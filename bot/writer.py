@@ -61,7 +61,8 @@ def rank(cands: list[dict], recent: list[str], category: str = "") -> list[dict]
         "engineers understand, crypto, NSFW, shady tools, blogs/newsletters, awesome-lists.\n"
         f"For each pick also choose the best ANGLE: {', '.join(ANGLES)}.\n"
         'Return {"picks": [{"index": 0, "score": 8, "angle": "free-alternative", '
-        '"why": "max 12 words"}]} with your 8 best, best first.',
+        '"why": "max 15 words IN CZECH: what it does + why it is a good pick"}]} '
+        'with your 8 best, best first.',
         temperature=0.3,
     )
     out = []
@@ -154,7 +155,8 @@ def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
         '"tool_name": "", "category": "1-2 words", "hook_formula": "name", '
         '"keyword": "", "sentences": [{"text": "", "emphasis": ["1-2 key words from this '
         'sentence"], "scene": {"type": "", "props": {}}}], "caption": "", '
-        '"hashtags": ["#ai"], "cover": {"line1": "", "line2": ""}}',
+        '"hashtags": ["#ai"], "cover": {"line1": "", "line2": ""}, '
+        '"summary_cs": "2 short sentences IN CZECH: what the tool does and who it is for"}',
         temperature=0.85,
     )
 
