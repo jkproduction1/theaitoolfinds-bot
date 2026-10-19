@@ -1,0 +1,26 @@
+name: debug-llm
+on: workflow_dispatch
+permissions:
+  contents: write
+  models: read
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p logs
+          {
+          echo "== catalog"; curl -sS https://models.github.ai/catalog/models | head -c 600; echo
+          for m in openai/gpt-4.1-mini openai/gpt-4o-mini; do
+          echo "== infer $m"
+          curl -sS -i -X POST https://models.github.ai/inference/chat/completions \
+            -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" -H "Content-Type: application/json" \
+            -d "{\"model\":\"$m\",\"messages\":[{\"role\":\"user\",\"content\":\"say hi\"}]}" | head -c 1500; echo
+          done
+          } > logs/debug.log 2>&1
+          git config user.name bot; git config user.email bot@users.noreply.github.com
+          git add logs && git commit -m "debug [skip ci]" && git push
