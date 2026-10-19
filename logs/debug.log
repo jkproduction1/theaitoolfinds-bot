@@ -1,0 +1,15 @@
+== catalog
+OK
+
+== infer openai/gpt-4.1-mini
+HTTP/2 200 
+content-type: text/plain
+
+OK
+
+== infer openai/gpt-4o-mini
+HTTP/2 200 
+content-type: text/plain
+
+OK
+
