@@ -100,8 +100,10 @@ def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
         "HOOK FORMULAS (choose the one that fits this tool best; adapt it, never copy):\n"
         f"{hooks}\n"
         "Hook rules: " + " ".join(HOOKS["rules"]) + "\n\n"
-        f"Write a {config.MIN_WORDS}-{config.MAX_WORDS} word voiceover split into 6-9 "
-        "sentences (each 5-16 words). Sentence 1 = the hook. Then what it does, 2-3 "
+        f"Write a {config.MIN_WORDS}-{config.MAX_WORDS} word voiceover (10-30 seconds). "
+        "Pick the length the tool deserves: a simple 'wow' tool = short and punchy (about "
+        "30-45 words, 4-5 sentences); a tool with several strong uses = longer (up to 85 "
+        "words). Never pad. Each sentence 4-16 words. Sentence 1 = the hook. Then what it does, 2-3 "
         "concrete use cases, pricing ONLY if stated on the website. Never invent features, "
         "prices or numbers that are not in the website text. Say the tool name clearly. "
         "Write numbers as words. The LAST sentence must be exactly: "
@@ -120,7 +122,7 @@ def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
     )
 
     sents = data.get("sentences") or []
-    if len(sents) < 4:
+    if len(sents) < 3:
         raise ValueError("storyboard has too few sentences")
     kw = re.sub(r"[^A-Z0-9]", "", (data.get("keyword") or "LINK").upper())[:12] or "LINK"
     data["keyword"] = kw

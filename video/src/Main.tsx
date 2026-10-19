@@ -85,7 +85,10 @@ const Captions: React.FC<{words: Word[]; dark: boolean}> = ({words, dark}) => {
       transform: `scale(${0.85 + 0.15 * pop})`}}>
       {ch.map((w, i) => {
         const active = t >= w.s;
-        const hl = w.hl;
+        // karaoke: every word gets the yellow marker while it is spoken,
+        // keywords keep it for the rest of the chunk
+        const speaking = t >= w.s && t < (ch[i + 1] ? ch[i + 1].s : w.e + 0.25);
+        const hl = speaking || (w.hl && active);
         return (
           <span key={i} style={{
             fontFamily: FONT, fontWeight: 900, fontSize: 84, letterSpacing: -2,

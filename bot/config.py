@@ -30,8 +30,8 @@ MUTED = (170, 170, 190)
 VOICE = os.getenv("TTS_VOICE", "en-US-AndrewNeural")
 VOICE_RATE = os.getenv("TTS_RATE", "+8%")
 
-# Script length target (~30-38 s of speech)
-MIN_WORDS, MAX_WORDS = 65, 100
+# Script length: 10-30 s of speech, the AI picks what fits the tool
+MIN_WORDS, MAX_WORDS = 28, 85
 
 # How many seconds the top of the website stays still before scrolling starts
 HOLD_SECONDS = 2.5
