@@ -72,12 +72,24 @@ def chat(system: str, user: str, temperature: float = 0.7) -> str:
             if p == "anthropic":
                 return _anthropic(system, user, temperature)
             if p == "gemini":
-                return _openai_compatible(
-                    "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-                    os.environ["GEMINI_API_KEY"],
-                    os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
-                    system, user, temperature,
-                )
+                # free tier has a daily quota per model -> on 429/404 try the next model
+                models = [os.getenv("GEMINI_MODEL", "gemini-3.8-flash")] + [
+                    m.strip() for m in os.getenv(
+                        "GEMINI_FALLBACKS", "gemini-3.8-flash-lite,gemini-3.5-flash,"
+                        "gemini-3.5-flash-lite").split(",") if m.strip()]
+                err = None
+                for mdl in models:
+                    try:
+                        return _openai_compatible(
+                            "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+                            os.environ["GEMINI_API_KEY"], mdl, system, user, temperature)
+                    except RuntimeError as e:
+                        err = e
+                        if "HTTP 429" in str(e) or "HTTP 404" in str(e):
+                            print(f"[llm] {mdl} unavailable ({str(e)[:40]}), trying next model")
+                            continue
+                        raise
+                raise err
         except Exception as e:  # rate limits / transient errors
             last = e
             print(f"[llm] attempt {attempt + 1} failed: {e}")

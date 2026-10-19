@@ -97,7 +97,11 @@ def main():
                 per_src[c["source"]] += 1
                 rest.append(i)
         recent = [h["name"] for h in discover.load_history()]
-        ranked = writer.rank([cands[i] for i in rest], recent) if rest else []
+        try:
+            ranked = writer.rank([cands[i] for i in rest], recent) if rest else []
+        except Exception as e:  # LLM down -> fall back to the score order
+            print(f"[main] ranking failed ({str(e)[:80]}), using score order")
+            ranked = []
         order = queued + [rest[i] for i in ranked] + [i for i in rest[:15]]
 
     made, tried = 0, set()
