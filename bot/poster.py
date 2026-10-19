@@ -40,15 +40,17 @@ def _z(method, path, **kw):
     return r.json() if r.text else {}
 
 
-def instagram_account_id():
-    if os.getenv("ZERNIO_ACCOUNT_ID"):
-        return os.environ["ZERNIO_ACCOUNT_ID"]
+def account_ids() -> dict:
+    """{"instagram": id, "tiktok": id} for every account connected in Zernio."""
     data = _z("GET", "/accounts")
     accounts = data.get("accounts") or data.get("data") or (data if isinstance(data, list) else [])
+    out = {}
     for a in accounts:
-        if a.get("platform") == "instagram":
-            return a.get("_id") or a.get("id")
-    raise RuntimeError(f"No Instagram account connected in Zernio: {str(data)[:200]}")
+        if a.get("platform") in ("instagram", "tiktok") and a.get("platform") not in out:
+            out[a["platform"]] = a.get("_id") or a.get("id")
+    if not out:
+        raise RuntimeError(f"No Instagram/TikTok account connected in Zernio: {str(data)[:200]}")
+    return out
 
 
 def upload(path: Path, ctype: str) -> str:
@@ -75,16 +77,30 @@ def next_slot(taken: set) -> datetime:
 def schedule(folder: Path, when: datetime) -> dict:
     caption = (folder / "caption.txt").read_text(encoding="utf-8")[:2200]
     video_url = upload(folder / "video.mp4", "video/mp4")
-    psd = {"shareToFeed": True}
-    if (folder / "cover.jpg").exists():
-        psd["instagramThumbnail"] = upload(folder / "cover.jpg", "image/jpeg")
-    res = _z("POST", "/posts", json={
-        "content": caption,
-        "mediaItems": [{"type": "video", "url": video_url}],
-        "platforms": [{"platform": "instagram", "accountId": instagram_account_id(),
-                       "platformSpecificData": psd}],
-        "scheduledFor": when.isoformat(),
-    })
+    cover = upload(folder / "cover.jpg", "image/jpeg") if (folder / "cover.jpg").exists() else None
+    ids = account_ids()
+    platforms = []
+    body = {"content": caption, "mediaItems": [{"type": "video", "url": video_url}],
+            "scheduledFor": when.isoformat()}
+    if "instagram" in ids:
+        psd = {"shareToFeed": True}
+        if cover:
+            psd["instagramThumbnail"] = cover
+        platforms.append({"platform": "instagram", "accountId": ids["instagram"],
+                          "platformSpecificData": psd})
+    if "tiktok" in ids:
+        platforms.append({"platform": "tiktok", "accountId": ids["tiktok"]})
+        body["tiktokSettings"] = {
+            "privacy_level": "PUBLIC_TO_EVERYONE", "allow_comment": True,
+            "allow_duet": True, "allow_stitch": True,
+            "video_made_with_ai": True,          # honest AI disclosure (AI voice + visuals)
+            "commercialContentType": "none",     # free promo; paid deals -> "brand_content"
+            "content_preview_confirmed": True, "express_consent_given": True,
+            **({"video_cover_image_url": cover} if cover else {}),
+        }
+    body["platforms"] = platforms
+    res = _z("POST", "/posts", json=body)
+    res["_platforms"] = list(ids)
     return res
 
 
@@ -177,7 +193,8 @@ def main():
             posted.append({"name": name, "when": when.isoformat(),
                            "post_id": (res.get("post") or {}).get("_id")})
             clear_buttons()
-            telegram.notify(f"✅ Naplánováno na Instagram: {when:%d.%m. %H:%M}\n{name}")
+            where = " + ".join(x.capitalize() for x in res.get("_platforms", ["instagram"]))
+            telegram.notify(f"✅ Naplánováno ({where}): {when:%d.%m. %H:%M}\n{name}")
         except Exception as e:
             pending[name] = info  # keep it, so the next run can retry
             telegram.notify(f"⚠️ Postování selhalo ({name}): {str(e)[:300]}\n"
