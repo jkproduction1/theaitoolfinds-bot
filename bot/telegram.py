@@ -51,8 +51,10 @@ def send_for_approval(folder, meta: dict, caption: str):
     cid = chat_id()
     name = folder.name
     text = (f"🎬 {meta['tool_name']}  ({meta.get('duration', '?')} s)\n"
-            f"🔗 {meta['url']}\n🔑 Keyword: {meta.get('keyword', '')}\n\n"
-            f"{caption[:700]}")
+            f"🔗 {meta['url']}\n\n"
+            f"ManyChat:\n🔑 Keyword: {meta.get('keyword', '')}\n"
+            f"💬 DM: Here is the link to {meta['tool_name']} 👉 {meta['url']}\n\n"
+            f"{caption[:600]}")
     kb = {"inline_keyboard": [[
         {"text": "✅ Postnout", "callback_data": f"ok:{name}"[:64]},
         {"text": "❌ Zahodit", "callback_data": f"no:{name}"[:64]},
