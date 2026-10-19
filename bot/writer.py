@@ -35,7 +35,7 @@ def rank(cands: list[dict], recent: list[str]) -> list[int]:
         f"Recently featured (avoid similar tools): {', '.join(recent[-30:]) or 'none'}\n\n"
         "Candidates:\n" + "\n".join(lines) + "\n\n"
         "Pick the 5 candidates most likely to make people say 'wait, this exists?!' and "
-        "save/share the video. Prefer: real usable products with a website, clear visual "
+        "save/share the video. The tool MUST be AI-powered (uses AI/LLMs/generative models). Prefer: real usable products with a website, clear visual "
         "result, free tier or cheap, broad appeal to NON-technical creators. Strongly prefer "
         "polished consumer products with their own website (Product Hunt style). Avoid: "
         "hardware hacks, dev libraries/CLIs only engineers understand, crypto, NSFW, shady "
