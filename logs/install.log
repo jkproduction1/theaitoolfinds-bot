@@ -1,0 +1,80 @@
+Setting up fonts-wqy-zenhei (0.9.45-8) ...
+Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+Setting up xserver-common (2:21.1.12-1ubuntu1.9) ...
+Setting up fonts-unifont (1:15.1.01-1build1) ...
+Setting up xvfb (2:21.1.12-1ubuntu1.9) ...
+Setting up xfonts-utils (1:7.7+6build3) ...
+Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+Setting up xfonts-scalable (1:1.0.3-1.3) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Not building database; man-db/auto-update is not 'true'.
+Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-linux64.zip
+|                                                                                |   0% of 191.1 MiB
+|■■■■■■■■                                                                        |  10% of 191.1 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 191.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 191.1 MiB
+Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /home/runner/.cache/ms-playwright/chromium-1248
+Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+|                                                                                |   0% of 2.2 MiB
+|■■■■■■■■                                                                        |  10% of 2.2 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.2 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.2 MiB
+FFmpeg (playwright ffmpeg v1013) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1013
+Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip
+|                                                                                |   0% of 120 MiB
+|■■■■■■■■                                                                        |  10% of 120 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 120 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
+Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
+
+added 260 packages in 7s
+[90mDownloading Chrome Headless Shell https://www.remotion.dev/chrome-headless-shell[39m
+Downloading from: https://remotion.media/chromium-headless-shell-linux-x64-157.0.8080.0.zip?clear
+Getting Headless Shell - 9.6 Mb/98.9 Mb
+Getting Headless Shell - 19.1 Mb/98.9 Mb
+Getting Headless Shell - 28.6 Mb/98.9 Mb
+Getting Headless Shell - 38.2 Mb/98.9 Mb
+Getting Headless Shell - 47.7 Mb/98.9 Mb
+Getting Headless Shell - 57.3 Mb/98.9 Mb
+Getting Headless Shell - 66.8 Mb/98.9 Mb
+Getting Headless Shell - 76.4 Mb/98.9 Mb
+Getting Headless Shell - 85.9 Mb/98.9 Mb
+Getting Headless Shell - 95.5 Mb/98.9 Mb
+Got Headless Shell
+Has browser at /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/video/node_modules/.remotion/chrome-headless-shell/linux64/chrome-headless-shell-linux64/chrome-headless-shell

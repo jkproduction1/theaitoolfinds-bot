@@ -1,60 +1,11 @@
-[discover] 0 from queue, 58 candidates total
-
-[main] trying: Krea 3 (https://www.producthunt.com/r/p/1281975?app_id=339)
-[main] skipped Krea 3: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1281975?app_id=339
-Traceback (most recent call last):
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 98, in main
-    meta = make_one(c)
-           ^^^^^^^^^^^
-requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1281975?app_id=339
-
-[main] trying: Tomo for ChatGPT (https://www.producthunt.com/r/p/1283357?app_id=339)
-[main] skipped Tomo for ChatGPT: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1283357?app_id=339
-Traceback (most recent call last):
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 98, in main
-    meta = make_one(c)
-           ^^^^^^^^^^^
-requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1283357?app_id=339
-
-[main] trying: Inbox Zero (https://www.producthunt.com/r/p/1276034?app_id=339)
-[main] skipped Inbox Zero: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1276034?app_id=339
-Traceback (most recent call last):
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 98, in main
-    meta = make_one(c)
-           ^^^^^^^^^^^
-requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1276034?app_id=339
-
-[main] trying: Openbroca (https://www.producthunt.com/r/p/1278100?app_id=339)
-[main] skipped Openbroca: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1278100?app_id=339
-Traceback (most recent call last):
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 98, in main
-    meta = make_one(c)
-           ^^^^^^^^^^^
-requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1278100?app_id=339
-
-[main] trying: readywhen (https://www.producthunt.com/r/p/1278782?app_id=339)
-[main] skipped readywhen: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1278782?app_id=339
-Traceback (most recent call last):
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 98, in main
-    meta = make_one(c)
-           ^^^^^^^^^^^
-requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://www.producthunt.com/r/p/1278782?app_id=339
+[discover] 0 from queue, 17 candidates total
+[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
 
 [main] trying: cleanyourtv (https://cleanyour.tv)
 [main] researching https://cleanyour.tv/
+[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 2 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
 [tts] ElevenLabs failed, using free Edge voice: ElevenLabs HTTP 401: {"detail":{"status":"detected_unusual_activity","message":"Unusual activity has been detected on your account, so Free Tier access has been disabled. This can be triggered by using a proxy or VPN, or 
-[main] voiceover 26.8s, 80 words
-[render] scenes: hook(3.0s) > zoom(1.6s) > feature(3.7s) > zoom(5.3s) > zoom(4.7s) > feature(3.1s) > zoom(3.1s) > cta(3.5s)
-[main] skipped cleanyourtv: box can't exceed original image size
-Traceback (most recent call last):
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 98, in main
-    meta = make_one(c)
-           ^^^^^^^^^^^
-ValueError: box can't exceed original image size
-
-[main] trying: Llmspeed – feel how fast a local LLM runs before you buy the hardware (https://llmspeed.dev/)
-[main] researching https://llmspeed.dev/
-[tts] ElevenLabs failed, using free Edge voice: ElevenLabs HTTP 401: {"detail":{"status":"detected_unusual_activity","message":"Unusual activity has been detected on your account, so Free Tier access has been disabled. This can be triggered by using a proxy or VPN, or 
-[main] voiceover 30.1s, 89 words
-[render] scenes: hook(3.4s) > zoom(1.9s) > feature(5.1s) > scroll(4.8s) > detail(3.5s) > feature(3.7s) > scroll(3.7s) > detail(1.8s) > cta(3.5s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-19_2056_llmspeed
+[main] voiceover 27.0s, 80 words
+[motion] scenes: title(3.8s) > browser(5.0s) > compare(3.8s) > icons(3.4s) > checklist(4.5s) > flow(4.3s) > cta(3.4s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-19_2122_cleanyourtv
