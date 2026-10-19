@@ -19,7 +19,16 @@ MIN_SCENE = 1.6   # seconds
 MAX_SCENE = 6.0   # longer scenes get split with a website shot
 
 
-def _logo(host: str, dest: Path):
+def _logo(host: str, dest: Path, site_url: str = ""):
+    gh = re.match(r"https?://github\.com/([^/]+)/", site_url or "")
+    if gh:  # GitHub repo -> the owner's avatar is the best "logo"
+        try:
+            r = requests.get(f"https://github.com/{gh.group(1)}.png?size=256", timeout=15)
+            im = Image.open(__import__("io").BytesIO(r.content)).convert("RGBA")
+            im.save(dest)
+            return "job/logo.png"
+        except Exception:
+            pass
     try:
         r = requests.get("https://www.google.com/s2/favicons",
                          params={"domain": host, "sz": 256}, timeout=15)
@@ -56,6 +65,14 @@ def _scenes(sb, words, total):
             merged[-1][1] = r[1]
         else:
             merged.append(r)
+    # never the same scene type twice in a row -> merge them
+    dedup = []
+    for r in merged:
+        if dedup and dedup[-1][2]["type"] == r[2]["type"] and r[2]["type"] != "cta":
+            dedup[-1][1] = r[1]
+        else:
+            dedup.append(r)
+    merged = dedup
     out, flip = [], 0
     for s0, s1, sc in merged:
         if s1 - s0 > MAX_SCENE and sc["type"] not in ("cta", "title"):
@@ -105,7 +122,7 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
     im.save(JOB / "screenshot.png")
     shutil.copy(voice, JOB / "voice.mp3")
     host = urlparse(site_url).netloc.replace("www.", "")
-    logo = _logo(host, JOB / "logo.png")
+    logo = _logo(host, JOB / "logo.png", site_url)
     av = None
     if avatar and avatar.exists():
         shutil.copy(avatar, JOB / "avatar.mp4")

@@ -67,10 +67,19 @@ def screenshot(url: str, out_png: Path) -> Path:
                 }
             }
         }""")
+        # GitHub repos: start the shot at the README (banner + demo), not the file list
+        top = 0
+        if "github.com" in url:
+            try:
+                box = page.locator("article.markdown-body").first.bounding_box(timeout=3000)
+                if box:
+                    top = max(0, int(box["y"]) - 40)
+            except Exception:
+                top = 0
         page.screenshot(
             path=str(out_png), full_page=True,
-            clip={"x": 0, "y": 0, "width": 1200,
-                  "height": min(page.evaluate("document.body.scrollHeight") or 900,
+            clip={"x": 0, "y": top, "width": 1200,
+                  "height": min((page.evaluate("document.body.scrollHeight") or 900) - top,
                                 MAX_PAGE_HEIGHT)},
         )
         browser.close()
