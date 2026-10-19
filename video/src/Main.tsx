@@ -47,7 +47,8 @@ const Captions: React.FC<{words: Word[]; dark: boolean}> = ({words, dark}) => {
   words.forEach((w, i) => {
     cur.push(w);
     const nx = words[i + 1];
-    if (cur.length >= 2 || !nx || nx.s - w.e > 0.25 || w.w.length > 9) {
+    const len = cur.reduce((a, x) => a + x.w.length, 0) + (nx ? nx.w.length : 0);
+    if (cur.length >= 2 || !nx || nx.s - w.e > 0.25 || len > 13) {
       chunks.push(cur);
       cur = [];
     }
@@ -61,15 +62,16 @@ const Captions: React.FC<{words: Word[]; dark: boolean}> = ({words, dark}) => {
   const pop = spring({frame: f - Math.round(ch[0].s * fps), fps,
     config: {damping: 12, stiffness: 220}});
   return (
-    <div style={{position: 'absolute', top: 1360, width: W, display: 'flex',
-      justifyContent: 'center', gap: 26, transform: `scale(${0.8 + 0.2 * pop})`}}>
+    <div style={{position: 'absolute', top: 1370, left: 120, width: W - 240, display: 'flex',
+      flexWrap: 'wrap', justifyContent: 'center', gap: 18,
+      transform: `scale(${0.85 + 0.15 * pop})`}}>
       {ch.map((w, i) => {
         const active = t >= w.s;
         const hl = w.hl;
         return (
           <span key={i} style={{
-            fontFamily: FONT, fontWeight: 900, fontSize: 112, letterSpacing: -3,
-            textTransform: 'lowercase', lineHeight: 1.05, padding: '0 16px', borderRadius: 18,
+            fontFamily: FONT, fontWeight: 900, fontSize: 84, letterSpacing: -2,
+            textTransform: 'lowercase', lineHeight: 1.1, padding: '0 14px', borderRadius: 14,
             color: hl ? C.ink : dark ? '#fff' : C.ink,
             background: hl ? C.yellow : 'transparent',
             opacity: active ? 1 : 0.35,
