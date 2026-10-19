@@ -11,7 +11,7 @@ import shutil
 import traceback
 from datetime import datetime, timezone
 
-from . import capture, config, discover, media, motion, research, tts, writer
+from . import capture, config, discover, media, motion, research, telegram, tts, writer
 
 
 def slug(s: str) -> str:
@@ -51,6 +51,11 @@ def make_one(cand: dict) -> dict:
         raise
     shutil.rmtree(work, ignore_errors=True)
     print(f"[main] DONE -> {folder}")
+    if telegram.enabled():
+        try:
+            telegram.send_for_approval(folder, meta, caption)
+        except Exception as e:
+            print(f"[telegram] failed: {e}")
     return meta
 
 

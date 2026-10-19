@@ -78,9 +78,33 @@ def _elevenlabs(text: str, mp3: Path):
 _KOKORO = None
 
 
+def _tighten(audio, words, sr, max_gap=0.12, max_sentence_gap=0.28):
+    """Cut long silences between words (Kokoro pauses a lot) and shift the timings."""
+    import numpy as np
+
+    keep, out_words, cursor, removed = [], [], 0, 0.0
+    for i, w in enumerate(words):
+        nxt = words[i + 1] if i + 1 < len(words) else None
+        out_words.append({**w, "start": w["start"] - removed, "end": w["end"] - removed})
+        if not nxt:
+            continue
+        gap = nxt["start"] - w["end"]
+        limit = max_sentence_gap if w.get("stop") else max_gap
+        if gap > limit + 0.04:
+            cut_from = int((w["end"] + 0.07) * sr)          # keep the word's tail
+            cut_to = int((nxt["start"] - (limit - 0.07)) * sr)
+            if cut_to > cut_from:
+                keep.append(audio[cursor:cut_from])
+                cursor = cut_to
+                removed += (cut_to - cut_from) / sr
+    keep.append(audio[cursor:])
+    return np.concatenate(keep), out_words
+
+
 def _kokoro(text: str, mp3: Path):
     """Kokoro-82M: free, open-source (Apache 2.0) neural voice, runs on CPU.
-    Gives token timestamps per chunk, which we offset into word timings."""
+    Whole script in one pass (fewer chunk edges = no swallowed word endings),
+    then long pauses are trimmed using the word timestamps."""
     global _KOKORO
     import numpy as np
     from kokoro import KPipeline
@@ -91,25 +115,31 @@ def _kokoro(text: str, mp3: Path):
     voice = os.getenv("KOKORO_VOICE", config.KOKORO_VOICE)
     speed = float(os.getenv("KOKORO_SPEED", config.KOKORO_SPEED))
     sr, chunks, words, offset = 24000, [], [], 0.0
-    for res in _KOKORO(text, voice=voice, speed=speed, split_pattern=r"(?<=[.!?])\s+"):
+    for res in _KOKORO(text, voice=voice, speed=speed, split_pattern=None):
         if res.audio is None:
             continue
         audio = res.audio.detach().cpu().numpy()
         for tk in res.tokens or []:
             if tk.start_ts is None or tk.end_ts is None:
                 continue
-            w = tk.text.strip(".,!?:;\"'()")
+            raw = tk.text.strip()
+            w = raw.strip(".,!?:;\"'()")
             if not w:
+                if words and raw and raw[-1] in ".!?":
+                    words[-1]["stop"] = True
                 continue
-            words.append({"word": w, "start": offset + tk.start_ts, "end": offset + tk.end_ts})
-        pause = np.zeros(int(sr * 0.12), dtype=np.float32)  # small breath between sentences
-        chunks += [audio, pause]
-        offset += (len(audio) + len(pause)) / sr
+            words.append({"word": w, "start": offset + tk.start_ts, "end": offset + tk.end_ts,
+                          "stop": raw[-1] in ".!?"})
+        chunks.append(audio)
+        offset += len(audio) / sr
+    audio = np.concatenate(chunks)
+    audio = np.concatenate([audio, np.zeros(int(sr * 0.25), dtype=audio.dtype)])  # no cut end
+    audio, words = _tighten(audio, words, sr)
     wav = mp3.with_suffix(".wav")
-    wavfile.write(wav, sr, (np.concatenate(chunks) * 32767).clip(-32768, 32767).astype(np.int16))
+    wavfile.write(wav, sr, (audio * 32767).clip(-32768, 32767).astype(np.int16))
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-ar", "44100",
                     "-b:a", "192k", str(mp3)], check=True)
-    return words
+    return [{"word": w["word"], "start": w["start"], "end": w["end"]} for w in words]
 
 
 def synthesize(text: str, mp3: Path) -> list[dict]:

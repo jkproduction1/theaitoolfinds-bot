@@ -64,6 +64,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           IN_URL: ${{ github.event.inputs.url }}
           IN_COUNT: ${{ github.event.inputs.count || '1' }}
         run: |
@@ -99,7 +100,7 @@ jobs:
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
           tail -n 300 logs/last_run.log > /tmp/l.log 2>/dev/null && cp /tmp/l.log logs/last_run.log || true
-          git add -f data/history.json data/queue.txt logs/last_run.log logs/install.log 2>/dev/null || true
+          git add -f data/history.json data/queue.txt data/telegram.json logs/last_run.log logs/install.log 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -qm "history: new video [skip ci]"
           for i in 1 2 3; do
