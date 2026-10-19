@@ -67,7 +67,7 @@ def _anthropic(system, user, temperature):
 def chat(system: str, user: str, temperature: float = 0.7) -> str:
     p = _provider()
     last = None
-    for attempt in range(3):
+    for attempt in range(5):
         try:
             if p == "anthropic":
                 return _anthropic(system, user, temperature)
@@ -81,7 +81,7 @@ def chat(system: str, user: str, temperature: float = 0.7) -> str:
         except Exception as e:  # rate limits / transient errors
             last = e
             print(f"[llm] attempt {attempt + 1} failed: {e}")
-            time.sleep(5 * (attempt + 1))
+            time.sleep(10 * (attempt + 1))
     raise RuntimeError(f"LLM call failed ({p}): {last}")
 
 

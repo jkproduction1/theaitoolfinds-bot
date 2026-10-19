@@ -65,6 +65,16 @@ jobs:
           path: out/
           retention-days: 30
 
+      - name: Publish video to "videos" branch (easy to download on GitHub)
+        if: success()
+        run: |
+          git config user.name "theaitoolfinds-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git fetch origin videos || true
+          git worktree add -B videos ../vb origin/videos 2>/dev/null || (git worktree add --detach ../vb && cd ../vb && git checkout --orphan videos && git rm -rfq . || true)
+          cp -r out/* ../vb/
+          cd ../vb && git add -A && git commit -qm "new video" && git push -q origin videos
+
       - name: Save history + log
         if: always()
         run: |
