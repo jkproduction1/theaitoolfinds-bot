@@ -1,0 +1,31 @@
+name: Voice samples
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  samples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-kokoro-v1
+      - run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -r requirements.txt
+          mkdir -p logs
+          python -u -m bot.voice_samples 2>&1 | tail -n 60 > logs/voice.log || true
+          git config user.name "theaitoolfinds-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git fetch origin videos
+          git worktree add -B videos ../vb origin/videos
+          cp -r out/voice-samples ../vb/ 2>/dev/null || true
+          cd ../vb && git add -A && (git diff --cached --quiet || git commit -qm "voice samples") && git push -q origin videos
+          cd $GITHUB_WORKSPACE && git add -f logs/voice.log && git commit -qm "voice log [skip ci]" && git pull -q --rebase origin main && git push -q origin HEAD:main || true
