@@ -22,5 +22,11 @@
     "domain": "cleanyour.tv",
     "date": "2026-10-19_2122",
     "source": "github"
+  },
+  {
+    "name": "MiniMax-H3 360 Orbit",
+    "domain": "huggingface.co/spaces/pablodawson/minimax-h3-360-orbit",
+    "date": "2026-10-19_2143",
+    "source": "hf-spaces"
   }
 ]
