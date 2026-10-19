@@ -1,10 +1,11 @@
 name: Make AI tool video
 
 on:
-  # 2 videos per day (times are UTC -> 07:23 and 15:23 Prague summer time)
+  # times are UTC (Prague = UTC+2 in summer, UTC+1 in winter)
   schedule:
-    - cron: "23 5 * * *"
-    - cron: "23 13 * * *"
+    - cron: "7 6 * * *"    # morning: send today's best candidates to Telegram
+    - cron: "7 9 * * *"    # if nothing was picked yet -> make video 1 automatically
+    - cron: "7 15 * * *"   # make sure there are 2 videos today
   # "Run workflow" button in the Actions tab
   workflow_dispatch:
     inputs:
@@ -67,14 +68,17 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           IN_URL: ${{ github.event.inputs.url }}
           IN_COUNT: ${{ github.event.inputs.count || '1' }}
+          SCHED: ${{ github.event.schedule }}
         run: |
           set -o pipefail
           mkdir -p logs
-          if [ -n "$IN_URL" ]; then
-            python -u -m bot.main --count "$IN_COUNT" --url "$IN_URL" 2>&1 | tee logs/last_run.log
-          else
-            python -u -m bot.main --count "$IN_COUNT" 2>&1 | tee logs/last_run.log
-          fi
+          case "$SCHED" in
+            "7 6 * * *")  ARGS="--pick-list" ;;
+            "7 9 * * *")  ARGS="--fill 1" ;;
+            "7 15 * * *") ARGS="--fill 2" ;;
+            *) if [ -n "$IN_URL" ]; then ARGS="--url $IN_URL"; else ARGS="--count $IN_COUNT"; fi ;;
+          esac
+          python -u -m bot.main $ARGS 2>&1 | tee logs/last_run.log
 
       - name: Upload video
         if: success()
@@ -87,6 +91,7 @@ jobs:
       - name: Publish video to "videos" branch (easy to download on GitHub)
         if: success()
         run: |
+          [ -n "$(ls -A out 2>/dev/null)" ] || exit 0   # e.g. morning list run: no video
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
           git fetch origin videos || true
@@ -104,7 +109,7 @@ jobs:
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
           tail -n 300 logs/last_run.log > /tmp/l.log 2>/dev/null && cp /tmp/l.log logs/last_run.log || true
-          for f in data/history.json data/queue.txt data/telegram.json data/pending.json logs/last_run.log logs/install.log; do
+          for f in data/history.json data/queue.txt data/telegram.json data/pending.json data/picks.json data/rotation.json logs/last_run.log logs/install.log; do
             [ -e "$f" ] && git add -f "$f"
           done
           git diff --cached --quiet && exit 0

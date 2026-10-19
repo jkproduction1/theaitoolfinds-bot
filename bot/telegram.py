@@ -77,3 +77,21 @@ def notify(text: str):
         _api("sendMessage", data={"chat_id": chat_id(), "text": text[:4000]})
     except Exception as e:
         print(f"[telegram] notify failed: {e}")
+
+
+def send_pick_list(category: str, items: list):
+    if not items:
+        notify("Dnes jsem nenašel nic dost dobrýho (skóre 7+). Zkusím to zase zítra.")
+        return
+    lines = [f"☀️ Dnešní kandidáti (kategorie: {category})", ""]
+    kb = []
+    for i, it in enumerate(items):
+        lines.append(f"{i + 1}. {it['name'][:50]}  ⭐{it['score']:.0f}  [{it['angle']}]")
+        lines.append(f"   {it['why']}")
+        lines.append(f"   {it['url']}")
+        kb.append([{"text": f"🎬 Udělat {i + 1}: {it['name'][:30]}", "callback_data": f"mk:{i}"}])
+    lines += ["", "Ťukni, co mám udělat (klidně 2). Když nic nevybereš, v 11:00 a 17:00 "
+              "udělám ty nejlepší sám."]
+    _api("sendMessage", data={"chat_id": chat_id(), "text": "\n".join(lines)[:4000],
+                              "disable_web_page_preview": "true",
+                              "reply_markup": json.dumps({"inline_keyboard": kb})})

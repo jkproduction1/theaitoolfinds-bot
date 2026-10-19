@@ -34,8 +34,8 @@ VOICE_RATE = os.getenv("TTS_RATE", "+8%")
 KOKORO_VOICE = "am_michael"
 KOKORO_SPEED = 1.18
 
-# Script length: 10-30 s of speech, the AI picks what fits the tool
-MIN_WORDS, MAX_WORDS = 28, 85
+# Script length: 15-50 s of speech, the AI picks what fits the tool
+MIN_WORDS, MAX_WORDS = 40, 135
 
 # How many seconds the top of the website stays still before scrolling starts
 HOLD_SECONDS = 2.5

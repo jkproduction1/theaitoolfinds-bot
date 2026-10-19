@@ -72,47 +72,64 @@ def remember(meta: dict, cand: dict):
                      encoding="utf-8")
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--url", help="make a video about this exact tool")
-    ap.add_argument("--count", type=int, default=1)
-    args = ap.parse_args()
+CATS = ["video", "design", "coding", "github", "useful"]
+ROT = config.DATA / "rotation.json"
+PICKS = config.DATA / "picks.json"
+MIN_SCORE = 7
 
-    if args.url:
-        cands = [{"name": discover.domain_of(args.url), "url": args.url, "desc": "",
-                  "source": "manual", "score": 0}]
-        order = [0]
-    else:
-        cands = discover.candidates()
-        if not cands:
-            raise SystemExit("No candidates found")
-        queued = [i for i, c in enumerate(cands) if c["source"] == "queue"]
-        # take the best ~10 from every source so one source can't dominate
-        per_src, rest = {}, []
-        for i, c in enumerate(cands):
-            if c["source"] == "queue":
-                continue
-            per_src.setdefault(c["source"], 0)
-            if per_src[c["source"]] < 10:
-                per_src[c["source"]] += 1
-                rest.append(i)
-        recent = [h["name"] for h in discover.load_history()]
-        try:
-            ranked = writer.rank([cands[i] for i in rest], recent) if rest else []
-        except Exception as e:  # LLM down -> fall back to the score order
-            print(f"[main] ranking failed ({str(e)[:80]}), using score order")
-            ranked = []
-        order = queued + [rest[i] for i in ranked] + [i for i in rest[:15]]
 
+def today_category(advance=False):
+    st = json.loads(ROT.read_text()) if ROT.exists() else {"i": 0}
+    cat = CATS[st["i"] % len(CATS)]
+    if advance:
+        st["i"] += 1
+        ROT.write_text(json.dumps(st))
+    return cat
+
+
+def made_today() -> int:
+    day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return sum(1 for h in discover.load_history() if str(h.get("date", "")).startswith(day))
+
+
+def ranked_candidates(category: str):
+    """Discovery + strict AI scoring. Returns (cands, [ranked dicts])."""
+    cands = discover.candidates()
+    queued = [i for i, c in enumerate(cands) if c["source"] == "queue"]
+    per_src, rest = {}, []
+    for i, c in enumerate(cands):  # best ~10 per source so no source dominates
+        if c["source"] == "queue":
+            continue
+        per_src[c["source"]] = per_src.get(c["source"], 0) + 1
+        if per_src[c["source"]] <= 10:
+            rest.append(i)
+    recent = [h["name"] for h in discover.load_history()]
+    try:
+        scored = writer.rank([cands[i] for i in rest], recent, category)
+        ranked = [{**r, "index": rest[r["index"]]} for r in scored]
+    except Exception as e:  # LLM down -> fall back to the discovery score order
+        print(f"[main] ranking failed ({str(e)[:80]}), using score order")
+        ranked = [{"index": i, "score": 7, "angle": "wow-demo", "why": ""} for i in rest[:8]]
+    ranked = [{"index": i, "score": 10, "angle": "wow-demo", "why": "your queue"}
+              for i in queued] + ranked
+    for r in ranked:
+        cands[r["index"]]["angle"] = r["angle"]
+        cands[r["index"]]["ai_score"] = r["score"]
+    print("[main] top picks:", " | ".join(
+        f"{cands[r['index']]['name'][:30]} {r['score']:.0f} {r['angle']}" for r in ranked[:8]))
+    return cands, ranked
+
+
+def produce(cands, order, count) -> int:
     made, tried = 0, set()
     for i in order:
-        if made >= args.count:
+        if made >= count:
             break
         if i in tried:
             continue
         tried.add(i)
         c = cands[i]
-        print(f"\n[main] trying: {c['name']} ({c['url']})")
+        print(f"\n[main] trying: {c['name']} ({c['url']})  angle={c.get('angle')}")
         try:
             meta = make_one(c)
             remember(meta, c)
@@ -120,6 +137,64 @@ def main():
         except Exception as e:
             print(f"[main] skipped {c['name']}: {e}")
             traceback.print_exc(limit=1)
+    return made
+
+
+def send_pick_list():
+    """Morning: send today's best candidates to Telegram, Jan taps which to make."""
+    cat = today_category(advance=True)
+    cands, ranked = ranked_candidates(cat)
+    top = [r for r in ranked if r["score"] >= MIN_SCORE][:5]
+    items = [{"name": cands[r["index"]]["name"], "url": cands[r["index"]]["url"],
+              "desc": cands[r["index"]].get("desc", ""), "source": cands[r["index"]]["source"],
+              "angle": r["angle"], "score": r["score"], "why": r["why"]} for r in top]
+    PICKS.write_text(json.dumps({"date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                                 "category": cat, "items": items, "picked": []}, indent=2))
+    if telegram.enabled():
+        telegram.send_pick_list(cat, items)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--url", help="make a video about this exact tool")
+    ap.add_argument("--count", type=int, default=1)
+    ap.add_argument("--pick-list", action="store_true", help="send today's candidates to Telegram")
+    ap.add_argument("--fill", type=int, default=0,
+                    help="auto mode: make videos only until N exist today")
+    args = ap.parse_args()
+
+    if args.pick_list:
+        return send_pick_list()
+
+    if args.url:
+        picks = json.loads(PICKS.read_text()) if PICKS.exists() else {"items": []}
+        known = next((p for p in picks.get("items", []) if p["url"] == args.url), {})
+        cands = [{"name": known.get("name") or discover.domain_of(args.url), "url": args.url,
+                  "desc": known.get("desc", ""), "source": known.get("source", "manual"),
+                  "score": 0, "angle": known.get("angle", "wow-demo")}]
+        made = produce(cands, [0], 1)
+    else:
+        count = args.count
+        if args.fill:
+            count = max(0, args.fill - made_today())
+            if not count:
+                print(f"[main] already {made_today()} videos today, nothing to do")
+                return
+        # prefer today's morning list (things Jan did not pick yet), then fresh discovery
+        picks = json.loads(PICKS.read_text()) if PICKS.exists() else {}
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        if picks.get("date") == today and picks.get("items"):
+            done = {h["domain"] for h in discover.load_history()}
+            cands = [dict(p, score=0) for p in picks["items"]
+                     if discover.domain_of(p["url"]) not in done]
+            made = produce(cands, list(range(len(cands))), count) if cands else 0
+            count -= made
+        else:
+            made = 0
+        if count > 0:
+            cands, ranked = ranked_candidates(today_category())
+            good = [r["index"] for r in ranked if r["score"] >= MIN_SCORE]
+            made += produce(cands, good or [r["index"] for r in ranked[:3]], count)
     if not made:
         raise SystemExit("Could not make any video")
 

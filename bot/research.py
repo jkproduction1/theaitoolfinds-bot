@@ -96,7 +96,14 @@ def fetch(url: str) -> dict:
     title = re.sub(r"\s+", " ", p.title).strip()
     if any(m in (title + text[:300]).lower() for m in BLOCKED_MARKERS):
         raise RuntimeError("site is behind a bot wall")
+    ig = None
+    for h in re.findall(r"instagram\.com/([A-Za-z0-9_.]{2,30})/?[\"'?]", r.text):
+        if h.lower() not in ("p", "reel", "reels", "explore", "accounts", "stories", "tv",
+                             "instagram", "share", "direct"):
+            ig = h.strip(".")
+            break
     return {
+        "instagram": ig,
         "url": final,
         "title": title,
         "description": p.meta.get("og:description") or p.meta.get("description", ""),

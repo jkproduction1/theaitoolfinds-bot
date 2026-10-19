@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: write
-  actions: read     # download the video artifact
+  actions: write    # download video artifacts + start a video job for a picked tool
 
 concurrency:
   group: poster
@@ -35,7 +35,7 @@ jobs:
         run: |
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
-          for f in data/telegram.json data/pending.json data/posted.json; do
+          for f in data/telegram.json data/pending.json data/posted.json data/picks.json; do
             [ -e "$f" ] && git add -f "$f"
           done
           git diff --cached --quiet && exit 0

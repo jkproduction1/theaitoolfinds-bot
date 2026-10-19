@@ -88,6 +88,17 @@ def schedule(folder: Path, when: datetime) -> dict:
     return res
 
 
+def dispatch_video(url: str):
+    repo = os.environ["GITHUB_REPOSITORY"]
+    r = requests.post(
+        f"https://api.github.com/repos/{repo}/actions/workflows/make-video.yml/dispatches",
+        headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                 "Accept": "application/vnd.github+json"},
+        json={"ref": "main", "inputs": {"url": url}}, timeout=30)
+    if r.status_code >= 300:
+        raise RuntimeError(f"dispatch HTTP {r.status_code}: {r.text[:200]}")
+
+
 # ---------------------------------------------------------------- artifacts
 def fetch_video(name: str, info: dict) -> Path:
     dest = Path("dl") / name
@@ -135,6 +146,19 @@ def main():
             except Exception:
                 pass
 
+        if action == "mk":  # morning list: Jan picked a tool -> start the video job
+            try:
+                picks = json.loads((config.DATA / "picks.json").read_text())
+                item = picks["items"][int(name)]
+                if item["url"] in picks.get("picked", []):
+                    continue
+                dispatch_video(item["url"])
+                picks.setdefault("picked", []).append(item["url"])
+                (config.DATA / "picks.json").write_text(json.dumps(picks, indent=2))
+                telegram.notify(f"🎬 Dělám video: {item['name']} (cca 8 min)")
+            except Exception as e:
+                telegram.notify(f"⚠️ Nepovedlo se spustit video: {str(e)[:200]}")
+            continue
         info = pending.pop(name, None)
         if action == "no":
             clear_buttons()

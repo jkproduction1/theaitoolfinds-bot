@@ -23,35 +23,59 @@ AUDIENCE = (
 )
 
 
-def rank(cands: list[dict], recent: list[str]) -> list[int]:
-    """Return candidate indexes, best first."""
+CATEGORIES = {
+    "video": "AI video editing / video generation / captions / avatars / motion",
+    "design": "design & image tools: image generation, UI design, thumbnails, upscaling, 3D",
+    "coding": "vibe coding / AI coding agents / app & website builders / Claude Code / MCP",
+    "github": "a FREE open-source GitHub repo that replaces a paid tool or blew up this week",
+    "useful": "anything that clearly saves creators time or money (voice, automation, writing, "
+              "productivity)",
+}
+ANGLES = ["free-alternative", "trending-repo", "time-saver", "money-saver", "wow-demo"]
+
+
+def rank(cands: list[dict], recent: list[str], category: str = "") -> list[dict]:
+    """Score candidates 1-10. Returns [{"index", "score", "angle", "why"}], best first."""
     lines = [
         f"{i}. {c['name']} | {c['desc'][:170]} | {c['url']} | source={c['source']} "
         f"niches={','.join(c.get('niches', [])) or '-'} "
         f"{c.get('stars_gained') or (str(c['stars']) + ' stars' if c.get('stars') else '')}"
-        for i, c in enumerate(cands[:45])
+        for i, c in enumerate(cands[:50])
     ]
+    cat = (f"TODAY'S CATEGORY: {category} = {CATEGORIES.get(category, '')}. Strongly prefer "
+           "candidates that fit it (but a 9+ outside it can still win).\n") if category else ""
     data = chat_json(
-        "You are the editor of a viral daily 'AI tool find' Reels account.",
-        f"Audience: {AUDIENCE}\n\n"
-        f"Recently featured (avoid similar tools): {', '.join(recent[-30:]) or 'none'}\n\n"
+        "You are the editor-in-chief of a premium daily 'AI tool find' Reels account. The "
+        "account must become the place AI companies WANT to be featured, so only the best, "
+        "hottest tools make it. You are strict.",
+        f"Audience: {AUDIENCE}\n\n{cat}"
+        f"Recently featured (never repeat, avoid near-duplicates): {', '.join(recent[-40:]) or 'none'}\n\n"
         "Candidates:\n" + "\n".join(lines) + "\n\n"
-        "PRIORITY NICHES (best performing): 1) AI video editing / video generation, "
-        "2) design & image tools, 3) vibe coding / AI coding agents / app builders, "
-        "4) FREE open-source GitHub repos that replace a paid tool ('this free GitHub repo "
-        "does X' goes viral), then voice/audio and automation. A repo trending fast on "
-        "GitHub or a Hugging Face Space you can try free in the browser is a great pick.\n"
-        "Pick the 5 candidates most likely to make people say 'wait, this exists?!' and "
-        "save/share the video. The tool MUST be AI-powered (uses AI/LLMs/generative models). Prefer: real usable products with a website, clear visual "
-        "result, free tier or cheap, broad appeal to NON-technical creators. Prefer things a "
-        "creator can try today (website, free repo with a clear demo, HF Space). Avoid: "
-        "hardware hacks, research papers, dev libraries only engineers understand, crypto, NSFW, shady "
-        "tools, plain newsletters/blogs.\n"
-        'Return {"ranked": [index, ...], "why": "short"}',
-        temperature=0.4,
+        "Score every promising candidate 1-10 (be honest, most things are 4-6):\n"
+        "- WOW: a viewer says 'wait, this exists?!' and the result is visual\n"
+        "- MOMENTUM: it is trending right now (stars today, HN points, HF trending)\n"
+        "- VALUE: saves real time or money, a creator can try it today (free tier/free repo)\n"
+        "- BRAND FIT: polished product or serious project a brand would be proud to be seen with\n"
+        "8+ = could go viral, 7 = solid, below 7 = do not post. The tool MUST be AI-powered. "
+        "Reject: hardware hacks, research papers without a usable demo, libraries only "
+        "engineers understand, crypto, NSFW, shady tools, blogs/newsletters, awesome-lists.\n"
+        f"For each pick also choose the best ANGLE: {', '.join(ANGLES)}.\n"
+        'Return {"picks": [{"index": 0, "score": 8, "angle": "free-alternative", '
+        '"why": "max 12 words"}]} with your 8 best, best first.',
+        temperature=0.3,
     )
-    out = [int(i) for i in data.get("ranked", []) if str(i).isdigit() and int(i) < len(cands)]
-    return out or list(range(min(5, len(cands))))
+    out = []
+    for p in data.get("picks", []):
+        try:
+            i = int(p.get("index"))
+        except (TypeError, ValueError):
+            continue
+        if 0 <= i < len(cands):
+            out.append({"index": i, "score": float(p.get("score") or 0),
+                        "angle": p.get("angle") if p.get("angle") in ANGLES else "wow-demo",
+                        "why": str(p.get("why") or "")[:120]})
+    out.sort(key=lambda x: -x["score"])
+    return out
 
 
 HOOKS = json.loads((config.ROOT / "bot" / "vendor" / "hooks.json").read_text(encoding="utf-8"))
@@ -70,6 +94,7 @@ Use each type at most twice, never the same type two scenes in a row, and use "b
 
 
 def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
+    angle = cand.get("angle") or "wow-demo"
     from .humanize import humanize
 
     hooks = "\n".join(f"- {h['name']}: {h['template']} (e.g. \"{h['example']}\")"
@@ -85,6 +110,16 @@ def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
                   f"license {site.get('license') or 'see repo'}). Lean into it: say it is free "
                   "and open source, mention the star count in words if impressive, and frame "
                   "it as an alternative to paid tools when that is true.")
+    angle_doc = {
+        "free-alternative": "ANGLE: frame it as a FREE alternative to a well-known paid tool "
+                            "(name the paid tool only if the website text supports it).",
+        "trending-repo": "ANGLE: this just blew up on GitHub - urgency, 'everyone is "
+                         "starring this', say what it replaces.",
+        "time-saver": "ANGLE: the hours it saves - old way vs new way.",
+        "money-saver": "ANGLE: the money it saves - what you would normally pay.",
+        "wow-demo": "ANGLE: lead with the most impressive visual result.",
+    }.get(angle, "")
+    facts += "\n\n" + angle_doc
     if "huggingface.co/spaces" in site["url"]:
         facts += "\n\nThis is a free demo you can try in the browser on Hugging Face."
     media_doc = ('\n- "media": the REAL demo (video/image of the tool\'s result). props: '
@@ -100,10 +135,12 @@ def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
         "HOOK FORMULAS (choose the one that fits this tool best; adapt it, never copy):\n"
         f"{hooks}\n"
         "Hook rules: " + " ".join(HOOKS["rules"]) + "\n\n"
-        f"Write a {config.MIN_WORDS}-{config.MAX_WORDS} word voiceover (10-30 seconds). "
+        f"Write a {config.MIN_WORDS}-{config.MAX_WORDS} word voiceover (15-50 seconds). "
         "Pick the length the tool deserves: a simple 'wow' tool = short and punchy (about "
-        "30-45 words, 4-5 sentences); a tool with several strong uses = longer (up to 85 "
-        "words). Never pad. Each sentence 4-16 words. Sentence 1 = the hook. Then what it does, 2-3 "
+        "40-60 words); a tool with several strong uses or a real how-to = longer (up to "
+        f"{config.MAX_WORDS} words, 3-4 concrete use cases or steps). Never pad. The hook must "
+        "be specific to THIS tool (a number, a named paid tool, a concrete result) - never "
+        "a generic 'this AI tool is amazing'. Each sentence 4-16 words. Sentence 1 = the hook. Then what it does, 2-3 "
         "concrete use cases, pricing ONLY if stated on the website. Never invent features, "
         "prices or numbers that are not in the website text. Say the tool name clearly. "
         "Write numbers as words. The LAST sentence must be exactly: "
@@ -148,6 +185,12 @@ def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
                 break
     data["script"] = " ".join(s["text"] for s in sents)
     data["caption"] = humanize(data.get("caption", "")).replace("KEYWORD", kw)
+    h = site.get("instagram")
+    if h and f"@{h}".lower() not in data["caption"].lower():
+        # tag the tool's own account - brands notice (and often repost) when they're featured
+        lines = data["caption"].split("\n", 1)
+        data["caption"] = lines[0] + f"\n\nTool by @{h}" + ("\n" + lines[1] if len(lines) > 1 else "")
+    data["angle"] = angle
     words = len(data["script"].split())
     if not (config.MIN_WORDS - 15 <= words <= config.MAX_WORDS + 25):
         raise ValueError(f"script length {words} words is off target")
