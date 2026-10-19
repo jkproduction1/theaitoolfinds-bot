@@ -1,7 +1,7 @@
 [discover] 0 from queue, 72 candidates total
-[llm] attempt 1 failed: HTTP 200: 'OK\r\n'
-[llm] attempt 2 failed: HTTP 200: 'OK\r\n'
-[llm] attempt 3 failed: HTTP 200: 'OK\r\n'
+[llm] attempt 1 failed: HTTP 404: '[{\n  "error": {\n    "code": 404,\n    "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/doc'
+[llm] attempt 2 failed: HTTP 404: '[{\n  "error": {\n    "code": 404,\n    "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/doc'
+[llm] attempt 3 failed: HTTP 404: '[{\n  "error": {\n    "code": 404,\n    "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/doc'
 Traceback (most recent call last):
   File "<frozen runpy>", line 198, in _run_module_as_main
   File "<frozen runpy>", line 88, in _run_code
@@ -13,9 +13,9 @@ Traceback (most recent call last):
   File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/writer.py", line 21, in rank
     data = chat_json(
            ^^^^^^^^^^
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 97, in chat_json
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 90, in chat_json
     raw = chat(system + "\nReply with ONE valid JSON object only. No markdown.", user, temperature)
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 92, in chat
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 85, in chat
     raise RuntimeError(f"LLM call failed ({p}): {last}")
-RuntimeError: LLM call failed (github): HTTP 200: 'OK\r\n'
+RuntimeError: LLM call failed (gemini): HTTP 404: '[{\n  "error": {\n    "code": 404,\n    "message": "This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/doc'
