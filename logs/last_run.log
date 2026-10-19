@@ -1,4 +1,7 @@
 [discover] 0 from queue, 72 candidates total
+[llm] attempt 1 failed: HTTP 200: 'OK\r\n'
+[llm] attempt 2 failed: HTTP 200: 'OK\r\n'
+[llm] attempt 3 failed: HTTP 200: 'OK\r\n'
 Traceback (most recent call last):
   File "<frozen runpy>", line 198, in _run_module_as_main
   File "<frozen runpy>", line 88, in _run_code
@@ -10,9 +13,9 @@ Traceback (most recent call last):
   File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/writer.py", line 21, in rank
     data = chat_json(
            ^^^^^^^^^^
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 93, in chat_json
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 97, in chat_json
     raw = chat(system + "\nReply with ONE valid JSON object only. No markdown.", user, temperature)
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 88, in chat
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 92, in chat
     raise RuntimeError(f"LLM call failed ({p}): {last}")
-RuntimeError: LLM call failed (github): Expecting value: line 1 column 1 (char 0)
+RuntimeError: LLM call failed (github): HTTP 200: 'OK\r\n'
