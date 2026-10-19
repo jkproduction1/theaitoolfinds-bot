@@ -38,7 +38,9 @@ def make_one(cand: dict) -> dict:
     print(f"[main] voiceover {vlen:.1f}s, {len(words)} words")
 
     render.build(work, script.get("title_on_screen") or name, script.get("category", ""),
-                 site["url"], shot, voice, words, folder / "video.mp4", vlen)
+                 site["url"], shot, voice, words, folder / "video.mp4", vlen,
+                 script=script["script"], features=script.get("features", []),
+                 og_image=site.get("og_image", ""))
 
     caption = script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", []))
     (folder / "caption.txt").write_text(caption, encoding="utf-8")

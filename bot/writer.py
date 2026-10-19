@@ -66,6 +66,8 @@ def write_script(cand: dict, site: dict) -> dict:
         '"tool_name": "", "category": "one or two words e.g. Video editing", '
         '"hook": "", "script": "full voiceover text including hook", '
         '"title_on_screen": "max 4 words, usually the tool name", '
+        '"features": ["2-4 word on-screen labels of real features from the website, '
+        'e.g. Auto captions, Free plan, Text to video - give 3"], '
         '"caption": "", "hashtags": ["#ai", ...]}',
         temperature=0.8,
     )
