@@ -18,7 +18,7 @@ export const Cover: React.FC<VideoProps & {coverImage?: string | null}> = (v) =>
       <AbsoluteFill style={{
         backgroundImage: `linear-gradient(${C.grid} 2px, transparent 2px), linear-gradient(90deg, ${C.grid} 2px, transparent 2px)`,
         backgroundSize: '60px 60px', opacity: 0.8}} />
-      <div style={{position: 'absolute', top: 560, left: 90, width: 900, height: 820,
+      <div style={{position: 'absolute', top: 610, left: 90, width: 900, height: 780,
         borderRadius: 40, overflow: 'hidden', transform: 'rotate(3deg)', background: '#fff',
         border: `3px solid ${C.line}`, boxShadow: '0 40px 100px rgba(20,20,30,0.25)'}}>
         {v.coverImage ? (
@@ -29,7 +29,7 @@ export const Cover: React.FC<VideoProps & {coverImage?: string | null}> = (v) =>
             objectPosition: 'top'}} />
         ) : null}
       </div>
-      <div style={{position: 'absolute', top: 230, width: W, display: 'flex',
+      <div style={{position: 'absolute', top: 300, width: W, display: 'flex',
         justifyContent: 'center'}}>{line(v.cover.line1, C.yellow, C.ink, -3)}</div>
       <div style={{position: 'absolute', top: 1440, width: W, display: 'flex',
         justifyContent: 'center'}}>{line(v.cover.line2, C.ink, '#fff', 2)}</div>
