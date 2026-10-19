@@ -16,11 +16,10 @@ Automaticky 2× denně (Actions → *Make AI tool video*). Ručně: **Actions �
 
 Hotové video: v běhu dole v **Artifacts** (video.mp4, caption.txt, cover.jpg).
 
-## Nastavení (volitelné, v Settings → Secrets → Actions)
+## Nastavení (Settings → Secrets and variables → Actions)
 | Secret | K čemu |
 |---|---|
-| *(nic)* | zdarma přes GitHub Models |
-| `GEMINI_API_KEY` | lepší texty, pořád zdarma |
+| `GEMINI_API_KEY` | **povinné** (nebo Claude) – zdarma na aistudio.google.com |
 | `ANTHROPIC_API_KEY` | nejlepší texty (Claude) |
 
 Hlas, barvy, délka: `bot/config.py`. Hudba: dej `.mp3` do `assets/music/` (jen s licencí!).

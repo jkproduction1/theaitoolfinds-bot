@@ -1,6 +1,7 @@
 """One small wrapper around whichever LLM is available.
 
-Priority: ANTHROPIC_API_KEY -> GEMINI_API_KEY -> GITHUB_TOKEN (GitHub Models, free).
+Priority: ANTHROPIC_API_KEY -> GEMINI_API_KEY (free tier at aistudio.google.com).
+(GitHub Models was retired by GitHub on 2026-07-30, so it is no longer an option.)
 Switching provider = just add the secret in GitHub, no code change.
 """
 import json
@@ -16,10 +17,9 @@ def _provider():
         return "anthropic"
     if os.getenv("GEMINI_API_KEY"):
         return "gemini"
-    if os.getenv("GITHUB_TOKEN"):
-        return "github"
     raise RuntimeError(
-        "No LLM available: set GITHUB_TOKEN (free), GEMINI_API_KEY or ANTHROPIC_API_KEY"
+        "No LLM key: add GEMINI_API_KEY (free) or ANTHROPIC_API_KEY in "
+        "repo Settings -> Secrets and variables -> Actions"
     )
 
 
@@ -78,13 +78,6 @@ def chat(system: str, user: str, temperature: float = 0.7) -> str:
                     os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
                     system, user, temperature,
                 )
-            return _openai_compatible(
-                "https://models.github.ai/inference/chat/completions",
-                os.environ["GITHUB_TOKEN"],
-                os.getenv("GITHUB_MODEL", "openai/gpt-4.1-mini"),
-                system, user, temperature,
-                {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"},
-            )
         except Exception as e:  # rate limits / transient errors
             last = e
             print(f"[llm] attempt {attempt + 1} failed: {e}")

@@ -17,7 +17,6 @@ on:
 
 permissions:
   contents: write   # save history.json back to the repo
-  models: read      # free GitHub Models LLM
 
 concurrency:
   group: make-video
