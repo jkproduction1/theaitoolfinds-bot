@@ -25,8 +25,10 @@ def rank(cands: list[dict], recent: list[str]) -> list[int]:
         "Candidates:\n" + "\n".join(lines) + "\n\n"
         "Pick the 5 candidates most likely to make people say 'wait, this exists?!' and "
         "save/share the video. Prefer: real usable products with a website, clear visual "
-        "result, free tier or cheap, broad appeal. Avoid: dev libraries only engineers "
-        "understand, crypto, NSFW, shady tools, plain newsletters/blogs.\n"
+        "result, free tier or cheap, broad appeal to NON-technical creators. Strongly prefer "
+        "polished consumer products with their own website (Product Hunt style). Avoid: "
+        "hardware hacks, dev libraries/CLIs only engineers understand, crypto, NSFW, shady "
+        "tools, plain newsletters/blogs.\n"
         'Return {"ranked": [index, ...], "why": "short"}',
         temperature=0.4,
     )

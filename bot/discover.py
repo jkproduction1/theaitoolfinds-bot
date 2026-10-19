@@ -134,9 +134,12 @@ def from_github():
             if not AI_WORDS.search(text):
                 continue
             home = (repo.get("homepage") or "").strip()
+            # only repos with a real product website (GitHub pages look boring on video)
+            if not home.startswith("http") or "github.com" in home:
+                continue
             out.append({
                 "name": repo["name"], "desc": (repo.get("description") or "")[:240],
-                "url": home if home.startswith("http") else repo["html_url"],
+                "url": home,
                 "source": "github", "score": repo.get("stargazers_count", 0) // 10,
             })
     except Exception as ex:
