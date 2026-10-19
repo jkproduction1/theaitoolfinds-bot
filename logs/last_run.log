@@ -3,29 +3,27 @@
 [discover] hf_spaces: 60
 [discover] reddit r/StableDiffusion: HTTP 403
 [discover] reddit: 0
-[discover] hackernews: 27
-[discover] 0 from queue, 142 candidates total
-
-[main] trying: universal-modder (https://github.com/rehan-remade/universal-modder)
-[main] researching https://github.com/rehan-remade/universal-modder
-[media] using video 560x316 from https://raw.githubusercontent.com/rehan-remade/universal-modder/HEAD/docs/media/mods-tease
-[tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"status":"detected_unusual_activity","message":"Unusual activity has been detected on yo
-WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/nn/modules/rnn.py:1011: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
-  super().__init__("LSTM", *args, **kwargs)
-/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:145: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
-  WeightNorm.apply(module, name, dim)
-Collecting en-core-web-sm==3.8.0
-  Downloading en_core_web_sm-3.8.0-py3-none-any.whl (12.8 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 52.9 MB/s  0:00:00
-Installing collected packages: en-core-web-sm
-Successfully installed en-core-web-sm-3.8.0
-[38;5;2m✔ Download and installation successful[0m
-You can now load the package via spacy.load('en_core_web_sm')
-/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
-  warnings.warn(
-[tts] Kokoro voice (am_michael)
-[main] voiceover 24.7s, 62 words
-[motion] scenes: title(5.0s) > browser(5.7s) > icons(5.8s) > media(4.9s) > cta(4.5s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-19_2208_universal-modder
+[discover] hackernews: 26
+[discover] 0 from queue, 140 candidates total
+[llm] attempt 1 failed: HTTP 429: '[{\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota e'
+[llm] attempt 2 failed: HTTP 429: '[{\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota e'
+[llm] attempt 3 failed: HTTP 429: '[{\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota e'
+[llm] attempt 4 failed: HTTP 429: '[{\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota e'
+[llm] attempt 5 failed: HTTP 429: '[{\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota e'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 124, in <module>
+    main()
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 100, in main
+    ranked = writer.rank([cands[i] for i in rest], recent) if rest else []
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/writer.py", line 34, in rank
+    data = chat_json(
+           ^^^^^^^^^^
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 90, in chat_json
+    raw = chat(system + "\nReply with ONE valid JSON object only. No markdown.", user, temperature)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/llm.py", line 85, in chat
+    raise RuntimeError(f"LLM call failed ({p}): {last}")
+RuntimeError: LLM call failed (gemini): HTTP 429: '[{\n  "error": {\n    "code": 429,\n    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota e'
