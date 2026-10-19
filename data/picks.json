@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-19",
+  "category": "video",
+  "items": [
+    {
+      "name": "Wan2.2 14B Preview",
+      "url": "https://huggingface.co/spaces/kulkas2pintu/wan777",
+      "desc": "generate a video from an image with a text prompt",
+      "source": "hf-spaces",
+      "angle": "free-alternative",
+      "score": 9.0,
+      "why": "Generate state-of-the-art AI videos from images for free directly in HuggingFace."
+    },
+    {
+      "name": "blender-ai-mcp-addon",
+      "url": "https://github.com/LiCinCan/blender-ai-mcp-addon",
+      "desc": "AI assistant and MCP server for Blender: visual chat, scene tools, multi-agent workflows. Works with OpenAI, ChatGPT, Claude, Gemini, Ollama, OpenCode. Blender AI addon and plugin, copilot for 3D, bpy Python scripting, MCP integration.",
+      "source": "gh-search",
+      "angle": "time-saver",
+      "score": 8.0,
+      "why": "Control Blender with natural language visual AI agents for 3D animation."
+    },
+    {
+      "name": "Krea 2 Turbo Image Generator",
+      "url": "https://huggingface.co/spaces/Aura1in/Krea-2-Turbo_v2",
+      "desc": "Krea 2 Turbo text2image and image editing",
+      "source": "hf-spaces",
+      "angle": "wow-demo",
+      "score": 8.0,
+      "why": "Instant real-time AI image generation and editing directly in your browser."
+    },
+    {
+      "name": "FLUX 3 Image Klein",
+      "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein",
+      "desc": "5.6B open weights. Text-to-image, editing, bounding boxes",
+      "source": "hf-spaces",
+      "angle": "free-alternative",
+      "score": 8.0,
+      "why": "Try Black Forest Labs' FLUX 3 image generation and editing weights free."
+    },
+    {
+      "name": "ComfyUI",
+      "url": "https://github.com/Comfy-Org/ComfyUI",
+      "desc": "Star                    Comfy-Org /   ComfyUI      The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface. The fastest local inference engine in the world.",
+      "source": "gh-trending",
+      "angle": "free-alternative",
+      "score": 8.0,
+      "why": "The ultimate open-source node GUI for advanced AI video and image workflows."
+    }
+  ],
+  "picked": []
+}
