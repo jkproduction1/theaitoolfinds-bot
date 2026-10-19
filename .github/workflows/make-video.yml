@@ -91,6 +91,12 @@ jobs:
         run: |
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
-          tail -n 300 logs/last_run.log > logs/tmp.log 2>/dev/null && mv logs/tmp.log logs/last_run.log || true
-          git add -f data/ logs/ || true
-          git diff --cached --quiet || (git commit -m "history: new video [skip ci]" && git push)
+          tail -n 300 logs/last_run.log > /tmp/l.log 2>/dev/null && cp /tmp/l.log logs/last_run.log || true
+          git add -f data/history.json data/queue.txt logs/last_run.log logs/install.log 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -qm "history: new video [skip ci]"
+          for i in 1 2 3; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
+          echo "could not push history"; exit 1
