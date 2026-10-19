@@ -49,22 +49,27 @@ jobs:
           IN_URL: ${{ github.event.inputs.url }}
           IN_COUNT: ${{ github.event.inputs.count || '1' }}
         run: |
+          set -o pipefail
+          mkdir -p logs
           if [ -n "$IN_URL" ]; then
-            python -m bot.main --count "$IN_COUNT" --url "$IN_URL"
+            python -u -m bot.main --count "$IN_COUNT" --url "$IN_URL" 2>&1 | tee logs/last_run.log
           else
-            python -m bot.main --count "$IN_COUNT"
+            python -u -m bot.main --count "$IN_COUNT" 2>&1 | tee logs/last_run.log
           fi
 
       - name: Upload video
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: videos-${{ github.run_number }}
           path: out/
           retention-days: 30
 
-      - name: Save history
+      - name: Save history + log
+        if: always()
         run: |
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/
+          tail -n 300 logs/last_run.log > logs/tmp.log 2>/dev/null && mv logs/tmp.log logs/last_run.log || true
+          git add data/ logs/ || true
           git diff --cached --quiet || (git commit -m "history: new video [skip ci]" && git push)
