@@ -158,7 +158,8 @@ def candidates():
     used_names = {h["name"].lower() for h in history}
 
     queue = from_queue()
-    found = from_producthunt() + from_hackernews() + from_github()
+    # Product Hunt redirect links return 403 to bots, so PH is off for now
+    found = from_hackernews() + from_github()
 
     seen, result = set(), []
     for c in queue + sorted(found, key=lambda c: -c["score"]):

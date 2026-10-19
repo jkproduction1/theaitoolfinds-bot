@@ -94,6 +94,12 @@ class Assets:
         self.features = [f for f in (features or []) if f][:4]
 
         page = Image.open(screenshot).convert("RGB")
+        min_h = int(page.width * 1.35)  # short pages: pad so zooms/crops never run out
+        if page.height < min_h:
+            pad = Image.new("RGB", (page.width, min_h),
+                            page.getpixel((page.width // 2, page.height - 1)))
+            pad.paste(page, (0, 0))
+            page = pad
         self.page = page
         self.pw, self.ph = page.size
         self.hero = page.crop((0, 0, self.pw, min(self.ph, int(self.pw * 0.75))))
