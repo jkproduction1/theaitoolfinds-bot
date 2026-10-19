@@ -42,10 +42,14 @@ jobs:
 
       - name: Install ffmpeg + Python packages + browsers + Remotion
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-          pip install -r requirements.txt
-          python -m playwright install --with-deps chromium
-          cd video && npm ci --no-audit --no-fund && npx remotion browser ensure
+          set -o pipefail
+          mkdir -p logs
+          {
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+            pip install -q -r requirements.txt
+            python -m playwright install --with-deps chromium
+            cd video && npm ci --no-audit --no-fund && npx remotion browser ensure
+          } 2>&1 | tail -n 80 > logs/install.log
 
       - name: Make video
         env:
@@ -88,5 +92,5 @@ jobs:
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
           tail -n 300 logs/last_run.log > logs/tmp.log 2>/dev/null && mv logs/tmp.log logs/last_run.log || true
-          git add data/ logs/ || true
+          git add -f data/ logs/ || true
           git diff --cached --quiet || (git commit -m "history: new video [skip ci]" && git push)
