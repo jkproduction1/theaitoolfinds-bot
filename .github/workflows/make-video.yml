@@ -15,6 +15,9 @@ on:
       count:
         description: "How many videos"
         default: "1"
+      mode:
+        description: "video | picklist"
+        default: "video"
 
 permissions:
   contents: write   # save history.json back to the repo
@@ -69,6 +72,7 @@ jobs:
           IN_URL: ${{ github.event.inputs.url }}
           IN_COUNT: ${{ github.event.inputs.count || '1' }}
           SCHED: ${{ github.event.schedule }}
+          IN_MODE: ${{ github.event.inputs.mode || 'video' }}
         run: |
           set -o pipefail
           mkdir -p logs
@@ -76,7 +80,8 @@ jobs:
             "7 6 * * *")  ARGS="--pick-list" ;;
             "7 9 * * *")  ARGS="--fill 1" ;;
             "7 15 * * *") ARGS="--fill 2" ;;
-            *) if [ -n "$IN_URL" ]; then ARGS="--url $IN_URL"; else ARGS="--count $IN_COUNT"; fi ;;
+            *) if [ "$IN_MODE" = "picklist" ]; then ARGS="--pick-list"
+               elif [ -n "$IN_URL" ]; then ARGS="--url $IN_URL"; else ARGS="--count $IN_COUNT"; fi ;;
           esac
           python -u -m bot.main $ARGS 2>&1 | tee logs/last_run.log
 
