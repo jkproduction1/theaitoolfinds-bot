@@ -75,7 +75,7 @@ def chat(system: str, user: str, temperature: float = 0.7) -> str:
                 return _openai_compatible(
                     "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
                     os.environ["GEMINI_API_KEY"],
-                    os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
                     system, user, temperature,
                 )
         except Exception as e:  # rate limits / transient errors
