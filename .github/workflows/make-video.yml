@@ -120,7 +120,7 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -qm "history: new video [skip ci]"
           for i in 1 2 3; do
-            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && exit 0
             sleep 5
           done
           echo "could not push history"; exit 1
