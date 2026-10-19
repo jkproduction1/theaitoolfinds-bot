@@ -30,6 +30,10 @@ MUTED = (170, 170, 190)
 VOICE = os.getenv("TTS_VOICE", "en-US-AndrewNeural")
 VOICE_RATE = os.getenv("TTS_RATE", "+8%")
 
+# Kokoro (default free voice). Male: am_michael, am_fenrir, am_puck. Female: af_heart, af_bella
+KOKORO_VOICE = "am_michael"
+KOKORO_SPEED = 1.1
+
 # Script length: 10-30 s of speech, the AI picks what fits the tool
 MIN_WORDS, MAX_WORDS = 28, 85
 

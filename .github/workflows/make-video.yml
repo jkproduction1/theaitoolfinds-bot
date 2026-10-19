@@ -34,6 +34,12 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      - name: Cache voice model
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-kokoro-v1
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -45,7 +51,8 @@ jobs:
           set -o pipefail
           mkdir -p logs
           {
-            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+            pip install -q torch --index-url https://download.pytorch.org/whl/cpu
             pip install -q -r requirements.txt
             python -m playwright install --with-deps chromium
             cd video && npm ci --no-audit --no-fund && npx remotion browser ensure

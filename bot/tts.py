@@ -75,6 +75,43 @@ def _elevenlabs(text: str, mp3: Path):
     return [w for w in words if w["word"]]
 
 
+_KOKORO = None
+
+
+def _kokoro(text: str, mp3: Path):
+    """Kokoro-82M: free, open-source (Apache 2.0) neural voice, runs on CPU.
+    Gives token timestamps per chunk, which we offset into word timings."""
+    global _KOKORO
+    import numpy as np
+    from kokoro import KPipeline
+    from scipy.io import wavfile
+
+    if _KOKORO is None:
+        _KOKORO = KPipeline(lang_code="a")  # American English
+    voice = os.getenv("KOKORO_VOICE", config.KOKORO_VOICE)
+    speed = float(os.getenv("KOKORO_SPEED", config.KOKORO_SPEED))
+    sr, chunks, words, offset = 24000, [], [], 0.0
+    for res in _KOKORO(text, voice=voice, speed=speed, split_pattern=r"(?<=[.!?])\s+"):
+        if res.audio is None:
+            continue
+        audio = res.audio.detach().cpu().numpy()
+        for tk in res.tokens or []:
+            if tk.start_ts is None or tk.end_ts is None:
+                continue
+            w = tk.text.strip(".,!?:;\"'()")
+            if not w:
+                continue
+            words.append({"word": w, "start": offset + tk.start_ts, "end": offset + tk.end_ts})
+        pause = np.zeros(int(sr * 0.12), dtype=np.float32)  # small breath between sentences
+        chunks += [audio, pause]
+        offset += (len(audio) + len(pause)) / sr
+    wav = mp3.with_suffix(".wav")
+    wavfile.write(wav, sr, (np.concatenate(chunks) * 32767).clip(-32768, 32767).astype(np.int16))
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-ar", "44100",
+                    "-b:a", "192k", str(mp3)], check=True)
+    return words
+
+
 def synthesize(text: str, mp3: Path) -> list[dict]:
     if os.getenv("TTS_OFFLINE") == "1":
         return _offline(text, mp3)
@@ -84,7 +121,15 @@ def synthesize(text: str, mp3: Path) -> list[dict]:
             print("[tts] ElevenLabs voice")
             return words
         except Exception as e:  # out of credits etc. -> free voice instead
-            print(f"[tts] ElevenLabs failed, using free Edge voice: {e}")
+            print(f"[tts] ElevenLabs failed: {str(e)[:120]}")
+    if os.getenv("TTS_ENGINE", "kokoro") == "kokoro":
+        try:
+            words = _kokoro(text, mp3)
+            if words:
+                print(f"[tts] Kokoro voice ({os.getenv('KOKORO_VOICE', config.KOKORO_VOICE)})")
+                return words
+        except Exception as e:
+            print(f"[tts] Kokoro failed, using Edge voice: {e}")
     words = asyncio.run(_edge(text, mp3))
     if not words:
         raise RuntimeError("TTS returned no word timings")
