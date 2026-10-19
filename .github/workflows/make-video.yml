@@ -92,7 +92,11 @@ jobs:
           git fetch origin videos || true
           git worktree add -B videos ../vb origin/videos 2>/dev/null || (git worktree add --detach ../vb && cd ../vb && git checkout --orphan videos && git rm -rfq . || true)
           cp -r out/* ../vb/
-          cd ../vb && git add -A && git commit -qm "new video" && git push -q origin videos
+          cd ../vb
+          # keep only the 12 newest videos and squash history so the repo stays small
+          ls -1d 20*/ 2>/dev/null | sort | head -n -12 | xargs -r rm -rf
+          git checkout -q --orphan fresh && git add -A && git commit -qm "latest videos"
+          git push -q -f origin HEAD:videos
 
       - name: Save history + log
         if: always()

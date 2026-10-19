@@ -112,6 +112,10 @@ def main():
                                                                                "message"])})
     for u in updates:
         st["offset"] = u["update_id"] + 1
+        m = u.get("message") or {}
+        if m.get("chat", {}).get("type") == "private" and not st.get("chat_id"):
+            st["chat_id"] = m["chat"]["id"]
+            telegram._save(st)
         cq = u.get("callback_query")
         if not cq:
             continue
