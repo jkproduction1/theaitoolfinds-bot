@@ -47,26 +47,46 @@ const Logo: React.FC<{v: VideoProps; size: number}> = ({v, size}) =>
   );
 
 // ---------------------------------------------------------------- TITLE (hook)
-export const Title: React.FC<SP> = ({v}) => {
+export const Title: React.FC<SP> = ({v, dur}) => {
+  // Hook: show WHAT the tool does right away (real demo or the product itself),
+  // with a compact name tag above it. A text-only title loses viewers in second one.
+  const f = useCurrentFrame();
   const a = useSpring(0);
-  const b = useSpring(5);
-  const c = useSpring(10);
+  const b = useSpring(4, 15);
+  const m = v.media;
+  const zoom = interpolate(f, [0, dur], [1.0, 1.12], {extrapolateRight: 'clamp'});
+  const cw = 940;
+  let ch = 760;
+  if (m) ch = Math.min(800, Math.max(660, (cw * m.h) / m.w));
   return (
-    <Stage>
-      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 34}}>
-        <div style={{transform: `scale(${a})`, background: C.yellow, color: C.ink,
-          fontWeight: 800, fontSize: 36, padding: '14px 30px', borderRadius: 999,
-          letterSpacing: 1}}>AI TOOL OF THE DAY</div>
-        <div style={{transform: `scale(${b})`}}><Logo v={v} size={210} /></div>
-        <div style={{transform: `translateY(${(1 - c) * 60}px)`, opacity: c, fontWeight: 900,
-          fontSize: v.title.length > 14 ? 96 : 124, color: C.ink, textAlign: 'center',
-          lineHeight: 1.0, maxWidth: 960, letterSpacing: -3}}>{v.title}</div>
-        {v.category ? (
-          <div style={{opacity: c, fontWeight: 600, fontSize: 38, color: C.muted}}>
-            {v.category}</div>
-        ) : null}
+    <AbsoluteFill style={{top: 230, height: 1080, alignItems: 'center'}}>
+      <div style={{display: 'flex', alignItems: 'center', gap: 22, marginTop: 10,
+        transform: `translateY(${(1 - a) * -40}px)`, opacity: a}}>
+        <Logo v={v} size={86} />
+        <div style={{display: 'flex', flexDirection: 'column', gap: 6}}>
+          <div style={{background: C.yellow, color: C.ink, fontWeight: 800, fontSize: 24,
+            padding: '6px 16px', borderRadius: 999, alignSelf: 'flex-start',
+            letterSpacing: 1}}>AI TOOL OF THE DAY</div>
+          <div style={{fontWeight: 900, fontSize: v.title.length > 16 ? 50 : 62, color: C.ink,
+            letterSpacing: -2, lineHeight: 1, maxWidth: 760}}>{v.title}</div>
+        </div>
       </div>
-    </Stage>
+      <div style={{marginTop: 34, transform: `translateY(${(1 - b) * 120}px) scale(${0.92 + 0.08 * b})`,
+        opacity: b}}>
+        <Card style={{width: cw, height: ch, overflow: 'hidden', borderRadius: 36}}>
+          {m && m.kind === 'video' ? (
+            <OffthreadVideo src={staticFile(m.src)} muted style={{width: cw, height: ch,
+              objectFit: 'cover', transform: `scale(${zoom})`}} />
+          ) : m ? (
+            <Img src={staticFile(m.src)} style={{width: cw, height: ch, objectFit: 'cover',
+              transform: `scale(${zoom})`}} />
+          ) : (
+            <Img src={staticFile(v.screenshot)} style={{width: cw, objectFit: 'cover',
+              objectPosition: 'top', transformOrigin: '50% 20%', transform: `scale(${zoom})`}} />
+          )}
+        </Card>
+      </div>
+    </AbsoluteFill>
   );
 };
 
