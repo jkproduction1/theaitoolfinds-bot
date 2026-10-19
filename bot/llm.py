@@ -23,10 +23,11 @@ def _provider():
     )
 
 
-def _openai_compatible(url, key, model, system, user, temperature):
+def _openai_compatible(url, key, model, system, user, temperature, extra_headers=None):
     r = requests.post(
         url,
-        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json",
+                 **(extra_headers or {})},
         json={
             "model": model,
             "temperature": temperature,
@@ -37,7 +38,8 @@ def _openai_compatible(url, key, model, system, user, temperature):
         },
         timeout=120,
     )
-    r.raise_for_status()
+    if r.status_code >= 400 or not r.text.strip().startswith("{"):
+        raise RuntimeError(f"HTTP {r.status_code}: {r.text[:300]!r}")
     return r.json()["choices"][0]["message"]["content"]
 
 
@@ -81,9 +83,11 @@ def chat(system: str, user: str, temperature: float = 0.7) -> str:
                 os.environ["GITHUB_TOKEN"],
                 os.getenv("GITHUB_MODEL", "openai/gpt-4.1-mini"),
                 system, user, temperature,
+                {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"},
             )
         except Exception as e:  # rate limits / transient errors
             last = e
+            print(f"[llm] attempt {attempt + 1} failed: {e}")
             time.sleep(5 * (attempt + 1))
     raise RuntimeError(f"LLM call failed ({p}): {last}")
 
