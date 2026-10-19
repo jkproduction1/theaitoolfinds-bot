@@ -4,5 +4,11 @@
     "domain": "github.com/nateherkai/roast-room",
     "date": "2026-10-19_2037",
     "source": "github"
+  },
+  {
+    "name": "esp32-iphone-agent",
+    "domain": "github.com/onehumanbeing/esp32-iphone-agent",
+    "date": "2026-10-19_2043",
+    "source": "github"
   }
 ]
