@@ -116,6 +116,7 @@ def main():
         if m.get("chat", {}).get("type") == "private" and not st.get("chat_id"):
             st["chat_id"] = m["chat"]["id"]
             telegram._save(st)
+            telegram.notify("🤖 Bot je připojenej! Sem ti budou chodit videa ke schválení.")
         cq = u.get("callback_query")
         if not cq:
             continue
