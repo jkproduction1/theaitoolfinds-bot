@@ -100,7 +100,9 @@ jobs:
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
           tail -n 300 logs/last_run.log > /tmp/l.log 2>/dev/null && cp /tmp/l.log logs/last_run.log || true
-          git add -f data/history.json data/queue.txt data/telegram.json logs/last_run.log logs/install.log 2>/dev/null || true
+          for f in data/history.json data/queue.txt data/telegram.json logs/last_run.log logs/install.log; do
+            [ -e "$f" ] && git add -f "$f"
+          done
           git diff --cached --quiet && exit 0
           git commit -qm "history: new video [skip ci]"
           for i in 1 2 3; do
