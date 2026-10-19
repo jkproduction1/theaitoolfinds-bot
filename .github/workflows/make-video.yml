@@ -1,0 +1,70 @@
+name: Make AI tool video
+
+on:
+  # 2 videos per day (times are UTC -> 07:23 and 15:23 Prague summer time)
+  schedule:
+    - cron: "23 5 * * *"
+    - cron: "23 13 * * *"
+  # "Run workflow" button in the Actions tab
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Optional: make a video about this exact tool URL"
+        required: false
+      count:
+        description: "How many videos"
+        default: "1"
+
+permissions:
+  contents: write   # save history.json back to the repo
+  models: read      # free GitHub Models LLM
+
+concurrency:
+  group: make-video
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ffmpeg + Python packages + browser
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Make video
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          IN_URL: ${{ github.event.inputs.url }}
+          IN_COUNT: ${{ github.event.inputs.count || '1' }}
+        run: |
+          if [ -n "$IN_URL" ]; then
+            python -m bot.main --count "$IN_COUNT" --url "$IN_URL"
+          else
+            python -m bot.main --count "$IN_COUNT"
+          fi
+
+      - name: Upload video
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos-${{ github.run_number }}
+          path: out/
+          retention-days: 30
+
+      - name: Save history
+        run: |
+          git config user.name "theaitoolfinds-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || (git commit -m "history: new video [skip ci]" && git push)

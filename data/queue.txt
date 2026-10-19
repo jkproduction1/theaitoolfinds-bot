@@ -1,0 +1,3 @@
+# Sem můžeš přidat vlastní tooly (jeden řádek = jeden tool). Použijí se jako první.
+# Formát:  URL  volitelná poznámka
+# Příklad: https://www.krea.ai  realtime image generator
