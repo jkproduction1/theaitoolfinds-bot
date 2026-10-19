@@ -48,5 +48,8 @@
       "why": "The ultimate open-source node GUI for advanced AI video and image workflows."
     }
   ],
-  "picked": []
+  "picked": [
+    "https://github.com/LiCinCan/blender-ai-mcp-addon",
+    "https://huggingface.co/spaces/Aura1in/Krea-2-Turbo_v2"
+  ]
 }
