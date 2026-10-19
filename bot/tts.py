@@ -78,27 +78,51 @@ def _elevenlabs(text: str, mp3: Path):
 _KOKORO = None
 
 
-def _tighten(audio, words, sr, max_gap=0.12, max_sentence_gap=0.28):
-    """Cut long silences between words (Kokoro pauses a lot) and shift the timings."""
+def _tighten(audio, words, sr, cap=0.2, lead=0.05):
+    """Shorten every silence longer than `cap` seconds (measured from the audio itself)
+    and shift the word timings to match. Makes the voice snappier."""
     import numpy as np
 
-    keep, out_words, cursor, removed = [], [], 0, 0.0
-    for i, w in enumerate(words):
-        nxt = words[i + 1] if i + 1 < len(words) else None
-        out_words.append({**w, "start": w["start"] - removed, "end": w["end"] - removed})
-        if not nxt:
+    hop = int(sr * 0.01)
+    n = len(audio) // hop
+    rms = np.sqrt(np.mean(audio[: n * hop].reshape(n, hop) ** 2, axis=1))
+    silent = rms < max(1e-4, rms.max() * 0.02)
+    cuts, i = [], 0  # (start_sample, end_sample) to remove
+    while i < n:
+        if not silent[i]:
+            i += 1
             continue
-        gap = nxt["start"] - w["end"]
-        limit = max_sentence_gap if w.get("stop") else max_gap
-        if gap > limit + 0.04:
-            cut_from = int((w["end"] + 0.07) * sr)          # keep the word's tail
-            cut_to = int((nxt["start"] - (limit - 0.07)) * sr)
-            if cut_to > cut_from:
-                keep.append(audio[cursor:cut_from])
-                cursor = cut_to
-                removed += (cut_to - cut_from) / sr
-    keep.append(audio[cursor:])
-    return np.concatenate(keep), out_words
+        j = i
+        while j < n and silent[j]:
+            j += 1
+        dur = (j - i) * hop / sr
+        keep = lead if i == 0 else cap
+        if dur > keep:
+            half = keep / 2 if i > 0 else 0
+            a0 = i * hop + int(half * sr)
+            a1 = j * hop - int((keep - half) * sr)
+            if a1 > a0:
+                cuts.append((a0, a1))
+        i = j
+    if not cuts:
+        return audio, words
+    parts, cur = [], 0
+    for a0, a1 in cuts:
+        parts.append(audio[cur:a0])
+        cur = a1
+    parts.append(audio[cur:])
+
+    def remap(t):
+        x, removed = int(t * sr), 0
+        for a0, a1 in cuts:
+            if x >= a1:
+                removed += a1 - a0
+            elif x > a0:
+                removed += x - a0
+        return (x - removed) / sr
+
+    out = [{**w, "start": remap(w["start"]), "end": remap(w["end"])} for w in words]
+    return np.concatenate(parts), out
 
 
 def _kokoro(text: str, mp3: Path):
