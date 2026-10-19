@@ -16,23 +16,41 @@ const GridBg: React.FC = () => {
         backgroundImage: `linear-gradient(${C.grid} 2px, transparent 2px), linear-gradient(90deg, ${C.grid} 2px, transparent 2px)`,
         backgroundSize: '60px 60px', backgroundPosition: `0 ${off}px`, opacity: 0.7,
       }} />
+      <div style={{position: 'absolute', width: 900, height: 900, borderRadius: 450,
+        left: 90 + Math.sin(f / 70) * 160, top: 420 + Math.cos(f / 90) * 140,
+        background: 'radial-gradient(circle, rgba(255,214,10,0.28) 0%, rgba(255,214,10,0) 65%)'}} />
+      <div style={{position: 'absolute', width: 700, height: 700, borderRadius: 350,
+        left: 300 + Math.cos(f / 80) * 200, top: 900 + Math.sin(f / 60) * 120,
+        background: 'radial-gradient(circle, rgba(255,106,61,0.12) 0%, rgba(255,106,61,0) 65%)'}} />
       <AbsoluteFill style={{background:
         'radial-gradient(ellipse at 50% 40%, rgba(244,244,241,0) 40%, rgba(244,244,241,0.95) 100%)'}} />
     </AbsoluteFill>
   );
 };
 
-// Each scene slides/zooms in and quickly out
-const SceneWrap: React.FC<{dur: number; children: React.ReactNode; idx: number}> = ({
-  dur, children, idx,
-}) => {
+const OVERLAP = 8; // frames the old scene keeps flying out while the new one comes in
+
+// Each scene: 3D tilt + blur in, slow camera drift, then flies out (overlapping the next)
+const SceneWrap: React.FC<{dur: number; children: React.ReactNode; idx: number;
+  first: boolean}> = ({dur, children, idx, first}) => {
   const f = useCurrentFrame();
-  const out = interpolate(f, [dur - 5, dur], [0, 1], {extrapolateLeft: 'clamp',
+  const {fps} = useVideoConfig();
+  const inn = first ? 1 : spring({frame: f, fps, config: {damping: 15, stiffness: 120}});
+  const out = interpolate(f, [dur, dur + OVERLAP], [0, 1], {extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp'});
+  const drift = interpolate(f, [0, dur], [1, 1.035], {extrapolateRight: 'clamp'});
   const dir = idx % 2 ? -1 : 1;
+  const style = idx % 3;
+  const outT = style === 0 ? `translateY(${-out * 260}px)` :
+    style === 1 ? `translateX(${-out * 300 * dir}px) rotate(${-out * 4 * dir}deg)` :
+    `scale(${1 + out * 0.25})`;
   return (
-    <AbsoluteFill style={{opacity: 1 - out, transform:
-      `translateX(${out * -160 * dir}px) scale(${1 - out * 0.06})`}}>{children}</AbsoluteFill>
+    <AbsoluteFill style={{
+      opacity: Math.min(1, inn * 1.4) * (1 - out),
+      filter: `blur(${(1 - Math.min(1, inn)) * 14 + out * 10}px)`,
+      transform: `perspective(1600px) rotateX(${(1 - inn) * 16}deg) ` +
+        `translateY(${(1 - inn) * 90}px) scale(${(0.92 + 0.08 * inn) * drift}) ${outT}`,
+    }}>{children}</AbsoluteFill>
   );
 };
 
@@ -73,7 +91,10 @@ const Captions: React.FC<{words: Word[]; dark: boolean}> = ({words, dark}) => {
             fontFamily: FONT, fontWeight: 900, fontSize: 84, letterSpacing: -2,
             textTransform: 'lowercase', lineHeight: 1.1, padding: '0 14px', borderRadius: 14,
             color: hl ? C.ink : dark ? '#fff' : C.ink,
-            background: hl ? C.yellow : 'transparent',
+            backgroundImage: hl ? `linear-gradient(${C.yellow}, ${C.yellow})` : 'none',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: `${interpolate(t, [w.s - 0.05, w.s + 0.12], [0, 100], {
+              extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}% 100%`,
             opacity: active ? 1 : 0.35,
             textShadow: dark && !hl ? '0 6px 24px rgba(0,0,0,0.6)' : 'none',
           }}>{w.w}</span>
@@ -106,12 +127,26 @@ export const Main: React.FC<VideoProps> = (v) => {
       {v.scenes.map((s, i) => {
         const Cmp = SCENES[s.type] || SCENES.title;
         const dur = Math.max(1, s.to - s.from);
+        const last = i === v.scenes.length - 1;
         return (
-          <Sequence key={i} from={s.from} durationInFrames={dur} layout="none">
-            <SceneWrap dur={dur} idx={i}><Cmp p={s.props || {}} v={v} dur={dur} /></SceneWrap>
+          <Sequence key={i} from={s.from} durationInFrames={dur + (last ? 0 : OVERLAP)}
+            layout="none">
+            <SceneWrap dur={dur} idx={i} first={i === 0}>
+              <Cmp p={s.props || {}} v={v} dur={dur} /></SceneWrap>
           </Sequence>
         );
       })}
+      {v.scenes.map((s, i) => (i === 0 ? null : (
+        <Sequence key={'sfx' + i} from={Math.max(0, s.from - 4)} durationInFrames={20}
+          layout="none">
+          <Audio src={staticFile('sfx/whoosh.wav')} volume={0.3} />
+        </Sequence>
+      )))}
+      {v.scenes.filter((s) => ['big', 'cta', 'media', 'title'].includes(s.type)).map((s, i) => (
+        <Sequence key={'pop' + i} from={s.from + 6} durationInFrames={10} layout="none">
+          <Audio src={staticFile('sfx/pop.wav')} volume={0.4} />
+        </Sequence>
+      ))}
       <Captions words={v.words} dark={dark} />
       <Progress total={v.durationInFrames} dark={dark} />
       <div style={{position: 'absolute', bottom: 70, width: W, textAlign: 'center',

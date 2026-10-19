@@ -344,9 +344,46 @@ export const Avatar: React.FC<SP> = ({v}) => {
   );
 };
 
+// ---------------------------------------------------------------- MEDIA (real demo)
+export const Media: React.FC<SP> = ({p, v, dur}) => {
+  const f = useCurrentFrame();
+  const enter = useSpring(0, 15);
+  const lab = useSpring(6, 11, 180);
+  const m = v.media;
+  if (!m) return null;
+  const maxW = 940, maxH = 1000;
+  const k = Math.min(maxW / m.w, maxH / m.h);
+  const w = m.w * k, h = m.h * k;
+  const zoom = interpolate(f, [0, dur], [1.0, 1.07], {extrapolateRight: 'clamp'});
+  return (
+    <Stage>
+      <div style={{position: 'relative', transform: `translateY(${(1 - enter) * 120}px)`,
+        opacity: enter}}>
+        <Card style={{width: w, height: h, overflow: 'hidden', borderRadius: 34}}>
+          {m.kind === 'video' ? (
+            <OffthreadVideo src={staticFile(m.src)} muted
+              style={{width: w, height: h, objectFit: 'cover', transform: `scale(${zoom})`}} />
+          ) : (
+            <Img src={staticFile(m.src)}
+              style={{width: w, height: h, objectFit: 'cover', transform: `scale(${zoom})`}} />
+          )}
+        </Card>
+        <div style={{position: 'absolute', top: -30, left: 30, transform: `scale(${lab}) rotate(-3deg)`,
+          background: C.yellow, color: C.ink, fontWeight: 900, fontSize: 38,
+          padding: '10px 24px', borderRadius: 16, boxShadow: '0 12px 30px rgba(0,0,0,0.18)',
+          display: 'flex', alignItems: 'center', gap: 12}}>
+          <div style={{width: 16, height: 16, borderRadius: 8, background: '#FF3B30',
+            opacity: f % 30 < 18 ? 1 : 0.3}} />
+          {(p.label || 'Real result').toUpperCase()}
+        </div>
+      </div>
+    </Stage>
+  );
+};
+
 export const SCENES: Record<string, React.FC<SP>> = {
   title: Title, browser: Browser, icons: Icons, checklist: Checklist, chat: Chat, flow: Flow,
-  big: Big, compare: Compare, cta: Cta, avatar: Avatar,
+  big: Big, compare: Compare, cta: Cta, avatar: Avatar, media: Media,
 };
 
 export const SceneFont = FONT;

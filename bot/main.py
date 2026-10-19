@@ -11,7 +11,7 @@ import shutil
 import traceback
 from datetime import datetime, timezone
 
-from . import capture, config, discover, motion, research, tts, writer
+from . import capture, config, discover, media, motion, research, tts, writer
 
 
 def slug(s: str) -> str:
@@ -24,26 +24,31 @@ def make_one(cand: dict) -> dict:
         raise RuntimeError("website has too little text to describe it")
     print(f"[main] researching {site['url']}")
 
-    script = writer.write_storyboard(cand, site)
-    name = script["tool_name"]
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H%M")
-    folder = config.OUT / f"{stamp}_{slug(name)}"
+    folder = config.OUT / f"{stamp}_{slug(cand['name'])}"
     work = folder / "_work"
     work.mkdir(parents=True, exist_ok=True)
+    try:
+        demo = media.find(site, work)
+        script = writer.write_storyboard(cand, site, has_media=bool(demo))
+        shot = capture.screenshot(site["url"], work / "screenshot.png")
+        voice = work / "voice.mp3"
+        words = tts.synthesize(script["script"], voice)
+        vlen = tts.duration(voice)
+        print(f"[main] voiceover {vlen:.1f}s, {len(words)} words")
 
-    shot = capture.screenshot(site["url"], work / "screenshot.png")
-    voice = work / "voice.mp3"
-    words = tts.synthesize(script["script"], voice)
-    vlen = tts.duration(voice)
-    print(f"[main] voiceover {vlen:.1f}s, {len(words)} words")
+        motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4",
+                     work, demo=demo)
 
-    motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4", work)
-
-    caption = script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", []))
-    (folder / "caption.txt").write_text(caption, encoding="utf-8")
-    meta = {**script, "url": site["url"], "domain": discover.domain_of(site["url"]),
-            "source": cand["source"], "created": stamp, "duration": round(vlen, 1)}
-    (folder / "meta.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False))
+        caption = script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", []))
+        (folder / "caption.txt").write_text(caption, encoding="utf-8")
+        meta = {**script, "url": site["url"], "domain": discover.domain_of(site["url"]),
+                "source": cand["source"], "created": stamp, "duration": round(vlen, 1),
+                "demo": demo["url"] if demo else None}
+        (folder / "meta.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False))
+    except Exception:
+        shutil.rmtree(folder, ignore_errors=True)  # don't publish half-made folders
+        raise
     shutil.rmtree(work, ignore_errors=True)
     print(f"[main] DONE -> {folder}")
     return meta
@@ -77,7 +82,15 @@ def main():
         if not cands:
             raise SystemExit("No candidates found")
         queued = [i for i, c in enumerate(cands) if c["source"] == "queue"]
-        rest = [i for i, c in enumerate(cands) if c["source"] != "queue"]
+        # take the best ~10 from every source so one source can't dominate
+        per_src, rest = {}, []
+        for i, c in enumerate(cands):
+            if c["source"] == "queue":
+                continue
+            per_src.setdefault(c["source"], 0)
+            if per_src[c["source"]] < 10:
+                per_src[c["source"]] += 1
+                rest.append(i)
         recent = [h["name"] for h in discover.load_history()]
         ranked = writer.rank([cands[i] for i in rest], recent) if rest else []
         order = queued + [rest[i] for i in ranked] + [i for i in rest[:15]]

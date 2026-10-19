@@ -96,7 +96,7 @@ def _remotion(args, cwd=VIDEO):
 
 
 def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_len: float,
-          out_mp4: Path, work: Path, avatar: Path | None = None):
+          out_mp4: Path, work: Path, avatar: Path | None = None, demo: dict | None = None):
     if JOB.exists():
         shutil.rmtree(JOB)
     JOB.mkdir(parents=True)
@@ -111,8 +111,26 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
         shutil.copy(avatar, JOB / "avatar.mp4")
         av = "job/avatar.mp4"
 
+    media, cover_img = None, None
+    if demo:
+        ext = "mp4" if demo["kind"] == "video" else "png"
+        shutil.copy(demo["path"], JOB / f"media.{ext}")
+        media = {"src": f"job/media.{ext}", "kind": demo["kind"], "w": demo["w"],
+                 "h": demo["h"]}
+        if demo["kind"] == "image":
+            cover_img = media["src"]
+        else:  # a frame from the demo video for the cover
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "1.5", "-i",
+                            str(JOB / "media.mp4"), "-frames:v", "1", str(JOB / "cover_src.png")])
+            if (JOB / "cover_src.png").exists():
+                cover_img = "job/cover_src.png"
+
     total = voice_len + config.TAIL_SECONDS
     scenes = _scenes(sb, words, total)
+    if not media:
+        for sc in scenes:
+            if sc["type"] == "media":
+                sc["type"], sc["props"] = "browser", {"motion": "zoom"}
     if av and scenes and scenes[0]["type"] == "title":
         scenes[0]["type"] = "avatar"
 
@@ -121,7 +139,7 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
         "title": sb.get("title_on_screen") or sb["tool_name"],
         "category": sb.get("category", ""), "host": host, "handle": config.BRAND,
         "keyword": sb["keyword"], "audio": "job/voice.mp3", "screenshot": "job/screenshot.png",
-        "screenshotW": im.width, "screenshotH": im.height, "logo": logo, "avatar": av,
+        "screenshotW": im.width, "screenshotH": im.height, "logo": logo, "avatar": av, "media": media, "coverImage": cover_img,
         "scenes": scenes, "words": _words(words, sb),
         "cover": {"line1": sb.get("cover", {}).get("line1") or sb["tool_name"],
                   "line2": sb.get("cover", {}).get("line2") or "AI tool"},

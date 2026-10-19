@@ -26,7 +26,9 @@ AUDIENCE = (
 def rank(cands: list[dict], recent: list[str]) -> list[int]:
     """Return candidate indexes, best first."""
     lines = [
-        f"{i}. {c['name']} | {c['desc'][:160]} | source={c['source']} score={c['score']}"
+        f"{i}. {c['name']} | {c['desc'][:170]} | {c['url']} | source={c['source']} "
+        f"niches={','.join(c.get('niches', [])) or '-'} "
+        f"{c.get('stars_gained') or (str(c['stars']) + ' stars' if c.get('stars') else '')}"
         for i, c in enumerate(cands[:45])
     ]
     data = chat_json(
@@ -34,11 +36,16 @@ def rank(cands: list[dict], recent: list[str]) -> list[int]:
         f"Audience: {AUDIENCE}\n\n"
         f"Recently featured (avoid similar tools): {', '.join(recent[-30:]) or 'none'}\n\n"
         "Candidates:\n" + "\n".join(lines) + "\n\n"
+        "PRIORITY NICHES (best performing): 1) AI video editing / video generation, "
+        "2) design & image tools, 3) vibe coding / AI coding agents / app builders, "
+        "4) FREE open-source GitHub repos that replace a paid tool ('this free GitHub repo "
+        "does X' goes viral), then voice/audio and automation. A repo trending fast on "
+        "GitHub or a Hugging Face Space you can try free in the browser is a great pick.\n"
         "Pick the 5 candidates most likely to make people say 'wait, this exists?!' and "
         "save/share the video. The tool MUST be AI-powered (uses AI/LLMs/generative models). Prefer: real usable products with a website, clear visual "
-        "result, free tier or cheap, broad appeal to NON-technical creators. Strongly prefer "
-        "polished consumer products with their own website (Product Hunt style). Avoid: "
-        "hardware hacks, dev libraries/CLIs only engineers understand, crypto, NSFW, shady "
+        "result, free tier or cheap, broad appeal to NON-technical creators. Prefer things a "
+        "creator can try today (website, free repo with a clear demo, HF Space). Avoid: "
+        "hardware hacks, research papers, dev libraries only engineers understand, crypto, NSFW, shady "
         "tools, plain newsletters/blogs.\n"
         'Return {"ranked": [index, ...], "why": "short"}',
         temperature=0.4,
@@ -62,7 +69,7 @@ SCENE_DOC = """Scene types (pick the one that best SHOWS what the sentence says)
 Use each type at most twice, never the same type two scenes in a row, and use "browser" 1-2 times."""
 
 
-def write_storyboard(cand: dict, site: dict) -> dict:
+def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
     from .humanize import humanize
 
     hooks = "\n".join(f"- {h['name']}: {h['template']} (e.g. \"{h['example']}\")"
@@ -73,6 +80,16 @@ def write_storyboard(cand: dict, site: dict) -> dict:
         f"Meta description: {site['description']}\n"
         f"Website text (truncated): {site['text'][:4500]}"
     )
+    if site.get("is_repo"):
+        facts += (f"\n\nTHIS IS A FREE OPEN-SOURCE GITHUB REPO ({site.get('stars', 0)} stars, "
+                  f"license {site.get('license') or 'see repo'}). Lean into it: say it is free "
+                  "and open source, mention the star count in words if impressive, and frame "
+                  "it as an alternative to paid tools when that is true.")
+    if "huggingface.co/spaces" in site["url"]:
+        facts += "\n\nThis is a free demo you can try in the browser on Hugging Face."
+    media_doc = ('\n- "media": the REAL demo (video/image of the tool\'s result). props: '
+                 '{"label": "2-3 words e.g. Real result"}. Use it 1-2 times, for the '
+                 'sentences about what it produces.') if has_media else ""
     data = chat_json(
         "You are the writer + motion designer of a clean, premium Instagram Reels account "
         "that shows one useful AI tool per video (style: white grid background, animated UI "
@@ -89,7 +106,7 @@ def write_storyboard(cand: dict, site: dict) -> dict:
         "prices or numbers that are not in the website text. Say the tool name clearly. "
         "Write numbers as words. The LAST sentence must be exactly: "
         "'Comment KEYWORD and I will send you the link.' (with the real keyword).\n\n"
-        f"{SCENE_DOC}\nICON must be one of: {', '.join(ICON_NAMES)}\n\n"
+        f"{SCENE_DOC}{media_doc}\nICON must be one of: {', '.join(ICON_NAMES)}\n\n"
         "Also: a one-word comment KEYWORD (uppercase, related to the tool, e.g. CLIPS), an "
         "Instagram caption whose first line (max 125 chars) is a strong hook, then 2-4 short "
         "value lines, then 'Comment KEYWORD and I will DM you the link.', then 6-8 hashtags; "
@@ -111,8 +128,9 @@ def write_storyboard(cand: dict, site: dict) -> dict:
         s["text"] = humanize(s.get("text", "")).replace("KEYWORD", kw)
         sc = s.get("scene") or {}
         t = sc.get("type")
-        if t not in ("title", "browser", "icons", "checklist", "chat", "flow", "big",
-                     "compare", "cta"):
+        allowed = ("title", "browser", "icons", "checklist", "chat", "flow", "big", "compare",
+                   "cta") + (("media",) if has_media else ())
+        if t not in allowed:
             sc = {"type": "browser", "props": {"motion": "scroll"}}
         if i == 0:
             sc = {"type": "title", "props": {}}
@@ -121,6 +139,11 @@ def write_storyboard(cand: dict, site: dict) -> dict:
         elif sc["type"] in ("title", "cta"):
             sc = {"type": "browser", "props": {"motion": "zoom"}}
         s["scene"] = sc
+    if has_media and not any(s["scene"]["type"] == "media" for s in sents):
+        for s in sents[1:-1]:  # make sure the real demo is shown at least once
+            if s["scene"]["type"] in ("browser", "icons", "big"):
+                s["scene"] = {"type": "media", "props": {"label": "Real result"}}
+                break
     data["script"] = " ".join(s["text"] for s in sents)
     data["caption"] = humanize(data.get("caption", "")).replace("KEYWORD", kw)
     words = len(data["script"].split())

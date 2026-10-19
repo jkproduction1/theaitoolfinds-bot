@@ -8,7 +8,7 @@ import type {VideoProps} from './types';
 const demo: VideoProps = {
   fps: 30, durationInFrames: 300, title: 'Demo Tool', category: 'Video editing',
   host: 'demo.ai', handle: '@theaitoolfinds', keyword: 'TOOL', audio: '', screenshot: '',
-  screenshotW: 1200, screenshotH: 3000, logo: null, avatar: null,
+  screenshotW: 1200, screenshotH: 3000, logo: null, avatar: null, media: null,
   scenes: [{type: 'title', from: 0, to: 300, props: {}}], words: [],
   cover: {line1: 'Demo', line2: 'Tool'},
 };

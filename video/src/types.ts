@@ -3,7 +3,7 @@ export type Word = {w: string; s: number; e: number; hl?: boolean};
 export type Scene = {
   type:
     | 'title' | 'browser' | 'icons' | 'checklist' | 'chat' | 'flow' | 'big' | 'compare'
-    | 'cta' | 'avatar';
+    | 'cta' | 'avatar' | 'media';
   from: number; // frame
   to: number; // frame
   props: Record<string, any>;
@@ -23,6 +23,7 @@ export type VideoProps = {
   screenshotH: number;
   logo: string | null;
   avatar: string | null;
+  media: {src: string; kind: 'video' | 'image'; w: number; h: number} | null;
   scenes: Scene[];
   words: Word[];
   cover: {line1: string; line2: string};
