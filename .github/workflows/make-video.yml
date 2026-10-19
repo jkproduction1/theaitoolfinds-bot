@@ -100,7 +100,7 @@ jobs:
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
           tail -n 300 logs/last_run.log > /tmp/l.log 2>/dev/null && cp /tmp/l.log logs/last_run.log || true
-          for f in data/history.json data/queue.txt data/telegram.json logs/last_run.log logs/install.log; do
+          for f in data/history.json data/queue.txt data/telegram.json data/pending.json logs/last_run.log logs/install.log; do
             [ -e "$f" ] && git add -f "$f"
           done
           git diff --cached --quiet && exit 0

@@ -64,6 +64,12 @@ def send_for_approval(folder, meta: dict, caption: str):
                                 "supports_streaming": "true", "reply_markup": json.dumps(kb)},
              files={"video": f})
     print(f"[telegram] sent {name} for approval")
+    if os.getenv("GITHUB_RUN_ID"):  # remember where the poster can download the video
+        pend_path = config.DATA / "pending.json"
+        pend = json.loads(pend_path.read_text()) if pend_path.exists() else {}
+        pend[name] = {"run_id": os.environ["GITHUB_RUN_ID"],
+                      "artifact": f"videos-{os.environ.get('GITHUB_RUN_NUMBER', '')}"}
+        pend_path.write_text(json.dumps(pend, indent=2))
 
 
 def notify(text: str):
