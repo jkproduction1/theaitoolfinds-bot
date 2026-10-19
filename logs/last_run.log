@@ -1,11 +1,16 @@
-[discover] 0 from queue, 17 candidates total
+[discover] github_trending: 19
+[discover] github_search: 58
+[discover] hf_spaces: 60
+[discover] reddit r/StableDiffusion: HTTP 403
+[discover] reddit: 0
+[discover] hackernews: 28
+[discover] 0 from queue, 144 candidates total
 [llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
 
-[main] trying: cleanyourtv (https://cleanyour.tv)
-[main] researching https://cleanyour.tv/
-[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
-[llm] attempt 2 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[main] trying: hyperframes (https://github.com/heygen-com/hyperframes)
+[main] researching https://github.com/heygen-com/hyperframes
+[media] using video 1080x608 from https://github.com/user-attachments/assets/f6ff9fae-f33d-4f68-bd54-f3ed4ba6473b
 [tts] ElevenLabs failed, using free Edge voice: ElevenLabs HTTP 401: {"detail":{"status":"detected_unusual_activity","message":"Unusual activity has been detected on your account, so Free Tier access has been disabled. This can be triggered by using a proxy or VPN, or 
-[main] voiceover 27.0s, 80 words
-[motion] scenes: title(3.8s) > browser(5.0s) > compare(3.8s) > icons(3.4s) > checklist(4.5s) > flow(4.3s) > cta(3.4s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-19_2122_cleanyourtv
+[main] voiceover 31.8s, 82 words
+[motion] scenes: title(4.4s) > flow(3.6s) > browser(3.0s) > browser(4.3s) > chat(4.6s) > checklist(5.0s) > media(4.6s) > cta(3.5s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-19_2151_hyperframes

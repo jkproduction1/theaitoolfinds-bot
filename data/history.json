@@ -28,5 +28,11 @@
     "domain": "huggingface.co/spaces/pablodawson/minimax-h3-360-orbit",
     "date": "2026-10-19_2143",
     "source": "hf-spaces"
+  },
+  {
+    "name": "HyperFrames",
+    "domain": "github.com/heygen-com/hyperframes",
+    "date": "2026-10-19_2151",
+    "source": "gh-trending"
   }
 ]
