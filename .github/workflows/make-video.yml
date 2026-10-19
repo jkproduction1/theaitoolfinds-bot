@@ -25,7 +25,7 @@ concurrency:
 jobs:
   make:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -34,11 +34,18 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Install ffmpeg + Python packages + browser
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: video/package-lock.json
+
+      - name: Install ffmpeg + Python packages + browsers + Remotion
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
           pip install -r requirements.txt
           python -m playwright install --with-deps chromium
+          cd video && npm ci --no-audit --no-fund && npx remotion browser ensure
 
       - name: Make video
         env:

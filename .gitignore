@@ -2,3 +2,6 @@ out/
 __pycache__/
 *.pyc
 .venv/
+video/node_modules/
+video/public/job/
+video/out/

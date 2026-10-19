@@ -11,7 +11,7 @@ import shutil
 import traceback
 from datetime import datetime, timezone
 
-from . import capture, config, discover, render, research, tts, writer
+from . import capture, config, discover, motion, research, tts, writer
 
 
 def slug(s: str) -> str:
@@ -24,7 +24,7 @@ def make_one(cand: dict) -> dict:
         raise RuntimeError("website has too little text to describe it")
     print(f"[main] researching {site['url']}")
 
-    script = writer.write_script(cand, site)
+    script = writer.write_storyboard(cand, site)
     name = script["tool_name"]
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H%M")
     folder = config.OUT / f"{stamp}_{slug(name)}"
@@ -37,10 +37,7 @@ def make_one(cand: dict) -> dict:
     vlen = tts.duration(voice)
     print(f"[main] voiceover {vlen:.1f}s, {len(words)} words")
 
-    render.build(work, script.get("title_on_screen") or name, script.get("category", ""),
-                 site["url"], shot, voice, words, folder / "video.mp4", vlen,
-                 script=script["script"], features=script.get("features", []),
-                 og_image=site.get("og_image", ""))
+    motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4", work)
 
     caption = script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", []))
     (folder / "caption.txt").write_text(caption, encoding="utf-8")

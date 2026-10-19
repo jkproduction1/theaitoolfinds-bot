@@ -1,8 +1,19 @@
 """LLM steps: pick the best tool, then write the voiceover script + caption."""
 import json
+import re
 
 from . import config
 from .llm import chat_json
+
+ICON_NAMES = [
+    "Sparkles", "Video", "Clapperboard", "Film", "Scissors", "Wand", "Clock", "Timer",
+    "DollarSign", "BadgeDollarSign", "Gift", "Bot", "Brain", "Cpu", "Code", "Terminal",
+    "PenTool", "Palette", "Image", "Images", "Camera", "Mic", "AudioLines", "Zap", "Layers",
+    "Rocket", "Globe", "Search", "FileText", "Mail", "MessageSquare", "Calendar", "ChartLine",
+    "TrendingUp", "Users", "User", "ShoppingCart", "Smartphone", "Laptop", "Download",
+    "Upload", "Share2", "Lock", "ShieldCheck", "Languages", "Captions", "Type", "Workflow",
+    "Repeat", "CircleCheck", "Star", "Heart", "Eye", "Lightbulb", "Target", "Megaphone", "Box",
+]
 
 AUDIENCE = (
     "Instagram/TikTok audience of creators, freelancers, marketers, designers and "
@@ -36,7 +47,26 @@ def rank(cands: list[dict], recent: list[str]) -> list[int]:
     return out or list(range(min(5, len(cands))))
 
 
-def write_script(cand: dict, site: dict) -> dict:
+HOOKS = json.loads((config.ROOT / "bot" / "vendor" / "hooks.json").read_text(encoding="utf-8"))
+
+SCENE_DOC = """Scene types (pick the one that best SHOWS what the sentence says):
+- "title": only for sentence 1 (the hook). props: {}
+- "browser": the real website. props: {"motion": "scroll" | "zoom", "focus": "top" | "middle" | "bottom"}
+- "icons": 3-6 feature tiles. props: {"title": "max 4 words", "items": [{"icon": ICON, "label": "1-3 words"}]}
+- "checklist": props: {"title": "max 4 words", "items": ["2-5 words", ...3 items]}
+- "chat": typing a prompt into the tool. props: {"prompt": "realistic user prompt, max 12 words", "reply": "short result description, max 10 words, no invented numbers"}
+- "flow": input -> tool -> output. props: {"from": "2-4 words", "from_icon": ICON, "to": "2-4 words", "to_icon": ICON}
+- "big": one big stamp. props: {"text": "max 7 chars e.g. FREE, 10x, $0", "sub": "max 6 words"}
+- "compare": props: {"before": "old way, max 5 words", "after": "with the tool, max 5 words"}
+- "cta": only for the last sentence. props: {}
+Use each type at most twice, never the same type two scenes in a row, and use "browser" 1-2 times."""
+
+
+def write_storyboard(cand: dict, site: dict) -> dict:
+    from .humanize import humanize
+
+    hooks = "\n".join(f"- {h['name']}: {h['template']} (e.g. \"{h['example']}\")"
+                      for h in HOOKS["hooks"])
     facts = (
         f"Name hint: {cand['name']}\nShort description: {cand['desc']}\n"
         f"URL: {site['url']}\nPage title: {site['title']}\n"
@@ -44,37 +74,58 @@ def write_script(cand: dict, site: dict) -> dict:
         f"Website text (truncated): {site['text'][:4500]}"
     )
     data = chat_json(
-        "You write voiceovers for a fast, punchy vertical-video account that shows one "
-        "useful AI tool per video. Simple English (B1 level), short sentences, natural "
-        "spoken flow, no hype words like 'revolutionary' or 'game-changer', no emojis "
-        "in the script.",
+        "You are the writer + motion designer of a clean, premium Instagram Reels account "
+        "that shows one useful AI tool per video (style: white grid background, animated UI "
+        "cards, one or two big words on screen at a time). Simple English (B1), short "
+        "spoken sentences, confident and specific. Never use hype words (revolutionary, "
+        "game-changer, unlock, supercharge, seamless, delve). No emojis in the script.",
         f"{facts}\n\n"
-        f"Write a {config.MIN_WORDS}-{config.MAX_WORDS} word voiceover (~30-35 seconds).\n"
-        "Structure:\n"
-        "1) HOOK (max 10 words): a curiosity or benefit hook, e.g. 'This free AI tool "
-        "turns any photo into a 3D model.'\n"
-        "2) What it does, in plain words.\n"
-        "3) Two or three concrete use cases / how you use it.\n"
-        "4) Pricing ONLY if the website text states it (e.g. free tier). Never invent "
-        "features, prices or numbers that are not in the website text.\n"
-        "5) End exactly with: 'Follow for a new AI tool every day.'\n"
-        "Say the tool name clearly at least once. Write numbers as words when spoken "
-        "(e.g. 'ten', not '10').\n\n"
-        "Also write an Instagram caption: hook line, 2-4 short lines with value, a line "
-        "'Link: <domain>' and a line 'Save this for later'. Then 6-8 relevant hashtags.\n"
+        "HOOK FORMULAS (choose the one that fits this tool best; adapt it, never copy):\n"
+        f"{hooks}\n"
+        "Hook rules: " + " ".join(HOOKS["rules"]) + "\n\n"
+        f"Write a {config.MIN_WORDS}-{config.MAX_WORDS} word voiceover split into 6-9 "
+        "sentences (each 5-16 words). Sentence 1 = the hook. Then what it does, 2-3 "
+        "concrete use cases, pricing ONLY if stated on the website. Never invent features, "
+        "prices or numbers that are not in the website text. Say the tool name clearly. "
+        "Write numbers as words. The LAST sentence must be exactly: "
+        "'Comment KEYWORD and I will send you the link.' (with the real keyword).\n\n"
+        f"{SCENE_DOC}\nICON must be one of: {', '.join(ICON_NAMES)}\n\n"
+        "Also: a one-word comment KEYWORD (uppercase, related to the tool, e.g. CLIPS), an "
+        "Instagram caption whose first line (max 125 chars) is a strong hook, then 2-4 short "
+        "value lines, then 'Comment KEYWORD and I will DM you the link.', then 6-8 hashtags; "
+        "and a cover: line1 max 2 words, line2 max 3 words (like 'Viral Clips' / 'In One Click').\n"
         "Return JSON: {"
-        '"tool_name": "", "category": "one or two words e.g. Video editing", '
-        '"hook": "", "script": "full voiceover text including hook", '
-        '"title_on_screen": "max 4 words, usually the tool name", '
-        '"features": ["2-4 word on-screen labels of real features from the website, '
-        'e.g. Auto captions, Free plan, Text to video - give 3"], '
-        '"caption": "", "hashtags": ["#ai", ...]}',
-        temperature=0.8,
+        '"tool_name": "", "category": "1-2 words", "hook_formula": "name", '
+        '"keyword": "", "sentences": [{"text": "", "emphasis": ["1-2 key words from this '
+        'sentence"], "scene": {"type": "", "props": {}}}], "caption": "", '
+        '"hashtags": ["#ai"], "cover": {"line1": "", "line2": ""}}',
+        temperature=0.85,
     )
-    words = len(data.get("script", "").split())
+
+    sents = data.get("sentences") or []
+    if len(sents) < 4:
+        raise ValueError("storyboard has too few sentences")
+    kw = re.sub(r"[^A-Z0-9]", "", (data.get("keyword") or "LINK").upper())[:12] or "LINK"
+    data["keyword"] = kw
+    for i, s in enumerate(sents):
+        s["text"] = humanize(s.get("text", "")).replace("KEYWORD", kw)
+        sc = s.get("scene") or {}
+        t = sc.get("type")
+        if t not in ("title", "browser", "icons", "checklist", "chat", "flow", "big",
+                     "compare", "cta"):
+            sc = {"type": "browser", "props": {"motion": "scroll"}}
+        if i == 0:
+            sc = {"type": "title", "props": {}}
+        elif i == len(sents) - 1:
+            sc = {"type": "cta", "props": {}}
+        elif sc["type"] in ("title", "cta"):
+            sc = {"type": "browser", "props": {"motion": "zoom"}}
+        s["scene"] = sc
+    data["script"] = " ".join(s["text"] for s in sents)
+    data["caption"] = humanize(data.get("caption", "")).replace("KEYWORD", kw)
+    words = len(data["script"].split())
     if not (config.MIN_WORDS - 15 <= words <= config.MAX_WORDS + 25):
         raise ValueError(f"script length {words} words is off target")
-    for k in ("tool_name", "script", "caption"):
-        if not data.get(k):
-            raise ValueError(f"missing {k} in LLM output: {json.dumps(data)[:200]}")
+    if not data.get("tool_name"):
+        raise ValueError("missing tool_name")
     return data
