@@ -37,9 +37,54 @@ def _offline(text: str, mp3: Path):
     return words
 
 
+def _elevenlabs(text: str, mp3: Path):
+    """ElevenLabs with timestamps -> convert character timings to word timings."""
+    import base64
+    import requests
+
+    voice = os.getenv("ELEVENLABS_VOICE_ID", "pNInz6obpgDQGcFmaJgB")  # "Adam"
+    r = requests.post(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps",
+        params={"output_format": "mp3_44100_128"},
+        headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"]},
+        json={"text": text,
+              "model_id": os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
+              "voice_settings": {"stability": 0.45, "similarity_boost": 0.8,
+                                 "style": 0.25, "use_speaker_boost": True}},
+        timeout=120,
+    )
+    if r.status_code >= 400:
+        raise RuntimeError(f"ElevenLabs HTTP {r.status_code}: {r.text[:200]}")
+    data = r.json()
+    mp3.write_bytes(base64.b64decode(data["audio_base64"]))
+    al = data.get("alignment") or data.get("normalized_alignment")
+    words, cur, start, end = [], "", None, 0.0
+    for ch, s0, s1 in zip(al["characters"], al["character_start_times_seconds"],
+                          al["character_end_times_seconds"]):
+        if ch.isspace():
+            if cur:
+                words.append({"word": cur.strip(".,!?:;\"'"), "start": start, "end": end})
+            cur, start = "", None
+            continue
+        if start is None:
+            start = s0
+        cur += ch
+        end = s1
+    if cur:
+        words.append({"word": cur.strip(".,!?:;\"'"), "start": start, "end": end})
+    return [w for w in words if w["word"]]
+
+
 def synthesize(text: str, mp3: Path) -> list[dict]:
     if os.getenv("TTS_OFFLINE") == "1":
         return _offline(text, mp3)
+    if os.getenv("ELEVENLABS_API_KEY"):
+        try:
+            words = _elevenlabs(text, mp3)
+            print("[tts] ElevenLabs voice")
+            return words
+        except Exception as e:  # out of credits etc. -> free voice instead
+            print(f"[tts] ElevenLabs failed, using free Edge voice: {e}")
     words = asyncio.run(_edge(text, mp3))
     if not words:
         raise RuntimeError("TTS returned no word timings")

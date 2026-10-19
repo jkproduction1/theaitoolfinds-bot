@@ -21,6 +21,7 @@ Hotové video: v běhu dole v **Artifacts** (video.mp4, caption.txt, cover.jpg).
 |---|---|
 | `GEMINI_API_KEY` | **povinné** (nebo Claude) – zdarma na aistudio.google.com |
 | `ANTHROPIC_API_KEY` | nejlepší texty (Claude) |
+| `ELEVENLABS_API_KEY` | lepší hlas (když dojdou kredity, přepne se na free hlas) |
 
 Hlas, barvy, délka: `bot/config.py`. Hudba: dej `.mp3` do `assets/music/` (jen s licencí!).
 
