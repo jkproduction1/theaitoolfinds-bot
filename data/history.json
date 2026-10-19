@@ -10,5 +10,11 @@
     "domain": "github.com/onehumanbeing/esp32-iphone-agent",
     "date": "2026-10-19_2043",
     "source": "github"
+  },
+  {
+    "name": "Llmspeed",
+    "domain": "llmspeed.dev",
+    "date": "2026-10-19_2056",
+    "source": "hackernews"
   }
 ]
