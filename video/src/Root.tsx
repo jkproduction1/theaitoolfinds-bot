@@ -2,6 +2,7 @@ import React from 'react';
 import {Composition, Still} from 'remotion';
 import {Main} from './Main';
 import {Cover} from './Cover';
+import {ConceptA, ConceptB, ConceptC} from './Concepts';
 import {H, W} from './theme';
 import type {VideoProps} from './types';
 
@@ -19,6 +20,9 @@ export const Root: React.FC = () => (
       durationInFrames={300} defaultProps={demo}
       calculateMetadata={({props}) => ({durationInFrames: (props as VideoProps).durationInFrames,
         fps: (props as VideoProps).fps})} />
+    <Composition id="ConceptA" component={ConceptA} width={W} height={H} fps={30} durationInFrames={180} />
+    <Composition id="ConceptB" component={ConceptB} width={W} height={H} fps={30} durationInFrames={180} />
+    <Composition id="ConceptC" component={ConceptC} width={W} height={H} fps={30} durationInFrames={180} />
     <Still id="Cover" component={Cover as any} width={W} height={H} defaultProps={demo} />
   </>
 );
