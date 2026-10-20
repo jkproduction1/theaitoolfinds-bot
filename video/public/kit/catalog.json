@@ -106,5 +106,217 @@
   ],
   "w": 768,
   "h": 1376
+ },
+ "cork_string": {
+  "file": "cork_string.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "laptop_top": {
+  "file": "laptop_top.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "vhs_shelf": {
+  "file": "vhs_shelf.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "phone_desk": {
+  "file": "phone_desk.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "tv_close": {
+  "file": "tv_close.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "keyboard_close": {
+  "file": "keyboard_close.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "lamp_close": {
+  "file": "lamp_close.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "drawer_top": {
+  "file": "drawer_top.jpg",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "p_polaroid": {
+  "file": "p_polaroid.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 574,
+  "h": 701,
+  "screen": [
+   0.0732,
+   0.0656,
+   0.8537,
+   0.7233
+  ]
+ },
+ "p_sticky": {
+  "file": "p_sticky.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 498,
+  "h": 836
+ },
+ "p_newspaper": {
+  "file": "p_newspaper.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 709,
+  "h": 987
+ },
+ "p_vhs": {
+  "file": "p_vhs.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 876,
+  "h": 486
+ },
+ "p_floppy": {
+  "file": "p_floppy.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 595,
+  "h": 636
+ },
+ "p_mug": {
+  "file": "p_mug.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 720,
+  "h": 600
+ },
+ "p_phone": {
+  "file": "p_phone.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 362,
+  "h": 723,
+  "screen": [
+   0.011,
+   0.0055,
+   0.9751,
+   0.9876
+  ]
+ },
+ "p_magnifier": {
+  "file": "p_magnifier.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 386,
+  "h": 782
+ },
+ "p_pins": {
+  "file": "p_pins.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 487,
+  "h": 317
+ },
+ "p_tape": {
+  "file": "p_tape.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 934,
+  "h": 669
+ },
+ "p_envelope": {
+  "file": "p_envelope.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 689,
+  "h": 501
+ },
+ "p_card": {
+  "file": "p_card.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "w": 750,
+  "h": 553
  }
 }
