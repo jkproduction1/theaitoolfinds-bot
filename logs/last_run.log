@@ -1,8 +1,300 @@
-[discover] github_trending: 24
-[discover] github_search: 54
-[discover] hf_spaces: 60
-[discover] reddit r/StableDiffusion: HTTP 403
-[discover] reddit: 0
-[discover] hackernews: 23
-[discover] 0 from queue, 136 candidates total
-[main] top picks: blender-ai-mcp-addon 8 wow-demo | oil-ui 8 time-saver | MOSS-Image 8 free-alternative | claude-plugins-official 8 trending-repo | Qwen-Image-2.1-Turbo 7 wow-demo | solid-glass 7 free-alternative | BFS Best Face Swap 7 wow-demo | ai-job-search 7 time-saver
+    383,
+    401,
+    164
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "Distilled (16 steps)",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    631,
+    725,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "Base (50 steps)",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    844,
+    725,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "1:1",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    610,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "4:3",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    665,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "3:4",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    724,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "3:2",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    781,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "2:3",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    840,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "16:9",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    895,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "9:16",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    953,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "1K",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    647,
+    902,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "2K",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    782,
+    902,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "4K",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    919,
+    902,
+    16,
+    16
+   ]
+  }
+ ],
+ "buttons": [
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "view-toggle-opt svelte-w2nbco active",
+   "text": "App",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    20,
+    1154,
+    73,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "view-toggle-opt svelte-w2nbco",
+   "text": "Workflow",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    95,
+    1154,
+    107,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "svelte-11gaq1",
+   "text": "Generate & edit",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    64,
+    231,
+    133,
+    32
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "svelte-11gaq1 selected",
+   "text": "Bounding boxes",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    197,
+    231,
+    133,
+    32
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83c\udfc3 Runner, two boxes",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    64,
+    287,
+    131,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83c\udffa Three vessels",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    211,
+    287,
+    106,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83e\udea7 SILENCE poster",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    333,
+    287,
+    119,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\u26ea Stained glass in a box",
+   "ph": "",
+   "type": "submit",
+   "aria

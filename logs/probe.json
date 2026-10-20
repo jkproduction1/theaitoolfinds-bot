@@ -1,0 +1,671 @@
+{
+ "title": "FLUX 3 Image Klein",
+ "url": "https://black-forest-labs-flux-3-image-klein.hf.space/",
+ "iframes": [],
+ "inputs": [
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "bx-id",
+   "text": "background_1",
+   "ph": "",
+   "type": "text",
+   "aria": "id",
+   "box": [
+    106,
+    937,
+    130,
+    27
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "bx-rect",
+   "text": "0, 0, 1000, 1000",
+   "ph": "",
+   "type": "text",
+   "aria": "box: top, left, bottom, right",
+   "box": [
+    244,
+    937,
+    172,
+    25
+   ]
+  },
+  {
+   "tag": "textarea",
+   "id": "",
+   "cls": "bx-desc",
+   "text": "A flat field of neon yellow-green with a subtle paper textur",
+   "ph": "What belongs in this box: subject, material, color, texture, any text in quotes",
+   "type": "textarea",
+   "aria": "description",
+   "box": [
+    88,
+    974,
+    466,
+    53
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "bx-id",
+   "text": "silhouette_1",
+   "ph": "",
+   "type": "text",
+   "aria": "id",
+   "box": [
+    106,
+    1053,
+    130,
+    27
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "bx-rect",
+   "text": "150, 150, 850, 850",
+   "ph": "",
+   "type": "text",
+   "aria": "box: top, left, bottom, right",
+   "box": [
+    244,
+    1054,
+    172,
+    25
+   ]
+  },
+  {
+   "tag": "textarea",
+   "id": "",
+   "cls": "bx-desc",
+   "text": "A black silhouette of a person in motion, made of dense stip",
+   "ph": "What belongs in this box: subject, material, color, texture, any text in quotes",
+   "type": "textarea",
+   "aria": "description",
+   "box": [
+    88,
+    1090,
+    466,
+    53
+   ]
+  },
+  {
+   "tag": "textarea",
+   "id": "",
+   "cls": "svelte-1hguek3",
+   "text": "Minimalist graphic illustration featuring a black silhouette",
+   "ph": "Describe the image and cite each box as <id>. With a reference image, say what changes; left empty, the instruction is written from the boxes. A pasted prompt that ends in a box table is split into text and boxes.",
+   "type": "textarea",
+   "aria": "",
+   "box": [
+    603,
+    383,
+    401,
+    164
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "Distilled (16 steps)",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    631,
+    725,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "Base (50 steps)",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    844,
+    725,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "1:1",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    610,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "4:3",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    665,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "3:4",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    724,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "3:2",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    781,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "2:3",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    840,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "16:9",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    895,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "9:16",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    953,
+    813,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "1K",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    647,
+    902,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "2K",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    782,
+    902,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "input",
+   "id": "",
+   "cls": "svelte-19qdtil",
+   "text": "4K",
+   "ph": "",
+   "type": "radio",
+   "aria": "",
+   "box": [
+    919,
+    902,
+    16,
+    16
+   ]
+  }
+ ],
+ "buttons": [
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "view-toggle-opt svelte-w2nbco active",
+   "text": "App",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    20,
+    1154,
+    73,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "view-toggle-opt svelte-w2nbco",
+   "text": "Workflow",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    95,
+    1154,
+    107,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "svelte-11gaq1",
+   "text": "Generate & edit",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    64,
+    231,
+    133,
+    32
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "svelte-11gaq1 selected",
+   "text": "Bounding boxes",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    197,
+    231,
+    133,
+    32
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83c\udfc3 Runner, two boxes",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    64,
+    287,
+    131,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83c\udffa Three vessels",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    211,
+    287,
+    106,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83e\udea7 SILENCE poster",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    333,
+    287,
+    119,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\u26ea Stained glass in a box",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    468,
+    287,
+    144,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83d\udcbf NEW sticker",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    628,
+    287,
+    99,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "\ud83e\uddf6 Move the knight",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    743,
+    287,
+    118,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "bx-btn bx-boxes",
+   "text": "Hide boxes",
+   "ph": "",
+   "type": "button",
+   "aria": "",
+   "box": [
+    76,
+    347,
+    87,
+    28
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "bx-btn bx-clear",
+   "text": "Clear boxes",
+   "ph": "",
+   "type": "button",
+   "aria": "",
+   "box": [
+    169,
+    347,
+    91,
+    28
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "bx-del",
+   "text": "\u2715",
+   "ph": "",
+   "type": "submit",
+   "aria": "Delete box",
+   "box": [
+    530,
+    940,
+    24,
+    24
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "bx-del",
+   "text": "\u2715",
+   "ph": "",
+   "type": "submit",
+   "aria": "Delete box",
+   "box": [
+    530,
+    1057,
+    24,
+    24
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "sm secondary  svelte-xzq5jh",
+   "text": "Draft boxes from the prompt",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    591,
+    573,
+    425,
+    26
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "label-wrap svelte-e5lyqv",
+   "text": "Reference image \u00b7 optional, for box edits\n\u25bc",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    603,
+    625,
+    401,
+    20
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "label-wrap svelte-e5lyqv",
+   "text": "Seed\n\u25bc",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    603,
+    962,
+    401,
+    20
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "f3-bb-run",
+   "cls": "lg primary  svelte-xzq5jh",
+   "text": "Generate with boxes",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    591,
+    1008,
+    425,
+    48
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "show-api svelte-zxu34v",
+   "text": "Use via API or MCP",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    387,
+    1282,
+    146,
+    21
+   ]
+  },
+  {
+   "tag": "button",
+   "id": "",
+   "cls": "settings svelte-zxu34v",
+   "text": "Settings",
+   "ph": "",
+   "type": "submit",
+   "aria": "",
+   "box": [
+    686,
+    1282,
+    77,
+    21
+   ]
+  }
+ ],
+ "images": [
+  {
+   "tag": "img",
+   "id": "",
+   "cls": "svelte-zxu34v",
+   "text": "",
+   "ph": "",
+   "type": "",
+   "aria": "",
+   "box": [
+    354,
+    1284,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "img",
+   "id": "",
+   "cls": "svelte-zxu34v",
+   "text": "",
+   "ph": "",
+   "type": "",
+   "aria": "",
+   "box": [
+    517,
+    1286,
+    12,
+    12
+   ]
+  },
+  {
+   "tag": "img",
+   "id": "",
+   "cls": "svelte-zxu34v",
+   "text": "",
+   "ph": "",
+   "type": "",
+   "aria": "",
+   "box": [
+    653,
+    1284,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "img",
+   "id": "",
+   "cls": "svelte-zxu34v",
+   "text": "",
+   "ph": "",
+   "type": "",
+   "aria": "",
+   "box": [
+    743,
+    1284,
+    16,
+    16
+   ]
+  },
+  {
+   "tag": "img",
+   "id": "",
+   "cls": "",
+   "text": "",
+   "ph": "",
+   "type": "",
+   "aria": "",
+   "box": [
+    638,
+    26,
+    14,
+    14
+   ]
+  }
+ ]
+}
