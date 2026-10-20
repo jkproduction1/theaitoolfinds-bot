@@ -1,0 +1,144 @@
+AUTOMATIONS: [
+ {
+  "id": "6ad77f77869f84fcf8164f53",
+  "name": "ArtCraft (ARTCRAFT)",
+  "platform": "instagram",
+  "trigger": "comment",
+  "accountId": "6ad69dcdecad4ce8494e92b1",
+  "postId": "6ad776bdf5e93b04321197ea",
+  "postTitle": "ArtCraft",
+  "keywords": [
+   "ARTCRAFT",
+   "artcraft"
+  ],
+  "matchMode": "word",
+  "typoTolerance": true,
+  "commentReply": "Check your DMs \ud83d\udc40",
+  "commentReplyVariations": [
+   "Sent it to your DMs \ud83d\udce9",
+   "Check your DMs \ud83d\udc40",
+   "Just sent it over \ud83d\udcec",
+   "Done, check your inbox \ud83d\ude4c"
+  ],
+  "repeatPolicy": {
+   "mode": "once"
+  },
+  "linkTracking": true,
+  "dmMessage": "As promised \ud83d\udc47 Here's ArtCraft. Thanks for the follow, more free tools coming \ud83e\udd9d",
+  "buttons": [
+   {
+    "url": "https://getartcraft.com/apps",
+    "type": "url",
+    "title": "Open ArtCraft"
+   }
+  ],
+  "publicReplyPolicy": "after_dm",
+  "audience": {
+   "whenUnknown": "verify",
+   "followerStatus": "follower"
+  },
+  "followGate": {
+   "message": "Oops, looks like you're not following me yet \ud83d\udc40 Hit follow, then tap the button and I'll send it right over \ud83d\ude4c",
+   "buttonLabel": "I followed \u2705",
+   "notFollowingMessage": "Hmm, I still can't see the follow \ud83e\udd14 Follow me and tap the button again, then the link is yours \ud83d\udd13"
+  },
+  "dmDelaySeconds": 5,
+  "alsoMatchInDms": true,
+  "isActive": true,
+  "stats": {
+   "read": 0,
+   "dmsSent": 0,
+   "delivered": 0,
+   "dmsFailed": 0,
+   "triggered": 0,
+   "linkClicks": 0,
+   "trackedSends": 0,
+   "uniqueClicks": 0,
+   "followGateSent": 0,
+   "uniqueContacts": 0,
+   "audienceSkipped": 0,
+   "followGateFailed": 0,
+   "followGatePassed": 0
+  },
+  "createdAt": "2026-10-20T14:49:27.266Z",
+  "updatedAt": "2026-10-20T14:49:27.266Z"
+ }
+]
+
+LOGS 6ad77f77869f84fcf8164f53: {
+ "success": true,
+ "logs": [],
+ "pagination": {
+  "total": 0,
+  "limit": 50,
+  "skip": 0,
+  "hasMore": false
+ },
+ "misses": {
+  "total": 0,
+  "retentionDays": 14,
+  "samples": []
+ }
+}
+
+IG ACCOUNT: {
+ "_id": "6ad69dcdecad4ce8494e92b1",
+ "userId": "6ad69db4c279e94afa01fb65",
+ "profileId": {
+  "_id": "6ad69db4c279e94afa01fb6d",
+  "name": "Default",
+  "externalId": null
+ },
+ "platform": "instagram",
+ "platformUserId": "28170760065935048",
+ "username": "theaitoolfinds",
+ "displayName": "The AI Tool Finds",
+ "profilePicture": "https://scontent-mrs2-1.cdninstagram.com/v/t51.82787-19/859082274_17955334455032548_5183997929216793947_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=100&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=7mNNZUsNWSQQ7kNvwEHJoxS&_nc_oc=Adro30hHW6dDitEsMAQd1kclDQcRJNi66IXc4OhzxXrb2Kjm0qzD4_2fKyPb8MA9HyE&_nc_zt=24&_nc_ht=scontent-mrs2-1.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=z5yDbhjqzbJvpDr-216uBw&_nc_tpa=Q5bMBQI85k6bjPUgFViWIxIdeZoHEtdJLN3_aEpBpitQ_IHt_7bghRcvN7pLlfKT-p1qfon_35Ni7AAwiQ&oh=00_AQO-8ua20NHGZpIyPdaxDk14f0LXGrdnJNhjmCcfZCsCCg&oe=6ADCEED4",
+ "profileUrl": "https://instagram.com/theaitoolfinds",
+ "isActive": true,
+ "permissions": [
+  "instagram_business_basic",
+  "instagram_business_manage_messages",
+  "instagram_business_content_publish",
+  "instagram_business_manage_insights",
+  "instagram_business_manage_comments"
+ ],
+ "metadata": {
+  "scope": [
+   "instagram_business_basic",
+   "instagram_business_manage_messages",
+   "instagram_business_content_publish",
+   "instagram_business_manage_insights",
+   "instagram_business_manage_comments"
+  ],
+  "expires_in": 5183999,
+  "connectedAt": "2026-10-19T22:46:37.326Z",
+  "profileData": {
+   "id": "28170760065935048",
+   "bio": "\ud83e\udd16 Discover the best AI tools\n\u26a1 Tools, tips & tutorials\n\ud83d\ude80 Work smarter with AI\n\ud83d\udce9 theaitoolfinds@gmail.com",
+   "website": null,
+   "username": "theaitoolfinds",
+   "extraData": {
+    "mediaCount": 0,
+    "accountType": "MEDIA_CREATOR",
+    "followsCount": 0,
+    "instagramScopedId": "17841460976410168"
+   },
+   "profileUrl": "https://instagram.com/theaitoolfinds",
+   "displayName": "The AI Tool Finds",
+   "followersCount": 0,
+   "profilePicture": "https://scontent-mrs2-1.cdninstagram.com/v/t51.82787-19/859082274_17955334455032548_5183997929216793947_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=100&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=7mNNZUsNWSQQ7kNvwEHJoxS&_nc_oc=Adro30hHW6dDitEsMAQd1kclDQcRJNi66IXc4OhzxXrb2Kjm0qzD4_2fKyPb8MA9HyE&_nc_zt=24&_nc_ht=scontent-mrs2-1.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=z5yDbhjqzbJvpDr-216uBw&_nc_tpa=Q5bMBQI85k6bjPUgFViWIxIdeZoHEtdJLN3_aEpBpitQ_IHt_7bghRcvN7pLlfKT-p1qfon_35Ni7AAwiQ&oh=00_AQO-8ua20NHGZpIyPdaxDk14f0LXGrdnJNhjmCcfZCsCCg&oe=6ADCEED4"
+  },
+  "instagramScopedId": "17841460976410168"
+ },
+ "platformStatus": "active",
+ "platformStatusReason": null,
+ "platformStatusAt": null,
+ "byokCredentials": null,
+ "followersCount": 0,
+ "followersLastUpdated": "2026-10-20T08:04:25.954Z",
+ "rateLimitedUntil": null,
+ "lastRateLimitAt": null,
+ "lastRateLimitError": null,
+ "rateLimitCount": 0,
+ 
