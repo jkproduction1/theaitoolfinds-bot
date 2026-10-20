@@ -149,7 +149,7 @@ def write_storyboard(cand: dict, site: dict, has_media: bool = False) -> dict:
         f"{SCENE_DOC}{media_doc}\nICON must be one of: {', '.join(ICON_NAMES)}\n\n"
         "Also: a one-word comment KEYWORD (uppercase, related to the tool, e.g. CLIPS), an "
         "Instagram caption whose first line (max 125 chars) is a strong hook, then 2-4 short "
-        "value lines, then 'Comment KEYWORD and I will DM you the link.', then 6-8 hashtags; "
+        "value lines, then 'Comment KEYWORD and I will DM you the link.', then 3-4 hashtags (never more than 4); "
         "and a cover: line1 max 2 words, line2 max 3 words (like 'Viral Clips' / 'In One Click').\n"
         "Return JSON: {"
         '"tool_name": "", "category": "1-2 words", "hook_formula": "name", '

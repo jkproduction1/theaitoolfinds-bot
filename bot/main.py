@@ -19,6 +19,20 @@ def slug(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:40] or "tool"
 
 
+def _cap_hashtags(text: str, limit: int = 4) -> str:
+    """Rule: max 4 hashtags per post (IG allows 5; more looks like spam). Keeps the first
+    unique ones, drops the rest, tidies empty lines."""
+    seen, out = [], []
+    for tok in re.split(r"(\s+)", text):
+        if tok.startswith("#") and len(tok) > 1:
+            key = tok.lower()
+            if key in seen or len(seen) >= limit:
+                continue
+            seen.append(key)
+        out.append(tok)
+    return re.sub(r"[ \t]+\n", "\n", re.sub(r"\n{3,}", "\n\n", "".join(out))).strip()
+
+
 def _force_keyword(sb: dict):
     """Rule: the comment keyword is ALWAYS the tool's name (so it can never be off-topic).
     Rewrites every "Comment X" in script, sentences, caption and CTA popups."""
@@ -76,7 +90,7 @@ def make_one(cand: dict) -> dict:
             motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4",
                          work, demo=demo, recordings=recs)
 
-        caption = script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", []))
+        caption = _cap_hashtags(script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", [])))
         (folder / "caption.txt").write_text(caption, encoding="utf-8")
         meta = {**script, "url": site["url"], "domain": discover.domain_of(site["url"]),
                 "source": cand["source"], "created": stamp, "duration": round(vlen, 1),
