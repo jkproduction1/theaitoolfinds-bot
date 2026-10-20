@@ -63,6 +63,8 @@ def upload(path: Path, ctype: str) -> str:
 
 
 def next_slot(taken: set) -> datetime:
+    if os.getenv("POST_NOW") == "true":  # manual run: publish right away
+        return datetime.now(TZ) + timedelta(minutes=3)
     now = datetime.now(TZ) + timedelta(minutes=20)
     for day in range(0, 14):
         d = (now + timedelta(days=day)).date()
