@@ -3,7 +3,7 @@
  "name": "ArtCraft",
  "tool_name": "ArtCraft",
  "category": "design",
- "keyword": "ADOBE",
+ "keyword": "ARTCRAFT",
  "style": "collage",
  "music": "t3",
  "sentences": [
@@ -149,9 +149,9 @@
    }
   },
   {
-   "text": "It's still early, so expect bugs. Comment ADOBE and I'll send you the links.",
+   "text": "It's still early, so expect bugs. Comment ARTCRAFT and I'll send you the links.",
    "emphasis": [
-    "ADOBE"
+    "ARTCRAFT"
    ],
    "scene": {
     "kind": "hang",
@@ -159,9 +159,9 @@
      "screen": "tools/filmcraft-hero.png",
      "popAt": 10,
      "popup": {
-      "title": "Free_Adobe.exe",
+      "title": "ArtCraft.exe",
       "text": "Want the links?",
-      "button": "COMMENT \"ADOBE\""
+      "button": "COMMENT \"ARTCRAFT\""
      },
      "poses": [
       [
@@ -173,7 +173,7 @@
    }
   }
  ],
- "caption": "Someone used AI to rebuild 7 Adobe apps, and they're all free 👀\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ADOBE and I'll DM you the links.\n\n#ai #adobe #photoshop #aftereffects #opensource #aitools #editing",
+ "caption": "Someone used AI to rebuild 7 Adobe apps, and they're all free 👀\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ARTCRAFT and I'll DM you the links.\n\n#ai #adobe #photoshop #aftereffects #opensource #aitools #editing",
  "hashtags": [
   "#ai",
   "#adobe"
@@ -183,5 +183,5 @@
   "line2": "Rebuilt by AI"
  },
  "summary_cs": "ArtCraft: někdo pomocí AI (Claude) přepsal 7 aplikací Adobe jako open source zdarma (PhotoCraft, FilmCraft, LightCraft, EffectCraft…). Zatím alfa verze.",
- "script": "Someone just used AI to rebuild seven Adobe apps. Photoshop, Premiere, Lightroom, even After Effects. The Photoshop one already has 58 tools and works with real PSD files. They run on Mac, Windows, Linux, and even in your browser. And every single one is free and open source. It's still early, so expect bugs. Comment ADOBE and I'll send you the links."
+ "script": "Someone just used AI to rebuild seven Adobe apps. Photoshop, Premiere, Lightroom, even After Effects. The Photoshop one already has 58 tools and works with real PSD files. They run on Mac, Windows, Linux, and even in your browser. And every single one is free and open source. It's still early, so expect bugs. Comment ARTCRAFT and I'll send you the links."
 }
