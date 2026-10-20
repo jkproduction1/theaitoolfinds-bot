@@ -21,10 +21,9 @@
      "size": 160,
      "sticker": "rebuilt by AI.",
      "sx": 120,
-     "circle": true,
-     "circleLine": 0,
      "bg": "tools/effectcraft-hero.png",
-     "y": 700
+     "y": 700,
+     "bgO": 0.6
     }
    }
   },
@@ -139,7 +138,11 @@
      "size": 170,
      "sticker": "+ browser",
      "stickerWord": "^browser",
-     "sx": 260
+     "sx": 260,
+     "bg": "crt_close.jpg",
+     "bgO": 0.55,
+     "bgBlur": 3,
+     "glow": "255,190,110"
     }
    }
   },

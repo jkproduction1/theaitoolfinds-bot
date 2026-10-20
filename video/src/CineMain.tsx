@@ -308,8 +308,10 @@ const TitleScene: React.FC<SP> = ({p, f, from, to, at, amp, side}) => {
   const lh = size * 1.08;
   return (
     <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, #1a1712 0%, #070605 75%)'}}>
-      {p.bg ? <Img src={K(p.bg)} style={{position: 'absolute', width: 1080, height: 1920, objectFit: 'cover', opacity: 0.28,
-        filter: 'blur(14px) saturate(0.6)', transform: `scale(${1.15 + (f - from) * 0.0015})`}} /> : null}
+      {p.bg ? <Img src={K(p.bg)} style={{position: 'absolute', width: 1080, height: 1920, objectFit: 'cover', opacity: p.bgO ?? 0.5,
+        filter: `blur(${p.bgBlur ?? 5}px) saturate(0.75) brightness(0.8)`, transform: `scale(${1.15 + (f - from) * 0.0015})`}} /> : null}
+      <AbsoluteFill style={{background: `radial-gradient(ellipse at 50% 42%, rgba(${p.glow ?? '80,255,170'},0.16) 0%, transparent 60%)`, mixBlendMode: 'screen'}} />
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.5))'}} />
       <Fabric />
       <div style={{position: 'absolute', top: p.y ?? 640, left: 60, right: 60, transform: `scale(${1.08 - 0.08 * k(f, from, to, OUT)})`}}>
         <Mask lines={lines} f={f} at={from + 1} size={size} />
@@ -405,7 +407,7 @@ const CorkScene: React.FC<SP> = ({p, f, from, to, at, amp, side}) => {
         <Blinds f={f} o={0.4} />
       </AbsoluteFill>
       {p.stamp && f >= stampAt ? (
-        <div style={{position: 'absolute', zIndex: 30, left: p.stampX ?? 250, top: p.stampY ?? 1130, transform: `scale(${2.4 - 1.4 * ss}) rotate(-12deg)`,
+        <div style={{position: 'absolute', zIndex: 30, left: p.stampX ?? 250, top: p.stampY ?? 950, transform: `scale(${2.4 - 1.4 * ss}) rotate(-12deg)`,
           opacity: Math.min(1, ss * 2), border: '12px solid #c1121f', borderRadius: 18, padding: '6px 40px',
           fontFamily: 'Anton', fontSize: 150, color: '#c1121f', letterSpacing: 6, mixBlendMode: 'multiply'}}>{p.stamp}</div>
       ) : null}
