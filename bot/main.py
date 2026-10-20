@@ -5,6 +5,7 @@ Usage:
   python -m bot.main --url https://x.ai    # make a video about a specific tool
 """
 import argparse
+import os
 from pathlib import Path
 import json
 import re
@@ -94,14 +95,17 @@ def make_one(cand: dict) -> dict:
         (folder / "caption.txt").write_text(caption, encoding="utf-8")
         meta = {**script, "url": site["url"], "domain": discover.domain_of(site["url"]),
                 "source": cand["source"], "created": stamp, "duration": round(vlen, 1),
-                "demo": demo["url"] if demo else None}
+                "demo": demo["url"] if demo else None,
+                "run_id": os.getenv("GITHUB_RUN_ID"), "artifact": f"videos-{os.getenv('GITHUB_RUN_NUMBER', '')}"}
         (folder / "meta.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False))
     except Exception:
         shutil.rmtree(folder, ignore_errors=True)  # don't publish half-made folders
         raise
     shutil.rmtree(work, ignore_errors=True)
     print(f"[main] DONE -> {folder}")
-    if telegram.enabled():
+    if script.get("hold"):  # director reviews first, then: mode=release
+        print(f"[main] HOLD {folder.name} (not sent to Telegram yet)")
+    elif telegram.enabled():
         try:
             telegram.send_for_approval(folder, meta, caption)
         except Exception as e:

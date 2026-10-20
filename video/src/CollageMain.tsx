@@ -133,19 +133,24 @@ const Stamp: React.FC<{text: string; at: number; f: number; x: number; y: number
   ) : null;
 };
 
-// Scrappy: flips in like a card, floats, hops to the voice, swaps pose
+// Scrappy: flips in like a card, stands still-ish, and jiggles while the voice talks
+// (tiny shake + squash, like the old talk-bounce). side = which edge of the frame.
 const Scrappy: React.FC<{poses: [number, string][]; at: number; x: number; y: number; h: number; rot?: number;
-  amp: number[]; f: number}> = ({poses, at, x, y, h, rot = 0, amp, f}) => {
+  amp: number[]; f: number; side?: 'left' | 'right'}> = ({poses, at, x, y, h, rot = 0, amp, f, side}) => {
   const s = spring({frame: f - at, fps: 30, config: {damping: 11, stiffness: 120}});
   let pose = poses[0][1], since = poses[0][0];
   for (const [t, ps] of poses) if (f >= t) { pose = ps; since = t; }
   const swap = spring({frame: f - since, fps: 30, config: {damping: 9, stiffness: 260}});
   const a = amp[Math.max(0, Math.min(amp.length - 1, f))] || 0;
+  const jx = Math.sin(f * 2.3) * a * 5, jy = -a * 14 + Math.cos(f * 2.9) * a * 3, jr = Math.sin(f * 1.7) * a * 2.5;
+  const left = side ? side === 'left' : x < 400;
+  const flip = left ? 1 : -1;  // poses gesture to the right -> mirror on the right edge so he faces the content
+  const xx = side ? (left ? 10 : 1080 - h * 0.78 - 10) : x;
   return (
-    <div style={{position: 'absolute', left: x, top: y + Math.sin(f / 11) * 8 - a * 26, height: h, zIndex: 20,
+    <div style={{position: 'absolute', left: xx, top: y + jy, height: h, zIndex: 20,
       opacity: f < at ? 0 : 1, perspective: 900, transformOrigin: '50% 100%',
-      transform: `scale(${(0.9 + 0.1 * swap) * (1 + a * 0.04)}, ${(0.9 + 0.1 * swap) * (1 - a * 0.03)})`}}>
-      <div style={{transform: `rotateY(${(1 - s) * 95}deg) rotate(${rot + Math.sin(f / 17) * 2.5}deg) translateY(${(1 - s) * 120}px)`,
+      transform: `translateX(${jx}px) scale(${(0.9 + 0.1 * swap) * (1 + a * 0.03)}, ${(0.9 + 0.1 * swap) * (1 - a * 0.025)})`}}>
+      <div style={{transform: `rotateY(${(1 - s) * 95}deg) rotate(${(rot + jr) * flip}deg) translateY(${(1 - s) * 120}px) scaleX(${flip})`,
         filter: 'drop-shadow(12px 22px 16px rgba(0,0,0,0.45))'}}>
         <Img src={staticFile(`mascot/${pose}.png`)} style={{height: h, display: 'block'}} />
       </div>
@@ -154,9 +159,9 @@ const Scrappy: React.FC<{poses: [number, string][]; at: number; x: number; y: nu
 };
 
 // ------------------------------------------------------------------ scene kinds
-type SP = {p: any; f: number; from: number; to: number; at: (re: string, fb: number) => number; amp: number[]};
+type SP = {p: any; f: number; from: number; to: number; at: (re: string, fb: number) => number; amp: number[]; side: 'left' | 'right'};
 
-const Hang: React.FC<SP> = ({p, f, from, to, amp}) => {
+const Hang: React.FC<SP> = ({p, f, from, to, amp, side}) => {
   const t = (f - from) / 30;
   const swing = 22 * Math.exp(-t * 1.3) * Math.cos(t * 4.2);
   const drop = spring({frame: f - from, fps: 30, config: {damping: 14, stiffness: 70}});
@@ -179,12 +184,12 @@ const Hang: React.FC<SP> = ({p, f, from, to, amp}) => {
       <Sfx at={from + 2} src="whoosh" vol={0.35} />
       {p.head1 ? <Sfx at={from + 8} src="impact" vol={0.5} /> : null}
       {p.head2 ? <Sfx at={from + 22} src="impact" vol={0.4} /> : null}
-      <Scrappy poses={p.poses || [[0, 'chill']]} at={from + 30} x={650} y={1330} h={600} rot={-3} amp={amp} f={f} />
+      <Scrappy poses={p.poses || [[0, 'chill']]} at={from + 30} x={650} y={1330} h={600} rot={-3} amp={amp} f={f} side={side} />
     </>
   );
 };
 
-const Desk: React.FC<SP> = ({p, f, from, to, at, amp}) => {
+const Desk: React.FC<SP> = ({p, f, from, to, at, amp, side}) => {
   const items = p.items || [];
   const four = items.length > 3;
   const spots = four ? [[30, 190, -7], [560, 300, 6], [50, 760, -4], [560, 880, 5]] : [[60, 230, -7], [440, 560, 6], [90, 900, -4]];
@@ -204,12 +209,12 @@ const Desk: React.FC<SP> = ({p, f, from, to, at, amp}) => {
           </Drop>
         );
       })}
-      <Scrappy poses={p.poses || [[0, 'excited']]} at={from + 20} x={p.sx ?? 640} y={p.sy ?? 1330} h={520} amp={amp} f={f} />
+      <Scrappy poses={p.poses || [[0, 'excited']]} at={from + 20} x={p.sx ?? 640} y={p.sy ?? 1330} h={520} amp={amp} f={f} side={side} />
     </>
   );
 };
 
-const CrtClose: React.FC<SP> = ({p, f, from, amp}) => {
+const CrtClose: React.FC<SP> = ({p, f, from, amp, side}) => {
   const k = ease(f, from, from + 30, IO);
   return (
     <>
@@ -219,12 +224,12 @@ const CrtClose: React.FC<SP> = ({p, f, from, amp}) => {
       </div>
       {p.note ? <Drop at={from + 14} x={600} y={1060} w={380} rot={6} z={5}><PostIt text={p.note} /></Drop> : null}
       {p.note ? <Sfx at={from + 16} src="pop" vol={0.45} /> : null}
-      <Scrappy poses={p.poses || [[0, 'shock']]} at={from + 24} x={30} y={1180} h={620} amp={amp} f={f} />
+      <Scrappy poses={p.poses || [[0, 'shock']]} at={from + 24} x={30} y={1180} h={620} amp={amp} f={f} side={side} />
     </>
   );
 };
 
-const Board: React.FC<SP> = ({p, f, from, to, at, amp}) => {
+const Board: React.FC<SP> = ({p, f, from, to, at, amp, side}) => {
   const cards: string[] = p.cards || [];
   const typedAt = from + 14;
   const typed = p.note ? p.note.slice(0, Math.max(0, Math.floor((f - typedAt) * 1.3))) : '';
@@ -253,7 +258,7 @@ const Board: React.FC<SP> = ({p, f, from, to, at, amp}) => {
       })}
       {p.stamp ? <Stamp text={p.stamp} at={p.stampWord ? at(p.stampWord, from + 40) : from + 40} f={f} x={240} y={p.note ? 1000 : 1250} /> : null}
       {p.stamp ? <Sfx at={p.stampWord ? at(p.stampWord, from + 40) : from + 40} src="impact" vol={0.6} /> : null}
-      <Scrappy poses={p.poses || [[0, 'talk']]} at={from + 16} x={560} y={1180} h={640} rot={3} amp={amp} f={f} />
+      <Scrappy poses={p.poses || [[0, 'talk']]} at={from + 16} x={560} y={1180} h={640} rot={3} amp={amp} f={f} side={side} />
     </>
   );
 };
@@ -308,7 +313,7 @@ export const CollageMain: React.FC<CollageProps> = (v) => {
         const Cmp = KINDS[s.kind] || Hang;
         return (
           <AbsoluteFill key={i} style={{transform: `translateY(${((1 - inK) - outK) * 1920 * dir}px)`}}>
-            <Cmp p={s.props} f={f} from={s.from} to={s.to} at={at} amp={amp} />
+            <Cmp p={s.props} f={f} from={s.from} to={s.to} at={at} amp={amp} side={s.props?.side || (i % 2 ? 'left' : 'right')} />
           </AbsoluteFill>
         );
       })}

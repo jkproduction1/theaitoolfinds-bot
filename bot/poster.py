@@ -177,10 +177,10 @@ def main():
                 item = picks["items"][int(name)]
                 if item["url"] in picks.get("picked", []):
                     continue
-                dispatch_video(item["url"])
+                # the Claude "brain" session reads picks["picked"] and makes these first
                 picks.setdefault("picked", []).append(item["url"])
                 (config.DATA / "picks.json").write_text(json.dumps(picks, indent=2))
-                telegram.notify(f"🎬 Dělám video: {item['name']} (cca 8 min)")
+                telegram.notify(f"🎬 Zapsáno: {item['name']}. Udělám ho v dalším kole (10:00 / 16:00).")
             except Exception as e:
                 telegram.notify(f"⚠️ Nepovedlo se spustit video: {str(e)[:200]}")
             continue
