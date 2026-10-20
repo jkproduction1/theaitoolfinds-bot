@@ -1,18 +1,17 @@
 
-[main] trying: Krea 2 Turbo Image Generator (https://huggingface.co/spaces/Aura1in/Krea-2-Turbo_v2)  angle=wow-demo
-[main] researching https://huggingface.co/spaces/Aura1in/Krea-2-Turbo_v2
-[llm] gemini-3.8-flash unavailable (HTTP 429: '[{\n  "error": {\n    "code":), trying next model
-[llm] gemini-3.8-flash-lite unavailable (HTTP 404: '[{\n  "error": {\n    "code":), trying next model
+[main] trying: github.com/heygen-com/hyperframes (https://github.com/heygen-com/hyperframes)  angle=wow-demo
+[main] researching https://github.com/heygen-com/hyperframes
+[media] using video 1080x608 from https://github.com/user-attachments/assets/f6ff9fae-f33d-4f68-bd54-f3ed4ba6473b
 [tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"status":"detected_unusual_activity","message":"Unusual activity has been detected on yo
 WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/nn/modules/rnn.py:1011: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
   super().__init__("LSTM", *args, **kwargs)
 /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:145: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 Collecting en-core-web-sm==3.8.0
   Downloading en_core_web_sm-3.8.0-py3-none-any.whl (12.8 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 163.7 MB/s  0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 25.9 MB/s  0:00:00
 Installing collected packages: en-core-web-sm
 Successfully installed en-core-web-sm-3.8.0
 [38;5;2m✔ Download and installation successful[0m
@@ -20,7 +19,7 @@ You can now load the package via spacy.load('en_core_web_sm')
 /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
   warnings.warn(
 [tts] Kokoro voice (am_michael)
-[main] voiceover 19.3s, 61 words
-[motion] scenes: title(4.7s) > browser(4.0s) > chat(3.8s) > big(4.2s) > cta(3.8s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-19_2335_krea-2-turbo-image-generator
-[telegram] sent 2026-10-19_2335_krea-2-turbo-image-generator for approval
+[main] voiceover 24.0s, 71 words
+[motion] scenes: title(3.7s) > media(4.6s) > flow(4.6s) > chat(4.6s) > browser(3.5s) > cta(4.1s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_0133_github-com-heygen-com-hyperframes
+[telegram] sent 2026-10-20_0133_github-com-heygen-com-hyperframes for approval

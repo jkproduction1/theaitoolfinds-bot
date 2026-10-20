@@ -64,5 +64,11 @@
     "domain": "huggingface.co/spaces/aura1in/krea-2-turbo_v2",
     "date": "2026-10-19_2335",
     "source": "hf-spaces"
+  },
+  {
+    "name": "HyperFrames",
+    "domain": "github.com/heygen-com/hyperframes",
+    "date": "2026-10-20_0133",
+    "source": "manual"
   }
 ]
