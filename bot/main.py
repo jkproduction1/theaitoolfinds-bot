@@ -19,6 +19,24 @@ def slug(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")[:40] or "tool"
 
 
+def _force_keyword(sb: dict):
+    """Rule: the comment keyword is ALWAYS the tool's name (so it can never be off-topic).
+    Rewrites every "Comment X" in script, sentences, caption and CTA popups."""
+    kw = re.sub(r"[^A-Z0-9]", "", sb["tool_name"].upper())[:14] or "LINK"
+    old = sb.get("keyword") or ""
+    sb["keyword"] = kw
+    fix = lambda t: re.sub(r'(?i)(comment\s+["\u201c]?)([A-Z0-9]+)', lambda m: m.group(1) + kw, t) if isinstance(t, str) else t
+    for snt in sb.get("sentences", []):
+        snt["text"] = fix(snt["text"])
+        pp = (snt.get("scene") or {}).get("props") or {}
+        if isinstance(pp.get("popup"), dict):
+            pp["popup"]["button"] = f'COMMENT "{kw}"'
+    sb["script"] = " ".join(x["text"] for x in sb.get("sentences", [])) or fix(sb.get("script", ""))
+    sb["caption"] = fix(sb.get("caption", ""))
+    if old and old != kw:
+        print(f"[main] keyword {old} -> {kw} (always the tool name)")
+
+
 def make_one(cand: dict) -> dict:
     site = research.fetch(cand["url"])
     if len(site["text"]) < 300 and not site["description"]:
@@ -38,6 +56,7 @@ def make_one(cand: dict) -> dict:
             print(f"[main] using hand-written storyboard {cand['storyboard']}")
         else:
             script = writer.write_storyboard(cand, site, has_media=bool(demo))
+        _force_keyword(script)
         shot = capture.screenshot(site["url"], work / "screenshot.png")
         recs = []
         for i, rc in enumerate(script.get("recordings") or []):
