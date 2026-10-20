@@ -263,10 +263,10 @@ const Board: React.FC<SP> = ({p, f, from, to, at, amp, side}) => {
   );
 };
 
-const KINDS: Record<string, React.FC<SP>> = {hang: Hang, desk: Desk, crt: CrtClose, board: Board};
+export const KINDS: Record<string, React.FC<SP>> = {hang: Hang, desk: Desk, crt: CrtClose, board: Board};
 
 // ------------------------------------------------------------------ captions: small pill, fade
-const Cap: React.FC<{words: W[]; breaks: number[]}> = ({words, breaks}) => {
+export const Cap: React.FC<{words: W[]; breaks: number[]}> = ({words, breaks}) => {
   const f = useCurrentFrame();
   const t = f / 30;
   const ph: W[][] = [];

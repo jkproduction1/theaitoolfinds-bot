@@ -300,9 +300,10 @@ def build_collage(sb: dict, voice: Path, words, voice_len: float, out_mp4: Path,
     pfile = work / "props.json"
     pfile.write_text(json.dumps(props, indent=1))
     print("[motion] collage:", " > ".join(f"{s['kind']}({(s['to'] - s['from']) / FPS:.1f}s)" for s in scenes))
-    _remotion(["render", "src/index.ts", "CollageMain", str(out_mp4.resolve()), f"--props={pfile.resolve()}",
+    comp = "CineMain" if sb.get("style") == "cine" else "CollageMain"
+    _remotion(["render", "src/index.ts", comp, str(out_mp4.resolve()), f"--props={pfile.resolve()}",
                "--codec=h264", "--crf=18"])
     cover_png = work / "cover.png"
-    _remotion(["still", "src/index.ts", "CollageMain", str(cover_png.resolve()), f"--props={pfile.resolve()}",
+    _remotion(["still", "src/index.ts", comp, str(cover_png.resolve()), f"--props={pfile.resolve()}",
                f"--frame={min(props['durationInFrames'] - 1, 45)}"])
     Image.open(cover_png).convert("RGB").save(out_mp4.with_name("cover.jpg"), quality=92)

@@ -85,7 +85,7 @@ def make_one(cand: dict) -> dict:
         vlen = tts.duration(voice)
         print(f"[main] voiceover {vlen:.1f}s, {len(words)} words")
 
-        if script.get("style") == "collage":
+        if script.get("style") in ("collage", "cine"):
             motion.build_collage(script, voice, words, vlen, folder / "video.mp4", work)
         else:
             motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4",

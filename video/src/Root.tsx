@@ -5,6 +5,7 @@ import {Cover} from './Cover';
 import {CollageTest} from './Collage';
 import {CollageMain} from './CollageMain';
 import {CineTest} from './CineTest';
+import {CineMain} from './CineMain';
 import {ConceptA, ConceptB, ConceptC} from './Concepts';
 import {H, W} from './theme';
 import type {VideoProps} from './types';
@@ -28,6 +29,9 @@ export const Root: React.FC = () => (
     <Composition id="ConceptC" component={ConceptC} width={W} height={H} fps={30} durationInFrames={180} />
     <Composition id="CollageTest" component={CollageTest} width={W} height={H} fps={30} durationInFrames={300} />
     <Composition id="CollageMain" component={CollageMain as any} width={W} height={H} fps={30} durationInFrames={300}
+      defaultProps={{durationInFrames: 300, words: [], breaks: [], audio: 'sfx/pop.wav', music: null, scenes: [], handle: ''}}
+      calculateMetadata={({props}) => ({durationInFrames: (props as any).durationInFrames})} />
+    <Composition id="CineMain" component={CineMain as any} width={W} height={H} fps={30} durationInFrames={300}
       defaultProps={{durationInFrames: 300, words: [], breaks: [], audio: 'sfx/pop.wav', music: null, scenes: [], handle: ''}}
       calculateMetadata={({props}) => ({durationInFrames: (props as any).durationInFrames})} />
     <Composition id="CineTest" component={CineTest} width={W} height={H} fps={30} durationInFrames={180} />

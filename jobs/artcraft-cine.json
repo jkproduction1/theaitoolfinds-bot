@@ -1,0 +1,233 @@
+{
+ "url": "https://getartcraft.com/apps",
+ "name": "ArtCraft cine test",
+ "tool_name": "ArtCraft",
+ "category": "design",
+ "keyword": "ARTCRAFT",
+ "style": "cine",
+ "music": "t3",
+ "sentences": [
+  {
+   "text": "Someone just used AI to rebuild seven Adobe apps.",
+   "emphasis": [
+    "seven"
+   ],
+   "scene": {
+    "kind": "title",
+    "props": {
+     "lines": [
+      "7 ADOBE APPS"
+     ],
+     "size": 160,
+     "sticker": "rebuilt by AI.",
+     "sx": 120,
+     "circle": true,
+     "circleLine": 0,
+     "bg": "tools/effectcraft-hero.png",
+     "y": 700
+    }
+   }
+  },
+  {
+   "text": "Photoshop, Premiere, Lightroom, even After Effects.",
+   "emphasis": [
+    "After Effects"
+   ],
+   "scene": {
+    "kind": "flat",
+    "props": {
+     "plate": "mat_top",
+     "items": [
+      {
+       "type": "polaroid",
+       "img": "tools/photocraft-demo.jpg",
+       "name": "PhotoCraft",
+       "word": "^Photoshop",
+       "pos": [
+        60,
+        150,
+        -6
+       ]
+      },
+      {
+       "type": "polaroid",
+       "img": "tools/filmcraft-hero.png",
+       "name": "FilmCraft",
+       "word": "^Premiere",
+       "pos": [
+        560,
+        260,
+        5
+       ]
+      },
+      {
+       "type": "polaroid",
+       "img": "tools/lightcraft-hero.jpg",
+       "name": "LightCraft",
+       "word": "^Lightroom",
+       "pos": [
+        80,
+        720,
+        3
+       ]
+      },
+      {
+       "type": "polaroid",
+       "img": "tools/effectcraft-hero.png",
+       "name": "EffectCraft",
+       "word": "^After",
+       "pos": [
+        580,
+        800,
+        -4
+       ]
+      }
+     ],
+     "poses": [
+      [
+       0,
+       "excited"
+      ]
+     ],
+     "side": "right"
+    }
+   }
+  },
+  {
+   "text": "The Photoshop one already has 58 tools and works with real PSD files.",
+   "emphasis": [
+    "58"
+   ],
+   "scene": {
+    "kind": "screen",
+    "props": {
+     "plate": "room1",
+     "show": {
+      "img": "tools/photocraft-demo.jpg"
+     },
+     "note": {
+      "text": "58 tools\n+ real PSD",
+      "word": "^58"
+     },
+     "poses": [
+      [
+       0,
+       "shock"
+      ],
+      [
+       45,
+       "chill"
+      ]
+     ],
+     "dive": true
+    }
+   }
+  },
+  {
+   "text": "They run on Mac, Windows, Linux, and even in your browser.",
+   "emphasis": [
+    "browser"
+   ],
+   "scene": {
+    "kind": "title",
+    "props": {
+     "lines": [
+      "MAC",
+      "WINDOWS",
+      "LINUX"
+     ],
+     "size": 170,
+     "sticker": "+ browser",
+     "stickerWord": "^browser",
+     "sx": 260
+    }
+   }
+  },
+  {
+   "text": "And every single one is free and open source.",
+   "emphasis": [
+    "free"
+   ],
+   "scene": {
+    "kind": "cork",
+    "props": {
+     "plate": "cork_string",
+     "items": [
+      {
+       "type": "news",
+       "text": "Adobe, but free",
+       "img": "tools/effectcraft-hero.png",
+       "pos": [
+        70,
+        230,
+        -3
+       ]
+      },
+      {
+       "type": "polaroid",
+       "img": "tools/photocraft-demo.jpg",
+       "name": "open source",
+       "pos": [
+        590,
+        420,
+        5
+       ],
+       "w": 400
+      }
+     ],
+     "stamp": "FREE",
+     "stampWord": "^free",
+     "poses": [
+      [
+       0,
+       "point"
+      ]
+     ],
+     "side": "left"
+    }
+   }
+  },
+  {
+   "text": "It's still early, so expect bugs. Comment ARTCRAFT and I'll send you the links.",
+   "emphasis": [
+    "ARTCRAFT"
+   ],
+   "scene": {
+    "kind": "screen",
+    "props": {
+     "plate": "tv_close",
+     "show": {
+      "type": "> comment\n  ARTCRAFT",
+      "size": 48
+     },
+     "note": {
+      "text": "still\nearly!",
+      "x": 700,
+      "y": 520,
+      "rot": 6,
+      "w": 180
+     },
+     "poses": [
+      [
+       0,
+       "thumb"
+      ]
+     ],
+     "tr": "zoom"
+    }
+   }
+  }
+ ],
+ "caption": "Someone used AI to rebuild 7 Adobe apps, and they're all free \ud83d\udc40\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ARTCRAFT and I'll DM you the links.\n\n#ai #adobe #photoshop #aftereffects #opensource #aitools #editing",
+ "hashtags": [
+  "#ai",
+  "#adobe"
+ ],
+ "cover": {
+  "line1": "Free Adobe",
+  "line2": "Rebuilt by AI"
+ },
+ "summary_cs": "ArtCraft: n\u011bkdo pomoc\u00ed AI (Claude) p\u0159epsal 7 aplikac\u00ed Adobe jako open source zdarma (PhotoCraft, FilmCraft, LightCraft, EffectCraft\u2026). Zat\u00edm alfa verze.",
+ "script": "Someone just used AI to rebuild seven Adobe apps. Photoshop, Premiere, Lightroom, even After Effects. The Photoshop one already has 58 tools and works with real PSD files. They run on Mac, Windows, Linux, and even in your browser. And every single one is free and open source. It's still early, so expect bugs. Comment ARTCRAFT and I'll send you the links.",
+ "hold": true
+}
