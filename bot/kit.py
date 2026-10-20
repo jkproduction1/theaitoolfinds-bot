@@ -36,19 +36,21 @@ def cutout(im: Image.Image) -> Image.Image:
 
 def screen_rect(im: Image.Image):
     """Largest near-black region (the blank screen) as fractions [x, y, w, h]."""
-    import cv2
+    from scipy import ndimage
     a = np.asarray(im.convert("RGBA"))
-    dark = ((a[..., :3].max(-1) < 40) & (a[..., 3] > 200)).astype(np.uint8)
-    dark = cv2.morphologyEx(dark, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
-    n, lab, st, _ = cv2.connectedComponentsWithStats(dark)
-    if n < 2:
+    dark = (a[..., :3].max(-1) < 40) & (a[..., 3] > 200)
+    dark = ndimage.binary_closing(dark, structure=np.ones((9, 9)))
+    lab, n = ndimage.label(dark)
+    if n < 1:
         return None
-    k = 1 + int(np.argmax(st[1:, 4]))
-    x, y, w, h, area = st[k]
-    if area < 0.03 * a.shape[0] * a.shape[1]:
+    sizes = ndimage.sum(dark, lab, range(1, n + 1))
+    k = int(np.argmax(sizes)) + 1
+    if sizes[k - 1] < 0.03 * a.shape[0] * a.shape[1]:
         return None
+    ys, xs = np.where(lab == k)
     W, H = a.shape[1], a.shape[0]
-    return [round(x / W, 4), round(y / H, 4), round(w / W, 4), round(h / H, 4)]
+    return [round(xs.min() / W, 4), round(ys.min() / H, 4),
+            round((xs.max() - xs.min()) / W, 4), round((ys.max() - ys.min()) / H, 4)]
 
 
 def main(path):
