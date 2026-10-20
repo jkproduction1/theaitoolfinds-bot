@@ -42,6 +42,7 @@ jobs:
           AUTODM: ${{ github.event.inputs.autodm }}
         run: |
           if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$ZERNIO_API_KEY" ]; then echo "not configured yet"; exit 0; fi
+          if [ "$AUTODM" = "debug" ]; then python -u -m bot.autodm_debug; exit 0; fi
           if [ -n "$AUTODM" ]; then git fetch -q origin +videos:refs/remotes/origin/videos && git worktree add -q ../vb origin/videos && python -u -m bot.autodm_once $AUTODM ../vb; exit $?; fi
           python -u -m bot.poster
       - name: Save state
@@ -49,7 +50,7 @@ jobs:
         run: |
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
-          for f in data/telegram.json data/pending.json data/posted.json data/picks.json; do
+          for f in data/telegram.json data/pending.json data/posted.json data/picks.json logs/autodm.log; do
             [ -e "$f" ] && git add -f "$f"
           done
           git diff --cached --quiet && exit 0
