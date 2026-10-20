@@ -121,5 +121,7 @@
   "line2": "New Model"
  },
  "summary_cs": "Nový obrázkový model FLUX 3 Klein od Black Forest Labs, zdarma v prohlížeči. Text na obrázek, editace fotek, až 10 referencí a rozmístění pomocí boxů.",
- "script": "The people behind FLUX just dropped a new image model, and you can use it for free right now. It's called FLUX 3 Klein, and it runs right in your browser. Type what you want, and it makes the image. But here's the cool part. You can upload up to ten reference photos and edit with them. You can even draw boxes to tell it where things go. No subscription, no credits, and the weights are open. Comment FLUX and I'll send you the link."
+ "script": "The people behind FLUX just dropped a new image model, and you can use it for free right now. It's called FLUX 3 Klein, and it runs right in your browser. Type what you want, and it makes the image. But here's the cool part. You can upload up to ten reference photos and edit with them. You can even draw boxes to tell it where things go. No subscription, no credits, and the weights are open. Comment FLUX and I'll send you the link.",
+ "tool_name": "FLUX 3 Klein",
+ "category": "design"
 }

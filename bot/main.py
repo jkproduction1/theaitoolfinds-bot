@@ -33,6 +33,8 @@ def make_one(cand: dict) -> dict:
         demo = media.find(site, work)
         if cand.get("storyboard"):  # written by Claude in chat instead of the API model
             script = json.loads(Path(cand["storyboard"]).read_text())
+            script.setdefault("tool_name", script.get("name") or cand["name"])
+            script.setdefault("script", " ".join(x["text"] for x in script["sentences"]))
             print(f"[main] using hand-written storyboard {cand['storyboard']}")
         else:
             script = writer.write_storyboard(cand, site, has_media=bool(demo))
