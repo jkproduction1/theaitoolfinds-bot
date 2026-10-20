@@ -5,6 +5,7 @@ import {
 } from 'remotion';
 import {C, FONT, fontCss, W} from './theme';
 import {SCENES} from './scenes';
+import {Mascot} from './Mascot';
 import type {VideoProps, Word} from './types';
 
 const GridBg: React.FC = () => {
@@ -156,6 +157,7 @@ export const Main: React.FC<VideoProps> = (v) => {
           <Audio src={staticFile('sfx/riser.wav')} volume={0.25} />
         </Sequence>
       ))}
+      <Mascot v={v} />
       <Captions words={v.words} dark={dark} />
       <Progress total={v.durationInFrames} dark={dark} />
       <div style={{position: 'absolute', bottom: 70, width: W, textAlign: 'center',
