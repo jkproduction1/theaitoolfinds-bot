@@ -266,3 +266,43 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
     _remotion(["still", "src/index.ts", "Cover", str(cover_png.resolve()),
                f"--props={pfile.resolve()}"])
     Image.open(cover_png).convert("RGB").save(out_mp4.with_name("cover.jpg"), quality=92)
+
+
+def build_collage(sb: dict, voice: Path, words, voice_len: float, out_mp4: Path, work: Path):
+    """House style: retro collage. Each sentence -> a scene kind (hang/desk/crt/board);
+    a sentence with "same": true extends the previous scene."""
+    if JOB.exists():
+        shutil.rmtree(JOB)
+    JOB.mkdir(parents=True)
+    shutil.copy(voice, JOB / "voice.mp3")
+    assets = _assets(sb.get("assets") or [])  # downloaded into job/a{i}.*
+    total = voice_len + 1.0
+    sents = sb["sentences"]
+    starts = _sentence_starts(sents, words) + [total]
+    scenes, breaks, wi = [], [], 0
+    for i, s in enumerate(sents):
+        breaks.append(wi)
+        wi += len(s["text"].split())
+        a, b = int(round(starts[i] * FPS)), int(round(starts[i + 1] * FPS))
+        if s.get("same") and scenes:
+            scenes[-1]["to"] = b
+            continue
+        sc = s["scene"]
+        scenes.append({"kind": sc["kind"], "from": a, "to": b, "props": sc.get("props") or {}})
+    music = None
+    tracks = json.loads((VIDEO / "public" / "music" / "tracks.json").read_text())
+    if sb.get("music") in tracks:
+        t = tracks[sb["music"]]
+        music = {"file": t["file"], "start": t["hook_start"]}
+    props = {"durationInFrames": int(round(total * FPS)), "audio": "job/voice.mp3", "music": music,
+             "words": [{"w": w["word"], "s": round(w["start"], 3), "e": round(w["end"], 3)} for w in words],
+             "breaks": breaks, "scenes": scenes, "handle": config.BRAND}
+    pfile = work / "props.json"
+    pfile.write_text(json.dumps(props, indent=1))
+    print("[motion] collage:", " > ".join(f"{s['kind']}({(s['to'] - s['from']) / FPS:.1f}s)" for s in scenes))
+    _remotion(["render", "src/index.ts", "CollageMain", str(out_mp4.resolve()), f"--props={pfile.resolve()}",
+               "--codec=h264", "--crf=18"])
+    cover_png = work / "cover.png"
+    _remotion(["still", "src/index.ts", "CollageMain", str(cover_png.resolve()), f"--props={pfile.resolve()}",
+               f"--frame={min(props['durationInFrames'] - 1, 45)}"])
+    Image.open(cover_png).convert("RGB").save(out_mp4.with_name("cover.jpg"), quality=92)

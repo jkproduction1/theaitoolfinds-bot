@@ -51,8 +51,11 @@ def make_one(cand: dict) -> dict:
         vlen = tts.duration(voice)
         print(f"[main] voiceover {vlen:.1f}s, {len(words)} words")
 
-        motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4",
-                     work, demo=demo, recordings=recs)
+        if script.get("style") == "collage":
+            motion.build_collage(script, voice, words, vlen, folder / "video.mp4", work)
+        else:
+            motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4",
+                         work, demo=demo, recordings=recs)
 
         caption = script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", []))
         (folder / "caption.txt").write_text(caption, encoding="utf-8")

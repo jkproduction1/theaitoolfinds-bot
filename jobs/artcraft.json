@@ -1,0 +1,187 @@
+{
+ "url": "https://getartcraft.com/apps",
+ "name": "ArtCraft",
+ "tool_name": "ArtCraft",
+ "category": "design",
+ "keyword": "ADOBE",
+ "style": "collage",
+ "music": "t3",
+ "sentences": [
+  {
+   "text": "Someone just used AI to rebuild seven Adobe apps.",
+   "emphasis": [
+    "seven"
+   ],
+   "scene": {
+    "kind": "hang",
+    "props": {
+     "screen": "tools/effectcraft-hero.png",
+     "head1": "7 Adobe apps",
+     "head2": "rebuilt by AI",
+     "poses": [
+      [
+       0,
+       "chill"
+      ],
+      [
+       75,
+       "talk"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "text": "Photoshop, Premiere, Lightroom, even After Effects.",
+   "emphasis": [
+    "After Effects"
+   ],
+   "scene": {
+    "kind": "desk",
+    "props": {
+     "items": [
+      {
+       "img": "tools/photocraft-demo.jpg",
+       "name": "PhotoCraft",
+       "sub": "Photoshop",
+       "word": "^Photoshop"
+      },
+      {
+       "img": "tools/filmcraft-hero.png",
+       "name": "FilmCraft",
+       "sub": "Premiere",
+       "word": "^Premiere"
+      },
+      {
+       "img": "tools/lightcraft-hero.jpg",
+       "name": "LightCraft",
+       "sub": "Lightroom",
+       "word": "^Lightroom"
+      },
+      {
+       "img": "tools/effectcraft-hero.png",
+       "name": "EffectCraft",
+       "sub": "After Effects",
+       "word": "^After"
+      }
+     ],
+     "poses": [
+      [
+       0,
+       "excited"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "text": "The Photoshop one already has 58 tools and works with real PSD files.",
+   "emphasis": [
+    "58"
+   ],
+   "scene": {
+    "kind": "crt",
+    "props": {
+     "screen": "tools/photocraft-demo.jpg",
+     "note": "58 tools + real PSD files",
+     "poses": [
+      [
+       0,
+       "shock"
+      ],
+      [
+       60,
+       "talk"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "text": "They run on Mac, Windows, Linux, and even in your browser.",
+   "emphasis": [
+    "browser"
+   ],
+   "scene": {
+    "kind": "board",
+    "props": {
+     "cards": [
+      "Mac",
+      "Windows",
+      "Linux",
+      "Browser"
+     ],
+     "poses": [
+      [
+       0,
+       "talk"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "text": "And every single one is free and open source.",
+   "emphasis": [
+    "free"
+   ],
+   "scene": {
+    "kind": "board",
+    "props": {
+     "note": "all 7 apps are\nfree + open source.",
+     "stamp": "FREE",
+     "stampWord": "^free",
+     "poses": [
+      [
+       0,
+       "talk"
+      ],
+      [
+       40,
+       "shock"
+      ],
+      [
+       70,
+       "chill"
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "text": "It's still early, so expect bugs. Comment ADOBE and I'll send you the links.",
+   "emphasis": [
+    "ADOBE"
+   ],
+   "scene": {
+    "kind": "hang",
+    "props": {
+     "screen": "tools/filmcraft-hero.png",
+     "popAt": 10,
+     "popup": {
+      "title": "Free_Adobe.exe",
+      "text": "Want the links?",
+      "button": "COMMENT \"ADOBE\""
+     },
+     "poses": [
+      [
+       0,
+       "talk"
+      ]
+     ]
+    }
+   }
+  }
+ ],
+ "caption": "Someone used AI to rebuild 7 Adobe apps, and they're all free 👀\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ADOBE and I'll DM you the links.\n\n#ai #adobe #photoshop #aftereffects #opensource #aitools #editing",
+ "hashtags": [
+  "#ai",
+  "#adobe"
+ ],
+ "cover": {
+  "line1": "Free Adobe",
+  "line2": "Rebuilt by AI"
+ },
+ "summary_cs": "ArtCraft: někdo pomocí AI (Claude) přepsal 7 aplikací Adobe jako open source zdarma (PhotoCraft, FilmCraft, LightCraft, EffectCraft…). Zatím alfa verze.",
+ "script": "Someone just used AI to rebuild seven Adobe apps. Photoshop, Premiere, Lightroom, even After Effects. The Photoshop one already has 58 tools and works with real PSD files. They run on Mac, Windows, Linux, and even in your browser. And every single one is free and open source. It's still early, so expect bugs. Comment ADOBE and I'll send you the links."
+}
