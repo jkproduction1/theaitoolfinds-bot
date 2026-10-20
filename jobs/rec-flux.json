@@ -1,9 +1,7 @@
 {"recordings": [{"url": "https://black-forest-labs-flux-3-image-klein.hf.space",
   "steps": [
-   {"click": "Generate & edit"},
-   {"wait": 1.0},
-   {"type": "A tiny raccoon DJ in a yellow cap, neon club, 35mm film photo", "into": "css:textarea"},
-   {"click": "css:button.primary"},
-   {"wait_for": "css:img[src^='http'][src*='file='], img[src^='blob:'], [data-testid=image] img", "timeout": 180},
+   {"type": "A tiny raccoon DJ wearing a yellow cap <silhouette_1>, glowing neon club background <background_1>, 35mm film photo", "into": "css:textarea[placeholder^='Describe']"},
+   {"click": "Generate with boxes"},
+   {"wait_for": "new-image", "timeout": 200},
    {"wait": 1.5}
   ]}]}

@@ -132,6 +132,11 @@ def run(url: str, steps: list, out_dir: Path, name="rec0") -> dict:
         page.evaluate(CURSOR_JS)
         page.mouse.move(r.x, r.y)
         r.log("start")
+        base = page.evaluate("""() => [...document.querySelectorAll('img')]
+            .filter(i => i.naturalWidth >= 300 && i.getBoundingClientRect().width > 150).length""")
+        for st in steps:
+            if st.get("wait_for") == "new-image":
+                st["_base"] = base
         page.wait_for_timeout(800)
         for st in steps:
             try:
@@ -140,16 +145,14 @@ def run(url: str, steps: list, out_dir: Path, name="rec0") -> dict:
                     r.move_to(loc)
                     page.wait_for_timeout(150)
                     r.log("click")
-                    loc.click(timeout=10_000)
+                    page.mouse.click(r.x, r.y)  # real click where the visible cursor is
                     page.wait_for_timeout(400)
                 elif "type" in st:
                     loc = _loc(page, st.get("into", "css:textarea"))
                     r.move_to(loc)
-                    loc.click(timeout=10_000)
-                    try:
-                        loc.fill("")
-                    except Exception:
-                        pass
+                    page.mouse.click(r.x, r.y)
+                    page.keyboard.press("Control+A")
+                    page.keyboard.press("Backspace")
                     r.log("type_start")
                     page.keyboard.type(st["type"], delay=38)
                     r.log("type_end")
@@ -159,6 +162,26 @@ def run(url: str, steps: list, out_dir: Path, name="rec0") -> dict:
                     loc.set_input_files(str(config.ROOT / st["upload"]))
                     r.log("upload")
                     page.wait_for_timeout(1200)
+                elif st.get("wait_for") == "new-image":
+                    # wait until a new big image shows up anywhere (the generated result)
+                    r.log("wait_start")
+                    js = """(base) => { const big = [...document.querySelectorAll('img')]
+                        .filter(i => i.naturalWidth >= 300 && i.getBoundingClientRect().width > 150);
+                        if (big.length <= base) return null;
+                        const b = big[big.length - 1].getBoundingClientRect();
+                        return [b.x + b.width / 2, b.y + b.height / 2]; }"""
+                    base = st.get("_base", 0)
+                    end = time.time() + float(st.get("timeout", 150))
+                    hit = None
+                    while time.time() < end and not hit:
+                        hit = page.evaluate(js, base)
+                        if not hit:
+                            page.wait_for_timeout(700)
+                    if not hit:
+                        raise RuntimeError("no result image appeared")
+                    page.wait_for_timeout(int(st.get("settle", 1.5) * 1000))
+                    r.log("wait_end")
+                    r.log("reveal", hit[0], hit[1])
                 elif "wait_for" in st:
                     r.log("wait_start")
                     _loc(page, st["wait_for"]).wait_for(state="visible",
@@ -196,6 +219,13 @@ def run(url: str, steps: list, out_dir: Path, name="rec0") -> dict:
 def _finish(webm: Path, ev: list, out_dir: Path, name: str) -> dict:
     """webm -> mp4, fast-forwarding each loading wait down to ~0.7 s."""
     # the video starts a bit before our t0 (page creation); align on first frame ~0
+    lead = max(0.0, next((e["t"] for e in ev if e["kind"] == "start"), 0.0) - 0.3)
+    for e in ev:
+        e["t"] = round(e["t"] - lead, 3)
+    trimmed = webm.with_name("trim.webm")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{lead:.2f}", "-i", str(webm),
+                    "-c:v", "libvpx-vp9", "-b:v", "6M", "-deadline", "realtime", str(trimmed)], check=True)
+    webm = trimmed
     cuts = []  # (start, end) in seconds to squeeze
     ws = None
     for e in ev:
