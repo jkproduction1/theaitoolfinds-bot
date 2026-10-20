@@ -142,3 +142,95 @@ IG ACCOUNT: {
  "lastRateLimitError": null,
  "rateLimitCount": 0,
  
+
+POST: {
+ "post": {
+  "_id": "6ad776bdf5e93b04321197ea",
+  "userId": {
+   "id": "6ad69db4c279e94afa01fb65",
+   "name": "theaitoolfinds",
+   "image": "https://lh3.googleusercontent.com/a/ACg8ocIB5HZkyRJi1iCQ6zQewnK-_DftXflFtLPwcO48vXScP5ynCg=s96-c"
+  },
+  "title": "",
+  "content": "Someone used AI to rebuild 7 Adobe apps, and they're all free \ud83d\udc40\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ARTCRAFT and I'll DM you the links.\n\n#ai #adobe #photoshop #aftereffects #opensource #aitools #editing\n\n#ai #adobe",
+  "mediaItems": [
+   {
+    "_id": "6ad776bdf5e93b04321197ed",
+    "url": "https://media.zernio.com/media/1792505524296_4sgxwuol_video.mp4",
+    "type": "video"
+   }
+  ],
+  "scheduledFor": "2026-10-20T14:15:03.951Z",
+  "timezone": "UTC",
+  "status": "published",
+  "tags": [],
+  "hashtags": [],
+  "mentions": [],
+  "visibility": "public",
+  "crosspostingEnabled": true,
+  "metadata": {
+   "usageCounted": true
+  },
+  "publishingClaimedAt": "2026-10-20T14:15:21.223Z",
+  "recycling": {
+   "enabled": false,
+   "gapFreq": "month",
+   "recycleCount": 0,
+   "contentVariations": [],
+   "contentVariationIndex": 0
+  },
+  "lastEnqueuedAt": "2026-10-20T14:16:14.964Z",
+  "createdAt": "2026-10-20T14:12:13.421Z",
+  "updatedAt": "2026-10-20T14:25:48.835Z",
+  "platforms": [
+   {
+    "_id": "6ad776bdf5e93b04321197e8",
+    "platform": "instagram",
+    "accountId": {
+     "_id": "6ad69dcdecad4ce8494e92b1",
+     "platform": "instagram",
+     "username": "theaitoolfinds",
+     "displayName": "The AI Tool Finds",
+     "profilePicture": "https://scontent-mrs2-1.cdninstagram.com/v/t51.82787-19/859082274_17955334455032548_5183997929216793947_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=100&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=7mNNZUsNWSQQ7kNvwEHJoxS&_nc_oc=Adro30hHW6dDitEsMAQd1kclDQcRJNi66IXc4OhzxXrb2Kjm0qzD4_2fKyPb8MA9HyE&_nc_zt=24&_nc_ht=scontent-mrs2-1.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=z5yDbhjqzbJvpDr-216uBw&_nc_tpa=Q5bMBQI85k6bjPUgFViWIxIdeZoHEtdJLN3_aEpBpitQ_IHt_7bghRcvN7pLlfKT-p1qfon_35Ni7AAwiQ&oh=00_AQO-8ua20NHGZpIyPdaxDk14f0LXGrdnJNhjmCcfZCsCCg&oe=6ADCEED4",
+     "isActive": true,
+     "profileId": "6ad69db4c279e94afa01fb6d"
+    },
+    "profileId": "6ad69db4c279e94afa01fb6d",
+    "customMedia": [],
+    "scheduledFor": "2026-10-20T14:15:03.951Z",
+    "platformSpecificData": {
+     "shareToFeed": true,
+     "instagramThumbnail": "https://media.zernio.com/media/1792505526566_b2we64d9_cover.jpg"
+    },
+    "status": "published",
+    "publishedAt": "2026-10-20T14:17:14.507Z",
+    "platformPostId": "18086880842695673",
+    "platformPostUrl": "https://www.instagram.com/reel/DeuBssIDopI/",
+    "publishAttempts": 1,
+    "contentHash": "4e2336dcb9885ecf6cf28ef0263bdaee"
+   },
+   {
+    "_id": "6ad776bdf5e93b04321197e9",
+    "platform": "tiktok",
+    "accountId": {
+     "_id": "6ad6a61e4115c03f8b41d247",
+     "platform": "tiktok",
+     "username": "theaitoolfinds",
+     "displayName": "The Ai Tool Finds",
+     "profilePicture": "https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-avt-0068c001-no/75ea2441c3ebd9d97c59659b62f844f6~tplv-tiktokx-cropcenter:168:168.jpeg?dr=10397&refresh_token=339f190c&x-expires=1792656000&x-signature=GgOPM7Q3FJtGFOB4jDeYWxkZj3I%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=useast2b",
+     "isActive": true,
+     "profileId": "6ad69db4c279e94afa01fb6d"
+    },
+    "profileId": "6ad69db4c279e94afa01fb6d",
+    "customMedia": [],
+    "scheduledFor": "2026-10-20T14:15:03.951Z",
+    "platformSpecificData": {
+     "tiktokSettings": {
+      "allow_duet": true,
+      "allow_stitch": true,
+      "allow_comment": true,
+      "privacy_level": "PUBLIC_TO_EVERYONE",
+      "video_made_with_ai": true,
+      "commercialContentType": "none",
+      "express_consent_given": true,
+      "video_cover_image_url": "https://media.zernio.com/media/1792505526566_b2we64
