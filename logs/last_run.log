@@ -4,8 +4,8 @@
 [media] using image 1200x630 from https://getartcraft.com/images/apps/og.jpg
 [main] using hand-written storyboard jobs/artcraft.json
 [tts] ElevenLabs voice
-[main] voiceover 22.0s, 62 words
+[main] voiceover 21.9s, 62 words
 [motion] 0 real assets
-[motion] collage: hang(3.4s) > desk(3.4s) > crt(4.8s) > board(3.4s) > board(2.8s) > hang(5.1s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_1356_artcraft
-[telegram] sent 2026-10-20_1356_artcraft for approval
+[motion] collage: hang(3.4s) > desk(3.4s) > crt(4.6s) > board(3.5s) > board(2.8s) > hang(5.1s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_1402_artcraft
+[telegram] sent 2026-10-20_1402_artcraft for approval
