@@ -50,18 +50,18 @@ AUTOMATIONS: [
    "dmsSent": 0,
    "delivered": 0,
    "dmsFailed": 0,
-   "triggered": 0,
+   "triggered": 1,
    "linkClicks": 0,
    "trackedSends": 0,
    "uniqueClicks": 0,
-   "followGateSent": 0,
+   "followGateSent": 1,
    "uniqueContacts": 0,
    "audienceSkipped": 0,
    "followGateFailed": 0,
    "followGatePassed": 0
   },
   "createdAt": "2026-10-20T15:10:56.317Z",
-  "updatedAt": "2026-10-20T15:10:56.317Z"
+  "updatedAt": "2026-10-20T15:15:24.796Z"
  }
 ]
 
@@ -76,22 +76,22 @@ LOGS 6ad78480ac56ebd13e5e8e83: {
    "commenterUsername": "honza_kroneisl",
    "commentText": "Artcraft",
    "source": "comment",
-   "status": "pending",
+   "status": "gated",
    "error": null,
    "platformError": null,
    "privateReplyConsumed": null,
    "commentReplyStatus": null,
    "commentReplyError": null,
    "publicReplyPostedAt": null,
-   "audienceOutcome": null,
-   "gateButtonStatus": null,
+   "audienceOutcome": "gate_sent",
+   "gateButtonStatus": "delivered",
    "commenterIsFollower": null,
    "commenterFollowerCount": null,
    "gateResolvedAt": null,
    "likeSkipped": null,
    "hideSkipped": null,
    "mediaError": null,
-   "nextDueAt": "2026-10-20T15:12:57.244Z",
+   "nextDueAt": null,
    "clickedAt": null,
    "clickCount": 0,
    "createdAt": "2026-10-20T15:12:52.256Z"
@@ -344,3 +344,5 @@ POST: {
   "mediaType": "VIDEO",
   "productType": "REELS",
   "createdAt": "2026-10-20T14:17:09+00
+
+patched 6ad78480ac56ebd13e5e8e83
