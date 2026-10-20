@@ -56,7 +56,7 @@ at least 3 different kinds, Scrappy in ~60–70% of scenes.
 Scene kinds (`scene.kind` + `props`), one per sentence (`"same": true` extends the previous):
 - `screen` — room plate with a glowing screen, slow push-in. props: `plate` (room1, room2,
   room1b, crt_close, tv_close, laptop_top), `show` {`img`: tool image | `type`: green typed
-  text, `size`}, `note` {text, word, x, y, rot, w} (flutters, pinned), `dive`: true = zoom
+  text, `size`}, `note` {text, word, rot, w} (flutters; default spot is ON the plate's cork board / monitor — only set x, y if you checked it stays on a surface), `dive`: true = zoom
   through the screen at the end (next scene starts with a flash; great before a `title`),
   `head` (optional big text, see TextFx).
 - `title` — big type, like inside the monitor. props: `lines` [≤3 short lines], `size`,
