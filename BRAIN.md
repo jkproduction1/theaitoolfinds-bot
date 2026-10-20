@@ -104,7 +104,8 @@ Automatic rules (code enforces, don't fight them): keyword = tool name; max 4 ha
 - Screens/polaroids show the real tool, not empty/black; no cut-out artifacts.
 - Scrappy in ~60–70% of scenes, leaning/standing (not pinned), never over key text.
 - CTA keyword on screen = tool name; music audible but quiet under the voice.
-- Pace: a new visual at least every ~3 s; total 15–35 s.
+- Screen text readable on a phone: typed `show.type` size ≥ 48 on CRTs/TVs.
+- Pace: a new visual at least every ~3 s (a long sentence → use `dive`/`head` or split it); total 15–35 s.
 - Paper sits on something real: sticky notes / cards are ON the cork board, monitor or desk —
   never floating on a bare wall or in the air.
 - Hook frames (0–1 s) look rich, not an empty dark screen; nothing covers the captions.

@@ -15,7 +15,7 @@
      "plate": "crt_close",
      "show": {
       "type": "> /plugin",
-      "size": 64,
+      "size": 70,
       "delay": 2
      },
      "head": {
@@ -99,11 +99,10 @@
      "plate": "room1b",
      "show": {
       "type": "> hyperframes\n  code -> video",
-      "size": 34
+      "size": 50
      },
      "note": {
-      "text": "by\nHeyGen",
-      "word": "^HeyGen"
+      "text": "by\nHeyGen"
      },
      "poses": [
       [
@@ -196,7 +195,7 @@
      "plate": "room2",
      "show": {
       "type": "> comment\n  PLUGINS",
-      "size": 36
+      "size": 54
      },
      "note": {
       "text": "trust\nfirst!"
@@ -212,7 +211,12 @@
       ]
      ],
      "side": "left",
-     "tr": "whip"
+     "tr": "whip",
+     "head": {
+      "text": "COMMENT\nPLUGINS",
+      "size": 150
+     },
+     "headY": 180
     }
    }
   }

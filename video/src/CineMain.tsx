@@ -27,8 +27,8 @@ const SHADE = 'brightness(0.72) sepia(0.22) saturate(0.9) contrast(1.05)';  // p
 type Plate = {scr?: [number, number, number, number]; tv?: boolean; note?: [number, number]; lean?: {x: number; y: number; h: number; flip?: boolean}};
 const PLATES: Record<string, Plate> = {
   room1: {note: [380, 470], scr: [0.4407, 0.5523, 0.2318, 0.1134], lean: {x: 770, y: 1090, h: 300, flip: true}},
-  room2: {note: [600, 540], scr: [0.385, 0.54, 0.31, 0.12], tv: true, lean: {x: 790, y: 1030, h: 290, flip: true}},
-  room1b: {note: [520, 320], scr: [0.51, 0.509, 0.326, 0.152], lean: {x: 300, y: 1050, h: 300}},
+  room2: {note: [600, 540], scr: [0.385, 0.54, 0.31, 0.12], tv: true, lean: {x: 730, y: 1030, h: 290, flip: true}},
+  room1b: {note: [520, 400], scr: [0.51, 0.509, 0.326, 0.152], lean: {x: 300, y: 1050, h: 300}},
   crt_close: {note: [790, 690], scr: [0.227, 0.414, 0.573, 0.24], lean: {x: 840, y: 1150, h: 380, flip: true}},
   tv_close: {note: [240, 760], scr: [0.312, 0.443, 0.4, 0.167], tv: true, lean: {x: 40, y: 1090, h: 340}},
   laptop_top: {note: [770, 1080], scr: [0.234, 0.323, 0.547, 0.116]},
@@ -226,7 +226,7 @@ const TextFx: React.FC<{t: any; f: number; at: number}> = ({t, f, at}) => {
 // ------------------------------------------------------------------ Scrappy (leaning, in the room light)
 const Scrappy: React.FC<{p: any; f: number; from: number; amp: number; def?: Plate['lean']; side: 'left' | 'right'}> = ({p, f, from, amp, def, side}) => {
   if (p.scrappy === false) return null;
-  const o = {...(def || (side === 'left' ? {x: 20, y: 1480, h: 400} : {x: 760, y: 1480, h: 400, flip: true})), ...(p.scrappy || {})};
+  const o = {...(def || (side === 'left' ? {x: 40, y: 1450, h: 380} : {x: 720, y: 1450, h: 380, flip: true})), ...(p.scrappy || {})};
   const poses: [number, string][] = p.poses || [[0, 'chill']];
   let pose = poses[0][1], since = poses[0][0];
   for (const [t, ps] of poses) if (f >= from + t) { pose = ps; since = from + t; }
@@ -252,7 +252,7 @@ const Cam: React.FC<{f: number; from: number; to: number; fx: number; fy: number
   f, from, to, fx, fy, push = 0.18, dive, children,
 }) => {
   const pk = k(f, from, to, Easing.bezier(0.3, 0, 0.7, 1));
-  const dk = dive ? k(f, to - 12, to + 2, Easing.in(Easing.cubic)) : 0;
+  const dk = dive ? k(f, to - 22, to - 1, Easing.in(Easing.quad)) : 0;
   return (
     <AbsoluteFill style={{transform: `scale(${1.04 + pk * push + dk * 3.4})`, transformOrigin: `${fx * 100}% ${fy * 100}%`,
       filter: dk > 0.2 ? `blur(${dk * 8}px)` : undefined}}>{children}</AbsoluteFill>
@@ -264,7 +264,7 @@ const ScreenContent: React.FC<{show: any; f: number; from: number; tv?: boolean}
     {show?.img ? <Img src={K(show.img)} style={{width: '100%', height: '100%', objectFit: 'cover',
       filter: 'saturate(0.9) contrast(1.05)', transform: `scale(${1.06 + (f - from) * 0.001})`}} /> : null}
     {show?.type ? <div style={{position: 'absolute', left: '8%', top: '22%', right: '6%'}}>
-      <Typed text={show.type} f={f} at={from + (show.delay ?? 6)} size={show.size ?? 40} color={tv ? '#ffe9b0' : '#8dffc4'} /></div> : null}
+      <Typed text={show.type} f={f} at={from + (show.delay ?? 6)} size={show.size ?? 50} color={tv ? '#ffe9b0' : '#8dffc4'} /></div> : null}
     <CrtTex f={f} o={show?.img ? 0.7 : 1} />
   </>
 );
@@ -292,10 +292,10 @@ const ScreenScene: React.FC<SP> = ({p, f, from, to, at, amp, side}) => {
         <Dust f={f} />
       </Cam>
       {p.head ? <div style={{position: 'absolute', top: p.headY ?? 260, left: 60, right: 60, zIndex: 10}}>
-        <TextFx t={typeof p.head === 'string' ? {text: p.head} : p.head} f={f} at={from + 2} /></div> : null}
+        <TextFx t={typeof p.head === 'string' ? {text: p.head} : p.head} f={f} at={from - 8} /></div> : null}
       {p.note ? <Sfx at={(p.note.word ? at(p.note.word, from + 10) : from + 10)} src="pop" vol={0.35} /> : null}
       {p.show?.type ? <><Sfx at={from + 6} src="type" vol={0.28} /><Sfx at={from + 22} src="type" vol={0.28} /></> : null}
-      {p.dive ? <Sfx at={to - 14} src="riser" vol={0.3} /> : null}
+      {p.dive ? <Sfx at={to - 22} src="riser" vol={0.3} /> : null}
     </>
   );
 };
