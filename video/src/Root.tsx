@@ -2,6 +2,7 @@ import React from 'react';
 import {Composition, Still} from 'remotion';
 import {Main} from './Main';
 import {Cover} from './Cover';
+import {CollageTest} from './Collage';
 import {ConceptA, ConceptB, ConceptC} from './Concepts';
 import {H, W} from './theme';
 import type {VideoProps} from './types';
@@ -23,6 +24,7 @@ export const Root: React.FC = () => (
     <Composition id="ConceptA" component={ConceptA} width={W} height={H} fps={30} durationInFrames={180} />
     <Composition id="ConceptB" component={ConceptB} width={W} height={H} fps={30} durationInFrames={180} />
     <Composition id="ConceptC" component={ConceptC} width={W} height={H} fps={30} durationInFrames={180} />
+    <Composition id="CollageTest" component={CollageTest} width={W} height={H} fps={30} durationInFrames={300} />
     <Still id="Cover" component={Cover as any} width={W} height={H} defaultProps={demo} />
   </>
 );
