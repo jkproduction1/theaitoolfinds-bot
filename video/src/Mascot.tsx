@@ -5,20 +5,23 @@ import type {Scene, VideoProps} from './types';
 
 // "Scrappy" the raccoon: paper-cutout sticker that pops into each scene in a different
 // spot, floats, reacts with a pose that fits the scene, and bounces to the voiceover.
-type Pose = 'idle' | 'point' | 'thumb' | 'shock' | 'wave' | 'gadget';
+type Pose = 'idle' | 'point' | 'thumb' | 'shock' | 'wave' | 'chill' | 'excited' | 'talk';
 type Spot = 'bl' | 'br' | 'peekL' | 'peekR';
 
-const POSE_FOR: Record<string, Pose> = {
-  browser: 'idle', icons: 'point', checklist: 'thumb', chat: 'gadget', flow: 'point',
-  big: 'shock', compare: 'point', media: 'thumb', cta: 'wave',
+// each scene type has a few fitting poses; we rotate through them so he never repeats
+const POSES_FOR: Record<string, Pose[]> = {
+  browser: ['idle', 'chill', 'talk'], icons: ['point', 'excited'], checklist: ['thumb', 'chill'],
+  chat: ['talk', 'chill'], flow: ['point', 'talk'], big: ['shock', 'excited'],
+  compare: ['point', 'chill'], media: ['excited', 'thumb'], cta: ['wave'],
 };
 
 function plan(scene: Scene, i: number): {pose: Pose; spot: Spot} | null {
   if (scene.type === 'title' || scene.type === 'avatar') return null; // the hook stays clean
-  const pose = POSE_FOR[scene.type] ?? 'idle';
+  const opts = POSES_FOR[scene.type] ?? ['idle'];
+  const pose = opts[Math.floor(i / 2) % opts.length];
   if (pose === 'idle') return {pose, spot: i % 2 ? 'peekL' : 'peekR'};
   // pointing poses face right -> put them on the left so they point at the content
-  if (pose === 'point') return {pose, spot: 'bl'};
+  if (pose === 'point' || pose === 'talk') return {pose, spot: 'bl'};
   return {pose, spot: i % 2 ? 'br' : 'bl'};
 }
 
