@@ -1,10 +1,8 @@
-
-[main] trying: FLUX 3 Klein (https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein)  angle=free-alternative
-[main] researching https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein
-[main] using hand-written storyboard jobs/flux3-klein-v4.json
-[tts] ElevenLabs voice
-[main] voiceover 23.9s, 81 words
-[motion] 6 real assets
-[motion] scenes: title(4.0s) > chat(1.9s) > counter(3.6s) > browser(2.9s) > gallery(3.0s) > hero(3.2s) > strike(3.3s) > cta(3.1s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_0252_flux-3-klein
-[telegram] sent 2026-10-20_0252_flux-3-klein for approval
+[discover] github_trending: 24
+[discover] github_search: 54
+[discover] hf_spaces: 60
+[discover] reddit r/StableDiffusion: HTTP 403
+[discover] reddit: 0
+[discover] hackernews: 23
+[discover] 0 from queue, 136 candidates total
+[main] top picks: blender-ai-mcp-addon 8 wow-demo | oil-ui 8 time-saver | MOSS-Image 8 free-alternative | claude-plugins-official 8 trending-repo | Qwen-Image-2.1-Turbo 7 wow-demo | solid-glass 7 free-alternative | BFS Best Face Swap 7 wow-demo | ai-job-search 7 time-saver
