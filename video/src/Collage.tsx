@@ -231,7 +231,7 @@ export const CollageTest: React.FC = () => {
       </AbsoluteFill>
       <Audio src={staticFile('kit/test/voice.mp3')} />
       {/* music bed: starts on the track's hook, ducks under the voice, fades in/out */}
-      <Audio src={staticFile('music/t1.mp3')} startFrom={Math.round(14.63 * 30)}
+      <Audio src={staticFile('music/t3.mp3')} startFrom={Math.round(139.78 * 30)}
         volume={(fr) => (talking(fr) ? 0.045 : 0.1) * Math.min(1, fr / 8) * Math.min(1, (300 - fr) / 20)} />
     </AbsoluteFill>
   );
