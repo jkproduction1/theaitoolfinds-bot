@@ -1,0 +1,20 @@
+{
+ "t1": {
+  "file": "t1.mp3",
+  "mood": "energetic, hype, fast cuts",
+  "use": "wow news, big launches, 'this shouldn't be free'",
+  "hook_start": 14.63
+ },
+ "t2": {
+  "file": "t2.mp3",
+  "mood": "chill, lo-fi, warm",
+  "use": "productivity, calm tips, explainers",
+  "hook_start": 86.31
+ },
+ "t3": {
+  "file": "t3.mp3",
+  "mood": "dark, rebel, attitude",
+  "use": "'big companies hate this', open-source vs paid, disruption",
+  "hook_start": 139.78
+ }
+}
