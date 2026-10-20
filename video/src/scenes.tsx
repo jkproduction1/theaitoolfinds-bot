@@ -489,7 +489,7 @@ export const Gallery: React.FC<SP> = ({p, v, dur}) => {
   const pos = n === 1 ? [[0, 0, 0]] : n === 2 ? [[-170, -90, -6], [170, 110, 5]]
     : n === 3 ? [[-230, -200, -7], [220, -60, 6], [-40, 230, -2]]
     : [[-220, -250, -6], [220, -210, 5], [-210, 210, 4], [230, 250, -5]];
-  const w = n === 1 ? 880 : n === 2 ? 560 : 450;
+  const w = n === 1 ? 860 : n === 2 ? 540 : 420;
   const drift = interpolate(f, [0, dur], [0, 1], {extrapolateRight: 'clamp'});
   return (
     <Stage>
@@ -501,7 +501,7 @@ export const Gallery: React.FC<SP> = ({p, v, dur}) => {
           const [x, y, r] = pos[i];
           return (
             <div key={i} style={{position: 'absolute', left: W / 2 + x - w / 2,
-              top: 500 + y - (w * Math.min(1.2, a.h / a.w)) / 2,
+              top: 440 + y * 0.8 - (w * Math.min(1.2, a.h / a.w)) / 2,
               transform: `translateY(${(1 - s) * 700}px) rotate(${r * s + (1 - s) * 20 + drift * (i % 2 ? 1 : -1)}deg) ` +
                 `scale(${0.8 + 0.2 * s})`, opacity: Math.min(1, s * 2), zIndex: i}}>
               <Sfx at={i * 6 + 3} src="whoosh" vol={0.18} len={14} />
@@ -563,7 +563,7 @@ export const Strike: React.FC<SP> = ({p, dur}) => {
           <div style={{fontWeight: 800, fontSize: 92, color: tone.fg, letterSpacing: -3,
             textAlign: 'center', maxWidth: 940, lineHeight: 1.05}}>{p.old}</div>
           <div style={{position: 'absolute', left: -20, top: '52%', height: 14, borderRadius: 7,
-            width: `calc(${line * 100}% + 40px)`, background: C.accent,
+            width: `calc(${line} * (100% + 40px))`, background: C.accent, opacity: line > 0 ? 1 : 0,
             transform: 'rotate(-3deg)'}} />
         </div>
         <div style={{background: C.yellow, color: C.ink, fontWeight: 900, fontSize: 110,
