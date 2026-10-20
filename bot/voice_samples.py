@@ -16,3 +16,10 @@ for v in ["am_michael"]:
     tts._kokoro(LINE, out / f"{v}.mp3")
     (out / f"{v}.wav").unlink(missing_ok=True)
     print("done", v)
+
+if os.getenv("ELEVENLABS_API_KEY"):
+    try:
+        tts._elevenlabs(LINE, out / "elevenlabs_test.mp3")
+        print("ELEVENLABS OK")
+    except Exception as e:
+        print("ELEVENLABS FAILED:", str(e)[:300])
