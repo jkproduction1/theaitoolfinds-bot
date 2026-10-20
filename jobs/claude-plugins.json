@@ -1,0 +1,232 @@
+{
+ "url": "https://github.com/anthropics/claude-plugins-official",
+ "name": "Claude Code Plugins",
+ "tool_name": "Plugins",
+ "category": "ai agents",
+ "style": "cine",
+ "hold": true,
+ "music": "t1",
+ "sentences": [
+  {
+   "text": "Claude Code has an official plugin store, with over 300 plugins.",
+   "scene": {
+    "kind": "screen",
+    "props": {
+     "plate": "crt_close",
+     "show": {
+      "type": "> /plugin",
+      "size": 64,
+      "delay": 2
+     },
+     "head": {
+      "text": "300+\nPLUGINS",
+      "size": 190
+     },
+     "headY": 200,
+     "push": 0.25,
+     "dive": true,
+     "scrappy": false
+    }
+   }
+  },
+  {
+   "text": "Figma, Canva, Adobe, GitHub. They all plug right in.",
+   "scene": {
+    "kind": "cork",
+    "props": {
+     "plate": "cork_close",
+     "items": [
+      {
+       "type": "sticky",
+       "text": "Figma",
+       "word": "^Figma",
+       "pos": [
+        110,
+        260,
+        -5
+       ],
+       "w": 250
+      },
+      {
+       "type": "sticky",
+       "text": "Canva",
+       "word": "^Canva",
+       "pos": [
+        620,
+        320,
+        4
+       ],
+       "w": 250
+      },
+      {
+       "type": "sticky",
+       "text": "Adobe",
+       "word": "^Adobe",
+       "pos": [
+        150,
+        760,
+        3
+       ],
+       "w": 250
+      },
+      {
+       "type": "sticky",
+       "text": "GitHub",
+       "word": "^GitHub",
+       "pos": [
+        640,
+        820,
+        -4
+       ],
+       "w": 250
+      }
+     ],
+     "poses": [
+      [
+       0,
+       "excited"
+      ]
+     ],
+     "side": "right"
+    }
+   }
+  },
+  {
+   "text": "One of them turns code into videos, and it's made by HeyGen.",
+   "scene": {
+    "kind": "screen",
+    "props": {
+     "plate": "room1b",
+     "show": {
+      "type": "> hyperframes\n  code -> video",
+      "size": 34
+     },
+     "note": {
+      "text": "by\nHeyGen",
+      "word": "^HeyGen"
+     },
+     "poses": [
+      [
+       0,
+       "shock"
+      ],
+      [
+       40,
+       "chill"
+      ]
+     ],
+     "tr": "drop"
+    }
+   }
+  },
+  {
+   "text": "Installing one takes a single command.",
+   "scene": {
+    "kind": "title",
+    "props": {
+     "lines": [
+      "ONE",
+      "COMMAND"
+     ],
+     "size": 190,
+     "sticker": "/plugin install",
+     "sx": 90,
+     "bg": "keyboard_close.jpg",
+     "bgO": 0.55,
+     "bgBlur": 3,
+     "glow": "255,190,110",
+     "tr": "whip"
+    }
+   }
+  },
+  {
+   "text": "The plugins are free. You just need Claude Code.",
+   "scene": {
+    "kind": "flat",
+    "props": {
+     "plate": "desk_top",
+     "items": [
+      {
+       "type": "card",
+       "text": "plugins: FREE\nneeds: Claude Code",
+       "pos": [
+        110,
+        330,
+        -4
+       ],
+       "w": 680
+      },
+      {
+       "type": "prop",
+       "src": "p_floppy.png",
+       "pos": [
+        620,
+        880,
+        14
+       ],
+       "w": 300
+      },
+      {
+       "type": "prop",
+       "src": "p_mug.png",
+       "pos": [
+        140,
+        930,
+        0
+       ],
+       "w": 290
+      }
+     ],
+     "poses": [
+      [
+       0,
+       "thumb"
+      ]
+     ],
+     "side": "right",
+     "tr": "zoom"
+    }
+   }
+  },
+  {
+   "text": "Only install ones you trust. Comment PLUGINS and I'll send you the link.",
+   "scene": {
+    "kind": "screen",
+    "props": {
+     "plate": "room2",
+     "show": {
+      "type": "> comment\n  PLUGINS",
+      "size": 36
+     },
+     "note": {
+      "text": "trust\nfirst!"
+     },
+     "poses": [
+      [
+       0,
+       "talk"
+      ],
+      [
+       50,
+       "wave"
+      ]
+     ],
+     "side": "left",
+     "tr": "whip"
+    }
+   }
+  }
+ ],
+ "caption": "Claude Code has an official plugin store with 300+ plugins \ud83d\udd0c\n\nFigma, Canva, Adobe, GitHub and more plug right in, and one by HeyGen turns code into videos. Install with one command: /plugin install. Plugins are free, you just need Claude Code. Only install ones you trust, Anthropic can't check third-party plugins.\n\nComment PLUGINS and I'll DM you the link.",
+ "hashtags": [
+  "#claude",
+  "#claudecode",
+  "#aitools",
+  "#ai"
+ ],
+ "cover": {
+  "line1": "300+ Free",
+  "line2": "Claude Plugins"
+ },
+ "summary_cs": "Ofici\u00e1ln\u00ed obchod s pluginy pro Claude Code (315 plugin\u016f: Figma, Canva, Adobe, GitHub, HyperFrames od HeyGenu). Instalace jedn\u00edm p\u0159\u00edkazem, pluginy zdarma, pot\u0159eba Claude Code."
+}
