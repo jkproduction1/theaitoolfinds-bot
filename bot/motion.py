@@ -195,9 +195,26 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
         shutil.copy(r["path"], JOB / f"rec{i}.mp4")
         recs.append({"src": f"job/rec{i}.mp4", "w": r["w"], "h": r["h"], "dur": r["dur"],
                      "events": r["events"]})
+        if r.get("result"):  # the generated result as its own image (hero / hook / cover)
+            im2 = Image.open(r["result"]).convert("RGB")
+            im2.save(JOB / f"rec{i}_result.jpg", quality=94)
+            assets.append({"src": f"job/rec{i}_result.jpg", "kind": "image", "w": im2.width,
+                           "h": im2.height, "label": "Made with " + sb["tool_name"]})
+            recs[-1]["asset"] = len(assets) - 1
+            cover_img = f"job/rec{i}_result.jpg"
+            media = media or assets[-1]
 
     total = voice_len + config.TAIL_SECONDS
     scenes = _scenes(sb, words, total)
+    for sc in scenes:  # {"rec_result": i} -> the cropped result image of recording i
+        rr = sc["props"].get("rec_result")
+        if rr is not None:
+            r = recs[rr] if rr < len(recs) else None
+            if r and r.get("asset") is not None:
+                sc["props"]["asset"] = r["asset"]
+            elif sc["type"] == "hero":
+                sc["type"] = "screen"
+                sc["props"] = {"rec": rr, "part": "reveal", **sc["props"]}
     for sc in scenes:  # "part" of a recording -> exact seconds
         if sc["type"] != "screen":
             continue

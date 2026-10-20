@@ -587,14 +587,14 @@ export const SceneFont = FONT;
 // Plays a real browser session with the tool. The camera glides like Screen Studio:
 // zooms in on the cursor when it types/clicks, pulls back while loading, then pushes
 // in on the result. Clicks + typing get sound.
-type Ev = {t: number; kind: string; x: number; y: number};
+type Ev = {t: number; kind: string; x: number; y: number; bw?: number; bh?: number};
 
 const camKeys = (ev: Ev[]) => {
   const k: {t: number; z: number; x: number; y: number}[] = [{t: 0, z: 1.0, x: 0.5, y: 0.5}];
   for (const e of ev) {
     if (['move', 'click', 'type_start', 'type_end', 'upload'].includes(e.kind)) k.push({t: e.t, z: 1.75, x: e.x, y: e.y});
     else if (e.kind === 'wait_start') k.push({t: e.t + 0.25, z: 1.0, x: 0.5, y: 0.5});
-    else if (e.kind === 'reveal') k.push({t: e.t, z: 1.45, x: e.x, y: e.y});
+    else if (e.kind === 'reveal') k.push({t: e.t, z: Math.max(1.3, Math.min(2.6, 0.9 / Math.max(e.bw || 0.5, e.bh || 0.5))), x: e.x, y: e.y});
   }
   return k;
 };

@@ -172,7 +172,7 @@ def run(url: str, steps: list, out_dir: Path, name="rec0") -> dict:
                         .filter(i => i.naturalWidth >= 300 && i.getBoundingClientRect().width > 150);
                         if (big.length <= base) return null;
                         const b = big[big.length - 1].getBoundingClientRect();
-                        return [b.x + b.width / 2, b.y + b.height / 2]; }"""
+                        return [b.x + b.width / 2, b.y + b.height / 2, b.x, b.y, b.width, b.height]; }"""
                     base = st.get("_base", 0)
                     end = time.time() + float(st.get("timeout", 150))
                     hit = None
@@ -184,7 +184,14 @@ def run(url: str, steps: list, out_dir: Path, name="rec0") -> dict:
                         raise RuntimeError("no result image appeared")
                     page.wait_for_timeout(int(st.get("settle", 1.5) * 1000))
                     r.log("wait_end")
-                    r.log("reveal", hit[0], hit[1])
+                    r.log("reveal", hit[0], hit[1], bw=round(hit[4] / VW, 4), bh=round(hit[5] / VH, 4))
+                    try:  # clean crop of the result itself -> used as a hero image / hook
+                        page.mouse.move(VW - 5, VH - 5)
+                        page.screenshot(path=str(out_dir / f"{name}_result.png"),
+                                        clip={"x": hit[2], "y": hit[3], "width": hit[4], "height": hit[5]})
+                        page.mouse.move(r.x, r.y)
+                    except Exception as e:
+                        print(f"[record] result crop failed: {e}")
                 elif "wait_for" in st:
                     r.log("wait_start")
                     _loc(page, st["wait_for"]).wait_for(state="visible",
@@ -273,7 +280,9 @@ def _finish(webm: Path, ev: list, out_dir: Path, name: str) -> dict:
                         "-c:v", "libx264", "-crf", "18", "-pix_fmt", "yuv420p", str(mp4)], check=True)
     dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of",
                                 "default=nw=1:nk=1", str(mp4)], capture_output=True, text=True).stdout)
-    meta = {"path": str(mp4), "w": VW, "h": VH, "dur": round(dur, 3), "events": ev}
+    res = out_dir / f"{name}_result.png"
+    meta = {"path": str(mp4), "w": VW, "h": VH, "dur": round(dur, 3), "events": ev,
+            "result": str(res) if res.exists() else None}
     (out_dir / f"{name}.json").write_text(json.dumps(meta, indent=1))
     print(f"[record] {name}: {dur:.1f}s, {len(ev)} events, squeezed {len(cuts)} waits")
     return meta
