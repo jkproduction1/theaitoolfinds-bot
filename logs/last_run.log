@@ -1,11 +1,9 @@
-
-[main] trying: ArtCraft cine test (https://getartcraft.com/apps)  angle=wow-demo
-[main] researching https://getartcraft.com/apps
-[media] using image 1200x630 from https://getartcraft.com/images/apps/og.jpg
-[main] using hand-written storyboard jobs/artcraft-cine.json
-[tts] ElevenLabs voice
-[main] voiceover 22.0s, 62 words
-[motion] 0 real assets
-[motion] collage: title(3.4s) > flat(3.5s) > screen(4.6s) > title(3.4s) > cork(3.0s) > screen(5.1s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_1834_artcraft-cine-test
-[main] HOLD 2026-10-20_1834_artcraft-cine-test (not sent to Telegram yet)
+[discover] github_trending: 21
+[discover] github_search: 53
+[discover] hf_spaces: 60
+[discover] reddit r/StableDiffusion: HTTP 403
+[discover] reddit: 0
+[discover] hackernews: 26
+[discover] 0 from queue, 139 candidates total
+[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[main] top picks: claude-plugins-official 9 trending-repo | blender-ai-mcp-addon 9 wow-demo | coop-anything 8 wow-demo | ponytail 8 time-saver | openfilm 8 wow-demo | ai-job-search 8 time-saver | context-mode 8 money-saver | security-audit-skill 7 trending-repo

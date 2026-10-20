@@ -1,51 +1,51 @@
 {
   "date": "2026-10-20",
-  "category": "design",
+  "category": "coding",
   "items": [
-    {
-      "name": "blender-ai-mcp-addon",
-      "url": "https://github.com/LiCinCan/blender-ai-mcp-addon",
-      "desc": "AI assistant and MCP server for Blender: visual chat, scene tools, multi-agent workflows. Works with OpenAI, ChatGPT, Claude, Gemini, Ollama, OpenCode. Blender AI addon and plugin, copilot for 3D, bpy Python scripting, MCP integration.",
-      "source": "gh-search",
-      "angle": "wow-demo",
-      "score": 8.0,
-      "why": "AI asistent a MCP server ovl\u00e1daj\u00edc\u00ed Blender hlasem a prompty pro 3D design\u00e9ry."
-    },
-    {
-      "name": "oil-ui",
-      "url": "https://github.com/oil-oil/oil-ui",
-      "desc": "UI design skill for Claude Code, Codex and other AI agents: explore distinct directions, compare them side by side, refine against real screenshots. \u7ed9 AI Agent \u7528\u7684 UI \u8bbe\u8ba1 Skill\u3002",
-      "source": "gh-search",
-      "angle": "time-saver",
-      "score": 8.0,
-      "why": "Skill pro Claude Code, kter\u00fd generuje varianty UI a porovn\u00e1v\u00e1 je vedle sebe."
-    },
-    {
-      "name": "MOSS-Image",
-      "url": "https://github.com/OpenMOSS/MOSS-Image",
-      "desc": "Official repository for MOSS-Image, a 5B-parameter base DiT model with high-quality text rendering, layout generation, and efficient fine-tuning.",
-      "source": "gh-search",
-      "angle": "free-alternative",
-      "score": 8.0,
-      "why": "Nov\u00fd 5B open-source gener\u00e1tor obr\u00e1zk\u016f s perfektn\u00edm vykreslov\u00e1n\u00edm typografie a layout\u016f."
-    },
     {
       "name": "claude-plugins-official",
       "url": "https://github.com/anthropics/claude-plugins-official",
       "desc": "Star                    anthropics /   claude-plugins-official      Official, Anthropic-managed directory of high quality Claude Code Plugins.",
       "source": "gh-trending",
       "angle": "trending-repo",
-      "score": 8.0,
-      "why": "Ofici\u00e1ln\u00ed repozit\u00e1\u0159 ov\u011b\u0159en\u00fdch plugin\u016f a roz\u0161\u00ed\u0159en\u00ed pro Claude Code p\u0159\u00edmo od Anthropicu."
+      "score": 9.0,
+      "why": "Ofici\u00e1ln\u00ed repozit\u00e1\u0159 Anthropicu s pluginy pro Claude Code, naprosto z\u00e1sadn\u00ed pro vibe coding."
     },
     {
-      "name": "Qwen-Image-2.1-Turbo",
-      "url": "https://huggingface.co/spaces/hugging-apps/qwen-qwen-image-2-1-turbo",
-      "desc": "8-step text-to-image and editing with Qwen-Image-2.1-Turbo",
-      "source": "hf-spaces",
+      "name": "blender-ai-mcp-addon",
+      "url": "https://github.com/LiCinCan/blender-ai-mcp-addon",
+      "desc": "AI assistant and MCP server for Blender: visual chat, scene tools, multi-agent workflows. Works with OpenAI, ChatGPT, Claude, Gemini, Ollama, OpenCode. Blender AI addon and plugin, copilot for 3D, bpy Python scripting, MCP integration.",
+      "source": "gh-search",
       "angle": "wow-demo",
-      "score": 7.0,
-      "why": "Extr\u00e9mn\u011b rychl\u00e9 generov\u00e1n\u00ed i \u00fapravy obr\u00e1zk\u016f v osmi kroc\u00edch p\u0159\u00edmo v prohl\u00ed\u017ee\u010di zdarma."
+      "score": 9.0,
+      "why": "MCP server propojuje Claude i ChatGPT p\u0159\u00edmo s Blenderem pro automatick\u00e9 3D modelov\u00e1n\u00ed."
+    },
+    {
+      "name": "coop-anything",
+      "url": "https://github.com/cranebeaker/coop-anything",
+      "desc": "Co-op Anything: point your AI agent at any single-player game and play it with friends (online and/or splitscreen!). MCP server and playbook to let you reverse engineer, fix, test, ship and share what it learns.",
+      "source": "gh-search",
+      "angle": "wow-demo",
+      "score": 8.0,
+      "why": "Geni\u00e1ln\u00ed MCP server, kter\u00fd pomoc\u00ed AI agenta p\u0159ed\u011bl\u00e1 jakoukoliv singleplayer hru na kooperaci."
+    },
+    {
+      "name": "ponytail",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "desc": "Sponsor                           Star                    DietrichGebert /   ponytail      Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "source": "gh-trending",
+      "angle": "time-saver",
+      "score": 8.0,
+      "why": "Nau\u010d\u00ed k\u00f3dovac\u00ed AI agenty myslet jako l\u00edn\u00fd senior dev a zabr\u00e1n\u00ed overengineeringu."
+    },
+    {
+      "name": "openfilm",
+      "url": "https://github.com/openfilm/openfilm",
+      "desc": "The open source AI video agent: turns any coding agent into a video agent, with an editor to change anything it makes.",
+      "source": "gh-search",
+      "angle": "wow-demo",
+      "score": 8.0,
+      "why": "Prom\u011bn\u00ed k\u00f3dovac\u00ed agenty v plnohodnotn\u00fd video editor generuj\u00edc\u00ed hotov\u00e1 videa podle zad\u00e1n\u00ed."
     }
   ],
   "picked": []
