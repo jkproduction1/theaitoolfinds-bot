@@ -118,5 +118,11 @@
     "domain": "getartcraft.com",
     "date": "2026-10-20_1834",
     "source": "manual"
+  },
+  {
+    "name": "Plugins",
+    "domain": "github.com/anthropics/claude-plugins-official",
+    "date": "2026-10-20_1924",
+    "source": "gh-trending"
   }
 ]
