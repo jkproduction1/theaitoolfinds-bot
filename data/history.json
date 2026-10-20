@@ -82,5 +82,11 @@
     "domain": "huggingface.co/spaces/black-forest-labs/flux-3-image-klein",
     "date": "2026-10-20_0252",
     "source": "hf-spaces"
+  },
+  {
+    "name": "FLUX 3 Klein",
+    "domain": "huggingface.co/spaces/black-forest-labs/flux-3-image-klein",
+    "date": "2026-10-20_1219",
+    "source": "manual"
   }
 ]

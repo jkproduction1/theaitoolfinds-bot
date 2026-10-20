@@ -1,1 +1,11 @@
-[record] rec0: 15.0s, 10 events, squeezed 1 waits
+
+[main] trying: FLUX 3 Klein (https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein)  angle=wow-demo
+[main] researching https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein
+[main] using hand-written storyboard jobs/flux3-klein-v5.json
+[record] rec0: 18.0s, 16 events, squeezed 1 waits
+[tts] ElevenLabs voice
+[main] voiceover 20.8s, 73 words
+[motion] 3 real assets
+[motion] scenes: screen(4.5s) > browser(3.0s) > screen(3.5s) > screen(3.0s) > gallery(2.6s) > strike(2.3s) > cta(3.1s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_1219_flux-3-klein
+[telegram] sent 2026-10-20_1219_flux-3-klein for approval
