@@ -81,7 +81,7 @@ const Captions: React.FC<{words: Word[]; dark: boolean}> = ({words, dark}) => {
   const pop = spring({frame: f - Math.round(ch[0].s * fps), fps,
     config: {damping: 12, stiffness: 220}});
   return (
-    <div style={{position: 'absolute', top: 1370, left: 120, width: W - 240, display: 'flex',
+    <div style={{position: 'absolute', top: 1300, left: 120, width: W - 240, display: 'flex',
       flexWrap: 'wrap', justifyContent: 'center', gap: 18,
       transform: `scale(${0.85 + 0.15 * pop})`}}>
       {ch.map((w, i) => {

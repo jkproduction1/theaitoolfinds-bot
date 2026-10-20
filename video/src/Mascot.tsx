@@ -42,12 +42,12 @@ const Raccoon: React.FC<{pose: Pose; spot: Spot; dur: number; v: VideoProps; fro
   const squash = 1 + amp * 0.035;
 
   const peek = spot === 'peekL' || spot === 'peekR';
-  const h = peek ? 520 : 400;
+  const h = peek ? 680 : 580;
   const left = spot === 'bl' || spot === 'peekL';
   const flip = left ? 1 : -1;  // mirror on the right side so the gesture faces the content
-  const baseX = left ? (peek ? -40 : 10) : undefined;
-  const baseR = !left ? (peek ? -40 : 10) : undefined;
-  const bottom = peek ? -250 : 20;   // peeking: only the top half shows above the edge
+  const baseX = left ? (peek ? -60 : -30) : undefined;
+  const baseR = !left ? (peek ? -60 : -30) : undefined;
+  const bottom = peek ? -330 : -90;   // feet below the frame edge; peeking: only the head shows
   const y = (1 - enter) * 520 + exit * 600 - float - talk;
 
   return (
