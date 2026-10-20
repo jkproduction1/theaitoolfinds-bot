@@ -36,5 +36,75 @@
    0.9883,
    0.9935
   ]
+ },
+ "mat_top": {
+  "file": "mat_top.jpg",
+  "kind": "background",
+  "tags": [
+   "topdown",
+   "mat",
+   "grid",
+   "night"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "desk_top": {
+  "file": "desk_top.jpg",
+  "kind": "background",
+  "tags": [
+   "topdown",
+   "desk",
+   "wood",
+   "night"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "cork_close": {
+  "file": "cork_close.jpg",
+  "kind": "background",
+  "tags": [
+   "cork",
+   "front",
+   "night"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "crt_close": {
+  "file": "crt_close.jpg",
+  "kind": "background",
+  "tags": [
+   "crt",
+   "front",
+   "night"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "room1b": {
+  "file": "room1b.jpg",
+  "kind": "background",
+  "tags": [
+   "room",
+   "night",
+   "crt",
+   "cork"
+  ],
+  "w": 768,
+  "h": 1376
+ },
+ "blinds_close": {
+  "file": "blinds_close.jpg",
+  "kind": "background",
+  "tags": [
+   "window",
+   "blinds",
+   "night",
+   "transition"
+  ],
+  "w": 768,
+  "h": 1376
  }
 }
