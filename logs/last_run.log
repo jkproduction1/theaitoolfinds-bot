@@ -1,11 +1,2 @@
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/kit.py", line 85, in <module>
-    main(sys.argv[1])
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/kit.py", line 78, in main
-    entry["screen"] = screen_rect(im)
-                      ^^^^^^^^^^^^^^^
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/kit.py", line 39, in screen_rect
-    import cv2
-ModuleNotFoundError: No module named 'cv2'
+kit: room1 [np.float64(0.0052), np.float64(0.0029), np.float64(0.9883), np.float64(0.9935)]
+kit: room2 [np.float64(0.0052), np.float64(0.0029), np.float64(0.9883), np.float64(0.9935)]
