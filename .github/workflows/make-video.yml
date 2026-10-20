@@ -88,6 +88,7 @@ jobs:
                elif [ -n "$IN_SB" ]; then ARGS="--storyboard $IN_SB"
                elif [ -n "$IN_URL" ]; then ARGS="--url $IN_URL"; else ARGS="--count $IN_COUNT"; fi ;;
           esac
+          if [ "$IN_MODE" = "record" ]; then python -u -m bot.record "$IN_SB" 2>&1 | tee logs/last_run.log; rm -rf out/rec_test/*_raw; exit 0; fi
           if [ "$IN_MODE" = "probe" ]; then python -u -m bot.record --probe "$IN_URL" 2>&1 | tee logs/last_run.log; exit 0; fi
           python -u -m bot.main $ARGS 2>&1 | tee logs/last_run.log
 
