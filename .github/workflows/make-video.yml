@@ -19,7 +19,7 @@ on:
         description: "How many videos"
         default: "1"
       mode:
-        description: "video | picklist"
+        description: "video | picklist | probe"
         default: "video"
 
 permissions:
@@ -88,6 +88,7 @@ jobs:
                elif [ -n "$IN_SB" ]; then ARGS="--storyboard $IN_SB"
                elif [ -n "$IN_URL" ]; then ARGS="--url $IN_URL"; else ARGS="--count $IN_COUNT"; fi ;;
           esac
+          if [ "$IN_MODE" = "probe" ]; then python -u -m bot.record --probe "$IN_URL" 2>&1 | tee logs/last_run.log; exit 0; fi
           python -u -m bot.main $ARGS 2>&1 | tee logs/last_run.log
 
       - name: Upload video
@@ -119,7 +120,7 @@ jobs:
           git config user.name "theaitoolfinds-bot"
           git config user.email "bot@users.noreply.github.com"
           tail -n 300 logs/last_run.log > /tmp/l.log 2>/dev/null && cp /tmp/l.log logs/last_run.log || true
-          for f in data/history.json data/queue.txt data/telegram.json data/pending.json data/picks.json data/rotation.json logs/last_run.log logs/install.log; do
+          for f in data/history.json data/queue.txt data/telegram.json data/pending.json data/picks.json data/rotation.json logs/last_run.log logs/install.log logs/probe.json logs/probe.png; do
             [ -e "$f" ] && git add -f "$f"
           done
           git diff --cached --quiet && exit 0
