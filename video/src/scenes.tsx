@@ -3,8 +3,8 @@ import {
   AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile,
   useCurrentFrame, useVideoConfig, Easing,
 } from 'remotion';
-import {C, FONT, Icon, W} from './theme';
-import type {VideoProps} from './types';
+import {C, FONT, Icon, W, useTone} from './theme';
+import type {Asset, VideoProps} from './types';
 
 type SP = {p: Record<string, any>; v: VideoProps; dur: number};
 
@@ -56,13 +56,14 @@ const Logo: React.FC<{v: VideoProps; size: number}> = ({v, size}) =>
   );
 
 // ---------------------------------------------------------------- TITLE (hook)
-export const Title: React.FC<SP> = ({v, dur}) => {
+export const Title: React.FC<SP> = ({p, v, dur}) => {
   // Hook: show WHAT the tool does right away (real demo or the product itself),
   // with a compact name tag above it. A text-only title loses viewers in second one.
   const f = useCurrentFrame();
   const a = useSpring(0);
   const b = useSpring(4, 15);
-  const m = v.media;
+  const tone = useTone();
+  const m = pickAsset(v, p.asset) || v.media;
   const zoom = interpolate(f, [0, dur], [1.0, 1.12], {extrapolateRight: 'clamp'});
   const cw = 940;
   let ch = 760;
@@ -77,7 +78,7 @@ export const Title: React.FC<SP> = ({v, dur}) => {
           <div style={{background: C.yellow, color: C.ink, fontWeight: 800, fontSize: 24,
             padding: '6px 16px', borderRadius: 999, alignSelf: 'flex-start',
             letterSpacing: 1}}>AI TOOL OF THE DAY</div>
-          <div style={{fontWeight: 900, fontSize: v.title.length > 16 ? 50 : 62, color: C.ink,
+          <div style={{fontWeight: 900, fontSize: v.title.length > 16 ? 50 : 62, color: tone.fg,
             letterSpacing: -2, lineHeight: 1, maxWidth: 760}}>{v.title}</div>
         </div>
       </div>
@@ -175,8 +176,9 @@ const IconTile: React.FC<{it: {icon: string; label: string}; i: number; size: nu
 
 const Heading: React.FC<{text: string}> = ({text}) => {
   const s = useSpring(0);
+  const tone = useTone();
   return (
-    <div style={{fontWeight: 900, fontSize: 64, color: C.ink, letterSpacing: -2,
+    <div style={{fontWeight: 900, fontSize: 64, color: tone.fg, letterSpacing: -2,
       transform: `translateY(${(1 - s) * 40}px)`, opacity: s, textAlign: 'center',
       maxWidth: 940}}>{text}</div>
   );
@@ -242,7 +244,12 @@ export const Chat: React.FC<SP> = ({p, v, dur}) => {
           fontWeight: 600, lineHeight: 1.25, minHeight: 50}}>
           {prompt.slice(0, typed)}<span style={{opacity: f % 16 < 8 ? 1 : 0}}>|</span>
         </div>
-        {showReply ? (
+        {showReply && pickAsset(v, p.asset) ? (
+          <div style={{alignSelf: 'flex-start', transform: `scale(${r})`, transformOrigin: 'left top'}}>
+            <AssetView a={pickAsset(v, p.asset)!} w={620} maxH={640} radius={26} zoomTo={1.06}
+              dur={dur} />
+          </div>
+        ) : showReply ? (
           <div style={{alignSelf: 'flex-start', maxWidth: 760, background: '#F2F2EF',
             borderRadius: '30px 30px 30px 8px', padding: '24px 30px', fontSize: 36,
             fontWeight: 600, color: C.ink, lineHeight: 1.25, transform: `scale(${r})`,
@@ -295,6 +302,7 @@ export const Flow: React.FC<SP> = ({p, v}) => {
 
 // ---------------------------------------------------------------- BIG stamp (FREE, 10x...)
 export const Big: React.FC<SP> = ({p}) => {
+  const tone = useTone();
   const s = useSpring(0, 9, 180);
   const t = useSpring(8);
   return (
@@ -305,7 +313,7 @@ export const Big: React.FC<SP> = ({p}) => {
           fontSize: (p.text || '').length > 6 ? 150 : 230, padding: '10px 60px',
           borderRadius: 40, transform: `scale(${s}) rotate(${-4 * s}deg)`, letterSpacing: -6,
           boxShadow: '0 30px 80px rgba(0,0,0,0.15)'}}>{p.text}</div>
-        {p.sub ? <div style={{fontWeight: 700, fontSize: 52, color: C.ink, opacity: t,
+        {p.sub ? <div style={{fontWeight: 700, fontSize: 52, color: tone.fg, opacity: t,
           transform: `translateY(${(1 - t) * 40}px)`, textAlign: 'center', maxWidth: 900}}>
           {p.sub}</div> : null}
       </div>
@@ -339,13 +347,14 @@ export const Compare: React.FC<SP> = ({p}) => {
 
 // ---------------------------------------------------------------- CTA (comment keyword)
 export const Cta: React.FC<SP> = ({v}) => {
+  const tone = useTone();
   const a = useSpring(0);
   const b = useSpring(8, 10, 170);
   const f = useCurrentFrame();
   return (
     <Stage>
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 36}}>
-        <div style={{fontWeight: 900, fontSize: 70, color: C.ink, opacity: a, letterSpacing: -2,
+        <div style={{fontWeight: 900, fontSize: 70, color: tone.fg, opacity: a, letterSpacing: -2,
           transform: `translateY(${(1 - a) * 40}px)`, textAlign: 'center'}}>Want the link?</div>
         <Card style={{padding: '30px 40px', display: 'flex', alignItems: 'center', gap: 26,
           transform: `scale(${b})`}}>
@@ -355,7 +364,7 @@ export const Cta: React.FC<SP> = ({v}) => {
             padding: '6px 26px', borderRadius: 18,
             transform: `scale(${1 + 0.04 * Math.sin(f / 4)})`}}>{v.keyword}</div>
         </Card>
-        <div style={{fontWeight: 700, fontSize: 40, color: C.muted, opacity: a}}>
+        <div style={{fontWeight: 700, fontSize: 40, color: tone.muted, opacity: a}}>
           Follow {v.handle} for daily AI tools</div>
       </div>
     </Stage>
@@ -387,7 +396,7 @@ export const Media: React.FC<SP> = ({p, v, dur}) => {
   const f = useCurrentFrame();
   const enter = useSpring(0, 15);
   const lab = useSpring(6, 11, 180);
-  const m = v.media;
+  const m = pickAsset(v, p.asset) || v.media;
   if (!m) return null;
   const maxW = 940, maxH = 1000;
   const k = Math.min(maxW / m.w, maxH / m.h);
@@ -419,9 +428,157 @@ export const Media: React.FC<SP> = ({p, v, dur}) => {
   );
 };
 
+// ================================================================ v4 scenes
+
+export const pickAsset = (v: VideoProps, i: any): Asset | null => {
+  const list = v.assets || [];
+  if (i === undefined || i === null || !list.length) return null;
+  return list[Math.max(0, Math.min(list.length - 1, Number(i) || 0))];
+};
+
+// One image/video in a rounded card, sized to its own aspect ratio, slow push-in
+const AssetView: React.FC<{a: Asset; w: number; maxH: number; radius?: number; zoomTo?: number;
+  dur: number; style?: React.CSSProperties}> = ({a, w, maxH, radius = 32, zoomTo = 1.08, dur, style}) => {
+  const f = useCurrentFrame();
+  let h = (w * a.h) / a.w;
+  let ww = w;
+  if (h > maxH) { ww = (w * maxH) / h; h = maxH; }
+  const zoom = interpolate(f, [0, Math.max(1, dur)], [1, zoomTo], {extrapolateRight: 'clamp'});
+  const st: React.CSSProperties = {width: ww, height: h, objectFit: 'cover', transform: `scale(${zoom})`};
+  return (
+    <div style={{width: ww, height: h, borderRadius: radius, overflow: 'hidden', background: '#111',
+      boxShadow: '0 40px 90px rgba(10,10,30,0.35), 0 0 0 3px rgba(255,255,255,0.9)', ...style}}>
+      {a.kind === 'video' ? <OffthreadVideo src={staticFile(a.src)} muted style={st} />
+        : <Img src={staticFile(a.src)} style={st} />}
+    </div>
+  );
+};
+
+// HERO: one real result, big, with a label sticker
+export const Hero: React.FC<SP> = ({p, v, dur}) => {
+  const a = pickAsset(v, p.asset ?? 0) || v.media;
+  const enter = useSpring(0, 13, 120);
+  const lab = useSpring(8, 10, 190);
+  if (!a) return null;
+  return (
+    <Stage>
+      <Sfx at={2} src="pop" vol={0.3} len={10} />
+      <div style={{position: 'relative', transform: `translateY(${(1 - enter) * 160}px) ` +
+        `rotate(${(1 - enter) * 6}deg) scale(${0.85 + 0.15 * enter})`, opacity: Math.min(1, enter * 1.5)}}>
+        <AssetView a={a} w={920} maxH={1020} dur={dur} />
+        {(p.label || a.label) ? (
+          <div style={{position: 'absolute', bottom: -34, right: 30,
+            transform: `scale(${lab}) rotate(3deg)`, background: C.yellow, color: C.ink,
+            fontWeight: 900, fontSize: 40, padding: '12px 26px', borderRadius: 18,
+            boxShadow: '0 14px 34px rgba(0,0,0,0.25)'}}>{p.label || a.label}</div>
+        ) : null}
+      </div>
+    </Stage>
+  );
+};
+
+// GALLERY: 2-4 real results fanned out like photos dropped on a table
+export const Gallery: React.FC<SP> = ({p, v, dur}) => {
+  const f = useCurrentFrame();
+  const idx: number[] = (p.items && p.items.length ? p.items : (v.assets || []).map((_, i) => i))
+    .slice(0, 4);
+  const list = idx.map((i) => pickAsset(v, i)).filter(Boolean) as Asset[];
+  const n = list.length;
+  const tone = useTone();
+  if (!n) return null;
+  const pos = n === 1 ? [[0, 0, 0]] : n === 2 ? [[-170, -90, -6], [170, 110, 5]]
+    : n === 3 ? [[-230, -200, -7], [220, -60, 6], [-40, 230, -2]]
+    : [[-220, -250, -6], [220, -210, 5], [-210, 210, 4], [230, 250, -5]];
+  const w = n === 1 ? 880 : n === 2 ? 560 : 450;
+  const drift = interpolate(f, [0, dur], [0, 1], {extrapolateRight: 'clamp'});
+  return (
+    <Stage>
+      {p.title ? <div style={{position: 'absolute', top: 10, width: W, textAlign: 'center',
+        fontWeight: 900, fontSize: 60, letterSpacing: -2, color: tone.fg, zIndex: 5}}>{p.title}</div> : null}
+      <div style={{position: 'relative', width: W, height: 1000, marginTop: p.title ? 80 : 0}}>
+        {list.map((a, i) => {
+          const s = spring({frame: f - i * 6, fps: 30, config: {damping: 12, stiffness: 130}});
+          const [x, y, r] = pos[i];
+          return (
+            <div key={i} style={{position: 'absolute', left: W / 2 + x - w / 2,
+              top: 500 + y - (w * Math.min(1.2, a.h / a.w)) / 2,
+              transform: `translateY(${(1 - s) * 700}px) rotate(${r * s + (1 - s) * 20 + drift * (i % 2 ? 1 : -1)}deg) ` +
+                `scale(${0.8 + 0.2 * s})`, opacity: Math.min(1, s * 2), zIndex: i}}>
+              <Sfx at={i * 6 + 3} src="whoosh" vol={0.18} len={14} />
+              <AssetView a={a} w={w} maxH={w * 1.2} radius={24} dur={dur} />
+            </div>
+          );
+        })}
+      </div>
+    </Stage>
+  );
+};
+
+// COUNTER: a number that counts up fast and lands with an impact
+export const Counter: React.FC<SP> = ({p, dur}) => {
+  const f = useCurrentFrame();
+  const tone = useTone();
+  const to = Number(p.to) || 0;
+  const land = Math.min(24, Math.floor(dur * 0.5));
+  const k = interpolate(f, [2, land], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic)});
+  const val = Number.isInteger(to) ? Math.round(to * k) : (to * k).toFixed(1);
+  const pop = spring({frame: f - land, fps: 30, config: {damping: 8, stiffness: 200}});
+  const sub = useSpring(land + 4);
+  const ticks = [];
+  for (let t = 3; t < land; t += 3) ticks.push(t);
+  return (
+    <Stage>
+      {ticks.map((t, i) => <Sfx key={i} at={t} src="tick" vol={0.22} len={4} />)}
+      <Sfx at={land} src="impact" vol={0.5} len={22} />
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10}}>
+        <div style={{fontWeight: 900, fontSize: 340, letterSpacing: -16, lineHeight: 1,
+          color: tone.fg, transform: `scale(${1 + 0.08 * pop * (1 - Math.min(1, (f - land) / 20))})`,
+          fontVariantNumeric: 'tabular-nums'}}>
+          {p.prefix || ''}{val}<span style={{color: C.yellow}}>{p.suffix || ''}</span></div>
+        <div style={{height: 22, width: 520 * k, background: C.yellow, borderRadius: 11,
+          marginTop: -10}} />
+        {p.sub ? <div style={{fontWeight: 700, fontSize: 54, color: tone.fg, marginTop: 26,
+          opacity: sub, transform: `translateY(${(1 - sub) * 30}px)`, textAlign: 'center',
+          maxWidth: 900}}>{p.sub}</div> : null}
+      </div>
+    </Stage>
+  );
+};
+
+// STRIKE: the old way gets crossed out, the new way slams in
+export const Strike: React.FC<SP> = ({p, dur}) => {
+  const f = useCurrentFrame();
+  const tone = useTone();
+  const a = useSpring(0);
+  const line = interpolate(f, [10, 20], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.quad)});
+  const b = spring({frame: f - 22, fps: 30, config: {damping: 10, stiffness: 170}});
+  return (
+    <Stage>
+      <Sfx at={10} src="whoosh" vol={0.3} len={14} />
+      <Sfx at={22} src="impact" vol={0.45} len={22} />
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 50}}>
+        <div style={{position: 'relative', opacity: a * (1 - 0.45 * line)}}>
+          <div style={{fontWeight: 800, fontSize: 92, color: tone.fg, letterSpacing: -3,
+            textAlign: 'center', maxWidth: 940, lineHeight: 1.05}}>{p.old}</div>
+          <div style={{position: 'absolute', left: -20, top: '52%', height: 14, borderRadius: 7,
+            width: `calc(${line * 100}% + 40px)`, background: C.accent,
+            transform: 'rotate(-3deg)'}} />
+        </div>
+        <div style={{background: C.yellow, color: C.ink, fontWeight: 900, fontSize: 110,
+          letterSpacing: -4, padding: '10px 44px', borderRadius: 30, textAlign: 'center',
+          maxWidth: 960, lineHeight: 1.02, transform: `scale(${b}) rotate(${-2 * b}deg)`,
+          boxShadow: '0 30px 70px rgba(0,0,0,0.25)'}}>{p.new}</div>
+      </div>
+    </Stage>
+  );
+};
+
 export const SCENES: Record<string, React.FC<SP>> = {
   title: Title, browser: Browser, icons: Icons, checklist: Checklist, chat: Chat, flow: Flow,
   big: Big, compare: Compare, cta: Cta, avatar: Avatar, media: Media,
+  hero: Hero, gallery: Gallery, counter: Counter, strike: Strike,
 };
 
 export const SceneFont = FONT;

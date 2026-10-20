@@ -1,3 +1,4 @@
+import React from 'react';
 import {staticFile} from 'remotion';
 import {icons} from 'lucide-react';
 
@@ -44,3 +45,10 @@ export const Icon: React.FC<{name?: string; size?: number; color?: string; strok
   const Cmp = (icons as Record<string, React.FC<any>>)[name || ''] || icons.Sparkles;
   return <Cmp size={size} color={color} strokeWidth={stroke} />;
 };
+
+// Text colours for the current background (light or dark scene)
+export type Tone = {fg: string; muted: string; dark: boolean};
+export const LIGHT: Tone = {fg: '#0E0E10', muted: '#6B6B73', dark: false};
+export const DARK: Tone = {fg: '#FFFFFF', muted: 'rgba(255,255,255,0.68)', dark: true};
+export const ToneCtx = React.createContext<Tone>(LIGHT);
+export const useTone = () => React.useContext(ToneCtx);

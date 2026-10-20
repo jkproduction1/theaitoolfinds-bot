@@ -3,28 +3,43 @@ import {
   AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
-import {C, FONT, fontCss, W} from './theme';
+import {C, DARK, FONT, LIGHT, ToneCtx, fontCss, W} from './theme';
 import {SCENES} from './scenes';
 import {Mascot} from './Mascot';
 import type {VideoProps, Word} from './types';
 
-const GridBg: React.FC = () => {
+// Premium animated mesh-gradient background with film grain.
+// Light scenes: warm cream with drifting yellow / peach / lilac light.
+// Dark scenes: deep navy with yellow + indigo glow. Crossfades between the two.
+const Blob: React.FC<{x: number; y: number; r: number; c: string}> = ({x, y, r, c}) => (
+  <div style={{position: 'absolute', left: x - r, top: y - r, width: r * 2, height: r * 2,
+    borderRadius: r, background: `radial-gradient(circle, ${c} 0%, rgba(0,0,0,0) 68%)`}} />
+);
+
+const MeshBg: React.FC<{darkAmt: number}> = ({darkAmt}) => {
   const f = useCurrentFrame();
-  const off = (f * 0.4) % 60;
+  const t = f / 30;
+  const sx = (a: number, sp: number, ph: number) => a * Math.sin(t * sp + ph);
   return (
-    <AbsoluteFill style={{background: C.bg}}>
-      <AbsoluteFill style={{
-        backgroundImage: `linear-gradient(${C.grid} 2px, transparent 2px), linear-gradient(90deg, ${C.grid} 2px, transparent 2px)`,
-        backgroundSize: '60px 60px', backgroundPosition: `0 ${off}px`, opacity: 0.7,
-      }} />
-      <div style={{position: 'absolute', width: 900, height: 900, borderRadius: 450,
-        left: 90 + Math.sin(f / 70) * 160, top: 420 + Math.cos(f / 90) * 140,
-        background: 'radial-gradient(circle, rgba(255,214,10,0.28) 0%, rgba(255,214,10,0) 65%)'}} />
-      <div style={{position: 'absolute', width: 700, height: 700, borderRadius: 350,
-        left: 300 + Math.cos(f / 80) * 200, top: 900 + Math.sin(f / 60) * 120,
-        background: 'radial-gradient(circle, rgba(255,106,61,0.12) 0%, rgba(255,106,61,0) 65%)'}} />
+    <AbsoluteFill style={{background: '#F6F1E7', overflow: 'hidden'}}>
+      <Blob x={200 + sx(180, 0.23, 0)} y={420 + sx(160, 0.19, 1)} r={720} c="rgba(255,206,64,0.55)" />
+      <Blob x={920 + sx(160, 0.17, 2)} y={980 + sx(200, 0.21, 0.5)} r={760} c="rgba(255,150,110,0.38)" />
+      <Blob x={300 + sx(220, 0.15, 3)} y={1600 + sx(140, 0.25, 2)} r={700} c="rgba(170,160,255,0.35)" />
+      <AbsoluteFill style={{opacity: darkAmt, background: '#0A0C1C'}}>
+        <Blob x={850 + sx(160, 0.2, 1)} y={380 + sx(150, 0.18, 0)} r={760} c="rgba(98,84,255,0.55)" />
+        <Blob x={180 + sx(200, 0.16, 2)} y={1250 + sx(180, 0.22, 1)} r={720} c="rgba(255,200,40,0.30)" />
+        <Blob x={700 + sx(140, 0.24, 0)} y={1800 + sx(120, 0.2, 3)} r={640} c="rgba(40,140,255,0.35)" />
+      </AbsoluteFill>
+      {/* film grain so gradients never look flat or banded */}
+      <AbsoluteFill style={{opacity: 0.16 + 0.06 * darkAmt, mixBlendMode: 'overlay'}}>
+        <svg width="100%" height="100%">
+          <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"
+            seed={Math.floor(f / 2) % 50} /></filter>
+          <rect width="100%" height="100%" filter="url(#g)" />
+        </svg>
+      </AbsoluteFill>
       <AbsoluteFill style={{background:
-        'radial-gradient(ellipse at 50% 40%, rgba(244,244,241,0) 40%, rgba(244,244,241,0.95) 100%)'}} />
+        'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.18) 100%)'}} />
     </AbsoluteFill>
   );
 };
@@ -122,12 +137,18 @@ const Progress: React.FC<{total: number; dark: boolean}> = ({total, dark}) => {
 
 export const Main: React.FC<VideoProps> = (v) => {
   const f = useCurrentFrame();
-  const current = v.scenes.find((s) => f >= s.from && f < s.to);
-  const dark = current?.type === 'avatar';
+  const isDark = (s?: {type: string; props: any}) => !!s && (s.type === 'avatar' || s.props?.bg === 'dark');
+  const ci = Math.max(0, v.scenes.findIndex((s) => f >= s.from && f < s.to));
+  const current = v.scenes[ci];
+  const dark = isDark(current);
+  // smooth background crossfade over 10 frames at each scene change
+  const prevDark = isDark(v.scenes[ci - 1]);
+  const k = current ? Math.min(1, (f - current.from) / 10) : 1;
+  const darkAmt = (prevDark ? 1 : 0) * (1 - k) + (dark ? 1 : 0) * k;
   return (
     <AbsoluteFill style={{fontFamily: FONT}}>
       <style>{fontCss}</style>
-      <GridBg />
+      <MeshBg darkAmt={darkAmt} />
       {v.scenes.map((s, i) => {
         const Cmp = SCENES[s.type] || SCENES.title;
         const dur = Math.max(1, s.to - s.from);
@@ -135,8 +156,10 @@ export const Main: React.FC<VideoProps> = (v) => {
         return (
           <Sequence key={i} from={s.from} durationInFrames={dur + (last ? 0 : OVERLAP)}
             layout="none">
-            <SceneWrap dur={dur} idx={i} first={i === 0}>
-              <Cmp p={s.props || {}} v={v} dur={dur} /></SceneWrap>
+            <ToneCtx.Provider value={isDark(s) ? DARK : LIGHT}>
+              <SceneWrap dur={dur} idx={i} first={i === 0}>
+                <Cmp p={s.props || {}} v={v} dur={dur} /></SceneWrap>
+            </ToneCtx.Provider>
           </Sequence>
         );
       })}

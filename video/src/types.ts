@@ -1,9 +1,11 @@
 export type Word = {w: string; s: number; e: number; hl?: boolean};
 
+export type Asset = {src: string; kind: 'video' | 'image'; w: number; h: number; label?: string};
+
 export type Scene = {
   type:
     | 'title' | 'browser' | 'icons' | 'checklist' | 'chat' | 'flow' | 'big' | 'compare'
-    | 'cta' | 'avatar' | 'media';
+    | 'cta' | 'avatar' | 'media' | 'gallery' | 'hero' | 'counter' | 'strike';
   from: number; // frame
   to: number; // frame
   props: Record<string, any>;
@@ -23,7 +25,8 @@ export type VideoProps = {
   screenshotH: number;
   logo: string | null;
   avatar: string | null;
-  media: {src: string; kind: 'video' | 'image'; w: number; h: number} | null;
+  media: Asset | null;
+  assets?: Asset[];
   scenes: Scene[];
   words: Word[];
   cover: {line1: string; line2: string};

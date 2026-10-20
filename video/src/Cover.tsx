@@ -15,9 +15,12 @@ export const Cover: React.FC<VideoProps & {coverImage?: string | null}> = (v) =>
   return (
     <AbsoluteFill style={{background: C.bg, fontFamily: FONT}}>
       <style>{fontCss}</style>
-      <AbsoluteFill style={{
-        backgroundImage: `linear-gradient(${C.grid} 2px, transparent 2px), linear-gradient(90deg, ${C.grid} 2px, transparent 2px)`,
-        backgroundSize: '60px 60px', opacity: 0.8}} />
+      <AbsoluteFill style={{background: '#F6F1E7'}} />
+      <AbsoluteFill style={{background: [
+        'radial-gradient(circle at 18% 22%, rgba(255,206,64,0.6) 0%, rgba(255,206,64,0) 45%)',
+        'radial-gradient(circle at 85% 55%, rgba(255,150,110,0.42) 0%, rgba(255,150,110,0) 45%)',
+        'radial-gradient(circle at 25% 88%, rgba(170,160,255,0.4) 0%, rgba(170,160,255,0) 45%)',
+      ].join(',')}} />
       <div style={{position: 'absolute', top: 610, left: 90, width: 900, height: 780,
         borderRadius: 40, overflow: 'hidden', transform: 'rotate(3deg)', background: '#fff',
         border: `3px solid ${C.line}`, boxShadow: '0 40px 100px rgba(20,20,30,0.25)'}}>

@@ -41,6 +41,45 @@ def _logo(host: str, dest: Path, site_url: str = ""):
         return None
 
 
+def _assets(items):
+    """Real results of the tool (images / short videos from its own page or demo),
+    listed in the storyboard. Downloaded here so scenes can show them."""
+    out = []
+    for i, it in enumerate(items[:8]):
+        url = it["url"] if isinstance(it, dict) else it
+        try:
+            r = requests.get(url, timeout=40, headers={"User-Agent": "Mozilla/5.0"})
+            r.raise_for_status()
+            ctype = r.headers.get("content-type", "")
+            is_vid = "video" in ctype or url.lower().split("?")[0].endswith((".mp4", ".webm", ".mov"))
+            if is_vid:
+                raw = JOB / f"a{i}_raw"
+                raw.write_bytes(r.content)
+                dst = JOB / f"a{i}.mp4"
+                subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(raw), "-an", "-t", "12",
+                                "-vf", "scale='min(1080,iw)':-2", "-c:v", "libx264", "-pix_fmt",
+                                "yuv420p", str(dst)], check=True)
+                raw.unlink()
+                pr = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0",
+                                     "-show_entries", "stream=width,height", "-of", "csv=p=0",
+                                     str(dst)], capture_output=True, text=True).stdout.strip()
+                w, h = (int(x) for x in pr.split(",")[:2])
+                out.append({"src": f"job/a{i}.mp4", "kind": "video", "w": w, "h": h})
+            else:
+                im = Image.open(__import__("io").BytesIO(r.content)).convert("RGB")
+                if im.width < 200:
+                    continue
+                im.thumbnail((1400, 1400))
+                im.save(JOB / f"a{i}.jpg", quality=92)
+                out.append({"src": f"job/a{i}.jpg", "kind": "image", "w": im.width, "h": im.height})
+            if isinstance(it, dict) and it.get("label"):
+                out[-1]["label"] = it["label"]
+        except Exception as e:
+            print(f"[motion] asset {i} failed: {str(e)[:120]}")
+    print(f"[motion] {len(out)} real assets")
+    return out
+
+
 def _sentence_starts(sentences, words):
     counts = [len(s["text"].split()) for s in sentences]
     total = sum(counts) or 1
@@ -142,6 +181,12 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
             if (JOB / "cover_src.png").exists():
                 cover_img = "job/cover_src.png"
 
+    assets = _assets(sb.get("assets") or [])
+    if assets and not media:
+        media = assets[0]
+    if assets and not cover_img:
+        cover_img = next((a["src"] for a in assets if a["kind"] == "image"), None)
+
     total = voice_len + config.TAIL_SECONDS
     scenes = _scenes(sb, words, total)
     if not media:
@@ -156,7 +201,7 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
         "title": sb.get("title_on_screen") or sb["tool_name"],
         "category": sb.get("category", ""), "host": host, "handle": config.BRAND,
         "keyword": sb["keyword"], "audio": "job/voice.mp3", "screenshot": "job/screenshot.png",
-        "screenshotW": im.width, "screenshotH": im.height, "logo": logo, "avatar": av, "media": media, "coverImage": cover_img,
+        "screenshotW": im.width, "screenshotH": im.height, "logo": logo, "avatar": av, "media": media, "assets": assets, "coverImage": cover_img,
         "scenes": scenes, "words": _words(words, sb),
         "cover": {"line1": sb.get("cover", {}).get("line1") or sb["tool_name"],
                   "line2": sb.get("cover", {}).get("line2") or "AI tool"},

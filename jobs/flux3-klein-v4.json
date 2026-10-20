@@ -1,0 +1,139 @@
+{
+ "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein",
+ "name": "FLUX 3 Klein",
+ "keyword": "FLUX",
+ "sentences": [
+  {
+   "text": "The FLUX team just dropped a new image model, and you can use it for free.",
+   "emphasis": [
+    "free"
+   ],
+   "scene": {
+    "type": "title",
+    "props": {
+     "asset": 0
+    }
+   }
+  },
+  {
+   "text": "You type what you want, and you get this.",
+   "emphasis": [
+    "this"
+   ],
+   "scene": {
+    "type": "chat",
+    "props": {
+     "bg": "dark",
+     "prompt": "retro record sleeve, bold title, riso print",
+     "asset": 1
+    }
+   }
+  },
+  {
+   "text": "It's called FLUX 3 Klein. It's small, only 5.6 billion parameters, and the weights are open.",
+   "emphasis": [
+    "open"
+   ],
+   "scene": {
+    "type": "counter",
+    "props": {
+     "to": 5.6,
+     "suffix": "B",
+     "sub": "parameters, open weights"
+    }
+   }
+  },
+  {
+   "text": "It can put text on signs, posters and packaging.",
+   "emphasis": [
+    "text"
+   ],
+   "scene": {
+    "type": "gallery",
+    "props": {
+     "bg": "dark",
+     "items": [
+      2,
+      3,
+      4
+     ]
+    }
+   }
+  },
+  {
+   "text": "And you can upload up to ten reference photos and edit with them.",
+   "emphasis": [
+    "ten"
+   ],
+   "scene": {
+    "type": "hero",
+    "props": {
+     "asset": 5,
+     "label": "Edited with refs"
+    }
+   }
+  },
+  {
+   "text": "No subscription, no credits. It runs right in your browser.",
+   "emphasis": [
+    "browser"
+   ],
+   "scene": {
+    "type": "strike",
+    "props": {
+     "bg": "dark",
+     "old": "Monthly AI subscription",
+     "new": "Free in browser"
+    }
+   }
+  },
+  {
+   "text": "Comment FLUX and I'll send you the link.",
+   "emphasis": [
+    "FLUX"
+   ],
+   "scene": {
+    "type": "cta",
+    "props": {}
+   }
+  }
+ ],
+ "caption": "The FLUX team dropped a new image model and it's free to try 👀\n\nFLUX 3 Klein makes images from text, puts text on signs and posters, and edits with up to 10 reference photos.\nSmall model, open weights, runs in your browser.\n\nComment FLUX and I'll DM you the link.\n\n#ai #aitools #flux #aiart #imagegenerator #opensource #design",
+ "hashtags": [
+  "#ai",
+  "#aitools",
+  "#flux",
+  "#aiart",
+  "#imagegenerator",
+  "#opensource",
+  "#design"
+ ],
+ "cover": {
+  "line1": "Free FLUX",
+  "line2": "New Model"
+ },
+ "summary_cs": "Nový obrázkový model FLUX 3 Klein od Black Forest Labs, zdarma v prohlížeči. Text na obrázek, editace fotek, až 10 referencí a rozmístění pomocí boxů.",
+ "script": "The FLUX team just dropped a new image model, and you can use it for free. You type what you want, and you get this. It's called FLUX 3 Klein. It's small, only 5.6 billion parameters, and the weights are open. It can put text on signs, posters and packaging. And you can upload up to ten reference photos and edit with them. No subscription, no credits. It runs right in your browser. Comment FLUX and I'll send you the link.",
+ "tool_name": "FLUX 3 Klein",
+ "category": "design",
+ "assets": [
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/hiroshige.png"
+  },
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/record_sleeve.png"
+  },
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/shop_sign.png"
+  },
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/bakery__text.png"
+  },
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/poster_layout.png"
+  },
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/still_life__pomegranate.png"
+  }
+ ]
+}
