@@ -23,3 +23,5 @@ if os.getenv("ELEVENLABS_API_KEY"):
         print("ELEVENLABS OK")
     except Exception as e:
         print("ELEVENLABS FAILED:", str(e)[:300])
+else:
+    print("ELEVENLABS key missing in this run")
