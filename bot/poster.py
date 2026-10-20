@@ -50,7 +50,7 @@ def instagram_account() -> dict:
     raise RuntimeError("No Instagram account in Zernio")
 
 
-def auto_dm(post_id: str, meta: dict) -> str:
+def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> str:
     """Comment-to-DM for this post (Instagram, via Zernio = official Meta private replies).
     Keyword = tool name. Follow gate: unknown followers get a confirm DM first."""
     import random
@@ -61,7 +61,8 @@ def auto_dm(post_id: str, meta: dict) -> str:
     rnd = random.Random(post_id)
     body = {
         "profileId": prof, "accountId": acc.get("_id") or acc.get("id"),
-        "postId": post_id, "postTitle": tool[:80], "name": f"{tool} ({kw})",
+        **({"platformPostId": platform_post_id} if platform_post_id else {"postId": post_id}),
+        "postTitle": tool[:80], "name": f"{tool} ({kw})",
         "trigger": "comment", "keywords": [kw, kw.lower()], "matchMode": "word", "typoTolerance": True,
         "alsoMatchInDms": True,
         "dmMessage": rnd.choice([f"Here you go 🙌 {tool} is right here 👇 More free AI finds every day 🦝",

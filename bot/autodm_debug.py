@@ -25,11 +25,20 @@ try:
     out.append("POST: " + json.dumps(post, indent=1)[:4000])
 except Exception as e:
     out.append(f"post failed {e}")
-for path in ["/inbox/comments", "/inbox/comments/6ad776bdf5e93b04321197ea"]:
+import os
+acc_id = "6ad69dcdecad4ce8494e92b1"
+for path in ["/inbox/comments", f"/inbox/comments/18086880842695673?accountId={acc_id}"]:
     try:
         out.append(f"{path}: " + json.dumps(poster._z("GET", path), indent=1)[:3000])
     except Exception as e:
         out.append(f"{path} failed {e}")
+if os.getenv("AUTODM_FIX"):  # recreate ArtCraft automation bound to the Instagram media id
+    for a in items:
+        if a.get("postId") == "6ad776bdf5e93b04321197ea" and not a.get("platformPostId"):
+            poster._z("DELETE", f"/comment-automations/{a.get('id') or a.get('_id')}")
+            out.append("deleted old automation")
+    meta = {"keyword": "ARTCRAFT", "tool_name": "ArtCraft", "url": "https://getartcraft.com/apps"}
+    out.append("new automation: " + str(poster.auto_dm("6ad776bdf5e93b04321197ea", meta, "18086880842695673")))
 Path("logs").mkdir(exist_ok=True)
 Path("logs/autodm.log").write_text("\n\n".join(out))
 print("\n\n".join(out)[:3000])
