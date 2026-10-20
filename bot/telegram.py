@@ -76,7 +76,7 @@ def send_for_approval(folder, meta: dict, caption: str):
     text = (f"🎬 Nový video: {meta['tool_name']}  ({meta.get('duration', '?')} s)\n"
             f"📝 Co to je: {meta.get('summary_cs') or '-'}\n"
             f"🔗 {meta['url']}\n\n"
-            f"{_manychat(meta)}\n\n"
+            f"🤖 Auto-DM: keyword {meta.get('keyword', '')}, zapne se sám po schválení (s kontrolou followu)\n\n"
             f"Popisek (angličtina, jde na IG):\n{caption[:500]}\n\n"
             f"✅ = naplánuju na Instagram/TikTok, ❌ = zahodím")
     kb = {"inline_keyboard": [[

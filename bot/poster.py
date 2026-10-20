@@ -40,6 +40,48 @@ def _z(method, path, **kw):
     return r.json() if r.text else {}
 
 
+def instagram_account() -> dict:
+    """The connected Instagram account object (has _id + profileId)."""
+    data = _z("GET", "/accounts")
+    accounts = data.get("accounts") or data.get("data") or (data if isinstance(data, list) else [])
+    for a in accounts:
+        if a.get("platform") == "instagram":
+            return a
+    raise RuntimeError("No Instagram account in Zernio")
+
+
+def auto_dm(post_id: str, meta: dict) -> str:
+    """Comment-to-DM for this post (Instagram, via Zernio = official Meta private replies).
+    Keyword = tool name. Follow gate: unknown followers get a confirm DM first."""
+    import random
+    acc = instagram_account()
+    prof = acc.get("profileId")
+    prof = prof.get("_id") if isinstance(prof, dict) else prof
+    kw, tool, url = meta["keyword"], meta["tool_name"], meta["url"]
+    rnd = random.Random(post_id)
+    body = {
+        "profileId": prof, "accountId": acc.get("_id") or acc.get("id"),
+        "postId": post_id, "postTitle": tool[:80], "name": f"{tool} ({kw})",
+        "trigger": "comment", "keywords": [kw, kw.lower()], "matchMode": "word", "typoTolerance": True,
+        "alsoMatchInDms": True,
+        "dmMessage": rnd.choice([f"Here you go 🙌 {tool} is right here 👇 More free AI finds every day 🦝",
+                                 f"As promised 👇 Here's {tool}. Thanks for the follow, more free tools coming 🦝"]),
+        "buttons": [{"type": "url", "title": f"Open {tool}"[:20], "url": url}],
+        "commentReply": rnd.choice(["Sent it to your DMs 📩", "Check your DMs 👀", "Just sent it over 📬"]),
+        "commentReplyVariations": ["Sent it to your DMs 📩", "Check your DMs 👀", "Just sent it over 📬",
+                                   "Done, check your inbox 🙌"],
+        "audience": {"followerStatus": "follower", "whenUnknown": "verify"},
+        "followGate": {
+            "message": "Oops, looks like you're not following me yet 👀 Hit follow, then tap the button and I'll send it right over 🙌",
+            "buttonLabel": "I followed ✅",
+            "notFollowingMessage": "Hmm, I still can't see the follow 🤔 Follow me and tap the button again, then the link is yours 🔓",
+        },
+        "dmDelaySeconds": 5,
+    }
+    res = _z("POST", "/comment-automations", json=body)
+    return (res.get("automation") or res).get("_id") or (res.get("automation") or res).get("id") or "ok"
+
+
 def account_ids() -> dict:
     """{"instagram": id, "tiktok": id} for every account connected in Zernio."""
     data = _z("GET", "/accounts")
@@ -203,7 +245,16 @@ def main():
                            "post_id": (res.get("post") or {}).get("_id")})
             clear_buttons()
             where = " + ".join(x.capitalize() for x in res.get("_platforms", ["instagram"]))
-            telegram.notify(f"✅ Naplánováno ({where}): {when:%d.%m. %H:%M}\n{name}")
+            dm_note = ""
+            pid = (res.get("post") or {}).get("_id")
+            if pid and "instagram" in res.get("_platforms", []):
+                try:
+                    meta = json.loads((folder / "meta.json").read_text())
+                    auto_dm(pid, meta)
+                    dm_note = f"\n🤖 Auto-DM zapnutej: keyword {meta['keyword']} (s kontrolou followu)"
+                except Exception as e:
+                    dm_note = f"\n⚠️ Auto-DM se nepovedl: {str(e)[:200]}"
+            telegram.notify(f"✅ Naplánováno ({where}): {when:%d.%m. %H:%M}\n{name}{dm_note}")
         except Exception as e:
             pending[name] = info  # keep it, so the next run can retry
             telegram.notify(f"⚠️ Postování selhalo ({name}): {str(e)[:300]}\n"
