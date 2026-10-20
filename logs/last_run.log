@@ -1,10 +1,2 @@
-
-[main] trying: Claude Code Plugins (https://github.com/anthropics/claude-plugins-official)  angle=trending-repo
-[main] researching https://github.com/anthropics/claude-plugins-official
-[main] using hand-written storyboard jobs/claude-plugins.json
-[tts] ElevenLabs voice
-[main] voiceover 19.9s, 60 words
-[motion] 0 real assets
-[motion] collage: screen(4.4s) > cork(4.2s) > screen(3.5s) > title(1.8s) > flat(2.6s) > screen(4.4s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_1938_claude-code-plugins
-[main] HOLD 2026-10-20_1938_claude-code-plugins (not sent to Telegram yet)
+[telegram] sent 2026-10-20_1938_claude-code-plugins for approval
+released 2026-10-20_1938_claude-code-plugins

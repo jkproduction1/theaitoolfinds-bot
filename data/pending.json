@@ -26,5 +26,9 @@
   "2026-10-20_1356_artcraft": {
     "run_id": "39434405257",
     "artifact": "videos-38"
+  },
+  "2026-10-20_1938_claude-code-plugins": {
+    "run_id": "39484934237",
+    "artifact": "videos-50"
   }
 }
