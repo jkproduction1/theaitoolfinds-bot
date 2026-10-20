@@ -124,7 +124,7 @@ def next_slot(taken: set) -> datetime:
     return now
 
 
-def schedule(folder: Path, when: datetime) -> dict:
+def schedule(folder: Path, when: datetime, trial: bool = False) -> dict:
     caption = (folder / "caption.txt").read_text(encoding="utf-8")[:2200]
     video_url = upload(folder / "video.mp4", "video/mp4")
     cover = upload(folder / "cover.jpg", "image/jpeg") if (folder / "cover.jpg").exists() else None
@@ -136,6 +136,8 @@ def schedule(folder: Path, when: datetime) -> dict:
         psd = {"shareToFeed": True}
         if cover:
             psd["instagramThumbnail"] = cover
+        if trial:  # Trial Reel: shown to non-followers first, IG shares it to followers if it performs
+            psd["trialParams"] = {"graduationStrategy": "SS_PERFORMANCE"}
         platforms.append({"platform": "instagram", "accountId": ids["instagram"],
                           "platformSpecificData": psd})
     if "tiktok" in ids:
@@ -152,6 +154,17 @@ def schedule(folder: Path, when: datetime) -> dict:
     res = _z("POST", "/posts", json=body)
     res["_platforms"] = list(ids)
     return res
+
+
+def dispatch_mode(mode: str):
+    repo = os.environ["GITHUB_REPOSITORY"]
+    r = requests.post(
+        f"https://api.github.com/repos/{repo}/actions/workflows/make-video.yml/dispatches",
+        headers={"Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                 "Accept": "application/vnd.github+json"},
+        json={"ref": "main", "inputs": {"mode": mode}}, timeout=30)
+    if r.status_code >= 300:
+        raise RuntimeError(f"dispatch HTTP {r.status_code}: {r.text[:200]}")
 
 
 def dispatch_video(url: str):
@@ -201,6 +214,14 @@ def main():
             st["chat_id"] = m["chat"]["id"]
             telegram._save(st)
             telegram.notify("🤖 Bot je připojenej! Sem ti budou chodit videa ke schválení.")
+        text = (m.get("text") or "").strip().lower().lstrip("/")
+        if text in ("návrhy", "navrhy", "navrh", "návrh", "ideas", "napady", "nápady"):
+            try:
+                dispatch_mode("picklist")
+                telegram.notify("🔎 Hledám návrhy, za pár minut je máš tady.")
+            except Exception as e:
+                telegram.notify(f"⚠️ Návrhy se nepovedly: {str(e)[:200]}")
+            continue
         cq = u.get("callback_query")
         if not cq:
             continue
@@ -228,7 +249,8 @@ def main():
                 # the Claude "brain" session reads picks["picked"] and makes these first
                 picks.setdefault("picked", []).append(item["url"])
                 (config.DATA / "picks.json").write_text(json.dumps(picks, indent=2))
-                telegram.notify(f"🎬 Zapsáno: {item['name']}. Udělám ho v dalším kole (10:00 / 16:00).")
+                telegram.notify(f"🎬 Zapsáno: {item['name']}. Udělám ho v ranním kole (10:00), "
+                                "nebo hned, když mi v Claude napíšeš „udělej“.")
             except Exception as e:
                 telegram.notify(f"⚠️ Nepovedlo se spustit video: {str(e)[:200]}")
             continue
@@ -237,7 +259,7 @@ def main():
             clear_buttons()
             telegram.notify(f"❌ Zahozeno: {name}")
             continue
-        if action != "ok":
+        if action not in ("ok", "tr"):
             continue
         if not info:
             telegram.notify(f"⚠️ {name}: nenašel jsem video (možná už je postnuté).")
@@ -245,7 +267,7 @@ def main():
         try:
             folder = fetch_video(name, info)
             when = next_slot(taken)
-            res = schedule(folder, when)
+            res = schedule(folder, when, trial=action == "tr")
             taken.add(when.isoformat())
             posted.append({"name": name, "when": when.isoformat(),
                            "post_id": (res.get("post") or {}).get("_id")})
@@ -260,7 +282,8 @@ def main():
                     dm_note = f"\n🤖 Auto-DM zapnutej: keyword {meta['keyword']} (s kontrolou followu)"
                 except Exception as e:
                     dm_note = f"\n⚠️ Auto-DM se nepovedl: {str(e)[:200]}"
-            telegram.notify(f"✅ Naplánováno ({where}): {when:%d.%m. %H:%M}\n{name}{dm_note}")
+            kind = "🧪 Trial reel (IG jen pro nefollowery)" if action == "tr" else "✅ Naplánováno"
+            telegram.notify(f"{kind} ({where}): {when:%d.%m. %H:%M}\n{name}{dm_note}")
         except Exception as e:
             pending[name] = info  # keep it, so the next run can retry
             telegram.notify(f"⚠️ Postování selhalo ({name}): {str(e)[:300]}\n"

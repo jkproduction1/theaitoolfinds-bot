@@ -42,29 +42,48 @@ Prefer tools without a needed visual result (coding, agents, productivity, GitHu
    `... dispatches -f ref=main -f "inputs[mode]=release" -f "inputs[storyboard]=<folder>"`
 9. Finish with a 2–3 line Czech summary to Jan (what was made, why the topic).
 
-## 3. House style: "retro collage" (render comp `CollageMain`, `"style": "collage"`)
-Photographic props, paper, polaroids, CRT monitors, sky + grass, cork board, typewriter +
-handwriting fonts, condensed 3D headline (Anton, yellow with dark extrude). Camera tilts
-between scenes. Small dark caption pill with fade (not big karaoke). Grain + vignette.
-Each video should look different inside this style: vary scene order, props, screens, notes.
+## 3. House style: "cinematic retro tech collage" (comp `CineMain`, `"style": "cine"`)
+Dark teal night room, warm desk lamp, venetian-blind light, dust, grain, vignette. Real-looking
+props from the kit (polaroids, index cards, newspapers, sticky notes) on top-down mats/desks
+(exactly 90° flat), CRT/TV screens that glow, cork board with red string. Big type "inside the
+screen" (Anton mask reveal + yellow italic sticker). Speed-ramped transitions. NO neon, no
+flat cards/slides. Captions are automatic (small dark pill) — never add caption text yourself.
 
-Scene kinds (`scene.kind` + `props`), every sentence = one scene (or `"same": true` to extend):
-- `hang`: sky, CRT on a swinging rope, grass. props: `screen` (img path), `head1`,
-  `head2` (short headline lines), optional `popup` {title, text, button} (Win95 CTA window),
-  `popAt` (frames). Use for hook and CTA.
-- `desk`: green wooden desk, polaroids drop in. props: `items` [{img, name, sub, word}]
-  (`word` = regex of the spoken word that drops it, e.g. `"^Premiere"`), max 4.
-- `crt`: CRT close-up push-in on `screen`, optional yellow post-it `note` (handwritten, short).
-- `board`: cork board. props: `cards` (≤4 post-its) OR `note` (typed on lined paper, `\n`
-  allowed) + `stamp` ("FREE") + `stampWord` (regex for when it slams).
-All scenes: `poses` [[frame, pose]…] for Scrappy, optional `side` left/right (default alternates).
-Poses: `chill` (arms crossed), `talk`, `excited`, `shock`, `thumb`, `point`, `wave`, `idle`.
-Kit props live in `video/public/kit/` (sky, grass, crt, desk, paper, polaroid, cork, tape,
-paperball, rope). New props: generate with Higgsfield (`nano_banana_2`, isolated on flat
-magenta #FF00FF), then `mode=kit` with a jobs/kitN.json (see jobs/kit1.json) to cut them out.
+**Variety rule:** before writing, look at the last 5 storyboards in `jobs/` (by date) and do NOT
+reuse the same scene order, the same plates or the same hook layout. Each video: 5–7 scenes,
+at least 3 different kinds, Scrappy in ~60–70% of scenes.
+
+Scene kinds (`scene.kind` + `props`), one per sentence (`"same": true` extends the previous):
+- `screen` — room plate with a glowing screen, slow push-in. props: `plate` (room1, room2,
+  room1b, crt_close, tv_close, laptop_top), `show` {`img`: tool image | `type`: green typed
+  text, `size`}, `note` {text, word, x, y, rot, w} (flutters, pinned), `dive`: true = zoom
+  through the screen at the end (next scene starts with a flash; great before a `title`),
+  `head` (optional big text, see TextFx).
+- `title` — big type, like inside the monitor. props: `lines` [≤3 short lines], `size`,
+  `sticker` (yellow italic word, slaps in), `stickerWord` (regex of spoken word), `sx`,
+  `sub` (handwritten line), `bg` (tool image or plate, e.g. `crt_close.jpg`), `bgO`, `bgBlur`,
+  `glow` ("r,g,b"). Best hook scene; keep lines ≤12 chars.
+- `flat` — top-down plate (mat_top, desk_top, drawer_top, laptop_top) and items land on it.
+  props: `items` [{`type`: polaroid|card|news|phone|sticky|prop, `img`, `name`, `text`, `src`
+  (for prop: p_mug.png, p_floppy.png, p_vhs.png, p_pins.png, p_tape.png, p_envelope.png,
+  p_magnifier.png), `word`, `pos` [x,y,rot], `w`}], `head`. Max 4 main items.
+- `cork` — cork board (cork_close, cork_string): pinned items + red string between them.
+  props: `items` (same as flat, pinned), `stamp` ("FREE"), `stampWord`, `head`.
+- `detail` — close-up plate (keyboard_close, lamp_close, blinds_close, vhs_shelf,
+  phone_desk, drawer_top, crt_close) with strong push-in + `text` (handwritten by default,
+  or {text, fx: hand|type|mask, size}), `fx`/`fy` focus point.
+- Legacy (use rarely, e.g. 1 scene for a surprise): `hang` (CRT swinging on a rope in the sky),
+  `desk`, `crt`, `board` (see old props in git history of this file).
+TextFx for `head`: string = mask reveal, or {text, fx: "mask"|"hand"|"type", size, color}.
+All scenes: `poses` [[frameFromSceneStart, pose]], `side` left/right, `scrappy`: false to
+hide, or {x, y, h, flip, lean, light}. `tr` = transition INTO this scene: whip|drop|zoom|cut
+(default rotates). Poses: chill, talk, excited, shock, thumb, point, wave, idle.
+Layout safe zones (1080×1920): captions at y 1360–1440 — keep text/items out of it; items
+from y 120 to ~1330. Kit catalog: `video/public/kit/catalog.json`. Tool media go in
+`video/public/kit/tools/`.
 
 Storyboard top level: `url` (tool link for the DM), `name`, `tool_name`, `category`,
-`style: "collage"`, `hold: true`, `music` (t1 energetic / t2 chill lo-fi / t3 dark rebel —
+`style: "cine"`, `hold: true`, `music` (t1 energetic / t2 chill lo-fi / t3 dark rebel —
 see `video/public/music/tracks.json`, pick by mood), `sentences`, `caption`, `hashtags`,
 `cover` {line1, line2}, `summary_cs` (2 Czech sentences for Jan).
 Automatic rules (code enforces, don't fight them): keyword = tool name; max 4 hashtags.
@@ -83,9 +102,13 @@ Automatic rules (code enforces, don't fight them): keyword = tool name; max 4 ha
 - Every claim matches the sources; nothing invented; tool named correctly.
 - No overlaps: captions (y≈1360–1440) not covered; Scrappy doesn't hide key text/screens.
 - Screens/polaroids show the real tool, not empty/black; no cut-out artifacts.
-- Scrappy present in most scenes, changes pose, alternates sides.
+- Scrappy in ~60–70% of scenes, leaning/standing (not pinned), never over key text.
 - CTA keyword on screen = tool name; music audible but quiet under the voice.
 - Pace: a new visual at least every ~3 s; total 15–35 s.
+- Paper sits on something real: sticky notes / cards are ON the cork board, monitor or desk —
+  never floating on a bare wall or in the air.
+- Hook frames (0–1 s) look rich, not an empty dark screen; nothing covers the captions.
+- Different from the last 5 videos (scene order, plates, hook).
 
 ## 6. Jan's standing preferences
 - Answer first, act after his OK when he is asking/weighing something (in chat).

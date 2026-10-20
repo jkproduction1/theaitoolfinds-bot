@@ -8,7 +8,7 @@ const tg = (env, method, body) => fetch(`https://api.telegram.org/bot${env.TELEG
   method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify(body),
 });
 
-const REPLY = {ok: '✅ Přijato! Nahrávám a plánuju post…', no: '🗑️ Zahozeno', mk: '🎬 Jasně, dělám video…'};
+const REPLY = {tr: '🧪 Přijato! Jde jako trial reel…', ok: '✅ Přijato! Nahrávám a plánuju post…', no: '🗑️ Zahozeno', mk: '🎬 Jasně, dělám video…'};
 
 export default {
   async fetch(req, env) {

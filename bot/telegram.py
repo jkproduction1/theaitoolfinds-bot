@@ -78,9 +78,10 @@ def send_for_approval(folder, meta: dict, caption: str):
             f"🔗 {meta['url']}\n\n"
             f"🤖 Auto-DM: keyword {meta.get('keyword', '')}, zapne se sám po schválení (s kontrolou followu)\n\n"
             f"Popisek (angličtina, jde na IG):\n{caption[:500]}\n\n"
-            f"✅ = naplánuju na Instagram/TikTok, ❌ = zahodím")
+            f"✅ = naplánuju na Instagram/TikTok, 🧪 = IG trial reel (nejdřív jen nefolloweři), ❌ = zahodím")
     kb = {"inline_keyboard": [[
         {"text": "✅ Postnout", "callback_data": f"ok:{name}"[:64]},
+        {"text": "🧪 Trial", "callback_data": f"tr:{name}"[:64]},
         {"text": "❌ Zahodit", "callback_data": f"no:{name}"[:64]},
     ]]}
     with open(folder / "video.mp4", "rb") as f:

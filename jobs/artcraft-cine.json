@@ -106,7 +106,10 @@
      },
      "note": {
       "text": "58 tools\n+ real PSD",
-      "word": "^58"
+      "word": "^58",
+      "x": 620,
+      "y": 330,
+      "rot": 4
      },
      "poses": [
       [
