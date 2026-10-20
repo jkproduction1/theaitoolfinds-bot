@@ -123,14 +123,14 @@ export const CollageTest: React.FC = () => {
           transform: `translateY(${(1 - drop) * -900}px) rotate(${swing}deg)`, transformOrigin: '0 0'}}>
           <Img src={K('rope.png')} style={{position: 'absolute', left: -40, top: 0, width: 80, height: 700, objectFit: 'fill'}} />
           <div style={{position: 'absolute', left: -380, top: 640, width: 760}}>
-            <div style={{position: 'absolute', left: '15%', top: '12%', width: '70%', height: '55%', overflow: 'hidden',
+            <div style={{position: 'absolute', zIndex: 2, left: '11.5%', top: '16%', width: '77%', height: '57%', overflow: 'hidden',
               borderRadius: 18, background: '#000'}}>
               <Img src={K('tools/effectcraft-hero.png')} style={{width: '100%', height: '100%', objectFit: 'cover',
                 transform: `scale(${1.15 + f * 0.001})`}} />
               <AbsoluteFill style={{background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 5px)'}} />
               <AbsoluteFill style={{boxShadow: 'inset 0 0 60px rgba(0,0,0,0.8)'}} />
             </div>
-            <Img src={K('crt.png')} style={{width: 760, position: 'relative'}} />
+            <Img src={K('crt.png')} style={{width: 760, position: 'relative', zIndex: 1}} />
           </div>
         </div>
         <Img src={K('grass.png')} style={{position: 'absolute', bottom: -40 - f * 0.4, left: -60, width: 1200}} />
@@ -168,7 +168,7 @@ export const CollageTest: React.FC = () => {
             <Sfx at={(t as number) + 4} src="pop" vol={0.45} />
           </Drop>
         ))}
-        <Scrappy pose="excited" at={tAe + 10} x={640} y={1170} h={520} />
+        <Scrappy pose="excited" at={tAe + 10} x={700} y={1330} h={480} />
       </AbsoluteFill>
 
       {/* SCENE 3: corkboard, note typed, FREE stamp */}
@@ -182,14 +182,15 @@ export const CollageTest: React.FC = () => {
               {'all 7 apps are\nfree + open source.'.slice(0, Math.max(0, Math.floor((f - s3 - 14) * 1.3)))
                 .split('\n').map((l, i) => <div key={i}>{l}</div>)}
             </div>
-            <Img src={K('pin.png')} style={{position: 'absolute', top: -30, left: 390, width: 90}} />
+            <div style={{position: 'absolute', top: -20, left: 400, width: 64, height: 64, borderRadius: 32,
+              background: 'radial-gradient(circle at 35% 30%, #ff8a8a, #d0141c 55%, #7a0b10)', boxShadow: '6px 10px 10px rgba(0,0,0,0.45)'}} />
           </div>
         </Drop>
         {(() => {
           const st = s3 + 44;
           const s = spring({frame: f - st, fps: 30, config: {damping: 8, stiffness: 260}});
           return f >= st ? (
-            <div style={{position: 'absolute', left: 300, top: 980, transform: `scale(${2.4 - 1.4 * s}) rotate(-12deg)`,
+            <div style={{position: 'absolute', zIndex: 30, left: 250, top: 1000, transform: `scale(${2.4 - 1.4 * s}) rotate(-12deg)`,
               opacity: Math.min(1, s * 2), border: '12px solid #c1121f', borderRadius: 18, padding: '6px 40px',
               fontFamily: 'Anton', fontSize: 170, color: '#c1121f', letterSpacing: 6, mixBlendMode: 'multiply'}}>FREE</div>
           ) : null;

@@ -16,16 +16,19 @@ KIT = config.ROOT / "video" / "public" / "kit"
 
 
 def cutout(im: Image.Image) -> Image.Image:
-    a = np.asarray(im.convert("RGB")).astype(np.float32)
-    r, g, b = a[..., 0], a[..., 1], a[..., 2]
-    # magenta-ness: red and blue high, green low
-    mag = np.clip(((r + b) / 2 - g - 60) / 80, 0, 1)
-    alpha = 1 - mag
+    """Key out magenta incl. its darker shadow tones (hue ~280-325 deg, saturated)."""
+    hsv = np.asarray(im.convert("RGB").convert("HSV")).astype(np.float32)
+    h, sat, v = hsv[..., 0] * 360 / 255, hsv[..., 1] / 255, hsv[..., 2] / 255
+    hue_in = np.clip(1 - np.maximum(np.maximum(275 - h, h - 330), 0) / 12, 0, 1)
+    key = hue_in * np.clip((sat - 0.22) / 0.2, 0, 1)
+    alpha = 1 - key
     am = Image.fromarray((alpha * 255).astype(np.uint8)).filter(ImageFilter.MinFilter(3))
-    am = am.filter(ImageFilter.GaussianBlur(0.8))
-    # de-spill: pull leftover magenta out of the edges
-    g2 = np.maximum(g, np.minimum(r, b) * (1 - alpha) + g * alpha)
-    rgb = np.stack([np.minimum(r, g2 + 40 + (r - g2) * alpha), g, np.minimum(b, g2 + 40 + (b - g2) * alpha)], -1)
+    am = am.filter(ImageFilter.GaussianBlur(0.7))
+    rgb = np.asarray(im.convert("RGB")).astype(np.float32)
+    # de-spill: on semi-transparent edges, clamp red/blue down toward green
+    k = (1 - alpha)[..., None]
+    g = rgb[..., 1:2]
+    rgb = rgb * (1 - k) + np.concatenate([np.minimum(rgb[..., :1], g + 20), g, np.minimum(rgb[..., 2:], g + 20)], -1) * k
     out = Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8)).convert("RGBA")
     out.putalpha(am)
     return out.crop(out.getbbox() or (0, 0, out.width, out.height))
