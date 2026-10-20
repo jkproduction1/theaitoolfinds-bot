@@ -25,6 +25,11 @@ try:
     out.append("POST: " + json.dumps(post, indent=1)[:4000])
 except Exception as e:
     out.append(f"post failed {e}")
+for path in ["/inbox/comments", "/inbox/comments/6ad776bdf5e93b04321197ea"]:
+    try:
+        out.append(f"{path}: " + json.dumps(poster._z("GET", path), indent=1)[:3000])
+    except Exception as e:
+        out.append(f"{path} failed {e}")
 Path("logs").mkdir(exist_ok=True)
 Path("logs/autodm.log").write_text("\n\n".join(out))
 print("\n\n".join(out)[:3000])
