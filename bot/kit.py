@@ -65,6 +65,10 @@ def main(path):
         im.thumbnail((1600, 1600))
         if it.get("key"):                      # flat magenta background -> our keyer
             im = cutout(im)
+        elif it.get("rembg"):                  # free local AI background removal (u2net)
+            from rembg import remove
+            im = remove(im.convert("RGB"))
+            im = im.crop(im.getbbox() or (0, 0, im.width, im.height))
         elif it.get("alpha"):                  # already transparent (Higgsfield bg remover)
             im = im.convert("RGBA")
             im = im.crop(im.getbbox() or (0, 0, im.width, im.height))

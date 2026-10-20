@@ -1,0 +1,186 @@
+{
+ "cork_string": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172157_7e39c5e7-4834-4fc8-9fa8-18699aa8c0eb.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "laptop_top": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172159_02da8fcf-41e7-4f91-86dd-6f3c511f8a9f.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "vhs_shelf": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172159_a1328442-718a-4bbe-b6b1-2b9c7427d4a8.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "phone_desk": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172201_08269959-32a1-4893-acf9-726825a5e6e1.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "tv_close": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172200_1b72bae8-bfe4-4e6e-a95b-e7d89cfca275.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "keyboard_close": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172200_fc5fa00f-1231-4164-bc31-dc9a83204e9d.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "lamp_close": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172158_1bcde32f-bd14-4854-b1aa-543507ac8914.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "drawer_top": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172158_09ee1166-887b-477d-849c-fbd1a4147cb6.png",
+  "kind": "background",
+  "tags": [
+   "night",
+   "room-style"
+  ]
+ },
+ "p_polaroid": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172200_86b28b32-9cfa-462f-9bb4-18efe54d34bb.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": true
+ },
+ "p_sticky": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172158_05c05689-f409-484c-a065-257b209b3de6.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_newspaper": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172157_3befeb19-b4ae-4c98-80b4-2f4502b88124.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_vhs": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172159_adbfde13-cce1-41b8-bea0-ab8a11cc1ff4.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_floppy": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172207_daef9ac0-7ca4-4046-9053-61516c02f73c.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_mug": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172207_e46d7e63-9e46-4742-a4d2-ae3ac04b2166.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_phone": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172207_1f750eff-7dcd-4fa5-bada-7fee2596f42e.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": true
+ },
+ "p_magnifier": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172208_46508b34-696a-451f-88d0-e990996401e3.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_pins": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172209_965c64b9-c698-4bc9-b5c1-c7787adcbc38.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_tape": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172208_51ec58f9-97c4-4b4d-8952-41d6de927ea6.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_envelope": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172209_bfa2de41-a9b4-4eed-a9c1-62373ad0da4e.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ },
+ "p_card": {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261020_172208_9de71b8b-608d-4cbe-a750-3f0a0307c9d6.png",
+  "kind": "prop",
+  "tags": [
+   "night",
+   "room-style"
+  ],
+  "rembg": true,
+  "screen": false
+ }
+}
