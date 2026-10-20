@@ -1,11 +1,11 @@
 AUTOMATIONS: [
  {
-  "id": "6ad77f77869f84fcf8164f53",
+  "id": "6ad78480ac56ebd13e5e8e83",
   "name": "ArtCraft (ARTCRAFT)",
   "platform": "instagram",
   "trigger": "comment",
   "accountId": "6ad69dcdecad4ce8494e92b1",
-  "postId": "6ad776bdf5e93b04321197ea",
+  "platformPostId": "18086880842695673",
   "postTitle": "ArtCraft",
   "keywords": [
    "ARTCRAFT",
@@ -60,16 +60,45 @@ AUTOMATIONS: [
    "followGateFailed": 0,
    "followGatePassed": 0
   },
-  "createdAt": "2026-10-20T14:49:27.266Z",
-  "updatedAt": "2026-10-20T14:49:27.266Z"
+  "createdAt": "2026-10-20T15:10:56.317Z",
+  "updatedAt": "2026-10-20T15:10:56.317Z"
  }
 ]
 
-LOGS 6ad77f77869f84fcf8164f53: {
+LOGS 6ad78480ac56ebd13e5e8e83: {
  "success": true,
- "logs": [],
+ "logs": [
+  {
+   "id": "6ad784f4d2ef713866432289",
+   "commentId": "18112351319270405",
+   "commenterId": "1112859521113152",
+   "commenterName": "honza_kroneisl",
+   "commenterUsername": "honza_kroneisl",
+   "commentText": "Artcraft",
+   "source": "comment",
+   "status": "pending",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": null,
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": null,
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": "2026-10-20T15:12:57.244Z",
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-10-20T15:12:52.256Z"
+  }
+ ],
  "pagination": {
-  "total": 0,
+  "total": 1,
   "limit": 50,
   "skip": 0,
   "hasMore": false
@@ -315,7 +344,3 @@ POST: {
   "mediaType": "VIDEO",
   "productType": "REELS",
   "createdAt": "2026-10-20T14:17:09+00
-
-deleted old automation
-
-new automation: 6ad78480ac56ebd13e5e8e83
