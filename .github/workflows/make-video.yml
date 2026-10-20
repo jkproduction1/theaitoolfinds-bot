@@ -4,13 +4,16 @@ on:
   # times are UTC (Prague = UTC+2 in summer, UTC+1 in winter)
   schedule:
     - cron: "7 6 * * *"    # morning: send today's best candidates to Telegram
-    - cron: "7 9 * * *"    # if nothing was picked yet -> make video 1 automatically
-    - cron: "7 15 * * *"   # make sure there are 2 videos today
+    # - cron: "7 9 * * *"   # paused: Claude writes the videos for now
+    # - cron: "7 15 * * *"  # paused: Claude writes the videos for now
   # "Run workflow" button in the Actions tab
   workflow_dispatch:
     inputs:
       url:
         description: "Optional: make a video about this exact tool URL"
+        required: false
+      storyboard:
+        description: "Optional: jobs/<name>.json storyboard written by Claude"
         required: false
       count:
         description: "How many videos"
@@ -70,6 +73,7 @@ jobs:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           IN_URL: ${{ github.event.inputs.url }}
+          IN_SB: ${{ github.event.inputs.storyboard }}
           IN_COUNT: ${{ github.event.inputs.count || '1' }}
           SCHED: ${{ github.event.schedule }}
           IN_MODE: ${{ github.event.inputs.mode || 'video' }}
@@ -81,6 +85,7 @@ jobs:
             "7 9 * * *")  ARGS="--fill 1" ;;
             "7 15 * * *") ARGS="--fill 2" ;;
             *) if [ "$IN_MODE" = "picklist" ]; then ARGS="--pick-list"
+               elif [ -n "$IN_SB" ]; then ARGS="--storyboard $IN_SB"
                elif [ -n "$IN_URL" ]; then ARGS="--url $IN_URL"; else ARGS="--count $IN_COUNT"; fi ;;
           esac
           python -u -m bot.main $ARGS 2>&1 | tee logs/last_run.log

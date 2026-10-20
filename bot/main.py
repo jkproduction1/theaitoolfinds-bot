@@ -5,6 +5,7 @@ Usage:
   python -m bot.main --url https://x.ai    # make a video about a specific tool
 """
 import argparse
+from pathlib import Path
 import json
 import re
 import shutil
@@ -30,7 +31,11 @@ def make_one(cand: dict) -> dict:
     work.mkdir(parents=True, exist_ok=True)
     try:
         demo = media.find(site, work)
-        script = writer.write_storyboard(cand, site, has_media=bool(demo))
+        if cand.get("storyboard"):  # written by Claude in chat instead of the API model
+            script = json.loads(Path(cand["storyboard"]).read_text())
+            print(f"[main] using hand-written storyboard {cand['storyboard']}")
+        else:
+            script = writer.write_storyboard(cand, site, has_media=bool(demo))
         shot = capture.screenshot(site["url"], work / "screenshot.png")
         voice = work / "voice.mp3"
         words = tts.synthesize(script["script"], voice)
@@ -158,6 +163,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", help="make a video about this exact tool")
     ap.add_argument("--count", type=int, default=1)
+    ap.add_argument("--storyboard", help="jobs/<name>.json written by Claude (has url + name)")
     ap.add_argument("--pick-list", action="store_true", help="send today's candidates to Telegram")
     ap.add_argument("--fill", type=int, default=0,
                     help="auto mode: make videos only until N exist today")
@@ -166,12 +172,18 @@ def main():
     if args.pick_list:
         return send_pick_list()
 
+    if args.storyboard:
+        sb = json.loads(Path(args.storyboard).read_text())
+        args.url = sb["url"]
     if args.url:
         picks = json.loads(PICKS.read_text()) if PICKS.exists() else {"items": []}
         known = next((p for p in picks.get("items", []) if p["url"] == args.url), {})
         cands = [{"name": known.get("name") or discover.domain_of(args.url), "url": args.url,
                   "desc": known.get("desc", ""), "source": known.get("source", "manual"),
-                  "score": 0, "angle": known.get("angle", "wow-demo")}]
+                  "score": 0, "angle": known.get("angle", "wow-demo"),
+                  "storyboard": args.storyboard}]
+        if args.storyboard:
+            cands[0]["name"] = sb.get("name") or cands[0]["name"]
         made = produce(cands, [0], 1)
     else:
         count = args.count

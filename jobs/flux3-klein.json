@@ -1,0 +1,125 @@
+{
+ "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein",
+ "name": "FLUX 3 Klein",
+ "keyword": "FLUX",
+ "sentences": [
+  {
+   "text": "The people behind FLUX just dropped a new image model, and you can use it for free right now.",
+   "emphasis": [
+    "free"
+   ],
+   "scene": {
+    "type": "title",
+    "props": {}
+   }
+  },
+  {
+   "text": "It's called FLUX 3 Klein, and it runs right in your browser.",
+   "emphasis": [
+    "Klein"
+   ],
+   "scene": {
+    "type": "browser",
+    "props": {
+     "motion": "zoom",
+     "focus": "top"
+    }
+   }
+  },
+  {
+   "text": "Type what you want, and it makes the image.",
+   "emphasis": [
+    "image"
+   ],
+   "scene": {
+    "type": "chat",
+    "props": {
+     "prompt": "a raccoon DJ in a neon club, film photo",
+     "reply": "Image ready"
+    }
+   }
+  },
+  {
+   "text": "But here's the cool part. You can upload up to ten reference photos and edit with them.",
+   "emphasis": [
+    "ten"
+   ],
+   "scene": {
+    "type": "big",
+    "props": {
+     "text": "10",
+     "sub": "reference images"
+    }
+   }
+  },
+  {
+   "text": "You can even draw boxes to tell it where things go.",
+   "emphasis": [
+    "boxes"
+   ],
+   "scene": {
+    "type": "icons",
+    "props": {
+     "title": "What it does",
+     "items": [
+      {
+       "icon": "Image",
+       "label": "Text to image"
+      },
+      {
+       "icon": "Wand",
+       "label": "Edit photos"
+      },
+      {
+       "icon": "Images",
+       "label": "Up to 10 refs"
+      },
+      {
+       "icon": "Layers",
+       "label": "Layout boxes"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "text": "No subscription, no credits, and the weights are open.",
+   "emphasis": [
+    "open"
+   ],
+   "scene": {
+    "type": "compare",
+    "props": {
+     "before": "Paid image apps",
+     "after": "Free, open weights"
+    }
+   }
+  },
+  {
+   "text": "Comment FLUX and I'll send you the link.",
+   "emphasis": [
+    "FLUX"
+   ],
+   "scene": {
+    "type": "cta",
+    "props": {}
+   }
+  }
+ ],
+ "caption": "The FLUX team dropped a new image model and it's free to try 👀\n\nFLUX 3 Klein makes images from text, edits your photos, and takes up to 10 reference images.\nYou can even draw boxes to place things exactly where you want.\nRuns in your browser, open weights.\n\nComment FLUX and I'll DM you the link.\n\n#ai #aitools #flux #aiart #imagegenerator #opensource #design",
+ "hashtags": [
+  "#ai",
+  "#aitools",
+  "#flux",
+  "#aiart",
+  "#imagegenerator",
+  "#opensource",
+  "#design"
+ ],
+ "cover": {
+  "line1": "Free FLUX",
+  "line2": "New Model"
+ },
+ "summary_cs": "Nový obrázkový model FLUX 3 Klein od Black Forest Labs, zdarma v prohlížeči. Text na obrázek, editace fotek, až 10 referencí a rozmístění pomocí boxů.",
+ "script": "The people behind FLUX just dropped a new image model, and you can use it for free right now. It's called FLUX 3 Klein, and it runs right in your browser. Type what you want, and it makes the image. But here's the cool part. You can upload up to ten reference photos and edit with them. You can even draw boxes to tell it where things go. No subscription, no credits, and the weights are open. Comment FLUX and I'll send you the link."
+}
