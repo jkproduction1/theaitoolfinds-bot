@@ -7,6 +7,9 @@ on:
       now:
         description: "Post approved videos right away (not at the next slot)"
         default: "false"
+      update:
+        description: "Telegram update (base64), sent by the Cloudflare worker"
+        default: ""
 
 permissions:
   contents: write
@@ -32,6 +35,7 @@ jobs:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           POST_NOW: ${{ github.event.inputs.now || 'false' }}
+          TG_UPDATE: ${{ github.event.inputs.update }}
         run: |
           if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$ZERNIO_API_KEY" ]; then echo "not configured yet"; exit 0; fi
           python -u -m bot.poster

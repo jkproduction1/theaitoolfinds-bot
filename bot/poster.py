@@ -136,9 +136,16 @@ def main():
     pending = _load(PENDING, {})
     posted = _load(POSTED, [])
     taken = {p["when"] for p in posted if p.get("when")}
-    updates = telegram._api("getUpdates", data={"offset": st.get("offset", 0), "timeout": 0,
-                                                "allowed_updates": json.dumps(["callback_query",
-                                                                               "message"])})
+    if os.getenv("TG_UPDATE"):  # pushed instantly by the Cloudflare worker (webhook mode)
+        import base64
+        updates = [json.loads(base64.b64decode(os.environ["TG_UPDATE"]).decode())]
+    else:
+        try:
+            updates = telegram._api("getUpdates", data={"offset": st.get("offset", 0), "timeout": 0,
+                                                        "allowed_updates": json.dumps(["callback_query", "message"])})
+        except RuntimeError as e:  # 409 = webhook is set, updates come from the worker
+            print(f"[poster] no polling: {str(e)[:80]}")
+            updates = []
     for u in updates:
         st["offset"] = u["update_id"] + 1
         m = u.get("message") or {}
