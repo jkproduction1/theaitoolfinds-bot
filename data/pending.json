@@ -14,5 +14,9 @@
   "2026-10-20_0231_flux-3-klein": {
     "run_id": "39359171171",
     "artifact": "videos-24"
+  },
+  "2026-10-20_0252_flux-3-klein": {
+    "run_id": "39361061863",
+    "artifact": "videos-25"
   }
 }
