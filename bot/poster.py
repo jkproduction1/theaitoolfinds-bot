@@ -50,6 +50,15 @@ def instagram_account() -> dict:
     raise RuntimeError("No Instagram account in Zernio")
 
 
+# 1st DM: friendly + button. Tap -> Instagram lets us check the follow ->
+# link (follower) or the "oops, follow first" follow-up with the same button.
+FOLLOW_GATE = {
+    "message": "Hey! 👋 Tap the button and I'll send you the link right away 🔗",
+    "buttonLabel": "Send me the link",
+    "notFollowingMessage": "Oops, looks like you're not following me yet 👀 Hit follow, then tap the button again and the link is yours 🔓",
+}
+
+
 def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> str:
     """Comment-to-DM for this post (Instagram, via Zernio = official Meta private replies).
     Keyword = tool name. Follow gate: unknown followers get a confirm DM first."""
@@ -72,12 +81,8 @@ def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> st
         "commentReplyVariations": ["Sent it to your DMs 📩", "Check your DMs 👀", "Just sent it over 📬",
                                    "Done, check your inbox 🙌"],
         "audience": {"followerStatus": "follower", "whenUnknown": "verify"},
-        "followGate": {
-            "message": "Oops, looks like you're not following me yet 👀 Hit follow, then tap the button and I'll send it right over 🙌",
-            "buttonLabel": "I followed ✅",
-            "notFollowingMessage": "Hmm, I still can't see the follow 🤔 Follow me and tap the button again, then the link is yours 🔓",
-        },
-        "dmDelaySeconds": 5,
+        "followGate": FOLLOW_GATE,
+        "dmDelaySeconds": 0,
     }
     res = _z("POST", "/comment-automations", json=body)
     return (res.get("automation") or res).get("_id") or (res.get("automation") or res).get("id") or "ok"

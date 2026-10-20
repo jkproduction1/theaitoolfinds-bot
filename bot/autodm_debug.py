@@ -32,6 +32,12 @@ for path in ["/inbox/comments", f"/inbox/comments/18086880842695673?accountId={a
         out.append(f"{path}: " + json.dumps(poster._z("GET", path), indent=1)[:3000])
     except Exception as e:
         out.append(f"{path} failed {e}")
+if os.getenv("AUTODM_PATCH"):  # push the current follow-gate copy to all automations
+    for a in items:
+        aid = a.get("id") or a.get("_id")
+        poster._z("PATCH", f"/comment-automations/{aid}", json={"followGate": poster.FOLLOW_GATE,
+                  "dmDelaySeconds": 0, "audience": {"followerStatus": "follower", "whenUnknown": "verify"}})
+        out.append(f"patched {aid}")
 if os.getenv("AUTODM_FIX"):  # recreate ArtCraft automation bound to the Instagram media id
     for a in items:
         if a.get("postId") == "6ad776bdf5e93b04321197ea" and not a.get("platformPostId"):
