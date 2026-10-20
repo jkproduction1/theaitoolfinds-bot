@@ -4,14 +4,14 @@
 [main] using hand-written storyboard jobs/flux3-klein.json
 [tts] ElevenLabs failed: ElevenLabs HTTP 402: {"detail":{"type":"payment_required","code":"paid_plan_required","message":"Free users cannot use l
 WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/nn/modules/rnn.py:1011: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
   super().__init__("LSTM", *args, **kwargs)
 /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:145: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
   WeightNorm.apply(module, name, dim)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 Collecting en-core-web-sm==3.8.0
   Downloading en_core_web_sm-3.8.0-py3-none-any.whl (12.8 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 52.5 MB/s  0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 136.8 MB/s  0:00:00
 Installing collected packages: en-core-web-sm
 Successfully installed en-core-web-sm-3.8.0
 [38;5;2m✔ Download and installation successful[0m
@@ -20,10 +20,6 @@ You can now load the package via spacy.load('en_core_web_sm')
   warnings.warn(
 [tts] Kokoro voice (am_michael)
 [main] voiceover 20.6s, 85 words
-[main] skipped FLUX 3 Klein: 'tool_name'
-Traceback (most recent call last):
-  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 139, in produce
-    meta = make_one(c)
-           ^^^^^^^^^^^
-KeyError: 'tool_name'
-Could not make any video
+[motion] scenes: title(4.3s) > browser(3.0s) > chat(1.9s) > big(4.1s) > icons(2.7s) > compare(2.7s) > cta(3.1s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_0231_flux-3-klein
+[telegram] sent 2026-10-20_0231_flux-3-klein for approval
