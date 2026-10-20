@@ -275,4 +275,47 @@ POST: {
  }
 }
 
-/inbox/comments/6ad776bdf5e93b04321197ea failed Zernio /inbox/comments/6ad776bdf5e93b04321197ea HTTP 400: {"error":"Invalid input: expected string, received undefined","type":"invalid_request_error","code":"missing_required_field","param":"accountId"}
+/inbox/comments/18086880842695673?accountId=6ad69dcdecad4ce8494e92b1: {
+ "status": "success",
+ "comments": [
+  {
+   "id": "17991172410117627",
+   "message": "ARTCRAFT",
+   "createdTime": "2026-10-20T14:51:54+0000",
+   "from": {
+    "id": "1112859521113152",
+    "name": "honza_kroneisl",
+    "username": "honza_kroneisl",
+    "isOwner": false
+   },
+   "likeCount": 0,
+   "replyCount": 0,
+   "platform": "instagram",
+   "url": "https://www.instagram.com/reel/DeuBssIDopI/?comment_id=17991172410117627",
+   "replies": [],
+   "isHidden": false,
+   "canReply": true,
+   "canDelete": false,
+   "canHide": true,
+   "canLike": false,
+   "isLiked": false,
+   "canPin": false,
+   "isPinned": false
+  }
+ ],
+ "pagination": {
+  "hasMore": false
+ },
+ "post": {
+  "id": "18086880842695673",
+  "permalink": "https://www.instagram.com/reel/DeuBssIDopI/",
+  "text": "Someone used AI to rebuild 7 Adobe apps, and they're all free \ud83d\udc40\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ARTCRAFT and I'll DM you the links.\n\n#adobe #photoshop #aftereffects #opensource #aitools #editing",
+  "thumbnailUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/859504777_17955427482032548_1953063365397892227_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=22L2_doNNn0Q7kNvwGQGr0R&_nc_oc=AdqEYb-aPQ3NfQR8m_m23Dl9KgC-WEdmY7c07iPgQiax17DF42MGokxawTkYdlVIqqk&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ANQ71j8EAAAA&_nc_gid=Sm1bAVQKIhHDfhPQR6lrKw&_nc_tpa=Q5bMBQKBlbsMmIlbomKcvaZaID73YQrkfi7Owwf0V-A0VhtJuXVd1zYmza71vqLWbFxbti37XCBP0hACYA&oh=00_AQO-1rUDHOfstEjsV8yugwnXILx4udhqHCPanBgvTth1_Q&oe=6ADD6696",
+  "mediaUrl": "https://scontent-lhr11-1.cdninstagram.com/o1/v/t2/f2/m86/AQMmWrlqXc7z3Vql-yPFotnRwK-2HdYOPHvrvUVkZzo0ycLLfUX1yBaqeI7dx7NpCbGONUTeN0FUHNBornG3IteXTI6vJ7UifBJd720.mp4?_nc_cat=106&_nc_sid=5e9851&_nc_ht=scontent-lhr11-1.cdninstagram.com&_nc_ohc=lk_HCFGpBFUQ7kNvwE3Otuu&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6MTc5NTU0MjczMTQwMzI1NDgsImFzc2V0X2FnZV9kYXlzIjowLCJ2aV91c2VjYXNlX2lkIjoxMDA5OSwiZHVyYXRpb25fcyI6MjIsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&vs=5d1a69914c930122&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC9CNjIyRUZCMzU1NDg0QjZDOTBDODVBOUFENTcyRkY3Ql92aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyLzI0RTVDQzI5RDZBNDQxRjE4RkE5OUMyNjRGQkQ3QzZEX2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACbI_r6ttpflPxUCKAJDMywXQDbu2RaHKwIYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZeadAQA&_nc_gid=Sm1bAVQKIhHDfhPQR6lrKw&edm=ANQ71j8EAAAA&_nc_zt=28&_nc_tpa=Q5bMBQJv3RcefwUHHNk-3rruX9dLWcPxjyJ6z7cPfD5MHoVLhTZ6KTP1dJosvV4OdbfPRftRon4ar5Y5dg&oh=00_AQNwUGzwDpcfXZiZVlT0dg969PnR9ej7AzI7Oq5vKMbbYg&oe=6AD96F2B",
+  "mediaType": "VIDEO",
+  "productType": "REELS",
+  "createdAt": "2026-10-20T14:17:09+00
+
+deleted old automation
+
+new automation: 6ad78480ac56ebd13e5e8e83
