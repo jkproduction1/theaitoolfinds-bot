@@ -32,7 +32,7 @@ export const Cover: React.FC<VideoProps & {coverImage?: string | null}> = (v) =>
             objectPosition: 'top'}} />
         ) : null}
       </div>
-      <div style={{position: 'absolute', top: 300, width: W, display: 'flex',
+      <div style={{position: 'absolute', top: 440, width: W, display: 'flex',
         justifyContent: 'center'}}>{line(v.cover.line1, C.yellow, C.ink, -3)}</div>
       <div style={{position: 'absolute', top: 1440, width: W, display: 'flex',
         justifyContent: 'center'}}>{line(v.cover.line2, C.ink, '#fff', 2)}</div>

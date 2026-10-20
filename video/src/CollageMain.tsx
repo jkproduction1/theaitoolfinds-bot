@@ -176,7 +176,7 @@ const Hang: React.FC<SP> = ({p, f, from, to, amp, side}) => {
         </div>
       </div>
       <Img src={K('grass.png')} style={{position: 'absolute', bottom: -40 - (f - from) * 0.4, left: -60, width: 1200}} />
-      <div style={{position: 'absolute', top: 230, width: 1080}}>
+      <div style={{position: 'absolute', top: 400, width: 1080}}>
         {p.head1 ? <Head text={p.head1} at={from + 6} /> : null}
         <div style={{height: 16}} />
         {p.head2 ? <Head text={p.head2} at={from + 20} size={120} color="#fff" /> : null}
