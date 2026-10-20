@@ -27,7 +27,7 @@ const SHADE = 'brightness(0.72) sepia(0.22) saturate(0.9) contrast(1.05)';  // p
 type Plate = {scr?: [number, number, number, number]; tv?: boolean; note?: [number, number]; lean?: {x: number; y: number; h: number; flip?: boolean}};
 const PLATES: Record<string, Plate> = {
   room1: {note: [380, 470], scr: [0.4407, 0.5523, 0.2318, 0.1134], lean: {x: 770, y: 1090, h: 300, flip: true}},
-  room2: {note: [640, 330], scr: [0.385, 0.54, 0.31, 0.12], tv: true, lean: {x: 790, y: 1030, h: 290, flip: true}},
+  room2: {note: [600, 540], scr: [0.385, 0.54, 0.31, 0.12], tv: true, lean: {x: 790, y: 1030, h: 290, flip: true}},
   room1b: {note: [520, 320], scr: [0.51, 0.509, 0.326, 0.152], lean: {x: 300, y: 1050, h: 300}},
   crt_close: {note: [790, 690], scr: [0.227, 0.414, 0.573, 0.24], lean: {x: 840, y: 1150, h: 380, flip: true}},
   tv_close: {note: [240, 760], scr: [0.312, 0.443, 0.4, 0.167], tv: true, lean: {x: 40, y: 1090, h: 340}},
