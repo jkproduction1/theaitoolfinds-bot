@@ -315,7 +315,7 @@ const TitleScene: React.FC<SP> = ({p, f, from, to, at, amp, side}) => {
       <Fabric />
       <div style={{position: 'absolute', top: p.y ?? 640, left: 60, right: 60, transform: `scale(${1.08 - 0.08 * k(f, from, to, OUT)})`}}>
         <Mask lines={lines} f={f} at={from + 1} size={size} />
-        {p.sticker ? <Sticker text={p.sticker} f={f} at={stAt} x={p.sx ?? 330} y={p.sy ?? lines.length * lh - 30} size={size * 0.9} /> : null}
+        {p.sticker ? <Sticker text={p.sticker} f={f} at={stAt} x={p.sx ?? 330} y={p.sy ?? lines.length * lh - 30} size={p.stickerSize ?? Math.min(size * 0.9, 1500 / Math.max(5, p.sticker.length))} /> : null}
         {p.circle ? <Circle f={f} at={stAt + 8} x={160} y={(p.circleLine ?? lines.length - 1) * lh - 50} w={640} h={lh + 90} /> : null}
         {p.sub ? <div style={{marginTop: p.sticker ? size * 1.1 : 30}}><Hand text={p.sub} f={f} at={stAt + 6} size={70} /></div> : null}
       </div>

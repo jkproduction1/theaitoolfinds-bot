@@ -129,7 +129,7 @@
      ],
      "size": 190,
      "sticker": "/plugin install",
-     "sx": 90,
+     "sx": 150,
      "bg": "keyboard_close.jpg",
      "bgO": 0.55,
      "bgBlur": 3,
@@ -214,9 +214,9 @@
      "tr": "whip",
      "head": {
       "text": "COMMENT\nPLUGINS",
-      "size": 150
+      "size": 135
      },
-     "headY": 180
+     "headY": 100
     }
    }
   }

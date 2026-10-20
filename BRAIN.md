@@ -60,7 +60,7 @@ Scene kinds (`scene.kind` + `props`), one per sentence (`"same": true` extends t
   through the screen at the end (next scene starts with a flash; great before a `title`),
   `head` (optional big text, see TextFx).
 - `title` — big type, like inside the monitor. props: `lines` [≤3 short lines], `size`,
-  `sticker` (yellow italic word, slaps in), `stickerWord` (regex of spoken word), `sx`,
+  `sticker` (yellow italic word, slaps in; auto-shrinks if long, or `stickerSize`), `stickerWord` (regex of spoken word), `sx`,
   `sub` (handwritten line), `bg` (tool image or plate, e.g. `crt_close.jpg`), `bgO`, `bgBlur`,
   `glow` ("r,g,b"). Best hook scene; keep lines ≤12 chars.
 - `flat` — top-down plate (mat_top, desk_top, drawer_top, laptop_top) and items land on it.
