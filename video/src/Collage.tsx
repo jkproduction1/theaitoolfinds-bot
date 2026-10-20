@@ -5,6 +5,7 @@ import {
   spring, staticFile, useCurrentFrame, useVideoConfig,
 } from 'remotion';
 import {FONT, fontCss} from './theme';
+import {useAudioData, visualizeAudio} from '@remotion/media-utils';
 
 const K = (n: string) => staticFile(`kit/${n}`);
 const css = fontCss + `
@@ -61,14 +62,15 @@ const Cap: React.FC<{words: W[]}> = ({words}) => {
   // phrases of max 3 words
   const ph: W[][] = [];
   words.forEach((w, i) => {
-    if (!ph.length || ph[ph.length - 1].length >= 3 || /[.,!?]$/.test(words[i - 1]?.word || '')) ph.push([]);
+    const gap = i > 0 ? w.start - words[i - 1].end : 0;
+    if (!ph.length || ph[ph.length - 1].length >= 3 || gap > 0.18) ph.push([]);
     ph[ph.length - 1].push(w);
   });
   const p = ph.find((g, i) => t >= g[0].start && t < (ph[i + 1] ? ph[i + 1][0].start : g[g.length - 1].end + 0.4));
   if (!p) return null;
   const k = ease(f, p[0].start * 30, p[0].start * 30 + 6);
   return (
-    <div style={{position: 'absolute', top: 1470, width: 1080, display: 'flex', justifyContent: 'center', zIndex: 50}}>
+    <div style={{position: 'absolute', top: 1360, width: 1080, display: 'flex', justifyContent: 'center', zIndex: 50}}>
       <div style={{background: 'rgba(20,18,16,0.78)', color: '#fff', fontFamily: FONT, fontWeight: 600, fontSize: 40,
         padding: '10px 22px', borderRadius: 12, opacity: k, transform: `translateY(${(1 - k) * 10}px)`,
         filter: `blur(${(1 - k) * 6}px)`}}>{p.map((w) => w.word).join(' ').replace(/[.,]$/, '')}</div>
@@ -76,15 +78,27 @@ const Cap: React.FC<{words: W[]}> = ({words}) => {
   );
 };
 
-const Scrappy: React.FC<{pose: string; at: number; x: number; y: number; h: number; rot?: number}> = ({pose, at, x, y, h, rot = 0}) => {
+// Scrappy: paper-cutout that flips in like a card, floats, hops to the voice, and
+// changes pose during the scene. poses = [[frame, 'pose'], ...]
+const Scrappy: React.FC<{poses: [number, string][]; at: number; x: number; y: number; h: number; rot?: number;
+  amp?: number[]}> = ({poses, at, x, y, h, rot = 0, amp}) => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const s = spring({frame: f - at, fps, config: {damping: 10, stiffness: 160}});
+  const s = spring({frame: f - at, fps, config: {damping: 11, stiffness: 120}});
+  let pose = poses[0][1], since = poses[0][0];
+  for (const [t, ps] of poses) if (f >= t) { pose = ps; since = t; }
+  const swap = spring({frame: f - since, fps, config: {damping: 9, stiffness: 260}});  // little pop on pose change
+  const a = amp ? amp[Math.max(0, Math.min(amp.length - 1, f))] || 0 : 0;
+  const hop = a * 26;
+  const float = Math.sin(f / 11) * 8;
   return (
-    <div style={{position: 'absolute', left: x, top: y, height: h, zIndex: 20, opacity: f < at ? 0 : 1,
-      transform: `scale(${s}) rotate(${rot + Math.sin(f / 14) * 1.5}deg)`, transformOrigin: '50% 90%',
-      filter: 'drop-shadow(10px 18px 14px rgba(0,0,0,0.45))'}}>
-      <Img src={staticFile(`mascot/${pose}.png`)} style={{height: h}} />
+    <div style={{position: 'absolute', left: x, top: y + float - hop, height: h, zIndex: 20, opacity: f < at ? 0 : 1,
+      perspective: 900, transformOrigin: '50% 100%',
+      transform: `scale(${(0.9 + 0.1 * swap) * (1 + a * 0.04)}, ${(0.9 + 0.1 * swap) * (1 - a * 0.03)})`}}>
+      <div style={{transform: `rotateY(${(1 - s) * 95}deg) rotate(${rot + Math.sin(f / 17) * 2.5}deg) translateY(${(1 - s) * 120}px)`,
+        filter: 'drop-shadow(12px 22px 16px rgba(0,0,0,0.45))'}}>
+        <Img src={staticFile(`mascot/${pose}.png`)} style={{height: h, display: 'block'}} />
+      </div>
     </div>
   );
 };
@@ -97,8 +111,15 @@ export const CollageTest: React.FC = () => {
     fetch(staticFile('kit/test/words.json')).then((r) => r.json()).then((d) => { setData(d); continueRender(h); })
       .catch(() => { setData({dur: 9.5, words: []}); continueRender(h); });
   }, [h]);
+  const voiceAudio = useAudioData(staticFile('kit/test/voice.mp3'));
   if (!data) return null;
   const ws = data.words;
+  const amp: number[] = [];
+  if (voiceAudio) for (let i = 0; i < 320; i++) {
+    const v = visualizeAudio({fps: 30, frame: i, audioData: voiceAudio, numberOfSamples: 16});
+    amp.push(Math.min(1, (v.slice(0, 6).reduce((x, y) => x + y, 0) / 6) * 3));
+  }
+  const talking = (fr: number) => ws.some((w) => fr / 30 >= w.start - 0.05 && fr / 30 <= w.end + 0.1);
   const at = (re: RegExp, fb: number) => { const w = ws.find((x) => re.test(x.word)); return w ? w.start * 30 : fb; };
   const s2 = at(/^Photoshop/i, 95) - 6;      // desk scene
   const s3 = at(/^And$/i, 205) - 4;           // corkboard scene
@@ -139,6 +160,7 @@ export const CollageTest: React.FC = () => {
           <div style={{height: 16}} />
           <Head text="rebuilt by AI" at={20} size={120} color="#fff" />
         </div>
+        <Scrappy poses={[[0, 'chill'], [60, 'talk']]} at={34} x={650} y={1330} h={600} rot={-3} amp={amp} />
         <Sfx at={2} src="whoosh" vol={0.35} />
         <Sfx at={8} src="impact" vol={0.5} />
         <Sfx at={22} src="impact" vol={0.4} />
@@ -168,7 +190,7 @@ export const CollageTest: React.FC = () => {
             <Sfx at={(t as number) + 4} src="pop" vol={0.45} />
           </Drop>
         ))}
-        <Scrappy pose="excited" at={tAe + 10} x={700} y={1330} h={480} />
+        <Scrappy poses={[[0, 'excited'], [tAe + 40, 'talk']]} at={tAe + 8} x={600} y={1180} h={640} amp={amp} />
       </AbsoluteFill>
 
       {/* SCENE 3: corkboard, note typed, FREE stamp */}
@@ -196,7 +218,7 @@ export const CollageTest: React.FC = () => {
           ) : null;
         })()}
         <Sfx at={s3 + 44} src="impact" vol={0.6} />
-        <Scrappy pose="chill" at={s3 + 20} x={620} y={1240} h={480} rot={4} />
+        <Scrappy poses={[[0, 'talk'], [s3 + 46, 'shock'], [s3 + 70, 'chill']]} at={s3 + 16} x={560} y={1180} h={660} rot={3} amp={amp} />
       </AbsoluteFill>
 
       <Cap words={ws} />
@@ -208,6 +230,9 @@ export const CollageTest: React.FC = () => {
           numOctaves="2" seed={Math.floor(f / 2) % 40} /></filter><rect width="100%" height="100%" filter="url(#g)" /></svg>
       </AbsoluteFill>
       <Audio src={staticFile('kit/test/voice.mp3')} />
+      {/* music bed: starts on the track's hook, ducks under the voice, fades in/out */}
+      <Audio src={staticFile('music/t1.mp3')} startFrom={Math.round(14.63 * 30)}
+        volume={(fr) => (talking(fr) ? 0.13 : 0.3) * Math.min(1, fr / 8) * Math.min(1, (300 - fr) / 20)} />
     </AbsoluteFill>
   );
 };
