@@ -1,0 +1,40 @@
+{
+ "room1": {
+  "file": "room1.jpg",
+  "kind": "background",
+  "tags": [
+   "room",
+   "night",
+   "crt",
+   "cork",
+   "cinematic"
+  ],
+  "w": 768,
+  "h": 1376,
+  "screen": [
+   0.0052,
+   0.0029,
+   0.9883,
+   0.9935
+  ]
+ },
+ "room2": {
+  "file": "room2.jpg",
+  "kind": "background",
+  "tags": [
+   "room",
+   "night",
+   "tv",
+   "cork",
+   "cinematic"
+  ],
+  "w": 768,
+  "h": 1376,
+  "screen": [
+   0.0052,
+   0.0029,
+   0.9883,
+   0.9935
+  ]
+ }
+}
