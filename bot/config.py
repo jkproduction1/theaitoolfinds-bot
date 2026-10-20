@@ -50,3 +50,10 @@ USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 )
+
+# ElevenLabs voice (Jan's pick) - stability higher = less over-stretched words like "3D"
+EL_VOICE = "y0s2ExEMuum3muUnA6Zd"
+EL_MODEL = "eleven_v4"
+EL_STABILITY = 0.5
+EL_SIMILARITY = 0.3
+EL_SPEED = 1.12   # applied after generation with ffmpeg atempo (v4 has no speed slider)

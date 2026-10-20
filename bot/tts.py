@@ -42,15 +42,17 @@ def _elevenlabs(text: str, mp3: Path):
     import base64
     import requests
 
-    voice = os.getenv("ELEVENLABS_VOICE_ID", "pNInz6obpgDQGcFmaJgB")  # "Adam"
+    voice = os.getenv("ELEVENLABS_VOICE_ID", config.EL_VOICE)
     r = requests.post(
         f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps",
         params={"output_format": "mp3_44100_128"},
         headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"]},
         json={"text": text,
-              "model_id": os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
-              "voice_settings": {"stability": 0.45, "similarity_boost": 0.8,
-                                 "style": 0.25, "use_speaker_boost": True}},
+              "model_id": os.getenv("ELEVENLABS_MODEL", config.EL_MODEL),
+              "voice_settings": {
+                  "stability": float(os.getenv("EL_STABILITY", config.EL_STABILITY)),
+                  "similarity_boost": float(os.getenv("EL_SIMILARITY", config.EL_SIMILARITY)),
+                  "style": 0.0, "use_speaker_boost": True}},
         timeout=120,
     )
     if r.status_code >= 400:
@@ -72,7 +74,27 @@ def _elevenlabs(text: str, mp3: Path):
         end = s1
     if cur:
         words.append({"word": cur.strip(".,!?:;\"'"), "start": start, "end": end})
-    return [w for w in words if w["word"]]
+    return _snappy(mp3, [w for w in words if w["word"]])
+
+
+def _snappy(mp3: Path, words, cap=0.15):
+    """Cut long pauses, then speed the whole read up (pitch stays the same)."""
+    import numpy as np
+    from scipy.io import wavfile
+
+    speed = float(os.getenv("EL_SPEED", config.EL_SPEED))
+    wav = mp3.with_suffix(".raw.wav")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(mp3), "-ac", "1",
+                    "-ar", "44100", str(wav)], check=True)
+    sr, a = wavfile.read(wav)
+    a = a.astype(np.float32) / 32768
+    a = np.concatenate([a, np.zeros(int(sr * 0.2), dtype=a.dtype)])
+    a, words = _tighten(a, words, sr, cap=cap)
+    wavfile.write(wav, sr, (a * 32767).clip(-32768, 32767).astype(np.int16))
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav), "-filter:a",
+                    f"atempo={speed}", "-b:a", "192k", str(mp3)], check=True)
+    wav.unlink(missing_ok=True)
+    return [{**w, "start": w["start"] / speed, "end": w["end"] / speed} for w in words]
 
 
 _KOKORO = None
