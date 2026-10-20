@@ -1,12 +1,21 @@
 import React from 'react';
 import {
-  AbsoluteFill, Img, OffthreadVideo, interpolate, spring, staticFile, useCurrentFrame,
-  useVideoConfig, Easing,
+  AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile,
+  useCurrentFrame, useVideoConfig, Easing,
 } from 'remotion';
 import {C, FONT, Icon, W} from './theme';
 import type {VideoProps} from './types';
 
 type SP = {p: Record<string, any>; v: VideoProps; dur: number};
+
+// Sound effect at a frame inside the current scene
+const Sfx: React.FC<{at: number; src: string; vol?: number; len?: number}> = ({
+  at, src, vol = 0.35, len = 25,
+}) => (
+  <Sequence from={Math.max(0, Math.round(at))} durationInFrames={len} layout="none">
+    <Audio src={staticFile(`sfx/${src}.wav`)} volume={vol} />
+  </Sequence>
+);
 
 const useSpring = (delay = 0, damping = 14, stiffness = 140) => {
   const f = useCurrentFrame();
@@ -60,6 +69,7 @@ export const Title: React.FC<SP> = ({v, dur}) => {
   if (m) ch = Math.min(800, Math.max(660, (cw * m.h) / m.w));
   return (
     <AbsoluteFill style={{top: 230, height: 1080, alignItems: 'center'}}>
+      <Sfx at={0} src="impact" vol={0.5} len={22} />
       <div style={{display: 'flex', alignItems: 'center', gap: 22, marginTop: 10,
         transform: `translateY(${(1 - a) * -40}px)`, opacity: a}}>
         <Logo v={v} size={86} />
@@ -151,6 +161,7 @@ const IconTile: React.FC<{it: {icon: string; label: string}; i: number; size: nu
     <Card style={{width: size, height: size * 0.92, display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center', gap: 22, transform: `scale(${s})`,
       opacity: Math.min(1, s * 1.5)}}>
+      <Sfx at={i * 4 + 2} src="pop" vol={0.22} len={8} />
       <div style={{width: size * 0.36, height: size * 0.36, borderRadius: 26,
         background: i % 2 ? C.yellow : C.ink, display: 'flex', alignItems: 'center',
         justifyContent: 'center'}}>
@@ -193,6 +204,7 @@ const CheckRow: React.FC<{text: string; delay: number}> = ({text, delay}) => {
   return (
     <div style={{display: 'flex', alignItems: 'center', gap: 24, padding: '20px 0',
       borderTop: `2px solid ${C.line}`, opacity: 0.25 + 0.75 * Math.min(1, s)}}>
+      <Sfx at={delay + 3} src="tick" vol={0.5} len={5} />
       <div style={{width: 58, height: 58, borderRadius: 29, flexShrink: 0,
         background: s > 0.5 ? C.yellow : '#EEE', display: 'flex', alignItems: 'center',
         justifyContent: 'center', transform: `scale(${0.6 + 0.4 * s})`}}>
@@ -212,8 +224,13 @@ export const Chat: React.FC<SP> = ({p, v, dur}) => {
     extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}));
   const showReply = f > dur * 0.5;
   const r = useSpring(Math.floor(dur * 0.5), 14);
+  const typeEnd = Math.max(12, dur * 0.45);
+  const clicks = [];
+  for (let k = 6; k < typeEnd; k += 3) clicks.push(k);  // keyboard clicks while typing
   return (
     <Stage>
+      {clicks.map((k, i) => <Sfx key={i} at={k} src="type" vol={i % 2 ? 0.18 : 0.26} len={3} />)}
+      <Sfx at={dur * 0.5} src="pop" vol={0.3} len={8} />
       <Card style={{width: 920, padding: 40, transform: `translateY(${(1 - enter) * 100}px)`,
         opacity: enter, display: 'flex', flexDirection: 'column', gap: 26}}>
         <div style={{display: 'flex', alignItems: 'center', gap: 18}}>
@@ -282,6 +299,7 @@ export const Big: React.FC<SP> = ({p}) => {
   const t = useSpring(8);
   return (
     <Stage>
+      <Sfx at={1} src="impact" vol={0.55} len={22} />
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30}}>
         <div style={{background: C.yellow, color: C.ink, fontWeight: 900,
           fontSize: (p.text || '').length > 6 ? 150 : 230, padding: '10px 60px',

@@ -145,9 +145,15 @@ export const Main: React.FC<VideoProps> = (v) => {
           <Audio src={staticFile('sfx/whoosh.wav')} volume={0.3} />
         </Sequence>
       )))}
-      {v.scenes.filter((s) => ['big', 'cta', 'media', 'title'].includes(s.type)).map((s, i) => (
+      {v.scenes.filter((s) => ['cta', 'media'].includes(s.type)).map((s, i) => (
         <Sequence key={'pop' + i} from={s.from + 6} durationInFrames={10} layout="none">
           <Audio src={staticFile('sfx/pop.wav')} volume={0.4} />
+        </Sequence>
+      ))}
+      {v.scenes.filter((s) => s.type === 'cta').map((s, i) => (
+        <Sequence key={'riser' + i} from={Math.max(0, s.from - 27)} durationInFrames={30}
+          layout="none">
+          <Audio src={staticFile('sfx/riser.wav')} volume={0.25} />
         </Sequence>
       ))}
       <Captions words={v.words} dark={dark} />
