@@ -1,3 +1,4 @@
+Setting up fonts-wqy-zenhei (0.9.45-8) ...
 Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
 Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
 Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
@@ -62,14 +63,13 @@ Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-she
 |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
 Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
 
-added 260 packages in 6s
+added 260 packages in 8s
 [90mDownloading Chrome Headless Shell https://www.remotion.dev/chrome-headless-shell[39m
 Downloading from: https://remotion.media/chromium-headless-shell-linux-x64-157.0.8080.0.zip?clear
-Getting Headless Shell - 9.6 Mb/98.9 Mb
+Getting Headless Shell - 9.5 Mb/98.9 Mb
 Getting Headless Shell - 19.1 Mb/98.9 Mb
 Getting Headless Shell - 28.6 Mb/98.9 Mb
 Getting Headless Shell - 38.2 Mb/98.9 Mb
-[33mDownloading https://remotion.media/chromium-headless-shell-linux-x64-157.0.8080.0.zip?clear failed (will retry): aborted[39m
 Getting Headless Shell - 47.7 Mb/98.9 Mb
 Getting Headless Shell - 57.3 Mb/98.9 Mb
 Getting Headless Shell - 66.8 Mb/98.9 Mb

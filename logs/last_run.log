@@ -1,8 +1,8 @@
 
-[main] trying: github.com/heygen-com/hyperframes (https://github.com/heygen-com/hyperframes)  angle=wow-demo
-[main] researching https://github.com/heygen-com/hyperframes
-[media] using video 1080x608 from https://github.com/user-attachments/assets/f6ff9fae-f33d-4f68-bd54-f3ed4ba6473b
-[tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"status":"detected_unusual_activity","message":"Unusual activity has been detected on yo
+[main] trying: FLUX 3 Klein (https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein)  angle=free-alternative
+[main] researching https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein
+[main] using hand-written storyboard jobs/flux3-klein.json
+[tts] ElevenLabs failed: ElevenLabs HTTP 402: {"detail":{"type":"payment_required","code":"paid_plan_required","message":"Free users cannot use l
 WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/nn/modules/rnn.py:1011: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
@@ -11,7 +11,7 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
   WeightNorm.apply(module, name, dim)
 Collecting en-core-web-sm==3.8.0
   Downloading en_core_web_sm-3.8.0-py3-none-any.whl (12.8 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 25.9 MB/s  0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 52.5 MB/s  0:00:00
 Installing collected packages: en-core-web-sm
 Successfully installed en-core-web-sm-3.8.0
 [38;5;2m✔ Download and installation successful[0m
@@ -19,7 +19,11 @@ You can now load the package via spacy.load('en_core_web_sm')
 /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
   warnings.warn(
 [tts] Kokoro voice (am_michael)
-[main] voiceover 24.0s, 71 words
-[motion] scenes: title(3.7s) > media(4.6s) > flow(4.6s) > chat(4.6s) > browser(3.5s) > cta(4.1s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-20_0133_github-com-heygen-com-hyperframes
-[telegram] sent 2026-10-20_0133_github-com-heygen-com-hyperframes for approval
+[main] voiceover 20.6s, 85 words
+[main] skipped FLUX 3 Klein: 'tool_name'
+Traceback (most recent call last):
+  File "/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/bot/main.py", line 139, in produce
+    meta = make_one(c)
+           ^^^^^^^^^^^
+KeyError: 'tool_name'
+Could not make any video
