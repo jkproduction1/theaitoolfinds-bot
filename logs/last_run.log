@@ -1,18 +1,1 @@
-[record] step {'click': 'Generate & edit'} failed: Locator.click: Timeout 10000ms exceeded.
-Call log:
-  - waiting for get_by_text("Generate & edit").first
-    - locator resolved to <button tabindex="-1" class="s
-[record] step {'type': 'A tiny raccoon DJ in a yellow cap, neon club, 35mm film photo', 'into': 'css:textarea'} failed: Locator.scroll_into_view_if_needed: Timeout 7993ms exceeded.
-Call log:
-  - attempting scroll into view action
-    2 × waiting for element to be stable
-      - e
-[record] step {'click': 'css:button.primary'} failed: Locator.scroll_into_view_if_needed: Timeout 7995ms exceeded.
-Call log:
-  - attempting scroll into view action
-    2 × waiting for element to be stable
-      - e
-[record] step {'wait_for': "css:img[src^='http'][src*='file='], img[src^='blob:'], [data-testid=image] img", 'timeout': 180} failed: Locator.wait_for: Timeout 180000ms exceeded.
-Call log:
-  - waiting for locator("img[src^='http'][src*='file='], img[src^='blob:'], [data-testid=image] img").fir
-[record] rec0: 227.5s, 9 events, squeezed 0 waits
+[record] rec0: 15.0s, 10 events, squeezed 1 waits
