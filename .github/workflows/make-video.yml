@@ -58,7 +58,7 @@ jobs:
           set -o pipefail
           mkdir -p logs
           {
-            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+            sudo rm -f /etc/apt/sources.list.d/microsoft-prod.* /etc/apt/sources.list.d/*azure* 2>/dev/null; sudo apt-get update -qq || true; sudo apt-get install -y -qq ffmpeg espeak-ng
             pip install -q torch --index-url https://download.pytorch.org/whl/cpu
             pip install -q -r requirements.txt
             python -m playwright install --with-deps chromium
