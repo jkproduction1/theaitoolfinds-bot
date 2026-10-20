@@ -154,7 +154,10 @@ def run(url: str, steps: list, out_dir: Path, name="rec0") -> dict:
                     page.keyboard.press("Control+A")
                     page.keyboard.press("Backspace")
                     r.log("type_start")
-                    page.keyboard.type(st["type"], delay=38)
+                    if st.get("fast"):
+                        page.keyboard.insert_text(st["type"])
+                    else:
+                        page.keyboard.type(st["type"], delay=int(st.get("delay", 32)))
                     r.log("type_end")
                     page.wait_for_timeout(300)
                 elif "upload" in st:

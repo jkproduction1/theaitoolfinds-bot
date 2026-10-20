@@ -5,7 +5,7 @@ export type Asset = {src: string; kind: 'video' | 'image'; w: number; h: number;
 export type Scene = {
   type:
     | 'title' | 'browser' | 'icons' | 'checklist' | 'chat' | 'flow' | 'big' | 'compare'
-    | 'cta' | 'avatar' | 'media' | 'gallery' | 'hero' | 'counter' | 'strike';
+    | 'cta' | 'avatar' | 'media' | 'gallery' | 'hero' | 'counter' | 'strike' | 'screen';
   from: number; // frame
   to: number; // frame
   props: Record<string, any>;
@@ -27,6 +27,7 @@ export type VideoProps = {
   avatar: string | null;
   media: Asset | null;
   assets?: Asset[];
+  recordings?: {src: string; w: number; h: number; dur: number; events: {t: number; kind: string; x: number; y: number}[]}[];
   scenes: Scene[];
   words: Word[];
   cover: {line1: string; line2: string};

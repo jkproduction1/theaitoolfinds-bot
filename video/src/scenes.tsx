@@ -582,3 +582,81 @@ export const SCENES: Record<string, React.FC<SP>> = {
 };
 
 export const SceneFont = FONT;
+
+// ================================================================ SCREEN (real recorded use)
+// Plays a real browser session with the tool. The camera glides like Screen Studio:
+// zooms in on the cursor when it types/clicks, pulls back while loading, then pushes
+// in on the result. Clicks + typing get sound.
+type Ev = {t: number; kind: string; x: number; y: number};
+
+const camKeys = (ev: Ev[]) => {
+  const k: {t: number; z: number; x: number; y: number}[] = [{t: 0, z: 1.0, x: 0.5, y: 0.5}];
+  for (const e of ev) {
+    if (['move', 'click', 'type_start', 'type_end', 'upload'].includes(e.kind)) k.push({t: e.t, z: 1.75, x: e.x, y: e.y});
+    else if (e.kind === 'wait_start') k.push({t: e.t + 0.25, z: 1.0, x: 0.5, y: 0.5});
+    else if (e.kind === 'reveal') k.push({t: e.t, z: 1.45, x: e.x, y: e.y});
+  }
+  return k;
+};
+
+export const Screen: React.FC<SP> = ({p, v, dur}) => {
+  const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const tone = useTone();
+  const rec = (v.recordings || [])[p.rec ?? 0];
+  const enter = useSpring(0, 15, 120);
+  if (!rec) return null;
+  const from = p.from ?? 0;
+  const to = p.to ?? rec.dur;
+  const rate = Math.max(0.75, Math.min(2.6, (to - from) / (dur / fps)));
+  const keys = camKeys(rec.events);
+  // critically damped follow of the keyframe target -> smooth, no linear moves
+  let z = 1, x = 0.5, y = 0.5, vz = 0, vx = 0, vy = 0;
+  const steps = Math.round(from * fps / rate) + f;
+  for (let i = 0; i <= steps; i++) {
+    const tt = (i / fps) * rate;
+    let tgt = keys[0];
+    for (const kk of keys) if (kk.t <= tt) tgt = kk;
+    const w = 0.16;
+    vz = vz * 0.72 + (tgt.z - z) * w; z += vz;
+    vx = vx * 0.72 + (tgt.x - x) * w; x += vx;
+    vy = vy * 0.72 + (tgt.y - y) * w; y += vy;
+  }
+  const W0 = 960;
+  const H0 = Math.min(1060, (W0 * rec.h) / rec.w);
+  // keep the zoomed view inside the recording
+  const half = 0.5 / z;
+  const cx = Math.max(half, Math.min(1 - half, x));
+  const cy = Math.max(half, Math.min(1 - half, y));
+  const tx = (0.5 - cx) * W0 * z;
+  const ty = (0.5 - cy) * ((W0 * rec.h) / rec.w) * z;
+  const sfx = rec.events.filter((e) => e.t >= from && e.t <= to);
+  const typeTicks: number[] = [];
+  const ts = rec.events.find((e) => e.kind === 'type_start' && e.t >= from && e.t <= to);
+  const te = rec.events.find((e) => e.kind === 'type_end' && e.t >= from);
+  if (ts && te) for (let t = ts.t; t < Math.min(te.t, to); t += 0.11) typeTicks.push(t);
+  const frameOf = (t: number) => ((t - from) / rate) * fps;
+  return (
+    <Stage>
+      {sfx.filter((e) => e.kind === 'click').map((e, i) =>
+        <Sfx key={'c' + i} at={frameOf(e.t)} src="tick" vol={0.6} len={5} />)}
+      {sfx.filter((e) => e.kind === 'reveal').map((e, i) =>
+        <Sfx key={'r' + i} at={frameOf(e.t)} src="pop" vol={0.45} len={10} />)}
+      {typeTicks.map((t, i) => <Sfx key={'t' + i} at={frameOf(t)} src="type" vol={i % 2 ? 0.16 : 0.24} len={3} />)}
+      <div style={{transform: `translateY(${(1 - enter) * 140}px) scale(${0.9 + 0.1 * enter})`,
+        opacity: Math.min(1, enter * 1.4)}}>
+        <div style={{width: W0, height: H0, borderRadius: 34, overflow: 'hidden', position: 'relative',
+          background: '#0b0b0f', boxShadow: tone.dark
+            ? '0 0 0 2px rgba(255,255,255,0.12), 0 40px 120px rgba(90,80,255,0.35)'
+            : '0 0 0 2px rgba(0,0,0,0.06), 0 40px 100px rgba(20,20,40,0.28)'}}>
+          <div style={{position: 'absolute', left: 0, top: 0, width: W0, height: (W0 * rec.h) / rec.w,
+            transform: `translate(${tx}px, ${ty}px) scale(${z})`, transformOrigin: '50% 50%'}}>
+            <OffthreadVideo src={staticFile(rec.src)} muted playbackRate={rate}
+              startFrom={Math.round(from * fps)} style={{width: W0}} />
+          </div>
+        </div>
+      </div>
+    </Stage>
+  );
+};
+SCENES.screen = Screen;

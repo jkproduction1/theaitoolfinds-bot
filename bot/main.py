@@ -12,7 +12,7 @@ import shutil
 import traceback
 from datetime import datetime, timezone
 
-from . import capture, config, discover, media, motion, research, telegram, tts, writer
+from . import capture, config, record, discover, media, motion, research, telegram, tts, writer
 
 
 def slug(s: str) -> str:
@@ -39,13 +39,20 @@ def make_one(cand: dict) -> dict:
         else:
             script = writer.write_storyboard(cand, site, has_media=bool(demo))
         shot = capture.screenshot(site["url"], work / "screenshot.png")
+        recs = []
+        for i, rc in enumerate(script.get("recordings") or []):
+            try:
+                recs.append(record.run(rc.get("url") or site["url"], rc["steps"], work, f"rec{i}"))
+            except Exception as e:
+                print(f"[main] recording {i} failed: {str(e)[:160]}")
+                recs.append(None)
         voice = work / "voice.mp3"
         words = tts.synthesize(script["script"], voice)
         vlen = tts.duration(voice)
         print(f"[main] voiceover {vlen:.1f}s, {len(words)} words")
 
         motion.build(script, site["url"], shot, voice, words, vlen, folder / "video.mp4",
-                     work, demo=demo)
+                     work, demo=demo, recordings=recs)
 
         caption = script["caption"].strip() + "\n\n" + " ".join(script.get("hashtags", []))
         (folder / "caption.txt").write_text(caption, encoding="utf-8")

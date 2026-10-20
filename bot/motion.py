@@ -107,14 +107,14 @@ def _scenes(sb, words, total):
     # never the same scene type twice in a row -> merge them
     dedup = []
     for r in merged:
-        if dedup and dedup[-1][2]["type"] == r[2]["type"] and r[2]["type"] != "cta":
+        if dedup and dedup[-1][2]["type"] == r[2]["type"] and r[2]["type"] not in ("cta", "screen"):
             dedup[-1][1] = r[1]
         else:
             dedup.append(r)
     merged = dedup
     out, flip = [], 0
     for s0, s1, sc in merged:
-        if s1 - s0 > MAX_SCENE and sc["type"] not in ("cta", "title"):
+        if s1 - s0 > MAX_SCENE and sc["type"] not in ("cta", "title", "screen"):
             mid = s0 + (s1 - s0) * 0.55
             out.append((s0, mid, sc))
             flip += 1
@@ -152,7 +152,7 @@ def _remotion(args, cwd=VIDEO):
 
 
 def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_len: float,
-          out_mp4: Path, work: Path, avatar: Path | None = None, demo: dict | None = None):
+          out_mp4: Path, work: Path, avatar: Path | None = None, demo: dict | None = None, recordings=None):
     if JOB.exists():
         shutil.rmtree(JOB)
     JOB.mkdir(parents=True)
@@ -187,8 +187,40 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
     if assets and not cover_img:
         cover_img = next((a["src"] for a in assets if a["kind"] == "image"), None)
 
+    recs = []
+    for i, r in enumerate(recordings or []):
+        if not r:
+            recs.append(None)
+            continue
+        shutil.copy(r["path"], JOB / f"rec{i}.mp4")
+        recs.append({"src": f"job/rec{i}.mp4", "w": r["w"], "h": r["h"], "dur": r["dur"],
+                     "events": r["events"]})
+
     total = voice_len + config.TAIL_SECONDS
     scenes = _scenes(sb, words, total)
+    for sc in scenes:  # "part" of a recording -> exact seconds
+        if sc["type"] != "screen":
+            continue
+        pr = sc["props"]
+        r = recs[pr.get("rec", 0)] if pr.get("rec", 0) < len(recs) else None
+        if not r:
+            sc["type"], sc["props"] = "browser", {"motion": "zoom"}
+            continue
+        ev = {e["kind"]: e["t"] for e in reversed(r["events"])}  # first occurrence
+        ws = ev.get("wait_start")
+        part = pr.get("part", "all")
+        if part == "type":
+            pr.setdefault("from", 0.0)
+            pr.setdefault("to", (ws + 0.3) if ws else r["dur"] * 0.6)
+        elif part == "reveal":
+            rv = ev.get("reveal") or ev.get("wait_end") or r["dur"] * 0.7
+            pr.setdefault("from", max(0.0, rv - 0.5))
+            pr.setdefault("to", r["dur"])
+        elif part == "result":
+            pr.setdefault("from", max(0.0, (ws or r["dur"] * 0.5) - 0.2))
+            pr.setdefault("to", r["dur"])
+        pr.setdefault("from", 0.0)
+        pr.setdefault("to", r["dur"])
     if not media:
         for sc in scenes:
             if sc["type"] == "media":
@@ -201,7 +233,7 @@ def build(sb: dict, site_url: str, screenshot: Path, voice: Path, words, voice_l
         "title": sb.get("title_on_screen") or sb["tool_name"],
         "category": sb.get("category", ""), "host": host, "handle": config.BRAND,
         "keyword": sb["keyword"], "audio": "job/voice.mp3", "screenshot": "job/screenshot.png",
-        "screenshotW": im.width, "screenshotH": im.height, "logo": logo, "avatar": av, "media": media, "assets": assets, "coverImage": cover_img,
+        "screenshotW": im.width, "screenshotH": im.height, "logo": logo, "avatar": av, "media": media, "assets": assets, "recordings": [r or {"src": "", "w": 1, "h": 1, "dur": 0, "events": []} for r in recs], "coverImage": cover_img,
         "scenes": scenes, "words": _words(words, sb),
         "cover": {"line1": sb.get("cover", {}).get("line1") or sb["tool_name"],
                   "line2": sb.get("cover", {}).get("line2") or "AI tool"},

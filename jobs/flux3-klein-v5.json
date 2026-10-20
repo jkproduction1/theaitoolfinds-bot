@@ -1,0 +1,160 @@
+{
+ "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein",
+ "name": "FLUX 3 Klein",
+ "tool_name": "FLUX 3 Klein",
+ "category": "design",
+ "keyword": "FLUX",
+ "recordings": [
+  {
+   "url": "https://black-forest-labs-flux-3-image-klein.hf.space",
+   "steps": [
+    {
+     "type": "A giant glowing yellow full moon in a dark purple starry sky, retro 70s poster art",
+     "into": "css:textarea.bx-desc >> nth=0",
+     "fast": true
+    },
+    {
+     "type": "A raccoon astronaut with a yellow cap, floating, bold retro illustration",
+     "into": "css:textarea.bx-desc >> nth=1",
+     "fast": true
+    },
+    {
+     "type": "Retro 70s sci-fi movie poster. Raccoon astronaut <silhouette_1> in front of a giant moon <background_1>. Big bold title text \"SCRAPPY\" at the top.",
+     "into": "css:textarea[placeholder^='Describe']",
+     "delay": 22
+    },
+    {
+     "click": "Generate with boxes"
+    },
+    {
+     "wait_for": "new-image",
+     "timeout": 200
+    },
+    {
+     "wait": 2.0
+    }
+   ]
+  }
+ ],
+ "assets": [
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/shop_sign.png"
+  },
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/bakery__text.png"
+  },
+  {
+   "url": "https://huggingface.co/spaces/black-forest-labs/flux-3-image-klein/resolve/main/outputs/poster_layout.png"
+  }
+ ],
+ "sentences": [
+  {
+   "text": "I told this free AI exactly where to put everything, and it made this.",
+   "emphasis": [
+    "exactly"
+   ],
+   "scene": {
+    "type": "screen",
+    "props": {
+     "rec": 0,
+     "part": "reveal",
+     "bg": "dark"
+    }
+   }
+  },
+  {
+   "text": "It's FLUX 3 Klein, the new model from the FLUX team.",
+   "emphasis": [
+    "Klein"
+   ],
+   "scene": {
+    "type": "browser",
+    "props": {
+     "motion": "zoom",
+     "focus": "top"
+    }
+   }
+  },
+  {
+   "text": "You draw boxes, say what goes in each one, and type your idea.",
+   "emphasis": [
+    "boxes"
+   ],
+   "scene": {
+    "type": "screen",
+    "props": {
+     "rec": 0,
+     "part": "type",
+     "bg": "dark"
+    }
+   }
+  },
+  {
+   "text": "Hit generate, and everything lands right where you asked.",
+   "emphasis": [
+    "generate"
+   ],
+   "scene": {
+    "type": "screen",
+    "props": {
+     "rec": 0,
+     "part": "result"
+    }
+   }
+  },
+  {
+   "text": "It even writes clean text on signs and posters.",
+   "emphasis": [
+    "text"
+   ],
+   "scene": {
+    "type": "gallery",
+    "props": {
+     "bg": "dark",
+     "items": [
+      0,
+      1,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "text": "And it's free. It runs right in your browser.",
+   "emphasis": [
+    "free"
+   ],
+   "scene": {
+    "type": "strike",
+    "props": {
+     "old": "Paid AI image apps",
+     "new": "Free in browser"
+    }
+   }
+  },
+  {
+   "text": "Comment FLUX and I'll send you the link.",
+   "emphasis": [
+    "FLUX"
+   ],
+   "scene": {
+    "type": "cta",
+    "props": {
+     "bg": "dark"
+    }
+   }
+  }
+ ],
+ "caption": "I told this free AI exactly where to put everything 👀\n\nFLUX 3 Klein lets you draw boxes, say what goes in each one, and it builds the image around them. It even writes clean text on signs and posters.\nFree, runs in your browser, open weights.\n\nComment FLUX and I'll DM you the link.\n\n#ai #aitools #flux #aiart #imagegenerator #design #opensource",
+ "hashtags": [
+  "#ai",
+  "#aitools",
+  "#flux"
+ ],
+ "cover": {
+  "line1": "AI Obeys",
+  "line2": "Your Boxes"
+ },
+ "summary_cs": "FLUX 3 Klein: nakreslíš boxy, napíšeš co v nich má být a model to přesně rozmístí. Zdarma v prohlížeči.",
+ "script": "I told this free AI exactly where to put everything, and it made this. It's FLUX 3 Klein, the new model from the FLUX team. You draw boxes, say what goes in each one, and type your idea. Hit generate, and everything lands right where you asked. It even writes clean text on signs and posters. And it's free. It runs right in your browser. Comment FLUX and I'll send you the link."
+}
