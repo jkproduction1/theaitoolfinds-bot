@@ -16,7 +16,7 @@ const k = (f: number, a: number, b: number, e = IO) => interpolate(f, [a, b], [0
 const twos = (f: number) => f - (f % 2);   // stop-motion feel: update on twos
 
 // screen rect of the monitor inside room.jpg (fractions of the image)
-const SCR = {x: 0.36, y: 0.6, w: 0.28, h: 0.16};
+const SCR = {x: 0.4407, y: 0.5523, w: 0.2318, h: 0.1134};
 
 const Sfx: React.FC<{at: number; src: string; vol?: number}> = ({at, src, vol = 0.4}) => (
   <Sequence from={Math.max(0, Math.round(at))} durationInFrames={30} layout="none">
@@ -54,13 +54,13 @@ const Note: React.FC<{x: number; y: number; text: string; rot: number}> = ({x, y
   const gust = 0.6 + 0.4 * Math.sin(f / 23);
   const flap = Math.sin(f / 4.3) * 14 * gust + Math.sin(f / 2.1) * 4 * gust;
   return (
-    <div style={{position: 'absolute', left: x, top: y, width: 230, height: 220, perspective: 600, zIndex: 3}}>
+    <div style={{position: 'absolute', left: x, top: y, width: 175, height: 165, perspective: 600, zIndex: 3}}>
       <div style={{width: '100%', height: '100%', transformOrigin: '50% 0%',
         transform: `rotate(${rot + Math.sin(f / 9) * 1.5}deg) rotateX(${flap}deg) skewX(${flap * 0.15}deg)`,
         background: 'linear-gradient(180deg, #f6dd6a 0%, #e8c94e 100%)', boxShadow: `0 ${8 + flap}px 18px rgba(0,0,0,0.55)`,
-        fontFamily: 'Hand', fontSize: 46, color: '#2a2418', lineHeight: 1, padding: '34px 18px', boxSizing: 'border-box',
-        textAlign: 'center', filter: 'brightness(0.75) sepia(0.2)'}}>{text}</div>
-      <div style={{position: 'absolute', top: -10, left: 100, width: 30, height: 30, borderRadius: 15,
+        fontFamily: 'Hand', fontSize: 36, color: '#2a2418', lineHeight: 1, padding: '28px 12px', boxSizing: 'border-box',
+        textAlign: 'center', filter: 'brightness(0.6) sepia(0.25) saturate(0.85)'}}>{text}</div>
+      <div style={{position: 'absolute', top: -10, left: 74, width: 26, height: 26, borderRadius: 15,
         background: 'radial-gradient(circle at 35% 30%, #ff8a8a, #b5121b 60%)', boxShadow: '3px 6px 6px rgba(0,0,0,0.6)'}} />
     </div>
   );
@@ -96,13 +96,15 @@ export const CineTest: React.FC = () => {
               color: '#8dffc4', textShadow: '0 0 8px #3dff9a, 0 0 22px #1aff7a'}}>{typed}</div>
             <CrtTex />
           </div>
+          <div style={{position: 'absolute', left: '43.6%', top: '66.9%', width: 70, height: 20, background: 'rgba(214,196,160,0.92)',
+            transform: 'rotate(-4deg)', boxShadow: '0 2px 3px rgba(0,0,0,0.4)', filter: 'brightness(0.7)'}} />
           {/* screen light spilling into the room */}
           <AbsoluteFill style={{background: `radial-gradient(circle at ${cx}% ${cy}%, rgba(80,255,170,${0.10 + 0.05 * Math.sin(f / 3)}) 0%, transparent 30%)`, mixBlendMode: 'screen'}} />
-          <Note x={150} y={430} text={'try it\nfree!'} rot={-6} />
+          <Note x={440} y={600} text={'try it\nfree!'} rot={-6} />
           {/* Scrappy leaning on the monitor (right side, standing on the desk) */}
-          <div style={{position: 'absolute', left: 670, top: 1020 + Math.sin(f / 13) * 3, height: 420, zIndex: 4,
-            transform: 'rotate(-7deg) scaleX(-1)', transformOrigin: '50% 100%', filter: 'brightness(0.62) contrast(1.05) drop-shadow(-14px 10px 14px rgba(0,0,0,0.7))'}}>
-            <Img src={staticFile('mascot/chill.png')} style={{height: 420}} />
+          <div style={{position: 'absolute', left: 770, top: 1090 + Math.sin(f / 13) * 3, height: 300, zIndex: 4,
+            transform: 'rotate(-7deg) scaleX(-1)', transformOrigin: '50% 100%', filter: 'brightness(0.5) sepia(0.35) contrast(1.1) drop-shadow(-14px 10px 14px rgba(0,0,0,0.75))'}}>
+            <Img src={staticFile('mascot/chill.png')} style={{height: 300}} />
           </div>
           {/* venetian blind light sweeping slowly */}
           <AbsoluteFill style={{mixBlendMode: 'soft-light', opacity: 0.55,
@@ -122,7 +124,7 @@ export const CineTest: React.FC = () => {
             background: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.25) 0 1px, transparent 1px 3px)'}} />
           <div style={{position: 'absolute', top: 640, left: 70, right: 70, transform: `scale(${1.08 - 0.08 * k(f, 100, 180, OUT)})`}}>
             <div style={{overflow: 'hidden', height: 170}}>
-              <div style={{fontFamily: 'Anton', fontSize: 168, color: '#f3ead8', letterSpacing: 2, lineHeight: 1,
+              <div style={{fontFamily: 'Anton', fontSize: 150, color: '#f3ead8', letterSpacing: 2, lineHeight: 1, whiteSpace: 'nowrap',
                 transform: `translateY(${(1 - l1) * 110}%)`}}>THIS SHOULDN'T</div>
             </div>
             <div style={{overflow: 'hidden', height: 170}}>
