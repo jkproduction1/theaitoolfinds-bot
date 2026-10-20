@@ -234,3 +234,45 @@ POST: {
       "commercialContentType": "none",
       "express_consent_given": true,
       "video_cover_image_url": "https://media.zernio.com/media/1792505526566_b2we64
+
+/inbox/comments: {
+ "data": [
+  {
+   "id": "18086880842695673",
+   "accountId": "6ad69dcdecad4ce8494e92b1",
+   "accountUsername": "theaitoolfinds",
+   "platform": "instagram",
+   "content": "Someone used AI to rebuild 7 Adobe apps, and they're all free \ud83d\udc40\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ARTCRAFT and I'll DM you the links.\n\n#adobe #photoshop #aftereffects #opensource #aitools #editing",
+   "createdTime": "2026-10-20T14:17:09.000Z",
+   "permalink": "https://www.instagram.com/reel/DeuBssIDopI/",
+   "picture": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/859504777_17955427482032548_1953063365397892227_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=22L2_doNNn0Q7kNvwHYQLp5&_nc_oc=AdoygYYNCx9b4FDjuvOr47Ak67eV2YbJfXI16yZBL8vZ6crhFd7wisJQpKt4Kwt-4fI&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=gKbipHduouGzFIB0JkTGtw&_nc_tpa=Q5bMBQKJyhjytlV1G0NBJqNclbLTLty2sxJGChZySYYuGqLev1jrjK9YI3xzfexbVVdpezxclSwaBRrJJA&oh=00_AQP0iH-_meCNx0OP0LNksYIdXzT-Nom52ZtZ5mjwczKvJg&oe=6ADD6696",
+   "commentCount": 1,
+   "likeCount": 0
+  },
+  {
+   "id": "7698753760952143137",
+   "accountId": "6ad6a61e4115c03f8b41d247",
+   "accountUsername": "theaitoolfinds",
+   "platform": "tiktok",
+   "content": "Someone used AI to rebuild 7 Adobe apps, and they're all free \ud83d\udc40 PhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs. Comment ARTCRAFT and I'll DM you the links. #ai #adobe #photoshop #aftereffects #opensource #aitools #editing #ai #adobe",
+   "createdTime": "2026-10-20T14:16:21.000Z",
+   "permalink": "https://www.tiktok.com/@theaitoolfinds/video/7698753760952143137?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+   "picture": "https://p16-common-sign.tiktokcdn-eu.com/tos-useast2a-i-4864-euttp/oMAYAfmqBBD1iAaYaXid7sE7aBTIgEio2VAwvC~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=8d717883&x-expires=1792594800&x-signature=rcJx9DapKXNmmg%2B5vxw9fARpvMg%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&biz_tag=tt_video&s=TIKTOK_FOR_DEVELOPER&sc=cover",
+   "commentCount": 0,
+   "likeCount": 1
+  }
+ ],
+ "pagination": {
+  "hasMore": false,
+  "nextCursor": null
+ },
+ "meta": {
+  "accountsQueried": 2,
+  "accountsFailed": 0,
+  "failedAccounts": [],
+  "lastUpdated": "2026-10-20T15:09:33.407Z",
+  "accountsSkipped": []
+ }
+}
+
+/inbox/comments/6ad776bdf5e93b04321197ea failed Zernio /inbox/comments/6ad776bdf5e93b04321197ea HTTP 400: {"error":"Invalid input: expected string, received undefined","type":"invalid_request_error","code":"missing_required_field","param":"accountId"}
