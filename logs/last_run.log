@@ -1,12 +1,12 @@
 
-[main] trying: Ponytail (https://github.com/DietrichGebert/ponytail)  angle=time-saver
-[main] researching https://github.com/DietrichGebert/ponytail
-[media] skip https://raw.githubusercontent.com/DietrichGebert/ponytail/HEAD/assets/stories-banner.png: image too small
-[media] using image 1400x787 from https://raw.githubusercontent.com/DietrichGebert/ponytail/HEAD/assets/v5/hero.jpg
-[main] using hand-written storyboard jobs/ponytail.json
+[main] trying: OpenFilm (https://github.com/openfilm/openfilm)  angle=wow-demo
+[main] researching https://github.com/openfilm/openfilm
+[media] skip https://raw.githubusercontent.com/openfilm/openfilm/HEAD/assets/footage.mp4#t=12,18: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/openfilm/openfilm/HEAD/assets/footage.mp4#t=12,18
+[media] using image 1280x720 from https://raw.githubusercontent.com/openfilm/openfilm/HEAD/docs/openfilm.webp
+[main] using hand-written storyboard jobs/openfilm.json
 [tts] ElevenLabs voice
-[main] voiceover 24.5s, 74 words
+[main] voiceover 21.2s, 69 words
 [motion] 0 real assets
-[motion] collage: flat(5.1s) > screen(3.9s) > title(5.5s) > cork(3.4s) > detail(4.5s) > screen(3.0s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-21_0758_ponytail
-[main] HOLD 2026-10-21_0758_ponytail (not sent to Telegram yet)
+[motion] collage: cork(3.3s) > screen(4.7s) > title(4.3s) > flat(3.6s) > detail(2.4s) > screen(4.0s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-21_0804_openfilm
+[main] HOLD 2026-10-21_0804_openfilm (not sent to Telegram yet)
