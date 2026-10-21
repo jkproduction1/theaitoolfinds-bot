@@ -1,0 +1,95 @@
+{
+ "url": "https://github.com/openfilm/openfilm",
+ "name": "OpenFilm",
+ "tool_name": "OpenFilm",
+ "category": "ai video",
+ "style": "cine",
+ "hold": true,
+ "music": "t1",
+ "sentences": [
+  {
+   "text": "Your coding agent can now make whole videos, for free.",
+   "scene": {"kind": "cork", "props": {
+     "plate": "cork_close",
+     "head": {"text": "AGENT-MADE\nFILMS", "size": 150},
+     "headY": 110,
+     "items": [
+      {"type": "polaroid", "img": "tools/openfilm-shot-096.jpg", "name": "made by an agent", "pos": [60, 470, -5], "w": 520},
+      {"type": "polaroid", "img": "tools/openfilm-shot-288.jpg", "name": "OpenFilm", "pos": [520, 800, 4], "w": 480}
+     ],
+     "stamp": "FREE",
+     "stampWord": "^free",
+     "scrappy": false
+   }}
+  },
+  {
+   "text": "It's called OpenFilm. Ask Claude Code or Codex for a film, and it builds it.",
+   "scene": {"kind": "screen", "props": {
+     "plate": "room2",
+     "show": {"img": "tools/openfilm-ui-096.jpg"},
+     "note": {"text": "Claude Code\n+ Codex", "word": "^Claude", "rot": 4},
+     "poses": [[0, "excited"], [50, "chill"]],
+     "side": "left",
+     "dive": true,
+     "tr": "zoom"
+   }}
+  },
+  {
+   "text": "Then you change anything by hand in Studio, a real editor in your browser.",
+   "scene": {"kind": "title", "props": {
+     "lines": ["EDIT IT", "BY HAND"],
+     "size": 180,
+     "sticker": "in Studio",
+     "stickerWord": "^Studio",
+     "sx": 220,
+     "bg": "tools/openfilm-ui-288.jpg",
+     "bgO": 0.5,
+     "bgBlur": 2,
+     "glow": "255,190,110",
+     "scrappy": false
+   }}
+  },
+  {
+   "text": "You can even export the timeline to Premiere, Final Cut or DaVinci.",
+   "scene": {"kind": "flat", "props": {
+     "plate": "drawer_top",
+     "items": [
+      {"type": "card", "text": "Premiere Pro", "word": "^Premiere", "pos": [90, 260, -4], "w": 560},
+      {"type": "card", "text": "Final Cut Pro", "word": "^Final", "pos": [380, 560, 3], "w": 560},
+      {"type": "card", "text": "DaVinci Resolve", "word": "^DaVinci", "pos": [110, 860, -2], "w": 600},
+      {"type": "prop", "src": "p_vhs.png", "pos": [680, 1030, 12], "w": 280}
+     ],
+     "poses": [[0, "point"]],
+     "side": "right",
+     "tr": "whip"
+   }}
+  },
+  {
+   "text": "No account needed, and it's open source.",
+   "scene": {"kind": "detail", "props": {
+     "plate": "phone_desk",
+     "text": {"text": "no account.\nopen source.", "fx": "hand", "size": 110},
+     "textY": 280,
+     "push": 0.35,
+     "poses": [[0, "thumb"]],
+     "side": "left",
+     "tr": "drop"
+   }}
+  },
+  {
+   "text": "It's still early. Comment OPENFILM and I'll send you the link.",
+   "scene": {"kind": "screen", "props": {
+     "plate": "crt_close",
+     "show": {"type": "> comment\n  OPENFILM", "size": 56},
+     "note": {"text": "still\nearly!", "word": "^early", "rot": -5, "w": 190},
+     "poses": [[0, "talk"], [40, "wave"]],
+     "side": "right",
+     "tr": "zoom"
+   }}
+  }
+ ],
+ "caption": "Your coding agent can now make whole videos, for free.\n\nOpenFilm is an open-source AI video agent: ask Claude Code, Codex or any coding agent for a film, then change anything by hand in Studio, a real editor in your browser. Export MP4 or send the timeline to Premiere Pro, Final Cut or DaVinci Resolve. No account needed (AI voice/music use your own keys). Still early (v0.2).\n\nComment OPENFILM and I'll DM you the link.",
+ "hashtags": ["#aivideo", "#claudecode", "#aitools", "#opensource"],
+ "cover": {"line1": "Free AI agent", "line2": "that makes films"},
+ "summary_cs": "OpenFilm je open-source (MIT) AI video agent: Claude Code / Codex udělá film jako HTML stránky a ty ho pak ručně upravíš ve Studiu v prohlížeči, timeline jde exportovat do Premiere, Final Cut a DaVinci. Je to ještě brzká verze (0.2.x), generovaný hlas/hudba jde přes vlastní klíče."
+}
