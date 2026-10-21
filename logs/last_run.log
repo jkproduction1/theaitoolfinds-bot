@@ -1,2 +1,11 @@
-[telegram] sent 2026-10-21_0839_openfilm for approval
-released 2026-10-21_0839_openfilm
+[discover] github_trending: 25
+[discover] github_search: 51
+[discover] hf_spaces: 60
+[discover] reddit r/StableDiffusion: HTTP 403
+[discover] reddit: 0
+[discover] hackernews: 23
+[discover] 0 from queue, 141 candidates total
+[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 2 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 3 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[main] top picks: opencode 9 free-alternative | ai-job-search 8 time-saver | blender-ai-mcp-addon 8 wow-demo | context-mode 8 money-saver | CLI-Anything 7 trending-repo | MOSS-Image 7 free-alternative | orca 7 trending-repo | solid-glass 7 wow-demo
