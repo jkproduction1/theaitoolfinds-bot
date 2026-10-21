@@ -7,12 +7,16 @@
     "still": "remotion still src/index.ts Cover"
   },
   "dependencies": {
+    "@react-three/fiber": "9.1.2",
     "@remotion/cli": "4.0.537",
     "@remotion/media-utils": "^4.0.537",
+    "@remotion/three": "4.0.537",
+    "@types/three": "0.170.0",
     "lucide-react": "1.59.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "remotion": "4.0.537"
+    "remotion": "4.0.537",
+    "three": "0.170.0"
   },
   "devDependencies": {
     "@types/react": "19.2.2",
