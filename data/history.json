@@ -136,5 +136,11 @@
     "domain": "github.com/anthropics/claude-plugins-official",
     "date": "2026-10-20_1938",
     "source": "gh-trending"
+  },
+  {
+    "name": "Ponytail",
+    "domain": "github.com/dietrichgebert/ponytail",
+    "date": "2026-10-21_0758",
+    "source": "gh-trending"
   }
 ]
