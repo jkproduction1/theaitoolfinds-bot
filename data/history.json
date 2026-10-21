@@ -142,5 +142,11 @@
     "domain": "github.com/openfilm/openfilm",
     "date": "2026-10-21_0804",
     "source": "gh-search"
+  },
+  {
+    "name": "Ponytail",
+    "domain": "github.com/dietrichgebert/ponytail",
+    "date": "2026-10-21_0820",
+    "source": "gh-trending"
   }
 ]
