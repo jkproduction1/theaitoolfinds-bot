@@ -128,15 +128,15 @@
      "items": [
       {
        "type": "polaroid",
-       "img": "tools/ponytail-tests.jpg",
+       "img": "tools/ponytail-98.jpg",
        "name": "98% get a test",
        "word": "^98",
        "pos": [
-        70,
-        300,
-        -4
+        130,
+        360,
+        -3
        ],
-       "w": 560
+       "w": 480
       },
       {
        "type": "sticky",
@@ -173,7 +173,7 @@
       "size": 90
      },
      "textY": 160,
-     "push": 0.35,
+     "push": 0.15,
      "poses": [
       [
        0,
@@ -208,12 +208,7 @@
       ]
      ],
      "side": "left",
-     "tr": "whip",
-     "scrappy": {
-      "x": 20,
-      "y": 1470,
-      "h": 360
-     }
+     "tr": "whip"
     }
    }
   }

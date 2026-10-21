@@ -212,8 +212,14 @@
        "wave"
       ]
      ],
-     "side": "left",
-     "tr": "zoom"
+     "side": "right",
+     "tr": "zoom",
+     "scrappy": {
+      "x": 690,
+      "y": 1120,
+      "h": 340,
+      "flip": true
+     }
     }
    }
   }
