@@ -48,5 +48,7 @@
       "why": "Ud\u011bl\u00e1 z libovoln\u00e9ho softwaru rozhran\u00ed, kter\u00e9 mohou pln\u011b ovl\u00e1dat autonomn\u00ed AI agenti."
     }
   ],
-  "picked": []
+  "picked": [
+    "https://github.com/anomalyco/opencode"
+  ]
 }
