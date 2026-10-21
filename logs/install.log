@@ -1,22 +1,6 @@
-Setting up fonts-unifont (1:15.1.01-1build1) ...
-Setting up xvfb (2:21.1.12-1ubuntu1.9) ...
-Setting up libglib2.0-bin (2.80.0-6ubuntu3.10) ...
-Setting up xfonts-utils (1:7.7+6build3) ...
-Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
-Setting up xfonts-scalable (1:1.0.3-1.3) ...
-Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
-Processing triggers for man-db (2.12.0-4build2) ...
-Not building database; man-db/auto-update is not 'true'.
-Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
-
 Running kernel seems to be up-to-date.
 
-Restarting services...
- systemctl restart packagekit.service php8.3-fpm.service polkit.service udisks2.service
-
-Service restarts being deferred:
- systemctl restart ModemManager.service
- systemctl restart networkd-dispatcher.service
+No services need to be restarted.
 
 No containers need to be restarted.
 
@@ -37,6 +21,22 @@ Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from htt
 |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 191.1 MiB
 Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /home/runner/.cache/ms-playwright/chromium-1248
 Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+Error: getaddrinfo ENOTFOUND playwright.download.prss.microsoft.com
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:internal/dns/promises:102:17) {
+  errno: -3008,
+  code: 'ENOTFOUND',
+  syscall: 'getaddrinfo',
+  hostname: 'playwright.download.prss.microsoft.com'
+}
+Downloading FFmpeg (playwright ffmpeg v1013) from https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-linux.zip
+Error: getaddrinfo ENOTFOUND playwright.download.prss.microsoft.com
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:internal/dns/promises:102:17) {
+  errno: -3008,
+  code: 'ENOTFOUND',
+  syscall: 'getaddrinfo',
+  hostname: 'playwright.download.prss.microsoft.com'
+}
+Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/builds/ffmpeg/1013/ffmpeg-linux.zip
 |                                                                                |   0% of 2.2 MiB
 |■■■■■■■■                                                                        |  10% of 2.2 MiB
 |■■■■■■■■■■■■■■■■                                                                |  20% of 2.2 MiB
@@ -63,7 +63,7 @@ Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-she
 |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 120 MiB
 Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1248
 
-added 260 packages in 5s
+added 283 packages in 10s
 [90mDownloading Chrome Headless Shell https://www.remotion.dev/chrome-headless-shell[39m
 Downloading from: https://remotion.media/chromium-headless-shell-linux-x64-157.0.8080.0.zip?clear
 Getting Headless Shell - 9.5 Mb/98.9 Mb

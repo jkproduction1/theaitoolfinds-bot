@@ -1,18 +1,0 @@
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Loading weights:   0%|          | 0/287 [00:00<?, ?it/s]Loading weights: 100%|██████████| 287/287 [00:00<00:00, 5697.00it/s]
-depth: room1
-depth: room2
-depth: mat_top
-depth: desk_top
-depth: cork_close
-depth: crt_close
-depth: room1b
-depth: blinds_close
-depth: cork_string
-depth: laptop_top
-depth: vhs_shelf
-depth: phone_desk
-depth: tv_close
-depth: keyboard_close
-depth: lamp_close
-depth: drawer_top
