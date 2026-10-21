@@ -5,8 +5,8 @@
 [media] using image 1400x787 from https://raw.githubusercontent.com/DietrichGebert/ponytail/HEAD/assets/v5/hero.jpg
 [main] using hand-written storyboard jobs/ponytail.json
 [tts] ElevenLabs voice
-[main] voiceover 21.0s, 69 words
+[main] voiceover 25.9s, 76 words
 [motion] 0 real assets
-[motion] collage: cork(3.3s) > screen(4.6s) > title(4.2s) > flat(3.6s) > detail(2.3s) > screen(4.0s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-21_0825_openfilm
-[main] HOLD 2026-10-21_0825_openfilm (not sent to Telegram yet)
+[motion] collage: flat(5.3s) > screen(3.9s) > title(5.6s) > cork(4.4s) > detail(4.6s) > screen(3.1s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-21_0833_ponytail
+[main] HOLD 2026-10-21_0833_ponytail (not sent to Telegram yet)
