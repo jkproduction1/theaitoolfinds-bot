@@ -16,7 +16,8 @@
    0.0029,
    0.9883,
    0.9935
-  ]
+  ],
+  "depth": "depth/room1.png"
  },
  "room2": {
   "file": "room2.jpg",
@@ -35,7 +36,8 @@
    0.0029,
    0.9883,
    0.9935
-  ]
+  ],
+  "depth": "depth/room2.png"
  },
  "mat_top": {
   "file": "mat_top.jpg",
@@ -47,7 +49,8 @@
    "night"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/mat_top.png"
  },
  "desk_top": {
   "file": "desk_top.jpg",
@@ -59,7 +62,8 @@
    "night"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/desk_top.png"
  },
  "cork_close": {
   "file": "cork_close.jpg",
@@ -70,7 +74,8 @@
    "night"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/cork_close.png"
  },
  "crt_close": {
   "file": "crt_close.jpg",
@@ -81,7 +86,8 @@
    "night"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/crt_close.png"
  },
  "room1b": {
   "file": "room1b.jpg",
@@ -93,7 +99,8 @@
    "cork"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/room1b.png"
  },
  "blinds_close": {
   "file": "blinds_close.jpg",
@@ -105,7 +112,8 @@
    "transition"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/blinds_close.png"
  },
  "cork_string": {
   "file": "cork_string.jpg",
@@ -115,7 +123,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/cork_string.png"
  },
  "laptop_top": {
   "file": "laptop_top.jpg",
@@ -125,7 +134,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/laptop_top.png"
  },
  "vhs_shelf": {
   "file": "vhs_shelf.jpg",
@@ -135,7 +145,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/vhs_shelf.png"
  },
  "phone_desk": {
   "file": "phone_desk.jpg",
@@ -145,7 +156,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/phone_desk.png"
  },
  "tv_close": {
   "file": "tv_close.jpg",
@@ -155,7 +167,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/tv_close.png"
  },
  "keyboard_close": {
   "file": "keyboard_close.jpg",
@@ -165,7 +178,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/keyboard_close.png"
  },
  "lamp_close": {
   "file": "lamp_close.jpg",
@@ -175,7 +189,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/lamp_close.png"
  },
  "drawer_top": {
   "file": "drawer_top.jpg",
@@ -185,7 +200,8 @@
    "room-style"
   ],
   "w": 768,
-  "h": 1376
+  "h": 1376,
+  "depth": "depth/drawer_top.png"
  },
  "p_polaroid": {
   "file": "p_polaroid.png",
