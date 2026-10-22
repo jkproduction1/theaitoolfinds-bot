@@ -1,11 +1,14 @@
-[discover] github_trending: 25
-[discover] github_search: 51
+[discover] github_trending: 18
+[discover] github_search: 53
 [discover] hf_spaces: 60
 [discover] reddit r/StableDiffusion: HTTP 403
 [discover] reddit: 0
-[discover] hackernews: 23
-[discover] 0 from queue, 141 candidates total
-[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[discover] hackernews: 24
+[discover] 0 from queue, 138 candidates total
+[llm] attempt 1 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
 [llm] attempt 2 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
-[llm] attempt 3 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
-[main] top picks: opencode 9 free-alternative | ai-job-search 8 time-saver | blender-ai-mcp-addon 8 wow-demo | context-mode 8 money-saver | CLI-Anything 7 trending-repo | MOSS-Image 7 free-alternative | orca 7 trending-repo | solid-glass 7 wow-demo
+[llm] attempt 3 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
+[llm] attempt 4 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 5 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[main] ranking failed (LLM call failed (gemini): HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "me), using score order
+[main] top picks: rea 7 wow-demo | free-my-tv 7 wow-demo | security-audit-skill 7 wow-demo | orca 7 wow-demo | ponytail 7 wow-demo | qwen21-nsfw-pose-skill 7 wow-demo | opencode 7 wow-demo | DeepInfer: High-performance in 7 wow-demo

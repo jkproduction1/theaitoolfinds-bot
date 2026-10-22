@@ -1,54 +1,52 @@
 {
-  "date": "2026-10-21",
-  "category": "github",
+  "date": "2026-10-22",
+  "category": "useful",
   "items": [
     {
-      "name": "opencode",
-      "url": "https://github.com/anomalyco/opencode",
-      "desc": "Sponsor                           Star                    anomalyco /   opencode      The open source coding agent.",
+      "name": "rea",
+      "url": "https://github.com/morluto/rea",
+      "desc": "Star                    morluto /   rea      Reverse engineer anything with agents, from app behavior down to native binaries.",
       "source": "gh-trending",
-      "angle": "free-alternative",
-      "score": 9.0,
-      "why": "Open-source AI coding agent zdarma, kter\u00fd nahrazuje drah\u00e9 propriet\u00e1rn\u00ed n\u00e1stroje pro vibe coding."
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
     },
     {
-      "name": "ai-job-search",
-      "url": "https://github.com/MadsLorentzen/ai-job-search",
-      "desc": "Sponsor                           Star                    MadsLorentzen /   ai-job-search      The job search that runs on your machine. AI job application framework built on Claude Code: evaluate postings, tailor CVs, write cover letters, prep interviews. For",
-      "source": "gh-trending",
-      "angle": "time-saver",
-      "score": 8.0,
-      "why": "Lok\u00e1ln\u00ed AI framework, kter\u00fd automaticky vyhled\u00e1v\u00e1 pr\u00e1ci a optimalizuje \u017eivotopisy zcela zdarma."
-    },
-    {
-      "name": "blender-ai-mcp-addon",
-      "url": "https://github.com/LiCinCan/blender-ai-mcp-addon",
-      "desc": "AI assistant and MCP server for Blender: visual chat, scene tools, multi-agent workflows. Works with OpenAI, ChatGPT, Claude, Gemini, Ollama, OpenCode. Blender AI addon and plugin, copilot for 3D, bpy Python scripting, MCP integration.",
+      "name": "free-my-tv",
+      "url": "https://github.com/simbasjungles/free-my-tv",
+      "desc": "A fast, ad-free home screen for Google TV. Open source, built with Claude Code. One button to undo.",
       "source": "gh-search",
       "angle": "wow-demo",
-      "score": 8.0,
-      "why": "MCP AI asistent do Blenderu, kter\u00fd umo\u017e\u0148uje ovl\u00e1dat 3D tvorbu b\u011b\u017en\u00fdm textem."
+      "score": 7,
+      "why": ""
     },
     {
-      "name": "context-mode",
-      "url": "https://github.com/mksglu/context-mode",
-      "desc": "Sponsor                           Star                    mksglu /   context-mode      Context window optimization for AI coding agents. Sandboxes tool output (98% reduction), persists session memory, and enforces routing across 17 platforms via MCP + hooks.",
+      "name": "security-audit-skill",
+      "url": "https://github.com/cloudflare/security-audit-skill",
+      "desc": "Star                    cloudflare /   security-audit-skill      A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
       "source": "gh-trending",
-      "angle": "money-saver",
-      "score": 8.0,
-      "why": "Optimalizuje kontext AI agent\u016f a u\u0161et\u0159\u00ed a\u017e 98 % n\u00e1klad\u016f za tokeny."
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
     },
     {
-      "name": "CLI-Anything",
-      "url": "https://github.com/HKUDS/CLI-Anything",
-      "desc": "Star                    HKUDS /   CLI-Anything      \"CLI-Anything: Making ALL Software Agent-Native\" -- CLI-Hub:  https://clianything.cc/",
+      "name": "orca",
+      "url": "https://github.com/stablyai/orca",
+      "desc": "Star                    stablyai /   orca      Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any coding agent with your own subscription. Available on desktop, mobile and remote runtime.",
       "source": "gh-trending",
-      "angle": "trending-repo",
-      "score": 7.0,
-      "why": "Ud\u011bl\u00e1 z libovoln\u00e9ho softwaru rozhran\u00ed, kter\u00e9 mohou pln\u011b ovl\u00e1dat autonomn\u00ed AI agenti."
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "ponytail",
+      "url": "https://github.com/DietrichGebert/ponytail",
+      "desc": "Sponsor                           Star                    DietrichGebert /   ponytail      Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
     }
   ],
-  "picked": [
-    "https://github.com/mksglu/context-mode"
-  ]
+  "picked": []
 }
