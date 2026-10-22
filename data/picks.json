@@ -1,6 +1,6 @@
 {
   "date": "2026-10-22",
-  "category": "useful",
+  "category": "video",
   "items": [
     {
       "name": "rea",
@@ -48,7 +48,5 @@
       "why": ""
     }
   ],
-  "picked": [
-    "https://github.com/simbasjungles/free-my-tv"
-  ]
+  "picked": []
 }
