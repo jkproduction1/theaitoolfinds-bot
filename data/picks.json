@@ -1,6 +1,6 @@
 {
   "date": "2026-10-23",
-  "category": "design",
+  "category": "coding",
   "items": [
     {
       "name": "rea",
@@ -39,16 +39,14 @@
       "why": ""
     },
     {
-      "name": "ponytail",
-      "url": "https://github.com/DietrichGebert/ponytail",
-      "desc": "Sponsor                           Star                    DietrichGebert /   ponytail      Makes your AI agent think like the laziest senior dev in the room. The best code is the code you never wrote.",
+      "name": "opencode",
+      "url": "https://github.com/anomalyco/opencode",
+      "desc": "Sponsor                           Star                    anomalyco /   opencode      The open source coding agent.",
       "source": "gh-trending",
       "angle": "wow-demo",
       "score": 7,
       "why": ""
     }
   ],
-  "picked": [
-    "https://github.com/morluto/rea"
-  ]
+  "picked": []
 }
