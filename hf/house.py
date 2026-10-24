@@ -186,7 +186,7 @@ function cta(word,t){ ft('#field',{opacity:0,y:60,scale:.94},{opacity:1,y:0,scal
   for(let x=t+0.4+.12*word.length;x<DUR-0.2;x+=0.6){ tl.set('#caret',{opacity:0},x); tl.set('#caret',{opacity:1},x+0.3); } }
 """
 JS_TAIL = r"""
-ft('#handle',{opacity:0,y:20},{opacity:1,y:0,duration:.5,ease:A},0.15);
+// handle pill is visible from frame 0
 for(let k=0,t=0;t<DUR;k++,t=k/12){ const sd=(k*7919)%997; tl.set('#grain',{x:-(sd%256),y:-((sd*31)%256)},t); }
 window.__timelines['main']=tl; tl.seek(0);
 """

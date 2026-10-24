@@ -27,7 +27,7 @@ def run(*a, cwd=repo):
 run("git", "fetch", "-q", "origin", "+videos:refs/remotes/origin/videos")
 if wt.exists():
     subprocess.run(["git", "worktree", "remove", "--force", str(wt)], cwd=repo)
-run("git", "worktree", "add", "-q", "-B", "videos", str(wt), "origin/videos")
+run("git", "worktree", "add", "-q", "--detach", str(wt), "origin/videos")
 d = wt / folder
 d.mkdir()
 shutil.copy(mp4, d / "video.mp4")
@@ -43,5 +43,5 @@ meta = {"url": post["url"], "name": post["tool_name"], "tool_name": post["tool_n
 run("git", "add", folder, cwd=wt)
 run("git", "-c", "user.name=theaitoolfinds-bot", "-c", "user.email=bot@users.noreply.github.com",
     "commit", "-qm", f"video: {folder} (HyperFrames)", cwd=wt)
-run("git", "push", "-q", "origin", "videos", cwd=wt)
+run("git", "push", "-q", "origin", "HEAD:videos", cwd=wt)
 print("PUBLISHED", folder)
