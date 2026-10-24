@@ -198,10 +198,10 @@
       "size": 72
      },
      "note": {
-      "text": "allowed apps\nonly",
+      "text": "allowed\napps only",
       "word": "^allowed",
       "rot": -5,
-      "w": 270
+      "w": 210
      },
      "poses": [
       [
