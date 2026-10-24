@@ -1,0 +1,9 @@
+Ever seen a feature in an app and wondered how they built it? Your AI agent can now look inside and show you.
+
+REA (Reverse Engineer Anything) is a free, open-source MCP for Claude Code, Codex, Cursor and more. It inspects desktop and Electron apps, websites and Android APKs without the source code, shows you the evidence, and helps your agent build a similar feature. Runs locally. Native binaries need Hopper, Ghidra or IDA.
+
+Use it only on software you own or are allowed to analyze.
+
+Comment REA and I'll DM you the link.
+
+#claudecode #aitools #opensource #reverseengineering
