@@ -1,3 +1,2 @@
-EL OK 0.3 13.1s [{'word': 'Stop', 'start': 0.0, 'end': 0.2857142857142857}, {'word': 'scrolling', 'start': 0.35714285714285715, 'end': 0.9598113054745706}, {'word': 'This', 'start': 1.0714083252348556, 'end': 1.2142654680919986}]
-EL OK 0.45 13.2s [{'word': 'Stop', 'start': 0.0, 'end': 0.2857142857142857}, {'word': 'scrolling', 'start': 0.35714285714285715, 'end': 0.857142857142857}, {'word': 'This', 'start': 0.9821226109491416, 'end': 1.1249797538062842}]
-EL OK 0.6 13.1s [{'word': 'Stop', 'start': 0.0, 'end': 0.2857142857142857}, {'word': 'scrolling', 'start': 0.35714285714285715, 'end': 1.0133827340459993}, {'word': 'This', 'start': 1.1249797538062842, 'end': 1.267836896663427}]
+[tts] ElevenLabs voice
+VOICE OK 26.9s 82 words
