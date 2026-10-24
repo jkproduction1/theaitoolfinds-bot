@@ -1,11 +1,2 @@
-
-[main] trying: OpenCode (https://github.com/anomalyco/opencode)  angle=wow-demo
-[main] researching https://github.com/anomalyco/opencode
-[media] using image 1400x1142 from https://raw.githubusercontent.com/anomalyco/opencode/HEAD/packages/web/src/assets/lander/s
-[main] using hand-written storyboard jobs/opencode.json
-[tts] ElevenLabs voice
-[main] voiceover 23.3s, 79 words
-[motion] 0 real assets
-[motion] collage: screen(3.0s) > flat(3.6s) > cork(4.5s) > detail(3.6s) > title(2.9s) > screen(3.4s) > detail(3.2s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-24_0832_opencode
-[main] HOLD 2026-10-24_0832_opencode (not sent to Telegram yet)
+[telegram] sent 2026-10-24_0826_rea for approval
+released 2026-10-24_0826_rea
