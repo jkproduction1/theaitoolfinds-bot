@@ -5,8 +5,8 @@
 [media] using image 1400x796 from https://raw.githubusercontent.com/morluto/rea/HEAD/docs/assets/rea-hopper-analysis.png
 [main] using hand-written storyboard jobs/rea.json
 [tts] ElevenLabs voice
-[main] voiceover 27.3s, 81 words
+[main] voiceover 23.5s, 79 words
 [motion] 0 real assets
-[motion] collage: title(4.0s) > screen(4.5s) > flat(4.1s) > cork(6.6s) > detail(3.8s) > screen(5.4s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-24_0813_rea
-[main] HOLD 2026-10-24_0813_rea (not sent to Telegram yet)
+[motion] collage: screen(3.0s) > flat(3.5s) > cork(4.5s) > detail(3.6s) > title(2.9s) > screen(3.6s) > detail(3.3s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-24_0819_opencode
+[main] HOLD 2026-10-24_0819_opencode (not sent to Telegram yet)
