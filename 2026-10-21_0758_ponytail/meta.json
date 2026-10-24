@@ -1,0 +1,225 @@
+{
+  "url": "https://github.com/DietrichGebert/ponytail",
+  "name": "Ponytail",
+  "tool_name": "Ponytail",
+  "category": "coding agents",
+  "style": "cine",
+  "hold": true,
+  "music": "t3",
+  "sentences": [
+    {
+      "text": "Your AI agent wrote 335 lines for a date picker. This one wrote 10.",
+      "scene": {
+        "kind": "flat",
+        "props": {
+          "plate": "laptop_top",
+          "head": {
+            "text": "335 VS 10",
+            "size": 200
+          },
+          "headY": 140,
+          "items": [
+            {
+              "type": "card",
+              "text": "no skill:\n335 lines",
+              "word": "^335",
+              "pos": [
+                80,
+                520,
+                -5
+              ],
+              "w": 470
+            },
+            {
+              "type": "card",
+              "text": "Ponytail:\n10 lines",
+              "word": "^10",
+              "pos": [
+                540,
+                820,
+                4
+              ],
+              "w": 470
+            },
+            {
+              "type": "prop",
+              "src": "p_mug.png",
+              "pos": [
+                90,
+                1000,
+                0
+              ],
+              "w": 250
+            }
+          ],
+          "scrappy": false
+        }
+      }
+    },
+    {
+      "text": "It's called Ponytail, and it puts a lazy senior dev inside your agent.",
+      "scene": {
+        "kind": "screen",
+        "props": {
+          "plate": "room1",
+          "show": {
+            "img": "tools/ponytail-logo.png"
+          },
+          "note": {
+            "text": "lazy\nsenior dev",
+            "word": "^lazy",
+            "rot": -4
+          },
+          "poses": [
+            [
+              0,
+              "talk"
+            ],
+            [
+              45,
+              "chill"
+            ]
+          ],
+          "side": "right",
+          "dive": true,
+          "tr": "whip"
+        }
+      }
+    },
+    {
+      "text": "In the creator's own tests, it wrote 53% less code and cost 26% less.",
+      "scene": {
+        "kind": "title",
+        "props": {
+          "lines": [
+            "-53%",
+            "CODE"
+          ],
+          "size": 210,
+          "sticker": "-26% cost",
+          "stickerWord": "^26",
+          "sx": 200,
+          "sub": "creator's own benchmark",
+          "bg": "tools/ponytail-chart.jpg",
+          "bgO": 0.5,
+          "bgBlur": 2,
+          "glow": "200,160,255",
+          "scrappy": false
+        }
+      }
+    },
+    {
+      "text": "But it never cuts security, and risky code still gets a test.",
+      "scene": {
+        "kind": "cork",
+        "props": {
+          "plate": "cork_string",
+          "items": [
+            {
+              "type": "polaroid",
+              "img": "tools/ponytail-band.jpg",
+              "name": "tests: passed",
+              "word": "^test",
+              "pos": [
+                70,
+                300,
+                -4
+              ],
+              "w": 560
+            },
+            {
+              "type": "sticky",
+              "text": "security:\nnever cut",
+              "word": "^security",
+              "pos": [
+                600,
+                760,
+                5
+              ],
+              "w": 300
+            }
+          ],
+          "poses": [
+            [
+              0,
+              "point"
+            ]
+          ],
+          "side": "left",
+          "tr": "drop"
+        }
+      }
+    },
+    {
+      "text": "It works with Claude Code, Codex, Cursor and more, free and open source.",
+      "scene": {
+        "kind": "detail",
+        "props": {
+          "plate": "lamp_close",
+          "text": {
+            "text": "Claude Code\nCodex · Cursor\n+ more",
+            "fx": "type",
+            "size": 90
+          },
+          "textY": 260,
+          "push": 0.35,
+          "poses": [
+            [
+              0,
+              "thumb"
+            ]
+          ],
+          "side": "right",
+          "tr": "zoom"
+        }
+      }
+    },
+    {
+      "text": "Comment PONYTAIL and I'll send you the link.",
+      "scene": {
+        "kind": "screen",
+        "props": {
+          "plate": "room1b",
+          "show": {
+            "type": "> comment\n  PONYTAIL",
+            "size": 56
+          },
+          "head": {
+            "text": "COMMENT\nPONYTAIL",
+            "size": 140
+          },
+          "headY": 110,
+          "poses": [
+            [
+              0,
+              "wave"
+            ]
+          ],
+          "side": "left",
+          "tr": "whip"
+        }
+      }
+    }
+  ],
+  "caption": "Your AI agent wrote 335 lines for a date picker. Ponytail wrote 10.\n\nPonytail is a free, open-source skill that puts a lazy senior dev inside your coding agent: write only what the task needs, but never cut validation, security or tests. In the creator's own benchmark (Claude Code, 39 tasks) it wrote 53% less code and cost 26% less. Works with Claude Code, Codex, Cursor and more.\n\nComment PONYTAIL and I'll DM you the link.",
+  "hashtags": [
+    "#claudecode",
+    "#aitools",
+    "#coding",
+    "#opensource"
+  ],
+  "cover": {
+    "line1": "335 vs 10 lines",
+    "line2": "Ponytail"
+  },
+  "summary_cs": "Ponytail je open-source skill/plugin pro Claude Code, Codex, Cursor a další, který agenta nutí psát jen nezbytný kód (příklad z README: date picker 335 → 10 řádků). Čísla -53 % kódu / -26 % ceny jsou z autorova vlastního benchmarku, tak to i ve videu říkám.",
+  "script": "Your AI agent wrote 335 lines for a date picker. This one wrote 10. It's called Ponytail, and it puts a lazy senior dev inside your agent. In the creator's own tests, it wrote 53% less code and cost 26% less. But it never cuts security, and risky code still gets a test. It works with Claude Code, Codex, Cursor and more, free and open source. Comment PONYTAIL and I'll send you the link.",
+  "keyword": "PONYTAIL",
+  "domain": "github.com/dietrichgebert/ponytail",
+  "source": "gh-trending",
+  "created": "2026-10-21_0758",
+  "duration": 24.5,
+  "demo": "https://raw.githubusercontent.com/DietrichGebert/ponytail/HEAD/assets/v5/hero.jpg",
+  "run_id": "39565489280",
+  "artifact": "videos-54"
+}

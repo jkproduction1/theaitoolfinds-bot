@@ -1,0 +1,7 @@
+You don't need a paid app to get an AI coding agent.
+
+OpenCode is a free, open-source (MIT) coding agent for your terminal, with a desktop app in beta. Use Claude, GPT, Gemini or any of 75+ providers, run local models with Ollama, or log in with your GitHub Copilot plan. Press Tab for read-only Plan mode. Paid models still cost what they cost; local ones are free.
+
+Comment OPENCODE and I'll DM you the link.
+
+#opencode #aitools #opensource #coding

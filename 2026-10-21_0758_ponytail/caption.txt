@@ -1,0 +1,7 @@
+Your AI agent wrote 335 lines for a date picker. Ponytail wrote 10.
+
+Ponytail is a free, open-source skill that puts a lazy senior dev inside your coding agent: write only what the task needs, but never cut validation, security or tests. In the creator's own benchmark (Claude Code, 39 tasks) it wrote 53% less code and cost 26% less. Works with Claude Code, Codex, Cursor and more.
+
+Comment PONYTAIL and I'll DM you the link.
+
+#claudecode #aitools #coding #opensource

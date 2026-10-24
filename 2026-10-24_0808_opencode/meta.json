@@ -1,0 +1,269 @@
+{
+  "url": "https://github.com/anomalyco/opencode",
+  "name": "OpenCode",
+  "tool_name": "OpenCode",
+  "category": "coding",
+  "style": "cine",
+  "hold": true,
+  "music": "t3",
+  "sentences": [
+    {
+      "text": "You don't need a paid app to get an AI coding agent.",
+      "scene": {
+        "kind": "screen",
+        "props": {
+          "plate": "laptop_top",
+          "show": {
+            "img": "tools/opencode-splash.jpg"
+          },
+          "head": {
+            "text": "FREE CODING\nAGENT",
+            "size": 150
+          },
+          "headY": 120,
+          "poses": [
+            [
+              0,
+              "shock"
+            ],
+            [
+              40,
+              "talk"
+            ]
+          ],
+          "side": "right"
+        }
+      }
+    },
+    {
+      "text": "OpenCode is free, open source, and runs right in your terminal.",
+      "scene": {
+        "kind": "flat",
+        "props": {
+          "plate": "desk_top",
+          "items": [
+            {
+              "type": "polaroid",
+              "img": "tools/opencode-tui.jpg",
+              "name": "OpenCode",
+              "word": "^OpenCode",
+              "pos": [
+                90,
+                300,
+                -4
+              ],
+              "w": 600
+            },
+            {
+              "type": "sticky",
+              "text": "open source\n(MIT)",
+              "word": "^open",
+              "pos": [
+                640,
+                860,
+                6
+              ],
+              "w": 300
+            },
+            {
+              "type": "prop",
+              "src": "p_floppy.png",
+              "pos": [
+                120,
+                1020,
+                -10
+              ],
+              "w": 260
+            }
+          ],
+          "poses": [
+            [
+              0,
+              "point"
+            ]
+          ],
+          "side": "right",
+          "tr": "drop",
+          "scrappy": {
+            "x": 700,
+            "y": 1060,
+            "h": 300,
+            "flip": true
+          }
+        }
+      }
+    },
+    {
+      "text": "Plug in Claude, GPT or Gemini, from over 75 providers.",
+      "scene": {
+        "kind": "cork",
+        "props": {
+          "plate": "cork_close",
+          "items": [
+            {
+              "type": "card",
+              "text": "Claude",
+              "word": "^Claude",
+              "pos": [
+                90,
+                330,
+                -5
+              ],
+              "w": 420
+            },
+            {
+              "type": "card",
+              "text": "GPT",
+              "word": "^GPT",
+              "pos": [
+                560,
+                520,
+                4
+              ],
+              "w": 380
+            },
+            {
+              "type": "card",
+              "text": "Gemini",
+              "word": "^Gemini",
+              "pos": [
+                150,
+                760,
+                2
+              ],
+              "w": 420
+            }
+          ],
+          "stamp": "75+",
+          "stampWord": "^providers",
+          "stampX": 560,
+          "stampY": 880,
+          "scrappy": false,
+          "tr": "whip"
+        }
+      }
+    },
+    {
+      "text": "Or run local models with Ollama, so you don't pay for the AI at all.",
+      "scene": {
+        "kind": "detail",
+        "props": {
+          "plate": "blinds_close",
+          "text": {
+            "text": "local models\nvia Ollama\n= $0",
+            "fx": "hand",
+            "size": 115
+          },
+          "textY": 260,
+          "push": 0.16,
+          "poses": [
+            [
+              0,
+              "thumb"
+            ]
+          ],
+          "side": "left",
+          "tr": "zoom",
+          "scrappy": {}
+        }
+      }
+    },
+    {
+      "text": "Already pay for GitHub Copilot? You can use that plan too.",
+      "scene": {
+        "kind": "title",
+        "props": {
+          "lines": [
+            "GOT",
+            "COPILOT?"
+          ],
+          "size": 190,
+          "sticker": "use it here",
+          "stickerWord": "^plan",
+          "sx": 220,
+          "bg": "tools/opencode-vscode.jpg",
+          "bgO": 0.55,
+          "bgBlur": 2,
+          "glow": "255,190,110",
+          "scrappy": false
+        }
+      }
+    },
+    {
+      "text": "Press Tab for Plan mode, which reads your code without editing it.",
+      "scene": {
+        "kind": "screen",
+        "props": {
+          "plate": "room1",
+          "show": {
+            "type": "[TAB] plan\nread-only",
+            "size": 60
+          },
+          "note": {
+            "text": "no edits\nwithout asking",
+            "word": "^editing",
+            "rot": -4
+          },
+          "poses": [
+            [
+              0,
+              "talk"
+            ],
+            [
+              50,
+              "chill"
+            ]
+          ],
+          "side": "left",
+          "tr": "cut"
+        }
+      }
+    },
+    {
+      "text": "Comment OPENCODE and I'll send you the link.",
+      "scene": {
+        "kind": "detail",
+        "props": {
+          "plate": "phone_desk",
+          "text": {
+            "text": "comment\nOPENCODE",
+            "fx": "type",
+            "size": 110
+          },
+          "textY": 240,
+          "push": 0.14,
+          "poses": [
+            [
+              0,
+              "wave"
+            ]
+          ],
+          "side": "right",
+          "tr": "whip",
+          "scrappy": {}
+        }
+      }
+    }
+  ],
+  "caption": "You don't need a paid app to get an AI coding agent.\n\nOpenCode is a free, open-source (MIT) coding agent for your terminal, with a desktop app in beta. Use Claude, GPT, Gemini or any of 75+ providers, run local models with Ollama, or log in with your GitHub Copilot plan. Press Tab for read-only Plan mode. Paid models still cost what they cost; local ones are free.\n\nComment OPENCODE and I'll DM you the link.",
+  "hashtags": [
+    "#opencode",
+    "#aitools",
+    "#opensource",
+    "#coding"
+  ],
+  "cover": {
+    "line1": "Free AI coding",
+    "line2": "agent, open source"
+  },
+  "summary_cs": "OpenCode je open-source (MIT) AI coding agent do terminálu (desktop appka v betě): napojíš Claude/GPT/Gemini z 75+ providerů, lokální modely přes Ollamu, nebo svoje GitHub Copilot předplatné. Tab přepne na read-only Plan agenta – free alternativa k placeným coding agentům.",
+  "script": "You don't need a paid app to get an AI coding agent. OpenCode is free, open source, and runs right in your terminal. Plug in Claude, GPT or Gemini, from over 75 providers. Or run local models with Ollama, so you don't pay for the AI at all. Already pay for GitHub Copilot? You can use that plan too. Press Tab for Plan mode, which reads your code without editing it. Comment OPENCODE and I'll send you the link.",
+  "keyword": "OPENCODE",
+  "domain": "github.com/anomalyco/opencode",
+  "source": "gh-trending",
+  "created": "2026-10-24_0808",
+  "duration": 23.4,
+  "demo": "https://raw.githubusercontent.com/anomalyco/opencode/HEAD/packages/web/src/assets/lander/screenshot.png",
+  "run_id": "40076347835",
+  "artifact": "videos-68"
+}

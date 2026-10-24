@@ -1,0 +1,7 @@
+Your coding agent can now make whole videos, for free.
+
+OpenFilm is an open-source AI video agent: ask Claude Code, Codex or any coding agent for a film, then change anything by hand in Studio, a real editor in your browser. Export MP4 or send the timeline to Premiere Pro, Final Cut or DaVinci Resolve. No account needed (AI voice/music use your own keys). Still early (v0.2).
+
+Comment OPENFILM and I'll DM you the link.
+
+#aivideo #claudecode #aitools #opensource
