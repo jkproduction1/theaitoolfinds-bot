@@ -1,0 +1,7 @@
+Running Claude Code, Codex and OpenCode in three messy terminals? Orca puts them side by side.
+
+Each agent gets its own git worktree, so they don't step on each other. Fan one prompt across five agents, compare, and merge the winner. Works with any CLI agent and the subscription you already have, plus a mobile app that pings you when an agent finishes. Free and open source (MIT). You still pay for your own agent plans.
+
+Comment ORCA and I'll DM you the link.
+
+#claudecode #aiagents #opensource #coding

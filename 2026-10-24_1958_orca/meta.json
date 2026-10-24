@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/stablyai/orca",
+ "name": "Orca",
+ "tool_name": "Orca",
+ "keyword": "ORCA",
+ "summary_cs": "Orca je open-source (MIT) desktop appka, kde vedle sebe pustíš Claude Code, Codex, OpenCode a další CLI agenty, každý ve vlastním git worktree. Jeden prompt rozešleš na pět agentů, porovnáš a mergneš vítěze; mobilní appka ti pípne, když agent dodělá.",
+ "style": "hyperframes-paper",
+ "duration": 24.5,
+ "domain": "github.com/stablyai/orca",
+ "created": "2026-10-24_1958",
+ "run_id": null,
+ "artifact": null
+}
