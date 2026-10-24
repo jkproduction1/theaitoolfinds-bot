@@ -19,7 +19,7 @@ PENDING = config.DATA / "pending.json"
 POSTED = config.DATA / "posted.json"
 TZ = ZoneInfo(os.getenv("POST_TIMEZONE", "Europe/Prague"))
 # Prague times = good for an English (EU + US morning) audience. Change freely.
-SLOTS = [s.strip() for s in os.getenv("POST_SLOTS", "15:00,21:00").split(",")]
+SLOTS = [s.strip() for s in os.getenv("POST_SLOTS", "08:00,15:00,22:00").split(",")]
 
 
 def _load(p, default):
@@ -184,8 +184,16 @@ def fetch_video(name: str, info: dict) -> Path:
     if (dest / "video.mp4").exists():
         return dest
     Path("dl").mkdir(exist_ok=True)
-    subprocess.run(["gh", "run", "download", str(info["run_id"]), "-n", info["artifact"],
-                    "-D", "dl"], check=True)
+    if not info.get("run_id"):  # HyperFrames videos: made in a Claude session, stored only on `videos`
+        dest.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["git", "fetch", "-q", "origin", "+videos:refs/remotes/origin/videos"], check=True)
+        for f in ("video.mp4", "cover.jpg", "caption.txt", "meta.json"):
+            r = subprocess.run(["git", "show", f"origin/videos:{name}/{f}"], capture_output=True)
+            if r.returncode == 0:
+                (dest / f).write_bytes(r.stdout)
+    else:
+        subprocess.run(["gh", "run", "download", str(info["run_id"]), "-n", info["artifact"],
+                        "-D", "dl"], check=True)
     if not (dest / "video.mp4").exists():
         raise RuntimeError(f"video {name} not in artifact {info['artifact']}")
     return dest
