@@ -1,10 +1,14 @@
 [
  {
-  "name": "opencode",
-  "text": "Paying for an AI coding app? There's a free, open-source one. It's called OpenCode, and it runs right in your terminal. Plug in Claude, GPT or Gemini, from over 75 providers. Already pay for GitHub Copilot? Log in and use that plan. Or run local models with Ollama and pay nothing for the AI. Press Tab for Plan mode. It reads your code, but won't edit it. Comment OPENCODE and I'll send you the link."
+  "name": "orca",
+  "text": "Running Claude Code, Codex and OpenCode in three messy terminals? Orca puts them all side by side. Each agent gets its own git worktree, so they never step on each other. Fan one prompt across five agents, compare the results, and merge the winner. It runs any CLI agent with the subscription you already have. Your phone pings you when an agent finishes. Free and open source. Comment ORCA and I'll send you the link."
  },
  {
-  "name": "claude7",
-  "text": "Most people use Claude Code like a chat box. These seven commands change that. One: slash B-T-W. Ask a side question without filling your context. Two: press Escape twice to roll back to an earlier checkpoint. Three: slash compact. It summarizes the chat to free up context. Four: slash context shows what's eating your context window. Five: Shift Tab switches to plan mode. Read only, no edits. Six: Control R searches your old prompts. Seven: slash simplify reviews your recent changes and fixes them. Comment CLAUDE and I'll send you the full cheat sheet."
+  "name": "secaudit",
+  "text": "Vibe coding fast and worried about security holes? Cloudflare open-sourced the skill that seeded its own bug-hunting harness. Add it to your coding agent and say: security audit this codebase. First, it maps your app. Then isolated hunters look for holes. A fresh agent tries to disprove every finding. The agent that checks a bug is never the one that found it. Tip: run it more than once. In their tests, one run found about half of what repeated runs found. Comment AUDIT and I'll send you the link."
+ },
+ {
+  "name": "comfy5",
+  "text": "Still clicking through menus in ComfyUI? These five shortcuts change that. One: double-click the canvas to search for any node. Two: Control B bypasses a node, and the wires pass right through. Three: Control M mutes it. Four: Control Enter queues your graph. Add Shift to put it first in line. Five: load an image you made in ComfyUI and get its whole workflow back, seed included. Free, open source, and it runs offline. Comment COMFY and I'll send you the link."
  }
 ]
