@@ -154,5 +154,11 @@
     "domain": "github.com/openfilm/openfilm",
     "date": "2026-10-21_0839",
     "source": "gh-search"
+  },
+  {
+    "name": "REA",
+    "domain": "github.com/morluto/rea",
+    "date": "2026-10-24_0802",
+    "source": "gh-trending"
   }
 ]
