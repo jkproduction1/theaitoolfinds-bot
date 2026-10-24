@@ -1,11 +1,12 @@
 
-[main] trying: OpenCode (https://github.com/anomalyco/opencode)  angle=wow-demo
-[main] researching https://github.com/anomalyco/opencode
-[media] using image 1400x1142 from https://raw.githubusercontent.com/anomalyco/opencode/HEAD/packages/web/src/assets/lander/s
-[main] using hand-written storyboard jobs/opencode.json
+[main] trying: REA (https://github.com/morluto/rea)  angle=wow-demo
+[main] researching https://github.com/morluto/rea
+[media] skip https://skills.sh/b/morluto/rea?style=flat-square: cannot identify image file '/home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-24_0813_rea/_work/media_raw.img'
+[media] using image 1400x796 from https://raw.githubusercontent.com/morluto/rea/HEAD/docs/assets/rea-hopper-analysis.png
+[main] using hand-written storyboard jobs/rea.json
 [tts] ElevenLabs voice
-[main] voiceover 23.4s, 79 words
+[main] voiceover 27.3s, 81 words
 [motion] 0 real assets
-[motion] collage: screen(3.0s) > flat(3.6s) > cork(4.4s) > detail(3.7s) > title(2.8s) > screen(3.6s) > detail(3.2s)
-[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-24_0808_opencode
-[main] HOLD 2026-10-24_0808_opencode (not sent to Telegram yet)
+[motion] collage: title(4.0s) > screen(4.5s) > flat(4.1s) > cork(6.6s) > detail(3.8s) > screen(5.4s)
+[main] DONE -> /home/runner/work/theaitoolfinds-bot/theaitoolfinds-bot/out/2026-10-24_0813_rea
+[main] HOLD 2026-10-24_0813_rea (not sent to Telegram yet)
