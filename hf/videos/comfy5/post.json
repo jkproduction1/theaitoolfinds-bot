@@ -1,0 +1,8 @@
+{
+ "url": "https://github.com/Comfy-Org/ComfyUI",
+ "tool_name": "ComfyUI",
+ "keyword": "COMFY",
+ "cover_at": 3.6,
+ "summary_cs": "Listicle: 5 zkratek v ComfyUI ověřených z README (dvojklik = hledání nodů, Ctrl+B bypass, Ctrl+M mute, Ctrl+Enter / +Shift fronta, načtení vygenerovaného obrázku vrátí celý workflow i seed). ComfyUI je zdarma, open source (GPL-3.0) a jede offline.",
+ "caption": "Still clicking through menus in ComfyUI? These 5 shortcuts change that.\n\n1. Double-click the canvas: search any node\n2. Ctrl+B: bypass a node, wires pass through\n3. Ctrl+M: mute a node\n4. Ctrl+Enter: queue the graph (Ctrl+Shift+Enter puts it first)\n5. Load an image made in ComfyUI: get its whole workflow and seed back\n\nFree, open source (GPL-3.0) and runs offline. Cmd instead of Ctrl on Mac. You still need a decent GPU for big models.\n\nComment COMFY and I'll DM you the link.\n\n#comfyui #aiart #stablediffusion #aitools"
+}

@@ -1,0 +1,8 @@
+{
+ "url": "https://github.com/stablyai/orca",
+ "tool_name": "Orca",
+ "keyword": "ORCA",
+ "cover_at": 3.9,
+ "summary_cs": "Orca je open-source (MIT) desktop appka, kde vedle sebe pustíš Claude Code, Codex, OpenCode a další CLI agenty, každý ve vlastním git worktree. Jeden prompt rozešleš na pět agentů, porovnáš a mergneš vítěze; mobilní appka ti pípne, když agent dodělá.",
+ "caption": "Running Claude Code, Codex and OpenCode in three messy terminals? Orca puts them side by side.\n\nEach agent gets its own git worktree, so they don't step on each other. Fan one prompt across five agents, compare, and merge the winner. Works with any CLI agent and the subscription you already have, plus a mobile app that pings you when an agent finishes. Free and open source (MIT). You still pay for your own agent plans.\n\nComment ORCA and I'll DM you the link.\n\n#claudecode #aiagents #opensource #coding"
+}
