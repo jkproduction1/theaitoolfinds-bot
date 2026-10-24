@@ -114,6 +114,12 @@ def next_slot(taken: set) -> datetime:
     if os.getenv("POST_NOW") == "true":  # manual run: publish right away
         return datetime.now(TZ) + timedelta(minutes=3)
     now = datetime.now(TZ) + timedelta(minutes=20)
+    extra = config.DATA / "extra_slots.json"  # one-off slots, e.g. ["2026-10-24T19:00:00+02:00"]
+    if extra.exists():
+        for s in sorted(json.loads(extra.read_text())):
+            t = datetime.fromisoformat(s)
+            if t > now and t.isoformat() not in taken:
+                return t
     for day in range(0, 14):
         d = (now + timedelta(days=day)).date()
         for s in SLOTS:
