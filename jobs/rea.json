@@ -1,0 +1,235 @@
+{
+ "url": "https://github.com/morluto/rea",
+ "name": "REA",
+ "tool_name": "REA",
+ "category": "coding",
+ "style": "cine",
+ "hold": true,
+ "music": "t1",
+ "sentences": [
+  {
+   "text": "Love a feature in some app? Your AI can now find out how it works.",
+   "scene": {
+    "kind": "title",
+    "props": {
+     "lines": [
+      "HOW DOES",
+      "IT WORK?"
+     ],
+     "size": 170,
+     "sticker": "no source code",
+     "stickerWord": "^find",
+     "sx": 160,
+     "bg": "tools/rea-hopper.jpg",
+     "bgO": 0.6,
+     "bgBlur": 1,
+     "glow": "120,220,255",
+     "scrappy": false
+    }
+   }
+  },
+  {
+   "text": "It's called REA, and it plugs into Claude Code, Codex or Cursor.",
+   "scene": {
+    "kind": "screen",
+    "props": {
+     "plate": "tv_close",
+     "show": {
+      "img": "tools/rea-flow.jpg"
+     },
+     "note": {
+      "text": "Claude Code\nCodex · Cursor",
+      "word": "^Claude",
+      "rot": -4
+     },
+     "poses": [
+      [
+       0,
+       "talk"
+      ],
+      [
+       45,
+       "point"
+      ]
+     ],
+     "side": "right",
+     "dive": true,
+     "tr": "zoom"
+    }
+   }
+  },
+  {
+   "text": "It looks inside desktop apps, websites and even Android APKs.",
+   "scene": {
+    "kind": "flat",
+    "props": {
+     "plate": "mat_top",
+     "head": {
+      "text": "LOOKS INSIDE",
+      "size": 130
+     },
+     "headY": 130,
+     "items": [
+      {
+       "type": "card",
+       "text": "desktop apps",
+       "word": "^desktop",
+       "pos": [
+        80,
+        400,
+        -4
+       ],
+       "w": 470
+      },
+      {
+       "type": "card",
+       "text": "websites",
+       "word": "^websites",
+       "pos": [
+        500,
+        640,
+        3
+       ],
+       "w": 430
+      },
+      {
+       "type": "card",
+       "text": "Android APKs",
+       "word": "^Android",
+       "pos": [
+        110,
+        900,
+        -2
+       ],
+       "w": 470
+      }
+     ],
+     "poses": [
+      [
+       0,
+       "excited"
+      ]
+     ],
+     "side": "left",
+     "tr": "whip",
+     "scrappy": {
+      "x": 40,
+      "y": 1050,
+      "h": 300
+     }
+    }
+   }
+  },
+  {
+   "text": "One showcase rebuilt the sound math from the game DX-Ball and passed all 3,205 checks.",
+   "scene": {
+    "kind": "cork",
+    "props": {
+     "plate": "cork_string",
+     "items": [
+      {
+       "type": "polaroid",
+       "img": "tools/rea-case1.jpg",
+       "name": "DX-Ball",
+       "word": "^DX",
+       "pos": [
+        110,
+        330,
+        -4
+       ],
+       "w": 480
+      },
+      {
+       "type": "sticky",
+       "text": "3,205 / 3,205\nchecks passed",
+       "word": "^passed",
+       "pos": [
+        580,
+        820,
+        5
+       ],
+       "w": 340
+      }
+     ],
+     "side": "left",
+     "tr": "drop",
+     "scrappy": false
+    }
+   }
+  },
+  {
+   "text": "Then your agent can build a similar feature, free and running locally.",
+   "scene": {
+    "kind": "detail",
+    "props": {
+     "plate": "keyboard_close",
+     "text": {
+      "text": "build your\nown version\n· free · local ·",
+      "fx": "hand",
+      "size": 110
+     },
+     "textY": 260,
+     "push": 0.18,
+     "poses": [
+      [
+       0,
+       "thumb"
+      ]
+     ],
+     "side": "right",
+     "tr": "zoom",
+     "scrappy": {}
+    }
+   }
+  },
+  {
+   "text": "Only use it on apps you're allowed to analyze. Comment REA and I'll send you the link.",
+   "scene": {
+    "kind": "screen",
+    "props": {
+     "plate": "crt_close",
+     "show": {
+      "type": "> comment\n  REA",
+      "size": 72
+     },
+     "note": {
+      "text": "your own\napps only",
+      "word": "^allowed",
+      "rot": -5,
+      "w": 200
+     },
+     "poses": [
+      [
+       0,
+       "talk"
+      ],
+      [
+       60,
+       "wave"
+      ]
+     ],
+     "side": "right",
+     "tr": "whip",
+     "scrappy": {
+      "x": 690,
+      "y": 1120,
+      "h": 340,
+      "flip": true
+     }
+    }
+   }
+  }
+ ],
+ "caption": "See a feature you love in an app? Your AI agent can now figure out how it works.\n\nREA (Reverse Engineer Anything) is a free, open-source MCP for Claude Code, Codex, Cursor and more. It inspects desktop and Electron apps, websites, Android APKs and native binaries, shows you the evidence, and lets your agent build a similar feature. Runs locally. Native binaries need Hopper, Ghidra or IDA.\n\nUse it only on software you own or are allowed to analyze.\n\nComment REA and I'll DM you the link.",
+ "hashtags": [
+  "#claudecode",
+  "#aitools",
+  "#opensource",
+  "#reverseengineering"
+ ],
+ "cover": {
+  "line1": "Your AI can see",
+  "line2": "how apps work"
+ },
+ "summary_cs": "REA je open-source (MIT) MCP pro Claude Code / Codex / Cursor: agent s ním prozkoumá appku, web nebo APK bez zdrojáku, ukáže důkazy a postaví podobnou funkci. Showcase: DX-Ball zvukový výpočet prošel všech 3 205 testů; na nativní binárky potřebuje Hopper/Ghidra/IDA."
+}
