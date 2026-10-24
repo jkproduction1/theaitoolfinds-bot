@@ -18,10 +18,10 @@
      ],
      "size": 170,
      "sticker": "no source code",
-     "stickerWord": "^find",
+     "stickerWord": "^feature",
      "sx": 160,
-     "bg": "tools/rea-hopper.jpg",
-     "bgO": 0.6,
+     "bg": "crt_close.jpg",
+     "bgO": 0.95,
      "bgBlur": 1,
      "glow": "120,220,255",
      "scrappy": false
@@ -178,7 +178,12 @@
      ],
      "side": "right",
      "tr": "zoom",
-     "scrappy": {}
+     "scrappy": {
+      "x": 690,
+      "y": 1120,
+      "h": 340,
+      "flip": true
+     }
     }
    }
   },
@@ -193,10 +198,10 @@
       "size": 72
      },
      "note": {
-      "text": "your own\napps only",
+      "text": "allowed apps\nonly",
       "word": "^allowed",
       "rot": -5,
-      "w": 200
+      "w": 270
      },
      "poses": [
       [
