@@ -1,0 +1,7 @@
+Vibe coding fast and worried about security holes? Cloudflare open-sourced the skill that seeded its own vulnerability harness.
+
+Install it into your coding agent and say "security audit this codebase". It maps your app, sends isolated hunters after bugs, then a fresh agent tries to disprove every finding before it lands in the report. Run it more than once: in Cloudflare's tests a single run found roughly half of what repeated runs found. Needs an agent with sub-agents and a proper sandbox to execute target code. MIT licensed.
+
+Comment AUDIT and I'll DM you the link.
+
+#cybersecurity #claudecode #aiagents #opensource

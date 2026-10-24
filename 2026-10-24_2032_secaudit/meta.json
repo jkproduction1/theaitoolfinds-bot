@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/cloudflare/security-audit-skill",
+ "name": "Cloudflare security-audit skill",
+ "tool_name": "Cloudflare security-audit skill",
+ "keyword": "AUDIT",
+ "summary_cs": "Cloudflare zveřejnil (MIT) skill pro coding agenty, ze kterého vyrostl jejich vlastní harness na hledání zranitelností: agent zmapuje appku, izolovaní hunteři hledají díry a nezávislý agent se každý nález snaží vyvrátit. Podle jejich testů jeden běh najde zhruba polovinu toho, co opakované běhy.",
+ "style": "hyperframes-paper",
+ "duration": 28.5,
+ "domain": "github.com/cloudflare/security-audit-skill",
+ "created": "2026-10-24_2032",
+ "run_id": null,
+ "artifact": null
+}
