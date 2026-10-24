@@ -73,8 +73,8 @@ def keys(kid, labels):
 CURSOR = '<svg id="cur" viewBox="0 0 40 40"><path d="M6 4l26 14-12 3-5 12z" fill="#111" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg>'
 
 # S0 graph + a menu being clicked through
-F.clip(0, '<div id="g0">' + svg(wire("w01", 320, 470, 360, 680) + wire("w02", 320, 520, 360, 730))
-       + node("a0", "Load Checkpoint", ["model", "clip"], 40, 380, w=280) + node("b0", "KSampler", ["steps 20", "cfg 7"], 360, 640, w=260) + '</div>'
+F.clip(0, '<div id="g0">' + svg(wire("w01", 350, 470, 390, 680) + wire("w02", 350, 520, 390, 730))
+       + node("a0", "Load Checkpoint", ["model", "clip"], 80, 380, w=272) + node("b0", "KSampler", ["steps 20", "cfg 7"], 390, 640, w=240) + '</div>'
        + '<div id="menu" class="card"><div>Add Node ›</div><div class="on" id="mo">sampling ›</div><div>loaders ›</div><div>image ›</div><div>latent ›</div></div>'
        + CURSOR
        + F.block([[(0, 3, "")], [(4, 4, ""), (5, 5, "hl")]], top=1040, size=86))
@@ -84,18 +84,18 @@ F.clip(2, num(1) + '<div id="rp1" class="rip" style="left:480px;top:420px"></div
          '<div class="it on">KSampler</div><div class="it">KSamplerAdvanced</div><div class="it">SamplerCustom</div></div>'
        + F.block([[(11, 11, "it"), (12, 12, "b"), (13, 14, "")], [(15, 16, "hl"), (17, 19, "")]], top=1020, size=78))
 F.clip(3, num(2) + keys("k2", ["Ctrl", "B"])
-       + '<div id="g3">' + svg(wire("w31", 300, 700, 780, 700, "#ff4b1f"))
-       + node("a3", "Loader", ["model"], 40, 640, w=260) + node("b3", "Upscale", ["×2"], 400, 640, w=280) + node("c3", "Save", ["image"], 780, 640, w=260) + '</div>'
-       + F.block([[(20, 20, "it"), (21, 22, "b"), (23, 25, "hl")], [(26, 31, "")]], top=1030, size=76))
+       + '<div id="g3">' + svg(wire("w31", 320, 700, 760, 700, "#ff4b1f"))
+       + node("a3", "Loader", ["model"], 80, 640, w=240) + node("b3", "Upscale", ["×2"], 400, 640, w=280) + node("c3", "Save", ["image"], 760, 640, w=240) + '</div>'
+       + F.block([[(20, 20, "it"), (21, 22, "b")], [(23, 25, "hl"), (26, 27, "")], [(28, 31, "")]], top=1010, size=72))
 F.clip(4, num(3) + keys("k3", ["Ctrl", "M"]) + node("m4", "Upscale", ["muted"], 390, 650, w=300)
        + F.block([[(32, 32, "it"), (33, 34, "b"), (35, 36, "hl")]], top=1060, size=84))
 F.clip(5, num(4) + keys("k4", ["Ctrl", "Enter"]) + '<span id="k4s" class="key" style="position:absolute;left:60px;top:420px">Shift</span>'
        + '<div id="q" class="card"><div class="qi new" id="qn"><i></i>your graph  → first</div><div class="qi" id="qa"><i></i>job #12</div><div class="qi" id="qb"><i></i>job #13</div></div>'
-       + F.block([[(37, 37, "it"), (38, 39, "b"), (40, 40, "hl"), (41, 42, "")], [(43, 44, "b"), (45, 50, "")]], top=1020, size=74))
+       + F.block([[(37, 37, "it"), (38, 39, "b"), (40, 40, "hl")], [(41, 42, ""), (43, 44, "b")], [(45, 50, "")]], top=1010, size=74))
 F.clip(6, num(5) + '<div id="img" class="card"><div class="art"></div></div>'
-       + '<div id="g6">' + svg(wire("w61", 330, 500, 400, 640) + wire("w62", 680, 690, 750, 520))
-       + node("a6", "Load Checkpoint", ["model"], 40, 400, w=290) + node("b6", "KSampler", ["seed 802114"], 390, 600, w=300, acc=True)
-       + node("c6", "Save Image", ["png"], 750, 420, w=290) + '</div><div id="seed">seed 802114</div>'
+       + '<div id="g6">' + svg(wire("w61", 352, 500, 390, 640) + wire("w62", 690, 690, 740, 520))
+       + node("a6", "Load Checkpoint", ["model"], 80, 400, w=272) + node("b6", "KSampler", ["seed 802114"], 390, 600, w=300, acc=True)
+       + node("c6", "Save Image", ["png"], 740, 420, w=260) + '</div><div id="seed">seed 802114</div>'
        + F.block([[(51, 51, "it"), (52, 56, "")], [(57, 58, "b"), (59, 61, "")], [(62, 64, "hl")], [(65, 66, "b")]], top=975, size=70))
 F.clip(7, tile("t1", "free", 100, 420, 250, acc=True) + tile("t2", "branch", 415, 420, 250) + tile("t3", "local", 730, 420, 250)
        + F.block([[(67, 67, "hl"), (68, 69, "b")], [(70, 72, ""), (73, 73, "it")]], top=1020, size=86))
@@ -123,7 +123,7 @@ tl.to('#cur',{scale:.8,duration:.06,yoyo:true,repeat:1},S[3]);
 tl.to('#mo',{backgroundColor:'#ff4b1f',duration:.1},S[3]);
 tl.to(['#g0','#menu','#cur'],{scale:.7,opacity:0,filter:'blur(16px)',duration:.3,ease:IN},ST[1]-0.3);
 // S1 big 5
-ft('#five',{opacity:0,scale:2.2,filter:'blur(30px)',rotation:-8},{opacity:1,scale:1,filter:'blur(0px)',rotation:0,duration:.6,ease:A},S[7]-0.12);
+ft('#five',{opacity:0,scale:2.2,filter:'blur(30px)',rotation:-8},{opacity:1,scale:1,filter:'blur(0px)',rotation:0,duration:.6,ease:A},ST[1]+0.02);
 tl.to('#five',{opacity:0,y:-120,filter:'blur(16px)',duration:.25,ease:IN},ST[2]-0.25);
 starPass('#st1',ST[2]-0.35,[700,-650,0],[430,-360,40],10,1.2);
 // items numbers
@@ -147,8 +147,8 @@ tl.to('#m4',{opacity:.35,filter:'grayscale(1)',duration:.35,ease:A},S[35]+0.1);
 outUp(['#k3','#m4'],ST[5]);
 starPass('#st2',ST[5]-0.3,[-700,1750,0],[-440,1450,-35],5,1.2);
 // #4 Ctrl+Enter queue, Shift = first
-popIn('#k40',S[38]-0.1,{y:40,s:.8,r:0}); popIn('#k41',S[39]-0.1,{y:40,s:.8,r:0}); keyPress('#k40',S[40]); keyPress('#k41',S[40]+0.05);
-popIn('#q',S[40],{y:60,s:.9,r:0});
+popIn('#k40',ST[5]+0.05,{y:40,s:.8,r:0}); popIn('#k41',S[39]-0.1,{y:40,s:.8,r:0}); keyPress('#k40',S[40]); keyPress('#k41',S[40]+0.05);
+popIn('#q',ST[5]+0.2,{y:60,s:.9,r:0});
 ft('#qn',{opacity:0,y:120},{opacity:1,y:0,duration:.6,ease:'back.out(1.6)'},S[47]);
 ft(['#qa','#qb'],{y:-60},{y:0,duration:.6,ease:A},S[47]);
 tl.to('#k4',{x:90,duration:.4,ease:A},S[44]-0.15);

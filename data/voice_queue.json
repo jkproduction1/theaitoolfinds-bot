@@ -1,14 +1,6 @@
 [
  {
-  "name": "orca",
-  "text": "Running Claude Code, Codex and OpenCode in three messy terminals? Orca puts them all side by side. Each agent gets its own git worktree, so they never step on each other. Fan one prompt across five agents, compare the results, and merge the winner. It runs any CLI agent with the subscription you already have. Your phone pings you when an agent finishes. Free and open source. Comment ORCA and I'll send you the link."
- },
- {
-  "name": "secaudit",
-  "text": "Vibe coding fast and worried about security holes? Cloudflare open-sourced the skill that seeded its own bug-hunting harness. Add it to your coding agent and say: security audit this codebase. First, it maps your app. Then isolated hunters look for holes. A fresh agent tries to disprove every finding. The agent that checks a bug is never the one that found it. Tip: run it more than once. In their tests, one run found about half of what repeated runs found. Comment AUDIT and I'll send you the link."
- },
- {
-  "name": "comfy5",
-  "text": "Still clicking through menus in ComfyUI? These five shortcuts change that. One: double-click the canvas to search for any node. Two: Control B bypasses a node, and the wires pass right through. Three: Control M mutes it. Four: Control Enter queues your graph. Add Shift to put it first in line. Five: load an image you made in ComfyUI and get its whole workflow back, seed included. Free, open source, and it runs offline. Comment COMFY and I'll send you the link."
+  "name": "microduck",
+  "text": "Want to train a real robot, not just a chatbot? Meet Microduck from Pollen Robotics. It's a 25 centimeter biped, about 800 grams, with fifteen motors. Out of the box it walks, kicks a ball, picks things up and gets back up when you knock it over. Put on skates and it rolls. The whole training stack is open source. Teach it new moves in a MuJoCo simulation, then run them on the robot. It's 399 dollars, intro price. Comment MICRODUCK and I'll send you the link."
  }
 ]

@@ -79,7 +79,7 @@ F.clip(4, '<div id="fc1" class="fc card" style="top:380px">auth bypass<span clas
 F.clip(5, f'<div id="wa" class="who card" style="left:90px"><svg viewBox="0 0 100 100" fill="none" stroke="#111" stroke-width="6" stroke-linecap="round">{USER}</svg>found it</div>'
           f'<div id="wb" class="who card" style="left:660px"><svg viewBox="0 0 100 100" fill="none" stroke="#ff4b1f" stroke-width="6" stroke-linecap="round">{USER}</svg>checks it</div>'
           '<div id="neq">≠</div>'
-       + F.block([[(49, 54, "")], [(55, 56, "hl"), (57, 61, "")]], top=1020, size=78))
+       + F.block([[(49, 54, "")], [(55, 56, "hl"), (57, 58, "")], [(59, 61, "")]], top=1010, size=66))
 F.clip(6, '<div id="loop"><span id="loopk">↻</span></div><div id="x2">×2</div>'
        + F.block([[(62, 62, "it"), (63, 64, "b"), (65, 67, "hl")]], top=1060, size=84))
 F.clip(7, '<div id="half">½</div>'
@@ -143,4 +143,4 @@ outUp(['#half','#r1','#r2'],ST[8]);
 starPass('#st3',ST[8]-0.3,[900,1500,0],[580,1290,50],8,1.2);
 cta('AUDIT',S[82]);
 """
-F.write(CSS, JS, music_vol=0.10)
+F.write(CSS, JS, music_vol=0.08)
