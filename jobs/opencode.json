@@ -31,7 +31,13 @@
        "talk"
       ]
      ],
-     "side": "right"
+     "side": "right",
+     "scrappy": {
+      "x": 700,
+      "y": 1120,
+      "h": 340,
+      "flip": true
+     }
     }
    }
   },
@@ -101,43 +107,43 @@
      "plate": "cork_close",
      "items": [
       {
-       "type": "card",
+       "type": "sticky",
        "text": "Claude",
        "word": "^Claude",
        "pos": [
-        90,
+        110,
         330,
         -5
        ],
-       "w": 420
+       "w": 330
       },
       {
-       "type": "card",
+       "type": "sticky",
        "text": "GPT",
        "word": "^GPT",
        "pos": [
-        560,
-        520,
+        600,
+        400,
         4
        ],
-       "w": 380
+       "w": 310
       },
       {
-       "type": "card",
+       "type": "sticky",
        "text": "Gemini",
        "word": "^Gemini",
        "pos": [
-        150,
+        200,
         760,
-        2
+        -2
        ],
-       "w": 420
+       "w": 330
       }
      ],
      "stamp": "75+",
      "stampWord": "^providers",
-     "stampX": 560,
-     "stampY": 880,
+     "stampX": 580,
+     "stampY": 900,
      "scrappy": false,
      "tr": "whip"
     }
@@ -164,7 +170,11 @@
      ],
      "side": "left",
      "tr": "zoom",
-     "scrappy": {}
+     "scrappy": {
+      "x": 60,
+      "y": 1120,
+      "h": 340
+     }
     }
    }
   },
@@ -182,7 +192,7 @@
      "stickerWord": "^plan",
      "sx": 220,
      "bg": "tools/opencode-vscode.jpg",
-     "bgO": 0.55,
+     "bgO": 0.7,
      "bgBlur": 2,
      "glow": "255,190,110",
      "scrappy": false
@@ -196,13 +206,14 @@
     "props": {
      "plate": "room1",
      "show": {
-      "type": "[TAB] plan\nread-only",
-      "size": 60
+      "type": "[TAB]\nPLAN",
+      "size": 64
      },
      "note": {
-      "text": "no edits\nwithout asking",
+      "text": "read-only\nno edits",
       "word": "^editing",
-      "rot": -4
+      "rot": -4,
+      "w": 300
      },
      "poses": [
       [
@@ -240,7 +251,12 @@
      ],
      "side": "right",
      "tr": "whip",
-     "scrappy": {}
+     "scrappy": {
+      "x": 700,
+      "y": 1120,
+      "h": 340,
+      "flip": true
+     }
     }
    }
   }
