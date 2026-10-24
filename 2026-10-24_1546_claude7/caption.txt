@@ -1,0 +1,13 @@
+Most people use Claude Code like a chat box. These 7 commands change that.
+
+1. /btw: side question without using your context
+2. Esc Esc: roll back to an earlier checkpoint
+3. /compact: summarize the chat to free up context
+4. /context: see what's eating your context window
+5. Shift+Tab: plan mode (read-only)
+6. Ctrl+R: search your old prompts
+7. /simplify: review and fix your recent changes
+
+Save this for your next session. Comment CLAUDE and I'll DM you the full official cheat sheet.
+
+#claudecode #aitools #coding #productivity
