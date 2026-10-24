@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/anomalyco/opencode",
+ "name": "OpenCode",
+ "tool_name": "OpenCode",
+ "keyword": "OPENCODE",
+ "summary_cs": "OpenCode je open-source (MIT) AI coding agent do terminálu: 75+ providerů (Claude/GPT/Gemini), přihlášení přes GitHub Copilot, lokální modely přes Ollamu, Tab = read-only Plan agent.",
+ "style": "hyperframes-paper",
+ "duration": 24.1,
+ "domain": "github.com/anomalyco/opencode",
+ "created": "2026-10-24_1533",
+ "run_id": null,
+ "artifact": null
+}
