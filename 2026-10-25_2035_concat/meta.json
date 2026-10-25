@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/jub0t/Concat",
+ "name": "Concat",
+ "tool_name": "Concat",
+ "keyword": "CONCAT",
+ "summary_cs": "Concat je free open-source (AGPL) náhrada CapCutu pro Mac/Windows/Linux/Android: bez watermarku, účtu i předplatného, auto titulky, TTS, odstranění pozadí, keyframy, export až 4K60, vše lokálně a offline. Má i MCP server, takže s ním umí stříhat Claude; je zatím v betě.",
+ "style": "hyperframes-paper",
+ "duration": 26.0,
+ "domain": "github.com/jub0t/Concat",
+ "created": "2026-10-25_2035",
+ "run_id": null,
+ "artifact": null
+}
