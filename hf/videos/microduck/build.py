@@ -70,7 +70,7 @@ CSS = r"""
 #yt{left:300px;top:760px}
 #num{position:absolute;left:0;right:0;top:400px;text-align:center;font-size:200px;font-weight:800;letter-spacing:-.06em;line-height:1}
 #numl{position:absolute;left:0;right:0;top:620px;text-align:center;font-size:44px;font-weight:700;color:#6f6f6f}
-#src{position:absolute;left:0;right:0;top:700px;text-align:center;font-size:28px;color:#9a9a9a;font-family:var(--mono)}
+#src{position:absolute;left:0;right:0;top:700px;text-align:center;font-size:32px;color:#444;font-weight:600}
 #quack{position:absolute;left:600px;top:250px;background:#fff;font-weight:800;font-size:96px;letter-spacing:-.04em;padding:20px 48px;border-radius:50px 50px 50px 10px;
  box-shadow:0 40px 60px -20px rgba(0,0,0,.3)}
 .wv{position:absolute;border:8px solid #ff4b1f;border-radius:50%;border-left-color:transparent;border-bottom-color:transparent;transform:rotate(45deg)}
@@ -91,7 +91,7 @@ BRAIN = '<svg viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="6" s
 F.clip(0, '<div id="c1" class="cm" style="left:100px;top:260px"><i>♥</i>so cute</div>'
        + '<div id="c2" class="cm" style="left:760px;top:520px"><i>♥</i>aww</div>'
        + '<div id="c3" class="cm" style="left:110px;top:780px"><i>♥</i>I want one</div>'
-       + F.block([[(0, 3, "")], [(4, 4, ""), (5, 5, "hl")]], top=1030, size=86))
+       + F.block([[(0, 1, "")], [(2, 4, "")], [(5, 5, "hl")]], top=1000, size=88))
 # S1 $399 robot you teach
 F.clip(1, '<div id="tag">$399</div>'
        + sk("k1", "walk", "✓", 620, 560) + sk("k2", "kick", "✓", 620, 680) + sk("k3", "your trick", "+", 620, 800, new=True)
@@ -126,7 +126,7 @@ F.clip(7, '<div id="b1">brain 1 · walk</div><div id="b2">brain 2 · roll</div>'
 # S8 open source -> your trick
 F.clip(8, '<div id="lic" class="card"><div class="own">pollen-robotics /</div><div class="nm">microduck_rl</div>'
           '<div class="tags"><span class="a">Open source</span><span>Apache-2.0</span><span>MuJoCo</span></div></div>'
-       + sk("yt", "your next trick", "+", 0, 0, new=True)
+       + sk("yt", "your next trick", "+", 300, 730, new=True)
        + F.block([[(66, 68, ""), (69, 71, "hl")], [(72, 74, ""), (75, 77, "b")]], top=1030, size=80))
 # S9 20,000 preorders
 F.clip(9, '<div id="num">0</div><div id="numl">pre-orders in one day</div><div id="src">per Hugging Face co-founder Clem Delangue</div>'
@@ -206,7 +206,7 @@ starPass('#st3',ST[9]-0.3,[900,1500,0],[580,1290,50],8,1.2);
 const N={v:0}, ne=document.getElementById('num');
 ft('#num',{opacity:0,scale:.8,filter:'blur(14px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.4,ease:A},ST[9]+0.02);
 ft(N,{v:0},{v:20000,duration:1.2,ease:'expo.out',onUpdate:()=>{ne.textContent=Math.round(N.v).toLocaleString('en-US')}},ST[9]+0.05);
-ft(['#numl','#src'],{opacity:0,y:20},{opacity:1,y:0,duration:.4,ease:A,stagger:.1},S[80]);
+ft(['#numl','#src'],{opacity:0,y:20},{opacity:1,y:0,duration:.4,ease:A,stagger:.1},S[78]+0.1);
 outUp(['#num','#numl','#src'],ST[10]);
 // S10 QUACK
 ft('#quack',{opacity:0,scale:.3,rotation:-12},{opacity:1,scale:1,rotation:-4,duration:.45,ease:'back.out(2.4)'},S[88]-0.05);
