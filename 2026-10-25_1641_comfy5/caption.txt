@@ -1,13 +1,5 @@
-Still clicking through menus in ComfyUI? These 5 shortcuts change that.
-
-1. Double-click the canvas: search any node
-2. Ctrl+B: bypass a node, wires pass through
-3. Ctrl+M: mute a node
-4. Ctrl+Enter: queue the graph (Ctrl+Shift+Enter puts it first)
-5. Load an image made in ComfyUI: get its whole workflow and seed back
-
-Free, open source (GPL-3.0) and runs offline. Cmd instead of Ctrl on Mac. Models are big downloads and a GPU helps a lot.
+5 ComfyUI shortcuts most people never use.
 
 Comment COMFY and I'll DM you the link.
 
-#comfyui #aiart #stablediffusion #aitools
+#comfyui #aiart #aitools
