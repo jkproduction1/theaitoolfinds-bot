@@ -1,0 +1,13 @@
+{
+ "url": "https://pollen-robotics.com/microduck/",
+ "name": "Microduck",
+ "tool_name": "Microduck",
+ "keyword": "MICRODUCK",
+ "summary_cs": "Microduck od Pollen Robotics je 25cm open-source dvounohý robot (800 g, 15 motorů), který umí chodit, kopat do míče, zvedat věci, vstát po pádu a jezdit na bruslích. Nové pohyby se trénují v MuJoCo simulaci (RL, Apache-2.0 stack) a nahrávají do robota; zaváděcí cena 399 $.",
+ "style": "hyperframes-paper",
+ "duration": 28.4,
+ "domain": "pollen-robotics.com/microduck",
+ "created": "2026-10-25_1628",
+ "run_id": null,
+ "artifact": null
+}
