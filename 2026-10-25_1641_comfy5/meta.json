@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/Comfy-Org/ComfyUI",
+ "name": "ComfyUI",
+ "tool_name": "ComfyUI",
+ "keyword": "COMFY",
+ "summary_cs": "Listicle: 5 zkratek v ComfyUI ověřených z README (dvojklik = hledání nodů, Ctrl+B bypass, Ctrl+M mute, Ctrl+Enter / +Shift fronta, načtení vygenerovaného obrázku vrátí celý workflow i seed). ComfyUI je zdarma, open source (GPL-3.0) a jede offline.",
+ "style": "hyperframes-paper",
+ "duration": 28.7,
+ "domain": "github.com/Comfy-Org/ComfyUI",
+ "created": "2026-10-25_1641",
+ "run_id": null,
+ "artifact": null
+}
