@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/openai/codex",
+ "name": "Codex CLI",
+ "tool_name": "Codex CLI",
+ "keyword": "CODEX",
+ "summary_cs": "Listicle: 6 slash příkazů v Codex CLI ověřených přímo ze zdrojáku (slash_command.rs): /review, /side, /fork, /diff, /init (AGENTS.md) a /import (převezme setup a chaty z Claude Code). Vybral jsem jen příkazy, které nejsou schované za feature flagem.",
+ "style": "hyperframes-paper",
+ "duration": 33.3,
+ "domain": "github.com/openai/codex",
+ "created": "2026-10-25_2020",
+ "run_id": null,
+ "artifact": null
+}
