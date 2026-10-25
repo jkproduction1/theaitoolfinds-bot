@@ -2,7 +2,7 @@
  "url": "https://pollen-robotics.com/microduck/",
  "tool_name": "Microduck",
  "keyword": "MICRODUCK",
- "cover_at": 3.8,
- "summary_cs": "Microduck od Pollen Robotics je 25cm open-source dvounohý robot (800 g, 15 motorů), který umí chodit, kopat do míče, zvedat věci, vstát po pádu a jezdit na bruslích. Nové pohyby se trénují v MuJoCo simulaci (RL, Apache-2.0 stack) a nahrávají do robota; zaváděcí cena 399 $.",
- "caption": "Want to train a real robot, not just a chatbot? Meet Microduck from Pollen Robotics.\n\nA 25 cm, 800 g biped with 15 motors. Out of the box it walks, kicks a ball, picks things up, gets back up after a fall, and rolls on skates. The SDK, simulation and full RL training stack are open source (Apache-2.0): train new moves in MuJoCo, then run them on the robot. $399 introductory price before taxes and shipping, on pre-order. Training your own policies needs a CUDA GPU (or Hugging Face Jobs).\n\nComment MICRODUCK and I'll DM you the link.\n\n#robotics #opensource #reinforcementlearning #aitools"
+ "cover_at": 1.6,
+ "summary_cs": "Microduck (Pollen Robotics / Hugging Face): robotická kachna za 399 $, kterou si sám natrénuješ v simulaci; open-source stack, 20 000 předobjednávek za den. Zajímavost bez CTA ve videu.",
+ "caption": "Everyone missed the point of Microduck.\n\nComment MICRODUCK and I'll DM you the link.\n\n#robotics #opensource #ai"
 }

@@ -62,8 +62,8 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
 7. **Director review (separate subagent that didn't write it):** give it the mp4 + script + this §3/§5
    checklist; it extracts frames with ffmpeg and returns PASS or concrete fixes. Max 2 fix rounds.
 8. Write `hf/videos/<name>/post.json` {url, tool_name, keyword (= tool name, CAPS), cover_at, summary_cs
-   (2 Czech sentences), caption (hook line, 2–3 value lines, honest caveat, "Comment X and I'll DM you the
-   link.", ≤4 hashtags)}. Then `python3 hf/publish.py <name>` → prints the folder; dispatch `make-video.yml`
+   (2 Czech sentences), caption}. **Caption is short, never spammy: max 1–2 sentences (usually the hook), then
+   "Comment X and I'll DM you the link.", then exactly 3 hashtags.** No feature lists or caveats in it. Then `python3 hf/publish.py <name>` → prints the folder; dispatch `make-video.yml`
    with inputs `{"mode":"release","storyboard":"<folder>"}` → Telegram. Commit hf/videos/* to main.
 9. Finish with a short Czech summary to Jan (which 3 tools, why, anything that failed).
 
@@ -82,4 +82,7 @@ GitHub cron is late by hours, so nothing time-critical relies on it; Zernio post
 
 ## 7. Jan's standing preferences
 - Answer first, act after his OK when he is asking/weighing something (in chat). Scheduled runs: just do it.
+- Captions: max 1–2 sentences + CTA + 3 hashtags (§4.8).
+- Not every video needs the on-screen "Comment X" CTA: curiosity pieces can end on a punchline instead.
+- When he's chatting live, he approves scripts before they're voiced.
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
