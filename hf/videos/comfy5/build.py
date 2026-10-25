@@ -20,7 +20,7 @@ CSS = r"""
 .node .rw{height:46px;margin:14px 22px;border-radius:12px;background:#f0f0f0;font-family:var(--mono);font-size:24px;color:#7a7a7a;display:flex;align-items:center;padding-left:16px}
 .node.acc .hd{background:#ff4b1f}
 .wires{position:absolute;left:0;top:0}
-#menu{left:650px;top:330px;width:340px;padding:18px 0}
+#menu{left:640px;top:330px;width:340px;padding:18px 0}
 #menu div{font-size:32px;font-weight:600;padding:14px 30px;color:#444}
 #menu div.on{background:#111;color:#fff}
 #cur{position:absolute;width:56px;height:56px}
@@ -77,7 +77,7 @@ F.clip(0, '<div id="g0">' + svg(wire("w01", 350, 470, 390, 680) + wire("w02", 35
        + node("a0", "Load Checkpoint", ["model", "clip"], 80, 380, w=272) + node("b0", "KSampler", ["steps 20", "cfg 7"], 390, 640, w=240) + '</div>'
        + '<div id="menu" class="card"><div>Add Node ›</div><div class="on" id="mo">sampling ›</div><div>loaders ›</div><div>image ›</div><div>latent ›</div></div>'
        + CURSOR
-       + F.block([[(0, 3, "")], [(4, 4, ""), (5, 5, "hl")]], top=1040, size=86))
+       + F.block([[(0, 3, "")], [(4, 4, ""), (5, 5, "hl")]], top=985, size=82))
 F.clip(1, '<div id="five">5</div>' + F.block([[(6, 6, ""), (7, 8, "b")], [(9, 10, "hl")]], top=1060, size=88))
 F.clip(2, num(1) + '<div id="rp1" class="rip" style="left:480px;top:420px"></div><div id="rp2" class="rip" style="left:480px;top:420px"></div>'
        + '<div id="pal" class="card"><div class="in"><b>⌕</b><span id="ty"></span></div>'
@@ -116,7 +116,7 @@ function draw(sel,t,d){ ft(sel,{strokeDasharray:1,strokeDashoffset:1},{strokeDas
 // S0 graph visible at t=0, menu + cursor clicking
 ft(['#a0','#b0'],{y:30,scale:.97},{y:0,scale:1,duration:1.2,ease:A,stagger:.08},0);
 draw('#w01',0,.8); draw('#w02',0.1,.8);
-ft('#menu',{opacity:1,x:40,scale:.96},{opacity:1,x:0,scale:1,duration:1.0,ease:A},0);
+ft('#menu',{opacity:1,x:10,scale:.96},{opacity:1,x:0,scale:1,duration:1.0,ease:A},0);
 ft('#cur',{x:820,y:420},{x:760,y:470,duration:.6,ease:IO},0);
 tl.to('#cur',{x:700,y:560,duration:.5,ease:IO},S[2]);
 tl.to('#cur',{scale:.8,duration:.06,yoyo:true,repeat:1},S[3]);
@@ -157,7 +157,7 @@ outUp(['#k4','#k4s','#q'],ST[6]);
 // #5 image -> workflow unfolds
 popIn('#img',ST[6]+0.05,{y:80,s:.8,r:-8});
 tl.to('#img',{scale:.35,y:180,opacity:0,filter:'blur(8px)',duration:.45,ease:IN},S[59]);
-['#a6','#b6','#c6'].forEach((s,k)=>ft(s,{opacity:0,scale:.3,x:[320,0,-320][k],y:[40,-120,40][k]},{opacity:1,scale:1,x:0,y:0,duration:.7,ease:'back.out(1.4)'},S[60]+k*0.08));
+['#a6','#b6','#c6'].forEach((s,k)=>ft(s,{opacity:0,scale:.3,x:[320,0,-320][k],y:[40,-120,40][k]},{opacity:1,scale:1,x:0,y:0,duration:.7,ease:A},S[60]+k*0.08));
 draw('#w61',S[62]); draw('#w62',S[62]+0.1);
 ft('#seed',{opacity:0,y:60,scale:.6},{opacity:1,y:180,scale:1,duration:.5,ease:'back.out(2)'},S[65]-0.1);
 outUp(['#g6','#seed'],ST[7]);
