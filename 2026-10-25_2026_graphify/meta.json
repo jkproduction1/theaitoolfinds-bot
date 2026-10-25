@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/Graphify-Labs/graphify",
+ "name": "Graphify",
+ "tool_name": "Graphify",
+ "keyword": "GRAPHIFY",
+ "summary_cs": "Graphify je open-source (Apache-2.0) skill /graphify pro Claude Code, Cursor, Codex a další: zmapuje projekt do knowledge grafu, takže agent se ptá grafu místo grepování. Kód se parsuje lokálně přes tree-sitter bez LLM, dostaneš klikací graph.html a `graphify path A B` ukáže spojení.",
+ "style": "hyperframes-paper",
+ "duration": 27.1,
+ "domain": "github.com/Graphify-Labs/graphify",
+ "created": "2026-10-25_2026",
+ "run_id": null,
+ "artifact": null
+}

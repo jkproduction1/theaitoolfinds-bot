@@ -1,0 +1,5 @@
+Is your coding agent grepping through your whole repo every time you ask a question? Type /graphify.
+
+Comment GRAPHIFY and I'll DM you the link.
+
+#claudecode #aiagents #opensource
