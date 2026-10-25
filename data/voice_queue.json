@@ -1,6 +1,14 @@
 [
  {
-  "name": "microduck",
-  "text": "Everyone missed the point of Microduck. It's a 399 dollar robot duck you teach new skills yourself. Nobody hand-codes its walk. You train it in a simulation with thousands of virtual ducks at once, and in about two hours it can walk. Then that brain drives the real robot. Knock it over, it gets back up. Put it on wheels, it swaps to a second brain. The whole stack is open source, so the next trick is yours. 20,000 people pre-ordered it in a day. And yes, it quacks."
+  "name": "graphify",
+  "text": "Is your coding agent grepping through your whole repo every time you ask a question? Type slash graphify. It maps your project into a knowledge graph your agent can query instead. Code is parsed locally. No LLM, and nothing leaves your machine. You get a clickable map of your codebase. Ask how two things connect, and it traces the path hop by hop. Works in Claude Code, Cursor, Codex and more. Free and open source. Comment GRAPHIFY and I'll send you the link."
+ },
+ {
+  "name": "concat",
+  "text": "Editing your Reels in CapCut? There's a free, open source replacement called Concat. No watermark, no account, no subscription. You get auto captions, text to speech, background removal and keyframes, all running on your own computer. Your footage never leaves your disk, and it works offline. Export up to 4K 60. It even has an MCP server, so Claude can edit video with it. It's still in beta. Comment CONCAT and I'll send you the link."
+ },
+ {
+  "name": "codex6",
+  "text": "Most people use Codex CLI like a chat box. These six commands change that. One: slash review. It reviews your current changes and finds issues. Two: slash side starts a side chat in a throwaway fork. Three: slash fork splits the chat, so you can try another path. Four: slash diff shows your git diff, even untracked files. Five: slash init writes an AGENTS file with instructions for Codex. Six: slash import brings your setup and recent chats over from Claude Code. Comment CODEX and I'll send you the full list."
  }
 ]
