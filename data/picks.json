@@ -1,16 +1,7 @@
 {
-  "date": "2026-10-24",
-  "category": "github",
+  "date": "2026-10-25",
+  "category": "useful",
   "items": [
-    {
-      "name": "rea",
-      "url": "https://github.com/morluto/rea",
-      "desc": "Star                    morluto /   rea      Reverse engineer anything with agents, from app behavior down to native binaries.",
-      "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
     {
       "name": "security-audit-skill",
       "url": "https://github.com/cloudflare/security-audit-skill",
@@ -24,6 +15,15 @@
       "name": "orca",
       "url": "https://github.com/stablyai/orca",
       "desc": "Star                    stablyai /   orca      Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any coding agent with your own subscription. Available on desktop, mobile and remote runtime.",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "graphify",
+      "url": "https://github.com/Graphify-Labs/graphify",
+      "desc": "Star                    Graphify-Labs /   graphify      Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every",
       "source": "gh-trending",
       "angle": "wow-demo",
       "score": 7,
