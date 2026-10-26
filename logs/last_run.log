@@ -1,14 +1,14 @@
 [discover] github_trending: 23
-[discover] github_search: 55
+[discover] github_search: 56
 [discover] hf_spaces: 60
 [discover] reddit r/StableDiffusion: HTTP 403
 [discover] reddit: 0
 [discover] hackernews: 23
-[discover] 0 from queue, 140 candidates total
+[discover] 0 from queue, 141 candidates total
 [llm] attempt 1 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
-[llm] attempt 2 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
+[llm] attempt 2 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
 [llm] attempt 3 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
-[llm] attempt 4 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 4 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
 [llm] attempt 5 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
 [main] ranking failed (LLM call failed (gemini): HTTPSConnectionPool(host='generativelanguage.googleapi), using score order
-[main] top picks: security-audit-skill 7 wow-demo | hallmark 7 wow-demo | orca 7 wow-demo | graphify 7 wow-demo | digital-human-koubo 7 wow-demo | impeccable 7 wow-demo | TradingAgents 7 wow-demo | cindy 7 wow-demo
+[main] top picks: security-audit-skill 7 wow-demo | hallmark 7 wow-demo | orca 7 wow-demo | digital-human-koubo 7 wow-demo | graphify 7 wow-demo | impeccable 7 wow-demo | TradingAgents 7 wow-demo | tstack 7 wow-demo

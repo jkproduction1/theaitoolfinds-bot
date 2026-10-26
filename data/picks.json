@@ -1,6 +1,6 @@
 {
   "date": "2026-10-26",
-  "category": "video",
+  "category": "design",
   "items": [
     {
       "name": "security-audit-skill",
@@ -30,15 +30,6 @@
       "why": ""
     },
     {
-      "name": "graphify",
-      "url": "https://github.com/Graphify-Labs/graphify",
-      "desc": "Star                    Graphify-Labs /   graphify      Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every",
-      "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
-    {
       "name": "digital-human-koubo",
       "url": "https://github.com/andyhuo520/digital-human-koubo",
       "desc": "AI digital-human talking-head videos from one photo: Renoise MCP generation + 5 editing styles + 48 creator-grade packaging components. Agent skill for Claude Code / Codex / OpenClaw / WorkBuddy \u2026",
@@ -46,9 +37,16 @@
       "angle": "wow-demo",
       "score": 7,
       "why": ""
+    },
+    {
+      "name": "graphify",
+      "url": "https://github.com/Graphify-Labs/graphify",
+      "desc": "Star                    Graphify-Labs /   graphify      Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
     }
   ],
-  "picked": [
-    "https://github.com/stablyai/orca"
-  ]
+  "picked": []
 }
