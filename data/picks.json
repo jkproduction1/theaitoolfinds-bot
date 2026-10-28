@@ -1,12 +1,21 @@
 {
-  "date": "2026-10-26",
-  "category": "design",
+  "date": "2026-10-28",
+  "category": "coding",
   "items": [
     {
       "name": "security-audit-skill",
       "url": "https://github.com/cloudflare/security-audit-skill",
       "desc": "Star                    cloudflare /   security-audit-skill      A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
       "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "digital-human-koubo",
+      "url": "https://github.com/andyhuo520/digital-human-koubo",
+      "desc": "AI digital-human talking-head videos from one photo: Renoise MCP generation + 5 editing styles + 48 creator-grade packaging components. Agent skill for Claude Code / Codex / OpenClaw / WorkBuddy \u2026",
+      "source": "gh-search",
       "angle": "wow-demo",
       "score": 7,
       "why": ""
@@ -21,19 +30,10 @@
       "why": ""
     },
     {
-      "name": "orca",
-      "url": "https://github.com/stablyai/orca",
-      "desc": "Star                    stablyai /   orca      Orca is the place for working with a fleet of agents (e.g. Grok Bot, Claude Code). Run any coding agent with your own subscription. Available on desktop, mobile and remote runtime.",
+      "name": "impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "desc": "Star                    pbakaus /   impeccable      The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
       "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
-    {
-      "name": "digital-human-koubo",
-      "url": "https://github.com/andyhuo520/digital-human-koubo",
-      "desc": "AI digital-human talking-head videos from one photo: Renoise MCP generation + 5 editing styles + 48 creator-grade packaging components. Agent skill for Claude Code / Codex / OpenClaw / WorkBuddy \u2026",
-      "source": "gh-search",
       "angle": "wow-demo",
       "score": 7,
       "why": ""
