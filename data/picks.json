@@ -48,5 +48,7 @@
       "why": "Lok\u00e1ln\u00ed desktopov\u00e9 studio pro paraleln\u00ed pr\u00e1ci s agenty Claude, Grok a Codex."
     }
   ],
-  "picked": []
+  "picked": [
+    "https://github.com/pbakaus/impeccable"
+  ]
 }
