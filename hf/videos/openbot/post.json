@@ -1,0 +1,8 @@
+{
+ "url": "https://github.com/nightly-labs/openbot",
+ "tool_name": "OpenBot",
+ "keyword": "OPENBOT",
+ "cover_at": 9.5,
+ "summary_cs": "OpenBot je desktop appka, kde běží Claude Code, Codex, Grok, Gemini, Cursor a OpenCode jako trvalí agenti s vlastním workspace, frontou úkolů, posíláním zpráv a souborů mezi sebou a vestavěným prohlížečem. Je to development preview s plným přístupem agentů a licencí jen pro nekomerční použití – ve videu to zaznívá.",
+ "caption": "Juggling Claude Code, Codex and Grok in five terminal windows? OpenBot puts them all in one desktop app.\n\nComment OPENBOT and I'll DM you the link.\n\n#aiagents #claudecode #devtools"
+}
