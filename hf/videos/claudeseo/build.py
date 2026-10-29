@@ -91,7 +91,7 @@ recs = "".join(
 F.clip(0, recs + F.block([[(0, 0, ""), (1, 4, "b")], [(5, 6, "hl")]], top=1030, size=84))
 # S1 free plugin in Claude Code
 F.clip(1, '<div id="t1" class="term tm"><div class="bar"><i></i><i></i><i></i></div><div class="body">'
-          '<div><span class="p">›</span> <span id="ty1"></span></div><div class="g" id="ok1">✓ 26 skills · 19 agents</div></div></div>'
+          '<div><span class="p">›</span> <span id="ty1"></span></div><div class="g" id="ok1">✓ claude-seo installed</div></div></div>'
           '<div id="free">FREE</div><div id="mit">MIT license</div>'
        + F.block([[(7, 8, ""), (9, 11, "b")], [(12, 13, ""), (14, 15, "hl")]], top=1030, size=80))
 # S2 the name + real command list
@@ -169,10 +169,10 @@ ft('#na',{opacity:0,y:40,filter:'blur(14px)'},{opacity:1,y:0,filter:'blur(0px)',
 ft('#nb',{opacity:0,scale:1.6,filter:'blur(24px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.55,ease:A},S[19]-0.12);
 ft('#cmds',{opacity:0,y:200,rotationX:25,transformPerspective:1400},{opacity:1,y:0,rotationX:0,duration:.8,ease:A},ST[2]+0.05);
 ft('#cmds img',{y:0},{y:-40,duration:ST[3]-ST[2],ease:'none'},ST[2]);
-tl.to('#name',{y:-80,opacity:0,filter:'blur(14px)',duration:.25,ease:IN},ST[3]-0.25);
-tl.to('#cmds',{y:300,opacity:0,filter:'blur(14px)',duration:.25,ease:IN},ST[3]-0.25);
+tl.to('#name',{y:-80,opacity:0,filter:'blur(14px)',duration:.2,ease:IN},ST[3]-0.12);
+tl.to('#cmds',{y:300,opacity:0,filter:'blur(14px)',duration:.2,ease:IN},ST[3]-0.12);
 // S3 URL typed, real audit frame, clock counts 10 -> 15
-popIn('#url',ST[3]+0.02,{y:-40,s:.92,r:0});
+ft('#url',{opacity:0,y:-60,scale:.9,filter:'blur(10px)'},{opacity:1,y:0,scale:1,filter:'blur(0px)',duration:.45,ease:A},ST[3]+0.0);
 typeIn('ty3','/seo audit yoursite.com',ST[3]+0.15,.04);
 for(let x=ST[3]+0.3;x<ST[4];x+=0.5){ tl.set('#cc3',{opacity:0},x); tl.set('#cc3',{opacity:1},x+0.25); }
 ft('#aud',{opacity:0,y:160,scale:.88,rotationX:20,transformPerspective:1400},{opacity:1,y:0,scale:1,rotationX:0,duration:.8,ease:A},S[26]-0.1);
@@ -213,5 +213,7 @@ popIn('#lap',ST[9]+0.02,{y:80,s:.7,r:-8});
 popIn('#mine',S[84]-0.1,{y:40,s:.7,r:6});
 outUp(['#lap','#mine'],ST[10]);
 cta('SEO',S[87]);
+tl.to('#send',{scale:.85,duration:.1,ease:'power2.in',yoyo:true,repeat:1},S[92]+0.2);
+tl.to('#typed',{color:'#ff4b1f',duration:.2},S[92]+0.3);
 """
 F.write(CSS, JS, music_vol=0.10)
