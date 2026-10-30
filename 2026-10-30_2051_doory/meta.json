@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/shaongitbd/doory",
+ "name": "Doory",
+ "tool_name": "Doory",
+ "keyword": "DOORY",
+ "summary_cs": "Doory je free open-source náhrada Canvy, editor v prohlížeči na posty, stories, slidy, thumbnaily i životopisy: animace, přechody, hudba, odstranění pozadí a export do MP4/GIF, bez placeného plánu a reklam. Hostuješ si ho sám přes Docker a je to mladý projekt (zatím 10 šablon), což ve videu zaznívá.",
+ "style": "hyperframes-paper",
+ "duration": 31.5,
+ "domain": "github.com/shaongitbd/doory",
+ "created": "2026-10-30_2051",
+ "run_id": null,
+ "artifact": null
+}
