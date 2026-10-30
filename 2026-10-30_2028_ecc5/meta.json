@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/affaan-m/ECC",
+ "name": "ECC",
+ "tool_name": "ECC",
+ "keyword": "ECC",
+ "summary_cs": "Listicle: 5 příkazů z ECC, free open-source (MIT) pluginu pro Claude Code s 90+ příkazy, ověřeno přímo ze souborů v commands/: /plan (čeká na tvoje OK), /build-fix, /orch-fix-defect (nejdřív failing test), /test-coverage a /santa-loop (dva nezávislí revieweři). Errory a testy ve vizuálech jsou ilustrační.",
+ "style": "hyperframes-paper",
+ "duration": 34.7,
+ "domain": "github.com/affaan-m/ECC",
+ "created": "2026-10-30_2028",
+ "run_id": null,
+ "artifact": null
+}
