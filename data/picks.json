@@ -1,15 +1,24 @@
 {
-  "date": "2026-10-29",
-  "category": "github",
+  "date": "2026-10-30",
+  "category": "useful",
   "items": [
+    {
+      "name": "security-audit-skill",
+      "url": "https://github.com/cloudflare/security-audit-skill",
+      "desc": "Star                    cloudflare /   security-audit-skill      A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
     {
       "name": "impeccable",
       "url": "https://github.com/pbakaus/impeccable",
       "desc": "Star                    pbakaus /   impeccable      The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
       "source": "gh-trending",
-      "angle": "trending-repo",
-      "score": 9.0,
-      "why": "Nau\u010d\u00ed AI agenty modern\u00ed design bez kli\u0161\u00e9 a slopu, masivn\u00ed vir\u00e1ln\u00ed hit dne\u0161ka."
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
     },
     {
       "name": "digital-human-koubo",
@@ -17,38 +26,27 @@
       "desc": "AI digital-human talking-head videos from one photo: Renoise MCP generation + 5 editing styles + 48 creator-grade packaging components. Agent skill for Claude Code / Codex / OpenClaw / WorkBuddy \u2026",
       "source": "gh-search",
       "angle": "wow-demo",
-      "score": 8.0,
-      "why": "Vytvo\u0159\u00ed mluv\u00edc\u00edho digit\u00e1ln\u00edho avatara z jedin\u00e9 fotky s 5 vizu\u00e1ln\u00edmi styly zdarma."
+      "score": 7,
+      "why": ""
     },
     {
-      "name": "claude-seo",
-      "url": "https://github.com/AgriciDaniel/claude-seo",
-      "desc": "Star                    AgriciDaniel /   claude-seo      Universal SEO skill for Claude Code. 26 sub-skills + 19 sub-agents covering technical SEO, E-E-A-T, schema, GEO/AEO, agent readiness (Lighthouse Agentic Browsing, WebMCP, llms.txt), backlinks, local SEO,",
+      "name": "ECC",
+      "url": "https://github.com/affaan-m/ECC",
+      "desc": "Sponsor                           Star                    affaan-m /   ECC      The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
       "source": "gh-trending",
-      "angle": "free-alternative",
-      "score": 8.0,
-      "why": "Kompletn\u00ed open-source SEO agent pro Claude Code, kter\u00fd nahrad\u00ed drah\u00e9 marketingov\u00e9 n\u00e1stroje."
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
     },
     {
       "name": "taste-skill",
       "url": "https://github.com/Leonxlnx/taste-skill",
       "desc": "Sponsor                           Star                    Leonxlnx /   taste-skill      Agent skills that give coding agents taste: art direction, reference images and a browser check instead of generic AI pages",
       "source": "gh-trending",
-      "angle": "time-saver",
-      "score": 8.0,
-      "why": "Dod\u00e1 k\u00f3dovac\u00edm agent\u016fm vizu\u00e1ln\u00ed vkus, cit pro art direkci a pr\u00e1ci s p\u0159edlohami."
-    },
-    {
-      "name": "openbot",
-      "url": "https://github.com/nightly-labs/openbot",
-      "desc": "Star                    nightly-labs /   openbot      A local-first desktop workspace for persistent AI teammates. Run Codex, Claude, and Grok with dedicated workspaces, task queues, file sharing, browser control, and agent-to-agent collaboration.",
-      "source": "gh-trending",
       "angle": "wow-demo",
-      "score": 8.0,
-      "why": "Lok\u00e1ln\u00ed desktopov\u00e9 studio pro paraleln\u00ed pr\u00e1ci s agenty Claude, Grok a Codex."
+      "score": 7,
+      "why": ""
     }
   ],
-  "picked": [
-    "https://github.com/AgriciDaniel/claude-seo"
-  ]
+  "picked": []
 }
