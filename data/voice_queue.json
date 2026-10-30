@@ -1,14 +1,14 @@
 [
  {
-  "name": "claudeseo",
-  "text": "Paying for SEO audit software every month? There's a free, open source plugin for Claude Code. It's called Claude SEO. Give it any website, and it runs a full audit in ten to fifteen minutes. Up to seventeen agents check your site at the same time. Technical SEO, speed, content, schema, and even how likely ChatGPT and Perplexity are to cite you. You get a plan sorted by what matters most, and every fix tells you how to check it worked. It runs on your machine. Comment SEO and I'll send you the link."
+  "name": "doory",
+  "text": "Paying for Canva Pro just to make posts and thumbnails? There's a free, open source one called Doory. It's a design editor that runs in your browser. Posters, stories, slides, thumbnails, even resumes. Edit the text, drag in shapes and icons, and remove a background right in the browser. Add animations, page transitions and music, then export as MP4 or GIF. No paid plan, no locked features, no ads. You host it yourself with Docker, and it's still early, with ten templates so far. Comment DOORY and I'll send you the link."
  },
  {
-  "name": "impeccable6",
-  "text": "Ever noticed every AI-built website looks the same? Inter font, purple gradients, cards inside cards. Impeccable gives your coding agent the words to fix it. Here are six commands. One: bolder, for designs that play it too safe. Two: quieter tones down loud ones. Three: critique scores your design and ranks what to fix first. Four: audit checks accessibility, speed and mobile layouts. Five: polish, the final pass before you ship. Six: live. Pick an element in your browser and flip through variants. Free and open source. Comment IMPECCABLE and I'll send you the link."
+  "name": "ecc5",
+  "text": "Most people use Claude Code with zero plugins. ECC is a free one with over ninety commands. Here are five worth stealing. One: plan. It writes the plan and waits for your OK before touching code. Two: build-fix finds your build errors and fixes them with small, safe changes. Three: orch-fix-defect proves the bug with a failing test first, then fixes it until it's green. Four: test-coverage finds the gaps and writes the missing tests. Five: santa-loop. Two separate reviewers both have to approve before your code ships. Comment ECC and I'll send you the link."
  },
  {
-  "name": "openbot",
-  "text": "Juggling Claude Code, Codex and Grok in five terminal windows? OpenBot puts them all in one desktop app. Every agent gets its own workspace and its own chat, and it sticks around. Line up tasks in a queue you can pause and resume. Agents can message each other and pass files. They can even open and control a built-in browser. Gemini, Cursor and OpenCode work too. It's a development preview, and agents get full access, so only run tasks you trust. Free for non-commercial use. Comment OPENBOT and I'll send you the link."
+  "name": "taste",
+  "text": "Your coding agent can build a website. But does it ever look at it? Taste Skill makes it look. It's a free, open source skill for Claude Code and Codex. First, it picks one of twenty art directions. Then it builds with real photos from open archives, and credits them. Then it opens the page in a real browser at three widths, studies its own screenshots, and fixes the top three problems. Up to three rounds. A page takes thirty to forty-five minutes and a lot of tokens. Comment TASTE and I'll send you the link."
  }
 ]
