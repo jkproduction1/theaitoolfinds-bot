@@ -28,8 +28,10 @@ class Film:
         self.ST, self.EN = [], []
 
     # scenes: list of first-word indices; scene n runs from just before its first word to the next one
-    def scenes(self, firsts):
-        self.ST = [0.0] + [round(self.S[i] - 0.15, 2) for i in firsts[1:]]
+    def scenes(self, firsts, hold=0.0):
+        # hold > 0: when a scene's last word lands right before the cut, push the cut up to `hold` s into the
+        # next word so the last word (and its label box) stays readable
+        self.ST = [0.0] + [round(max(self.S[i] - 0.15, min(self.S[i] + hold, self.S[i - 1] + 0.6)), 2) for i in firsts[1:]]
         self.EN = self.ST[1:] + [self.dur]
         for n in range(1, len(self.ST)):
             self.sfx.append((self.ST[n] - 0.05, "whoosh"))
@@ -171,7 +173,7 @@ document.querySelectorAll('.w').forEach(el=>{ const i=+el.id.slice(1);
 document.querySelectorAll('.hl').forEach(el=>{ const a=+el.dataset.a, b=+el.dataset.b; const d=Math.max(.25,(S[b]-S[a])+.25);
   ft(el,{clipPath:'inset(-20% 100% -20% 0)'},{clipPath:'inset(-20% 0% -20% 0)',duration:d,ease:'power2.out'},S[a]-0.04);
   ft(el,{scale:.92},{scale:1,duration:.4,ease:'back.out(2)'},S[a]-0.04); });
-for(let n=0;n<ST.length-1;n++) tl.to('#s'+n+' .tb',{opacity:0,y:-24,filter:'blur(12px)',duration:.22,ease:IN,stagger:.01},ST[n+1]-0.22);
+for(let n=0;n<ST.length-1;n++) tl.to('#s'+n+' .tb',{opacity:0,y:-24,filter:'blur(12px)',duration:.18,ease:IN,stagger:.01},ST[n+1]-0.18);
 ft('#grid',{x:0,y:0},{x:-120,y:-240,duration:DUR,ease:'none'},0);
 // foreground stars: defocused shapes passing a corner (id, start, from[x,y,rot], to[x,y,rot], blur, hold)
 function starPass(id,t,from,to,blur,hold){ ft(id,{x:from[0],y:from[1],rotation:from[2],filter:`blur(${blur}px)`,opacity:1},{x:to[0],y:to[1],rotation:to[2],duration:.75,ease:IO},t);

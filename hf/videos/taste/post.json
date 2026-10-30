@@ -1,0 +1,8 @@
+{
+ "url": "https://github.com/Leonxlnx/taste-skill",
+ "tool_name": "Taste Skill",
+ "keyword": "TASTE",
+ "cover_at": 4.6,
+ "summary_cs": "Taste Skill (MIT) je skill pro Claude Code a Codex, který agentovi dá art direction (vybere 1 z 20 směrů), staví s reálnými fotkami z otevřených archivů s kredity a pak stránku sám kontroluje v prohlížeči ve 3 šířkách a opraví top 3 problémy (až 3 kola). Jedna stránka trvá 30–45 min a sežere hodně tokenů, ve videu to říkám.",
+ "caption": "Your coding agent can build a website. But does it ever look at it? Taste Skill makes it look.\n\nComment TASTE and I'll DM you the link.\n\n#webdesign #claudecode #vibecoding"
+}

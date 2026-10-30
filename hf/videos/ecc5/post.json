@@ -1,0 +1,8 @@
+{
+ "url": "https://github.com/affaan-m/ECC",
+ "tool_name": "ECC",
+ "keyword": "ECC",
+ "cover_at": 7.0,
+ "summary_cs": "Listicle: 5 příkazů z ECC, free open-source (MIT) pluginu pro Claude Code s 90+ příkazy, ověřeno přímo ze souborů v commands/: /plan (čeká na tvoje OK), /build-fix, /orch-fix-defect (nejdřív failing test), /test-coverage a /santa-loop (dva nezávislí revieweři). Errory a testy ve vizuálech jsou ilustrační.",
+ "caption": "Most people use Claude Code with zero plugins. These 5 ECC commands change that.\n\nComment ECC and I'll DM you the link.\n\n#claudecode #aicoding #developer"
+}
