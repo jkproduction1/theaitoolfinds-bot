@@ -94,27 +94,27 @@ F.clip(0, '<div id="bill"><div class="h">newsletter plan · monthly</div>'
 # S1 most never open
 F.clip(1, "".join(f'<div class="env{" o" if k in (3, 11, 17) else ""}" id="e{k}" style="left:{x}px;top:{y}px"></div>' for k, (x, y) in enumerate(ENV))
           + '<div class="zz" id="zz">zzz</div>'
-       + F.block([[(4, 5, "")], [(6, 7, ""), (8, 8, "hl")], [(9, 10, "it")]], top=1020, size=92))
+       + F.block([[(4, 5, "")], [(6, 7, ""), (8, 8, "hl")], [(9, 10, "it")]], top=990, size=82))
 # S2 name + icon + overview
 F.clip(2, '<div id="ico"><img src="assets/icon-512.png" alt=""></div><div id="nm">Mail<i>Cheap</i></div><div id="free">FREE</div>'
           + pg("ov", "overview.jpg", 160, 510, 760)
-       + F.block([[(11, 13, ""), (14, 14, "b")], [(15, 16, "hl")], [(17, 18, "b")]], top=1050, size=86))
+       + F.block([[(11, 13, ""), (14, 14, "b")], [(15, 16, "hl")], [(17, 18, "b")]], top=990, size=80))
 # S3 host it yourself, pay per email
 F.clip(3, tile("srv", "local", 120, 400, 330)
           + '<div id="ppe"><div class="h">you pay for</div><div class="n" id="ppn">0</div><div class="u">emails sent</div></div>'
-       + F.block([[(19, 22, "")], [(23, 27, "")], [(28, 30, "hl")]], top=1040, size=84))
+       + F.block([[(19, 22, "")], [(23, 27, "")], [(28, 30, "hl")]], top=990, size=80))
 # S4 10,000 readers x 4 issues
 F.clip(4, '<div class="eq" id="eqa">10,000 <span>readers</span></div><div class="eq" id="eqb">× 4 <span>issues</span></div>'
           '<div class="eq" id="eqc">40,000<small>emails a month</small></div>'
        + F.block([[(31, 33, "b")], [(34, 36, ""), (37, 38, "it")]], top=1080, size=100))
 # S5 $4 to $6 on SES
 F.clip(5, '<div id="tag"><div class="p"><span>$</span>4–6</div><div class="m">a month</div></div><div id="ses">on Amazon SES</div>'
-       + F.block([[(39, 40, ""), (41, 44, "hl")], [(45, 47, "b")]], top=1080, size=100))
+       + F.block([[(39, 40, ""), (41, 44, "hl")], [(45, 47, "b")]], top=1060, size=96))
 # S6 imports
 F.clip(6, "".join(f'<div class="csv" id="cv{k}" style="left:{x}px;top:330px"><b>CSV</b><br>{n}<i></i><i style="width:70%"></i><i></i></div>'
                   for k, (x, n) in enumerate([(110, "beehiiv"), (430, "Substack"), (750, "Mailchimp")]))
           + '<div id="hub"><img src="assets/icon-512.png" alt=""></div>'
-       + F.block([[(48, 50, ""), (51, 51, "")], [(52, 52, "b"), (53, 53, "b"), (54, 55, "b")]], top=1060, size=86))
+       + F.block([[(48, 51, "")], [(52, 53, "b")], [(54, 55, "b")]], top=990, size=80))
 # S7 a web page per issue (real screenshot)
 F.clip(7, '<div id="url">yourname<b>.mailcheap.ai</b></div>' + pg("ws", "website.jpg", 110, 390, 860)
        + F.block([[(56, 58, "")], [(59, 60, ""), (61, 62, "hl")]], top=1060, size=100))
@@ -123,12 +123,12 @@ F.clip(8, '<div id="t8" class="term tm" style="top:320px"><div class="bar"><i></
           '<div><span class="p">&gt;</span> <span id="t8c"></span></div><div class="d" id="t8d">● mailcheap · send campaign</div></div></div>'
           '<div id="dlg"><div class="q">Send this issue now?</div><div class="s">This can\'t be undone.</div>'
           '<div class="bt"><span class="y" id="yes">Yes, send</span><span>Not yet</span></div></div>'
-       + F.block([[(63, 65, "b"), (66, 69, "")], [(70, 71, ""), (72, 74, "hl")]], top=1070, size=88))
+       + F.block([[(63, 65, "b"), (66, 66, "")], [(67, 69, "")], [(70, 71, ""), (72, 74, "hl")]], top=990, size=80))
 # S9 setup about an hour
 F.clip(9, '<div id="clock"><svg width="420" height="420" viewBox="0 0 420 420"><circle cx="210" cy="210" r="170" fill="none" stroke="#ececec" stroke-width="26"/>'
           '<circle id="arc" cx="210" cy="210" r="170" fill="none" stroke="#ff4b1f" stroke-width="26" stroke-linecap="round" pathLength="1" transform="rotate(-90 210 210)"/></svg>'
           '<div class="t">~1</div><div class="u">hour</div></div><div id="dns">mostly waiting for DNS</div>'
-       + F.block([[(75, 76, ""), (77, 79, "hl")]], top=1080, size=104))
+       + F.block([[(75, 76, "")], [(77, 79, "hl")]], top=1060, size=100))
 # S10 CTA
 F.clip(10, '<div id="field">Add a comment…<span id="typed"></span><span id="caret"></span><div id="send"></div></div>'
         + F.block([[(80, 80, ""), (81, 81, "hl")], [(82, 87, "")]], top=1020, size=84))

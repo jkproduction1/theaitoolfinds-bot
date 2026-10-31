@@ -1,0 +1,8 @@
+{
+ "url": "https://github.com/thedotmack/claude-mem",
+ "tool_name": "Claude-Mem",
+ "keyword": "MEM",
+ "cover_at": 5.0,
+ "summary_cs": "Claude-Mem (Apache-2.0) je plugin pro Claude Code, který zaznamenává, co agent dělá, zhušťuje to do krátkých shrnutí a ukládá lokálně (SQLite), takže v další session má kontext. Umí hledání v historii přirozeným jazykem a <private> tagy; placený cloud je volitelný, ve videu to říkám.",
+ "caption": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory.\n\nComment MEM and I'll DM you the link.\n\n#claudecode #aitools #opensource"
+}

@@ -1,0 +1,8 @@
+{
+ "url": "https://github.com/marclou/mailcheap",
+ "tool_name": "MailCheap",
+ "keyword": "MAILCHEAP",
+ "cover_at": 5.6,
+ "summary_cs": "MailCheap (AGPL, od Marca Lou) je open-source newsletter appka, kterou si hostuješ sám a platíš jen za odeslané maily přes Amazon SES (10k čtenářů × 4 čísla ≈ 4–6 $ měsíčně podle README). Import z beehiiv/Substack/Mailchimp, web pro každé číslo, AI agent přes MCP se před odesláním ptá; setup ~1 hodina.",
+ "caption": "Paying beehiiv or Mailchimp for subscribers who never open your emails? MailCheap is a free, open source newsletter app.\n\nComment MAILCHEAP and I'll DM you the link.\n\n#newsletter #opensource #creators"
+}

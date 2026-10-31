@@ -87,32 +87,32 @@ F.clip(3, pg("ms", "macshot.jpg", 90, 340, 900)
 F.clip(4, '<div id="mb"><span class="dot"></span><span class="dot"></span><img id="mbi" src="assets/macshot-icon.png" alt=""><span>Sat 9:41</span></div>'
           '<div id="drop"><div class="on">Capture area</div><div>Scroll capture</div><div>Record screen</div></div>'
           + pg("ed", "macshot-editor.jpg", 70, 660, 500)
-       + F.block([[(26, 28, "")], [(29, 30, "hl")]], top=1080, size=104))
+       + F.block([[(26, 28, "")], [(29, 30, "hl")]], top=1060, size=100))
 # S5 #2 CleanMyMac -> PureMac (icon drawn: no app icon in repo assets, show name)
 F.clip(5, f'<div id="n2" class="num"><span>#</span>2</div><div class="old" id="o2"><span>CleanMyMac<i id="oi2"></i></span></div>'
           + pg("pmh", "puremac.jpg", 190, 560, 700)
-       + F.block([[(31, 31, "b"), (32, 32, "")], [(33, 33, "hl")]], top=1080, size=104))
+       + F.block([[(31, 31, "b"), (32, 32, "")], [(33, 33, "hl")]], top=1060, size=100))
 # S6 clears caches and junk
 F.clip(6, pg("pm", "puremac.jpg", 90, 340, 900)
        + F.block([[(34, 34, "b"), (35, 35, "")], [(36, 36, ""), (37, 37, "hl")]], top=1060, size=104))
 # S7 uninstall with leftovers, no subscription
 F.clip(7, pg("pu", "puremac-uninst.jpg", 90, 340, 900) + '<div id="nosub">No subscription</div>'
-       + F.block([[(38, 41, "")], [(42, 43, "hl")], [(44, 45, "b")]], top=1030, size=86))
+       + F.block([[(38, 41, "")], [(42, 43, "hl")], [(44, 45, "b")]], top=1000, size=80))
 # S8 #3 Wispr Flow -> FreeFlow
 F.clip(8, swap(8, 3, "Wispr Flow", "freeflow-icon.png", "FreeFlow")
-       + F.block([[(46, 46, "b"), (47, 48, "")], [(49, 49, "hl")]], top=1080, size=104))
+       + F.block([[(46, 46, "b"), (47, 48, "")], [(49, 49, "hl")]], top=1060, size=100))
 # S9 hold fn, talk, text lands (+ README demo GIF below)
 F.clip(9, '<div id="fn"><span id="kfn" class="key" style="min-width:260px">fn</span></div>'
           '<div id="wave">' + "".join(f'<i id="wv{k}"></i>' for k in range(14)) + '</div>'
        + F.block([[(50, 53, "b"), (54, 54, "")], [(55, 58, "")], [(59, 61, "hl")]], top=1030, size=74))
 # S10 free Groq key
 F.clip(10, '<div id="gk"><div class="h">Groq API key</div><div class="k">gsk_<span>••••••••••</span></div><div class="f">FREE</div></div>'
-        + F.block([[(62, 64, ""), (65, 65, "b")], [(66, 67, "hl")]], top=1080, size=104))
+        + F.block([[(62, 64, ""), (65, 65, "b")], [(66, 67, "hl")]], top=1060, size=100))
 # S11 #4 Screen Studio -> OpenScreen
 F.clip(11, swap(11, 4, "Screen Studio", "openscreen-icon.png", "OpenScreen")
-        + F.block([[(68, 68, "b"), (69, 70, "")], [(71, 71, "hl")]], top=1080, size=104))
+        + F.block([[(68, 68, "b"), (69, 70, "")], [(71, 71, "hl")]], top=1060, size=100))
 # S12 records, auto zooms, captions (README demo GIF)
-F.clip(12, F.block([[(72, 74, "")], [(75, 76, ""), (77, 78, "hl")], [(79, 80, "b")]], top=1030, size=86))
+F.clip(12, F.block([[(72, 74, "")], [(75, 76, ""), (77, 78, "hl")], [(79, 80, "b")]], top=1000, size=80))
 # S13 still early
 F.clip(13, pg("osp", "openscreen.jpg", 90, 360, 900) + '<div id="early">still <span>early</span></div>'
         + F.block([[(81, 83, "hl")]], top=1100, size=110))

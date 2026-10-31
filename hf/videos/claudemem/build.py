@@ -85,25 +85,25 @@ F.clip(0, '<div id="t0" class="term tm" style="top:330px"><div class="bar"><i></
           '<div><span class="p">&gt;</span> claude</div><div class="d">● Read src/auth/login.ts</div><div class="d">● Edit src/auth/session.ts</div>'
           '<div><span class="g">✓</span> fixed the login bug</div><div class="d">● Bash npm test  <span class="g">✓ 42 passed</span></div></div></div>'
           '<div id="x0">✕</div>'
-       + F.block([[(0, 3, "")], [(4, 4, ""), (5, 6, "hl")]], top=1060, size=84))
+       + F.block([[(0, 1, "")], [(2, 3, "b")], [(4, 4, ""), (5, 6, "hl")]], top=990, size=84))
 # S1 what it learned, gone
 F.clip(1, '<div class="mc" id="m0" style="left:130px;top:360px"><em>learned</em>uses pnpm, not npm</div>'
           '<div class="mc" id="m1" style="left:300px;top:540px"><em>learned</em>tests live in /tests</div>'
           '<div class="mc" id="m2" style="left:170px;top:720px"><em>learned</em>don\'t touch /legacy</div>'
-       + F.block([[(7, 9, "")], [(10, 11, "it")]], top=1060, size=110))
+       + F.block([[(7, 9, "")], [(10, 11, "it")]], top=1060, size=100))
 # S2 name + logomark
 F.clip(2, '<div id="mark"><img src="assets/cm-mark.png" alt=""></div><div id="nm">Claude<i>-Mem</i></div>'
-       + F.block([[(12, 12, "b"), (13, 14, "")], [(15, 16, "hl")]], top=1060, size=104))
+       + F.block([[(12, 12, "b"), (13, 14, "")], [(15, 16, "hl")]], top=1060, size=86))
 # S3 free, open source plugin
 F.clip(3, '<div id="lic">Apache-2.0</div><div id="free">FREE</div>'
           '<div id="t3" class="term tm" style="top:560px"><div class="bar"><i></i><i></i><i></i></div><div class="body">'
           '<div><span class="p">&gt;</span> <span id="t3c"></span></div><div class="d" id="t3d">✓ plugin installed</div></div></div>'
-       + F.block([[(17, 18, ""), (19, 19, "b")], [(20, 21, "hl"), (22, 22, "b")]], top=1050, size=100))
+       + F.block([[(17, 18, ""), (19, 19, "b")], [(20, 21, "hl"), (22, 22, "b")]], top=1060, size=84))
 # S4 records what Claude does
 F.clip(4, '<div id="rec"><i></i>REC</div>'
           + "".join(f'<div class="ev" id="ev{k}" style="top:{430 + k * 125}px"><b>{t}</b><span>{d}</span><span class="ln"></span></div>'
                     for k, (t, d) in enumerate([("Read", "package.json"), ("Edit", "session.ts"), ("Bash", "npm test"), ("Edit", "login.ts")]))
-       + F.block([[(23, 25, "")], [(26, 27, "b"), (28, 28, ""), (29, 30, "hl")]], top=1050, size=92))
+       + F.block([[(23, 25, "")], [(26, 27, "b"), (28, 28, "")], [(29, 30, "hl")]], top=990, size=80))
 # S5 squeezes into short summaries
 F.clip(5, "".join(f'<div class="lg" id="lg{k}" style="top:{360 + k * 40}px"><i style="width:90%"></i><i style="width:70%"></i><i style="width:84%"></i><i style="width:60%"></i></div>' for k in range(3))
           + '<div id="sum"><div class="h">summary #128</div><div class="t">Fixed the login bug in session.ts. Tests pass.</div></div>'
@@ -116,14 +116,14 @@ F.clip(6, tile("lap", "local", 170, 420, 330)
 F.clip(7, '<div id="t7" class="term tm" style="top:330px"><div class="bar"><i></i><i></i><i></i></div><div class="body">'
           '<div><span class="p">&gt;</span> claude</div><div class="d">new session</div></div></div>'
           '<div id="ctx"><b>context from earlier sessions</b>Login bug fixed in session.ts · uses pnpm · tests in /tests</div>'
-       + F.block([[(42, 43, "b"), (44, 46, "")], [(47, 48, "hl"), (49, 51, "it")]], top=1060, size=84))
+       + F.block([[(42, 43, "b"), (44, 44, "")], [(45, 46, ""), (47, 48, "hl")], [(49, 51, "it")]], top=990, size=78))
 # S8 search history in plain English (real viewer)
 F.clip(8, f'<div id="sf">{SRCH}<span id="sft"></span></div>'
-       + F.block([[(52, 54, ""), (55, 57, "b")], [(58, 60, "hl")]], top=1060, size=92))
+       + F.block([[(52, 54, "")], [(55, 57, "b")], [(58, 60, "hl")]], top=990, size=80))
 # S9 private tags never stored
 F.clip(9, '<div id="cd"><div>deploy with key</div><div><span class="tg">&lt;private&gt;</span></div><div><span class="sec">sk-live-•••••••••••<span class="bar" id="rb"></span></span></div>'
           '<div><span class="tg">&lt;/private&gt;</span></div></div>' + tile("lock", "lock", 770, 640, 230, acc=True)
-       + F.block([[(61, 63, ""), (64, 65, "hl")], [(66, 66, ""), (67, 68, "b")]], top=1080, size=92))
+       + F.block([[(61, 63, "")], [(64, 65, "hl")], [(66, 66, ""), (67, 68, "b")]], top=990, size=80))
 # S10 paid cloud is optional
 F.clip(10, CLOUD + tile("loc", "local", 600, 380, 330, acc=True)
            + '<div class="tg2" id="tgc"><span>optional</span></div><div class="tg2" id="tgl"><span>enough</span></div>'
@@ -188,7 +188,7 @@ ft('#vw',{opacity:0,y:200,rotationX:25,transformPerspective:1400},{opacity:1,y:0
 outUp(['#sf','#vw'],ST[9]);
 starPass('#st3',ST[9]-0.3,[900,1500,0],[760,1460,50],8,1.2);
 // S9 private tag, secret blacked out
-popIn('#cd',ST[9]+0.05,{y:80,s:.92,r:-2});
+popIn('#cd',ST[9]-0.1,{y:80,s:.92,r:-2});
 ft('#rb',{scaleX:0},{scaleX:1,duration:.35,ease:'power3.out'},S[64]);
 popIn('#lock',S[67]-0.1,{y:60,s:.4,r:12});
 outUp(['#cd','#lock'],ST[10]);
