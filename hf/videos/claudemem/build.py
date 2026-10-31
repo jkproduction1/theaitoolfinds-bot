@@ -184,7 +184,7 @@ outUp(['#t7','#ctx'],ST[8]);
 // S8 search + real viewer
 ft('#sf',{opacity:0,y:-60,scale:.9},{opacity:1,y:0,scale:1,duration:.5,ease:A},ST[8]+0.02);
 typeIn('sft','how did we fix the login bug?',ST[8]+0.35,.04);
-ft('#vw',{opacity:0,y:200,rotationX:25,transformPerspective:1400},{opacity:1,y:0,rotationX:0,duration:.8,ease:A},S[55]-0.1);
+ft('#vw',{opacity:0,y:-120,scale:.9,rotationX:-20,filter:'blur(12px)',transformPerspective:1400},{opacity:1,y:0,scale:1,rotationX:0,filter:'blur(0px)',duration:.8,ease:A},S[55]-0.1);
 outUp(['#sf','#vw'],ST[9]);
 starPass('#st3',ST[9]-0.3,[900,1500,0],[760,1460,50],8,1.2);
 // S9 private tag, secret blacked out
