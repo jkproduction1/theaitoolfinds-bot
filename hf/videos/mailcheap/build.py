@@ -106,7 +106,7 @@ F.clip(3, tile("srv", "local", 120, 400, 330)
 # S4 10,000 readers x 4 issues
 F.clip(4, '<div class="eq" id="eqa">10,000 <span>readers</span></div><div class="eq" id="eqb">× 4 <span>issues</span></div>'
           '<div class="eq" id="eqc">40,000<small>emails a month</small></div>'
-       + F.block([[(31, 33, "b")], [(34, 36, ""), (37, 38, "it")]], top=1080, size=100))
+       + F.block([[(31, 33, "b")], [(34, 36, ""), (37, 38, "it")]], top=1080, size=94))
 # S5 $4 to $6 on SES
 F.clip(5, '<div id="tag"><div class="p"><span>$</span>4–6</div><div class="m">a month</div></div><div id="ses">on Amazon SES</div>'
        + F.block([[(39, 40, ""), (41, 44, "hl")], [(45, 47, "b")]], top=1060, size=96))
@@ -116,7 +116,7 @@ F.clip(6, "".join(f'<div class="csv" id="cv{k}" style="left:{x}px;top:330px"><b>
           + '<div id="hub"><img src="assets/icon-512.png" alt=""></div>'
        + F.block([[(48, 51, "")], [(52, 53, "b")], [(54, 55, "b")]], top=990, size=80))
 # S7 a web page per issue (real screenshot)
-F.clip(7, '<div id="url">yourname<b>.mailcheap.ai</b></div>' + pg("ws", "website.jpg", 110, 390, 860)
+F.clip(7, '<div id="url">yourdomain.com<b>/archive/newsletter</b></div>' + pg("ws", "website.jpg", 110, 390, 860)
        + F.block([[(56, 58, "")], [(59, 60, ""), (61, 62, "hl")]], top=1060, size=100))
 # S8 agent sends, asks first
 F.clip(8, '<div id="t8" class="term tm" style="top:320px"><div class="bar"><i></i><i></i><i></i></div><div class="body">'

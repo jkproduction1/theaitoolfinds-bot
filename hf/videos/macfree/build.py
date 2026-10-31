@@ -72,7 +72,7 @@ def swap(n, k, paid, icon, name):
 
 PAID = [("CleanShot X", 110, 340), ("CleanMyMac", 470, 500), ("Wispr Flow", 140, 660), ("Screen Studio", 460, 820)]
 # S0 paid apps with subscription tags
-F.clip(0, "".join(f'<div class="pd" id="pd{k}" style="left:{x}px;top:{y}px">{n}<s>$/mo</s></div>' for k, (n, x, y) in enumerate(PAID))
+F.clip(0, "".join(f'<div class="pd" id="pd{k}" style="left:{x}px;top:{y}px">{n}<s>$</s></div>' for k, (n, x, y) in enumerate(PAID))
        + F.block([[(0, 3, "")], [(4, 4, "hl"), (5, 5, "b")]], top=1060, size=104))
 # S1 four free swaps
 F.clip(1, '<div id="four">4</div><div id="free">FREE</div>'
@@ -144,14 +144,14 @@ function swapIn(k,sc,iPaid,iFree){ numIn(k,ST[sc]+0.02);
 [0,1,2,3].forEach(k=>tl.to('#pd'+k+' s',{backgroundColor:'#ff4b1f',scale:1.15,duration:.2,ease:'back.out(3)'},S[1]+k*0.12));
 outUp(['#pd0','#pd1','#pd2','#pd3'],ST[1]);
 // S1 big 4 + FREE
-ft('#four',{opacity:0,scale:2.2,filter:'blur(30px)',rotation:-8},{opacity:1,scale:1,filter:'blur(0px)',rotation:0,duration:.6,ease:A},S[8]-0.15);
+ft('#four',{opacity:0,scale:2.2,filter:'blur(30px)',rotation:-8},{opacity:1,scale:1,filter:'blur(0px)',rotation:0,duration:.6,ease:A},ST[1]+0.05);
 ft('#free',{opacity:0,scale:2.4,rotation:-14,filter:'blur(10px)'},{opacity:1,scale:1,rotation:8,filter:'blur(0px)',duration:.4,ease:'back.out(2)'},S[9]-0.05);
 outUp(['#four','#free'],ST[2]);
 starPass('#st1',ST[2]-0.35,[700,-650,0],[430,-360,40],10,1.2);
 // #1 macshot
 swapIn(1,2,14,17);
 ft('#ms',{opacity:0,y:220,rotationX:28,transformPerspective:1600,scale:.9},{opacity:1,y:0,rotationX:0,scale:1,duration:.9,ease:A},ST[3]+0.02);
-tl.to('#ms',{scale:1.05,duration:Math.max(.5,ST[4]-ST[3]-0.9),ease:'none'},ST[3]+0.9);
+tl.to("#ms",{scale:1.03,duration:Math.max(.5,ST[4]-ST[3]-0.9),ease:'none'},ST[3]+0.9);
 outUp('#ms',ST[4]);
 ft('#mb',{opacity:0,y:-60},{opacity:1,y:0,duration:.5,ease:A},ST[4]+0.02);
 ft('#drop',{opacity:0,y:-30,scale:.9,transformOrigin:'80% 0'},{opacity:1,y:0,scale:1,duration:.4,ease:'back.out(1.6)'},ST[4]+0.4);
