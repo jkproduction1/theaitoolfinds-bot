@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/thedotmack/claude-mem",
+ "name": "Claude-Mem",
+ "tool_name": "Claude-Mem",
+ "keyword": "MEM",
+ "summary_cs": "Claude-Mem (Apache-2.0) je plugin pro Claude Code, který zaznamenává, co agent dělá, zhušťuje to do krátkých shrnutí a ukládá lokálně (SQLite), takže v další session má kontext. Umí hledání v historii přirozeným jazykem a <private> tagy; placený cloud je volitelný, ve videu to říkám.",
+ "style": "hyperframes-paper",
+ "duration": 26.9,
+ "domain": "github.com/thedotmack/claude-mem",
+ "created": "2026-10-31_2103",
+ "run_id": null,
+ "artifact": null
+}
