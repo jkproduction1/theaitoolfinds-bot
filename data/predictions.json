@@ -580,5 +580,77 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "hallmark",
+  "date": "2026-11-01",
+  "score": 83,
+  "mode": "script",
+  "features": {
+   "hook": 0.64,
+   "hook_words": 6,
+   "hook_end_s": 2.31,
+   "tool_named_s": 3.46,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 24.7,
+   "words": 60,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "relatable-pain",
+   "topic": 0.9
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "hallmark",
+  "date": "2026-11-01",
+  "score": 89,
+  "mode": "full",
+  "features": {
+   "hook": 0.68,
+   "hook_words": 6,
+   "hook_end_s": 2.08,
+   "tool_named_s": 3.69,
+   "payoff": 0.92,
+   "wps": 3.07,
+   "dur_s": 21.2,
+   "words": 60,
+   "pace": 0.86,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.0,
+   "visual_changes": 52,
+   "visuals": 1.0,
+   "ending": 1.0,
+   "angle": "relatable-pain",
+   "topic": 0.9
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]
