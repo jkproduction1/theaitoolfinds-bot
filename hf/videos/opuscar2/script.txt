@@ -1,0 +1,1 @@
+Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code. Pick one of sixty-six styles, like watercolor, ukiyo-e or pixel RPG, and give it one line of story. It draws every frame in code, scores the music and adds a voice. No video model. One film takes up to an hour. Comment OPUSCAR and I'll send you the link.
