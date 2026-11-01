@@ -211,9 +211,19 @@ def main():
     pending = _load(PENDING, {})
     posted = _load(POSTED, [])
     taken = {p["when"] for p in posted if p.get("when")}
-    if os.getenv("TG_UPDATE"):  # pushed instantly by the Cloudflare worker (webhook mode)
+    queue = sorted((config.DATA / "tg_queue").glob("*.b64")) if (config.DATA / "tg_queue").exists() else []
+    if queue or os.getenv("TG_UPDATE"):  # pushed by the Cloudflare worker (webhook mode), saved in data/tg_queue/
         import base64
-        updates = [json.loads(base64.b64decode(os.environ["TG_UPDATE"]).decode())]
+        updates = [json.loads(base64.b64decode(f.read_text()).decode()) for f in queue]
+        if os.getenv("TG_UPDATE"):
+            updates.append(json.loads(base64.b64decode(os.environ["TG_UPDATE"]).decode()))
+        seen_ids, uniq = set(), []
+        for u in sorted(updates, key=lambda u: u.get("update_id", 0)):
+            if u.get("update_id") not in seen_ids:
+                seen_ids.add(u.get("update_id")); uniq.append(u)
+        updates = uniq
+        for f in queue:
+            f.unlink()
     else:
         try:
             updates = telegram._api("getUpdates", data={"offset": st.get("offset", 0), "timeout": 0,
@@ -263,7 +273,7 @@ def main():
                 # the Claude "brain" session reads picks["picked"] and makes these first
                 picks.setdefault("picked", []).append(item["url"])
                 (config.DATA / "picks.json").write_text(json.dumps(picks, indent=2))
-                telegram.notify(f"🎬 Zapsáno: {item['name']}. Udělám ho v ranním kole (10:00), "
+                telegram.notify(f"🎬 Zapsáno: {item['name']}. Udělám ho ve večerním kole (19:30), "
                                 "nebo hned, když mi v Claude napíšeš „udělej“.")
             except Exception as e:
                 telegram.notify(f"⚠️ Nepovedlo se spustit video: {str(e)[:200]}")

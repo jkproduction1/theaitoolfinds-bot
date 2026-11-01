@@ -18,16 +18,45 @@ permissions:
   contents: write
   actions: write    # download video artifacts + start a video job for a picked tool
 
-concurrency:
-  group: poster
-  cancel-in-progress: false
-
+# Every Telegram tap is first saved to data/tg_queue/ by its own job (never cancelled), then ONE serialized
+# "post" job works through the whole queue. GitHub keeps only one pending run per concurrency group and cancels
+# the rest, so putting the concurrency on the whole run used to drop taps when Jan tapped several videos quickly.
 jobs:
-  post:
+  enqueue:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - name: Save the Telegram update to the queue
+        env:
+          TG_UPDATE: ${{ github.event.inputs.update }}
+        run: |
+          [ -z "$TG_UPDATE" ] && exit 0
+          mkdir -p data/tg_queue
+          f="data/tg_queue/$(date -u +%s%N)-${GITHUB_RUN_ID}.b64"
+          printf '%s' "$TG_UPDATE" > "$f"
+          git config user.name "theaitoolfinds-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -f "$f" && git commit -qm "tg queue [skip ci]"
+          for i in 1 2 3 4 5 6; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep $((i * 3))
+          done
+          exit 1
+
+  post:
+    needs: enqueue
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: poster
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Get the latest queue
+        run: git pull -q origin main || true
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -38,7 +67,6 @@ jobs:
           ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           POST_NOW: ${{ github.event.inputs.now || 'false' }}
-          TG_UPDATE: ${{ github.event.inputs.update }}
           AUTODM: ${{ github.event.inputs.autodm }}
         run: |
           if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$ZERNIO_API_KEY" ]; then echo "not configured yet"; exit 0; fi
@@ -55,6 +83,7 @@ jobs:
           for f in data/telegram.json data/pending.json data/posted.json data/picks.json logs/autodm.log; do
             [ -e "$f" ] && git add -f "$f"
           done
+          git add -A data/tg_queue 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -qm "poster state [skip ci]"
           for i in 1 2 3; do
