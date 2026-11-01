@@ -19,7 +19,7 @@ PENDING = config.DATA / "pending.json"
 POSTED = config.DATA / "posted.json"
 TZ = ZoneInfo(os.getenv("POST_TIMEZONE", "Europe/Prague"))
 # Prague times = good for an English (EU + US morning) audience. Change freely.
-SLOTS = [s.strip() for s in os.getenv("POST_SLOTS", "08:00,15:00,22:00").split(",")]
+SLOTS = [s.strip() for s in os.getenv("POST_SLOTS", "08:00,15:00,21:00").split(",")]
 
 
 def _load(p, default):
@@ -273,7 +273,7 @@ def main():
                 # the Claude "brain" session reads picks["picked"] and makes these first
                 picks.setdefault("picked", []).append(item["url"])
                 (config.DATA / "picks.json").write_text(json.dumps(picks, indent=2))
-                telegram.notify(f"🎬 Zapsáno: {item['name']}. Udělám ho ve večerním kole (19:30), "
+                telegram.notify(f"🎬 Zapsáno: {item['name']}. Udělám ho v ranním kole (zítra kolem 5–7 h, posty 8/15/21), "
                                 "nebo hned, když mi v Claude napíšeš „udělej“.")
             except Exception as e:
                 telegram.notify(f"⚠️ Nepovedlo se spustit video: {str(e)[:200]}")

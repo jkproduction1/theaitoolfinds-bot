@@ -52,7 +52,7 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
 - Reference build: `hf/videos/claude7/build.py` (listicle), `hf/videos/opencode/build.py` (tool),
   `hf/videos/rea/build_reference.py` (first film). Copy the closest one and change scenes, don't start blank.
 
-## 4. Each run (3 videos)
+## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`) and
    `data/learnings.md`. Prefer topic types and hook patterns that are winning; avoid the losing ones. On Sunday runs,
    rewrite `data/learnings.md` from the stats (top/bottom 3 per platform, hook patterns, length vs. watch time,
@@ -101,7 +101,7 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
 
 ## 6. Posting
 Jan taps ✅ in Telegram → `post-approved` workflow schedules on Zernio at the next free slot:
-**08:00 / 15:00 / 22:00 Prague** (`bot/poster.py` SLOTS; one-off extra slots in `data/extra_slots.json`).
+**08:00 / 15:00 / 21:00 Prague** (`bot/poster.py` SLOTS; one-off extra slots in `data/extra_slots.json`).
 GitHub cron is late by hours, so nothing time-critical relies on it; Zernio posts at the exact time.
 
 ## 6b. A/B test: Lemo Opuscar
