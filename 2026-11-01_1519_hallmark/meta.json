@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/Nutlope/hallmark",
+ "name": "Hallmark",
+ "tool_name": "Hallmark",
+ "keyword": "HALLMARK",
+ "summary_cs": "Hallmark (MIT, od Together AI) je design skill pro Claude Code, Codex, Cursor a OpenCode, který nedovolí, aby web vypadal jako z AI: vybírá z 50 témat a stránku kontroluje v reálném prohlížeči v 8 šířkách na typické AI znaky (barevné slovo v nadpisu, eyebrow nad každým nadpisem…). Umí i /hallmark redesign a audit existující stránky.",
+ "style": "hyperframes-paper",
+ "duration": 20.6,
+ "domain": "github.com/Nutlope/hallmark",
+ "created": "2026-11-01_1519",
+ "run_id": null,
+ "artifact": null
+}
