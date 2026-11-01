@@ -1,51 +1,51 @@
 {
-  "date": "2026-10-31",
-  "category": "video",
+  "date": "2026-11-01",
+  "category": "design",
   "items": [
-    {
-      "name": "unslop",
-      "url": "https://github.com/heydamir/unslop",
-      "desc": "A Claude skill that turns vibecoded, AI-looking UI into a designed interface",
-      "source": "gh-search",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
     {
       "name": "hallmark",
       "url": "https://github.com/Nutlope/hallmark",
       "desc": "Star                    Nutlope /   hallmark      Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
       "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
+      "angle": "trending-repo",
+      "score": 9.0,
+      "why": "Zbav\u00ed k\u00f3dovan\u00e9 weby generick\u00e9ho AI vzhledu a dod\u00e1 jim pr\u00e9miov\u00fd designov\u00fd styl."
     },
     {
       "name": "impeccable",
       "url": "https://github.com/pbakaus/impeccable",
       "desc": "Star                    pbakaus /   impeccable      The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
       "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
+      "angle": "time-saver",
+      "score": 9.0,
+      "why": "Nau\u010d\u00ed AI agenty design\u00e9rsk\u00fd slovn\u00edk a vizu\u00e1ln\u00ed kritiku pro dokonal\u00e9 UI rozhran\u00ed."
     },
     {
-      "name": "security-audit-skill",
-      "url": "https://github.com/cloudflare/security-audit-skill",
-      "desc": "Star                    cloudflare /   security-audit-skill      A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
+      "name": "taste-skill",
+      "url": "https://github.com/Leonxlnx/taste-skill",
+      "desc": "Sponsor                           Star                    Leonxlnx /   taste-skill      Agent skills that give coding agents taste: art direction, reference images and a browser check instead of generic AI pages",
       "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
+      "angle": "trending-repo",
+      "score": 8.0,
+      "why": "Dod\u00e1 k\u00f3dovac\u00edm agent\u016fm vizu\u00e1ln\u00ed vkus, art direction a schopnost pracovat s referencemi."
     },
     {
-      "name": "claude-mem",
-      "url": "https://github.com/thedotmack/claude-mem",
-      "desc": "Sponsor                           Star                    thedotmack /   claude-mem      Persistent Context Across Sessions for Every Agent \u2013 Captures everything your agent does during sessions, compresses it with AI, and injects relevant context back into fut",
-      "source": "gh-trending",
+      "name": "unslop",
+      "url": "https://github.com/heydamir/unslop",
+      "desc": "A Claude skill that turns vibecoded, AI-looking UI into a designed interface",
+      "source": "gh-search",
+      "angle": "time-saver",
+      "score": 8.0,
+      "why": "Skill pro Claude, kter\u00fd okam\u017eit\u011b p\u0159epracuje amat\u00e9rsk\u00e9 vibe-coding UI na \u010dist\u00fd design."
+    },
+    {
+      "name": "Qwen Image 2.1 Realtime",
+      "url": "https://huggingface.co/spaces/linoyts/qwen-image-2-1-realtime",
+      "desc": "Real-time t2i & editing with a Qwen-Image-2.1 2-step LoRA",
+      "source": "hf-spaces",
       "angle": "wow-demo",
-      "score": 7,
-      "why": ""
+      "score": 8.0,
+      "why": "Generov\u00e1n\u00ed a editace obr\u00e1zk\u016f v re\u00e1ln\u00e9m \u010dase b\u011bhem dvou krok\u016f zdarma na HF."
     }
   ],
   "picked": []

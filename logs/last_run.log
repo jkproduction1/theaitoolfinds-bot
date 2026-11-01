@@ -1,2 +1,12 @@
-[telegram] sent 2026-11-01_0303_opuscar2 for approval
-released 2026-11-01_0303_opuscar2
+[discover] github_trending: 20
+[discover] github_search: 57
+[discover] hf_spaces: 60
+[discover] reddit r/StableDiffusion: HTTP 403
+[discover] reddit: 0
+[discover] hackernews: 25
+[discover] 0 from queue, 141 candidates total
+[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 2 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 3 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
+[llm] attempt 4 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
+[main] top picks: hallmark 9 trending-repo | impeccable 9 time-saver | taste-skill 8 trending-repo | unslop 8 time-saver | Qwen Image 2.1 Realtime 8 wow-demo | pixelfx 7 wow-demo | SimReady Central 7 free-alternative | openjutsu 7 free-alternative
