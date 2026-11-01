@@ -1,0 +1,22 @@
+{
+ "weights": {
+  "topic": 30,
+  "hook": 20,
+  "payoff": 12,
+  "pace": 8,
+  "length": 12,
+  "filler": 8,
+  "visuals": 8,
+  "ending": 2
+ },
+ "angle_prior": {
+  "new-ability": 1.0,
+  "relatable-pain": 0.9,
+  "news": 0.85,
+  "pain-command": 0.6,
+  "fear": 0.55,
+  "listicle": 0.4,
+  "alternative": 0.3
+ },
+ "note": "angle_prior = relative TikTok reach per topic type from data/stats.json (2026-11-01, 15 videos). Recalibrate on Sundays."
+}

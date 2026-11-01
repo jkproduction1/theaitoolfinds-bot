@@ -58,6 +58,9 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
    rewrite `data/learnings.md` from the stats (top/bottom 3 per platform, hook patterns, length vs. watch time,
    what to test next) and do a short viral-research pass (WebSearch: what AI-tool shorts and launches are spreading
    this week; links Jan drops in `data/viral_inbox.md`). Only write conclusions the numbers support; mark guesses as guesses.
+   Then recalibrate `hf/predict_weights.json`: set each `angle_prior` from the average TikTok views per angle
+   (best angle = 1.0), and shift a few weight points toward the features whose scores actually tracked views
+   (compare `data/predictions.json` with `data/stats.json`; later also completion / watch time). Log the change.
 1. `git pull`. Pick 3 topics: Jan's taps in `data/picks.json` "picked" first (skip any already made, see
    `data/history.json` and the `videos` branch), then `items`, else research (WebSearch: trending repos,
    launches this week). Mix pillars: e.g. 1 paid→free, 1 creator/dev tool, 1 listicle.
@@ -68,12 +71,18 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
    `voice-samples.yml` (ref main). ~3 min later `voice-samples/<name>.mp3/.json` are on the `videos` branch.
    Words in the json must match `script.txt.split()` one to one (keep hyphenated tokens like B-T-W together;
    use `display={i: "/btw"}` in Film to show a different on-screen form, "" hides a word).
+   **Before voicing:** write `post.json` early with `"angle"` (topic type: new-ability | relatable-pain | news |
+   pain-command | fear | listicle | alternative) and run `python3 hf/predict.py --script <name>`. Fix every ⚑ flag
+   (long hook, tool named late, too long, filler) and re-run until it's clean or you can say why a flag is fine.
 4. Per video: `MUSIC=t1 hf/new.sh <name>` (scratch project in hf/work/<name>), write
    `hf/videos/<name>/build.py` (Film(...).scenes([...first word index of each scene...]), clips, JS), run it.
 5. Check: in `hf/work/<name>` run `npx -y hyperframes@0.8.192 snapshot --at <one time per scene>` with
    `HYPERFRAMES_SKIP_SKILLS=1 HYPERFRAMES_BROWSER_PATH=/opt/pw-browsers/chromium-*/chrome-linux64/chrome`
    and LOOK at the contact sheets: nothing overlapping or cut off, text readable, hook frame rich.
 6. Render: `hf/render.sh <name>` (≈10 min, renders one at a time) → `hf/work/<name>/renders/final.mp4`.
+6b. **Predictor:** `python3 hf/predict.py <name>` on the render (adds the longest static stretch from the frames).
+   Score + flags go to `data/predictions.json`. Below 60 or a ⚑ on hook/visuals → fix before review if cheap,
+   otherwise mention it in the summary to Jan.
 7. **Director review (separate subagent that didn't write it):** give it the mp4 + script + this §3/§5
    checklist; it extracts frames with ffmpeg and returns PASS or concrete fixes. Max 2 fix rounds.
 8. Write `hf/videos/<name>/post.json` {url, tool_name, keyword (= tool name, CAPS), cover_at, summary_cs

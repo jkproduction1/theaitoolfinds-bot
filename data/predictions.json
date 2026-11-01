@@ -1,0 +1,510 @@
+[
+ {
+  "name": "claude7",
+  "date": "2026-11-01",
+  "score": 53,
+  "mode": "script",
+  "features": {
+   "hook": 0.37,
+   "hook_words": 9,
+   "hook_end_s": 3.46,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 37.8,
+   "words": 94,
+   "pace": 0.75,
+   "length": 0.35,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.22
+  },
+  "flags": [
+   "hook končí v 3.5 s (cíl ≤2,5 s)",
+   "video má 38 s (cíl 18–30 s)",
+   "po CTA ještě 5.4 s"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "opencode",
+  "date": "2026-11-01",
+  "score": 66,
+  "mode": "script",
+  "features": {
+   "hook": 0.64,
+   "hook_words": 6,
+   "hook_end_s": 2.31,
+   "tool_named_s": 5.0,
+   "payoff": 0.4,
+   "wps": 2.6,
+   "dur_s": 30.4,
+   "words": 75,
+   "pace": 0.75,
+   "length": 0.96,
+   "filler_hits": 1,
+   "filler": 0.8,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "nástroj zazní až v 5.0 s (cíl ≤3,5 s)",
+   "video má 30 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "orca",
+  "date": "2026-11-01",
+  "score": 68,
+  "mode": "script",
+  "features": {
+   "hook": 0.32,
+   "hook_words": 10,
+   "hook_end_s": 3.85,
+   "tool_named_s": 3.85,
+   "payoff": 0.86,
+   "wps": 2.6,
+   "dur_s": 30.4,
+   "words": 75,
+   "pace": 0.75,
+   "length": 0.96,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)",
+   "video má 30 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "microduck",
+  "date": "2026-11-01",
+  "score": 71,
+  "mode": "script",
+  "features": {
+   "hook": 0.64,
+   "hook_words": 6,
+   "hook_end_s": 2.31,
+   "tool_named_s": 1.92,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 35.8,
+   "words": 89,
+   "pace": 0.75,
+   "length": 0.51,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.5
+  },
+  "flags": [
+   "video má 36 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "codex6",
+  "date": "2026-11-01",
+  "score": 60,
+  "mode": "script",
+  "features": {
+   "hook": 0.37,
+   "hook_words": 9,
+   "hook_end_s": 3.46,
+   "tool_named_s": 1.15,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 36.6,
+   "words": 91,
+   "pace": 0.75,
+   "length": 0.45,
+   "filler_hits": 1,
+   "filler": 0.8,
+   "visuals": 0.5,
+   "ending": 0.38
+  },
+  "flags": [
+   "hook končí v 3.5 s (cíl ≤2,5 s)",
+   "video má 37 s (cíl 18–30 s)",
+   "po CTA ještě 5.1 s"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "comfy5",
+  "date": "2026-11-01",
+  "score": 69,
+  "mode": "script",
+  "features": {
+   "hook": 0.64,
+   "hook_words": 6,
+   "hook_end_s": 2.31,
+   "tool_named_s": 1.92,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 33.1,
+   "words": 82,
+   "pace": 0.75,
+   "length": 0.74,
+   "filler_hits": 2,
+   "filler": 0.6,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "video má 33 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "graphify",
+  "date": "2026-11-01",
+  "score": 50,
+  "mode": "script",
+  "features": {
+   "hook": 0.25,
+   "hook_words": 15,
+   "hook_end_s": 5.77,
+   "tool_named_s": 6.54,
+   "payoff": 0.0,
+   "wps": 2.6,
+   "dur_s": 33.5,
+   "words": 83,
+   "pace": 0.75,
+   "length": 0.71,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "hook má 15 slov (cíl ≤10)",
+   "hook končí v 5.8 s (cíl ≤2,5 s)",
+   "nástroj zazní až v 6.5 s (cíl ≤3,5 s)",
+   "video má 34 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "concat",
+  "date": "2026-11-01",
+  "score": 68,
+  "mode": "script",
+  "features": {
+   "hook": 0.65,
+   "hook_words": 5,
+   "hook_end_s": 1.92,
+   "tool_named_s": 4.62,
+   "payoff": 0.55,
+   "wps": 2.6,
+   "dur_s": 30.8,
+   "words": 76,
+   "pace": 0.75,
+   "length": 0.93,
+   "filler_hits": 1,
+   "filler": 0.8,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "nástroj zazní až v 4.6 s (cíl ≤3,5 s)",
+   "video má 31 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "claudeseo",
+  "date": "2026-11-01",
+  "score": 51,
+  "mode": "script",
+  "features": {
+   "hook": 0.54,
+   "hook_words": 7,
+   "hook_end_s": 2.69,
+   "tool_named_s": 6.92,
+   "payoff": 0.0,
+   "wps": 2.6,
+   "dur_s": 37.8,
+   "words": 94,
+   "pace": 0.75,
+   "length": 0.35,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "nástroj zazní až v 6.9 s (cíl ≤3,5 s)",
+   "video má 38 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "impeccable6",
+  "date": "2026-11-01",
+  "score": 50,
+  "mode": "script",
+  "features": {
+   "hook": 0.43,
+   "hook_words": 8,
+   "hook_end_s": 3.08,
+   "tool_named_s": 5.77,
+   "payoff": 0.09,
+   "wps": 2.6,
+   "dur_s": 38.1,
+   "words": 95,
+   "pace": 0.75,
+   "length": 0.32,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "hook končí v 3.1 s (cíl ≤2,5 s)",
+   "nástroj zazní až v 5.8 s (cíl ≤3,5 s)",
+   "video má 38 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "secaudit",
+  "date": "2026-11-01",
+  "score": 59,
+  "mode": "script",
+  "features": {
+   "hook": 0.43,
+   "hook_words": 8,
+   "hook_end_s": 3.08,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 35.8,
+   "words": 89,
+   "pace": 0.75,
+   "length": 0.51,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53
+  },
+  "flags": [
+   "hook končí v 3.1 s (cíl ≤2,5 s)",
+   "video má 36 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "hook": 25,
+   "payoff": 15,
+   "pace": 10,
+   "length": 15,
+   "filler": 15,
+   "visuals": 15,
+   "ending": 5
+  }
+ },
+ {
+  "name": "claudemem",
+  "date": "2026-11-01",
+  "score": 76,
+  "mode": "full",
+  "features": {
+   "hook": 0.34,
+   "hook_words": 12,
+   "hook_end_s": 3.65,
+   "tool_named_s": 3.78,
+   "payoff": 0.89,
+   "wps": 3.4,
+   "dur_s": 26.9,
+   "words": 86,
+   "pace": 0.58,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 59,
+   "visuals": 0.7,
+   "ending": 0.83,
+   "angle": "relatable-pain",
+   "topic": 0.9
+  },
+  "flags": [
+   "hook končí v 3.6 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "mailcheap",
+  "date": "2026-11-01",
+  "score": 58,
+  "mode": "full",
+  "features": {
+   "hook": 0.38,
+   "hook_words": 11,
+   "hook_end_s": 4.15,
+   "tool_named_s": 4.25,
+   "payoff": 0.7,
+   "wps": 3.34,
+   "dur_s": 28.0,
+   "words": 88,
+   "pace": 0.64,
+   "length": 1.0,
+   "filler_hits": 1,
+   "filler": 0.8,
+   "longest_static_s": 2.5,
+   "visual_changes": 59,
+   "visuals": 1.0,
+   "ending": 0.99,
+   "angle": "alternative",
+   "topic": 0.3
+  },
+  "flags": [
+   "hook končí v 4.2 s (cíl ≤2,5 s)",
+   "nástroj zazní až v 4.2 s (cíl ≤3,5 s)",
+   "typ tématu \"alternative\" u nás zatím slabě funguje"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "macfree",
+  "date": "2026-11-01",
+  "score": 65,
+  "mode": "full",
+  "features": {
+   "hook": 0.74,
+   "hook_words": 6,
+   "hook_end_s": 1.69,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.87,
+   "dur_s": 33.7,
+   "words": 92,
+   "pace": 0.97,
+   "length": 0.69,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.0,
+   "visual_changes": 73,
+   "visuals": 0.8,
+   "ending": 1.0,
+   "angle": "listicle",
+   "topic": 0.4
+  },
+  "flags": [
+   "video má 34 s (cíl 18–30 s)",
+   "typ tématu \"listicle\" u nás zatím slabě funguje"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ }
+]
