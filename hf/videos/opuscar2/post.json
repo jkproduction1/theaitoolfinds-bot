@@ -3,7 +3,7 @@
  "tool_name": "Lemo Opuscar",
  "keyword": "OPUSCAR",
  "angle": "new-ability",
- "cover_at": 3.0,
- "summary_cs": "Lemo Opuscar (MIT) je free plugin pro Claude Code: vybere\u0161 jeden z 66 styl\u016f, nap\u00ed\u0161e\u0161 jednu v\u011btu p\u0159\u00edb\u011bhu a on nakresl\u00ed ka\u017ed\u00fd sn\u00edmek v k\u00f3du, slo\u017e\u00ed hudbu a p\u0159id\u00e1 hlas. \u017d\u00e1dn\u00fd video model; jeden film trv\u00e1 30\u201360 min a hodn\u011b token\u016f (podle README).",
- "caption": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code.\n\nComment OPUSCAR and I'll DM you the link.\n\n#claudecode #aivideo #opensource"
+ "cover_at": 1.2,
+ "summary_cs": "Lemo Opuscar (MIT) je free plugin pro Claude Code: vybereš jeden z 66 stylů, napíšeš jednu větu příběhu a on nakreslí každý snímek v kódu, složí hudbu a přidá hlas. Žádný video model; jeden film trvá 30–60 min a hodně tokenů (podle README).",
+ "caption": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code.\n\nComment OPUSCAR and I'll DM you the link.\n\nStyle frames: LemoLab (github.com/lemomo-ai/lemo-opuscar), CC BY 4.0, cropped.\n\n#claudecode #aivideo #opensource"
 }
