@@ -1,14 +1,6 @@
 [
  {
-  "name": "claudemem",
-  "text": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory. It's a free, open source plugin. While you work, it records what Claude does, squeezes it into short summaries, and saves them on your machine. Next session, the right context shows up on its own. You can search your whole history in plain English. And anything inside private tags is never stored. There's a paid cloud, but you don't need it. Comment MEM and I'll send you the link."
- },
- {
-  "name": "mailcheap",
-  "text": "Paying beehiiv or Mailchimp for subscribers who never open your emails? MailCheap is a free, open source newsletter app. You host it yourself and only pay for the emails you send. Ten thousand readers and four issues a month is about four to six dollars on Amazon S-E-S. Import your list from beehiiv, Substack or Mailchimp. Every issue gets its own web page. Your AI agent can even send it, but it asks you first. Setup takes about an hour. Comment MAILCHEAP and I'll send you the link."
- },
- {
-  "name": "macfree",
-  "text": "Still paying for these Mac apps? Here are four free, open source swaps. One. CleanShot X? Try macshot. Screenshots, arrows, blur, scroll capture and screen recording, right from your menu bar. Two. CleanMyMac? PureMac clears caches and junk, and removes apps with their leftovers. No subscription. Three. Wispr Flow? FreeFlow. Hold the function key, talk, and clean text lands where you type. You'll need a free Groq key. Four. Screen Studio? OpenScreen records your screen, then adds auto zooms and captions. It's still early. Comment MAC and I'll send you all four."
+  "name": "opuscar",
+  "text": "Paying for AI video credits? This free tool makes short films without a video model. It's called Lemo Opuscar, a plugin for Claude Code with sixty-six film styles. Watercolor, Ukiyo-e, pixel RPG, or a dark tech keynote, like this one. You give it a style and one line of story. It draws every frame in code, writes the music and adds the voice. One film takes thirty to sixty minutes and a lot of tokens. Comment OPUSCAR and I'll send you the link."
  }
 ]
