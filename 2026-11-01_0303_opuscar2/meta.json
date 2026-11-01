@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/lemomo-ai/lemo-opuscar",
+ "name": "Lemo Opuscar",
+ "tool_name": "Lemo Opuscar",
+ "keyword": "OPUSCAR",
+ "summary_cs": "Lemo Opuscar (MIT) je free plugin pro Claude Code: vybereš jeden z 66 stylů, napíšeš jednu větu příběhu a on nakreslí každý snímek v kódu, složí hudbu a přidá hlas. Žádný video model; jeden film trvá 30–60 min a hodně tokenů (podle README).",
+ "style": "hyperframes-paper",
+ "duration": 21.7,
+ "domain": "github.com/lemomo-ai/lemo-opuscar",
+ "created": "2026-11-01_0303",
+ "run_id": null,
+ "artifact": null
+}
