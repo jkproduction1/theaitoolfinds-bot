@@ -3,6 +3,134 @@
  "analytics_access": true,
  "posts": [
   {
+   "name": "2026-10-31_2103_claudemem",
+   "post_id": "6ae750117b2437187f0ee5a8",
+   "published_at": "2026-11-01T14:47:28.000Z",
+   "status": "published",
+   "hook": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory.",
+   "total": {
+    "views": 7,
+    "reach": 3,
+    "impressions": 7,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfM-ta2EkPc/",
+     "views": 7,
+     "reach": 3,
+     "impressions": 7,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-31_2103_claudemem",
+   "post_id": "6ae750117b2437187f0ee5a8",
+   "published_at": "2026-11-01T14:46:39.000Z",
+   "status": "published",
+   "hook": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory. Comment MEM and I'll DM you the link. #claudecode #aitools #opensource",
+   "total": {
+    "views": 153,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 7,
+    "comments": 0,
+    "shares": 2,
+    "saves": 1,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7703214600099089696?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 153,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 7,
+     "comments": 0,
+     "shares": 2,
+     "saves": 1,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-01_0303_opuscar2",
+   "post_id": "6ae69f9d1e44c4e6e87cca03",
+   "published_at": "2026-11-01T07:05:35.000Z",
+   "status": "published",
+   "hook": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code.",
+   "total": {
+    "views": 276,
+    "reach": 233,
+    "impressions": 276,
+    "likes": 1,
+    "comments": 0,
+    "shares": 3,
+    "saves": 7,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfMJ1urgjTR/",
+     "views": 276,
+     "reach": 233,
+     "impressions": 276,
+     "likes": 1,
+     "comments": 0,
+     "shares": 3,
+     "saves": 7,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-01_0303_opuscar2",
+   "post_id": "6ae69f9d1e44c4e6e87cca03",
+   "published_at": "2026-11-01T07:03:59.000Z",
+   "status": "published",
+   "hook": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code. Comment OPUSCAR and I'll DM you the link. Style frames: LemoLab (github.com/lemomo-ai/lemo-opuscar), CC BY ",
+   "total": {
+    "views": 380,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 18,
+    "comments": 1,
+    "shares": 1,
+    "saves": 11,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7703095284745686304?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 380,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 18,
+     "comments": 1,
+     "shares": 1,
+     "saves": 11,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
    "name": null,
    "post_id": "6ae48536b641257fdc200be6",
    "published_at": "2026-10-30T14:02:41.000Z",
@@ -40,7 +168,7 @@
    "status": "published",
    "hook": "Ever noticed every AI-built website looks the same? These 6 Impeccable commands fix that. Comment IMPECCABLE and I'll DM you the link. #webdesign #vibecoding #aitools",
    "total": {
-    "views": 216,
+    "views": 217,
     "reach": 72,
     "impressions": 0,
     "likes": 5,
@@ -54,7 +182,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7702460872228228385?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 216,
+     "views": 217,
      "reach": 72,
      "impressions": 0,
      "likes": 5,
@@ -104,7 +232,7 @@
    "status": "published",
    "hook": "Paying for SEO audit software every month? There's a free, open source plugin for Claude Code. Comment SEO and I'll DM you the link. #seo #claudecode #opensource",
    "total": {
-    "views": 288,
+    "views": 289,
     "reach": 132,
     "impressions": 0,
     "likes": 4,
@@ -118,7 +246,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7702439528509787425?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 288,
+     "views": 289,
      "reach": 132,
      "impressions": 0,
      "likes": 4,
@@ -366,7 +494,7 @@
     "likes": 7,
     "comments": 0,
     "shares": 0,
-    "saves": 4,
+    "saves": 0,
     "follows": 0,
     "reposts": 0
    },
@@ -380,7 +508,7 @@
      "likes": 7,
      "comments": 0,
      "shares": 0,
-     "saves": 4,
+     "saves": 0,
      "follows": 0,
      "reposts": 0
     }
