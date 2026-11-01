@@ -2,7 +2,7 @@ name: Make AI tool video
 
 on:
   # times are UTC (Prague = UTC+2 in summer, UTC+1 in winter)
-  schedule:
+  # schedule:   (no cron here any more: GitHub cron ran 5-6 h late)
     # - cron: "7 6 * * *"  # moved: GitHub cron ran 5-6 h late; the 07:52 Prague Claude scheduled task dispatches mode=picklist
     # - cron: "7 9 * * *"   # paused: Claude writes the videos for now
     # - cron: "7 15 * * *"  # paused: Claude writes the videos for now
