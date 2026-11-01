@@ -1,0 +1,999 @@
+{
+ "updated": "2026-11-01",
+ "analytics_access": true,
+ "posts": [
+  {
+   "name": null,
+   "post_id": "6ae48536b641257fdc200be6",
+   "published_at": "2026-10-30T14:02:41.000Z",
+   "status": "published",
+   "hook": "Ever noticed every AI-built website looks the same? These 6 Impeccable commands fix that.",
+   "total": {
+    "views": 259,
+    "reach": 229,
+    "impressions": 259,
+    "likes": 1,
+    "comments": 0,
+    "shares": 0,
+    "saves": 6,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfHv-p5kqeb/",
+     "views": 259,
+     "reach": 229,
+     "impressions": 259,
+     "likes": 1,
+     "comments": 0,
+     "shares": 0,
+     "saves": 6,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": null,
+   "post_id": "6ae48536b641257fdc200be6",
+   "published_at": "2026-10-30T14:01:45.000Z",
+   "status": "published",
+   "hook": "Ever noticed every AI-built website looks the same? These 6 Impeccable commands fix that. Comment IMPECCABLE and I'll DM you the link. #webdesign #vibecoding #aitools",
+   "total": {
+    "views": 216,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 5,
+    "comments": 0,
+    "shares": 1,
+    "saves": 2,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7702460872228228385?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 216,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 5,
+     "comments": 0,
+     "shares": 1,
+     "saves": 2,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-29_2031_claudeseo",
+   "post_id": "6ae48572b641257fdc200cdd",
+   "published_at": "2026-10-30T12:39:44.000Z",
+   "status": "published",
+   "hook": "Paying for SEO audit software every month? There's a free, open source plugin for Claude Code.",
+   "total": {
+    "views": 95,
+    "reach": 85,
+    "impressions": 95,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfHmhojFZwY/",
+     "views": 95,
+     "reach": 85,
+     "impressions": 95,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-29_2031_claudeseo",
+   "post_id": "6ae48572b641257fdc200cdd",
+   "published_at": "2026-10-30T12:38:58.000Z",
+   "status": "published",
+   "hook": "Paying for SEO audit software every month? There's a free, open source plugin for Claude Code. Comment SEO and I'll DM you the link. #seo #claudecode #opensource",
+   "total": {
+    "views": 288,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 4,
+    "comments": 0,
+    "shares": 0,
+    "saves": 5,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7702439528509787425?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 288,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 4,
+     "comments": 0,
+     "shares": 0,
+     "saves": 5,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": null,
+   "post_id": "6ade6914f5e3630a75ad1bb8",
+   "published_at": "2026-10-26T07:02:48.000Z",
+   "status": "published",
+   "hook": "Editing your Reels in CapCut? There's a free, open source replacement called Concat.",
+   "total": {
+    "views": 149,
+    "reach": 125,
+    "impressions": 149,
+    "likes": 0,
+    "comments": 0,
+    "shares": 1,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De8szAnj2W4/",
+     "views": 149,
+     "reach": 125,
+     "impressions": 149,
+     "likes": 0,
+     "comments": 0,
+     "shares": 1,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": null,
+   "post_id": "6ade6914f5e3630a75ad1bb8",
+   "published_at": "2026-10-26T07:01:39.000Z",
+   "status": "published",
+   "hook": "Editing your Reels in CapCut? There's a free, open source replacement called Concat. Comment CONCAT and I'll DM you the link. #videoediting #opensource #contentcreator",
+   "total": {
+    "views": 9,
+    "reach": 7,
+    "impressions": 0,
+    "likes": 1,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700868250963397921?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 9,
+     "reach": 7,
+     "impressions": 0,
+     "likes": 1,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_2026_graphify",
+   "post_id": "6ade6951f8dc59c7a425a250",
+   "published_at": "2026-10-26T00:03:55.000Z",
+   "status": "published",
+   "hook": "Is your coding agent grepping through your whole repo every time you ask a question? Type /graphify.",
+   "total": {
+    "views": 184,
+    "reach": 152,
+    "impressions": 184,
+    "likes": 2,
+    "comments": 2,
+    "shares": 1,
+    "saves": 3,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De78202DYjc/",
+     "views": 184,
+     "reach": 152,
+     "impressions": 184,
+     "likes": 2,
+     "comments": 2,
+     "shares": 1,
+     "saves": 3,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_2026_graphify",
+   "post_id": "6ade6951f8dc59c7a425a250",
+   "published_at": "2026-10-26T00:03:26.000Z",
+   "status": "published",
+   "hook": "Is your coding agent grepping through your whole repo every time you ask a question? Type /graphify. Comment GRAPHIFY and I'll DM you the link. #claudecode #aiagents #opensource",
+   "total": {
+    "views": 310,
+    "reach": 276,
+    "impressions": 0,
+    "likes": 15,
+    "comments": 0,
+    "shares": 1,
+    "saves": 8,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700760482008829216?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 310,
+     "reach": 276,
+     "impressions": 0,
+     "likes": 15,
+     "comments": 0,
+     "shares": 1,
+     "saves": 8,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_1641_comfy5",
+   "post_id": "6ade29a7405a352d56cce29c",
+   "published_at": "2026-10-25T21:03:46.000Z",
+   "status": "published",
+   "hook": "Still clicking through menus in ComfyUI? These 5 shortcuts change that.",
+   "total": {
+    "views": 141,
+    "reach": 123,
+    "impressions": 141,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De7oPUDDpzv/",
+     "views": 141,
+     "reach": 123,
+     "impressions": 141,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_1641_comfy5",
+   "post_id": "6ade29a7405a352d56cce29c",
+   "published_at": "2026-10-25T21:03:18.000Z",
+   "status": "published",
+   "hook": "Still clicking through menus in ComfyUI? These 5 shortcuts change that. 1. Double-click the canvas: search any node 2. Ctrl+B: bypass a node, wires pass through 3. Ctrl+M: mute a node 4. Ctrl+Enter: q",
+   "total": {
+    "views": 157,
+    "reach": 150,
+    "impressions": 0,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700714089080704288?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 157,
+     "reach": 150,
+     "impressions": 0,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_2020_codex6",
+   "post_id": "6ade574824351d94c0d8886f",
+   "published_at": "2026-10-25T19:46:30.000Z",
+   "status": "published",
+   "hook": "Most people use Codex CLI like a chat box. These 6 commands change that.",
+   "total": {
+    "views": 145,
+    "reach": 127,
+    "impressions": 145,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De7fX9TlQG0/",
+     "views": 145,
+     "reach": 127,
+     "impressions": 145,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_2020_codex6",
+   "post_id": "6ade574824351d94c0d8886f",
+   "published_at": "2026-10-25T19:45:46.000Z",
+   "status": "published",
+   "hook": "Most people use Codex CLI like a chat box. These 6 commands change that. Comment CODEX and I'll DM you the full list. #codex #aicoding #developer",
+   "total": {
+    "views": 282,
+    "reach": 259,
+    "impressions": 0,
+    "likes": 7,
+    "comments": 0,
+    "shares": 0,
+    "saves": 4,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700694098621287712?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 282,
+     "reach": 259,
+     "impressions": 0,
+     "likes": 7,
+     "comments": 0,
+     "shares": 0,
+     "saves": 4,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_1816_microduck",
+   "post_id": "6ade4389f44733ac49075e91",
+   "published_at": "2026-10-25T18:22:59.000Z",
+   "status": "published",
+   "hook": "Everyone missed the point of Microduck. 🎥 Pollen Robotics",
+   "total": {
+    "views": 144,
+    "reach": 107,
+    "impressions": 144,
+    "likes": 1,
+    "comments": 0,
+    "shares": 1,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De7V1kkiFpx/",
+     "views": 144,
+     "reach": 107,
+     "impressions": 144,
+     "likes": 1,
+     "comments": 0,
+     "shares": 1,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-25_1816_microduck",
+   "post_id": "6ade4389f44733ac49075e91",
+   "published_at": "2026-10-25T18:22:24.000Z",
+   "status": "published",
+   "hook": "Everyone missed the point of Microduck. 🎥 Pollen Robotics Comment MICRODUCK and I'll DM you the link. #robotics #opensource #ai",
+   "total": {
+    "views": 270,
+    "reach": 258,
+    "impressions": 0,
+    "likes": 3,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700672608685083937?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 270,
+     "reach": 258,
+     "impressions": 0,
+     "likes": 3,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1958_orca",
+   "post_id": "6adcfcd6eb9bff29e565d9fc",
+   "published_at": "2026-10-25T07:04:18.000Z",
+   "status": "published",
+   "hook": "Running Claude Code, Codex and OpenCode in three messy terminals? Orca puts them side by side.",
+   "total": {
+    "views": 180,
+    "reach": 152,
+    "impressions": 180,
+    "likes": 3,
+    "comments": 1,
+    "shares": 1,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De6IKemiBiA/",
+     "views": 180,
+     "reach": 152,
+     "impressions": 180,
+     "likes": 3,
+     "comments": 1,
+     "shares": 1,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1958_orca",
+   "post_id": "6adcfcd6eb9bff29e565d9fc",
+   "published_at": "2026-10-25T07:03:44.000Z",
+   "status": "published",
+   "hook": "Running Claude Code, Codex and OpenCode in three messy terminals? Orca puts them side by side. Each agent gets its own git worktree, so they don't step on each other. Fan one prompt across five agents",
+   "total": {
+    "views": 96,
+    "reach": 86,
+    "impressions": 0,
+    "likes": 1,
+    "comments": 0,
+    "shares": 0,
+    "saves": 2,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700497696691342625?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 96,
+     "reach": 86,
+     "impressions": 0,
+     "likes": 1,
+     "comments": 0,
+     "shares": 0,
+     "saves": 2,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": null,
+   "post_id": "6adcfca83cf074f392c7cd38",
+   "published_at": "2026-10-25T07:03:42.000Z",
+   "status": "published",
+   "hook": "Vibe coding fast and worried about security holes? Cloudflare open-sourced the skill that seeded its own vulnerability harness. Install it into your coding agent and say \"security audit this codebase\"",
+   "total": {
+    "views": 291,
+    "reach": 248,
+    "impressions": 0,
+    "likes": 9,
+    "comments": 0,
+    "shares": 0,
+    "saves": 4,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700497661325004064?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 291,
+     "reach": 248,
+     "impressions": 0,
+     "likes": 9,
+     "comments": 0,
+     "shares": 0,
+     "saves": 4,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1310_rea",
+   "post_id": "6adcb0081202ad4b6405ec96",
+   "published_at": "2026-10-24T20:02:22.000Z",
+   "status": "published",
+   "hook": "Ever seen a feature in an app and wondered how they built it? Your AI agent can now look inside and show you.",
+   "total": {
+    "views": 126,
+    "reach": 105,
+    "impressions": 126,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De48bIhkyMp/",
+     "views": 126,
+     "reach": 105,
+     "impressions": 126,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1310_rea",
+   "post_id": "6adcb0081202ad4b6405ec96",
+   "published_at": "2026-10-24T20:01:56.000Z",
+   "status": "published",
+   "hook": "Ever seen a feature in an app and wondered how they built it? Your AI agent can now look inside and show you. REA (Reverse Engineer Anything) is a free, open-source MCP for Claude Code, Codex, Cursor ",
+   "total": {
+    "views": 80,
+    "reach": 80,
+    "impressions": 0,
+    "likes": 1,
+    "comments": 0,
+    "shares": 1,
+    "saves": 1,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700327184287698209?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 80,
+     "reach": 80,
+     "impressions": 0,
+     "likes": 1,
+     "comments": 0,
+     "shares": 1,
+     "saves": 1,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1533_opencode",
+   "post_id": "6adcb8537bd49fae7f983802",
+   "published_at": "2026-10-24T17:04:34.000Z",
+   "status": "published",
+   "hook": "Paying for an AI coding app? There's a free, open-source one.",
+   "total": {
+    "views": 118,
+    "reach": 104,
+    "impressions": 118,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De4oEchk6__/",
+     "views": 118,
+     "reach": 104,
+     "impressions": 118,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1533_opencode",
+   "post_id": "6adcb8537bd49fae7f983802",
+   "published_at": "2026-10-24T17:04:03.000Z",
+   "status": "published",
+   "hook": "Paying for an AI coding app? There's a free, open-source one. OpenCode is an open-source (MIT) AI coding agent for your terminal, with a desktop app in beta. Use Claude, GPT, Gemini or any of 75+ prov",
+   "total": {
+    "views": 88,
+    "reach": 83,
+    "impressions": 0,
+    "likes": 2,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700281327865613600?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 88,
+     "reach": 83,
+     "impressions": 0,
+     "likes": 2,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1546_claude7",
+   "post_id": "6adcb8b3b0cc26972e4919f1",
+   "published_at": "2026-10-24T13:59:09.000Z",
+   "status": "published",
+   "hook": "Most people use Claude Code like a chat box. These 7 commands change that.",
+   "total": {
+    "views": 126,
+    "reach": 91,
+    "impressions": 126,
+    "likes": 2,
+    "comments": 1,
+    "shares": 0,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/De4S2oBlLb4/",
+     "views": 126,
+     "reach": 91,
+     "impressions": 126,
+     "likes": 2,
+     "comments": 1,
+     "shares": 0,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-24_1546_claude7",
+   "post_id": "6adcb8b3b0cc26972e4919f1",
+   "published_at": "2026-10-24T13:58:42.000Z",
+   "status": "published",
+   "hook": "Most people use Claude Code like a chat box. These 7 commands change that. 1. /btw: side question without using your context 2. Esc Esc: roll back to an earlier checkpoint 3. /compact: summarize the c",
+   "total": {
+    "views": 88,
+    "reach": 81,
+    "impressions": 0,
+    "likes": 3,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7700233572359195936?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 88,
+     "reach": 81,
+     "impressions": 0,
+     "likes": 3,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-21_0839_openfilm",
+   "post_id": "6ad87ccb1ba86f74bcde65b6",
+   "published_at": "2026-10-22T13:05:27.000Z",
+   "status": "published",
+   "hook": "Your coding agent can now make whole videos, for free.",
+   "total": {
+    "views": 114,
+    "reach": 96,
+    "impressions": 114,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DezDHmcjcuM/",
+     "views": 114,
+     "reach": 96,
+     "impressions": 114,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-21_0839_openfilm",
+   "post_id": "6ad87ccb1ba86f74bcde65b6",
+   "published_at": "2026-10-22T13:04:37.000Z",
+   "status": "published",
+   "hook": "Your coding agent can now make whole videos, for free. OpenFilm is an open-source AI video agent: ask Claude Code, Codex or any coding agent for a film, then change anything by hand in Studio, a real ",
+   "total": {
+    "views": 638,
+    "reach": 598,
+    "impressions": 0,
+    "likes": 10,
+    "comments": 1,
+    "shares": 0,
+    "saves": 4,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7699477452468292897?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 638,
+     "reach": 598,
+     "impressions": 0,
+     "likes": 10,
+     "comments": 1,
+     "shares": 0,
+     "saves": 4,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-21_0833_ponytail",
+   "post_id": "6ad87c4edba8cc107885bdc6",
+   "published_at": "2026-10-21T19:03:29.000Z",
+   "status": "published",
+   "hook": "Your AI agent wrote 335 lines for a date picker. Ponytail wrote 10.",
+   "total": {
+    "views": 109,
+    "reach": 101,
+    "impressions": 109,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DexHOcxDey5/",
+     "views": 109,
+     "reach": 101,
+     "impressions": 109,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-21_0833_ponytail",
+   "post_id": "6ad87c4edba8cc107885bdc6",
+   "published_at": "2026-10-21T19:01:51.000Z",
+   "status": "published",
+   "hook": "Your AI agent wrote 335 lines for a date picker. Ponytail wrote 10. Ponytail is a free, open-source skill that puts a lazy senior dev inside your coding agent: write only what the task needs, but neve",
+   "total": {
+    "views": 504,
+    "reach": 460,
+    "impressions": 0,
+    "likes": 16,
+    "comments": 3,
+    "shares": 1,
+    "saves": 7,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7699198438486969633?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 504,
+     "reach": 460,
+     "impressions": 0,
+     "likes": 16,
+     "comments": 3,
+     "shares": 1,
+     "saves": 7,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-20_1938_claude-code-plugins",
+   "post_id": "6ad7c5ba5a009a40ee133e7c",
+   "published_at": "2026-10-21T13:04:27.000Z",
+   "status": "published",
+   "hook": "Claude Code has an official plugin store with 300+ plugins 🔌",
+   "total": {
+    "views": 181,
+    "reach": 144,
+    "impressions": 181,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DeweMLQCQMc/",
+     "views": 181,
+     "reach": 144,
+     "impressions": 181,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-20_1938_claude-code-plugins",
+   "post_id": "6ad7c5ba5a009a40ee133e7c",
+   "published_at": "2026-10-21T13:03:35.000Z",
+   "status": "published",
+   "hook": "Claude Code has an official plugin store with 300+ plugins 🔌 Figma, Canva, Adobe, GitHub and more plug right in, and one by HeyGen turns code into videos. Install with one command: /plugin install. Pl",
+   "total": {
+    "views": 490,
+    "reach": 456,
+    "impressions": 0,
+    "likes": 6,
+    "comments": 0,
+    "shares": 1,
+    "saves": 6,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7699106111076584736?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 490,
+     "reach": 456,
+     "impressions": 0,
+     "likes": 6,
+     "comments": 0,
+     "shares": 1,
+     "saves": 6,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-20_1402_artcraft",
+   "post_id": "6ad776bdf5e93b04321197ea",
+   "published_at": "2026-10-20T14:17:09.000Z",
+   "status": "published",
+   "hook": "Someone used AI to rebuild 7 Adobe apps, and they're all free 👀",
+   "total": {
+    "views": 167,
+    "reach": 143,
+    "impressions": 167,
+    "likes": 1,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DeuBssIDopI/",
+     "views": 167,
+     "reach": 143,
+     "impressions": 167,
+     "likes": 1,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-10-20_1402_artcraft",
+   "post_id": "6ad776bdf5e93b04321197ea",
+   "published_at": "2026-10-20T14:16:21.000Z",
+   "status": "published",
+   "hook": "Someone used AI to rebuild 7 Adobe apps, and they're all free 👀 PhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha,",
+   "total": {
+    "views": 192,
+    "reach": 171,
+    "impressions": 0,
+    "likes": 2,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7698753760952143137?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 192,
+     "reach": 171,
+     "impressions": 0,
+     "likes": 2,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  }
+ ]
+}
