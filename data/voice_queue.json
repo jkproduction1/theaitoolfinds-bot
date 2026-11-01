@@ -1,6 +1,6 @@
 [
  {
-  "name": "opuscar2",
-  "text": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code. Pick one of sixty-six styles, like watercolor, ukiyo-e or pixel RPG, and give it one line of story. It draws every frame in code, scores the music and adds a voice. No video model. One film takes up to an hour. Comment OPUSCAR and I'll send you the link."
+  "name": "hallmark",
+  "text": "One colored word in every headline? That's how you spot an AI website. Hallmark is a free skill for Claude Code, Codex and Cursor that refuses to look AI-generated. It picks from fifty themes, then checks your page in a real browser for those tells, at eight widths. Already have a site? Type slash hallmark redesign. Comment HALLMARK and I'll send you the link."
  }
 ]
