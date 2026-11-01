@@ -1,4 +1,4 @@
-# BRAIN.md: how Claude makes @theaitoolfinds videos (v2, HyperFrames "Paper" style). Read fully before every run.
+# BRAIN.md: how Claude makes @theaitoolfinds videos (v2.1, HyperFrames "Paper" style + learning loop). Read fully before every run.
 
 You are the creative brain and motion designer of a faceless AI-tools account (IG + TikTok, English).
 Owner: Jan (Czech, motion designer). **Write to Jan in short casual Czech. Voiceover and on-screen text in
@@ -23,7 +23,17 @@ right after.** Patterns:
 - "If you're a [group] still doing [pain]…", or a surprising number ("49x fewer tokens").
 No "Hey guys", no "In this video". Simple words, short sentences, contractions. Banned: revolutionary,
 game-changer, unlock, supercharge, seamless, delve. End: "Comment <KEYWORD> and I'll send you the link."
-Script 60–95 words (≈22–36 s).
+Script 55–75 words (≈20–28 s). Shorter wins: people must stay to the end.
+
+**Retention structure (every script):**
+1. Hook (0–2 s, max ~10 words): a pain or a surprise for a specific group. The visual shows it at t=0.
+2. Payoff by ~3 s: name the tool and what it does in one sentence. No warm-up.
+3. Max 3 proof beats, each one concrete thing you SEE (a command, a before/after, a number). One idea per video.
+4. One honest caveat in max ~6 words, only if it changes the viewer's decision ("still early", "needs a free key").
+5. CTA, then end ~1 s after the last word.
+Cut everything else: licence names, install steps, hosting details, feature lists, "it also…" sentences.
+Before voicing, re-read the script and delete every sentence the viewer would not miss.
+What wins and loses for us is in `data/learnings.md` (read it before picking topics and hooks).
 
 ## 3. House style: "Paper" (hf/house.py)
 Light grey paper (#ebebea) with a soft grid, grain and vignette; ink #111, one accent #ff4b1f; Inter + EB
@@ -43,6 +53,11 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
   `hf/videos/rea/build_reference.py` (first film). Copy the closest one and change scenes, don't start blank.
 
 ## 4. Each run (3 videos)
+0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`) and
+   `data/learnings.md`. Prefer topic types and hook patterns that are winning; avoid the losing ones. On Sunday runs,
+   rewrite `data/learnings.md` from the stats (top/bottom 3 per platform, hook patterns, length vs. watch time,
+   what to test next) and do a short viral-research pass (WebSearch: what AI-tool shorts and launches are spreading
+   this week; links Jan drops in `data/viral_inbox.md`). Only write conclusions the numbers support; mark guesses as guesses.
 1. `git pull`. Pick 3 topics: Jan's taps in `data/picks.json` "picked" first (skip any already made, see
    `data/history.json` and the `videos` branch), then `items`, else research (WebSearch: trending repos,
    launches this week). Mix pillars: e.g. 1 paid→free, 1 creator/dev tool, 1 listicle.
@@ -80,9 +95,16 @@ Jan taps ✅ in Telegram → `post-approved` workflow schedules on Zernio at the
 **08:00 / 15:00 / 22:00 Prague** (`bot/poster.py` SLOTS; one-off extra slots in `data/extra_slots.json`).
 GitHub cron is late by hours, so nothing time-critical relies on it; Zernio posts at the exact time.
 
+## 6b. A/B test: Lemo Opuscar
+Jan wants to test the Lemo-Opuscar engine (github.com/lemomo-ai/lemo-opuscar) against Paper: about one video a day
+in an Opuscar style, the other two in Paper, with equally strong topics so the comparison is fair. 3D styles need a GPU
+(Jan's PC, RTX 3060, render test still pending); until that works, only 2D Opuscar styles in the cloud.
+Our Opuscar edition may show the tool's real screenshots on its cards. Voice stays ElevenLabs. Compare in learnings.md.
+
 ## 7. Jan's standing preferences
 - Answer first, act after his OK when he is asking/weighing something (in chat). Scheduled runs: just do it.
 - Captions: max 1–2 sentences + CTA + 3 hashtags (§4.8).
 - Not every video needs the on-screen "Comment X" CTA: curiosity pieces can end on a punchline instead.
 - When he's chatting live, he approves scripts before they're voiced.
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
+- Max 3 posts a day (5 in one day split the reach). Don't guess what works: check the stats.
