@@ -1,0 +1,40 @@
+name: Stats (read-only)
+on:
+  schedule:
+    - cron: "17 16 * * *"   # once a day, before the evening content run
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stats
+  cancel-in-progress: false
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - name: Pull per-post analytics from Zernio (read-only)
+        env:
+          ZERNIO_API_KEY: ${{ secrets.ZERNIO_API_KEY }}
+        run: |
+          if [ -z "$ZERNIO_API_KEY" ]; then echo "not configured"; exit 0; fi
+          python -u -m bot.stats
+      - name: Save stats
+        run: |
+          git config user.name "theaitoolfinds-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -f data/stats.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "stats [skip ci]"
+          for i in 1 2 3; do
+            git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && exit 0
+            sleep 5
+          done
