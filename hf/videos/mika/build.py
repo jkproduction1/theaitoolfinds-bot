@@ -62,11 +62,11 @@ VIDS = [  # name, scene, x, y, w, h, class
 
 # S0 phone working by itself at t=0 (flights demo), tap ripples
 F.clip(0, '<div class="tap" id="tp1" style="left:640px;top:440px"></div><div class="tap" id="tp2" style="left:420px;top:780px"></div>'
-       + F.block([[(0, 3, "")], [(4, 5, "hl")]], top=1080, size=110))
+       + F.block([[(0, 3, "")], [(4, 5, "hl")]], top=1060, size=92))
 # S1 Mika logo + FREE + Android chip
 F.clip(1, '<div id="logo"><img src="assets/mika-logo.png" alt=""></div><div id="free">FREE</div>'
-          + chip("c1", "open-source", 70, 760, "{}", "#111") + chip("c2", "Android", 600, 760, "▲", "#2e9e4a")
-       + F.block([[(6, 6, "b"), (7, 10, "")], [(11, 12, "hl"), (13, 14, "b")]], top=1020, size=88))
+          + chip("c1", "open-source", 90, 740, "{}", "#111") + chip("c2", "Android", 600, 740, "▲", "#2e9e4a")
+       + F.block([[(6, 6, "b"), (7, 9, "")], [(10, 10, ""), (11, 12, "hl")], [(13, 14, "b")]], top=990, size=74))
 # S2 "Say:" bubble + flights result
 F.clip(2, '<div class="bub" id="bub"><small>you say</small>find the cheapest nonstop flight</div>'
        + F.block([[(15, 15, "it"), (16, 17, "")], [(18, 20, "hl")]], top=1080, size=80))
@@ -76,7 +76,7 @@ F.clip(3, '<div class="lab" id="l1" style="left:150px;top:310px">taps</div><div 
        + F.block([[(21, 25, "")], [(26, 27, ""), (28, 29, "hl")], [(30, 30, "hl")]], top=1080, size=74))
 # S4 you keep using your phone, small live view
 F.clip(4, '<div id="home">' + "<u></u>" * 12 + '</div><div id="lv">● live view</div>'
-       + F.block([[(31, 32, ""), (33, 34, "hl")], [(35, 36, "")]], top=1080, size=100))
+       + F.block([[(31, 32, ""), (33, 34, "hl")], [(35, 36, "")]], top=1060, size=84))
 # S5 asks before money
 F.clip(5, '<div id="ask"><div class="t">Place the order?</div><div class="s">Mika stops before checkout</div><div class="bt"><b>Not now</b><b class="y">You decide</b></div></div>'
        + F.block([[(37, 41, "")], [(42, 44, "hl")]], top=1080, size=88))

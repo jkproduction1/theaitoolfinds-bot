@@ -79,10 +79,10 @@ F.clip(2, '<div id="logo"><img src="assets/fp-logo.png" alt="">Floorplan</div>' 
 # S3 free plugin, Claude Code + Codex
 F.clip(3, sh("st", "c-stats.jpg", 340, 330, 400) + '<div id="free">FREE</div>'
           + chip("c1", "Claude Code", 80, 790, "✳", "#d97757") + chip("c2", "Codex", 640, 790, "◎", "#111")
-       + F.block([[(18, 21, "")], [(22, 26, "b")]], top=1060, size=88))
+       + F.block([[(18, 21, "")], [(22, 26, "b")]], top=1040, size=74))
 # S4 ask the map
-F.clip(4, '<div id="ask"><span class="ph" id="aph">Ask:</span><span id="askt"></span><span id="askc"></span></div>' + sh("ans", "c-ask.jpg", 90, 480, 900)
-       + F.block([[(27, 29, "hl")], [(30, 36, "")]], top=1100, size=82))
+F.clip(4, '<div id="ask"><span class="ph" id="aph">Ask:</span><span id="askt"></span><span id="askc"></span></div>' + sh("ans", "c-ask.jpg", 130, 460, 820)
+       + F.block([[(27, 29, "hl")], [(30, 36, "")]], top=1020, size=68))
 # S5 traces every step
 F.clip(5, sh("flow", "c-map.jpg", 70, 380, 940) + "".join(f'<div class="num" id="n{k}" style="left:{x}px;top:{y}px">{k + 1}</div>'
                                                           for k, (x, y) in enumerate([(120, 420), (420, 600), (760, 470), (800, 800)]))

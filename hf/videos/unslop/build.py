@@ -17,8 +17,8 @@ from house import Film, tile, chip
 W = HERE.parent.parent / "work" / "unslop"
 for f in (HERE / "media").iterdir():
     shutil.copy(f, W / "assets" / f.name)
-F = Film(W, (HERE / "script.txt").read_text(), W / "assets" / "voice.json", display={61: "Comment", 62: "UNSLOP"}, tail=1.0)
-F.scenes([0, 5, 9, 14, 22, 32, 40, 46, 50, 61], hold=0.12)
+F = Film(W, (HERE / "script.txt").read_text(), W / "assets" / "voice.json", display={57: "Comment", 58: "UNSLOP"}, tail=1.0)
+F.scenes([0, 5, 9, 14, 18, 28, 36, 42, 46, 57], hold=0.12)
 
 CSS = r"""
 #s0 #w0{opacity:1!important;filter:none!important}
@@ -72,42 +72,42 @@ F.clip(0, pg("p0", "s0.jpg", 170, 300, 740)
        + F.block([[(0, 2, "")], [(3, 4, "hl")]], top=1100, size=96))
 # S1 stamp VIBECODED
 F.clip(1, pg("p1", "s0.jpg", 170, 300, 740) + '<div id="stamp">VIBECODED</div>'
-       + F.block([[(5, 6, ""), (7, 8, "hl")]], top=1120, size=104))
+       + F.block([[(5, 5, "b"), (6, 6, "")], [(7, 8, "hl")]], top=1100, size=104))
 # S2 Unslop wordmark (drawn) + FREE
 F.clip(2, '<div id="wm"><div class="t"><span id="un">un</span><s id="sl">slop</s></div><div class="u" id="wmu">by Damir Sokolovsky</div></div><div id="free">FREE</div>'
-       + F.block([[(9, 9, "b"), (10, 11, ""), (12, 13, "hl")]], top=1100, size=100))
+       + F.block([[(9, 10, ""), (11, 12, "hl"), (13, 13, "")]], top=1100, size=100))
 # S3 harness chips + /unslop command
 F.clip(3, '<div id="t3t" class="term tm" style="top:330px"><div class="bar"><i></i><i></i><i></i></div><div class="body">'
           '<div><span class="p">&gt;</span> <span id="t3c"></span></div><div class="d" id="t3d">● auditing the screen…</div></div></div>'
           + chip("c1", "Claude Code", 90, 700, "✳", "#d97757") + chip("c2", "Codex", 620, 700, "◎", "#111")
-       + F.block([[(14, 18, "")], [(19, 19, ""), (20, 21, "hl")]], top=1020, size=92))
+       + F.block([[(14, 15, "hl"), (16, 17, "b")]], top=1040, size=92))
 # S4 audit: every sign of slop
 F.clip(4, pg("p4", "s1.jpg", 40, 330, 560)
           + "".join(f'<div class="red" id="r{k}" style="top:{350 + k * 112}px"><b>{k + 1}</b>{t}</div>'
                     for k, t in enumerate(["purple gradients", "glows", "emoji labels", "shouty copy", "uneven spacing"]))
-       + F.block([[(22, 24, ""), (25, 28, "hl")], [(29, 31, "")]], top=1020, size=86))
+       + F.block([[(18, 20, ""), (21, 24, "hl")], [(25, 27, "")]], top=1020, size=86))
 # S5 direction from your product
 F.clip(5, '<div class="dl" id="dl">direction</div>'
           + "".join(f'<div class="dc" id="d{k}" style="left:{x}px;top:{y}px"><div class="k">{a}</div><div class="v">{b}</div></div>'
                     for k, (a, b, x, y) in enumerate([("01", "Char&shy;acter", 60, 420), ("02", "World", 390, 470), ("03", "<i>Signature</i> detail", 720, 420)]))
-       + F.block([[(32, 34, ""), (35, 36, "hl")], [(37, 39, "it")]], top=1020, size=92))
+       + F.block([[(28, 30, ""), (31, 32, "hl")], [(33, 35, "it")]], top=1020, size=92))
 # S6 pass by pass: story frames flip
 F.clip(6, '<div id="passes">' + "".join(f'<span id="ps{k}">{p}</span>' for k, p in enumerate(["spacing", "color", "icons", "copy", "type", "layout", "details"])) + '</div>'
           + '<div class="fl" id="fl" style="top:400px;left:190px;width:700px;height:700px">' + "".join(f'<img id="f{k}" src="assets/s{k}.jpg" alt="">' for k in range(8)) + '</div>'
-       + F.block([[(40, 42, ""), (43, 45, "hl")]], top=1150, size=100))
+       + F.block([[(36, 38, ""), (39, 41, "hl")]], top=1150, size=100))
 # S7 the finished screen
 F.clip(7, pg("p7", "after.jpg", 150, 300, 780, bar=False)
-       + F.block([[(46, 48, ""), (49, 49, "hl")]], top=1130, size=104))
+       + F.block([[(42, 44, ""), (45, 45, "hl")]], top=1130, size=104))
 # S8 live site from a link
 F.clip(8, pg("p8", "heroafter.jpg", 60, 400, 960, url=" ") + '<div class="tag" id="t8" style="left:640px;top:330px">just a link</div>'
-       + F.block([[(50, 53, ""), (54, 56, "hl")], [(57, 60, "")]], top=1020, size=90))
+       + F.block([[(46, 49, ""), (50, 52, "hl")], [(53, 56, "")]], top=1020, size=90))
 # S9 CTA
 F.clip(9, '<div id="field">Add a comment…<span id="typed"></span><span id="caret"></span><div id="send"></div></div>'
-       + F.block([[(61, 61, ""), (62, 62, "hl")], [(63, 68, "")]], top=1020, size=84))
+       + F.block([[(57, 57, ""), (58, 58, "hl")], [(59, 64, "")]], top=1020, size=84))
 F.body.append('<div class="layer"><div id="credit">screens: Damir Sokolovsky (@heydamir) · CC BY 4.0</div></div>')
 
 S = F.S
-for i in (1, 2, 4, 9, 12, 15, 18, 25, 35, 43, 49, 54, 62):
+for i in (1, 3, 5, 7, 11, 14, 16, 21, 31, 39, 45, 50, 58):
     F.pop(S[i] - 0.05)
 
 JS = r"""
@@ -127,16 +127,16 @@ starPass('#st1',ST[2]-0.3,[700,-650,0],[430,-360,40],10,1.2);
 // S2 wordmark: "slop" gets struck through
 ft('#wm',{opacity:0,scale:.6,filter:'blur(20px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.6,ease:A},ST[2]+0.02);
 ft('#sl',{'--k':0},{'--k':1,duration:.35,ease:'power2.out'},ST[2]+0.45);
-ft('#free',{opacity:0,scale:2.4,rotation:-14,filter:'blur(10px)'},{opacity:1,scale:1,rotation:8,filter:'blur(0px)',duration:.4,ease:'back.out(2)'},S[12]-0.08);
+ft('#free',{opacity:0,scale:2.4,rotation:-14,filter:'blur(10px)'},{opacity:1,scale:1,rotation:8,filter:'blur(0px)',duration:.4,ease:'back.out(2)'},S[11]-0.08);
 outUp(['#wm','#free'],ST[3]);
 // S3 terminal + chips
 popIn('#t3t',ST[3]+0.02,{y:60,s:.94,r:0}); typeIn('t3c','/unslop this dashboard',ST[3]+0.15,.04);
 ft('#t3d',{opacity:0},{opacity:1,duration:.2},ST[3]+1.2);
-popIn('#c1',S[15]-0.15,{y:60,s:.6,r:-6}); popIn('#c2',S[18]-0.15,{y:60,s:.6,r:6});
+popIn('#c1',S[14]-0.15,{y:60,s:.6,r:-6}); popIn('#c2',S[17]-0.15,{y:60,s:.6,r:6});
 outUp(['#t3t','#c1','#c2'],ST[4]);
 // S4 audit list
 popIn('#p4',ST[4]+0.02,{y:80,s:.9,r:-3});
-[0,1,2,3,4].forEach(k=>ft('#r'+k,{opacity:0,x:140,filter:'blur(8px)'},{opacity:1,x:0,filter:'blur(0px)',duration:.4,ease:A},S[24]+k*0.22));
+[0,1,2,3,4].forEach(k=>ft('#r'+k,{opacity:0,x:140,filter:'blur(8px)'},{opacity:1,x:0,filter:'blur(0px)',duration:.4,ease:A},S[20]+k*0.22));
 outUp(['#p4','#r0','#r1','#r2','#r3','#r4'],ST[5]);
 starPass('#st2',ST[5]-0.3,[-700,1750,0],[-440,1450,-35],5,1.2);
 // S5 direction cards
@@ -156,10 +156,10 @@ outUp('#p7',ST[8]);
 starPass('#st3',ST[8]-0.3,[900,1500,0],[760,1460,50],8,1.2);
 // S8 live site
 popIn('#p8',ST[8]+0.02,{y:80,s:.9,r:2}); typeIn('p8u','https://your-site.com',ST[8]+0.3,.04);
-popIn('#t8',S[57]-0.15,{y:30,s:.5,r:6});
+popIn('#t8',S[53]-0.15,{y:30,s:.5,r:6});
 outUp(['#p8','#t8'],ST[9]);
-cta('UNSLOP',S[62]);
-tl.to('#send',{scale:.85,duration:.1,ease:'power2.in',yoyo:true,repeat:1},S[68]+0.15);
+cta('UNSLOP',S[58]);
+tl.to('#send',{scale:.85,duration:.1,ease:'power2.in',yoyo:true,repeat:1},S[64]+0.15);
 ft('#credit',{opacity:0},{opacity:1,duration:.3},0.3);
 ft('#w0',{opacity:1,y:0,filter:'blur(0px)',color:'#b9b9b9'},{opacity:1,y:0,filter:'blur(0px)',color:'#111',duration:.35,ease:A},0);
 """
