@@ -1,14 +1,6 @@
 [
  {
   "name": "unslop",
-  "text": "Purple gradients, glows, emoji labels? Your app looks vibecoded. Unslop is a free skill for Claude Code and Codex that fixes that. First it lists every sign of slop on your screen. Then it picks a direction from your product and fixes it pass by pass, like a designer's redline. It even works on a live site from just a link. Comment UNSLOP and I'll send you the link."
- },
- {
-  "name": "floorplan",
-  "text": "Vibe coded an app? No idea how it works? Floorplan draws it as a map, in plain English. It's a free plugin for Claude Code and Codex. Ask the map: how does a refund reach the card? It traces every step. And it flags keys left in your code and endpoints anyone can call. Comment FLOORPLAN and I'll send you the link."
- },
- {
-  "name": "mika",
-  "text": "Your phone can now use itself. Mika is a free, open-source AI assistant for Android. Say: find the cheapest nonstop flight. It taps, types and scrolls on a hidden background screen, while you keep using your phone. It asks you before it spends any money. You bring your own AI account. Comment MIKA and I'll send you the link."
+  "text": "Purple gradients and emoji labels? Unslop fixes vibecoded apps. It's a free skill for Claude Code and Codex. First it lists every sign of slop on your screen. Then it picks a direction from your product and fixes it pass by pass, like a designer's redline. It even works on a live site from just a link. Comment UNSLOP and I'll send you the link."
  }
 ]

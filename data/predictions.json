@@ -654,41 +654,6 @@
   }
  },
  {
-  "name": "unslop",
-  "date": "2026-11-02",
-  "score": 81,
-  "mode": "script",
-  "features": {
-   "hook": 0.55,
-   "hook_words": 5,
-   "hook_end_s": 1.92,
-   "tool_named_s": 3.46,
-   "payoff": 1.0,
-   "wps": 2.6,
-   "dur_s": 28.1,
-   "words": 69,
-   "pace": 0.75,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "visuals": 0.5,
-   "ending": 0.53,
-   "angle": "relatable-pain",
-   "topic": 0.9
-  },
-  "flags": [],
-  "weights": {
-   "topic": 30,
-   "hook": 20,
-   "payoff": 12,
-   "pace": 8,
-   "length": 12,
-   "filler": 8,
-   "visuals": 8,
-   "ending": 2
-  }
- },
- {
   "name": "floorplan",
   "date": "2026-11-02",
   "score": 82,
@@ -745,6 +710,81 @@
    "ending": 0.53,
    "angle": "new-ability",
    "topic": 1.0
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "unslop",
+  "date": "2026-11-02",
+  "score": 76,
+  "mode": "full",
+  "features": {
+   "hook": 0.38,
+   "hook_words": 5,
+   "hook_end_s": 3.03,
+   "tool_named_s": 4.68,
+   "payoff": 0.53,
+   "wps": 3.28,
+   "dur_s": 22.7,
+   "words": 69,
+   "pace": 0.69,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 51,
+   "visuals": 1.0,
+   "ending": 0.97,
+   "angle": "relatable-pain",
+   "topic": 0.9
+  },
+  "flags": [
+   "hook končí v 3.0 s (cíl ≤2,5 s)",
+   "nástroj zazní až v 4.7 s (cíl ≤3,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "unslop",
+  "date": "2026-11-02",
+  "score": 81,
+  "mode": "script",
+  "features": {
+   "hook": 0.55,
+   "hook_words": 5,
+   "hook_end_s": 1.92,
+   "tool_named_s": 1.92,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 26.6,
+   "words": 65,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "relatable-pain",
+   "topic": 0.9
   },
   "flags": [],
   "weights": {
