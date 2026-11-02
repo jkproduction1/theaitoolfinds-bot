@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/wangzan101/Mika",
+ "name": "Mika",
+ "tool_name": "Mika",
+ "keyword": "MIKA",
+ "summary_cs": "Mika (Apache-2.0) je free open-source AI asistent pro Android, který sám ovládá appky a web na skrytém druhém displeji, zatímco ty normálně používáš telefon (třeba najde nejlevnější přímý let). Před placením se vždy zeptá; potřebuje vlastní AI účet (ChatGPT, xAI, OpenRouter) nebo API klíč.",
+ "style": "hyperframes-paper",
+ "duration": 19.3,
+ "domain": "github.com/wangzan101/Mika",
+ "created": "2026-11-02_0629",
+ "run_id": null,
+ "artifact": null
+}
