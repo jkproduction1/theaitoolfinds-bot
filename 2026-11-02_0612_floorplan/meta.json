@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/haydenschmitty/floorplan",
+ "name": "Floorplan",
+ "tool_name": "Floorplan",
+ "keyword": "FLOORPLAN",
+ "summary_cs": "Floorplan (MIT) je free plugin pro Claude Code a Codex, který nakreslí celou tvoji appku jako interaktivní mapu v obyčejné angličtině; můžeš se mapy ptát (např. jak se refund dostane na kartu) a ukáže kroky. Health check navíc najde klíče v kódu a endpointy bez přihlášení, každé s návrhem opravy.",
+ "style": "hyperframes-paper",
+ "duration": 19.1,
+ "domain": "github.com/haydenschmitty/floorplan",
+ "created": "2026-11-02_0612",
+ "run_id": null,
+ "artifact": null
+}
