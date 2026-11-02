@@ -3,15 +3,143 @@
  "analytics_access": true,
  "posts": [
   {
+   "name": "2026-11-02_0612_floorplan",
+   "post_id": "6ae8881749fda41143e7af8a",
+   "published_at": "2026-11-02T20:01:39.000Z",
+   "status": "published",
+   "hook": "Vibe coded an app? No idea how it works? Floorplan draws it as a map, in plain English.",
+   "total": {
+    "views": 113,
+    "reach": 68,
+    "impressions": 113,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 5,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfQHeTlCpj_/",
+     "views": 113,
+     "reach": 68,
+     "impressions": 113,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 5,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-02_0612_floorplan",
+   "post_id": "6ae8881749fda41143e7af8a",
+   "published_at": "2026-11-02T20:01:00.000Z",
+   "status": "published",
+   "hook": "Vibe coded an app? No idea how it works? Floorplan draws it as a map, in plain English. Comment FLOORPLAN and I'll DM you the link. #vibecoding #claudecode #opensource",
+   "total": {
+    "views": 215,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 5,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7703666692592913697?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 215,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 5,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-02_0607_unslop",
+   "post_id": "6ae8880e49fda41143e7af40",
+   "published_at": "2026-11-02T14:04:53.000Z",
+   "status": "published",
+   "hook": "Purple gradients, glows, emoji labels? Your app looks vibecoded. Unslop is a free skill that fixes that.",
+   "total": {
+    "views": 140,
+    "reach": 116,
+    "impressions": 140,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 2,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfPeniWACuA/",
+     "views": 140,
+     "reach": 116,
+     "impressions": 140,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 2,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-02_0607_unslop",
+   "post_id": "6ae8880e49fda41143e7af40",
+   "published_at": "2026-11-02T14:04:00.000Z",
+   "status": "published",
+   "hook": "Purple gradients, glows, emoji labels? Your app looks vibecoded. Unslop is a free skill that fixes that. Comment UNSLOP and I'll DM you the link. Screens: Damir Sokolovsky (@heydamir), github.com/heyd",
+   "total": {
+    "views": 603,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 26,
+    "comments": 6,
+    "shares": 1,
+    "saves": 19,
+    "follows": 2,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7703574674277485857?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 603,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 26,
+     "comments": 6,
+     "shares": 1,
+     "saves": 19,
+     "follows": 2,
+     "reposts": 0
+    }
+   ]
+  },
+  {
    "name": "2026-11-01_1519_hallmark",
    "post_id": "6ae74c02b7992ceaab3caf55",
    "published_at": "2026-11-01T20:02:27.000Z",
    "status": "published",
    "hook": "One colored word in every headline? That's AI slop. Hallmark is a free skill that refuses to look AI-generated.",
    "total": {
-    "views": 255,
-    "reach": 222,
-    "impressions": 255,
+    "views": 259,
+    "reach": 223,
+    "impressions": 259,
     "likes": 0,
     "comments": 0,
     "shares": 0,
@@ -22,9 +150,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfNiykpD0k7/",
-     "views": 255,
-     "reach": 222,
-     "impressions": 255,
+     "views": 259,
+     "reach": 223,
+     "impressions": 259,
      "likes": 0,
      "comments": 0,
      "shares": 0,
@@ -40,28 +168,28 @@
    "status": "published",
    "hook": "One colored word in every headline? That's AI slop. Hallmark is a free skill that refuses to look AI-generated. Comment HALLMARK and I'll DM you the link. #webdesign #claudecode #vibecoding",
    "total": {
-    "views": 263,
+    "views": 731,
     "reach": 0,
     "impressions": 0,
-    "likes": 5,
-    "comments": 0,
-    "shares": 0,
-    "saves": 1,
-    "follows": 0,
+    "likes": 18,
+    "comments": 4,
+    "shares": 1,
+    "saves": 16,
+    "follows": 1,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703295859060002081?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 263,
+     "views": 731,
      "reach": 0,
      "impressions": 0,
-     "likes": 5,
-     "comments": 0,
-     "shares": 0,
-     "saves": 1,
-     "follows": 0,
+     "likes": 18,
+     "comments": 4,
+     "shares": 1,
+     "saves": 16,
+     "follows": 1,
      "reposts": 0
     }
    ]
@@ -73,26 +201,26 @@
    "status": "published",
    "hook": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory.",
    "total": {
-    "views": 18,
-    "reach": 12,
-    "impressions": 18,
+    "views": 35,
+    "reach": 25,
+    "impressions": 35,
     "likes": 0,
     "comments": 0,
     "shares": 0,
-    "saves": 0,
+    "saves": 1,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfM-ta2EkPc/",
-     "views": 18,
-     "reach": 12,
-     "impressions": 18,
+     "views": 35,
+     "reach": 25,
+     "impressions": 35,
      "likes": 0,
      "comments": 0,
      "shares": 0,
-     "saves": 0,
+     "saves": 1,
      "reposts": 0
     }
    ]
@@ -104,28 +232,28 @@
    "status": "published",
    "hook": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory. Comment MEM and I'll DM you the link. #claudecode #aitools #opensource",
    "total": {
-    "views": 348,
+    "views": 787,
     "reach": 0,
     "impressions": 0,
-    "likes": 12,
-    "comments": 0,
+    "likes": 36,
+    "comments": 1,
     "shares": 3,
-    "saves": 2,
-    "follows": 1,
+    "saves": 10,
+    "follows": 3,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703214600099089696?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 348,
+     "views": 787,
      "reach": 0,
      "impressions": 0,
-     "likes": 12,
-     "comments": 0,
+     "likes": 36,
+     "comments": 1,
      "shares": 3,
-     "saves": 2,
-     "follows": 1,
+     "saves": 10,
+     "follows": 3,
      "reposts": 0
     }
    ]
@@ -137,9 +265,9 @@
    "status": "published",
    "hook": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code.",
    "total": {
-    "views": 316,
-    "reach": 257,
-    "impressions": 316,
+    "views": 344,
+    "reach": 278,
+    "impressions": 344,
     "likes": 2,
     "comments": 0,
     "shares": 3,
@@ -150,9 +278,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfMJ1urgjTR/",
-     "views": 316,
-     "reach": 257,
-     "impressions": 316,
+     "views": 344,
+     "reach": 278,
+     "impressions": 344,
      "likes": 2,
      "comments": 0,
      "shares": 3,
@@ -168,13 +296,13 @@
    "status": "published",
    "hook": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code. Comment OPUSCAR and I'll DM you the link. Style frames: LemoLab (github.com/lemomo-ai/lemo-opuscar), CC BY ",
    "total": {
-    "views": 554,
+    "views": 617,
     "reach": 0,
     "impressions": 0,
     "likes": 25,
-    "comments": 1,
+    "comments": 2,
     "shares": 1,
-    "saves": 18,
+    "saves": 19,
     "follows": 1,
     "reposts": 0
    },
@@ -182,13 +310,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703095284745686304?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 554,
+     "views": 617,
      "reach": 0,
      "impressions": 0,
      "likes": 25,
-     "comments": 1,
+     "comments": 2,
      "shares": 1,
-     "saves": 18,
+     "saves": 19,
      "follows": 1,
      "reposts": 0
     }
@@ -525,7 +653,7 @@
     "likes": 7,
     "comments": 0,
     "shares": 0,
-    "saves": 0,
+    "saves": 4,
     "follows": 0,
     "reposts": 0
    },
@@ -539,7 +667,7 @@
      "likes": 7,
      "comments": 0,
      "shares": 0,
-     "saves": 0,
+     "saves": 4,
      "follows": 0,
      "reposts": 0
     }
@@ -680,7 +808,7 @@
    "status": "published",
    "hook": "Vibe coding fast and worried about security holes? Cloudflare open-sourced the skill that seeded its own vulnerability harness. Install it into your coding agent and say \"security audit this codebase\"",
    "total": {
-    "views": 291,
+    "views": 292,
     "reach": 248,
     "impressions": 0,
     "likes": 9,
@@ -694,7 +822,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7700497661325004064?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 291,
+     "views": 292,
      "reach": 248,
      "impressions": 0,
      "likes": 9,
@@ -905,9 +1033,9 @@
    "status": "published",
    "hook": "Your coding agent can now make whole videos, for free.",
    "total": {
-    "views": 114,
-    "reach": 96,
-    "impressions": 114,
+    "views": 115,
+    "reach": 97,
+    "impressions": 115,
     "likes": 0,
     "comments": 0,
     "shares": 0,
@@ -918,9 +1046,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DezDHmcjcuM/",
-     "views": 114,
-     "reach": 96,
-     "impressions": 114,
+     "views": 115,
+     "reach": 97,
+     "impressions": 115,
      "likes": 0,
      "comments": 0,
      "shares": 0,
