@@ -73,7 +73,7 @@ F.clip(2, '<div class="bub" id="bub"><small>you say</small>find the cheapest non
 # S3 hidden background screen (README side-by-side demo)
 F.clip(3, '<div class="lab" id="l1" style="left:150px;top:310px">taps</div><div class="lab" id="l2" style="left:430px;top:300px">types</div>'
           '<div class="lab" id="l3" style="left:720px;top:310px">scrolls</div>'
-       + F.block([[(21, 25, "")], [(26, 27, ""), (28, 29, "hl")], [(30, 30, "hl")]], top=1080, size=74))
+       + F.block([[(21, 25, "")], [(26, 27, ""), (28, 29, "hl")], [(30, 30, "hl")]], top=1030, size=74))
 # S4 you keep using your phone, small live view
 F.clip(4, '<div id="home">' + "<u></u>" * 12 + '</div><div id="lv">● live view</div>'
        + F.block([[(31, 32, ""), (33, 34, "hl")], [(35, 36, "")]], top=1060, size=84))

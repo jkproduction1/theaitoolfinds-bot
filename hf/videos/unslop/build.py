@@ -65,14 +65,14 @@ def pg(pid, src, x, y, w, bar=True, url=""):
     return f'<div id="{pid}" class="pg" style="left:{x}px;top:{y}px;width:{w}px">{b}<img src="assets/{src}" alt=""></div>'
 
 # S0 vibecoded dashboard on screen at t=0, tags fly in on each word
-F.clip(0, pg("p0", "s0.jpg", 170, 300, 740)
+F.clip(0, pg("p0", "s0.jpg", 220, 290, 640)
        + '<div class="tag" id="t1" style="left:80px;top:420px">purple gradient</div>'
        + '<div class="tag" id="t2" style="left:640px;top:600px">glow</div>'
-       + '<div class="tag" id="t3" style="left:130px;top:880px">emoji labels</div>'
-       + F.block([[(0, 2, "")], [(3, 4, "hl")]], top=1100, size=96))
+       + '<div class="tag" id="t3" style="left:140px;top:820px">emoji labels</div>'
+       + F.block([[(0, 2, "")], [(3, 4, "hl")]], top=1060, size=92))
 # S1 stamp VIBECODED
-F.clip(1, pg("p1", "s0.jpg", 170, 300, 740) + '<div id="stamp">VIBECODED</div>'
-       + F.block([[(5, 5, "b"), (6, 6, "")], [(7, 8, "hl")]], top=1100, size=104))
+F.clip(1, pg("p1", "s0.jpg", 220, 290, 640) + '<div id="stamp">VIBECODED</div>'
+       + F.block([[(5, 5, "b"), (6, 6, "")], [(7, 8, "hl")]], top=1060, size=96))
 # S2 Unslop wordmark (drawn) + FREE
 F.clip(2, '<div id="wm"><div class="t"><span id="un">un</span><s id="sl">slop</s></div><div class="u" id="wmu">by Damir Sokolovsky</div></div><div id="free">FREE</div>'
        + F.block([[(9, 10, ""), (11, 12, "hl"), (13, 13, "")]], top=1100, size=100))
@@ -90,17 +90,17 @@ F.clip(4, pg("p4", "s1.jpg", 40, 330, 560)
 F.clip(5, '<div class="dl" id="dl">direction</div>'
           + "".join(f'<div class="dc" id="d{k}" style="left:{x}px;top:{y}px"><div class="k">{a}</div><div class="v">{b}</div></div>'
                     for k, (a, b, x, y) in enumerate([("01", "Char&shy;acter", 60, 420), ("02", "World", 390, 470), ("03", "<i>Signature</i> detail", 720, 420)]))
-       + F.block([[(28, 30, ""), (31, 32, "hl")], [(33, 35, "it")]], top=1020, size=92))
+       + F.block([[(28, 30, ""), (31, 32, "hl")], [(33, 35, "it")]], top=980, size=86))
 # S6 pass by pass: story frames flip
 F.clip(6, '<div id="passes">' + "".join(f'<span id="ps{k}">{p}</span>' for k, p in enumerate(["spacing", "color", "icons", "copy", "type", "layout", "details"])) + '</div>'
-          + '<div class="fl" id="fl" style="top:400px;left:190px;width:700px;height:700px">' + "".join(f'<img id="f{k}" src="assets/s{k}.jpg" alt="">' for k in range(8)) + '</div>'
-       + F.block([[(36, 38, ""), (39, 41, "hl")]], top=1150, size=100))
+          + '<div class="fl" id="fl" style="top:380px;left:230px;width:620px;height:620px">' + "".join(f'<img id="f{k}" src="assets/s{k}.jpg" alt="">' for k in range(8)) + '</div>'
+       + F.block([[(36, 38, ""), (39, 41, "hl")]], top=1060, size=92))
 # S7 the finished screen
-F.clip(7, pg("p7", "after.jpg", 150, 300, 780, bar=False)
-       + F.block([[(42, 44, ""), (45, 45, "hl")]], top=1130, size=104))
+F.clip(7, pg("p7", "after.jpg", 200, 300, 680, bar=False)
+       + F.block([[(42, 44, ""), (45, 45, "hl")]], top=1050, size=96))
 # S8 live site from a link
-F.clip(8, pg("p8", "heroafter.jpg", 60, 400, 960, url=" ") + '<div class="tag" id="t8" style="left:640px;top:330px">just a link</div>'
-       + F.block([[(46, 49, ""), (50, 52, "hl")], [(53, 56, "")]], top=1020, size=90))
+F.clip(8, pg("p8", "heroafter.jpg", 90, 390, 900, url=" ") + '<div class="tag" id="t8" style="left:640px;top:330px">just a link</div>'
+       + F.block([[(46, 49, ""), (50, 52, "hl")], [(53, 56, "")]], top=990, size=86))
 # S9 CTA
 F.clip(9, '<div id="field">Add a comment…<span id="typed"></span><span id="caret"></span><div id="send"></div></div>'
        + F.block([[(57, 57, ""), (58, 58, "hl")], [(59, 64, "")]], top=1020, size=84))
@@ -123,7 +123,7 @@ ft('#p1',{scale:1.04},{scale:1.04,duration:.01},ST[1]);
 ft('#stamp',{opacity:0,scale:2.6,rotation:-25,filter:'blur(10px)'},{opacity:1,scale:1,rotation:-10,filter:'blur(0px)',duration:.35,ease:'back.out(2.2)'},S[7]-0.08);
 tl.to('#p1',{filter:'grayscale(1) blur(3px)',opacity:.55,duration:.3},S[7]);
 outUp(['#p1','#stamp'],ST[2]);
-starPass('#st1',ST[2]-0.3,[700,-650,0],[430,-360,40],10,1.2);
+starPass('#st1',ST[2]-0.3,[900,1500,0],[760,1460,50],10,1.2);
 // S2 wordmark: "slop" gets struck through
 ft('#wm',{opacity:0,scale:.6,filter:'blur(20px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.6,ease:A},ST[2]+0.02);
 ft('#sl',{'--k':0},{'--k':1,duration:.35,ease:'power2.out'},ST[2]+0.45);

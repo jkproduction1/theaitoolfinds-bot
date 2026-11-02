@@ -70,12 +70,12 @@ MESS = ('<svg id="mess" viewBox="0 0 1080 1000">'
 FC = "".join(f'<div class="fc" id="fc{k}" style="left:{x}px;top:{y}px;transform:rotate({r}deg)">{n}</div>' for k, (n, x, y, r) in enumerate(FILES))
 
 # S0 tangle of AI-written files + red wires, already on screen
-F.clip(0, MESS + FC + F.block([[(0, 1, "b"), (2, 3, "hl")]], top=1110, size=112))
+F.clip(0, MESS + FC + F.block([[(0, 1, "b"), (2, 3, "hl")]], top=1040, size=104))
 # S1 no idea: files blur away, giant ?
-F.clip(1, '<div id="q">?</div>' + F.block([[(4, 5, "hl"), (6, 8, "")]], top=1110, size=104))
+F.clip(1, '<div id="q">?</div>' + F.block([[(4, 5, "hl"), (6, 8, "")]], top=1060, size=100))
 # S2 Floorplan draws the map
-F.clip(2, '<div id="logo"><img src="assets/fp-logo.png" alt="">Floorplan</div>' + sh("map", "c-map.jpg", 70, 440, 940)
-       + F.block([[(9, 9, "b"), (10, 12, ""), (13, 14, "hl")], [(15, 17, "it")]], top=1140, size=84))
+F.clip(2, '<div id="logo"><img src="assets/fp-logo.png" alt="">Floorplan</div>' + sh("map", "c-map.jpg", 130, 420, 820)
+       + F.block([[(9, 9, "b"), (10, 12, ""), (13, 14, "hl")], [(15, 17, "it")]], top=1020, size=80))
 # S3 free plugin, Claude Code + Codex
 F.clip(3, sh("st", "c-stats.jpg", 340, 330, 400) + '<div id="free">FREE</div>'
           + chip("c1", "Claude Code", 80, 790, "✳", "#d97757") + chip("c2", "Codex", 640, 790, "◎", "#111")
@@ -84,9 +84,9 @@ F.clip(3, sh("st", "c-stats.jpg", 340, 330, 400) + '<div id="free">FREE</div>'
 F.clip(4, '<div id="ask"><span class="ph" id="aph">Ask:</span><span id="askt"></span><span id="askc"></span></div>' + sh("ans", "c-ask.jpg", 130, 460, 820)
        + F.block([[(27, 29, "hl")], [(30, 36, "")]], top=1020, size=68))
 # S5 traces every step
-F.clip(5, sh("flow", "c-map.jpg", 70, 380, 940) + "".join(f'<div class="num" id="n{k}" style="left:{x}px;top:{y}px">{k + 1}</div>'
+F.clip(5, sh("flow", "c-map.jpg", 110, 370, 860) + "".join(f'<div class="num" id="n{k}" style="left:{x}px;top:{y}px">{k + 1}</div>'
                                                           for k, (x, y) in enumerate([(120, 420), (420, 600), (760, 470), (800, 800)]))
-       + F.block([[(37, 38, ""), (39, 40, "hl")]], top=1120, size=110))
+       + F.block([[(37, 38, ""), (39, 40, "hl")]], top=1060, size=104))
 # S6 health check: keys left in your code
 F.clip(6, sh("hc", "c-health.jpg", 700, 300, 310)
           + '<div class="warn" id="wa1" style="top:380px">🔑 secret key<small>config.ts</small></div>'
