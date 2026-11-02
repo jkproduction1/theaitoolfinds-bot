@@ -2,5 +2,8 @@
  "url": "https://github.com/haydenschmitty/floorplan",
  "tool_name": "Floorplan",
  "keyword": "FLOORPLAN",
- "angle": "relatable-pain"
+ "angle": "relatable-pain",
+ "cover_at": 1.2,
+ "summary_cs": "Floorplan (MIT) je free plugin pro Claude Code a Codex, který nakreslí celou tvoji appku jako interaktivní mapu v obyčejné angličtině; můžeš se mapy ptát (např. jak se refund dostane na kartu) a ukáže kroky. Health check navíc najde klíče v kódu a endpointy bez přihlášení, každé s návrhem opravy.",
+ "caption": "Vibe coded an app? No idea how it works? Floorplan draws it as a map, in plain English.\n\nComment FLOORPLAN and I'll DM you the link.\n\n#vibecoding #claudecode #opensource"
 }

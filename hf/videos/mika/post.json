@@ -2,5 +2,8 @@
  "url": "https://github.com/wangzan101/Mika",
  "tool_name": "Mika",
  "keyword": "MIKA",
- "angle": "new-ability"
+ "angle": "new-ability",
+ "cover_at": 1.3,
+ "summary_cs": "Mika (Apache-2.0) je free open-source AI asistent pro Android, který sám ovládá appky a web na skrytém druhém displeji, zatímco ty normálně používáš telefon (třeba najde nejlevnější přímý let). Před placením se vždy zeptá; potřebuje vlastní AI účet (ChatGPT, xAI, OpenRouter) nebo API klíč.",
+ "caption": "Your phone can now use itself. Mika is a free, open-source AI assistant for Android.\n\nComment MIKA and I'll DM you the link.\n\n#android #aitools #opensource"
 }

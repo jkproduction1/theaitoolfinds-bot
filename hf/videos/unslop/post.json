@@ -2,5 +2,8 @@
  "url": "https://github.com/heydamir/unslop",
  "tool_name": "Unslop",
  "keyword": "UNSLOP",
- "angle": "relatable-pain"
+ "angle": "relatable-pain",
+ "cover_at": 1.6,
+ "summary_cs": "Unslop (CC BY 4.0, Damir Sokolovsky) je free skill pro Claude Code a Codex, který z vibecoded UI (fialové gradienty, glow, emoji) udělá navržený design: nejdřív vypíše všechny znaky AI slopu, pak zvolí směr podle produktu a opravuje to pass by pass jako designérský redline. Umí to i na živém webu jen z odkazu.",
+ "caption": "Purple gradients, glows, emoji labels? Your app looks vibecoded. Unslop is a free skill that fixes that.\n\nComment UNSLOP and I'll DM you the link.\n\nScreens: Damir Sokolovsky (@heydamir), github.com/heydamir/unslop, CC BY 4.0, cropped.\n\n#webdesign #claudecode #vibecoding"
 }
