@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/heydamir/unslop",
+ "name": "Unslop",
+ "tool_name": "Unslop",
+ "keyword": "UNSLOP",
+ "summary_cs": "Unslop (CC BY 4.0, Damir Sokolovsky) je free skill pro Claude Code a Codex, který z vibecoded UI (fialové gradienty, glow, emoji) udělá navržený design: nejdřív vypíše všechny znaky AI slopu, pak zvolí směr podle produktu a opravuje to pass by pass jako designérský redline. Umí to i na živém webu jen z odkazu.",
+ "style": "hyperframes-paper",
+ "duration": 20.5,
+ "domain": "github.com/heydamir/unslop",
+ "created": "2026-11-02_0607",
+ "run_id": null,
+ "artifact": null
+}
