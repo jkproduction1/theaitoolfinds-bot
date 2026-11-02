@@ -55,7 +55,7 @@ CSS = r"""
 VIDS = [  # name, scene, x, y, w, h, class
     ("flights-a", 0, 375, 300, 330, 728, "ph"),
     ("flights-b", 2, 610, 300, 330, 728, "ph"),
-    ("side", 3, 100, 410, 880, 804 * 880 // 1120, "wide"),
+    ("side", 3, 100, 350, 880, 804 * 880 // 1120, "wide"),
     ("hn", 4, 400, 560, 150, 331, ""),
     ("cart", 5, 120, 300, 330, 728, "ph"),
 ]
@@ -71,8 +71,8 @@ F.clip(1, '<div id="logo"><img src="assets/mika-logo.png" alt=""></div><div id="
 F.clip(2, '<div class="bub" id="bub"><small>you say</small>find the cheapest nonstop flight</div>'
        + F.block([[(15, 15, "it"), (16, 17, "")], [(18, 20, "hl")]], top=1080, size=80))
 # S3 hidden background screen (README side-by-side demo)
-F.clip(3, '<div class="lab" id="l1" style="left:150px;top:310px">taps</div><div class="lab" id="l2" style="left:430px;top:300px">types</div>'
-          '<div class="lab" id="l3" style="left:720px;top:310px">scrolls</div>'
+F.clip(3, '<div class="lab" id="l1" style="left:150px;top:250px">taps</div><div class="lab" id="l2" style="left:430px;top:240px">types</div>'
+          '<div class="lab" id="l3" style="left:720px;top:250px">scrolls</div>'
        + F.block([[(21, 25, "")], [(26, 27, ""), (28, 29, "hl")], [(30, 30, "hl")]], top=1030, size=74))
 # S4 you keep using your phone, small live view
 F.clip(4, '<div id="home">' + "<u></u>" * 12 + '</div><div id="lv">● live view</div>'
