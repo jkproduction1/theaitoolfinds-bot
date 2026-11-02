@@ -1,0 +1,1 @@
+Purple gradients, glows, emoji labels? Your app looks vibecoded. Unslop is a free skill for Claude Code and Codex that fixes that. First it lists every sign of slop on your screen. Then it picks a direction from your product and fixes it pass by pass, like a designer's redline. It even works on a live site from just a link. Comment UNSLOP and I'll send you the link.

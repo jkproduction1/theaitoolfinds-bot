@@ -1,0 +1,1 @@
+Vibe coded an app? No idea how it works? Floorplan draws it as a map, in plain English. It's a free plugin for Claude Code and Codex. Ask the map: how does a refund reach the card? It traces every step. And it flags keys left in your code and endpoints anyone can call. Comment FLOORPLAN and I'll send you the link.
