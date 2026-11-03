@@ -1,0 +1,1 @@
+Your UI can now get Apple-style blueprints. Dimensional Drawing is a free skill for Claude Code. Point it at a card or a dialog. You get one technical sheet: paddings, gaps, corner radii and layers, all measured. It never invents values. Unknowns stay T-B-D. A second skill turns the sheet into a short film. Comment DRAWING and I'll send you the link.

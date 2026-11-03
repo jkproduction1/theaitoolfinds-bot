@@ -1,6 +1,14 @@
 [
  {
-  "name": "unslop",
-  "text": "Purple gradients and emoji labels? Unslop fixes vibecoded apps. It's a free skill for Claude Code and Codex. First it lists every sign of slop on your screen. Then it picks a direction from your product and fixes it pass by pass, like a designer's redline. It even works on a live site from just a link. Comment UNSLOP and I'll send you the link."
+  "name": "pixelfx",
+  "text": "Game devs, still paying for pixel effects? Pixel-F-X has 244 of them, free. Fire, lightning, magic, explosions, each one a small piece of code. Recolor them, mirror them, or export sprite sheets for Godot or Unity. And its Claude Code skill makes new ones like a picky pixel artist: draft, render, look, refine. Comment PIXELFX and I'll send you the link."
+ },
+ {
+  "name": "dimdraw",
+  "text": "Your UI can now get Apple-style blueprints. Dimensional Drawing is a free skill for Claude Code. Point it at a card or a dialog. You get one technical sheet: paddings, gaps, corner radii and layers, all measured. It never invents values. Unknowns stay T-B-D. A second skill turns the sheet into a short film. Comment DRAWING and I'll send you the link."
+ },
+ {
+  "name": "tstack",
+  "text": "Still babysitting your AI's pull requests? Theo's T-stack has nine free skills for Claude Code and Codex. Here are four. Council: three models from different providers review your change until they agree. Babysit: it watches a PR through CI and fixes the real findings. Take over: it finishes someone else's PR and keeps their credit. Full send: from change to merged PR, with nobody watching. Comment TSTACK and I'll send you the link."
  }
 ]
