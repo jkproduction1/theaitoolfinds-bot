@@ -1,55 +1,52 @@
 {
-  "date": "2026-11-02",
-  "category": "coding",
+  "date": "2026-11-03",
+  "category": "github",
   "items": [
-    {
-      "name": "impeccable",
-      "url": "https://github.com/pbakaus/impeccable",
-      "desc": "Star                    pbakaus /   impeccable      The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
-      "source": "gh-trending",
-      "angle": "trending-repo",
-      "score": 9.0,
-      "why": "Nau\u010d\u00ed Claude Code a Cursor designovat bez generick\u00e9ho AI slopu s profesion\u00e1ln\u00edm vkusem."
-    },
-    {
-      "name": "hallmark",
-      "url": "https://github.com/Nutlope/hallmark",
-      "desc": "Star                    Nutlope /   hallmark      Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
-      "source": "gh-trending",
-      "angle": "time-saver",
-      "score": 8.0,
-      "why": "Popul\u00e1rn\u00ed skill od Nutlope, kter\u00fd zbav\u00ed vibek\u00f3dovan\u00e9 weby o\u0161kliv\u00e9ho AI vzhledu na jedno kliknut\u00ed."
-    },
-    {
-      "name": "claude-mem",
-      "url": "https://github.com/thedotmack/claude-mem",
-      "desc": "Sponsor                           Star                    thedotmack /   claude-mem      Persistent Context Across Sessions for Every Agent \u2013 Captures everything your agent does during sessions, compresses it with AI, and injects relevant context back into fut",
-      "source": "gh-trending",
-      "angle": "time-saver",
-      "score": 8.0,
-      "why": "P\u0159id\u00e1 Claude Code trvalou pam\u011b\u0165 mezi sezen\u00edmi, tak\u017ee agent nezapom\u00edn\u00e1 kontext projektu."
-    },
-    {
-      "name": "claude-seo",
-      "url": "https://github.com/AgriciDaniel/claude-seo",
-      "desc": "Star                    AgriciDaniel /   claude-seo      Universal SEO skill for Claude Code. 26 sub-skills + 19 sub-agents covering technical SEO, E-E-A-T, schema, GEO/AEO, agent readiness (Lighthouse Agentic Browsing, WebMCP, llms.txt), backlinks, local SEO,",
-      "source": "gh-trending",
-      "angle": "money-saver",
-      "score": 8.0,
-      "why": "Masivn\u00ed Claude Code skill s 19 sub-agenty pro kompletn\u00ed SEO a technick\u00fd audit webu."
-    },
     {
       "name": "unslop",
       "url": "https://github.com/heydamir/unslop",
       "desc": "A Claude skill that turns vibecoded, AI-looking UI into a designed interface",
       "source": "gh-search",
       "angle": "wow-demo",
-      "score": 8.0,
-      "why": "Skill pro Claude, kter\u00fd okam\u017eit\u011b prom\u011bn\u00ed o\u0161kliv\u00fd prototyp v pr\u00e9miov\u011b vypadaj\u00edc\u00ed rozhran\u00ed."
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "impeccable",
+      "url": "https://github.com/pbakaus/impeccable",
+      "desc": "Star                    pbakaus /   impeccable      The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "pixelfx",
+      "url": "https://github.com/patch-gg/pixelfx",
+      "desc": "244 pixel art effects, every one a small piece of code. Plus a Claude Code skill to make your own.",
+      "source": "gh-search",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "hallmark",
+      "url": "https://github.com/Nutlope/hallmark",
+      "desc": "Star                    Nutlope /   hallmark      Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "security-audit-skill",
+      "url": "https://github.com/cloudflare/security-audit-skill",
+      "desc": "Star                    cloudflare /   security-audit-skill      A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
     }
   ],
-  "picked": [
-    "https://github.com/pbakaus/impeccable",
-    "https://github.com/AgriciDaniel/claude-seo"
-  ]
+  "picked": []
 }
