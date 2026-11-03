@@ -1,0 +1,7 @@
+Type one command, get an Apple-style blueprint of your UI. Free skill for Claude Code.
+
+Comment DRAWING and I'll DM you the link.
+
+Results: dimensional-drawing by Enes Ozturk (github.com/enesozturk/dimensional-drawing), MIT.
+
+#uidesign #claudecode #designsystem

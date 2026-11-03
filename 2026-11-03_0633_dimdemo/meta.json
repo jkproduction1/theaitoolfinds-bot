@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/enesozturk/dimensional-drawing",
+ "name": "Dimensional Drawing",
+ "tool_name": "Dimensional Drawing",
+ "keyword": "DRAWING",
+ "summary_cs": "App demo 1/3: skill dimensional-drawing (MIT, Enes Ozturk) pro Claude Code – /dimensional-drawing z karty a z dialogu udělá technický výkres ve stylu Apple dimensional drawings, /dimensional-drawing-motion z výkresu udělá krátký film. Všechny 3 výsledky jsou skutečné ukázky z repa autora.",
+ "style": "hyperframes-paper",
+ "duration": 20.5,
+ "domain": "github.com/enesozturk/dimensional-drawing",
+ "created": "2026-11-03_0633",
+ "run_id": null,
+ "artifact": null
+}
