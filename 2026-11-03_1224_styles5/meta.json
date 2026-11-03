@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/skills",
+ "name": "Claude Code animation styles",
+ "tool_name": "Claude Code animation styles",
+ "keyword": "STYLES",
+ "summary_cs": "App demo v2 podle tvé reference: 5 animačních stylů z Claude Code za 20 s (/ink-wash, /headline, /stat-chart z reference, nové /teardown notebooku a /receipt). Všechny animace jsou postavené v kódu, ukázkový obsah je fiktivní; prompty pro DM jsou v hf/videos/styles5/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 20.8,
+ "domain": "code.claude.com/docs/en/skills",
+ "created": "2026-11-03_1224",
+ "run_id": null,
+ "artifact": null
+}
