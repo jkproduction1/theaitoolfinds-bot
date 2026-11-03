@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/t3dotgg/tstack",
+ "name": "tstack",
+ "tool_name": "tstack",
+ "keyword": "TSTACK",
+ "summary_cs": "tstack (MIT) jsou agent skilly, které Theo (t3dotgg) denně používá, pro Claude Code a Codex – 9 skillů, ve videu 4: council (3 modely od různých providerů reviewují změnu, dokud se neshodnou), babysit (hlídá PR přes CI a opravuje reálné nálezy), take over (dokončí cizí PR a zachová kredit), full send (od změny k mergnutému PR bez dozoru).",
+ "style": "hyperframes-paper",
+ "duration": 26.3,
+ "domain": "github.com/t3dotgg/tstack",
+ "created": "2026-11-03_0619",
+ "run_id": null,
+ "artifact": null
+}
