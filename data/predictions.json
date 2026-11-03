@@ -975,5 +975,42 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "pixelfx",
+  "date": "2026-11-03",
+  "score": 87,
+  "mode": "full",
+  "features": {
+   "hook": 0.56,
+   "hook_words": 7,
+   "hook_end_s": 2.53,
+   "tool_named_s": 2.61,
+   "payoff": 1.0,
+   "wps": 2.71,
+   "dur_s": 24.1,
+   "words": 61,
+   "pace": 0.84,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 69,
+   "visuals": 1.0,
+   "ending": 0.9,
+   "angle": "relatable-pain",
+   "topic": 0.9
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]

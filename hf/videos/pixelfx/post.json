@@ -1,1 +1,9 @@
-{"angle":"relatable-pain","tool_name":"Pixel-F-X","keyword":"PIXELFX"}
+{
+ "url": "https://github.com/patch-gg/pixelfx",
+ "tool_name": "pixelfx",
+ "keyword": "PIXELFX",
+ "angle": "relatable-pain",
+ "cover_at": 4.6,
+ "summary_cs": "pixelfx (MIT, Patch) je free knihovna 244 pixel art efektů (oheň, blesky, magie, exploze…), každý je malý kus kódu – jdou přebarvit, zrcadlit nebo exportovat jako sprite sheety do Godotu/Unity. Navíc má Claude Code skill, který dělá nové efekty smyčkou draft, render, look, refine.",
+ "caption": "Game devs, still paying for pixel effects? pixelfx has 244 of them, free.\n\nComment PIXELFX and I'll DM you the link.\n\nEffects: pixelfx by Patch (github.com/patch-gg/pixelfx), MIT.\n\n#gamedev #pixelart #indiedev"
+}

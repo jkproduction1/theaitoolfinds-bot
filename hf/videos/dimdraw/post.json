@@ -1,1 +1,9 @@
-{"angle":"new-ability","tool_name":"Dimensional Drawing","keyword":"DRAWING"}
+{
+ "url": "https://github.com/enesozturk/dimensional-drawing",
+ "tool_name": "Dimensional Drawing",
+ "keyword": "DRAWING",
+ "angle": "new-ability",
+ "cover_at": 2.4,
+ "summary_cs": "Dimensional Drawing (MIT, Enes Ozturk) je free skill pro Claude Code (a další agenty), který z UI komponenty (karta, dialog) udělá jednostránkový technický výkres ve stylu Apple dimensional drawings: paddingy, mezery, radiusy a vrstvy, nic si nevymýšlí (neznámé = [TBD]). Druhý skill z výkresu udělá krátký animovaný film.",
+ "caption": "Your UI can now get Apple-style blueprints. A free skill for Claude Code.\n\nComment DRAWING and I'll DM you the link.\n\nDrawings: dimensional-drawing by Enes Ozturk (github.com/enesozturk/dimensional-drawing), MIT.\n\n#uidesign #claudecode #designsystem"
+}
