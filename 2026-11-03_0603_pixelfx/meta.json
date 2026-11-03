@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/patch-gg/pixelfx",
+ "name": "pixelfx",
+ "tool_name": "pixelfx",
+ "keyword": "PIXELFX",
+ "summary_cs": "pixelfx (MIT, Patch) je free knihovna 244 pixel art efektů (oheň, blesky, magie, exploze…), každý je malý kus kódu – jdou přebarvit, zrcadlit nebo exportovat jako sprite sheety do Godotu/Unity. Navíc má Claude Code skill, který dělá nové efekty smyčkou draft, render, look, refine.",
+ "style": "hyperframes-paper",
+ "duration": 23.6,
+ "domain": "github.com/patch-gg/pixelfx",
+ "created": "2026-11-03_0603",
+ "run_id": null,
+ "artifact": null
+}
