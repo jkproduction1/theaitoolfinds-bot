@@ -52,6 +52,29 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
 - Reference build: `hf/videos/claude7/build.py` (listicle), `hf/videos/opencode/build.py` (tool),
   `hf/videos/rea/build_reference.py` (first film). Copy the closest one and change scenes, don't start blank.
 
+## 3b. Format "App demo 1/3" (AT LEAST 1 video EVERY day, Jan's standing order since 2026-11-03)
+Reference (another creator's viral video, frames at 2 fps): `hf/reference/app_demo_ref.jpg`. Copy the STRUCTURE 1:1,
+never its content: not its skill, topics, results or keyword ("FOLDER").
+- **No intro, no hook sentence.** From frame 0 we are inside a chat app on a phone and a command is being typed.
+  Voice per demo: "Type /<command> <short prompt>… and you get this." Same rhythm each time. 15–20 s, ~35–50 words.
+- **3 demos**, ~4–5 s each: prompt typed on the on-screen keyboard (key pop-ups, slash-command suggestion chip
+  with the skill name + one-line description) → send → "Running /<command>…" line → the RESULT plays inside the
+  chat as a big card with a short title ("laptop battery explainer with <skill>"). Counter 1/3 · 2/3 · 3/3 top right.
+- **End card (~2–3 s):** big "Comment "<KEYWORD>" to get the link" (keyword in accent #ff4b1f), under it a strip
+  of the 3 results. Handle @theaitoolfinds small on the end card.
+- **UI drawn in code:** dark, phone-like chat (status bar, top tabs, input field, keyboard), our own generic design.
+  **No Anthropic/Claude logo or wordmark as a logo** (saying "Claude Code" in voice/text is fine). Exception: Jan's
+  real screen recordings of the real app are used as they are.
+- **Results must be REAL outputs of that exact command:** the skill author's own demo videos/GIFs (README, site,
+  X posts linked from the repo) or Jan's recordings (he drops them in the repo or Telegram; when he does, prefer them).
+  No mock-ups of results, no AI-generated stand-ins. **No view counts or any invented numbers on the cards.**
+- **Pick skills/commands with a visually striking result** (animation, explainer video, 3D, design, website, image).
+  Verify the command name and that the skill is public. If no command has 3 strong real results, show 3 commands of
+  related skills, or skip the format that day and tell Jan why.
+- post.json `"angle": "app-demo"`. Paper rules in §3/§5 that conflict (light paper, text block under the visual)
+  don't apply here; margins, readability, real-claims and pacing rules do.
+- Daily mix: 1 App demo + 1 Opuscar (§6b) + 1 Paper, unless Jan says otherwise. Compare App demo vs. the rest in learnings.md.
+
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`) and
    `data/learnings.md`. Prefer topic types and hook patterns that are winning; avoid the losing ones. On Sunday runs,
@@ -63,7 +86,8 @@ Garamond italic + JetBrains Mono. Orange pill **@theaitoolfinds** always at y≈
    (compare `data/predictions.json` with `data/stats.json`; later also completion / watch time). Log the change.
 1. `git pull`. Pick 3 topics: Jan's taps in `data/picks.json` "picked" first (skip any already made, see
    `data/history.json` and the `videos` branch), then `items`, else research (WebSearch: trending repos,
-   launches this week). Mix pillars: e.g. 1 paid→free, 1 creator/dev tool, 1 listicle.
+   launches this week). Mix pillars: e.g. 1 paid→free, 1 creator/dev tool, 1 listicle. **One of the 3 is always
+   an App demo 1/3 video (§3b).**
 2. **Verify every fact** in the tool's README/docs (clone with `git clone --depth 1`). No invented numbers.
    Alpha/beta → say "still early". Save media you'll show into `hf/videos/<name>/media/`.
 3. Write the 3 scripts. Save each as `hf/videos/<name>/script.txt` AND put all three in
@@ -117,3 +141,4 @@ Our Opuscar edition may show the tool's real screenshots on its cards. Voice sta
 - When he's chatting live, he approves scripts before they're voiced.
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
 - Max 3 posts a day (5 in one day split the reach). Don't guess what works: check the stats.
+- At least 1 "App demo 1/3" video every day (§3b): command typed in a chat app → real result right away.
