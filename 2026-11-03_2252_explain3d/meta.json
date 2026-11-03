@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D explainers",
+ "tool_name": "Claude Code 3D explainers",
+ "keyword": "EXPLAIN",
+ "summary_cs": "App demo podle tvé druhé reference: /explain-3d + prompt → realistický 3D explainer (rozložený telefon s popisky, bezdrátové nabíjení s cívkami a polem, sluchátka s potlačením hluku a vlnami). Všechno three.js v kódu; prompt pro DM je v hf/videos/explain3d/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 25.5,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-03_2252",
+ "run_id": null,
+ "artifact": null
+}
