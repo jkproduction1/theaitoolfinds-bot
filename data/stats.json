@@ -3,32 +3,288 @@
  "analytics_access": true,
  "posts": [
   {
+   "name": "2026-11-03_0619_tstack",
+   "post_id": "6ae98c1d8e11c252b2500f5f",
+   "published_at": "2026-11-03T20:02:08.000Z",
+   "status": "published",
+   "hook": "Still babysitting your AI's pull requests? Theo's tstack has 9 free agent skills for Claude Code and Codex.",
+   "total": {
+    "views": 102,
+    "reach": 70,
+    "impressions": 102,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 2,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfSsWX_mdIx/",
+     "views": 102,
+     "reach": 70,
+     "impressions": 102,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 2,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-03_0619_tstack",
+   "post_id": "6ae98c1d8e11c252b2500f5f",
+   "published_at": "2026-11-03T20:01:44.000Z",
+   "status": "published",
+   "hook": "Still babysitting your AI's pull requests? Theo's tstack has 9 free agent skills for Claude Code and Codex. Comment TSTACK and I'll DM you the link. #claudecode #codex #aiagents",
+   "total": {
+    "views": 37,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 1,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7704037987792751904?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 37,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 1,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-03_0603_pixelfx",
+   "post_id": "6ae98c1594545583db635470",
+   "published_at": "2026-11-03T14:03:17.000Z",
+   "status": "published",
+   "hook": "Game devs, still paying for pixel effects? pixelfx has 244 of them, free.",
+   "total": {
+    "views": 263,
+    "reach": 230,
+    "impressions": 263,
+    "likes": 2,
+    "comments": 0,
+    "shares": 4,
+    "saves": 8,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfSDRygASRU/",
+     "views": 263,
+     "reach": 230,
+     "impressions": 263,
+     "likes": 2,
+     "comments": 0,
+     "shares": 4,
+     "saves": 8,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-03_0603_pixelfx",
+   "post_id": "6ae98c1594545583db635470",
+   "published_at": "2026-11-03T14:01:56.000Z",
+   "status": "published",
+   "hook": "Game devs, still paying for pixel effects? pixelfx has 244 of them, free. Comment PIXELFX and I'll DM you the link. Effects: pixelfx by Patch (github.com/patch-gg/pixelfx), MIT. #gamedev #pixelart #in",
+   "total": {
+    "views": 362,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 10,
+    "comments": 1,
+    "shares": 0,
+    "saves": 3,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7703945245372796192?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 362,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 10,
+     "comments": 1,
+     "shares": 0,
+     "saves": 3,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-03_1224_styles5",
+   "post_id": "6ae9c6868b6180bd56458a57",
+   "published_at": "2026-11-03T12:43:55.000Z",
+   "status": "published",
+   "hook": "Comment STYLES and I'll DM you every prompt.",
+   "total": {
+    "views": 436,
+    "reach": 376,
+    "impressions": 436,
+    "likes": 3,
+    "comments": 2,
+    "shares": 0,
+    "saves": 14,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfR6MSlFUCo/",
+     "views": 436,
+     "reach": 376,
+     "impressions": 436,
+     "likes": 3,
+     "comments": 2,
+     "shares": 0,
+     "saves": 14,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-03_1224_styles5",
+   "post_id": "6ae9c6868b6180bd56458a57",
+   "published_at": "2026-11-03T12:43:16.000Z",
+   "status": "published",
+   "hook": "Comment STYLES and I'll DM you every prompt. 5 animation styles, one short command each. All made with Claude Code. #claudecode #motiondesign #aitools",
+   "total": {
+    "views": 472,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 11,
+    "comments": 1,
+    "shares": 0,
+    "saves": 5,
+    "follows": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7703924961257327904?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 472,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 11,
+     "comments": 1,
+     "shares": 0,
+     "saves": 5,
+     "follows": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-02_0629_mika",
+   "post_id": "6ae88895180aaa2509bf1c46",
+   "published_at": "2026-11-03T07:02:51.000Z",
+   "status": "published",
+   "hook": "Your phone can now use itself. Mika is a free, open-source AI assistant for Android.",
+   "total": {
+    "views": 181,
+    "reach": 148,
+    "impressions": 181,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DfRTIQzD8P9/",
+     "views": 181,
+     "reach": 148,
+     "impressions": 181,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 1,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-02_0629_mika",
+   "post_id": "6ae88895180aaa2509bf1c46",
+   "published_at": "2026-11-03T07:02:06.000Z",
+   "status": "published",
+   "hook": "Your phone can now use itself. Mika is a free, open-source AI assistant for Android. Comment MIKA and I'll DM you the link. #android #aitools #opensource",
+   "total": {
+    "views": 362,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 4,
+    "comments": 0,
+    "shares": 0,
+    "saves": 3,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7703837025471827232?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 362,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 4,
+     "comments": 0,
+     "shares": 0,
+     "saves": 3,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
    "name": "2026-11-02_0612_floorplan",
    "post_id": "6ae8881749fda41143e7af8a",
    "published_at": "2026-11-02T20:01:39.000Z",
    "status": "published",
    "hook": "Vibe coded an app? No idea how it works? Floorplan draws it as a map, in plain English.",
    "total": {
-    "views": 463,
-    "reach": 386,
-    "impressions": 463,
-    "likes": 6,
-    "comments": 1,
-    "shares": 3,
-    "saves": 16,
+    "views": 2178,
+    "reach": 1841,
+    "impressions": 2178,
+    "likes": 28,
+    "comments": 7,
+    "shares": 10,
+    "saves": 73,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfQHeTlCpj_/",
-     "views": 463,
-     "reach": 386,
-     "impressions": 463,
-     "likes": 6,
-     "comments": 1,
-     "shares": 3,
-     "saves": 16,
+     "views": 2178,
+     "reach": 1841,
+     "impressions": 2178,
+     "likes": 28,
+     "comments": 7,
+     "shares": 10,
+     "saves": 73,
      "reposts": 0
     }
    ]
@@ -40,13 +296,13 @@
    "status": "published",
    "hook": "Vibe coded an app? No idea how it works? Floorplan draws it as a map, in plain English. Comment FLOORPLAN and I'll DM you the link. #vibecoding #claudecode #opensource",
    "total": {
-    "views": 498,
+    "views": 855,
     "reach": 0,
     "impressions": 0,
-    "likes": 19,
-    "comments": 1,
+    "likes": 32,
+    "comments": 2,
     "shares": 2,
-    "saves": 12,
+    "saves": 19,
     "follows": 0,
     "reposts": 0
    },
@@ -54,13 +310,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703666692592913697?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 498,
+     "views": 855,
      "reach": 0,
      "impressions": 0,
-     "likes": 19,
-     "comments": 1,
+     "likes": 32,
+     "comments": 2,
      "shares": 2,
-     "saves": 12,
+     "saves": 19,
      "follows": 0,
      "reposts": 0
     }
@@ -73,9 +329,9 @@
    "status": "published",
    "hook": "Purple gradients, glows, emoji labels? Your app looks vibecoded. Unslop is a free skill that fixes that.",
    "total": {
-    "views": 187,
-    "reach": 164,
-    "impressions": 187,
+    "views": 196,
+    "reach": 173,
+    "impressions": 196,
     "likes": 0,
     "comments": 0,
     "shares": 0,
@@ -86,9 +342,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfPeniWACuA/",
-     "views": 187,
-     "reach": 164,
-     "impressions": 187,
+     "views": 196,
+     "reach": 173,
+     "impressions": 196,
      "likes": 0,
      "comments": 0,
      "shares": 0,
@@ -104,13 +360,13 @@
    "status": "published",
    "hook": "Purple gradients, glows, emoji labels? Your app looks vibecoded. Unslop is a free skill that fixes that. Comment UNSLOP and I'll DM you the link. Screens: Damir Sokolovsky (@heydamir), github.com/heyd",
    "total": {
-    "views": 801,
+    "views": 828,
     "reach": 0,
     "impressions": 0,
-    "likes": 34,
-    "comments": 7,
+    "likes": 35,
+    "comments": 9,
     "shares": 1,
-    "saves": 22,
+    "saves": 23,
     "follows": 2,
     "reposts": 0
    },
@@ -118,13 +374,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703574674277485857?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 801,
+     "views": 828,
      "reach": 0,
      "impressions": 0,
-     "likes": 34,
-     "comments": 7,
+     "likes": 35,
+     "comments": 9,
      "shares": 1,
-     "saves": 22,
+     "saves": 23,
      "follows": 2,
      "reposts": 0
     }
@@ -137,9 +393,9 @@
    "status": "published",
    "hook": "One colored word in every headline? That's AI slop. Hallmark is a free skill that refuses to look AI-generated.",
    "total": {
-    "views": 260,
-    "reach": 224,
-    "impressions": 260,
+    "views": 264,
+    "reach": 226,
+    "impressions": 264,
     "likes": 0,
     "comments": 0,
     "shares": 0,
@@ -150,9 +406,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfNiykpD0k7/",
-     "views": 260,
-     "reach": 224,
-     "impressions": 260,
+     "views": 264,
+     "reach": 226,
+     "impressions": 264,
      "likes": 0,
      "comments": 0,
      "shares": 0,
@@ -168,10 +424,10 @@
    "status": "published",
    "hook": "One colored word in every headline? That's AI slop. Hallmark is a free skill that refuses to look AI-generated. Comment HALLMARK and I'll DM you the link. #webdesign #claudecode #vibecoding",
    "total": {
-    "views": 732,
+    "views": 737,
     "reach": 177,
     "impressions": 0,
-    "likes": 18,
+    "likes": 19,
     "comments": 4,
     "shares": 1,
     "saves": 16,
@@ -182,10 +438,10 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703295859060002081?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 732,
+     "views": 737,
      "reach": 177,
      "impressions": 0,
-     "likes": 18,
+     "likes": 19,
      "comments": 4,
      "shares": 1,
      "saves": 16,
@@ -201,9 +457,9 @@
    "status": "published",
    "hook": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory.",
    "total": {
-    "views": 35,
-    "reach": 25,
-    "impressions": 35,
+    "views": 36,
+    "reach": 26,
+    "impressions": 36,
     "likes": 0,
     "comments": 0,
     "shares": 0,
@@ -214,9 +470,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfM-ta2EkPc/",
-     "views": 35,
-     "reach": 25,
-     "impressions": 35,
+     "views": 36,
+     "reach": 26,
+     "impressions": 36,
      "likes": 0,
      "comments": 0,
      "shares": 0,
@@ -232,13 +488,13 @@
    "status": "published",
    "hook": "Ever closed Claude Code and lost everything it learned about your project? Claude-Mem gives it a memory. Comment MEM and I'll DM you the link. #claudecode #aitools #opensource",
    "total": {
-    "views": 790,
+    "views": 804,
     "reach": 277,
     "impressions": 0,
     "likes": 37,
     "comments": 1,
     "shares": 3,
-    "saves": 10,
+    "saves": 9,
     "follows": 3,
     "reposts": 0
    },
@@ -246,13 +502,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703214600099089696?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 790,
+     "views": 804,
      "reach": 277,
      "impressions": 0,
      "likes": 37,
      "comments": 1,
      "shares": 3,
-     "saves": 10,
+     "saves": 9,
      "follows": 3,
      "reposts": 0
     }
@@ -265,9 +521,9 @@
    "status": "published",
    "hook": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code.",
    "total": {
-    "views": 344,
+    "views": 347,
     "reach": 278,
-    "impressions": 344,
+    "impressions": 347,
     "likes": 2,
     "comments": 0,
     "shares": 3,
@@ -278,9 +534,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfMJ1urgjTR/",
-     "views": 344,
+     "views": 347,
      "reach": 278,
-     "impressions": 344,
+     "impressions": 347,
      "likes": 2,
      "comments": 0,
      "shares": 3,
@@ -296,13 +552,13 @@
    "status": "published",
    "hook": "Your coding agent can now direct short films. Lemo Opuscar is a free plugin for Claude Code. Comment OPUSCAR and I'll DM you the link. Style frames: LemoLab (github.com/lemomo-ai/lemo-opuscar), CC BY ",
    "total": {
-    "views": 634,
+    "views": 669,
     "reach": 459,
     "impressions": 0,
-    "likes": 26,
+    "likes": 27,
     "comments": 2,
     "shares": 1,
-    "saves": 19,
+    "saves": 20,
     "follows": 1,
     "reposts": 0
    },
@@ -310,13 +566,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7703095284745686304?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 634,
+     "views": 669,
      "reach": 459,
      "impressions": 0,
-     "likes": 26,
+     "likes": 27,
      "comments": 2,
      "shares": 1,
-     "saves": 19,
+     "saves": 20,
      "follows": 1,
      "reposts": 0
     }
@@ -360,7 +616,7 @@
    "status": "published",
    "hook": "Ever noticed every AI-built website looks the same? These 6 Impeccable commands fix that. Comment IMPECCABLE and I'll DM you the link. #webdesign #vibecoding #aitools",
    "total": {
-    "views": 217,
+    "views": 219,
     "reach": 192,
     "impressions": 0,
     "likes": 5,
@@ -374,7 +630,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7702460872228228385?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 217,
+     "views": 219,
      "reach": 192,
      "impressions": 0,
      "likes": 5,
@@ -424,7 +680,7 @@
    "status": "published",
    "hook": "Paying for SEO audit software every month? There's a free, open source plugin for Claude Code. Comment SEO and I'll DM you the link. #seo #claudecode #opensource",
    "total": {
-    "views": 289,
+    "views": 290,
     "reach": 253,
     "impressions": 0,
     "likes": 4,
@@ -438,7 +694,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7702439528509787425?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 289,
+     "views": 290,
      "reach": 253,
      "impressions": 0,
      "likes": 4,
@@ -711,7 +967,7 @@
    "status": "published",
    "hook": "Everyone missed the point of Microduck. 🎥 Pollen Robotics Comment MICRODUCK and I'll DM you the link. #robotics #opensource #ai",
    "total": {
-    "views": 270,
+    "views": 271,
     "reach": 258,
     "impressions": 0,
     "likes": 3,
@@ -725,7 +981,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7700672608685083937?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 270,
+     "views": 271,
      "reach": 258,
      "impressions": 0,
      "likes": 3,
@@ -808,7 +1064,7 @@
    "status": "published",
    "hook": "Vibe coding fast and worried about security holes? Cloudflare open-sourced the skill that seeded its own vulnerability harness. Install it into your coding agent and say \"security audit this codebase\"",
    "total": {
-    "views": 292,
+    "views": 294,
     "reach": 248,
     "impressions": 0,
     "likes": 9,
@@ -822,7 +1078,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7700497661325004064?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 292,
+     "views": 294,
      "reach": 248,
      "impressions": 0,
      "likes": 9,
@@ -1064,7 +1320,7 @@
    "status": "published",
    "hook": "Your coding agent can now make whole videos, for free. OpenFilm is an open-source AI video agent: ask Claude Code, Codex or any coding agent for a film, then change anything by hand in Studio, a real ",
    "total": {
-    "views": 638,
+    "views": 640,
     "reach": 598,
     "impressions": 0,
     "likes": 10,
@@ -1078,7 +1334,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7699477452468292897?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 638,
+     "views": 640,
      "reach": 598,
      "impressions": 0,
      "likes": 10,
@@ -1161,9 +1417,9 @@
    "status": "published",
    "hook": "Claude Code has an official plugin store with 300+ plugins 🔌",
    "total": {
-    "views": 181,
-    "reach": 144,
-    "impressions": 181,
+    "views": 182,
+    "reach": 145,
+    "impressions": 182,
     "likes": 0,
     "comments": 0,
     "shares": 0,
@@ -1174,9 +1430,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DeweMLQCQMc/",
-     "views": 181,
-     "reach": 144,
-     "impressions": 181,
+     "views": 182,
+     "reach": 145,
+     "impressions": 182,
      "likes": 0,
      "comments": 0,
      "shares": 0,
