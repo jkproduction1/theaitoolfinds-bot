@@ -1,1 +1,9 @@
-{"angle":"app-demo","tool_name":"Claude Code","keyword":"STYLES"}
+{
+ "url": "https://code.claude.com/docs/en/skills",
+ "tool_name": "Claude Code animation styles",
+ "keyword": "STYLES",
+ "angle": "app-demo",
+ "cover_at": 2.9,
+ "summary_cs": "App demo v2 podle tvé reference: 5 animačních stylů z Claude Code za 20 s (/ink-wash, /headline, /stat-chart z reference, nové /teardown notebooku a /receipt). Všechny animace jsou postavené v kódu, ukázkový obsah je fiktivní; prompty pro DM jsou v hf/videos/styles5/prompts.md.",
+ "caption": "5 animation styles, one short command each. All made with Claude Code.\n\nComment STYLES and I'll DM you every prompt.\n\n#claudecode #motiondesign #aitools"
+}

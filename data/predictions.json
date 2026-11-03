@@ -1127,5 +1127,44 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "styles5",
+  "date": "2026-11-03",
+  "score": 63,
+  "mode": "full",
+  "features": {
+   "hook": 0.36,
+   "hook_words": 8,
+   "hook_end_s": 19.44,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 3.08,
+   "dur_s": 21.0,
+   "words": 8,
+   "pace": 0.85,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.0,
+   "visual_changes": 44,
+   "visuals": 0.8,
+   "ending": 0.72,
+   "angle": "app-demo",
+   "topic": 0.5
+  },
+  "flags": [
+   "hook končí v 19.4 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]
