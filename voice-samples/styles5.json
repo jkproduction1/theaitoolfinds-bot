@@ -1,0 +1,42 @@
+[
+ {
+  "word": "Comment",
+  "start": 0.0,
+  "end": 0.32
+ },
+ {
+  "word": "STYLES",
+  "start": 0.4,
+  "end": 0.8
+ },
+ {
+  "word": "and",
+  "start": 0.88,
+  "end": 1.12
+ },
+ {
+  "word": "I'll",
+  "start": 1.2,
+  "end": 1.36
+ },
+ {
+  "word": "send",
+  "start": 1.44,
+  "end": 1.52
+ },
+ {
+  "word": "you",
+  "start": 1.6,
+  "end": 1.76
+ },
+ {
+  "word": "every",
+  "start": 1.88,
+  "end": 2.0
+ },
+ {
+  "word": "prompt",
+  "start": 2.08,
+  "end": 2.5949886621315192
+ }
+]
