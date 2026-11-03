@@ -16,7 +16,7 @@ for f in (HERE / "media").iterdir():
     shutil.copy(f, A / f.name)
 
 # --- give each result a beat: insert silence after "this." of demo 1, 2, 3
-GAPS = {10: 1.7, 20: 1.7, 30: 1.4}
+GAPS = {10: 1.4, 20: 1.4, 30: 1.6}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
@@ -102,7 +102,7 @@ html,body,#root{background:#121212!important}
 #end .c{position:absolute;top:470px;font-weight:800;font-size:84px;color:#fff}
 #end .kw{position:absolute;top:570px;font-weight:900;font-size:150px;color:#ff4b1f;letter-spacing:-.04em}
 #end .g{position:absolute;top:760px;font-weight:800;font-size:72px;color:#fff}
-.th{position:absolute;top:960px;width:300px;height:420px;border-radius:26px;overflow:hidden;background:#ececea;box-shadow:0 40px 70px -20px rgba(0,0,0,.8),0 0 0 2px #2a2a2a}
+.th{position:absolute;top:960px;width:280px;height:420px;border-radius:26px;overflow:hidden;background:#ececea;box-shadow:0 40px 70px -20px rgba(0,0,0,.8),0 0 0 2px #2a2a2a}
 .th img{width:100%;height:100%;object-fit:cover}
 """
 
@@ -154,9 +154,9 @@ F.clip(0, "".join(app))
 
 F.clip(1, '<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“DRAWING”</div>'
           '<div class="g" id="e3">to get the link</div>'
-          '<div class="th" id="th0" style="left:70px"><img src="assets/r1.jpg" alt=""></div>'
-          '<div class="th" id="th1" style="left:390px"><img src="assets/r2.jpg" alt=""></div>'
-          '<div class="th" id="th2" style="left:710px"><img src="assets/r3.jpg" alt=""></div></div>')
+          '<div class="th" id="th0" style="left:100px"><img src="assets/r1.jpg" alt=""></div>'
+          '<div class="th" id="th1" style="left:400px"><img src="assets/r2.jpg" alt=""></div>'
+          '<div class="th" id="th2" style="left:700px"><img src="assets/r3.jpg" alt=""></div></div>')
 
 # typing events: (time, html-state) and key pops
 typing = []
@@ -193,7 +193,7 @@ const pop=document.getElementById('pop'), cn=document.getElementById('cn');
 let last=-1, lastC='', lastN='', lastP='';
 function apply(t){ let j=0; for(let i=0;i<STEPS.length;i++){ if(STEPS[i][0]<=t) j=i; else break; }
   if(j!==last){ last=j; it.innerHTML=STEPS[j][1]; sug.textContent=STEPS[j][2]; }
-  let c=0, nm='', ds=''; TY.forEach(d=>{ if(d.res<=t) c++; if(d.slash-0.01<=t){ nm='/'+d.cmdtxt; ds=d.desc; } });
+  let c=0, nm='', ds=''; TY.forEach((d,k)=>{ if(k==0||d.slash-0.01<=t) c++; if(d.slash-0.01<=t){ nm='/'+d.cmdtxt; ds=d.desc; } });
   const cs=c+'/3'; if(cs!==lastC){ lastC=cs; cn.textContent=cs; } if(nm!==lastN){ lastN=nm; chn.textContent=nm; chd.textContent=ds; }
   let pk=''; KEV.forEach(e=>{ if(t>=e[0]&&t<e[0]+0.08) pk=e[1]+'|'+e[2][0]+'|'+e[2][1]; });
   if(pk!==lastP){ lastP=pk; if(pk){ const q=pk.split('|'); pop.textContent=q[0]===' '?'':q[0]; pop.style.left=(+q[1]-12)+'px'; pop.style.top=(+q[2]-120)+'px'; pop.style.opacity=1; } else pop.style.opacity=0; } }
@@ -216,17 +216,17 @@ TY.forEach((d,k)=>{
   ft('#run'+k,{opacity:0,x:-30},{opacity:1,x:0,duration:.3,ease:A},d.send+0.15);
   tl.to('#run'+k+' svg',{rotation:180,duration:.8,ease:'none',repeat:3},d.send+0.3);
   // result card
-  ft('#res'+k,{opacity:0,y:240,scale:.86,rotationX:22,transformPerspective:1600,filter:'blur(16px)'},{opacity:1,y:0,scale:1,rotationX:0,filter:'blur(0px)',duration:.8,ease:A},d.res);
+  ft('#res'+k,{opacity:0,y:240,scale:.86,rotationX:22,transformPerspective:1600},{opacity:1,y:0,scale:1,rotationX:0,duration:.8,ease:A},d.res);
   tl.to('#run'+k,{opacity:0,duration:.25},d.res+0.5);
   if(k<2){ ft('#ri'+k,{scale:1.0,xPercent:0},{scale:k?1.9:1.6,xPercent:k?-12:6,yPercent:k?8:-6,duration:d.end-d.res,ease:'power1.inOut'},d.res+0.2); }
-  ft('#ctr',{scale:1},{scale:1.25,duration:.15,yoyo:true,repeat:1,ease:'power2.out'},d.res);
-  if(k<2) tl.to(['#res'+k,'#ub'+k],{y:-120,opacity:0,scale:.92,filter:'blur(14px)',duration:.3,ease:IN},d.end-0.3);
+  if(k) ft('#ctr',{scale:1},{scale:1.25,duration:.15,yoyo:true,repeat:1,ease:'power2.out'},d.slash);
+  if(k<2) tl.to(['#res'+k,'#ub'+k],{y:-120,opacity:0,scale:.92,duration:.3,ease:IN},d.end-0.3);
   else tl.to(['#ub'+k],{opacity:0,duration:.2},d.end-0.2);
 });
 // end card
 ft('#end svg',{opacity:0,scale:0,rotation:-90},{opacity:1,scale:1,rotation:0,duration:.6,ease:'back.out(2)'},ST[1]+0.02);
 ft('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.4,ease:A},ST[1]+0.08);
-ft('#e2',{opacity:0,scale:1.6,filter:'blur(12px)'},{opacity:1,scale:1,filter:'blur(0px)',duration:.5,ease:'back.out(1.8)'},S[32]-0.1);
+ft('#e2',{opacity:0,scale:1.6},{opacity:1,scale:1,duration:.5,ease:'back.out(1.8)'},S[32]-0.1);
 ft('#e3',{opacity:0,y:40},{opacity:1,y:0,duration:.4,ease:A},S[33]-0.05);
 [0,1,2].forEach(k=>ft('#th'+k,{opacity:0,y:300,rotation:(k-1)*10},{opacity:1,y:0,rotation:(k-1)*4,duration:.7,ease:'back.out(1.4)'},ST[1]+0.3+k*0.12));
 ft('#handle',{opacity:0},{opacity:1,duration:.3},ST[1]+0.4);
