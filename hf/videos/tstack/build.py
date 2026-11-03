@@ -91,13 +91,13 @@ F.clip(2, '<div id="four">4<span>of 9</span></div>'
 F.clip(3, '<div class="num" id="n2">01 · council</div>'
           '<div id="diff"><div class="r">- if (token) refresh()</div><div class="a">+ if (token?.expired)</div><div class="a">+   await refresh()</div></div>'
           + "".join(f'<div class="md" id="m{k}" style="left:{x}px;top:{y}px"><b style="background:{c}">{g}</b>model {l}<div class="ag" id="a{k}">✓</div></div>'
-                    for k, (x, y, c, g, l) in enumerate([(70, 620, "#111", "A", "A"), (415, 680, "#ff4b1f", "B", "B"), (760, 620, "#6f6f6f", "C", "C")]))
-       + F.block([[(20, 20, "hl"), (21, 22, "")], [(23, 25, ""), (26, 28, "")], [(29, 31, "b")]], top=1030, size=80))
+                    for k, (x, y, c, g, l) in enumerate([(60, 600, "#111", "A", "A"), (400, 660, "#ff4b1f", "B", "B"), (740, 600, "#6f6f6f", "C", "C")]))
+       + F.block([[(20, 20, "hl"), (21, 22, "")], [(23, 25, ""), (26, 28, "")], [(29, 31, "b")]], top=950, size=76))
 # S3 babysit: CI goes green, findings fixed
 F.clip(4, '<div class="num" id="n3">02 · babysit</div>'
           + pr("p3", 340, "fix auth refresh", "Open", [("bad", "✕", "ci / lint", "failed"), ("bad", "✕", "ci / test", "failed"),
                                                         ("pend", "", "review-bot", "real finding")])
-       + F.block([[(32, 32, "hl"), (33, 36, "")], [(37, 40, "")], [(41, 43, "b")]], top=1040, size=84))
+       + F.block([[(32, 32, "hl"), (33, 36, "")], [(37, 40, "")], [(41, 43, "b")]], top=1015, size=84))
 # S4 takeover: someone else's PR, credit kept
 F.clip(5, '<div class="num" id="n4">03 · take over</div>'
           + pr("p4", 340, "someone else's PR", "Stale", [("pend", "", "last commit", "3 weeks ago"), ("pend", "", "agent thread", "abandoned")])

@@ -1,1 +1,9 @@
-{"angle":"app-demo","tool_name":"Dimensional Drawing","keyword":"DRAWING"}
+{
+ "url": "https://github.com/enesozturk/dimensional-drawing",
+ "tool_name": "Dimensional Drawing",
+ "keyword": "DRAWING",
+ "angle": "app-demo",
+ "cover_at": 5.6,
+ "summary_cs": "App demo 1/3: skill dimensional-drawing (MIT, Enes Ozturk) pro Claude Code – /dimensional-drawing z karty a z dialogu udělá technický výkres ve stylu Apple dimensional drawings, /dimensional-drawing-motion z výkresu udělá krátký film. Všechny 3 výsledky jsou skutečné ukázky z repa autora.",
+ "caption": "Type one command, get an Apple-style blueprint of your UI. Free skill for Claude Code.\n\nComment DRAWING and I'll DM you the link.\n\nResults: dimensional-drawing by Enes Ozturk (github.com/enesozturk/dimensional-drawing), MIT.\n\n#uidesign #claudecode #designsystem"
+}

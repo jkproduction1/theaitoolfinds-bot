@@ -1049,5 +1049,44 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "tstack",
+  "date": "2026-11-03",
+  "score": 76,
+  "mode": "full",
+  "features": {
+   "hook": 0.72,
+   "hook_words": 6,
+   "hook_end_s": 2.43,
+   "tool_named_s": 2.88,
+   "payoff": 1.0,
+   "wps": 2.89,
+   "dur_s": 26.9,
+   "words": 73,
+   "pace": 0.99,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 44,
+   "visuals": 1.0,
+   "ending": 0.96,
+   "angle": "listicle",
+   "topic": 0.4
+  },
+  "flags": [
+   "typ tématu \"listicle\" u nás zatím slabě funguje"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]
