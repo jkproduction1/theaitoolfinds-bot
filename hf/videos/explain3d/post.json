@@ -1,1 +1,9 @@
-{"angle":"app-demo","tool_name":"Claude Code","keyword":"EXPLAIN"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D explainers",
+ "keyword": "EXPLAIN",
+ "angle": "app-demo",
+ "cover_at": 6.9,
+ "summary_cs": "App demo podle tvé druhé reference: /explain-3d + prompt → realistický 3D explainer (rozložený telefon s popisky, bezdrátové nabíjení s cívkami a polem, sluchátka s potlačením hluku a vlnami). Všechno three.js v kódu; prompt pro DM je v hf/videos/explain3d/prompts.md.",
+ "caption": "Type one command, get a 3D explainer of anything. Made with Claude Code.\n\nComment EXPLAIN and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
+}
