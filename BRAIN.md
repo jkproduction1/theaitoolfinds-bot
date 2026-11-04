@@ -74,6 +74,18 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - post.json `"angle": "app-demo"`. Paper rules in §3/§5 that conflict (light paper, text block under the visual)
   don't apply here; margins, readability, real-claims and pacing rules do.
 - Daily mix: 1 App demo + 1 Opuscar (§6b) + 1 Paper, unless Jan says otherwise. Compare App demo vs. the rest in learnings.md.
+- **What makes it work (Jan + stats, 2026-11-04):** the voice line "Type /<command> <prompt>… and you get this." is the format's
+  engine: an App demo with it became the best IG post within hours (2,600 views, 38 likes). Keep it in every App demo.
+  Amplify it, don't replace it: (1) prefer BEFORE → AFTER results (a plain/ugly input turns into the result; e.g. reference
+  "/color-grade make my clip look like this"), (2) faster rhythm: aim ~2–3 s per result, 4–7 results in 15–20 s,
+  (3) CTA "Comment X to get this Claude skill for free" (we DM the skill/prompt file), (4) topics for vibe coders first
+  (UI that looks AI-made, apps you don't understand, social content, design), (5) results we can render 100% for real:
+  UI, websites, design, data, typography, effects, real footage Jan sends. Photoreal 3D objects drawn in code look fake:
+  avoid them as the main result.
+- Stronger hooks to test in the first line on screen (keep them true, no invented money/numbers): "I turned Claude into a
+  social media machine", "The most powerful Claude skill I've seen", "Claude just turned my vibe-coded app into a real design".
+- Second reference that works: a curated mega-list with real data ("The 30 best Claude plugins": categories, real GitHub
+  stars, ending "Don't install all 30. Pick one row." → saves). Worth testing as a Paper/listicle format.
 
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`) and
