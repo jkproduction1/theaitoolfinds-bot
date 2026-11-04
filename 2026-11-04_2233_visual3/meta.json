@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "VISUAL",
+ "summary_cs": "App demo jako explain3d (tvůj nejlepší IG post): /visualize jak funguje počítač (data jako světlo SSD→RAM→CPU→GPU→obrazovka), /explain-3d jak létá dron, /how-its-made mikročip (wafer, UV světlo, čip). Všechno three.js v kódu se studiovým HDRI; prompty pro DM jsou v hf/videos/visual3/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 23.1,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-04_2233",
+ "run_id": null,
+ "artifact": null
+}
