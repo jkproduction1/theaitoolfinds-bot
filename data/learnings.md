@@ -1,31 +1,43 @@
-# learnings.md: what works for @theaitoolfinds (rewrite every Sunday from data/stats.json)
+# learnings.md: what works for @theaitoolfinds (rewrite on Wednesday + Sunday runs from data/stats.json)
 
-Last update: 2026-11-01, from 15 videos (2026-10-20 → 10-30). Small sample: treat everything as a lead, not a law.
+Last update: 2026-11-04 (live with Jan), from 26 posts (2026-10-20 → 11-03). Still a small sample: leads, not laws.
 
-## Where the views come from
-- **TikTok carries the account.** TikTok views range 9–638 per video; Instagram stays flat at ~95–260 whatever the content.
-- **Instagram gives almost no likes** (0–2 per video). IG is reach for now, not engagement. Saves exist on both.
-- Watch time, skip rate and completion rate are not in the stats yet (Zernio returns them empty for now). Get them
-  once they show up: they are the real retention signal.
+## The big change
+- **Since 2026-11-01 (retention structure + predictor) TikTok reach roughly doubled:** Nov 1–3 posts average ~630 TT views
+  (8 of 9 above 390), Oct 20–30 averaged ~250. Part of it may be account growth; the jump is too big and too sudden to be only that.
+- **Instagram finally moves on save-worthy posts:** Floorplan 2,198 IG views / 74 saves / 10 shares (best post ever),
+  styles5 (App demo) 822 IG / 34 saves, pixelfx 379 IG / 12 saves / 6 shares. Before Nov IG was flat at ~100–260.
+- Watch time / completion still not in the stats.
 
-## Topics: winners (TikTok views / likes)
-1. OpenFilm 638 / 10: "Your coding agent can now make whole videos, for free." A new ability that surprises.
-2. Ponytail 504 / 16: "Your AI agent wrote 335 lines for a date picker." Relatable pain + a number + humour.
-3. Claude Code plugin store 490 / 6: official news about a tool people already use.
-4. Graphify 310 / 15: a precise dev pain ("grepping through your whole repo") + one command.
-5. Cloudflare security skill 291 / 9: a fear (security holes while vibe coding) + a big-name source.
+## Topics: winners (TikTok views / likes / saves; IG views)
+1. Floorplan 858 / 31 / 19, IG 2,198: "Vibe coded an app? No idea how it works?" → a map of your own codebase.
+2. Unslop 833 / 36 / 23, 10 comments: "Purple gradients, glows, emoji labels? Your app looks AI-made."
+3. Claude-Mem 805 / 37 / 9: "Ever closed Claude Code and lost everything it learned?"
+4. styles5 (App demo) 750 / 15 / 8, IG 822 / 34 saves: type a command → 5 animation styles, prompts in DM.
+5. Hallmark 737 / 19 / 16: "One colored word in every headline? That's AI slop."
+6. Opuscar2 685 / 27 / 20: "Your coding agent can now direct short films."
+→ **Cluster that wins: pains of vibe coders / people building with Claude Code** — the AI-made look, not understanding
+  your own app, lost context. Hook = a visible symptom the viewer recognises in their own work.
 
 ## Topics: losers
-- Concat (CapCut alternative) **9 on TikTok**. CapCut belongs to the same company as TikTok; a guess, not proven:
-  "replace CapCut" may be held back there. Don't pitch TikTok/CapCut replacements on TikTok.
-- "Free alternative to <app>" for a narrow group: OpenCode 88, REA 80, Orca 96, Claude Code 7 commands 88.
-- Five posts on one day (2026-10-25) split the reach. Max 3 a day.
+- tstack 66 TT: "Still babysitting your AI's pull requests? Theo's tstack…" (narrow dev workflow + a person's name).
+- Listicles of commands (claude7 88, comfy5 158, codex6 283) and "free alternative to X" (OpenCode 88, REA 80, Orca 96,
+  Concat 0 on TT) stay weak. CapCut/TikTok replacements: never on TikTok.
+- Narrow groups (game devs: pixelfx 398 TT) do OK on IG (shares) but not great on TT.
+- Mika (phone agent) 523 views but only 4 likes: surprise works for views, not for engagement.
 
 ## Hook patterns
-- Works: a number inside the pain ("335 lines"), "can now" + a surprising ability, a fear for a specific group.
-- Weak: "Paying for X? There's a free one." on tools with a small user base; "Most people use X like…" (Claude 7: 88).
-- Next to test: hook on screen as one short line in the first frame; videos at 20–25 s vs. 30+ s.
+- Works: a symptom list ("Purple gradients, glows, emoji labels?"), "Vibe coded an app? No idea how it works?",
+  "Ever closed X and lost…", "can now" + surprising ability.
+- Weak: "Paying for X? There's a free one.", "Most people use X like…", a creator's name in the hook.
 
-## Style
-- Engagement per view is the same in the old style (Oct 20–22) and in Paper (~1.4 % likes/views); the reach
-  differences match topic and posting density, not style. Lemo Opuscar A/B test: BRAIN.md §6b.
+## Formats
+- App demo 1/3 (styles5): strongest IG saves after Floorplan. Keep 1 a day (Jan). dimdemo/explain3d/teardown/motion3d2 not in stats yet.
+- Paper vs. old style: no style effect visible; topic + hook explain the differences.
+- Predictor: it rated tstack 76 and mika 93 but they did worst/average; topic matters more than its craft checks.
+  angle_prior recalibrated 2026-11-04 (see hf/predict_weights.json).
+
+## Test next
+- More vibe-coder pain topics (security, broken deploys, AI-looking UI, context loss) — 1 per day.
+- App demo with prompts in DM: does the DM keyword bring comments? (styles5 only 1 TT comment so far.)
+- Posting 4 a day (Jan's 20:00 extra on 11-04): check if it splits reach like 10-25.

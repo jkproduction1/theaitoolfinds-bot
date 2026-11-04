@@ -77,7 +77,7 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`) and
-   `data/learnings.md`. Prefer topic types and hook patterns that are winning; avoid the losing ones. On Sunday runs,
+   `data/learnings.md`. Prefer topic types and hook patterns that are winning; avoid the losing ones. On Wednesday and Sunday runs (Jan, 2026-11-04: analyse more often),
    rewrite `data/learnings.md` from the stats (top/bottom 3 per platform, hook patterns, length vs. watch time,
    what to test next) and do a short viral-research pass (WebSearch: what AI-tool shorts and launches are spreading
    this week; links Jan drops in `data/viral_inbox.md`). Only write conclusions the numbers support; mark guesses as guesses.
