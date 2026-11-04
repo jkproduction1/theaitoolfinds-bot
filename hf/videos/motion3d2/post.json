@@ -1,0 +1,9 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "MOTION",
+ "angle": "app-demo",
+ "cover_at": 3.6,
+ "summary_cs": "App demo podle tvé reference, každá ukázka jiný příkaz: /explain-3d (objektiv – posun čoček zaostří fotku), /motion3d (chlazení laptopu – čip, heat pipe, větrák) a /hero-3d (landing page se skleněným 3D tvarem). Všechno three.js v kódu se studiovým HDRI (CC0), bez hlasu; prompty pro DM jsou v hf/videos/motion3d2/prompts.md.",
+ "caption": "Type one command, get a cinematic 3D animation. Made with Claude Code.\n\nComment MOTION and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
+}

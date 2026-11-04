@@ -55,7 +55,7 @@ for k, (cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
             F.sfx.append((p0 + (p1 - p0) * i / len(prompt), "tick"))
 F.sfx.append((END, "whoosh")); F.sfx.append((END + 0.25, "pop"))
 
-HERO = ('<div id="bw2"><div id="hb2"><i></i><i></i><i></i><span>nova.ai</span></div><div id="hpage2">'
+HERO = ('<div id="bw2"><div id="hb2"><i></i><i></i><i></i><span>localhost:3000</span></div><div id="hpage2">'
         '<div id="hn2"><b>✦ nova</b><span>Product</span><span>Pricing</span><span>Docs</span><em>Sign in</em></div>'
         '<canvas id="hc2" width="900" height="760"></canvas>'
         '<div id="hh2"></div><div id="hs2">Your AI teammate for research, writing and code.</div><div id="hcta2">Start free →</div>'
@@ -164,6 +164,8 @@ html,body,#root{background:#121212!important}
 .th img{width:100%;height:100%;object-fit:cover}
 """
 CSS += r'''
+.lb{background:rgba(8,9,12,.92)!important}
+
 #pic0{position:absolute;left:360px;top:1250px;width:360px;height:270px;border-radius:18px;box-shadow:0 30px 60px rgba(0,0,0,.7),0 0 0 3px #2a2d35}
 
 #bw2{position:absolute;left:70px;top:390px;width:940px;height:1120px;border-radius:30px;overflow:hidden;background:#0a0b10;box-shadow:0 60px 120px rgba(0,0,0,.7),0 0 0 2px #23252c}

@@ -133,12 +133,13 @@ function bgGrad(sc,c1,c2){ const t=canvasTex(512,1024,(g,w,h)=>{ const gr=g.crea
     for(let i=0;i<NA;i++){ const s=((i*0.6180339)%1); const u=((lt-1.7)*0.9+s)%1; const a=(i*2.399)%6.283; const r=0.28*Math.sqrt(((i*0.381966)%1));
       ap[i*3]=0.95+Math.cos(a)*r*(1-u)+(((i*0.7548)%1)-0.5)*0.75*u; ap[i*3+1]=0.08+Math.sin(a)*0.03+u*0.25*((i*0.31)%1); ap[i*3+2]=-0.45-u*1.3; }
     ag.attributes.position.needsUpdate=true;
-    lap.rotation.y=-0.36+0.22*cl(lt/3.2); lap.scale.setScalar(0.52); lap.position.x=0.18;
+    lap.rotation.y=-0.36+0.22*cl(lt/3.2); lap.scale.setScalar(0.47); lap.position.x=0.05;
     const cv=easeIO(cl((lt-0.7)/1.0));
     cam.position.set(0.0,1.0+2.7*cv,6.6-2.9*cv); cam.lookAt(0.1,0.45-0.55*cv,-0.25*cv);
     if(P.bk) P.bk.uniforms['focus'].value=cam.position.distanceTo(new THREE.Vector3(0,0.3,0));
     P.c.render();
-    layoutLabels([['l1_0',chip],['l1_1',pipeA],['l1_3',fins],['l1_2',fanG]].map(([id,o],i)=>[document.getElementById(id),o,cl((lt-1.55-i*0.14)/0.2)]),cam,70,140);
+    layoutLabels([['l1_0',chip],['l1_1',pipeA]].map(([id,o],i)=>[document.getElementById(id),o,cl((lt-1.55-i*0.14)/0.2)]),cam,70,150);
+    layoutLabels([['l1_3',fins],['l1_2',fanG]].map(([id,o],i)=>[document.getElementById(id),o,cl((lt-1.83-i*0.14)/0.2)]),cam,770,150);
     caption(1,lt); };
 })();
 // ---------- hero-3d: a landing page builds itself, glass 3D shape in the hero
