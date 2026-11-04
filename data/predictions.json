@@ -1313,5 +1313,118 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "craftany",
+  "date": "2026-11-04",
+  "score": 90,
+  "mode": "full",
+  "features": {
+   "hook": 0.62,
+   "hook_words": 7,
+   "hook_end_s": 1.85,
+   "tool_named_s": 1.9,
+   "payoff": 1.0,
+   "wps": 3.33,
+   "dur_s": 19.3,
+   "words": 59,
+   "pace": 0.64,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 48,
+   "visuals": 1.0,
+   "ending": 1.0,
+   "angle": "new-ability",
+   "topic": 1.0
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "teardown",
+  "date": "2026-11-04",
+  "score": 63,
+  "mode": "full",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.34,
+   "tool_named_s": 0.8,
+   "payoff": 1.0,
+   "wps": 1.89,
+   "dur_s": 21.7,
+   "words": 38,
+   "pace": 0.16,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.75,
+   "visual_changes": 46,
+   "visuals": 0.9,
+   "ending": 0.93,
+   "angle": "app-demo",
+   "topic": 0.5
+  },
+  "flags": [
+   "hook končí v 3.3 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "zerobreach",
+  "date": "2026-11-04",
+  "score": 78,
+  "mode": "full",
+  "features": {
+   "hook": 0.69,
+   "hook_words": 7,
+   "hook_end_s": 2.33,
+   "tool_named_s": 2.46,
+   "payoff": 1.0,
+   "wps": 3.2,
+   "dur_s": 20.0,
+   "words": 59,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 38,
+   "visuals": 1.0,
+   "ending": 0.91,
+   "angle": "fear",
+   "topic": 0.55
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]

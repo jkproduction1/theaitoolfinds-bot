@@ -58,6 +58,7 @@ CSS = r"""
 #gres{position:absolute;left:200px;top:300px;width:680px;height:300px;border-radius:40px;background:#1fae5b;color:#fff;display:flex;align-items:center;justify-content:center;gap:30px;
  font-weight:800;font-size:72px;box-shadow:0 50px 80px -20px rgba(31,174,91,.55)}
 #gres b{font-size:96px}
+#field{font-size:36px;padding-left:40px}#field #typed{font-size:42px}
 #ast{position:absolute;left:740px;top:560px;font-family:var(--serif);font-style:italic;font-size:220px;color:#111;line-height:1}
 .clip.layer .tag,.clip.layer .wtag,#free,.clip.layer .chip,.nm{z-index:5}
 """
@@ -140,7 +141,7 @@ ft('#win',{opacity:0,y:200,rotationX:25,transformPerspective:1600,scale:.88},{op
 tl.set('#o1',{backgroundColor:'#fff',color:'#111',borderColor:'#e2e2e2'},0);
 ft('#cursor',{x:0,y:0},{x:-400,y:-140,duration:.5,ease:IO},S[27]);
 tl.to('#o1',{backgroundColor:'#111',color:'#fff',borderColor:'#111',duration:.12},S[29]-0.05);
-tl.to('#cursor',{x:-90,y:-150,duration:.4,ease:IO},S[30]-0.1);
+tl.to('#cursor',{x:-25,y:-95,duration:.4,ease:IO},S[30]-0.1);
 tl.to('#startb',{scale:.9,duration:.1,yoyo:true,repeat:1},S[31]);
 tl.to('#cursor',{scale:.85,duration:.1,yoyo:true,repeat:1},S[31]);
 outUp(['#win'],ST[5]);
