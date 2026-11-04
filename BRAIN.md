@@ -75,13 +75,13 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   don't apply here; margins, readability, real-claims and pacing rules do.
 - Daily mix: 1 App demo + 1 Opuscar (§6b) + 1 Paper, unless Jan says otherwise. Compare App demo vs. the rest in learnings.md.
 - **What makes it work (Jan + stats, 2026-11-04):** the voice line "Type /<command> <prompt>… and you get this." is the format's
-  engine: an App demo with it became the best IG post within hours (2,600 views, 38 likes). Keep it in every App demo.
-  Amplify it, don't replace it: (1) prefer BEFORE → AFTER results (a plain/ugly input turns into the result; e.g. reference
-  "/color-grade make my clip look like this"), (2) faster rhythm: aim ~2–3 s per result, 4–7 results in 15–20 s,
-  (3) CTA "Comment X to get this Claude skill for free" (we DM the skill/prompt file), (4) topics for vibe coders first
-  (UI that looks AI-made, apps you don't understand, social content, design), (5) results we can render 100% for real:
-  UI, websites, design, data, typography, effects, real footage Jan sends. Photoreal 3D objects drawn in code look fake:
-  avoid them as the main result.
+  engine: explain3d (/explain-3d, 3D explainers drawn in code) became the best IG post within hours (2,600 views, 38 likes).
+  Keep that voice line in every App demo. This is an ADDITION for the App demo format only: all other formats in this
+  file (Paper, daily mix, Opuscar test) stay as they are. Ideas to amplify the App demo (test, don't force): (1) BEFORE →
+  AFTER results where it fits (e.g. reference "/color-grade make my clip look like this"), (2) a faster rhythm (~2–3 s per
+  result, 4–7 results), (3) CTA "Comment X to get this Claude skill for free" (we DM the skill/prompt file), (4) vibe-coder
+  topics, (5) results we render well: 3D explainers like explain3d, UI/websites, design, data, typography, effects, Jan's footage.
+  Command backlog for this format: data/app_demo_commands.md.
 - Stronger hooks to test in the first line on screen (keep them true, no invented money/numbers): "I turned Claude into a
   social media machine", "The most powerful Claude skill I've seen", "Claude just turned my vibe-coded app into a real design".
 - Second reference that works: a curated mega-list with real data ("The 30 best Claude plugins": categories, real GitHub

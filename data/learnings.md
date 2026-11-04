@@ -32,7 +32,7 @@ Last update: 2026-11-04 (live with Jan), from 26 posts (2026-10-20 → 11-03). S
 - Weak: "Paying for X? There's a free one.", "Most people use X like…", a creator's name in the hook.
 
 ## Formats
-- **App demo with the voice "Type /… and you get this" = strongest IG post so far** (Jan, 11-04: 2,600 IG views + 38 likes within hours).
+- **App demo with the voice "Type /… and you get this" = strongest IG post so far:** explain3d (/explain-3d, 3D explainers), Jan 11-04: 2,600 IG views + 38 likes within hours.
   Keep that voice line; amplify with before→after results and a faster rhythm (BRAIN §3b).
 - App demo 1/3 (styles5): strongest IG saves after Floorplan. Keep 1 a day (Jan). dimdemo/explain3d/teardown/motion3d2 not in stats yet.
 - Paper vs. old style: no style effect visible; topic + hook explain the differences.
