@@ -44,4 +44,16 @@ run("git", "add", folder, cwd=wt)
 run("git", "-c", "user.name=theaitoolfinds-bot", "-c", "user.email=bot@users.noreply.github.com",
     "commit", "-qm", f"video: {folder} (HyperFrames)", cwd=wt)
 run("git", "push", "-q", "origin", "HEAD:videos", cwd=wt)
+# remember the tool so discovery / the morning picklist never suggests it again (bot/discover.py reads data/history.json)
+hist_p = repo / "data" / "history.json"
+hist = json.loads(hist_p.read_text()) if hist_p.exists() else []
+dom = meta["domain"].lower()
+if dom.startswith("github.com/"):
+    dom = "/".join(dom.split("/")[:3])
+elif "claude.com" in dom:
+    dom = f"{dom}#{name}"
+if not any(h.get("domain") == dom for h in hist):
+    hist.append({"name": post["tool_name"], "domain": dom, "date": folder[:15], "source": "hyperframes"})
+    hist_p.write_text(json.dumps(hist, indent=2, ensure_ascii=False))
+    print("history.json: added", dom, "(commit data/history.json to main)")
 print("PUBLISHED", folder)

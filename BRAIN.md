@@ -124,7 +124,8 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 8. Write `hf/videos/<name>/post.json` {url, tool_name, keyword (= tool name, CAPS), cover_at, summary_cs
    (2 Czech sentences), caption}. **Caption is short, never spammy: max 1–2 sentences (usually the hook), then
    "Comment X and I'll DM you the link.", then exactly 3 hashtags.** No feature lists or caveats in it. Then `python3 hf/publish.py <name>` → prints the folder; dispatch `make-video.yml`
-   with inputs `{"mode":"release","storyboard":"<folder>"}` → Telegram. Commit hf/videos/* to main.
+   with inputs `{"mode":"release","storyboard":"<folder>"}` → Telegram. Commit hf/videos/* and data/history.json
+(publish.py records the tool there so the picklist/discovery never suggests it again) to main.
 9. Finish with a short Czech summary to Jan (which 3 tools, why, anything that failed).
 
 ## 5. Director checklist (PASS only if all true)

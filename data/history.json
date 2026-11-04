@@ -172,5 +172,197 @@
     "domain": "github.com/anomalyco/opencode",
     "date": "2026-10-24_0832",
     "source": "gh-trending"
+  },
+  {
+    "name": "Claude Code cheat sheet",
+    "domain": "support.claude.com/en/articles/14553413-claude-code-cheatsheet#claude7",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude-Mem",
+    "domain": "github.com/thedotmack/claude-mem",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude SEO",
+    "domain": "github.com/agricidaniel/claude-seo",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Codex CLI",
+    "domain": "github.com/openai/codex",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "ComfyUI",
+    "domain": "github.com/comfy-org/comfyui",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Concat",
+    "domain": "github.com/jub0t/concat",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Craft Anything",
+    "domain": "github.com/storytold/craft-anything",
+    "date": "2026-11-04_0412",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Dimensional Drawing",
+    "domain": "github.com/enesozturk/dimensional-drawing",
+    "date": "2026-11-03_0444",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Doory",
+    "domain": "github.com/shaongitbd/doory",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "ECC",
+    "domain": "github.com/affaan-m/ecc",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D explainers",
+    "domain": "code.claude.com/docs/en/slash-commands#explain3d",
+    "date": "2026-11-03_2133",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Floorplan",
+    "domain": "github.com/haydenschmitty/floorplan",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Graphify",
+    "domain": "github.com/graphify-labs/graphify",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Hallmark",
+    "domain": "github.com/nutlope/hallmark",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Impeccable",
+    "domain": "github.com/pbakaus/impeccable",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "4 free Mac swaps",
+    "domain": "github.com/sw33tlie/macshot",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "MailCheap",
+    "domain": "github.com/marclou/mailcheap",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Microduck",
+    "domain": "pollen-robotics.com/microduck",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Mika",
+    "domain": "github.com/wangzan101/mika",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#motion3d2",
+    "date": "2026-11-04_1714",
+    "source": "hyperframes"
+  },
+  {
+    "name": "OpenBot",
+    "domain": "github.com/nightly-labs/openbot",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Lemo Opuscar",
+    "domain": "github.com/lemomo-ai/lemo-opuscar",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Orca",
+    "domain": "github.com/stablyai/orca",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "pixelfx",
+    "domain": "github.com/patch-gg/pixelfx",
+    "date": "2026-11-03_0408",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Cloudflare security-audit skill",
+    "domain": "github.com/cloudflare/security-audit-skill",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code animation styles",
+    "domain": "code.claude.com/docs/en/skills#styles5",
+    "date": "2026-11-03_1105",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Taste Skill",
+    "domain": "github.com/leonxlnx/taste-skill",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "teardown",
+    "domain": "github.com/elvarofficial/teardown",
+    "date": "2026-11-04_0412",
+    "source": "hyperframes"
+  },
+  {
+    "name": "tstack",
+    "domain": "github.com/t3dotgg/tstack",
+    "date": "2026-11-03_0408",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Unslop",
+    "domain": "github.com/heydamir/unslop",
+    "date": "2026-11-02_0458",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#visual3",
+    "date": "2026-11-04_2109",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Zero Breach Toolkit",
+    "domain": "github.com/interplains/zero-breach-toolkit",
+    "date": "2026-11-04_0412",
+    "source": "hyperframes"
   }
 ]
