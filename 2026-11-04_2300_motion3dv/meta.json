@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "MOTION",
+ "summary_cs": "Nová verze motion3d2 S HLASEM („Type… and you get this“): /explain-3d objektiv, /motion3d chlazení laptopu, /hero-3d landing page. Starou verzi bez hlasu (pá 08:00) prosím smaž v Zerniu.",
+ "style": "hyperframes-paper",
+ "duration": 27.0,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-04_2300",
+ "run_id": null,
+ "artifact": null
+}
