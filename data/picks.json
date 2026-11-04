@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-03",
-  "category": "useful",
+  "date": "2026-11-04",
+  "category": "video",
   "items": [
     {
       "name": "unslop",
@@ -21,6 +21,15 @@
       "why": ""
     },
     {
+      "name": "agent-desktop",
+      "url": "https://github.com/vercel-labs/agent-desktop",
+      "desc": "Star                    vercel-labs /   agent-desktop      Computer use CLI for AI agents",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
       "name": "pixelfx",
       "url": "https://github.com/patch-gg/pixelfx",
       "desc": "244 pixel art effects, every one a small piece of code. Plus a Claude Code skill to make your own.",
@@ -33,15 +42,6 @@
       "name": "hallmark",
       "url": "https://github.com/Nutlope/hallmark",
       "desc": "Star                    Nutlope /   hallmark      Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
-      "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
-    {
-      "name": "security-audit-skill",
-      "url": "https://github.com/cloudflare/security-audit-skill",
-      "desc": "Star                    cloudflare /   security-audit-skill      A coding-agent skill for multi-phase security audits with independently verified, machine-readable findings",
       "source": "gh-trending",
       "angle": "wow-demo",
       "score": 7,
