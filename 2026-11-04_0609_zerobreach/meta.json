@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/interplains/Zero-Breach-Toolkit",
+ "name": "Zero Breach Toolkit",
+ "tool_name": "Zero Breach Toolkit",
+ "keyword": "ZEROBREACH",
+ "summary_cs": "Zero Breach Toolkit (Apache-2.0) je zdarma open-source kontrola stop známého spywaru (Pegasus, Predator, Graphite, Candiru) na počítači, Androidu a v zálohách iPhonu. Nic neodesílá a sám říká, že zelený výsledek není záruka; repo nemá screenshoty, vizuály jsou kreslené v kódu.",
+ "style": "hyperframes-paper",
+ "duration": 19.4,
+ "domain": "github.com/interplains/Zero-Breach-Toolkit",
+ "created": "2026-11-04_0609",
+ "run_id": null,
+ "artifact": null
+}
