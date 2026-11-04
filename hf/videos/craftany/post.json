@@ -1,1 +1,9 @@
-{"angle":"new-ability","tool_name":"Craft Anything"}
+{
+ "url": "https://github.com/storytold/craft-anything",
+ "tool_name": "Craft Anything",
+ "keyword": "CRAFT",
+ "angle": "new-ability",
+ "cover_at": 1.0,
+ "summary_cs": "Craft Anything (ArtCraft, MIT/Apache-2.0, 8.9k hvězd) prozkoumá web, appku nebo hru a nechá Claude Code postavit tvoji vlastní verzi, pak ji porovnává s originálem a ladí. Je v early alpha – to ve videu říkám.",
+ "caption": "Want your own version of any app? Craft Anything studies it, then Claude Code builds yours.\n\nComment CRAFT and I'll DM you the link.\n\n#claudecode #vibecoding #opensource"
+}

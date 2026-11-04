@@ -1,1 +1,9 @@
-{"angle":"app-demo","tool_name":"teardown"}
+{
+ "url": "https://github.com/elvarofficial/teardown",
+ "tool_name": "teardown",
+ "keyword": "TEARDOWN",
+ "angle": "app-demo",
+ "cover_at": 4.5,
+ "summary_cs": "App demo 1/3: skill teardown (MIT, elvarofficial) pro Claude Code – z jedné věty postaví interaktivní 3D simulátor stroje, který jde rozebrat. Všechny 3 výsledky (robotická včela, štír, chobotnice) jsou skutečné ukázky z README autora.",
+ "caption": "Type one command, get a 3D machine you can take apart. Free skill for Claude Code.\n\nComment TEARDOWN and I'll DM you the link.\n\nResults: teardown by elvarofficial (github.com/elvarofficial/teardown), MIT.\n\n#claudecode #3danimation #aitools"
+}
