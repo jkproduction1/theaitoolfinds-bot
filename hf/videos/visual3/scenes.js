@@ -88,9 +88,9 @@ function bgGrad(sc,c1,c2){ const t=canvasTex(512,1024,(g,w,h)=>{ const gr=g.crea
     for(let i=0;i<NA;i++){ const c=corners[i%4]; const s=((i*0.618)%1); const u=((lt*1.8+s)%1); const r=0.28*Math.sqrt(((i*0.381)%1)); const a=i*2.4;
       const x=c[0]*0.78+Math.cos(a)*r, z=c[1]*0.78+Math.sin(a)*r, y=0.0-u*0.9*(1+((i%4>1)?tilt*0.6:0));
       ap.set([x,y,z,x,y-0.12,z],i*6); } ag.attributes.position.needsUpdate=true;
-    D.rotation.set(tilt*0.32,-0.6+0.4*easeIO(cl(lt/3.2)),0); D.position.set(0,0.15+0.06*Math.sin(lt*2)+0.3*spin,-tilt*0.5); D.scale.setScalar(0.72);
+    D.rotation.set(tilt*0.32,-0.6+0.4*easeIO(cl(lt/3.2)),0); D.position.set(0,0.15+0.06*Math.sin(lt*2)+0.3*spin,-tilt*0.5); D.scale.setScalar(0.6);
     cam.position.set(0,1.4,6.4-0.6*ease(lt/3.2)); cam.lookAt(0,0.2,0); P.c.render();
-    layoutLabels([['l1_0',motors[0]],['l1_1',batG],['l1_2',chipG]].map(([id,o],i)=>[document.getElementById(id),o,cl((lt-0.9-i*0.2)/0.2)]),cam,720,130);
+    layoutLabels([['l1_0',motors[0]],['l1_1',batG],['l1_2',chipG]].map(([id,o],i)=>[document.getElementById(id),o,cl((lt-0.9-i*0.2)/0.2)]),cam,700,130);
     caption(1,lt); };
 })();
 
@@ -125,6 +125,6 @@ function bgGrad(sc,c1,c2){ const t=canvasTex(512,1024,(g,w,h)=>{ const gr=g.crea
     const lift=easeIO(cl((lt-1.9)/0.8)); chipG.visible=lt>1.85; chipG.position.set(0.2,0.05+lift*0.75,0.25); chipG.scale.setScalar(0.3+lift*0.75); chipG.rotation.set(lift*0.5,lt*0.6,0); die.material.emissiveIntensity=lift*1.6;
     W.position.y=-0.3-lift*0.3; W.scale.setScalar(0.48);
     cam.position.set(0,2.9,5.4-0.5*ease(lt/3.2)); cam.lookAt(0,0.25,0); P.c.render();
-    layoutLabels([['l2_0',wafer],['l2_1',uvA],['l2_2',chipG]].map(([id,o],i)=>[document.getElementById(id),o,cl((lt-[0.4,0.6,2.2][i])/0.2)*(i==1?bOn:1)]),cam,720,130);
+    layoutLabels([['l2_0',wafer],['l2_1',uvA],['l2_2',chipG]].map(([id,o],i)=>[document.getElementById(id),o,cl((lt-[0.4,0.6,2.2][i])/0.2)*(i==1?bOn:1)]),cam,680,130);
     caption(2,lt); };
 })();

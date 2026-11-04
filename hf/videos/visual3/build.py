@@ -171,6 +171,10 @@ html,body,#root{background:#121212!important}
 .th img{width:100%;height:100%;object-fit:cover}
 """
 
+CSS += r"""
+.ttl{padding:22px 0 26px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 25%,rgba(0,0,0,.72) 75%,rgba(0,0,0,0))}
+"""
+
 JS = r"""
 const TY=__TY__, KP=__KP__, CMD='__CMD__', END=__END__;
 const it=document.getElementById('it'), sug=document.getElementById('sug'), pop=document.getElementById('pop'), cn=document.getElementById('cn'), ubt=document.getElementById('ubt');
