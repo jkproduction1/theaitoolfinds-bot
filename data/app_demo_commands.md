@@ -8,6 +8,11 @@ Never reuse the reference creator's command name (/full-visual) — use our own 
 - /how-its-made a microchip                    (wafer → light etching → layers → cut into chips)
 - Lemo Opuscar: still not tested for real (BRAIN §6b) — run the real skill for one demo/film.
 
+## Other formats — ideas from Jan (2026-11-04)
+- "Stop paying for these 5 apps — GitHub has free versions" (Paper listicle: app logo-free name → free open-source twin, real
+  repos + real stars). Caution: single "free alternative to X" posts were our weakest (80–96 TT views); test it as ONE strong
+  list with a fresh hook, not as single-tool posts. Never pitch TikTok/CapCut replacements on TikTok.
+
 ## More ideas (not picked yet)
 - /explain-3d: how an SSD stores data, how an e-bike motor works, how noise-free headphones… (new topics only)
 - /x-ray my phone · /blueprint a jet engine · /zoom-in a phone screen until you see pixels · /scale the Sun vs Earth
