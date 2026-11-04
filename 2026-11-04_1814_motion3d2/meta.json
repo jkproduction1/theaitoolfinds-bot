@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "MOTION",
+ "summary_cs": "App demo podle tvé reference, každá ukázka jiný příkaz: /explain-3d (objektiv – posun čoček zaostří fotku), /motion3d (chlazení laptopu – čip, heat pipe, větrák) a /hero-3d (landing page se skleněným 3D tvarem). Všechno three.js v kódu se studiovým HDRI (CC0), bez hlasu; prompty pro DM jsou v hf/videos/motion3d2/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 16.7,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-04_1814",
+ "run_id": null,
+ "artifact": null
+}
