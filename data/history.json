@@ -364,5 +364,11 @@
     "domain": "github.com/interplains/zero-breach-toolkit",
     "date": "2026-11-04_0412",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#motion3dv",
+    "date": "2026-11-04_2300",
+    "source": "hyperframes"
   }
 ]
