@@ -73,7 +73,7 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   related skills, or skip the format that day and tell Jan why.
 - post.json `"angle": "app-demo"`. Paper rules in §3/§5 that conflict (light paper, text block under the visual)
   don't apply here; margins, readability, real-claims and pacing rules do.
-- Daily mix: 1 App demo + 1 Opuscar (§6b) + 1 Paper, unless Jan says otherwise. Compare App demo vs. the rest in learnings.md.
+- Daily mix: 1 App demo + 2 Paper (Opuscar paused, §6b), unless Jan says otherwise. Compare App demo vs. the rest in learnings.md.
 - **What makes it work (Jan + stats, 2026-11-04):** the voice line "Type /<command> <prompt>… and you get this." is the format's
   engine: explain3d (/explain-3d, 3D explainers drawn in code) became the best IG post within hours (2,600 views, 38 likes).
   Keep that voice line in every App demo. This is an ADDITION for the App demo format only: all other formats in this
@@ -145,6 +145,8 @@ Jan wants to test the Lemo-Opuscar engine (github.com/lemomo-ai/lemo-opuscar) ag
 in an Opuscar style, the other two in Paper, with equally strong topics so the comparison is fair. 3D styles need a GPU
 (Jan's PC, RTX 3060, render test still pending); until that works, only 2D Opuscar styles in the cloud.
 Our Opuscar edition may show the tool's real screenshots on its cards. Voice stays ElevenLabs. Compare in learnings.md.
+**Paused (Jan, 2026-11-04):** a real Opuscar film costs 30–60 min and many tokens per film; Jan prefers consistency and more
+videos in our own formats. Don't make Opuscar videos unless Jan asks again. Daily mix meanwhile: 1 App demo + 2 Paper.
 
 ## 7. Jan's standing preferences
 - Answer first, act after his OK when he is asking/weighing something (in chat). Scheduled runs: just do it.

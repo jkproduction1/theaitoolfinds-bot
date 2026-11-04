@@ -1,1 +1,9 @@
-{"angle":"app-demo","tool_name":"Claude Code 3D commands"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "VISUAL",
+ "angle": "app-demo",
+ "cover_at": 5.6,
+ "summary_cs": "App demo jako explain3d (tvůj nejlepší IG post): /visualize jak funguje počítač (data jako světlo SSD→RAM→CPU→GPU→obrazovka), /explain-3d jak létá dron, /how-its-made mikročip (wafer, UV světlo, čip). Všechno three.js v kódu se studiovým HDRI; prompty pro DM jsou v hf/videos/visual3/prompts.md.",
+ "caption": "Type one command, get a 3D explainer of anything. Made with Claude Code.\n\nComment VISUAL and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
+}
