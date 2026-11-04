@@ -1,6 +1,14 @@
 [
  {
-  "name": "explain3d",
-  "text": "Type slash explain 3D, how a smartphone works… and you get this. Type slash explain 3D, how wireless charging works… and you get this. Type slash explain 3D, how noise-cancelling headphones work… and you get this. Comment EXPLAIN and I'll send you the prompts."
+  "name": "teardown",
+  "text": "Type slash teardown, a robotic bee… and you get this. Type slash teardown, a robotic scorpion… and you get this. Type slash teardown, a robotic octopus… and you get this. Comment TEARDOWN and I'll send you the link."
+ },
+ {
+  "name": "zerobreach",
+  "text": "Worried your phone has spyware like Pegasus? Zero Breach Toolkit checks, for free. It looks for traces of known spyware on computers, Android phones and iPhone backups. Pick a check, press Start, and it tells you in plain words what it found. Nothing gets uploaded. A green result isn't a guarantee. Comment ZEROBREACH and I'll send you the link."
+ },
+ {
+  "name": "craftany",
+  "text": "Want your own version of any app? Craft Anything studies any website, app or game, then has Claude Code build yours. Type the address, say what you want, press Start. It compares your build with the original and keeps fixing it until it's close. Free and open source, but still early. Comment CRAFT and I'll send you the link."
  }
 ]

@@ -1,0 +1,1 @@
+Want your own version of any app? Craft Anything studies any website, app or game, then has Claude Code build yours. Type the address, say what you want, press Start. It compares your build with the original and keeps fixing it until it's close. Free and open source, but still early. Comment CRAFT and I'll send you the link.
