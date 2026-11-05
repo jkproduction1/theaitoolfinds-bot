@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "SCALE",
+ "summary_cs": "App demo „Type it, get it #1“: /scale Slunce vs Země (109 Zemí přes Slunce), /blueprint proudový motor (výkres → kov, vzduch modrá→oranžová), /explode tenisky (vrstvy s popisky). Všechno three.js v kódu; prompty pro DM v hf/videos/scale3/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 19.9,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-05_0546",
+ "run_id": null,
+ "artifact": null
+}
