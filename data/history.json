@@ -382,5 +382,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#scale3",
     "date": "2026-11-05_0546",
     "source": "hyperframes"
+  },
+  {
+    "name": "Agent Desktop",
+    "domain": "github.com/vercel-labs/agent-desktop",
+    "date": "2026-11-05_0552",
+    "source": "hyperframes"
   }
 ]
