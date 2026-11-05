@@ -1,0 +1,42 @@
+[
+ {
+  "word": "Comment",
+  "start": 0.0,
+  "end": 0.4
+ },
+ {
+  "word": "CAR",
+  "start": 0.48,
+  "end": 0.88
+ },
+ {
+  "word": "and",
+  "start": 0.96,
+  "end": 1.2
+ },
+ {
+  "word": "I'll",
+  "start": 1.28,
+  "end": 1.44
+ },
+ {
+  "word": "send",
+  "start": 1.52,
+  "end": 1.6
+ },
+ {
+  "word": "you",
+  "start": 1.68,
+  "end": 1.84
+ },
+ {
+  "word": "every",
+  "start": 2.0,
+  "end": 2.16
+ },
+ {
+  "word": "prompt",
+  "start": 2.36,
+  "end": 2.6949886621315193
+ }
+]
