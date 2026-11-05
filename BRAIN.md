@@ -73,7 +73,7 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   related skills, or skip the format that day and tell Jan why.
 - post.json `"angle": "app-demo"`. Paper rules in §3/§5 that conflict (light paper, text block under the visual)
   don't apply here; margins, readability, real-claims and pacing rules do.
-- Daily mix: 1 App demo + 2 Paper (Opuscar paused, §6b), unless Jan says otherwise. Compare App demo vs. the rest in learnings.md.
+- Daily mix (Jan, 2026-11-05): **2 App demos + 1 Paper**, unless Jan says otherwise. Compare App demo vs. the rest in learnings.md.
 - **What makes it work (Jan + stats, 2026-11-04):** the voice line "Type /<command> <prompt>… and you get this." is the format's
   engine: explain3d (/explain-3d, 3D explainers drawn in code) became the best IG post within hours (2,600 views, 38 likes).
   Keep that voice line in every App demo. This is an ADDITION for the App demo format only: all other formats in this
@@ -87,9 +87,24 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - Second reference that works: a curated mega-list with real data ("The 30 best Claude plugins": categories, real GitHub
   stars, ending "Don't install all 30. Pick one row." → saves). Worth testing as a Paper/listicle format.
 
+## 3c. Growth rules (Jan, 2026-11-05: views are OK, followers grow slowly → give people a reason to follow)
+- **Series on every video.** Two running series, numbers in `data/series.json` (+1 per released video, commit it):
+  - App demo → **"Type it, get it #N"**: small pill top-left in the chat UI from frame 0 (next to the 1/3 counter side),
+    same pill on the end card above the keyword.
+  - Paper → **"Free AI tool #N"**: small mono pill at y≈190 from frame 0 (above the visual, inside the margins).
+  - End card / last scene shows one extra line on screen (not spoken): **"Follow for a new one every day"**.
+  - Caption: first line stays the hook; add "Part #N of a daily series." before the CTA line. Still max 3 hashtags.
+- **Shorter App demos: target 16–19 s.** Prompts ≤ 5 spoken words, gaps after "and you get this" 1.8–2.0 s, end card ≈1.6 s
+  after the last word, typing as fast as the voice allows. (Our 23–27 s App demos did 2.4k on IG but only 370 on TikTok.)
+- **Trial Reels for experiments.** In summary_cs mark new/risky formats with "🧪 doporučuju Trial" so Jan taps 🧪 instead of ✅
+  (IG shows a Trial Reel to non-followers first). Proven formats → ✅.
+- **Watch time.** Zernio doesn't return retention. Jan sends screenshots of avg. watch time / % watched; write them to
+  `data/retention.md` (one line per video). Step 0 reads that file; on Sunday ask Jan for this week's screenshots in the summary.
+- Never more than 3 posts a day.
+
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
-0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`) and
-   `data/learnings.md`. Prefer topic types and hook patterns that are winning; avoid the losing ones. On Wednesday and Sunday runs (Jan, 2026-11-04: analyse more often),
+0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`),
+   `data/learnings.md` and `data/retention.md` (Jan's watch-time screenshots). Prefer topic types and hook patterns that are winning; avoid the losing ones. On Wednesday and Sunday runs (Jan, 2026-11-04: analyse more often),
    rewrite `data/learnings.md` from the stats (top/bottom 3 per platform, hook patterns, length vs. watch time,
    what to test next) and do a short viral-research pass (WebSearch: what AI-tool shorts and launches are spreading
    this week; links Jan drops in `data/viral_inbox.md`). Only write conclusions the numbers support; mark guesses as guesses.
@@ -99,7 +114,7 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 1. `git pull`. Pick 3 topics: Jan's taps in `data/picks.json` "picked" first (skip any already made, see
    `data/history.json` and the `videos` branch), then `items`, else research (WebSearch: trending repos,
    launches this week). Mix pillars: e.g. 1 paid→free, 1 creator/dev tool, 1 listicle. **One of the 3 is always
-   an App demo 1/3 video (§3b).**
+   an App demo 1/3 video (§3b); default mix is 2 App demos + 1 Paper (§3c).**
 2. **Verify every fact** in the tool's README/docs (clone with `git clone --depth 1`). No invented numbers.
    Alpha/beta → say "still early". Save media you'll show into `hf/videos/<name>/media/`.
 3. Write the 3 scripts. Save each as `hf/videos/<name>/script.txt` AND put all three in

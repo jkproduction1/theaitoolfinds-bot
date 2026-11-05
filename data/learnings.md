@@ -40,6 +40,8 @@ Last update: 2026-11-04 (live with Jan), from 26 posts (2026-10-20 → 11-03). S
   angle_prior recalibrated 2026-11-04 (see hf/predict_weights.json).
 
 ## Test next
+- From 2026-11-05 (Jan): series on every video, 2 App demos + 1 Paper, App demos 16–19 s, Trial Reels for experiments.
+  Compare followers/day and TT views before vs. after (baseline: ~20 TT follows from ~10k TT views in 16 days).
 - More vibe-coder pain topics (security, broken deploys, AI-looking UI, context loss) — 1 per day.
 - App demo with prompts in DM: does the DM keyword bring comments? (styles5 only 1 TT comment so far.)
 - Posting 4 a day (Jan's 20:00 extra on 11-04): check if it splits reach like 10-25.
