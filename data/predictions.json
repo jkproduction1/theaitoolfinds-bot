@@ -1728,5 +1728,44 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "styles10",
+  "date": "2026-11-05",
+  "score": 76,
+  "mode": "full",
+  "features": {
+   "hook": 0.36,
+   "hook_words": 8,
+   "hook_end_s": 14.99,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.97,
+   "dur_s": 16.6,
+   "words": 8,
+   "pace": 0.94,
+   "length": 0.82,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.75,
+   "visual_changes": 39,
+   "visuals": 0.9,
+   "ending": 0.68,
+   "angle": "app-demo",
+   "topic": 0.95
+  },
+  "flags": [
+   "hook končí v 15.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]
