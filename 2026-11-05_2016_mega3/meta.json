@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "MEGA",
+ "summary_cs": "App demo „Type it, get it #3“ (Mega technika, vybral jsi live): /time-lapse mrakodrapu (jádro → patra → jeřáb šplhá → sklo, soumrak a rozsvícená okna), /x-ray elektroauta (scan přepne lak na rentgen, baterie v podlaze, invertor, motor, rekuperace) a /explain-3d větrné elektrárny (průlet do gondoly, převodovka, generátor). Všechno three.js v kódu, prompty pro DM v hf/videos/mega3/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 20.4,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-05_2016",
+ "run_id": null,
+ "artifact": null
+}
