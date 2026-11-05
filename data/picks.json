@@ -1,47 +1,47 @@
 {
-  "date": "2026-11-04",
-  "category": "video",
+  "date": "2026-11-05",
+  "category": "design",
   "items": [
     {
-      "name": "unslop",
-      "url": "https://github.com/heydamir/unslop",
-      "desc": "A Claude skill that turns vibecoded, AI-looking UI into a designed interface",
+      "name": "muse4ai",
+      "url": "https://github.com/andrew-babo/muse4ai",
+      "desc": "Muse4AI \u2014 let your AI agent make the pictures and the videos. Local Windows bridge for Muse via REST, MCP, and OAuth.",
       "source": "gh-search",
       "angle": "wow-demo",
       "score": 7,
       "why": ""
     },
     {
-      "name": "impeccable",
-      "url": "https://github.com/pbakaus/impeccable",
-      "desc": "Star                    pbakaus /   impeccable      The design vocabulary for your coding agent. Steer with polish and bolder, review with critique and audit, catch AI slop before it ships.",
-      "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
-    {
-      "name": "agent-desktop",
-      "url": "https://github.com/vercel-labs/agent-desktop",
-      "desc": "Star                    vercel-labs /   agent-desktop      Computer use CLI for AI agents",
-      "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
-    {
-      "name": "pixelfx",
-      "url": "https://github.com/patch-gg/pixelfx",
-      "desc": "244 pixel art effects, every one a small piece of code. Plus a Claude Code skill to make your own.",
+      "name": "cinecode",
+      "url": "https://github.com/sarpstar/cinecode",
+      "desc": "Films made with code. Short films, long YouTube videos, ads, explainers and music videos: an AI coding agent writes the script, builds every frame in code, designs the sound and hands you an MP4.",
       "source": "gh-search",
       "angle": "wow-demo",
       "score": 7,
       "why": ""
     },
     {
-      "name": "hallmark",
-      "url": "https://github.com/Nutlope/hallmark",
-      "desc": "Star                    Nutlope /   hallmark      Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
+      "name": "skills",
+      "url": "https://github.com/mattpocock/skills",
+      "desc": "Sponsor                           Star                    mattpocock /   skills      Skills for Real Engineers. Straight from my .agents directory.",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "OpenMontage",
+      "url": "https://github.com/calesthio/OpenMontage",
+      "desc": "Sponsor                           Star                    calesthio /   OpenMontage      World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assis",
+      "source": "gh-trending",
+      "angle": "wow-demo",
+      "score": 7,
+      "why": ""
+    },
+    {
+      "name": "auto-ontology",
+      "url": "https://github.com/NVIDIA/auto-ontology",
+      "desc": "Star                    NVIDIA /   auto-ontology      Auto Ontology is a Python framework for building semantic, graph-based reasoning layers over data. It enables deterministic query generation, better context retrieval, and more explainable AI for LLM and ag",
       "source": "gh-trending",
       "angle": "wow-demo",
       "score": 7,
