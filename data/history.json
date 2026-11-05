@@ -388,5 +388,11 @@
     "domain": "github.com/vercel-labs/agent-desktop",
     "date": "2026-11-05_0552",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#mega3",
+    "date": "2026-11-05_2016",
+    "source": "hyperframes"
   }
 ]

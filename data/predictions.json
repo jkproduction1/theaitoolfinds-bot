@@ -1652,5 +1652,81 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "mega3",
+  "date": "2026-11-05",
+  "score": 69,
+  "mode": "script",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 4.23,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 17.0,
+   "words": 40,
+   "pace": 0.75,
+   "length": 0.87,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.95
+  },
+  "flags": [
+   "hook končí v 4.2 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "mega3",
+  "date": "2026-11-05",
+  "score": 70,
+  "mode": "full",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 4.18,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.07,
+   "dur_s": 20.9,
+   "words": 40,
+   "pace": 0.31,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.0,
+   "visual_changes": 38,
+   "visuals": 0.8,
+   "ending": 0.91,
+   "angle": "app-demo",
+   "topic": 0.95
+  },
+  "flags": [
+   "hook končí v 4.2 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]

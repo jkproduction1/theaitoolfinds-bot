@@ -22,5 +22,6 @@ Never reuse the reference creator's command name (/full-visual) — use our own 
 - explain3d (2026-11-03): /explain-3d smartphone, wireless charging, noise-cancelling headphones
 - visual3 (2026-11-04): /visualize how a computer works, /explain-3d how a drone flies, /how-its-made a microchip (Jan's picks)
 - scale3 (2026-11-05): /scale the Sun vs Earth, /blueprint a jet engine, /explode my sneaker
+- mega3 (2026-11-05): /time-lapse a skyscraper going up, /x-ray an electric car, /explain-3d a wind turbine (Jan, live)
 - zoom3 (2026-11-05): /zoom-in my phone screen, /explain-3d how a lock opens, /explain-3d how a watch ticks
 - motion3d2 (2026-11-04): /explain-3d camera lens, /motion3d laptop cooling, /hero-3d landing page
