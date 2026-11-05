@@ -22,14 +22,14 @@ CSS = r"""
 .vcard{position:absolute;overflow:hidden;background:#111;border-radius:28px;box-shadow:0 60px 90px -24px rgba(0,0,0,.42),0 16px 28px -12px rgba(0,0,0,.18)}
 .vcard video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}
 .cred{position:absolute;left:18px;bottom:14px;font-family:var(--mono);font-size:20px;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:8px;z-index:3}
-#name{position:absolute;left:110px;top:330px;width:860px;height:300px;padding:56px 60px}
+#name{position:absolute;left:110px;top:300px;width:860px;height:300px;padding:56px 60px}
 #name .t{font-weight:800;font-size:104px;letter-spacing:-.05em;line-height:1}
 #name .s{font-family:var(--mono);font-size:30px;color:#6f6f6f;margin-top:22px}
 #vl{font-size:44px}
-#shot{position:absolute;left:600px;top:690px;width:250px;height:250px;border-radius:52px;background:linear-gradient(160deg,#fff,#f1f1f1);padding:50px;
+#shot{position:absolute;left:620px;top:620px;width:250px;height:250px;border-radius:52px;background:linear-gradient(160deg,#fff,#f1f1f1);padding:50px;
  box-shadow:0 50px 70px -22px rgba(0,0,0,.30),0 12px 22px -10px rgba(0,0,0,.14),0 0 0 1px rgba(0,0,0,.04)}
 #shot svg{width:100%;height:100%}
-#slash{position:absolute;left:585px;top:805px;width:280px;height:16px;background:#ff4b1f;border-radius:8px;transform-origin:0 50%;transform:rotate(-45deg) translate(-40px,110px)}
+#slash{position:absolute;left:605px;top:735px;width:280px;height:16px;background:#ff4b1f;border-radius:8px;transform-origin:0 50%;transform:rotate(-45deg) translate(-40px,110px)}
 #tree{position:absolute;left:90px;top:280px;width:900px;height:560px;padding:44px 48px;font-family:var(--mono)}
 #tree .h{font-size:24px;color:#9a9a9a;margin-bottom:24px;font-weight:600}
 .nd{position:relative;display:flex;align-items:center;gap:18px;height:84px;font-size:34px;font-weight:600;opacity:0}
@@ -51,10 +51,10 @@ SHOT = ('<svg viewBox="0 0 100 100" fill="none" stroke="#111" stroke-width="5" s
 VIDS = [("muse", 0, 160, 300, 760, 653), ("dnd", 3, 70, 300, 520, 562), ("codex", 4, 110, 300, 860, 484)]
 
 F.body.append('<div class="layer" id="serl">' + series("Free AI tool", 1, x=70, y=190) + '</div>')
-F.clip(0, F.block([[(0, 3, "")], [(4, 5, ""), (6, 7, "hl")]], top=1010, size=92))
+F.clip(0, F.block([[(0, 3, "")], [(4, 5, ""), (6, 7, "hl")]], top=980, size=92))
 F.clip(1, '<div id="name" class="card"><div class="t">Agent Desktop</div><div class="s">github.com/vercel-labs/agent-desktop</div></div>'
-          + chip("vl", "Vercel Labs", 110, 700, "▲", "#111") + f'<div id="shot">{SHOT}</div><div id="slash"></div>'
-       + F.block([[(8, 9, "b"), (10, 12, "")], [(13, 14, ""), (15, 16, "hl")]], top=1010, size=82))
+          + chip("vl", "Vercel Labs", 110, 640, "▲", "#111") + f'<div id="shot">{SHOT}</div><div id="slash"></div>'
+       + F.block([[(8, 9, "b"), (10, 12, "")], [(13, 14, ""), (15, 16, "hl")]], top=930, size=78))
 nodes = [("window", '"Downloads"', "", "@e1"), ("button", '"Back"', "c", "@e4"), ("treeitem", '"Documents"', "c", "@e8"),
          ("textfield", '"Search"', "c", "@e9"), ("button", '"Share"', "c", "@e12")]
 tree = '<div id="tree" class="card"><div class="h">snapshot --app Finder -i</div>' + "".join(
