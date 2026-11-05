@@ -1,3 +1,9 @@
 {
- "angle": "app-demo"
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "SCALE",
+ "angle": "app-demo",
+ "cover_at": 4.6,
+ "summary_cs": "App demo „Type it, get it #1“: /scale Slunce vs Země (109 Zemí přes Slunce), /blueprint proudový motor (výkres → kov, vzduch modrá→oranžová), /explode tenisky (vrstvy s popisky). Všechno three.js v kódu; prompty pro DM v hf/videos/scale3/prompts.md.",
+ "caption": "Type one command, get a 3D animation of anything. Made with Claude Code.\n\nPart #1 of a daily series.\n\nComment SCALE and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
 }

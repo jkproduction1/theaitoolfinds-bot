@@ -1,4 +1,9 @@
 {
+ "url": "https://github.com/vercel-labs/agent-desktop",
+ "tool_name": "Agent Desktop",
+ "keyword": "DESKTOP",
  "angle": "new-ability",
- "tool_name": "Agent Desktop"
+ "cover_at": 0.6,
+ "summary_cs": "Agent Desktop od Vercel Labs: AI agent ovládá desktopové aplikace přes accessibility tree (bez screenshotů), každé tlačítko dostane ref, agent klikne a znovu zkontroluje. Open-source, Mac/Windows/Linux; ukázky jsou jejich vlastní videa z repa.",
+ "caption": "AI agents can now use your desktop apps, no screenshots needed.\n\nPart #1 of a daily series.\n\nComment DESKTOP and I'll DM you the link.\n\n#aiagents #opensource #aitools"
 }
