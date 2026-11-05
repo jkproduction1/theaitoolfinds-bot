@@ -17,19 +17,30 @@ shutil.copy(z3 / "three.min.js", A / "three.min.js")
 
 STY = ["Pixel RPG", "Watercolor", "Ukiyo-e", "Chalkboard", "Neon Glow", "Blueprint", "Comic Pop", "Papercut", "Claymation", "Low-poly PS1"]
 N = len(STY)
-D = 1.2
-END = round(N * D, 2)
 THUMBS = [0, 2, 4, 6, 7, 9]
 
+FIRST = [0, 2, 3, 4, 5, 7, 8, 10, 11, 12]          # first word of each style name
+GAPS = {1: .3, 2: .3, 3: .3, 4: .3, 6: .3, 7: .3, 9: .3, 10: .3, 11: .3, 14: .45}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
-LEAD = END + 0.3
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(A / "voice_raw.mp3"), "-af", f"adelay={int(LEAD * 1000)}:all=1",
-                "-ar", "44100", str(A / "voice.mp3")], check=True)
 vw = json.loads((A / "voice_raw.json").read_text())
-for w in vw:
-    w["start"] += LEAD; w["end"] += LEAD
+cuts = [round(vw[i]["end"] + 0.06, 3) for i in sorted(GAPS)]
+filt, parts, prev = [], [], 0.0
+for k, (i, c) in enumerate(zip(sorted(GAPS), cuts)):
+    filt.append(f"[0:a]atrim={prev}:{c},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=mono[a{k}];"
+                f"anullsrc=r=44100:cl=mono,atrim=duration={GAPS[i]}[z{k}]")
+    parts += [f"[a{k}]", f"[z{k}]"]; prev = c
+filt.append(f"[0:a]atrim=start={prev},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=mono[al]"); parts.append("[al]")
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(A / "voice_raw.mp3"), "-filter_complex",
+                ";".join(filt) + ";" + "".join(parts) + f"concat=n={len(parts)}:v=0:a=1[out]", "-map", "[out]", "-ar", "44100",
+                str(A / "voice.mp3")], check=True)
+shift = 0.0
+for j, w in enumerate(vw):
+    w["start"] += shift; w["end"] += shift
+    if j in GAPS: shift += GAPS[j]
 (A / "voice.json").write_text(json.dumps(vw))
+TT = [0.0] + [round(vw[i]["start"] - 0.08, 3) for i in FIRST[1:]]
+END = round(vw[15]["start"] - 0.12, 3)
 
 from PIL import Image
 for k in THUMBS:
@@ -40,8 +51,8 @@ F = Film(W, (HERE / "script.txt").read_text(), A / "voice.json", tail=1.0)
 F.scenes([0])
 S = F.S
 for k in range(N):
-    F.sfx.append((k * D, "whoosh")); F.sfx.append((k * D + 0.12, "pop")); F.sfx.append((k * D + 0.05, "tick"))
-F.sfx.append((END, "whoosh")); F.sfx.append((S[1] - 0.05, "click"))
+    F.sfx.append((TT[k], "whoosh")); F.sfx.append((TT[k] + 0.12, "pop"))
+F.sfx.append((END, "whoosh"))
 
 SPARK = '<svg viewBox="0 0 100 100"><path fill="#ff4b1f" d="M50 4c3 26 10 36 46 46-36 10-43 20-46 46-3-26-10-36-46-46 36-10 43-20 46-46z"/></svg>'
 title = ('<div id="ttl"><div class="l1">10 <i>Claude</i>' + SPARK + '</div><div class="l2">animation styles</div>'
@@ -87,11 +98,11 @@ CSS = r"""
 """
 
 JS = r"""
-const NN=__N__, D=__D__, END=__END__;
+const NN=__N__, TT=__TT__, END=__END__;
 __STYLES__
-const T=k=>k*D;
+const T=k=>TT[k]; const DK=k=>(k<NN-1?TT[k+1]:END)-TT[k];
 const clock={t:0}; let lastK=-1;
-function draw(t){ for(let k=0;k<NN;k++){ const lt=t-T(k); if(lt>=-0.02 && lt<D+0.55 && t<END+0.05) SC[k](Math.max(0,lt)); } }
+function draw(t){ for(let k=0;k<NN;k++){ const lt=t-T(k); if(lt>=-0.02 && lt<DK(k)+0.65 && t<END+0.05) SC[k](Math.max(0,lt)); } }
 tl.fromTo(clock,{t:0},{t:DUR,duration:DUR,ease:'none',onUpdate:()=>draw(clock.t)},0); draw(0);
 const NI={immediateRender:false}; function F2(sel,f,t,at){ return tl.fromTo(sel,f,Object.assign({},t,NI),at); }
 for(let k=0;k<NN;k++){ const a=T(k), c='#cd'+k, n='#nm'+k;
@@ -111,6 +122,6 @@ F2('#e2',{opacity:0,y:30},{opacity:1,y:0,duration:.4,ease:'expo.out'},END+0.2);
 [0,1,2,3,4,5].forEach(j=>F2('#th'+j,{opacity:0,y:160,rotation:(j%2?5:-5)},{opacity:1,y:0,rotation:0,duration:.55,ease:'back.out(1.4)'},END+0.25+j*0.07));
 F2('#efol',{opacity:0,y:20},{opacity:1,y:0,duration:.3},END+0.7);
 """
-JS = JS.replace("__STYLES__", (HERE / "styles.js").read_text()).replace("__N__", str(N)).replace("__D__", str(D)).replace("__END__", str(END))
+JS = JS.replace("__STYLES__", (HERE / "styles.js").read_text()).replace("__N__", str(N)).replace("__TT__", json.dumps(TT)).replace("__END__", str(END))
 F.write(CSS, JS, music_vol=0.13)
 _ix = W / "index.html"; _ix.write_text(_ix.read_text().replace('data-motion-blur="on"', 'data-motion-blur="off"'))
