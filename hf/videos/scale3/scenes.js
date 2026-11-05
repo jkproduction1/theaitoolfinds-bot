@@ -69,7 +69,7 @@ function starsBg(sc,n){ const t=canvasTex(1024,2048,(g,w,h)=>{ g.fillStyle='#020
     for(let i=0;i<n;i++){ const b=new THREE.Mesh(new THREE.BoxGeometry(r*0.7,0.02,0.11),metal(c,.25)); const a=i/n*Math.PI*2; b.position.set(Math.cos(a)*r*0.62,0,Math.sin(a)*r*0.62); b.rotation.set(0,-a,tw); rot.add(b); }
     return {objs,rot}; }
   const nac=new THREE.Mesh(new THREE.CylinderGeometry(0.98,0.85,3.2,64,1,true),new THREE.MeshPhysicalMaterial({color:0xcfd5dc,metalness:.9,roughness:.25,transparent:true,opacity:0,side:THREE.DoubleSide})); nac.position.y=0.1;
-  const fan=bladeDisk(0.92,18,1.5,0xd8dde3,0.5);
+  const fan=bladeDisk(0.92,18,1.5,0xb9c0c8,0.5); fan.objs.forEach(o=>{ o.material.roughness=.6; o.material.envMapIntensity=.3; o.material.color.setHex(0x5f666e); });
   const comp=[1.0,0.75,0.5].map((y,i)=>bladeDisk(0.62-i*0.04,22,y,0xb8c0c9,0.35));
   const burn=new THREE.Mesh(new THREE.TorusGeometry(0.42,0.13,24,64),new THREE.MeshStandardMaterial({color:0x555,metalness:.6,roughness:.4,emissive:0xff5a1f,emissiveIntensity:0,transparent:true,opacity:0})); burn.rotation.x=Math.PI/2; burn.position.y=0.05;
   const turb=[-0.4,-0.65].map((y,i)=>bladeDisk(0.55+i*0.04,26,y,0x9a7d5a,-0.4));
@@ -118,13 +118,13 @@ function starsBg(sc,n){ const t=canvasTex(1024,2048,(g,w,h)=>{ g.fillStyle='#020
   const upperG=new THREE.Group();
   const knit=canvasTex(512,512,(g,w,h)=>{ g.fillStyle='#1d1f24'; g.fillRect(0,0,w,h); g.strokeStyle='rgba(255,255,255,.08)'; g.lineWidth=3; for(let y=0;y<h;y+=10){ g.beginPath(); for(let x=0;x<=w;x+=16){ g.lineTo(x,y+((x/16)%2?4:0)); } g.stroke(); } }); knit.wrapS=knit.wrapT=THREE.RepeatWrapping; knit.repeat.set(4,4);
   const upMat=new THREE.MeshPhysicalMaterial({color:0xffffff,map:knit,roughness:.8,sheen:1,sheenColor:new THREE.Color(0x555a66),side:THREE.DoubleSide});
-  const up=new THREE.Mesh(new THREE.SphereGeometry(1,64,32,0,Math.PI*2,0,Math.PI/2),upMat); { const pa=up.geometry.attributes.position; for(let i=0;i<pa.count;i++){ const x=pa.getX(i), y=pa.getY(i); const k=0.35+0.75*Math.min(1,Math.max(0,(0.55-x)/1.1)); pa.setY(i,y*k); } up.geometry.computeVertexNormals(); }
+  const up=new THREE.Mesh(new THREE.SphereGeometry(1,64,32,0,Math.PI*2,0,Math.PI/2),upMat); { const pa=up.geometry.attributes.position; for(let i=0;i<pa.count;i++){ const x=pa.getX(i), y=pa.getY(i); const k=0.28+0.82*Math.min(1,Math.max(0,(0.65-x)/1.3)); pa.setY(i,y*k); } up.geometry.computeVertexNormals(); }
   up.scale.set(1.45,0.75,0.5); up.position.x=-0.05; upperG.add(up);
   const collar=new THREE.Mesh(new THREE.TorusGeometry(0.26,0.06,16,48),new THREE.MeshStandardMaterial({color:0x111215,roughness:.7})); collar.rotation.x=Math.PI/2; collar.scale.set(1.4,1,1); collar.position.set(-0.62,0.6,0); upperG.add(collar);
   const swoosh=new THREE.Mesh(new THREE.TorusGeometry(0.9,0.035,8,64,1.4),new THREE.MeshStandardMaterial({color:0xff4b1f,roughness:.5})); swoosh.position.set(-0.2,-0.3,0.42); swoosh.rotation.z=0.6; upperG.add(swoosh);
-  const toe=new THREE.Mesh(new THREE.SphereGeometry(0.42,48,24,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:0xf3f1ec,roughness:.6})); toe.scale.set(1.15,0.55,1.05); toe.position.set(0.95,-0.01,0); upperG.add(toe);
-  const heel=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.52,0.42,48,1,true,Math.PI*0.5,Math.PI),new THREE.MeshStandardMaterial({color:0xff4b1f,roughness:.6,side:THREE.DoubleSide})); heel.scale.set(1,1,0.98); heel.position.set(-0.92,0.2,0); upperG.add(heel);
-  const tongue=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.05,0.34),new THREE.MeshStandardMaterial({color:0x2a2d33,roughness:.8})); tongue.position.set(-0.05,0.62,0); tongue.rotation.z=-0.42; upperG.add(tongue);
+  const toe=new THREE.Mesh(new THREE.SphereGeometry(0.42,48,24,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:0xf3f1ec,roughness:.6})); toe.scale.set(1.15,0.55,1.05); toe.position.set(0.95,-0.01,0); 
+  const heel=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.52,0.42,48,1,true,Math.PI*0.5,Math.PI),new THREE.MeshStandardMaterial({color:0xff4b1f,roughness:.6,side:THREE.DoubleSide})); heel.scale.set(1,1,0.98); heel.position.set(-0.92,0.2,0); 
+  const tongue=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.05,0.34),new THREE.MeshStandardMaterial({color:0x2a2d33,roughness:.8})); tongue.position.set(-0.05,0.62,0); tongue.rotation.z=-0.42; 
   const laces=new THREE.Group(); for(let i=0;i<5;i++){ const l=new THREE.Mesh(new THREE.CylinderGeometry(0.028,0.028,0.62,8),new THREE.MeshStandardMaterial({color:0xf5f5f5,roughness:.6})); l.rotation.x=Math.PI/2; l.position.set(-0.35+i*0.16,0.62-i*0.085,0); laces.add(l); } upperG.add(laces);
   const layers=[upperG,insole,midsole,outsole]; [upperG,insole,midsole,outsole].forEach(o=>S.add(o));
   const home=[0.36,0.37,0.1,0.0], out=[2.1,1.38,0.7,-0.3];
