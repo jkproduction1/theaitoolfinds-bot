@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/skills",
+ "name": "Claude animation styles",
+ "tool_name": "Claude animation styles",
+ "keyword": "CAR",
+ "summary_cs": "Podle tvé reference: jedno červené auto v 10 animačních stylech (Pixel RPG, Watercolor, Ukiyo-e, Chalkboard, Neon Glow, Blueprint, Comic Pop, Papercut, Claymation, Low-poly PS1). Vlevo se plní seznam, všechno je kreslené v kódu, hlas jen na konci „Comment CAR“; prompty pro DM v hf/videos/styles10/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 16.0,
+ "domain": "code.claude.com/docs/en/skills",
+ "created": "2026-11-05_2135",
+ "run_id": null,
+ "artifact": null
+}
