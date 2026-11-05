@@ -1,14 +1,6 @@
 [
  {
-  "name": "scale3",
-  "text": "Type slash scale, the Sun versus Earth… and you get this. Type slash blueprint, a jet engine… and you get this. Type slash explode, my sneaker… and you get this. Comment SCALE and I'll send you the prompts."
- },
- {
-  "name": "zoom3",
-  "text": "Type slash zoom in, my phone screen… and you get this. Type slash explain 3D, how a lock opens… and you get this. Type slash explain 3D, how a watch ticks… and you get this. Comment ZOOM and I'll send you the prompts."
- },
- {
-  "name": "agentdesk",
-  "text": "AI agents can now use your desktop apps. Agent Desktop from Vercel Labs does it without screenshots. It reads the app's accessibility tree and gives every button and field an ID. The agent clicks one, reads the app again, and checks it worked. Works on Mac, Windows and Linux. Comment DESKTOP and I'll send you the link."
+  "name": "mega3",
+  "text": "Type slash time-lapse, a skyscraper going up… and you get this. Type slash x-ray, an electric car… and you get this. Type slash explain 3D, a wind turbine… and you get this. Comment MEGA and I'll send you the prompts."
  }
 ]
