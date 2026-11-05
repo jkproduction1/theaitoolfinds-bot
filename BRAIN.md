@@ -90,7 +90,7 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 ## 3c. Growth rules (Jan, 2026-11-05: views are OK, followers grow slowly → give people a reason to follow)
 - **Series on every video.** Two running series, numbers in `data/series.json` (+1 per released video, commit it):
   - App demo → **"Type it, get it #N"**: small pill top-left in the chat UI from frame 0 (next to the 1/3 counter side),
-    same pill on the end card above the keyword.
+    same pill on the end card above the keyword. Use `house.series(...)` and `house.FOLLOW_LINE` (position `.follow` with top:...).
   - Paper → **"Free AI tool #N"**: small mono pill at y≈190 from frame 0 (above the visual, inside the margins).
   - End card / last scene shows one extra line on screen (not spoken): **"Follow for a new one every day"**.
   - Caption: first line stays the hook; add "Part #N of a daily series." before the CTA line. Still max 3 hashtags.

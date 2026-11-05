@@ -112,6 +112,15 @@ def tile(tid, icon, x, y, s=230, acc=False):
             f'stroke-linejoin="round">{ICON[icon]}</svg></div>')
 
 
+def series(kind, n, x=70, y=190, dark=False):
+    """BRAIN §3c series pill, e.g. series("Free AI tool", 3) -> "Free AI tool #3". Put it in a full-length layer
+    (F.body.append('<div class="layer">' + series(...) + '</div>')) so it's on screen from frame 0 to the end."""
+    return f'<div class="series{" dark" if dark else ""}" style="left:{x}px;top:{y}px">{html.escape(kind)} <b>#{n}</b></div>'
+
+
+FOLLOW_LINE = '<div class="follow">Follow for a new one every day</div>'
+
+
 def chip(cid, name, x, y, glyph="", color="#111"):
     return (f'<div id="{cid}" class="chip" style="left:{x}px;top:{y}px"><b style="background:{color}">{glyph}</b>'
             f'{html.escape(name)}</div>')
@@ -145,6 +154,10 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--paper)}
 .hl>span{display:inline-block;background:var(--ink);padding:.02em .22em .06em;box-shadow:0 14px 26px -10px rgba(0,0,0,.45)}
 .card{position:absolute;border-radius:30px;background:#fff;box-shadow:0 60px 90px -20px rgba(0,0,0,.28),0 18px 30px -10px rgba(0,0,0,.14),0 0 0 1px rgba(0,0,0,.04)}
 .dark{background:#141414}
+.series{position:absolute;z-index:40;font-family:var(--mono);font-weight:700;font-size:26px;letter-spacing:.02em;padding:8px 18px;border-radius:999px;
+ background:#111;color:#fff;box-shadow:0 10px 24px -10px rgba(0,0,0,.45)}.series b{color:var(--acc)}
+.series.dark{background:rgba(255,255,255,.1);color:#eaeaea;border:1px solid rgba(255,255,255,.18)}
+.follow{position:absolute;left:0;right:0;text-align:center;font-family:var(--sans);font-weight:700;font-size:40px;color:inherit;opacity:.85}
 .chip{position:absolute;display:flex;align-items:center;gap:22px;background:#fff;border-radius:999px;padding:22px 42px 22px 24px;font-weight:700;font-size:54px;letter-spacing:-.03em;
  box-shadow:0 40px 60px -18px rgba(0,0,0,.28),0 10px 20px -8px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.04);white-space:nowrap}
 .chip b{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px;font-weight:800}
