@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/vercel-labs/agent-desktop",
+ "name": "Agent Desktop",
+ "tool_name": "Agent Desktop",
+ "keyword": "DESKTOP",
+ "summary_cs": "Agent Desktop od Vercel Labs: AI agent ovládá desktopové aplikace přes accessibility tree (bez screenshotů), každé tlačítko dostane ref, agent klikne a znovu zkontroluje. Open-source, Mac/Windows/Linux; ukázky jsou jejich vlastní videa z repa.",
+ "style": "hyperframes-paper",
+ "duration": 19.0,
+ "domain": "github.com/vercel-labs/agent-desktop",
+ "created": "2026-11-05_0552",
+ "run_id": null,
+ "artifact": null
+}
