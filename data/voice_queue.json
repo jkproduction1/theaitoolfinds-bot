@@ -1,6 +1,14 @@
 [
  {
-  "name": "motion3dv",
-  "text": "Type slash explain 3D, how a camera lens focuses… and you get this. Type slash motion 3D, how a laptop fan keeps the chip cool… and you get this. Type slash hero 3D, landing page for my AI startup… and you get this. Comment MOTION and I'll send you the prompts."
+  "name": "scale3",
+  "text": "Type slash scale, the Sun versus Earth… and you get this. Type slash blueprint, a jet engine… and you get this. Type slash explode, my sneaker… and you get this. Comment SCALE and I'll send you the prompts."
+ },
+ {
+  "name": "zoom3",
+  "text": "Type slash zoom in, my phone screen… and you get this. Type slash explain 3D, how a lock opens… and you get this. Type slash explain 3D, how a watch ticks… and you get this. Comment ZOOM and I'll send you the prompts."
+ },
+ {
+  "name": "agentdesk",
+  "text": "AI agents can now use your desktop apps. Agent Desktop from Vercel Labs does it without screenshots. It reads the app's accessibility tree and gives every button and field an ID. The agent clicks one, reads the app again, and checks it worked. Works on Mac, Windows and Linux. Comment DESKTOP and I'll send you the link."
  }
 ]

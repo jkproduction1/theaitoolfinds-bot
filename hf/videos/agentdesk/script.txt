@@ -1,0 +1,1 @@
+AI agents can now use your desktop apps. Agent Desktop from Vercel Labs does it without screenshots. It reads the app's accessibility tree and gives every button and field an ID. The agent clicks one, reads the app again, and checks it worked. Works on Mac, Windows and Linux. Comment DESKTOP and I'll send you the link.
