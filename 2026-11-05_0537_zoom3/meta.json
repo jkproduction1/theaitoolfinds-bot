@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "ZOOM",
+ "summary_cs": "App demo „Type it, get it #2“: /zoom-in displej telefonu (až na RGB subpixely), /explain-3d jak se otevře zámek (kolíčky na střižnou linii), /explain-3d jak tiká hodinkový strojek. Všechno v kódu; prompty pro DM v hf/videos/zoom3/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 21.8,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-05_0537",
+ "run_id": null,
+ "artifact": null
+}
