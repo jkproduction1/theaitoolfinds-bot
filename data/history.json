@@ -370,5 +370,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#motion3dv",
     "date": "2026-11-04_2300",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#zoom3",
+    "date": "2026-11-05_0537",
+    "source": "hyperframes"
   }
 ]
