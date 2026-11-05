@@ -1539,6 +1539,45 @@
   }
  },
  {
+  "name": "zoom3",
+  "date": "2026-11-05",
+  "score": 69,
+  "mode": "full",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 3.78,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.1,
+   "dur_s": 22.0,
+   "words": 43,
+   "pace": 0.34,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 36,
+   "visuals": 0.7,
+   "ending": 0.95,
+   "angle": "app-demo",
+   "topic": 0.95
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
   "name": "agentdesk",
   "date": "2026-11-05",
   "score": 87,
@@ -1557,7 +1596,7 @@
    "filler_hits": 0,
    "filler": 1.0,
    "longest_static_s": 2.5,
-   "visual_changes": 37,
+   "visual_changes": 36,
    "visuals": 1.0,
    "ending": 1.0,
    "angle": "new-ability",
@@ -1597,45 +1636,6 @@
    "visual_changes": 37,
    "visuals": 1.0,
    "ending": 0.92,
-   "angle": "app-demo",
-   "topic": 0.95
-  },
-  "flags": [
-   "hook končí v 3.8 s (cíl ≤2,5 s)"
-  ],
-  "weights": {
-   "topic": 30,
-   "hook": 20,
-   "payoff": 12,
-   "pace": 8,
-   "length": 12,
-   "filler": 8,
-   "visuals": 8,
-   "ending": 2
-  }
- },
- {
-  "name": "zoom3",
-  "date": "2026-11-05",
-  "score": 69,
-  "mode": "full",
-  "features": {
-   "hook": 0.23,
-   "hook_words": 11,
-   "hook_end_s": 3.78,
-   "tool_named_s": null,
-   "payoff": 0.5,
-   "wps": 2.1,
-   "dur_s": 22.0,
-   "words": 43,
-   "pace": 0.34,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 3.25,
-   "visual_changes": 36,
-   "visuals": 0.7,
-   "ending": 0.95,
    "angle": "app-demo",
    "topic": 0.95
   },

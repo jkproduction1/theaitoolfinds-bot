@@ -376,5 +376,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#zoom3",
     "date": "2026-11-05_0537",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#scale3",
+    "date": "2026-11-05_0546",
+    "source": "hyperframes"
   }
 ]
