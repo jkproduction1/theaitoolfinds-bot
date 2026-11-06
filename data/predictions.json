@@ -1877,43 +1877,6 @@
   }
  },
  {
-  "name": "grillme",
-  "date": "2026-11-06",
-  "score": 91,
-  "mode": "full",
-  "features": {
-   "hook": 0.58,
-   "hook_words": 7,
-   "hook_end_s": 2.09,
-   "tool_named_s": 2.7,
-   "payoff": 1.0,
-   "wps": 3.02,
-   "dur_s": 19.5,
-   "words": 54,
-   "pace": 0.9,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 2.0,
-   "visual_changes": 31,
-   "visuals": 1.0,
-   "ending": 1.0,
-   "angle": "relatable-pain",
-   "topic": 1.0
-  },
-  "flags": [],
-  "weights": {
-   "topic": 30,
-   "hook": 20,
-   "payoff": 12,
-   "pace": 8,
-   "length": 12,
-   "filler": 8,
-   "visuals": 8,
-   "ending": 2
-  }
- },
- {
   "name": "build3",
   "date": "2026-11-06",
   "score": 70,
@@ -1980,6 +1943,45 @@
   "flags": [
    "hook má 13 slov (cíl ≤10)",
    "hook končí v 5.2 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "grillme",
+  "date": "2026-11-06",
+  "score": 87,
+  "mode": "full",
+  "features": {
+   "hook": 0.58,
+   "hook_words": 7,
+   "hook_end_s": 2.09,
+   "tool_named_s": 2.7,
+   "payoff": 1.0,
+   "wps": 3.02,
+   "dur_s": 19.5,
+   "words": 54,
+   "pace": 0.9,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.75,
+   "visual_changes": 29,
+   "visuals": 0.5,
+   "ending": 1.0,
+   "angle": "relatable-pain",
+   "topic": 1.0
+  },
+  "flags": [
+   "3.8 s bez změny obrazu (cíl ≤3 s)"
   ],
   "weights": {
    "topic": 30,

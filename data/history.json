@@ -412,5 +412,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#inside3",
     "date": "2026-11-06_0548",
     "source": "hyperframes"
+  },
+  {
+    "name": "grill-me",
+    "domain": "github.com/mattpocock/skills",
+    "date": "2026-11-06_0555",
+    "source": "hyperframes"
   }
 ]
