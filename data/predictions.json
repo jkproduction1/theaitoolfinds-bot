@@ -1877,46 +1877,6 @@
   }
  },
  {
-  "name": "inside3",
-  "date": "2026-11-06",
-  "score": 69,
-  "mode": "full",
-  "features": {
-   "hook": 0.29,
-   "hook_words": 13,
-   "hook_end_s": 5.2,
-   "tool_named_s": null,
-   "payoff": 0.5,
-   "wps": 2.06,
-   "dur_s": 22.5,
-   "words": 43,
-   "pace": 0.3,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 3.5,
-   "visual_changes": 39,
-   "visuals": 0.6,
-   "ending": 0.83,
-   "angle": "app-demo",
-   "topic": 0.95
-  },
-  "flags": [
-   "hook má 13 slov (cíl ≤10)",
-   "hook končí v 5.2 s (cíl ≤2,5 s)"
-  ],
-  "weights": {
-   "topic": 30,
-   "hook": 20,
-   "payoff": 12,
-   "pace": 8,
-   "length": 12,
-   "filler": 8,
-   "visuals": 8,
-   "ending": 2
-  }
- },
- {
   "name": "grillme",
   "date": "2026-11-06",
   "score": 91,
@@ -1980,6 +1940,46 @@
   },
   "flags": [
    "hook končí v 3.7 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
+ },
+ {
+  "name": "inside3",
+  "date": "2026-11-06",
+  "score": 69,
+  "mode": "full",
+  "features": {
+   "hook": 0.29,
+   "hook_words": 13,
+   "hook_end_s": 5.2,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.06,
+   "dur_s": 22.5,
+   "words": 43,
+   "pace": 0.3,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.5,
+   "visual_changes": 38,
+   "visuals": 0.6,
+   "ending": 0.83,
+   "angle": "app-demo",
+   "topic": 0.95
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 5.2 s (cíl ≤2,5 s)"
   ],
   "weights": {
    "topic": 30,
