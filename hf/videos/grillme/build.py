@@ -108,7 +108,7 @@ ft('#sub1',{opacity:0,y:20},{opacity:1,y:0,duration:.35,ease:A},S[8]+0.1);
 popIn('#repo',S[9]-0.1,{y:60,s:.6,r:-6});
 outUp(['#t1','#repo'],ST[2]);
 // S2 questions stack in
-['#q1','#q2','#q3'].forEach((q,k)=>ft(q,{opacity:0,x:k%2?160:-160,rotation:k%2?4:-4,filter:'blur(10px)'},{opacity:1,x:0,rotation:0,filter:'blur(0px)',duration:.6,ease:'back.out(1.3)'},S[14]-0.1+k*0.42));
+['#q1','#q2','#q3'].forEach((q,k)=>ft(q,{opacity:0,x:k%2?160:-160,rotation:k%2?4:-4,filter:'blur(10px)'},{opacity:1,x:0,rotation:0,filter:'blur(0px)',duration:.6,ease:'back.out(1.3)'},ST[2]+0.02+k*0.35));
 outUp(['#q1','#q2','#q3'],ST[3]);
 starPass('#st2',ST[3]-0.3,[-700,1750,0],[-440,1450,-35],5,1.2);
 // S3 recommended answer + yes
@@ -118,14 +118,14 @@ popIn('#yes',S[25]-0.1,{y:60,s:.4,r:10});
 outUp(['#q4','#yes'],ST[4]);
 // S4 tdd red -> green
 ft('#tests',{opacity:0,y:160,rotationY:-22,transformPerspective:1400},{opacity:1,y:0,rotationY:0,duration:.65,ease:A},ST[4]+0.02);
-[0,1,2].forEach(k=>ft('#tr'+k,{opacity:0,x:-40},{opacity:1,x:0,duration:.35,ease:A},S[33]-0.1+k*0.12));
-ft('#st_r',{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:A},S[34]);
-[0,1,2].forEach(k=>{ tl.to('#d'+k,{backgroundColor:'#2e9e4a',scale:1.25,duration:.15,ease:'power2.out'},S[37]+k*0.14);
-  tl.to('#d'+k,{scale:1,duration:.3,ease:'back.out(2)'},S[37]+k*0.14+0.15);
-  tl.call(()=>{},null,S[37]+k*0.14); });
+[0,1,2].forEach(k=>ft('#tr'+k,{opacity:0,x:-40},{opacity:1,x:0,duration:.35,ease:A},ST[4]+0.3+k*0.12));
+ft('#st_r',{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:A},ST[4]+0.7);
+[0,1,2].forEach(k=>{ tl.to('#d'+k,{backgroundColor:'#2e9e4a',scale:1.25,duration:.15,ease:'power2.out'},S[36]+k*0.14);
+  tl.to('#d'+k,{scale:1,duration:.3,ease:'back.out(2)'},S[36]+k*0.14+0.15);
+  tl.call(()=>{},null,S[36]+k*0.14); });
 [0,1,2].forEach(k=>{ const el=document.getElementById('d'+k); const o={v:0};
-  ft(o,{v:0},{v:1,duration:.01,onUpdate:()=>{el.textContent=o.v>0.5?'✓':'✗'}},S[37]+k*0.14); });
-tl.to('#st_r',{opacity:0,duration:.15},S[38]); ft('#st_g',{opacity:0,scale:.8},{opacity:1,scale:1,duration:.4,ease:'back.out(2)'},S[38]);
+  ft(o,{v:0},{v:1,duration:.01,onUpdate:()=>{el.textContent=o.v>0.5?'✓':'✗'}},S[36]+k*0.14); });
+tl.to('#st_r',{opacity:0,duration:.15},S[36]+0.45); ft('#st_g',{opacity:0,scale:.8},{opacity:1,scale:1,duration:.4,ease:'back.out(2)'},S[36]+0.45);
 outUp(['#tests','#stat'],ST[5]);
 // S5 agents
 popIn('#c1',S[41]-0.15,{y:60,s:.6,r:-6}); popIn('#c2',S[43]-0.15,{y:60,s:.6,r:6}); popIn('#c3',S[45]-0.15,{y:60,s:.6,r:-4});

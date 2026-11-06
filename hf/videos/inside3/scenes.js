@@ -37,8 +37,8 @@ function tubeBetween(a,b,r,mat){ const A=new THREE.Vector3(...a), B=new THREE.Ve
   const ctrlDot=new THREE.Mesh(new THREE.CircleGeometry(0.05,24),glowMat(0x48c8ff,0.0)); ctrlDot.rotation.x=-Math.PI/2; ctrlDot.position.set(1.25,0.122,0); G.add(ctrlDot);
   const chips=[]; [0.1,-1.3].forEach(x=>{ const c=new THREE.Mesh(rbox(0.95,0.8,0.1,0.04),chipM.clone()); c.rotation.x=-Math.PI/2; c.position.set(x,0.08,0); G.add(c); chips.push(c); });
   const chipE=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(0.95,0.1,0.8)),new THREE.LineBasicMaterial({color:0x8fe3ff,transparent:true,opacity:0,toneMapped:false})); chipE.position.set(0.1,0.08,0); G.add(chipE);
-  const smd=new THREE.MeshStandardMaterial({color:0x8a7a62,roughness:.5,metalness:.4}); const R=rnd(4);
-  for(let i=0;i<26;i++){ const s=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.03,0.03),smd); s.position.set(-2.0+R()*3.6,0.045,(R()<.5?-1:1)*(0.43+R()*0.06)); G.add(s); }
+  const smd=new THREE.MeshStandardMaterial({color:0x8a7a62,roughness:.5,metalness:.4}); const R=rnd(4); const SM=new THREE.Group(); G.add(SM);
+  for(let i=0;i<26;i++){ const s=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.03,0.03),smd); s.position.set(-2.0+R()*3.6,0.045,(R()<.5?-1:1)*(0.43+R()*0.06)); SM.add(s); }
   // data path: connector -> controller -> chips
   const route=new THREE.CatmullRomCurve3([new THREE.Vector3(2.15,0.05,0.05),new THREE.Vector3(1.6,0.06,0.05),new THREE.Vector3(1.25,0.13,0),new THREE.Vector3(0.7,0.08,0.1),new THREE.Vector3(0.1,0.15,0.05)]);
   const NP=18, parts=[]; for(let i=0;i<NP;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.022,10,8),glowMat(0x58d6ff,0)); G.add(m); parts.push(m); }
@@ -63,7 +63,7 @@ function tubeBetween(a,b,r,mat){ const A=new THREE.Vector3(...a), B=new THREE.Ve
     ctrlDot.material.opacity=0.4+0.6*Math.abs(Math.sin(lt*9));
     const zin=easeIO(cl((lt-0.85)/1.0)); const op=cl((lt-1.0)/0.4);
     chips[0].material.opacity=1-0.85*op; chips[0].material.depthWrite=op<0.05; chipE.material.opacity=0.6*op;
-    Z.visible=lt>0.95; const zs=0.25+0.75*easeOut2(cl((lt-0.95)/0.6)); Z.scale.setScalar(zs); Z.position.y=0.13+0.0*zs;
+    Z.visible=lt>0.95; const far2=lt>1.45; SM.visible=!far2; ctrl.visible=ctrlDot.visible=chips[1].visible=!far2; const zs=0.25+0.75*easeOut2(cl((lt-0.95)/0.6)); Z.scale.setScalar(zs); Z.position.y=0.13+0.0*zs;
     // fill cells: electrons fly in from below and get trapped; trapped cells glow
     n=0; for(let i=0;i<NX;i++) for(let j=0;j<NY;j++) for(let k=0;k<NZ;k++){ const fillT=1.35+((i*NY+j)*NZ+k)/(NX*NY*NZ)*1.2; const on=bits[n]&&lt>fillT;
       const g=bits[n]?cl((lt-fillT)/0.15):0; const pp=cpos(i,j,k); M5.compose(pp,Qi,Sv.set(g||0.0001,g||0.0001,g||0.0001)); glowC.setMatrixAt(n,M5); n++; } glowC.instanceMatrix.needsUpdate=true;
@@ -173,7 +173,7 @@ function tubeBetween(a,b,r,mat){ const A=new THREE.Vector3(...a), B=new THREE.Ve
   const valve=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.08,16),new THREE.MeshPhysicalMaterial({color:0xd9ad55,metalness:1,roughness:.25,emissive:0xffffff,emissiveIntensity:0})); valve.rotation.x=Math.PI/2; valve.position.set(0,2.3,-0.52); Fr.add(valve);
   const NPH=26, NPC=18, ph=[], pc=[]; for(let i=0;i<NPH;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8),glowMat(0xff7a3d,0)); Fr.add(m); ph.push(m); }
   for(let i=0;i<NPC;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8),glowMat(0x7fd8ff,0)); Fr.add(m); pc.push(m); }
-  const NH=30, heat=[], RH=rnd(13); for(let i=0;i<NH;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.05,10,8),glowMat(0xff6a2a,0)); Fr.add(m); heat.push({m,x:(RH()-.5)*0.9,y:0.5+RH()*1.6,d:RH()}); }
+  const NH=30, heat=[], RH=rnd(13); for(let i=0;i<NH;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.05,10,8),glowMat(0xff6a2a,0)); Fr.add(m); heat.push({m,x:(RH()-.5)*0.9,y:0.5+RH()*1.15,d:RH()}); }
   const NF=24, frost=[], RF=rnd(17); for(let i=0;i<NF;i++){ const m=new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6),glowMat(0xcff2ff,0)); Fr.add(m); frost.push({m,x:(RF()-.5)*0.9,y:0.5+RF()*1.5,z:(RF()-.5)*0.6,d:RF()}); }
   const shd=shadowPlane(2.6,2.2,.75); shd.position.y=0.005; sc.add(shd);
   

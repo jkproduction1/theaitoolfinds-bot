@@ -1,11 +1,11 @@
 {
  "app_demo": {
   "name": "Type it, get it",
-  "next": 4
+  "next": 6
  },
  "paper": {
   "name": "Free AI tool",
   "next": 2
  },
- "note": "Increment 'next' after each released video of that series (BRAIN §3c)."
+ "note": "Increment 'next' after each released video of that series (BRAIN \u00a73c)."
 }

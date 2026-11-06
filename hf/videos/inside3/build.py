@@ -48,7 +48,7 @@ S, E = F.S, F.E
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
     (0, (2, 3), (4, 8), 9, "explain-3d", "how an SSD stores data", "SSD explainer", "Data lives as trapped electrons.", 3, "Cinematic 3D explainer of anything"),
     (13, (15, 15), (16, 17), 18, "x-ray", "an e-bike", "e-bike x-ray", "Pedal, and the motor helps.", 3, "See inside anything, like an X-ray"),
-    (22, (24, 25), (26, 30), 31, "explain-3d", "how a fridge stays cold", "fridge explainer", "It moves the heat out back.", 3, "Cinematic 3D explainer of anything"),
+    (22, (24, 25), (26, 30), 31, "explain-3d", "how a fridge stays cold", "fridge explainer", "It moves the heat out the back.", 3, "Cinematic 3D explainer of anything"),
 ]
 CMD = "explain-3d"
 TY = []
@@ -173,6 +173,7 @@ html,body,#root{background:#121212!important}
 """
 
 CSS += r"""
+.lb{background:rgba(8,9,12,.94);box-shadow:0 6px 24px rgba(0,0,0,.6);z-index:2}
 .cap{text-shadow:0 3px 0 rgba(0,0,0,.55),0 6px 26px rgba(0,0,0,.95),0 0 40px rgba(0,0,0,.8)}
 .ttl{padding:22px 0 26px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 25%,rgba(0,0,0,.72) 75%,rgba(0,0,0,0))}
 """
@@ -252,10 +253,10 @@ tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacit
 tl.set('#st2',{opacity:0},END); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.15},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
-F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.08);
+F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.3,ease:A},END+0.02);
 F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},S[36]-0.1);
-F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:A},END+0.4);
-[0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.55,ease:'back.out(1.4)'},END+0.3+k*0.1));
+F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.3,ease:A},END+0.12);
+[0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.5,ease:'back.out(1.4)'},END+0.12));
 F2('#handle',{opacity:0},{opacity:1,duration:.3},END+0.5);
 tl.set(['#end','#e1','#e2','#e3','#th0','#th1','#th2','#handle','#eser','#efol'],{opacity:0},0);
 F2('#eser',{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:A},END+0.6);

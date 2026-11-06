@@ -89,7 +89,7 @@ KEYPOS[" "] = (460, y3)
 
 LABELS = [
     [("Furnace", "sand + soda ash + limestone"), ("Mould", "a hot gob drops in"), ("Air", "blows it into shape"), ("Cooled slowly", "so it won't crack")],
-    [("Keycaps", ""), ("Switch", "stem, spring, housing"), ("Plate", "holds the switches"), ("PCB", "reads each press")],
+    [("Keycaps", ""), ("Switch", "stem, spring, housing"), ("Plate", "holds the switches"), ("PCB", "reads each press"), ("Case", "")],
     [("Towers", "go up first"), ("Main cables", "strung over the towers"), ("Deck", "hung piece by piece")],
 ]
 ui = ['<script src="assets/three.min.js"></script><script src="assets/three-extras.js"></script><script src="assets/studio_exr.js"></script><div class="ui" id="ui">',
@@ -230,7 +230,7 @@ function apply(t){
   if(key!==lastKey){ lastKey=key; it.innerHTML=html; sug.textContent=sg; cn.textContent=(k+1)+'/3'; ubt.textContent=d.prompt; document.getElementById('ubc').textContent='/'+d.cmd; document.getElementById('runt').textContent='Animating with /'+d.cmd+'…'; document.getElementById('chn').textContent='/'+d.cmd; document.getElementById('chd').textContent=d.desc;
     if(pk){ const p=KP[pk]; pop.textContent=pk; pop.style.left=(p[0]-12)+'px'; pop.style.top=(p[1]-120)+'px'; pop.style.opacity=1; } else pop.style.opacity=0; }
   // 3D: render the active result
-  if(t>=d.card && t<d.end+0.05 && t<END){ SCN[k](t-d.card); }
+  if(t>=d.card && t<d.end+(k===2?0.32:0.05) && t<END+0.32){ SCN[k](t-d.card); }
 }
 const clock={t:0}; tl.fromTo(clock,{t:0},{t:DUR,duration:DUR,ease:'none',onUpdate:()=>apply(clock.t)},0); apply(0);
 const NI={immediateRender:false}; function F2(sel,f,t,at){ return tl.fromTo(sel,f,Object.assign({},t,NI),at); }
@@ -249,13 +249,13 @@ TY.forEach((d,k)=>{
   F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.42,ease:'expo.inOut'},d.full);
 });
 tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
-tl.set('#st2',{opacity:0},END); tl.set('#ui',{opacity:0},END);
-F2('#end',{opacity:0},{opacity:1,duration:.15},END);
+tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
+F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
-F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.08);
-F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},S[34]-0.1);
-F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:A},END+0.4);
-[0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.55,ease:'back.out(1.4)'},END+0.3+k*0.1));
+F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.02);
+F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[34]-0.1,END+0.1));
+F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:A},END+0.22);
+[0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.55,ease:'back.out(1.4)'},END+0.15+k*0.08));
 F2('#handle',{opacity:0},{opacity:1,duration:.3},END+0.5);
 tl.set(['#end','#e1','#e2','#e3','#th0','#th1','#th2','#handle','#eser','#efol'],{opacity:0},0);
 F2('#eser',{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:A},END+0.6);

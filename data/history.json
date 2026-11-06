@@ -400,5 +400,11 @@
     "domain": "code.claude.com/docs/en/skills#styles10",
     "date": "2026-11-05_2135",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#build3",
+    "date": "2026-11-06_0541",
+    "source": "hyperframes"
   }
 ]
