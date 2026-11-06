@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "BUILD",
+ "summary_cs": "App demo „Type it, get it #5“: /how-its-made skleněná láhev (pec → kapka skla do formy → vyfouknutí → pomalé chlazení), /explode mechanická klávesnice (klávesy, spínače s pružinou, plate, PCB), /time-lapse stavba visutého mostu. Všechno v kódu, prompty pro DM v hf/videos/build3/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 20.1,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-06_0541",
+ "run_id": null,
+ "artifact": null
+}
