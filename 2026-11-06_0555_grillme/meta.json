@@ -1,0 +1,13 @@
+{
+ "url": "https://github.com/mattpocock/skills",
+ "name": "grill-me",
+ "tool_name": "grill-me",
+ "keyword": "GRILL",
+ "summary_cs": "Free AI tool #2: skilly od Matta Pococka (MIT) – /grill-me tě nejdřív vyzpovídá k plánu a ke každé otázce dá doporučenou odpověď, /tdd napíše nejdřív padající test a pak opravu. Funguje s Claude Code, Codexem i Copilotem; vizuály kreslené v kódu.",
+ "style": "hyperframes-paper",
+ "duration": 19.3,
+ "domain": "github.com/mattpocock/skills",
+ "created": "2026-11-06_0555",
+ "run_id": null,
+ "artifact": null
+}
