@@ -1,1 +1,9 @@
-{"angle":"app-demo"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "INSIDE",
+ "angle": "app-demo",
+ "cover_at": 6.6,
+ "summary_cs": "App demo „Type it, get it #4“: /explain-3d jak SSD ukládá data (elektrony uvězněné v paměťových buňkách), /x-ray elektrokolo (baterie → řídicí jednotka → motor v náboji), /explain-3d jak lednice chladí (kompresor, kondenzátor, ventil, výparník). Všechno v kódu, prompty pro DM v hf/videos/inside3/prompts.md.",
+ "caption": "Type one command and Claude shows you what's inside anything.\n\nPart #4 of a daily series.\n\nComment INSIDE and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
+}

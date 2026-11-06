@@ -25,3 +25,5 @@ Never reuse the reference creator's command name (/full-visual) — use our own 
 - mega3 (2026-11-05): /time-lapse a skyscraper going up, /x-ray an electric car, /explain-3d a wind turbine (Jan, live)
 - zoom3 (2026-11-05): /zoom-in my phone screen, /explain-3d how a lock opens, /explain-3d how a watch ticks
 - motion3d2 (2026-11-04): /explain-3d camera lens, /motion3d laptop cooling, /hero-3d landing page
+- inside3 (2026-11-06): /explain-3d how an SSD stores data, /x-ray an e-bike, /explain-3d how a fridge stays cold
+- build3 (2026-11-06): /how-its-made a glass bottle, /explode a mechanical keyboard, /time-lapse a bridge being built

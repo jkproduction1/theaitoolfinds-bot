@@ -1,1 +1,9 @@
-{"angle":"relatable-pain","tool_name":"grill-me"}
+{
+ "url": "https://github.com/mattpocock/skills",
+ "tool_name": "grill-me",
+ "keyword": "GRILL",
+ "angle": "relatable-pain",
+ "cover_at": 1.9,
+ "summary_cs": "Free AI tool #2: skilly od Matta Pococka (MIT) – /grill-me tě nejdřív vyzpovídá k plánu a ke každé otázce dá doporučenou odpověď, /tdd napíše nejdřív padající test a pak opravu. Funguje s Claude Code, Codexem i Copilotem; vizuály kreslené v kódu.",
+ "caption": "Your AI keeps building the wrong thing? /grill-me makes it ask first.\n\nPart #2 of a daily series.\n\nComment GRILL and I'll DM you the link.\n\n#claudecode #vibecoding #aitools"
+}
