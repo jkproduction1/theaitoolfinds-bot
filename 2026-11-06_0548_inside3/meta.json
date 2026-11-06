@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "INSIDE",
+ "summary_cs": "App demo „Type it, get it #4“: /explain-3d jak SSD ukládá data (elektrony uvězněné v paměťových buňkách), /x-ray elektrokolo (baterie → řídicí jednotka → motor v náboji), /explain-3d jak lednice chladí (kompresor, kondenzátor, ventil, výparník). Všechno v kódu, prompty pro DM v hf/videos/inside3/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 21.9,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-06_0548",
+ "run_id": null,
+ "artifact": null
+}
