@@ -118,6 +118,14 @@ springs on UI; quiet emotional SFX, no cringe voice jokes. Brand name only as pl
 **never draw real logos, logotypes or mascots** (plain-text name + brand colours + the product's world instead).
 Paid "3D Ad Kit" (Gumroad/Payhip idea) = generic prompts/templates only, no brand names or colours.
 Process: style frames (stills from the real code) → Jan's OK → animation → render → director review → final.
+**Spec-ad craft rules (Jan, 2026-11-07):** story first, simple (not melodrama): e.g. uberad v3 = tap → "5 min" → car arrives →
+ride → you're home → 5-star rating. Alternate polished app UI beats (single-colour black/white backgrounds, Bolt-level UI,
+taps shown as a finger tap: 2-frame press to 96 % + soft ripple, never a mouse cursor) with 3D shots, cuts on the beat.
+Transitions only by real motion-design principles, never "fake": match on shape/position/colour, keep motion direction and
+speed continuous across the cut, cut where the eye already is, cut on action. Ultra clean; nothing awkwardly cropped (check
+every cut frame). Pauses/silence rarely (max 1–2 per video, right before a release). SFX felt, not heard, under the VO,
+mix through a limiter (no clipping). Energetic VO with punch for ads; our house voice stays for all regular videos.
+Sweat invisible details: overshoot ≤3 %, 40 ms staggers, odometer numbers, stroke-drawn icons, 2-layer shadows, grain/vignette.
 
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`),
