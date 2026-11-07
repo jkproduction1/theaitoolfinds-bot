@@ -26,9 +26,18 @@ if VO.exists():
     groups=[];i=0
     for n in [2,2,2,2,2,2,1,2,2,2,2]: groups.append(words[i:i+n]); i+=n
     at=[.06]+[t+.05 for t in ST]+([] if (W/"voice_cta.mp3").exists() else [CTA+.3])
-    for g,t0 in zip(groups,at):
-        a0=max(0,int((g[0]["start"]-.03)*SR)); a1=int((g[-1]["end"]+.12)*SR); seg=v[a0:a1].copy(); f=int(.012*SR); seg[:f]*=np.linspace(0,1,f); seg[-f:]*=np.linspace(1,0,f)
-        put(seg,t0,1.3)
+    win=int(.006*SR); en=np.sqrt(np.convolve(v**2,np.ones(win)/win,'same'))
+    def quiet(t0,t1):  # quietest sample between two times (cut point in the gap between words)
+        i0,i1=int(t0*SR),max(int(t0*SR)+1,int(t1*SR)); return i0+int(np.argmin(en[i0:i1]))
+    cuts=[quiet(max(0,groups[0][0]["start"]-.12),groups[0][0]["start"])]
+    for g,h in zip(groups,groups[1:]): cuts.append(quiet(g[-1]["end"]-.02,h[0]["start"]+.03))
+    cuts.append(min(len(v)-1,int((groups[-1][-1]["end"]+.25)*SR)))
+    edge=[]
+    for k,(g,t0) in enumerate(zip(groups,at)):
+        a0,a1=cuts[k],cuts[k+1]; seg=v[a0:a1].copy(); f=int(.008*SR); seg[:f]*=np.linspace(0,1,f); seg[-f:]*=np.linspace(1,0,f)
+        edge.append((round(float(en[a0]),4),round(float(en[a1]),4)))
+        put(seg,t0-(g[0]["start"]-a0/SR),1.3)
+    print("edge rms",edge)
     CV=W/"voice_cta.mp3"
     if CV.exists():
         raw=subprocess.run(["ffmpeg","-v","error","-i",str(CV),"-f","f32le","-ac","1","-ar",str(SR),"-"],capture_output=True,check=True).stdout
