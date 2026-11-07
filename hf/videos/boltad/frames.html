@@ -1,0 +1,121 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- boltad style frames: ?f=1 phone "Hungry?" shake + finger tap, ?f=2 box grab "vjunk", ?f=3 scooter courier in mini city. Toon shading + ink outline. -->
+<style>
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/Inter-Bold.otf);font-weight:700}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/Inter-SemiBold.otf);font-weight:600}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/Inter-Medium.otf);font-weight:500}
+html,body{margin:0;background:#000}
+#root{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(70% 50% at 50% 42%,#1d2125,#0b0c0e 75%);font-family:IDs,sans-serif;color:#F6F4EE}
+canvas{position:absolute;inset:0}
+svg.ov{position:absolute;inset:0;pointer-events:none}
+</style>
+<script src="media/three.min.js"></script>
+</head><body><div id="root"><canvas id="cv" width="1080" height="1920"></canvas><svg class="ov" id="ov" width="1080" height="1920"></svg></div>
+<script>
+(async()=>{await Promise.all(['700 20px IDs','600 20px IDs','500 20px IDs'].map(f=>document.fonts.load(f)));
+const F=+(new URLSearchParams(location.search).get('f')||1);
+const G=0x34D186, INK=0x15171a, SKIN=0xF2B98F, CREAM=0xF6F4EE;
+const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,preserveDrawingBuffer:true});
+R.setSize(1080,1920,false); R.outputEncoding=THREE.sRGBEncoding;
+const S=new THREE.Scene(), C=new THREE.PerspectiveCamera(30,1080/1920,.1,200);
+S.add(new THREE.HemisphereLight(0xffffff,0x334,.55)); const key=new THREE.DirectionalLight(0xffffff,1.05); key.position.set(4,8,6); S.add(key);
+const gm=(()=>{const d=new Uint8Array([70,70,70,255,170,170,170,255,255,255,255,255]);const t=new THREE.DataTexture(d,3,1);t.minFilter=t.magFilter=THREE.NearestFilter;t.needsUpdate=true;return t})();
+const toon=(c,o={})=>new THREE.MeshToonMaterial(Object.assign({color:new THREE.Color(c).convertSRGBToLinear(),gradientMap:gm},o));
+const inkM=w=>new THREE.ShaderMaterial({side:THREE.BackSide,uniforms:{w:{value:w}},vertexShader:'uniform float w;void main(){vec4 p=modelViewMatrix*vec4(position,1.);vec3 n=normalize(normalMatrix*normal);p.xyz+=n*w*(-p.z)*.0045;gl_Position=projectionMatrix*p;}',fragmentShader:'void main(){gl_FragColor=vec4(.07,.075,.085,1.);}'});
+function M(geo,col,w=.9,o){const g=new THREE.Group(),m=new THREE.Mesh(geo,typeof col==='object'&&col.isMaterial?col:toon(col,o));g.add(m);if(w){g.add(new THREE.Mesh(geo,inkM(w)))}g.userData.m=m;return g}
+function rbox(w,h,d,r,seg=6){const s=new THREE.Shape(),x=-w/2,y=-h/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);
+ const g=new THREE.ExtrudeGeometry(s,{depth:d-2*Math.min(r,d/2.2)*.6,bevelEnabled:true,bevelSize:Math.min(r,d/2.2)*.6,bevelThickness:Math.min(r,d/2.2)*.6,bevelSegments:seg,curveSegments:seg*2});g.center();g.computeVertexNormals();return g}
+const cap=(r,l)=>new THREE.CapsuleGeometry(r,l,8,16);
+const P=(o,x,y,z,p)=>{o.position.set(x,y,z);(p||S).add(o);return o};
+const svg=s=>ov.insertAdjacentHTML('beforeend',s);
+function tex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');draw(x,w,h);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t}
+function rr(x,X,Y,W,H,r){x.beginPath();x.roundRect(X,Y,W,H,r)}
+/* cartoon hand: palm + pointing index, curled fingers, thumb */
+function hand(){const h=new THREE.Group(),sk=toon(SKIN);
+ const palm=M(rbox(1.0,1.15,.5,.24),sk,.8);P(palm,0,0,0,h);
+ const idx=new THREE.Group();P(idx,-.28,.72,0,h);P(M(cap(.135,.55),sk,.8),0,.32,0,idx);
+ [[-.0,.42],[.27,.36],[.5,.28]].forEach(([x,y],i)=>{const f=M(cap(.13,.22),sk,.8);f.rotation.x=1.35;P(f,x+.02,y+.02,.22,h)});
+ const th=M(cap(.135,.4),sk,.8);th.rotation.z=.9;P(th,-.58,.05,.12,h);
+ const cuff=M(new THREE.CylinderGeometry(.5,.52,.5,32),toon(G),.8);cuff.scale.z=.55;P(cuff,.06,-.78,0,h);
+ const sl=M(new THREE.CylinderGeometry(.53,.6,1.6,32),toon(0x2a2e33),.8);sl.scale.z=.58;P(sl,.06,-1.8,0,h);
+ h.userData.tip=new THREE.Vector3(-.28,1.32,0);return h}
+function screenUI(shake){return tex(620,1300,(x,w,h)=>{x.fillStyle='#0f1113';x.fillRect(0,0,w,h);
+ x.fillStyle='#F6F4EE';x.font='600 30px IDs';x.fillText('9:41',52,70);rr(x,w-110,48,56,24,8);x.fill();x.fillStyle='#000';rr(x,w/2-90,36,180,50,25);x.fill();
+ x.font='700 64px IDs';x.fillStyle='#F6F4EE';x.textAlign='center';x.fillText('Sat 7 November',w/2,250);
+ x.font='700 170px IDs';x.fillText('12:30',w/2,430);
+ x.save();x.translate(w/2+shake,640);x.rotate(shake*.004);
+ x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=40;rr(x,-268,-130,536,260,52);x.fillStyle='#F6F4EE';x.fill();x.shadowBlur=0;
+ rr(x,-232,-96,100,100,28);x.fillStyle='#34D186';x.fill();x.fillStyle='#0f1113';x.font='700 58px IDs';x.textAlign='center';x.fillText('🍔',-182,-24);
+ x.textAlign='left';x.fillStyle='#6b7077';x.font='600 26px IDs';x.fillText('BOLT FOOD · now',-110,-60);
+ x.fillStyle='#0f1113';x.font='700 74px IDs';x.fillText('Hungry?',-110,12);
+ x.fillStyle='#4a4f56';x.font='500 30px IDs';x.fillText('Your favourites are 8 min away',-232,86);x.restore();
+ x.fillStyle='rgba(246,244,238,.5)';rr(x,w/2-90,h-40,180,10,5);x.fill()})}
+function phone(sh){const g=new THREE.Group();const body=M(rbox(3.1,6.4,.42,.5),toon(0x22262b),.9);P(body,0,0,0,g);
+ const scr=new THREE.Mesh(new THREE.PlaneGeometry(2.86,6.0),new THREE.MeshBasicMaterial({map:screenUI(sh),toneMapped:false}));P(scr,0,0,.232,g);
+ return g}
+/* scooter + courier */
+function scooter(){const g=new THREE.Group(),dk=toon(0x2a2e33),gr=toon(G),cr=toon(CREAM);
+ const wheel=x=>{const w=new THREE.Group();const t=M(new THREE.TorusGeometry(.32,.14,16,32),dk,.8);P(t,0,0,0,w);P(M(new THREE.CylinderGeometry(.16,.16,.2,24).rotateX(Math.PI/2),toon(0xbfc4c9),.6),0,0,0,w);P(w,x,.46,0,g);w.rotation.y=Math.PI/2;return w};
+ wheel(-1.0);wheel(1.05);
+ const deck=M(rbox(1.5,.28,.62,.13),gr,.8);P(deck,0,.62,0,g);
+ const rear=M(cap(.42,.9).rotateZ(Math.PI/2),gr,.8);rear.scale.set(1,1,.9);P(rear,-.62,.92,0,g);
+ const seat=M(rbox(1.0,.18,.56,.09),dk,.8);P(seat,-.55,1.38,0,g);
+ const fork=M(cap(.12,1.1),dk,.8);fork.rotation.z=-.32;P(fork,.92,1.05,0,g);
+ const front=M(rbox(.42,1.2,.66,.2),gr,.8);front.rotation.z=-.32;P(front,.78,1.1,0,g);
+ const bar=M(cap(.07,.9).rotateX(Math.PI/2),dk,.8);P(bar,1.12,1.78,0,g);
+ P(M(new THREE.SphereGeometry(.12,16,12),new THREE.MeshBasicMaterial({color:0xfff2b0}),.6),1.0,1.45,0,g);
+ /* rider */
+ const rd=new THREE.Group();P(rd,-.35,1.45,0,g);
+ const torso=M(cap(.34,.55),gr,.8);torso.rotation.z=-.35;P(torso,.05,.62,0,rd);
+ const head=M(new THREE.SphereGeometry(.3,24,18),toon(SKIN),.8);P(head,.3,1.32,0,rd);
+ const helm=M(new THREE.SphereGeometry(.36,24,18,0,Math.PI*2,0,Math.PI*.55),toon(CREAM),.8);helm.rotation.z=-.25;P(helm,.27,1.38,0,rd);
+ P(M(rbox(.3,.06,.5,.03),toon(0x2a2e33),.5),.52,1.42,0,rd);
+ const eye=new THREE.Mesh(new THREE.SphereGeometry(.035,8,8),new THREE.MeshBasicMaterial({color:0x111111}));P(eye,.57,1.32,.14,rd);P(eye.clone(),.57,1.32,-.14,rd);
+ [.24,-.24].forEach(z=>{const a=M(cap(.1,.62),gr,.7);a.rotation.z=-1.15;P(a,.45,.8,z,rd);const l=M(cap(.12,.55),dk,.7);l.rotation.z=1.2;P(l,.3,.02,z*.9,rd)});
+ const box=M(rbox(.95,.85,.9,.14),gr,.9);P(box,-.48,.95,0,rd);
+ const lid=new THREE.Mesh(new THREE.PlaneGeometry(.6,.3),new THREE.MeshBasicMaterial({map:tex(256,128,(x,w,h)=>{x.fillStyle='#F6F4EE';x.font='700 54px IDs';x.textAlign='center';x.fillText('Bolt',w/2,82)}),transparent:true}));P(lid,-.48,.98,.452,rd);
+ return g}
+function burgerBox(){const g=new THREE.Group();P(M(rbox(1.5,.9,1.3,.16),toon(0xE9D3AE),.9),0,0,0,g);
+ const band=M(rbox(1.52,.28,1.32,.06),toon(G),.6);P(band,0,.08,0,g);return g}
+function puff(x,y,r,o=.9){return `<g opacity="${o}">${[0,1,2,3].map(i=>`<circle cx="${x+Math.cos(i*1.7)*r*.8}" cy="${y+Math.sin(i*2.3)*r*.4}" r="${r*(.55+.12*i)}" fill="#F6F4EE" stroke="#15171a" stroke-width="7"/>`).join('')}</g>`}
+const lines=(pts,c='#F6F4EE',w=9)=>pts.map(([x1,y1,x2,y2])=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`).join('');
+function proj(v){const p=v.clone().project(C);return[(p.x+1)/2*1080,(1-p.y)/2*1920]}
+
+if(F===1){C.position.set(0,0,19);C.lookAt(0,-.4,0);
+ const ph=phone(14);ph.rotation.set(-.12,.22,.035);P(ph,0,.4,0);
+ const h=hand();h.rotation.set(.3,-.3,.12);h.scale.setScalar(1.05);P(h,.45,-1.15,1.1);
+ R.render(S,C);
+ const [tx,ty]=proj(h.userData.tip.clone().applyMatrix4(h.matrixWorld));
+ svg(lines([[150,640,110,600],[140,700,90,700],[150,760,110,800]],'#F6F4EE',8)+lines([[930,640,970,600],[940,700,990,700],[930,760,970,800]],'#F6F4EE',8));
+ svg(`<circle cx="${tx}" cy="${ty}" r="56" fill="none" stroke="#34D186" stroke-width="8"/><circle cx="${tx}" cy="${ty}" r="92" fill="none" stroke="#34D186" stroke-width="5" opacity=".45"/>`)}
+if(F===2){C.position.set(0,7.5,17);C.lookAt(.3,.9,0);
+ const tb=M(rbox(7,.5,4.4,.2),toon(0xC98F5E),1.0);P(tb,0,-.6,0);
+ const pl=M(new THREE.CylinderGeometry(1.0,.85,.12,40),toon(CREAM),.8);P(pl,-1.5,-.27,.6);
+ const bx=burgerBox();bx.scale.set(1.35,.75,1.0);bx.rotation.set(0,-.3,-.25);P(bx,.4,2.1,0);
+ const h=hand();h.rotation.set(-.3,.2,1.9);h.scale.setScalar(1.0);P(h,1.75,3.05,0);
+ const sh=new THREE.Mesh(new THREE.CircleGeometry(.95,40),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.28}));sh.rotation.x=-Math.PI/2;sh.scale.set(1.2,.7,1);P(sh,-.2,-.33,.2);
+ R.render(S,C);
+ svg(lines([[120,980,620,870],[160,1060,640,960],[110,1140,560,1040],[200,900,520,830]],'#F6F4EE',11));
+ svg(puff(400,1150,46,.95)+puff(250,1120,30,.8));
+ svg(`<g transform="translate(120,520) rotate(-12)"><text font-family="IDs" font-weight="700" font-size="110" fill="#34D186" stroke="#15171a" stroke-width="10" paint-order="stroke">VJUNK!</text></g>`)}
+if(F===3){C.position.set(-1+14,14,1.5+16);C.lookAt(-0.4,.6,0.6);C.fov=34;C.updateProjectionMatrix();
+ const gd=M(rbox(13,.6,13,.3),toon(0x2a3036),1.0);P(gd,0,-.3,0);
+ const rd=new THREE.Mesh(new THREE.PlaneGeometry(13,2.2),toon(0x1b1f23));rd.rotation.x=-Math.PI/2;P(rd,0,.02,1.5);
+ const rd2=rd.clone();rd2.rotation.z=Math.PI/2;P(rd2,1.5,.02,0);
+ for(let i=-5;i<=5;i+=1.3){const d=new THREE.Mesh(new THREE.PlaneGeometry(.5,.08),new THREE.MeshBasicMaterial({color:0x5a6068}));d.rotation.x=-Math.PI/2;P(d,i,.03,1.5)}
+ const cols=[0xF6F4EE,0xE7C9A0,0x9FB4C7,0xD98B6F,0xC9D6CF];let k=0;
+ [[-3.6,-3.6],[-3.6,4.4],[4.6,-3.8],[4.6,4.4],[-5.2,-1],[5.4,-1]].forEach(([x,z],i)=>{const hgt=[2.4,1.6,3.2,2,1.4,1.8][i];const b=M(rbox(2.6,hgt,2.6,.25),toon(cols[k++%5]),.9);P(b,x,hgt/2,z);
+  const rf=M(rbox(2.7,.25,2.7,.12),toon(0x3a4048),.7);P(rf,x,hgt+.12,z);
+  for(let wy=.6;wy<hgt-.3;wy+=.7)for(const wx of[-.6,.6]){const w=new THREE.Mesh(new THREE.PlaneGeometry(.42,.38),new THREE.MeshBasicMaterial({color:0xFFE6A6}));P(w,x+wx,wy,z+1.31)}});
+ [[-1.4,-5],[ -5,3.2],[3.2,-5.4]].forEach(([x,z])=>{P(M(new THREE.CylinderGeometry(.09,.12,.6,10),toon(0x6b4a33),.6),x,.3,z);P(M(new THREE.SphereGeometry(.55,18,14),toon(0x5FB27A),.8),x,.95,z)});
+ const pts=[[-6.3,1.5],[1.5,1.5],[1.5,-6.3]].map(([x,z])=>new THREE.Vector3(x,.06,z));
+ const cu=new THREE.CatmullRomCurve3([pts[0],new THREE.Vector3(.6,.06,1.5),new THREE.Vector3(1.5,.06,.6),pts[2]],false,'catmullrom',.1);
+ const tb=new THREE.Mesh(new THREE.TubeGeometry(cu,80,.09,8),new THREE.MeshBasicMaterial({color:new THREE.Color(G).convertSRGBToLinear()}));tb.scale.y=.4;P(tb,0,0,0);
+ const sc=scooter();sc.scale.setScalar(1.15);sc.rotation.z=.04;P(sc,-1.6,0,1.5);
+ const pin=M(new THREE.SphereGeometry(.35,20,16),toon(G),.8);P(pin,1.5,1.6,-6.0);P(M(new THREE.ConeGeometry(.22,.6,20).rotateX(Math.PI),toon(G),.8),1.5,1.15,-6.0);
+ R.render(S,C);
+ const [sx,sy]=proj(new THREE.Vector3(-2.8,.9,1.5));
+ svg(lines([[sx-30,sy-40,sx-170,sy+20],[sx-20,sy+10,sx-190,sy+80],[sx-40,sy-90,sx-150,sy-50]],'#F6F4EE',9)+puff(sx-200,sy+70,26,.85));
+ svg(`<g transform="translate(540,300)"><rect x="-150" y="-62" width="300" height="124" rx="62" fill="#F6F4EE" stroke="#15171a" stroke-width="8"/><circle cx="-88" cy="0" r="34" fill="#34D186"/><text x="-40" y="22" font-family="IDs" font-weight="700" font-size="62" fill="#15171a">8 min</text></g>`)}
+window.READY=true;})();
+</script></body></html>
