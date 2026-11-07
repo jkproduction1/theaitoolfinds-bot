@@ -1,0 +1,13 @@
+{
+ "url": "https://claude.ai",
+ "name": "10 Claude animation styles",
+ "tool_name": "10 Claude animation styles",
+ "keyword": "PENGUIN",
+ "summary_cs": "10 animačních stylů s jedním tučňákem se šálou (Pixel Waddle, Chalk Talk, Neon Line, Clay Toy, Comic Pop, Paper Cut, Blueprint, Ink Doodle, Brick Toy, Moonlight 3D), každý ~1,2 s na beat, hlas říká název stylu, konec mřížka + CTA. Všechno v kódu. Prompty pro DM: hf/videos/penguin10/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 16.2,
+ "domain": "claude.ai",
+ "created": "2026-11-07_1953",
+ "run_id": null,
+ "artifact": null
+}
