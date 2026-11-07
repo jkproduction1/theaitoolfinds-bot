@@ -28,15 +28,15 @@ if VO.exists():
     at=[.06]+[t+.05 for t in ST]+([] if (W/"voice_cta.mp3").exists() else [CTA+.3])
     for g,t0 in zip(groups,at):
         a0=max(0,int((g[0]["start"]-.03)*SR)); a1=int((g[-1]["end"]+.12)*SR); seg=v[a0:a1].copy(); f=int(.012*SR); seg[:f]*=np.linspace(0,1,f); seg[-f:]*=np.linspace(1,0,f)
-        put(seg,t0,1.0)
+        put(seg,t0,1.3)
     CV=W/"voice_cta.mp3"
     if CV.exists():
         raw=subprocess.run(["ffmpeg","-v","error","-i",str(CV),"-f","f32le","-ac","1","-ar",str(SR),"-"],capture_output=True,check=True).stdout
-        put(np.frombuffer(raw,np.float32).copy(),CTA+.3,1.0)
+        put(np.frombuffer(raw,np.float32).copy(),CTA+.3,1.3)
 out=np.clip(out,-1,1)
 with wave.open(str(W/"sfx.wav"),"wb") as f: f.setnchannels(2); f.setsampwidth(2); f.setframerate(SR); f.writeframes((out*32767).astype("<i2").tobytes())
 M=Path(__file__).resolve().parents[3]/"video/public/music"; hs=json.load(open(M/"tracks.json"))["t1"]["hook_start"]
 subprocess.run(["ffmpeg","-v","error","-y","-ss",str(hs),"-i",str(M/"t1.mp3"),"-i",str(W/"sfx.wav"),"-filter_complex",
-  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.32,afade=t=in:d=0.05,afade=t=out:st={DUR-1.0}:d=1.0[m];[m][1:a]amix=inputs=2:normalize=0,atrim=0:{DUR},alimiter=limit=0.89:attack=4:release=80[o]",
+  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.12,afade=t=in:d=0.05,afade=t=out:st={DUR-1.0}:d=1.0[m];[m][1:a]amix=inputs=2:normalize=0,atrim=0:{DUR},alimiter=limit=0.89:attack=4:release=80[o]",
   "-map","[o]","-ar","44100",str(W/"mix.wav")],check=True)
 print("ok")
