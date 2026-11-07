@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- revad landscape style frames (1920x1080, unofficial spec ad, all code). ?f=1 app listing + tap · 2 3D phones · 3 metal card · 4 globe + currency coins -->
+<style>
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Regular.otf);font-weight:400}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Medium.otf);font-weight:500}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-SemiBold.otf);font-weight:600}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Bold.otf);font-weight:700}
+:root{--k:#07070A;--w:#F6F6F4;--a1:#3D5AFE;--a2:#8B5CF6}
+html,body{margin:0;background:#000}
+#root{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:IDs,Inter,sans-serif;-webkit-font-smoothing:antialiased;background:var(--k);color:var(--w)}
+canvas{position:absolute;inset:0;width:1920px;height:1080px}
+.f{display:none;position:absolute;inset:0}
+/* F1 white page with faint layout grid + app listing card */
+#f1{background:var(--w)}
+#f1 .gl{position:absolute;background:rgba(10,10,20,.07)}
+.app{position:absolute;left:50%;top:50%;width:820px;height:190px;transform:translate(-50%,-50%);border-radius:44px;background:#0d0d12;color:#fff;display:flex;align-items:center;gap:34px;padding:0 40px;
+ box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 2px 6px rgba(0,0,0,.12),0 40px 90px rgba(20,20,40,.28)}
+.ico{width:118px;height:118px;border-radius:30px;flex:none;position:relative;overflow:hidden;background:conic-gradient(from 210deg at 35% 30%,#3D5AFE,#8B5CF6,#E15CF0,#3D5AFE);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.ico::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 30% 20%,rgba(255,255,255,.45),rgba(255,255,255,0) 60%)}
+.app .t{font-size:48px;font-weight:600;letter-spacing:-.02em}.app .s{font-size:30px;color:#9a9aa8;margin-top:6px}
+.app .r{font-size:26px;color:#7c7c8a;margin-top:10px;letter-spacing:.02em}.app .r b{color:#f2c94c;font-weight:600}
+.get{margin-left:auto;height:78px;padding:0 46px;border-radius:39px;background:linear-gradient(100deg,var(--a1),var(--a2));display:flex;align-items:center;font-size:34px;font-weight:600;position:relative;overflow:hidden;transform:scale(.96)}
+.get i{position:absolute;left:50%;top:50%;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.4),rgba(255,255,255,0) 65%)}
+.tap{position:absolute;width:92px;height:92px;border-radius:50%;border:3px solid rgba(255,255,255,.75);box-shadow:0 0 0 14px rgba(255,255,255,.12)}
+/* glows for dark frames */
+.col{position:absolute;left:50%;top:-10%;width:520px;height:120%;transform:translateX(-50%);background:radial-gradient(50% 50% at 50% 50%,rgba(108,72,255,.55),rgba(108,72,255,0) 70%);filter:blur(20px)}
+.small{position:absolute;right:56px;bottom:40px;font-size:20px;color:#55556a;letter-spacing:.02em}
+#grain{position:absolute;inset:-50%;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+</style>
+<script src="../uberad/media/three.min.js"></script><script src="../uberad/media/three-extras.js"></script><script src="../uberad/media/studio_exr.js"></script>
+</head><body><div id="root">
+<div class="f" id="bg2"><div class="col"></div></div>
+<canvas id="cv" width="1920" height="1080"></canvas>
+<div class="f" id="f1"></div>
+<div class="small">Unofficial spec ad · not affiliated with Revolut</div>
+<div id="grain"></div>
+</div>
+<script>
+const F=+(new URLSearchParams(location.search).get('f')||1);const W=1920,H=1080,$=id=>document.getElementById(id);
+function rnd(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+function b64buf(s){const bin=atob(s),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer}
+function canvasTex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t}
+function rrect(w,h,r){const s=new THREE.Shape(),x=-w/2,y=-h/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);return s}
+function rr2d(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+// ---------- the app screen, drawn as a texture (our own UI)
+function appScreen(variant){return canvasTex(780,1690,(g,w,h)=>{const F2='IDs, Inter, sans-serif';
+  const bg=g.createLinearGradient(0,0,0,h);bg.addColorStop(0,variant?'#1a1440':'#14143a');bg.addColorStop(.45,'#0b0b14');bg.addColorStop(1,'#07070a');g.fillStyle=bg;g.fillRect(0,0,w,h);
+  g.fillStyle='#fff';g.font=`600 38px ${F2}`;g.fillText('9:41',70,82);
+  g.fillStyle='#000';rr2d(g,w/2-120,30,240,70,35);g.fill();
+  g.fillStyle='rgba(255,255,255,.6)';g.font=`500 34px ${F2}`;g.textAlign='center';g.fillText(variant?'EUR · Euro':'Personal · EUR',w/2,240);
+  {const a=variant?'€1,850':'€3,204',c=variant?'.00':'.18';g.font=`600 128px ${F2}`;const wa=g.measureText(a).width;g.font=`600 64px ${F2}`;const wc=g.measureText(c).width;const x0=w/2-(wa+wc)/2;g.textAlign='left';g.fillStyle='#fff';g.font=`600 128px ${F2}`;g.fillText(a,x0,380);g.fillStyle='rgba(255,255,255,.6)';g.font=`600 64px ${F2}`;g.fillText(c,x0+wa+4,380);g.textAlign='center'}
+  const lab=['Add money','Move','Details'];lab.forEach((l,i)=>{const cx=w/2+(i-1)*210;const gr=g.createLinearGradient(cx-55,470,cx+55,580);gr.addColorStop(0,'#3D5AFE');gr.addColorStop(1,'#8B5CF6');g.fillStyle=i===0?gr:'rgba(255,255,255,.12)';g.beginPath();g.arc(cx,520,58,0,7);g.fill();
+    g.fillStyle='#fff';g.font=`600 54px ${F2}`;g.fillText(['+','⇄','i'][i],cx,538);g.fillStyle='rgba(255,255,255,.75)';g.font=`500 28px ${F2}`;g.fillText(l,cx,630)});
+  g.textAlign='left';g.fillStyle='rgba(255,255,255,.07)';rr2d(g,40,690,w-80,330,44);g.fill();
+  g.strokeStyle='#8B8CFF';g.lineWidth=6;g.beginPath();const R=rnd(variant?5:2);let y=930;for(let i=0;i<=24;i++){const x=80+i*(w-160)/24;y=Math.max(760,Math.min(980,y-(R()-.42)*46));i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke();
+  g.fillStyle='rgba(255,255,255,.55)';g.font=`500 28px ${F2}`;g.fillText('Spent this month',80,740);
+  const tx=[['Coffee','Today','−€3.40'],['Mom','Today','+€200.00'],['Groceries','Yesterday','−€46.12'],['Rent','1 Nov','−€740.00']];
+  tx.forEach(([a,b,c],i)=>{const y0=1080+i*140;g.fillStyle='rgba(255,255,255,.1)';g.beginPath();g.arc(100,y0+50,44,0,7);g.fill();g.fillStyle='#fff';g.font=`600 36px ${F2}`;g.fillText(a,170,y0+42);g.fillStyle='rgba(255,255,255,.45)';g.font=`500 28px ${F2}`;g.fillText(b,170,y0+84);
+    g.textAlign='right';g.fillStyle=c[0]==='+'?'#7ee2b8':'#fff';g.font=`600 36px ${F2}`;g.fillText(c,w-70,y0+60);g.textAlign='left'});
+})}
+if(F===1){const f=$('f1');f.style.display='block';let h='';[480,1440].forEach(x=>h+=`<div class="gl" style="left:${x}px;top:0;width:2px;height:1080px"></div>`);[300,780].forEach(y=>h+=`<div class="gl" style="left:0;top:${y}px;width:1920px;height:2px"></div>`);
+  h+=`<div class="app"><div class="ico"></div><div><div class="t">Revolut</div><div class="s">Banking &amp; Money</div><div class="r"><b>★ 4.7</b> · Finance · 50M+</div></div><div class="get">Get<i></i></div></div><div class="tap" style="left:1272px;top:494px"></div>`;f.innerHTML=h}
+else{$('bg2').style.display='block';
+ const ren=new THREE.WebGLRenderer({canvas:$('cv'),antialias:true,alpha:true,preserveDrawingBuffer:true});ren.setPixelRatio(1);ren.setSize(W,H,false);ren.outputEncoding=THREE.sRGBEncoding;ren.toneMapping=THREE.ACESFilmicToneMapping;
+ const sc=new THREE.Scene();const d=new THREE.EXRLoader().parse(b64buf(window.STUDIO_EXR));const tx=new THREE.DataTexture(d.data,d.width,d.height,d.format,d.type);tx.mapping=THREE.EquirectangularReflectionMapping;tx.minFilter=tx.magFilter=THREE.LinearFilter;tx.generateMipmaps=false;tx.flipY=false;tx.needsUpdate=true;
+ sc.environment=new THREE.PMREMGenerator(ren).fromEquirectangular(tx).texture;
+ const cam=new THREE.PerspectiveCamera(28,W/H,.1,100);const comp=new THREE.EffectComposer(ren);comp.setPixelRatio(1);comp.setSize(W,H);comp.addPass(new THREE.RenderPass(sc,cam));comp.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(960,540),.45,.6,.85));
+ const colT=canvasTex(256,512,(g,w,h)=>{const gr=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w*.5);gr.addColorStop(0,'rgba(120,80,255,.9)');gr.addColorStop(.5,'rgba(90,60,255,.35)');gr.addColorStop(1,'rgba(90,60,255,0)');g.fillStyle=gr;g.fillRect(0,0,w,h)});
+ const col=new THREE.Mesh(new THREE.PlaneGeometry(5,11),new THREE.MeshBasicMaterial({map:colT,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.7}));col.position.z=-4;sc.add(col);
+ const key=new THREE.DirectionalLight(0xffffff,.8);key.position.set(-3,4,6);sc.add(key);
+ const vio=new THREE.PointLight(0x7a52ff,40,14,2);vio.position.set(0,1,-2.5);sc.add(vio);const blu=new THREE.PointLight(0x3d5afe,22,14,2);blu.position.set(-3,-1,2);sc.add(blu);
+ function phone(tex){const G=new THREE.Group();const w=.78,h=1.62,dpt=.085;
+   const body=new THREE.Mesh(new THREE.ExtrudeGeometry(rrect(w,h,.13),{depth:dpt,bevelEnabled:true,bevelThickness:.012,bevelSize:.012,bevelSegments:5,curveSegments:24}),new THREE.MeshPhysicalMaterial({color:0x4a4b55,metalness:1,roughness:.32,clearcoat:.5,envMapIntensity:.7}));body.position.z=-dpt/2;G.add(body);
+   const back=new THREE.Mesh(new THREE.ShapeGeometry(rrect(w-.02,h-.02,.12),24),new THREE.MeshPhysicalMaterial({color:0x2a2a36,metalness:.3,roughness:.5}));back.position.z=-dpt/2-.013;back.rotation.y=Math.PI;G.add(back);
+   const sg=new THREE.ShapeGeometry(rrect(w-.05,h-.05,.11),24);const uv=sg.attributes.uv,p=sg.attributes.position;for(let i=0;i<uv.count;i++){uv.setXY(i,p.getX(i)/(w-.05)+.5,p.getY(i)/(h-.05)+.5)}
+   const scr=new THREE.Mesh(sg,new THREE.MeshBasicMaterial({map:tex,toneMapped:false}));scr.position.z=dpt/2+.013;G.add(scr);
+   const glass=new THREE.Mesh(new THREE.ShapeGeometry(rrect(w-.03,h-.03,.12),24),new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.05,transparent:true,opacity:.08,clearcoat:1,envMapIntensity:1.4}));glass.position.z=dpt/2+.016;G.add(glass);
+   return G}
+ if(F===2){const p1=phone(appScreen(0)),p2=phone(appScreen(1));p1.position.set(-.42,0,0);p1.rotation.set(-.08,.42,.06);p2.position.set(.5,.08,-.45);p2.rotation.set(-.05,-.38,-.05);sc.add(p1,p2);cam.position.set(0,.05,4.3);cam.lookAt(0,0,-.2)}
+ if(F===3){const G=new THREE.Group();sc.add(G);const cw=3.37,chh=2.125,th=.045;const geo=new THREE.ExtrudeGeometry(rrect(cw,chh,.17),{depth:th,bevelEnabled:true,bevelThickness:.012,bevelSize:.012,bevelSegments:4,curveSegments:16});geo.translate(0,0,-th/2);
+   const face=canvasTex(1024,646,(g,w,h)=>{const gr=g.createLinearGradient(0,h,w,0);gr.addColorStop(0,'#2b1e7a');gr.addColorStop(.5,'#3D5AFE');gr.addColorStop(1,'#E15CF0');g.fillStyle=gr;g.fillRect(0,0,w,h);const R=rnd(3);for(let i=0;i<2500;i++){g.fillStyle=`rgba(255,255,255,${R()*.035})`;g.fillRect(0,R()*h,w,1)}});
+   const uv=geo.attributes.uv,p=geo.attributes.position;for(let i=0;i<uv.count;i++)uv.setXY(i,p.getX(i)/cw+.5,p.getY(i)/chh+.5);
+   const card=new THREE.Mesh(geo,new THREE.MeshPhysicalMaterial({map:face,metalness:.75,roughness:.28,clearcoat:1,clearcoatRoughness:.08,iridescence:.5,iridescenceIOR:1.5,envMapIntensity:.9}));G.add(card);
+   const chip=new THREE.Mesh(new THREE.ExtrudeGeometry(rrect(.46,.36,.06),{depth:.01,bevelEnabled:true,bevelThickness:.004,bevelSize:.004,bevelSegments:2}),new THREE.MeshStandardMaterial({color:0xb08a3e,metalness:1,roughness:.35,envMapIntensity:.5}));chip.position.set(1.05,.12,th/2+.003);G.add(chip);
+   G.rotation.set(-.25,-.55,.18);G.position.z=.5;cam.position.set(0,0,9.5);cam.lookAt(0,0,0)}
+ if(F===4){const R0=1.35;const N=6000,pos=[];const blobs=[[50,15,22],[40,-5,18],[10,20,16],[-15,25,14],[55,90,30],[35,105,20],[-25,135,16],[45,-100,26],[15,-90,14],[-15,-60,18],[65,-40,10]];const rr=rnd(8);
+   const ll=(lat,lon,r)=>{const ph=(90-lat)*Math.PI/180,t=(lon+180)*Math.PI/180;return new THREE.Vector3(-r*Math.sin(ph)*Math.cos(t),r*Math.cos(ph),r*Math.sin(ph)*Math.sin(t))};
+   for(let i=0;i<16000;i++){const y=1-2*(i+.5)/16000,th=i*2.399963,lat=Math.asin(y)*180/Math.PI,lon=((th*180/Math.PI)%360)-180;if(blobs.some(([a,b,s])=>{const dl=Math.min(Math.abs(lon-b),360-Math.abs(lon-b));return Math.hypot(lat-a,dl*Math.cos(lat*Math.PI/180))<s+6*rr()})){const v=ll(lat,lon,R0);pos.push(v.x,v.y,v.z)}}
+   const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+   const dt=canvasTex(64,64,g=>{const gr=g.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.55,'rgba(255,255,255,.8)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(0,0,64,64)});
+   const globe=new THREE.Group();globe.add(new THREE.Points(pg,new THREE.PointsMaterial({size:.045,map:dt,transparent:true,depthWrite:false,color:0xdcdcff,toneMapped:false})));
+   globe.add(new THREE.Mesh(new THREE.SphereGeometry(R0*.99,64,48),new THREE.MeshStandardMaterial({color:0x0a0a12,roughness:.9,envMapIntensity:.1})));
+   globe.add(new THREE.Mesh(new THREE.SphereGeometry(R0*1.07,64,48),new THREE.ShaderMaterial({transparent:true,side:THREE.BackSide,depthWrite:false,blending:THREE.AdditiveBlending,vertexShader:'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 vN;void main(){float i=pow(.72-dot(vN,vec3(0,0,1.)),3.);gl_FragColor=vec4(.45,.38,1.,1.)*i*.8;}'})));
+   const A=ll(50.08,14.43,R0),B=ll(38.72,-9.14,R0),M=A.clone().add(B).multiplyScalar(.5).normalize().multiplyScalar(R0*1.5);const cv=new THREE.QuadraticBezierCurve3(A,M,B);
+   globe.add(new THREE.Mesh(new THREE.TubeGeometry(cv,100,.011,8),new THREE.MeshBasicMaterial({color:0xa9a6ff,toneMapped:false})));globe.add(new THREE.Mesh(new THREE.TubeGeometry(cv,100,.035,8),new THREE.MeshBasicMaterial({color:0x6a5cff,transparent:true,opacity:.35,blending:THREE.AdditiveBlending,depthWrite:false})));
+   globe.rotation.set(.35,-1.9,0);sc.add(globe);
+   const sym=['€','$','£','¥','₣','₹','₩','₺'];sym.forEach((s,i)=>{const t=canvasTex(256,256,g=>{g.fillStyle='#f4f4f6';g.beginPath();g.arc(128,128,124,0,7);g.fill();g.strokeStyle='#d8d8de';g.lineWidth=10;g.beginPath();g.arc(128,128,108,0,7);g.stroke();g.fillStyle='#0b0b12';g.font='700 130px IDs, Inter, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(s,128,136)});t.center.set(.5,.5);t.rotation=Math.PI/2;
+     const coin=new THREE.Mesh(new THREE.CylinderGeometry(.24,.24,.05,48),[new THREE.MeshStandardMaterial({color:0x9a9aa4,metalness:.8,roughness:.35,envMapIntensity:.4}),new THREE.MeshStandardMaterial({map:t,color:0xbdbdc6,metalness:.1,roughness:.5,envMapIntensity:.25}),new THREE.MeshStandardMaterial({map:t,color:0xbdbdc6,metalness:.1,roughness:.5,envMapIntensity:.25})]);
+     const a=i/sym.length*Math.PI*2+.3;coin.position.set(Math.cos(a)*2.35,Math.sin(a)*.55+.05,Math.sin(a)*1.1);coin.rotation.set(-Math.PI/2+.25,Math.PI,a*.15);sc.add(coin)});
+   cam.position.set(0,.6,8.6);cam.lookAt(0,0,0);vio.intensity=3;blu.intensity=2;key.intensity=.6;col.material.opacity=.35}
+ comp.render()}
+window.READY=true;
+</script></body></html>
