@@ -1,0 +1,9 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code film commands",
+ "keyword": "FILMS",
+ "angle": "app-demo",
+ "cover_at": 4.9,
+ "summary_cs": "App demo „Type it, get it #7“ (Jan live): /zack-d-films skok na Měsíci (astronaut, Země, prach v obloucích, gravitace 1/6), /neon-silhouette panáček běží nočním městem, /ink-doodle panáčkovi vítr vezme deštník. Všechno v kódu, prompty pro DM v hf/videos/films7/prompts.md.",
+ "caption": "Type one command and Claude makes the short film.\n\nPart #7 of a daily series.\n\nComment FILMS and I'll DM you the link.\n\n#claudecode #animation #aitools"
+}
