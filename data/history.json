@@ -436,5 +436,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#films7",
     "date": "2026-11-07_2210",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code space commands",
+    "domain": "code.claude.com/docs/en/slash-commands#space7",
+    "date": "2026-11-07_2235",
+    "source": "hyperframes"
   }
 ]
