@@ -2,7 +2,7 @@
 const W=600,H=1067, CARD={x:440,y:410,w:600,h:1067,r:34};
 const BEAT=0.3946, Bk=k=>BEAT*k;
 const ST=[0,...Array.from({length:9},(_,i)=>Bk(4+3*i))];   // style starts (0, 1.58, 2.76 … 11.03)
-const CTA=Bk(31), END=14.6, WIPE=0.22;
+const CTA=Bk(31), END=16.2, WIPE=0.22;
 const NAMES=['Pixel Waddle','Chalk Talk','Neon Line','Clay Toy','Comic Pop','Paper Cut','Blueprint','Ink Doodle','Brick Toy','Moonlight 3D'];
 const V2=150;                         // 2D world scroll px/s (card units)
 const GY=H*0.72, PX=W*0.47, PK=1.05;  // penguin ground y, x, scale

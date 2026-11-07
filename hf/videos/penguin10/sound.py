@@ -1,7 +1,7 @@
 """penguin10 sound: house track t1 from its hook + soft SFX on every style switch (wipe swish L→R + glassy tick), tile pops + chime at the CTA."""
 import numpy as np, subprocess, sys, wave, json
 from pathlib import Path
-SR=44100; DUR=14.6; N=int(SR*DUR); rng=np.random.default_rng(3); out=np.zeros((N,2))
+SR=44100; DUR=16.2; N=int(SR*DUR); rng=np.random.default_rng(3); out=np.zeros((N,2))
 BEAT=.3946; ST=[BEAT*(4+3*i) for i in range(9)]; CTA=BEAT*31
 def put(x,at,g=1.0,pan=0.0):
     i=int(at*SR); j=min(N,i+len(x)); x=x[:j-i]*g
@@ -25,10 +25,14 @@ if VO.exists():
     v=np.frombuffer(raw,np.float32); words=json.load(open(W/"voice.json"))
     groups=[];i=0
     for n in [2,2,2,2,2,2,1,2,2,2,2]: groups.append(words[i:i+n]); i+=n
-    at=[.06]+[t+.05 for t in ST]+[CTA+.3]
+    at=[.06]+[t+.05 for t in ST]+([] if (W/"voice_cta.mp3").exists() else [CTA+.3])
     for g,t0 in zip(groups,at):
         a0=max(0,int((g[0]["start"]-.03)*SR)); a1=int((g[-1]["end"]+.12)*SR); seg=v[a0:a1].copy(); f=int(.012*SR); seg[:f]*=np.linspace(0,1,f); seg[-f:]*=np.linspace(1,0,f)
         put(seg,t0,1.0)
+    CV=W/"voice_cta.mp3"
+    if CV.exists():
+        raw=subprocess.run(["ffmpeg","-v","error","-i",str(CV),"-f","f32le","-ac","1","-ar",str(SR),"-"],capture_output=True,check=True).stdout
+        put(np.frombuffer(raw,np.float32).copy(),CTA+.3,1.0)
 out=np.clip(out,-1,1)
 with wave.open(str(W/"sfx.wav"),"wb") as f: f.setnchannels(2); f.setsampwidth(2); f.setframerate(SR); f.writeframes((out*32767).astype("<i2").tobytes())
 M=Path(__file__).resolve().parents[3]/"video/public/music"; hs=json.load(open(M/"tracks.json"))["t1"]["hook_start"]
