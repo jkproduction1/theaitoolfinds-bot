@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- revad: 13 s landscape spec ad "Money that travels with you." — all code. window.setT(t) renders time t. Story: install → land in New York →
+exchange at the real rate → pay a coffee with the card → spend like a local → end card. -->
+<style>
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Regular.otf);font-weight:400}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Medium.otf);font-weight:500}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-SemiBold.otf);font-weight:600}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Bold.otf);font-weight:700}
+:root{--k:#07070A;--w:#F6F6F4;--a1:#3D5AFE;--a2:#8B5CF6;--g:#7ee2b8;--mut:#8e8ea0}
+html,body{margin:0;background:#000}
+#root{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:IDs,Inter,sans-serif;-webkit-font-smoothing:antialiased;background:var(--k);color:var(--w)}
+canvas{position:absolute;inset:0;width:1920px;height:1080px}
+.L{position:absolute;inset:0;opacity:0}
+/* S1 app listing */
+#s1{background:var(--w)}#s1 .gl{position:absolute;background:rgba(10,10,20,.07)}
+.app{position:absolute;left:50%;top:50%;width:820px;height:190px;margin:-95px 0 0 -410px;border-radius:44px;background:#0d0d12;color:#fff;display:flex;align-items:center;gap:34px;padding:0 40px;box-sizing:border-box;box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 2px 6px rgba(0,0,0,.12),0 40px 90px rgba(20,20,40,.28)}
+.ico{width:118px;height:118px;border-radius:30px;flex:none;position:relative;overflow:hidden;background:conic-gradient(from 210deg at 35% 30%,#3D5AFE,#8B5CF6,#E15CF0,#3D5AFE);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.ico::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 60% at 30% 20%,rgba(255,255,255,.45),rgba(255,255,255,0) 60%)}
+.app .t{font-size:48px;font-weight:600;letter-spacing:-.02em}.app .s{font-size:30px;color:#9a9aa8;margin-top:6px}.app .r{font-size:26px;color:#7c7c8a;margin-top:10px}.app .r b{color:#f2c94c;font-weight:600}
+#get{margin-left:auto;height:78px;width:150px;border-radius:39px;background:linear-gradient(100deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:600;position:relative}
+.rip{position:absolute;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.35);transform:translate(-50%,-50%) scale(0);pointer-events:none}
+.tapd{position:absolute;width:86px;height:86px;border-radius:50%;border:3px solid rgba(255,255,255,.8);box-shadow:0 0 0 12px rgba(255,255,255,.14);transform:translate(-50%,-50%);opacity:0}
+#grow{position:absolute;background:var(--k);opacity:0}
+/* S3 exchange */
+#s3 .lab{position:absolute;left:220px;top:230px;font-size:30px;color:var(--mut);letter-spacing:.02em}
+#s3 .pair{position:absolute;left:220px;top:275px;font-size:64px;font-weight:600;letter-spacing:-.03em}#s3 .pair span{color:var(--mut);font-weight:500}
+#s3 .chg{position:absolute;left:220px;top:365px;font-size:30px;color:var(--g)}
+#s3 svg{position:absolute;left:180px;top:420px}
+#pill{position:absolute;padding:14px 26px;border-radius:40px;background:#fff;color:var(--k);font-size:34px;font-weight:600;transform:translate(-50%,-140%);box-shadow:0 14px 40px rgba(0,0,0,.4)}
+.conv{position:absolute;left:1160px;top:300px;width:560px;border-radius:44px;background:#14141c;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 40px 100px rgba(0,0,0,.6);padding:40px 44px;box-sizing:border-box}
+.row{display:flex;align-items:center;gap:22px;padding:22px 0}.row+.row{border-top:1px solid #23232e}
+.flag{width:64px;height:64px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700}
+.cur{font-size:40px;font-weight:600}.cur small{display:block;font-size:26px;color:var(--mut);font-weight:500;margin-top:4px}
+.amt{margin-left:auto;font-size:60px;font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.swap{position:absolute;left:62%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:linear-gradient(140deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 0 10px #14141c}
+#exb{margin-top:26px;height:110px;border-radius:55px;background:linear-gradient(100deg,var(--a1),var(--a2));display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:600;position:relative;overflow:hidden}
+/* paid toast (S4) */
+#paid{position:absolute;left:50%;top:150px;height:120px;padding:0 44px 0 30px;border-radius:60px;background:rgba(20,20,28,.88);backdrop-filter:blur(20px);display:flex;align-items:center;gap:22px;transform:translateX(-50%);opacity:0;box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);font-size:40px;font-weight:600;white-space:nowrap}
+#paid i{width:64px;height:64px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center}
+#paid small{color:var(--mut);font-weight:500;font-size:32px}
+/* white slogan */
+.slog{position:absolute;inset:0;background:var(--w);color:var(--k);display:flex;align-items:center;justify-content:center;font-size:66px;font-weight:600;letter-spacing:-.035em}
+/* S6 spending */
+#s6 .hd{position:absolute;left:560px;top:190px;font-size:30px;color:var(--mut);letter-spacing:.02em}
+#s6 .bal{position:absolute;left:560px;top:232px;font-size:112px;font-weight:600;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.tx{position:absolute;left:560px;width:800px;height:118px;display:flex;align-items:center;gap:30px;border-bottom:1px solid #1c1c26}
+.tx i{width:78px;height:78px;border-radius:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:36px;font-style:normal}
+.tx b{font-size:40px;font-weight:600}.tx span{display:block;font-size:28px;color:var(--mut);margin-top:4px;font-weight:500}
+.tx em{margin-left:auto;font-style:normal;font-size:42px;font-weight:600;font-variant-numeric:tabular-nums}
+/* end */
+#end{background:var(--k);display:flex;flex-direction:column;align-items:center;justify-content:center}
+#end h1{margin:0;font-size:150px;font-weight:600;letter-spacing:-.045em}
+#end p{margin:18px 0 0;font-size:44px;color:#a9a9b8;font-weight:500;letter-spacing:-.015em}
+#grain{position:absolute;inset:-50%;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+</style>
+<script src="../uberad/media/three.min.js"></script><script src="../uberad/media/three-extras.js"></script><script src="../uberad/media/studio_exr.js"></script>
+</head><body><div id="root">
+<canvas id="cv" width="1920" height="1080"></canvas>
+<div class="L" id="s1"><div class="gl" style="left:480px;top:0;width:2px;height:1080px"></div><div class="gl" style="left:1440px;top:0;width:2px;height:1080px"></div><div class="gl" style="left:0;top:300px;width:1920px;height:2px"></div><div class="gl" style="left:0;top:780px;width:1920px;height:2px"></div>
+ <div class="app" id="app"><div class="ico"></div><div><div class="t">Revolut</div><div class="s">Banking &amp; Money</div><div class="r"><b>★ 4.7</b> · Finance · 50M+</div></div><div id="get">Get<div class="rip" id="rip1"></div></div></div><div class="tapd" id="tap1"></div><div id="grow"></div></div>
+<div class="L" id="s3"></div>
+<div id="paid"><i><svg width="34" height="34" viewBox="0 0 34 34"><path d="M7 18 L14 25 L27 10" fill="none" stroke="#07070A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Paid $4.50 <small>· Coffee</small></div>
+<div class="L slog" id="s5">Spend like a local.</div>
+<div class="L" id="s6"><div class="hd">USD · DOLLAR ACCOUNT</div><div class="bal" id="bal">$542.10</div>
+ <div class="tx" id="t0" style="top:430px"><i style="background:#2a1f14">☕</i><div><b>Coffee</b><span>Brooklyn · 08:12</span></div><em>−$4.50</em></div>
+ <div class="tx" id="t1" style="top:548px"><i style="background:#14202a">🚇</i><div><b>Metro</b><span>Manhattan · 09:40</span></div><em>−$2.90</em></div>
+ <div class="tx" id="t2" style="top:666px"><i style="background:#1d1630">🏨</i><div><b>Hotel</b><span>2 nights · 11:05</span></div><em>−$189.00</em></div></div>
+<div class="L" id="end"><h1>Revolut</h1><p>Money that travels with you.</p></div>
+<div id="grain"></div>
+</div>
+<script src="scene.js"></script>
+</body></html>
