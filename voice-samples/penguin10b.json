@@ -1,0 +1,42 @@
+[
+ {
+  "word": "Comment",
+  "start": 0.0,
+  "end": 0.31
+ },
+ {
+  "word": "penguin",
+  "start": 0.39,
+  "end": 0.79
+ },
+ {
+  "word": "and",
+  "start": 0.87,
+  "end": 1.11
+ },
+ {
+  "word": "I'll",
+  "start": 1.15,
+  "end": 1.27
+ },
+ {
+  "word": "send",
+  "start": 1.35,
+  "end": 1.43
+ },
+ {
+  "word": "you",
+  "start": 1.51,
+  "end": 1.55
+ },
+ {
+  "word": "the",
+  "start": 1.59,
+  "end": 1.67
+ },
+ {
+  "word": "link",
+  "start": 1.83,
+  "end": 2.0749886621315192
+ }
+]
