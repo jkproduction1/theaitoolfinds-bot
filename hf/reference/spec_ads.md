@@ -29,3 +29,15 @@ Jan: we do NOT want to look like these. We have our own style; use this file onl
 - **UI is real-product quality:** rounded cards, soft 2-layer shadows, slight 3D tilt and depth layering, nothing generic.
 - **End reveal grows out of the hero object** (circle wipe / zoom through), tagline types on, small CTA.
 - 10–15 s is the sweet spot; steady VO rhythm, 2–3 words per beat; text never cropped, generous margins.
+
+## Learnings from Luca's (DrillUp) public guide "How I made the Clawd skill video" (Jan sent it, 2026-11-07)
+- **Open with a feeling/moment, not the product or logo.** The logo moment is when people scroll away.
+- **Exactly 3 named colours** and where each goes; never let the model pick new colours per scene.
+- **Every scene has a job** (problem → proof → twist → answer → build-up → rules → end). Plan per scene: start second,
+  what moves, what the viewer should feel. A scene without a job goes.
+- **One continuous camera, no cuts**; every move starts and stops softly like a real camera.
+- **Sound is written down per event**: which sound, how loud, why. The model can't hear the video, so the plan must say it.
+- **No slow outro.** End with one short CTA right after the message and stop (retention: a 5 s dead ending on a 16 s
+  video means < 70 % watched → less reach).
+- His per-video prompt is ~3,000 words (every colour, timing, camera path, sound, checks); the reusable rules live in a
+  skill file Claude loads once. Business: free in-browser test → paid prompts + skill.

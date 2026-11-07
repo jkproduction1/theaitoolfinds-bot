@@ -132,6 +132,8 @@ so prefer brands whose world we render best (cards, globes, UI, abstract 3D) —
 No big headline text pinned on top of the visuals (reads like a talking-head video). Text only as short, small, centred
 slogans on their own clean black/white beat ("Track your expenses"), like a product film. **Everything is 9:16 (1080x1920),
 spec ads too** (Jan, 2026-11-07; the 16:9 Revolut v1/v2 was a mistake).
+From Luca's guide (hf/reference/spec_ads.md): open on a feeling not the logo, 3 named colours, every scene has a job,
+sound planned per event, NO slow outro (short CTA then stop).
 Transitions on motion (Jan, revad v2): outgoing layer does a small slow anticipation against the direction, then whips fast
 with directional motion blur (SVG feGaussianBlur on the layer/canvas); the incoming layer arrives in the SAME direction and
 decelerates (expo-out). Cuts on the music beat grid. Every scene keeps a subtle continuous move (slow push-in or drift).
