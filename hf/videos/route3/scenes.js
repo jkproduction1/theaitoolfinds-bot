@@ -106,11 +106,10 @@ function pinMesh(color,num){ const g=new THREE.Group(); const m=new THREE.MeshSt
   SCN[0]=function(lt0){ const lt=lt0*1.35; const u=easeIO(cl((lt-0.05)/2.3)); line.geometry.setDrawRange(0,Math.floor(u*TUB)*6); casing.geometry.setDrawRange(0,Math.floor(u*TUB)*6);
     const h=path.getPointAt(Math.max(0.0001,u)), b=path.getPointAt(Math.max(0,u-0.07)), a=path.getPointAt(Math.min(1,u+0.05));
     puck.position.set(h.x,0.2,h.z); halo.scale.setScalar(1+0.35*((lt*1.6)%1)); halo.material.opacity=0.5*(1-((lt*1.6)%1));
-    const dir=h.clone().sub(b); dir.y=0; if(dir.lengthSq()<1e-4) dir.set(1,0,0); dir.normalize();
-    const follow=new THREE.Vector3(h.x-dir.x*9,27,h.z-dir.z*9+4), flook=new THREE.Vector3(h.x,0,h.z);
-    const ov=easeIO(cl((lt-2.0)/1.0)); const over=new THREE.Vector3(6,78,40), olook=new THREE.Vector3(6,0,9);
-    const tp=follow.lerp(over,ov), tl2=flook.lerp(olook,ov);
-    camP.copy(tp); camL.copy(tl2);
+    const z=easeIO(cl((lt-0.0)/2.7));
+    const l0=new THREE.Vector3(-19,0,-15), l1=new THREE.Vector3(-2,0,2.5);
+    const p0=l0.clone().add(new THREE.Vector3(13,40,13)), p1=l1.clone().add(new THREE.Vector3(33,104,33));
+    camP.lerpVectors(p0,p1,z); camL.lerpVectors(l0,l1,z);
     cam.position.copy(camP); cam.lookAt(camL);
     const pd=cl((lt-2.35)/0.45); pin.visible=lt>2.35; pin.position.set(hotelC[0],4.4+(1-easeOut2(pd))*9,hotelC[1]); pin.scale.setScalar(3.4*(0.6+0.4*backOut(pd)));
     hring.material.opacity=0.85*cl((lt-2.6)/0.3); hring.scale.setScalar(1+0.15*Math.sin(lt*6));

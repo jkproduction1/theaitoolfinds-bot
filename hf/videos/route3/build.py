@@ -47,7 +47,7 @@ DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, titl
     (12, (14, 15), (16, 18), 19, "holo-scan", "a hydro dam", "hydro dam hologram", "Water spins the turbines.", 3, "Hologram scan of anything"),
     (23, (25, 26), (27, 31), 32, "iso-flow", "from home to the shop", "home-to-shop flow", "Every stop, step by step.", 1, "Isometric step-by-step flow"),
 ]
-SER = json.loads((HERE.parent.parent.parent / "data" / "series.json").read_text())["app_demo"]["next"]
+SER = 6  # released as "Type it, get it #6" (series.json was bumped after release)
 CMD = "route-map"
 TY = []
 for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
