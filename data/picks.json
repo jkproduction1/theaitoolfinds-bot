@@ -1,51 +1,51 @@
 {
-  "date": "2026-11-06",
-  "category": "coding",
+  "date": "2026-11-07",
+  "category": "github",
   "items": [
-    {
-      "name": "muse4ai",
-      "url": "https://github.com/andrew-babo/muse4ai",
-      "desc": "Muse4AI \u2014 let your AI agent make the pictures and the videos. Local Windows bridge for Muse via REST, MCP, and OAuth.",
-      "source": "gh-search",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
-    {
-      "name": "auto-ontology",
-      "url": "https://github.com/NVIDIA/auto-ontology",
-      "desc": "Star                    NVIDIA /   auto-ontology      Auto Ontology is a Python framework for building semantic, graph-based reasoning layers over data. It enables deterministic query generation, better context retrieval, and more explainable AI for LLM and ag",
-      "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
-    {
-      "name": "OpenMontage",
-      "url": "https://github.com/calesthio/OpenMontage",
-      "desc": "Sponsor                           Star                    calesthio /   OpenMontage      World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assis",
-      "source": "gh-trending",
-      "angle": "wow-demo",
-      "score": 7,
-      "why": ""
-    },
     {
       "name": "rea-video",
       "url": "https://github.com/JuneYaooo/rea-video",
       "desc": "Reverse-engineer any video, shot by shot: tells whether each shot was filmed, AI-generated or coded, how the captions, cuts and audio were made, and how to remake it. \u9006\u5411\u4e00\u5207\u89c6\u9891\uff0c\u9010\u955c\u62c6\u51fa\u5236\u4f5c\u65b9\u5f0f\u5e76\u7ed9\u51fa\u590d\u523b\u65b9\u6848\u3002",
       "source": "gh-search",
       "angle": "wow-demo",
-      "score": 7,
-      "why": ""
+      "score": 9.0,
+      "why": "Rozebere libovoln\u00e9 video z\u00e1b\u011br po z\u00e1b\u011bru a prozrad\u00ed p\u0159esn\u00fd postup replikace."
     },
     {
-      "name": "roblox-studio-mcp",
-      "url": "https://github.com/HerdBuilderEstimate/roblox-studio-mcp",
-      "desc": "Model Context Protocol server for Roblox Studio. Connect AI assistants (Claude, Cursor) to read object trees, edit scripts, and run playtests safely. Open-source and lightweight",
+      "name": "openjutsu",
+      "url": "https://github.com/D3voz/openjutsu",
+      "desc": "One-click character swap for videos: an open-source, local Higgsfield Genjutsu alternative built on ComfyUI and MiniMax H3, with FLUX.3 Klein relighting.",
+      "source": "gh-search",
+      "angle": "free-alternative",
+      "score": 8.0,
+      "why": "Lok\u00e1ln\u00ed open-source alternativa k placen\u00e9mu Higgsfield pro bleskovou v\u00fdm\u011bnu postav ve videu."
+    },
+    {
+      "name": "OpenMontage",
+      "url": "https://github.com/calesthio/OpenMontage",
+      "desc": "Sponsor                           Star                    calesthio /   OpenMontage      World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assis",
+      "source": "gh-trending",
+      "angle": "trending-repo",
+      "score": 8.0,
+      "why": "Kompletn\u00ed open-source syst\u00e9m pro automatizovanou tvorbu a st\u0159ih vide\u00ed pomoc\u00ed AI agent\u016f."
+    },
+    {
+      "name": "cicada",
+      "url": "https://github.com/wquguru/cicada",
+      "desc": "\u77e5\u4e86 Cicada \u00b7 \u4efb\u4f55\u4f1a\u8bae\u548c\u76f4\u64ad\u7684\u5b9e\u65f6\u5b57\u5e55\u3001\u540c\u58f0\u4f20\u8bd1\u3001AI \u4f1a\u8bae\u7eaa\u8981\uff0cMac\u3001Windows\u3001Linux\u3001Android \u514d\u8d39\u5f00\u6e90\u3002Live subtitles, interpreting and meeting notes for any call or stream, on Mac, Windows, Linux and Android.",
+      "source": "gh-search",
+      "angle": "free-alternative",
+      "score": 8.0,
+      "why": "Bezplatn\u00e1 open-source n\u00e1hrada placen\u00fdch n\u00e1stroj\u016f na \u017eiv\u00e9 titulky, p\u0159eklady a z\u00e1pisy sch\u016fzek."
+    },
+    {
+      "name": "poki",
+      "url": "https://github.com/JosssphZhou/poki",
+      "desc": "Let AI agents operate a real iPhone. Local MCP server and agent, no jailbreak, no extra hardware.",
       "source": "gh-search",
       "angle": "wow-demo",
-      "score": 7,
-      "why": ""
+      "score": 8.0,
+      "why": "Umo\u017e\u0148uje AI agent\u016fm autonomn\u011b ovl\u00e1dat re\u00e1ln\u00fd iPhone bez nutnosti jailbreaku."
     }
   ],
   "picked": []
