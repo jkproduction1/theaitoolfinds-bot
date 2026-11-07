@@ -1,10 +1,2 @@
-[discover] github_trending: 16
-[discover] github_search: 58
-[discover] hf_spaces: 60
-[discover] reddit r/StableDiffusion: HTTP 403
-[discover] reddit: 0
-[discover] hackernews: 25
-[discover] 0 from queue, 131 candidates total
-[llm] attempt 1 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
-[llm] attempt 2 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
-[main] top picks: rea-video 9 wow-demo | openjutsu 8 free-alternative | OpenMontage 8 trending-repo | cicada 8 free-alternative | poki 8 wow-demo | digital-human-koubo 8 free-alternative | Claude-Code-Game-Studios 8 wow-demo | cinecode 7 wow-demo
+[telegram] sent 2026-11-07_1143_route3 for approval
+released 2026-11-07_1143_route3
