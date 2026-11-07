@@ -102,6 +102,23 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   `data/retention.md` (one line per video). Step 0 reads that file; on Sunday ask Jan for this week's screenshots in the summary.
 - Never more than 3 posts a day.
 
+## 3d. 3D styles in code (Jan, 2026-11-07) — proven looks + the new "3D spec ad" format
+All 3D is three.js drawn in code (no AI images/video), rendered by HyperFrames. Copy the closest scene, don't start blank:
+- `/route-map` (hf/videos/route3, S0): soft white 3D city, blue route ribbon draws itself. **Camera: calm pull-back from the
+  start to an overview that keeps the whole route in frame. Never a tight chase-cam behind the puck** (Jan: confusing).
+- `/holo-scan` (route3 S1): blue additive wireframe hologram on a projector base, clipping-plane scan rising, orange working parts.
+- `/iso-flow` (route3 S2): light isometric slab, orthographic camera, soft shadows, car on a road, numbered pins pop in.
+- `/explain-3d`, `/x-ray`, `/explode`… (inside3, zoom3, mega3): studio HDRI + bloom + cutaways + leader-line labels.
+- Ribbon geometry needs `side: DoubleSide` (else it is back-face culled and invisible). Avoid fog on far overview shots.
+**Format "3D spec ad"** (reference: hf/reference + Jan's Strava example): a 13–20 s cinematic ad for a real app, built in code.
+Jan films his real screen (Claude Code writing the code + the ad playing), we deliver only the clean 9:16 ad (no UI, no handle)
+plus the prompt. Rules: a short STORY with a payoff (e.g. uberad "3 %": phone dying, ride home, screen dies on arrival);
+one continuous camera move; a locked palette (5–6 colours) and one typeface; expo-out arrivals, slow inOut camera, soft
+springs on UI; quiet emotional SFX, no cringe voice jokes. Brand name only as plain text + "Unofficial spec ad · not affiliated";
+**never draw real logos, logotypes or mascots** (plain-text name + brand colours + the product's world instead).
+Paid "3D Ad Kit" (Gumroad/Payhip idea) = generic prompts/templates only, no brand names or colours.
+Process: style frames (stills from the real code) → Jan's OK → animation → render → director review → final.
+
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`),
    `data/learnings.md` and `data/retention.md` (Jan's watch-time screenshots). Prefer topic types and hook patterns that are winning; avoid the losing ones. On Wednesday and Sunday runs (Jan, 2026-11-04: analyse more often),
