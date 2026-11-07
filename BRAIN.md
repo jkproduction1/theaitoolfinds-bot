@@ -129,6 +129,9 @@ Sweat invisible details: overshoot ≤3 %, 40 ms staggers, odometer numbers, str
 Jan's notes on uberad v3: open on a real phone mock-up with the app inside (not bare UI); never a flat full-colour card with
 just a word on it (reads cheap); key beats (e.g. "Your ride is here") stay readable ≥1.2 s; our code-built car looks toy-like,
 so prefer brands whose world we render best (cards, globes, UI, abstract 3D) — next: Revolut (hf/videos/revad).
+No big headline text pinned on top of the visuals (reads like a talking-head video). Text only as short, small, centred
+slogans on their own clean black/white beat ("Track your expenses"), like a product film. Spec ads for Jan's monitor shots
+are LANDSCAPE (1920x1080), he films the monitor himself.
 **Skim `hf/reference/spec_ads.md` for smoothness principles only — we build OUR OWN style, never copy those ads** (5 analysed references: one world/one camera, object continuity,
 kinetic type with one key word in an accent pill, story = the product's core mechanic, end reveal grows out of the hero object).
 
