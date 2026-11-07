@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code space commands",
+ "tool_name": "Claude Code space commands",
+ "keyword": "SPACE",
+ "summary_cs": "App demo „Type it, get it #7“ (Jan live), celé vesmír: /zack-d-films skok na Měsíci (astronaut se zlatým hledím, Země, prach v obloucích, gravitace 1/6), /explain-3d sluneční soustava (8 planet, popisky), /deep-dive jak funguje černá díra (akreční disk, horizont událostí, hvězda roztažená do proudu). Vše v kódu, prompty pro DM v hf/videos/space7/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 20.9,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-07_2235",
+ "run_id": null,
+ "artifact": null
+}
