@@ -1,0 +1,9 @@
+{
+ "url": "https://claude.ai",
+ "tool_name": "10 Claude animation styles",
+ "keyword": "PENGUIN",
+ "angle": "styles-list",
+ "cover_at": 13.6,
+ "summary_cs": "10 animačních stylů s jedním tučňákem se šálou (Pixel Waddle, Chalk Talk, Neon Line, Clay Toy, Comic Pop, Paper Cut, Blueprint, Ink Doodle, Brick Toy, Moonlight 3D), každý ~1,2 s na beat, hlas říká název stylu, konec mřížka + CTA. Všechno v kódu. Prompty pro DM: hf/videos/penguin10/prompts.md.",
+ "caption": "Same penguin, 10 animation styles. Every frame made by Claude in code.\n\nComment PENGUIN and I'll DM you all 10 prompts.\n\n#claude #animation #aitools"
+}
