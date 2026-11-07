@@ -4,7 +4,7 @@ import sys, asyncio, os
 from pathlib import Path
 from playwright.async_api import async_playwright
 from PIL import Image, ImageChops
-HTML=str(Path(__file__).with_name('scene.html')); out=Path(sys.argv[1]); out.mkdir(parents=True,exist_ok=True)
+HTML=str(Path(__file__).with_name(os.environ.get('SCENE','scene.html'))); out=Path(sys.argv[1]); out.mkdir(parents=True,exist_ok=True)
 a,b=int(sys.argv[2]),int(sys.argv[3]); SUB=int(sys.argv[4]) if len(sys.argv)>4 else 1
 async def main():
     async with async_playwright() as p:

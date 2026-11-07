@@ -1,0 +1,104 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- uberad v3: unofficial spec ad, all code. UI beats (black/white) alternate with 3D shots; the blue ETA chip is the hero object. ?t= renders a moment. -->
+<style>
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Regular.otf);font-weight:400}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Medium.otf);font-weight:500}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-SemiBold.otf);font-weight:600}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Bold.otf);font-weight:700}
+:root{--k:#0A0A0B;--g:#1C1D20;--w:#F5F5F2;--b:#276EF1;--mut:#8A8C92}
+html,body{margin:0;background:var(--k)}
+#root{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--k);font-family:IDs,Inter,sans-serif;color:var(--w);-webkit-font-smoothing:antialiased}
+canvas#cv{position:absolute;inset:0;width:1080px;height:1920px}
+.scr{position:absolute;inset:0;opacity:0}
+/* S1 white app */
+#s1{background:var(--w);color:var(--k)}
+.sb{position:absolute;left:90px;right:90px;top:60px;display:flex;justify-content:space-between;font-weight:600;font-size:40px}
+.sb i{display:inline-block;width:70px;height:34px;border:4px solid currentColor;border-radius:11px;opacity:.5;position:relative;top:4px}
+.sb i::before{content:'';position:absolute;left:4px;top:4px;bottom:4px;width:44px;background:currentColor;border-radius:3px}
+#s1 h2{position:absolute;left:90px;top:230px;margin:0;font-size:88px;font-weight:700;letter-spacing:-.04em;line-height:1}
+#where{position:absolute;left:90px;right:90px;top:380px;height:150px;border-radius:40px;background:#EAEAE6;display:flex;align-items:center;padding:0 50px;font-size:54px;font-weight:500;letter-spacing:-.02em;color:#7d7f85}
+#where b{width:24px;height:24px;background:var(--k);margin-right:38px;flex:none}
+#where .ty{color:var(--k)}#where .ca{display:inline-block;width:5px;height:60px;background:var(--b);margin-left:4px}
+.card{position:absolute;left:90px;right:90px;height:190px;border-radius:44px;background:#fff;box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 2px 4px rgba(10,10,11,.06),0 24px 60px rgba(10,10,11,.10);display:flex;align-items:center;gap:40px;padding:0 50px;opacity:0}
+.card .car{width:150px;height:84px;border-radius:24px;background:linear-gradient(180deg,#2a2c31,#121316);flex:none;position:relative}
+.card .car::after{content:'';position:absolute;left:18px;right:18px;top:14px;height:26px;border-radius:12px;background:#3d4047}
+.card .t{font-size:52px;font-weight:600;letter-spacing:-.025em}.card .s{font-size:36px;color:var(--mut);margin-top:6px}
+.card .p{margin-left:auto;font-size:48px;font-weight:600}
+.card.sel{box-shadow:0 0 0 5px var(--k),0 24px 60px rgba(10,10,11,.14)}
+#req{position:absolute;left:90px;right:90px;bottom:170px;height:170px;border-radius:85px;background:var(--k);color:var(--w);display:flex;align-items:center;justify-content:center;font-size:58px;font-weight:600;letter-spacing:-.02em;opacity:0}
+.rip{position:absolute;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);transform:translate(-50%,-50%) scale(0);pointer-events:none}
+#grow{position:absolute;background:var(--k);border-radius:85px;opacity:0}
+/* S2 dark map */
+#s2{background:var(--k)}
+#s2 svg{position:absolute;inset:0}
+/* hero chip (lives across sections) */
+#chip{position:absolute;left:540px;top:0;height:120px;padding:0 50px;border-radius:60px;background:var(--b);color:#fff;display:flex;align-items:center;gap:22px;font-size:56px;font-weight:600;letter-spacing:-.02em;transform:translate(-50%,-50%);opacity:0;white-space:nowrap;box-shadow:0 20px 60px rgba(39,110,241,.45)}
+#chip .od{display:inline-block;height:1.1em;overflow:hidden;vertical-align:-.18em}
+#chip .od span{display:block;height:1.1em;line-height:1.1em}
+/* S3 big type */
+#s3{background:var(--w);color:var(--k);display:flex;align-items:center;justify-content:center}
+#s3 .big{font-size:330px;font-weight:700;letter-spacing:-.06em;line-height:1}
+#hole{position:absolute;inset:0;background:var(--w);opacity:0}
+/* S4 driver card */
+#s4{background:var(--k)}
+#drv{position:absolute;left:70px;right:70px;top:1020px;height:520px;border-radius:56px;background:#17181B;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 40px 120px rgba(0,0,0,.6);padding:60px 64px}
+#drv .row1{display:flex;align-items:center;gap:36px}
+#drv .av{width:150px;height:150px;border-radius:50%;background:linear-gradient(160deg,#3a3d44,#1f2125);display:flex;align-items:center;justify-content:center;font-size:66px;font-weight:600}
+#drv .nm{font-size:62px;font-weight:600;letter-spacing:-.025em}#drv .rt{font-size:40px;color:var(--mut);margin-top:6px}
+#drv .plate{margin-left:auto;font-size:44px;font-weight:600;padding:16px 28px;border-radius:20px;background:#24262A;letter-spacing:.04em}
+#drv .msg{margin-top:56px;font-size:46px;color:#c9cbd0}#drv .msg b{color:var(--w)}
+#drv .bar{position:absolute;left:64px;right:64px;bottom:70px;height:14px;border-radius:7px;background:#26282d;overflow:hidden}
+#drv .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--b);border-radius:7px}
+/* S6 arrived */
+#s6{background:var(--k);display:flex;flex-direction:column;align-items:center;justify-content:center}
+#chk{width:300px;height:300px}
+#s6 .h{margin-top:60px;font-size:96px;font-weight:700;letter-spacing:-.04em}
+#s6 .s{margin-top:16px;font-size:44px;color:var(--mut)}
+/* S8 rating */
+#s8{background:var(--w);color:var(--k);display:flex;flex-direction:column;align-items:center;justify-content:center}
+#s8 .q{font-size:76px;font-weight:700;letter-spacing:-.035em;text-align:center;line-height:1.08}
+#s8 .q span{color:var(--mut);font-weight:500}
+#stars{display:flex;gap:30px;margin-top:90px}
+#stars svg{width:140px;height:140px}
+#done{margin-top:120px;width:680px;height:160px;border-radius:80px;background:var(--k);color:var(--w);display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:600;position:relative;overflow:hidden}
+/* captions (kinetic, synced to VO) */
+#cap{position:absolute;left:90px;right:90px;top:1640px;text-align:center;font-size:68px;font-weight:700;letter-spacing:-.035em;opacity:0}
+#cap .w{display:inline-block;margin:0 .12em}
+#cap .k{background:var(--b);color:#fff;padding:0 .22em;border-radius:.28em}
+/* banner in 3D */
+.nt{position:absolute;left:70px;right:70px;top:150px;height:190px;border-radius:52px;background:rgba(24,25,28,.82);backdrop-filter:blur(26px);box-shadow:0 30px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08);display:flex;align-items:center;gap:34px;padding:0 44px;opacity:0}
+.nt .ic{width:104px;height:104px;border-radius:30px;background:#000;box-shadow:inset 0 0 0 2px #2c2d31;display:flex;align-items:center;justify-content:center}
+.nt .ic i{width:34px;height:34px;border-radius:50%;background:var(--b)}
+.nt b{display:block;font-size:46px;font-weight:600}.nt span{display:block;font-size:34px;color:#a5a7ad;margin-top:4px}
+/* end */
+#end{position:absolute;inset:0;z-index:5;background:var(--k);opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#end h1{margin:0;font-size:200px;font-weight:600;letter-spacing:-.045em}
+#end small{position:absolute;bottom:130px;font-size:30px;color:#8d8f96}
+#wipe{position:absolute;left:540px;top:960px;width:10px;height:10px;border-radius:50%;background:var(--k);transform:translate(-50%,-50%) scale(0)}
+#vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(110% 70% at 50% 45%,rgba(0,0,0,0) 60%,rgba(0,0,0,.35) 100%)}
+#grain{position:absolute;inset:-50%;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+</style>
+<script src="media/three.min.js"></script><script src="media/three-extras.js"></script><script src="media/studio_exr.js"></script>
+</head><body><div id="root">
+<canvas id="cv" width="1080" height="1920"></canvas>
+<div class="scr" id="s1"><div class="sb"><span>1:04</span><span><i></i></span></div><h2>Where to?</h2>
+  <div id="where"><b></b><span id="wtxt">Search destination</span></div>
+  <div class="card sel" id="c1" style="top:620px"><div class="car"></div><div><div class="t">Comfort</div><div class="s">5 min away · 4 seats</div></div><div class="p">€14</div></div>
+  <div class="card" id="c2" style="top:840px"><div class="car"></div><div><div class="t">XL</div><div class="s">9 min away · 6 seats</div></div><div class="p">€21</div></div>
+  <div id="req">Request ride</div><div class="rip" id="rip1"></div><div id="grow"></div></div>
+<div class="scr" id="s2"><svg viewBox="0 0 1080 1920" id="map"></svg></div>
+<div class="scr" id="s3"><div class="big" id="big">5 min</div></div>
+<div class="scr" id="s4"><div id="drv"><div class="row1"><div class="av">M</div><div><div class="nm">Martin</div><div class="rt">★ 4.9 · Grey sedan</div></div><div class="plate">7XK 492</div></div>
+  <div class="msg"><b>Your ride is here.</b> Look for the lights by the corner.</div><div class="bar"><i id="barf"></i></div></div></div>
+<div class="nt" id="nt"><div class="ic"><i></i></div><div><b id="ntb">On the way home</b><span id="nts">Arriving 1:12 AM</span></div></div>
+<div class="scr" id="s6"><svg id="chk" viewBox="0 0 300 300"><circle cx="150" cy="150" r="140" fill="#276EF1"/><path id="chkp" d="M92 154 L134 194 L212 112" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="200" stroke-dashoffset="200"/></svg>
+  <div class="h">You've arrived</div><div class="s">Home · 12 Linden Street</div></div>
+<div class="scr" id="s8"><div class="q">How was your ride<br><span>with Martin?</span></div><div id="stars"></div><div id="done">Done<div class="rip" id="rip2"></div></div></div>
+<div id="chip"><span class="od" id="od"><span>9</span></span><span id="chipt">min</span></div>
+<div id="cap"></div>
+<div id="end"><h1>Uber</h1><small>Unofficial spec ad · not affiliated with Uber</small></div>
+<div id="wipe"></div>
+<div id="vig"></div><div id="grain"></div>
+</div>
+<script src="scene3.js"></script>
+</body></html>
