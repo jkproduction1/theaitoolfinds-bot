@@ -126,6 +126,9 @@ speed continuous across the cut, cut where the eye already is, cut on action. Ul
 every cut frame). Pauses/silence rarely (max 1–2 per video, right before a release). SFX felt, not heard, under the VO,
 mix through a limiter (no clipping). Energetic VO with punch for ads; our house voice stays for all regular videos.
 Sweat invisible details: overshoot ≤3 %, 40 ms staggers, odometer numbers, stroke-drawn icons, 2-layer shadows, grain/vignette.
+Jan's notes on uberad v3: open on a real phone mock-up with the app inside (not bare UI); never a flat full-colour card with
+just a word on it (reads cheap); key beats (e.g. "Your ride is here") stay readable ≥1.2 s; our code-built car looks toy-like,
+so prefer brands whose world we render best (cards, globes, UI, abstract 3D) — next: Revolut (hf/videos/revad).
 **Skim `hf/reference/spec_ads.md` for smoothness principles only — we build OUR OWN style, never copy those ads** (5 analysed references: one world/one camera, object continuity,
 kinetic type with one key word in an accent pill, story = the product's core mechanic, end reveal grows out of the hero object).
 
