@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code film commands",
+ "tool_name": "Claude Code film commands",
+ "keyword": "FILMS",
+ "summary_cs": "App demo „Type it, get it #7“ (Jan live): /zack-d-films skok na Měsíci (astronaut, Země, prach v obloucích, gravitace 1/6), /neon-silhouette panáček běží nočním městem, /ink-doodle panáčkovi vítr vezme deštník. Všechno v kódu, prompty pro DM v hf/videos/films7/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 23.3,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-07_2210",
+ "run_id": null,
+ "artifact": null
+}
