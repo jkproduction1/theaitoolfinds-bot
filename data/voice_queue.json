@@ -1,14 +1,6 @@
 [
  {
-  "name": "sound3",
-  "text": "Type slash explain 3D, how a speaker makes sound… and you get this. Type slash explode, a game controller… and you get this. Type slash explain 3D, how a microwave heats food… and you get this. Comment SOUND and I'll send you the prompts."
- },
- {
-  "name": "engine3",
-  "text": "Type slash explain 3D, how a car engine works… and you get this. Type slash x-ray, a coffee machine… and you get this. Type slash explain 3D, how a solar panel works… and you get this. Comment ENGINE and I'll send you the prompts."
- },
- {
-  "name": "montage",
-  "text": "Your coding agent now makes whole videos. OpenMontage turns Claude Code or Cursor into a video studio. Paste a Short you love, and it plans one like it, with the cost first. A live board shows the script, the scenes and every dollar spent. Nothing renders until you approve the storyboard. AI clips cost money, free footage doesn't. Comment MONTAGE and I'll send you the link."
+  "name": "route3",
+  "text": "Type slash route map, airport to the hotel… and you get this. Type slash holo scan, a hydro dam… and you get this. Type slash iso flow, from home to the shop… and you get this. Comment ANIMATE and I'll send you the prompts."
  }
 ]
