@@ -1,5 +1,5 @@
 # Spec-ad references (Jan, 2026-11-07) — what makes them smooth. Read before every 3D/UI spec ad (BRAIN §3d).
-We don't copy their look 1:1 (we keep our own style); these are the craft principles we steal.
+Jan: we do NOT want to look like these. We have our own style; use this file only to remember WHY they feel smooth.
 
 ## The 5 references (frames studied at ~2 fps)
 1. **Duolingo spec ad (12 s).** Solid brand-green background the whole time. Left column: kinetic type, the VO appears word
