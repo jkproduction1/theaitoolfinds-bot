@@ -1993,5 +1993,42 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "route3",
+  "date": "2026-11-07",
+  "score": 69,
+  "mode": "script",
+  "features": {
+   "hook": 0.19,
+   "hook_words": 12,
+   "hook_end_s": 4.62,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.5,
+   "words": 44,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.95
+  },
+  "flags": [
+   "hook končí v 4.6 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]
