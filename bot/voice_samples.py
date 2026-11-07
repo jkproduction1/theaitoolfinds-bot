@@ -1,6 +1,6 @@
 """Voice job for HyperFrames videos: render every script in data/voice_queue.json with ElevenLabs.
 
-data/voice_queue.json = [{"name": "opencode", "text": "..."}, ...]
+data/voice_queue.json = [{"name": "opencode", "text": "..."}, ...]  (optional "voice_id": ElevenLabs voice for that job)
 Output (pushed to the `videos` branch by the "Voice samples" workflow):
   voice-samples/<name>.mp3   the voiceover
   voice-samples/<name>.json  word timings [{word, start, end}]
@@ -16,7 +16,7 @@ queue = json.loads((config.DATA / "voice_queue.json").read_text())
 for job in queue:
     mp3 = out / f"{job['name']}.mp3"
     try:
-        words = tts.synthesize(job["text"], mp3)
+        words = tts.synthesize(job["text"], mp3, job.get("voice_id"))
         (out / f"{job['name']}.json").write_text(json.dumps(words, indent=1))
         print("VOICE OK", job["name"], f"{tts.duration(mp3):.1f}s", len(words), "words")
     except Exception as e:

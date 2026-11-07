@@ -37,12 +37,12 @@ def _offline(text: str, mp3: Path):
     return words
 
 
-def _elevenlabs(text: str, mp3: Path):
+def _elevenlabs(text: str, mp3: Path, voice_id: str | None = None):
     """ElevenLabs with timestamps -> convert character timings to word timings."""
     import base64
     import requests
 
-    voice = os.getenv("ELEVENLABS_VOICE_ID", config.EL_VOICE)
+    voice = voice_id or os.getenv("ELEVENLABS_VOICE_ID", config.EL_VOICE)
     r = requests.post(
         f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps",
         params={"output_format": "mp3_44100_128"},
@@ -188,12 +188,13 @@ def _kokoro(text: str, mp3: Path):
     return [{"word": w["word"], "start": w["start"], "end": w["end"]} for w in words]
 
 
-def synthesize(text: str, mp3: Path) -> list[dict]:
+def synthesize(text: str, mp3: Path, voice_id: str | None = None) -> list[dict]:
+    """voice_id: optional per-job ElevenLabs voice (e.g. a spec ad); default = our house voice."""
     if os.getenv("TTS_OFFLINE") == "1":
         return _offline(text, mp3)
     if os.getenv("ELEVENLABS_API_KEY"):
         try:
-            words = _elevenlabs(text, mp3)
+            words = _elevenlabs(text, mp3, voice_id)
             print("[tts] ElevenLabs voice")
             return words
         except Exception as e:  # out of credits etc. -> free voice instead
