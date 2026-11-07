@@ -1,13 +1,13 @@
-"""films7 - App demo "Type it, get it #7" (Jan live, 2026-11-07): /zack-d-films what if you jumped on the Moon, /neon-silhouette a stick
-figure running through the city at night, /ink-doodle a stick figure losing his umbrella in the wind. Every result is drawn in code here
-(three.js + 2D canvas). Fact used: Moon gravity is about 1/6 of Earth's; no air, so dust flies in clean arcs. Prompts for DM: prompts.md."""
+"""space7 - App demo "Type it, get it #7" (Jan live, 2026-11-07), all space: /zack-d-films what if you jumped on the Moon,
+/explain-3d our solar system, /deep-dive how a black hole works. All drawn in code (one shared WebGL context). Facts: Moon gravity ~1/6 of
+Earth's, no air so dust flies in arcs; 8 planets, inner ones orbit faster; nothing escapes past the event horizon. DM prompts: prompts.md."""
 import json, shutil, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parent.parent))
 from house import Film, series, FOLLOW_LINE
 
-W = HERE.parent.parent / "work" / "films7"
+W = HERE.parent.parent / "work" / "space7"
 A = W / "assets"
 for f in (HERE / "media").iterdir():
     shutil.copy(f, A / f.name)
@@ -17,7 +17,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {15: 1.8, 32: 1.8, 49: 1.8}
+GAPS = {15: 1.8, 26: 1.8, 39: 1.8}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
@@ -43,15 +43,15 @@ S, E = F.S, F.E
 
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
     (0, (2, 4), (5, 11), 12, "zack-d-films", "what if you jumped on the Moon", "moon jump film", "Gravity is 1/6 of Earth's.", 2, "Zack D Films–style 3D short"),
-    (16, (18, 19), (20, 28), 29, "neon-silhouette", "a stick figure running through the city at night", "neon city run", "Every step leaves light.", 3, "Glowing neon silhouette animation"),
-    (33, (35, 36), (37, 45), 46, "ink-doodle", "a stick figure losing his umbrella in the wind", "umbrella doodle", "The wind always wins.", 1, "Hand-drawn ink doodle animation"),
+    (16, (18, 19), (20, 22), 23, "explain-3d", "our solar system", "solar system explainer", "8 planets, one Sun.", 3, "3D explainer of anything"),
+    (27, (29, 30), (31, 35), 36, "deep-dive", "how a black hole works", "black hole deep dive", "Not even light escapes.", 2, "Cinematic deep dive into anything"),
 ]
 SER = 7
 CMD = "zack-d-films"
 TY = []
 for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
     T = 0.0 if k == 0 else round(S[a] - 0.15, 3)
-    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[50] - 0.15, 3)
+    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[40] - 0.15, 3)
     t_slash = 0.0 if k == 0 else max(T + 0.05, S[a + 1] - 0.05)
     c0, c1 = (0.08 if k == 0 else S[ci0]), E[ci1]
     p0, p1 = S[pi0], E[pi1] - 0.05
@@ -84,7 +84,7 @@ keys_html += [f'<div class="k f" style="left:30px;top:{KY0 + 232}px;width:120px"
               f'<div class="k f" style="left:840px;top:{y3}px;width:210px">return</div>']
 KEYPOS[" "] = (460, y3)
 
-LABELS = [[], [], []]
+LABELS = [[], [], [("Accretion disk", "hot gas spirals in"), ("Event horizon", "point of no return"), ("Singularity", "the crushed centre")]]
 ui = ['<script src="assets/three.min.js"></script><script src="assets/three-extras.js"></script><script src="assets/studio_exr.js"></script><div class="ui" id="ui">',
       '<div id="sb"><span>9:41</span><span>●●● <i></i></span></div>',
       '<div id="tabs"><span>Chat</span><span class="on">Code</span></div><div id="ctr"><b id="cn">1/3</b></div>',
@@ -102,7 +102,7 @@ for k, (a, _c, _p, _a, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
                f'<div class="cap">{capw}</div>{labs}'
                f'<div class="ttl"><b>{title}</b><i>with Claude Code</i></div></div>')
 thumbs = "".join(f'<div class="th" id="th{k}" style="left:{x}px"><img src="assets/th{k}.jpg" alt=""></div>' for k, x in enumerate([90, 400, 710]))
-end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“FILMS”</div>'
+end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“SPACE”</div>'
        '<div class="g" id="e3">and I\'ll send you the link</div>' + thumbs + '<div class="series" id="eser" style="left:0;right:0;margin:0 auto;width:fit-content;top:1400px">Type it, get it <b>#'+str(SER)+'</b></div>' + FOLLOW_LINE.replace('class="follow"', 'class="follow" id="efol" style="top:1490px;color:#fff"') + '</div>')
 F.body.append('<div class="layer" id="serl">' + series("Type it, get it", SER, x=70, y=116, dark=True) + '</div>')
 F.clip(0, "".join(ui) + stages + end)
@@ -252,7 +252,7 @@ tl.set('#st2',{opacity:0},END); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.15},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
 F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.3,ease:A},END+0.02);
-F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},S[51]-0.1);
+F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},S[41]-0.1);
 F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.3,ease:A},END+0.12);
 [0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.5,ease:'back.out(1.4)'},END+0.12));
 F2('#handle',{opacity:0},{opacity:1,duration:.3},END+0.5);
