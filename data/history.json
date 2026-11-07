@@ -418,5 +418,11 @@
     "domain": "github.com/mattpocock/skills",
     "date": "2026-11-06_0555",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code animation commands",
+    "domain": "code.claude.com/docs/en/slash-commands#route3",
+    "date": "2026-11-07_1143",
+    "source": "hyperframes"
   }
 ]

@@ -2030,5 +2030,44 @@
    "visuals": 8,
    "ending": 2
   }
+ },
+ {
+  "name": "route3",
+  "date": "2026-11-07",
+  "score": 72,
+  "mode": "full",
+  "features": {
+   "hook": 0.19,
+   "hook_words": 12,
+   "hook_end_s": 3.78,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.33,
+   "dur_s": 20.4,
+   "words": 44,
+   "pace": 0.53,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.75,
+   "visual_changes": 33,
+   "visuals": 0.9,
+   "ending": 0.89,
+   "angle": "app-demo",
+   "topic": 0.95
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 20,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 8,
+   "ending": 2
+  }
  }
 ]

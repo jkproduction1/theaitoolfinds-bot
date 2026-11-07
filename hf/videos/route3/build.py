@@ -176,6 +176,7 @@ CSS += r"""
 #st2{background:radial-gradient(90% 60% at 50% 42%,#f7f8fa 0%,#dde2e8 70%,#c9cfd8 100%)}
 #st2 .cap{color:#111;text-shadow:none}#st2 .cw.hi{color:#fff}
 #st2 .lb{background:#fff;box-shadow:0 10px 30px rgba(20,30,60,.22)}#st2 .lb b{color:#111}#st2 .lb span{color:#6a7380}
+#st0 .lb span,#st1 .lb span{font-size:30px;color:#dfe5ec}#st2 .lb span{font-size:30px;color:#3d4652}
 #st0 .cap{text-shadow:0 2px 0 rgba(0,0,0,.35),0 4px 22px rgba(0,0,0,.6)}
 .ttl{padding:22px 0 26px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 25%,rgba(0,0,0,.72) 75%,rgba(0,0,0,0))}
 """

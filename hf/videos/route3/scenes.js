@@ -38,8 +38,8 @@ function lbl(id,obj,cam,ox,oy,a){ const el=document.getElementById(id); placeLab
 function pinMesh(color,num){ const g=new THREE.Group(); const m=new THREE.MeshStandardMaterial({color,roughness:.35,metalness:.05,envMapIntensity:.5,emissive:color,emissiveIntensity:.35});
   const head=new THREE.Mesh(new THREE.SphereGeometry(0.34,32,20),m); head.position.y=0.95; head.castShadow=true; g.add(head);
   const tip=new THREE.Mesh(new THREE.ConeGeometry(0.3,0.62,32),m); tip.rotation.x=Math.PI; tip.position.y=0.55; tip.castShadow=true; g.add(tip);
-  if(num){ const t=canvasTex(128,128,(c,w,h)=>{ c.fillStyle='#fff'; c.font='bold 92px Inter, Arial'; c.textAlign='center'; c.textBaseline='middle'; c.fillText(num,w/2,h/2+6); });
-    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false})); s.scale.set(0.46,0.46,1); s.position.y=0.96; s.renderOrder=5; g.add(s); }
+  if(num){ const t=canvasTex(128,128,(c,w,h)=>{ c.fillStyle='#fff'; c.font='900 100px Inter, Arial'; c.textAlign='center'; c.textBaseline='middle'; c.fillText(num,w/2,h/2+6); });
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,toneMapped:false})); s.scale.set(0.6,0.6,1); s.position.y=0.96; s.renderOrder=5; g.add(s); }
   else { const d=new THREE.Mesh(new THREE.SphereGeometry(0.13,20,14),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.4})); d.position.set(0,0.95,0.26); g.add(d); }
   return g; }
 
@@ -100,14 +100,14 @@ function pinMesh(color,num){ const g=new THREE.Group(); const m=new THREE.MeshSt
   const pb=new THREE.Mesh(new THREE.CylinderGeometry(0.52,0.52,0.24,40),new THREE.MeshBasicMaterial({color:0x2f6bff,toneMapped:false})); puck.add(pb);
   const halo=new THREE.Mesh(new THREE.RingGeometry(0.8,1.0,48),new THREE.MeshBasicMaterial({color:0x2f6bff,transparent:true,opacity:.5,toneMapped:false,side:THREE.DoubleSide})); halo.rotation.x=-Math.PI/2; halo.position.y=0.05; puck.add(halo);
   const pin=pinMesh(0x2f6bff,null); pin.scale.setScalar(2.2); sc.add(pin);
-  const aA=new THREE.Object3D(); aA.position.set(-26,2.2,-16.8); sc.add(aA);
+  const aA=new THREE.Object3D(); aA.position.set(-24,1.2,-20); sc.add(aA);
   const aH=new THREE.Object3D(); aH.position.set(hotelC[0],9.5,hotelC[1]); sc.add(aH);
   const camP=new THREE.Vector3(), camL=new THREE.Vector3();
   SCN[0]=function(lt0){ const lt=lt0*1.35; const u=easeIO(cl((lt-0.05)/2.3)); line.geometry.setDrawRange(0,Math.floor(u*TUB)*6); casing.geometry.setDrawRange(0,Math.floor(u*TUB)*6);
     const h=path.getPointAt(Math.max(0.0001,u)), b=path.getPointAt(Math.max(0,u-0.07)), a=path.getPointAt(Math.min(1,u+0.05));
     puck.position.set(h.x,0.2,h.z); halo.scale.setScalar(1+0.35*((lt*1.6)%1)); halo.material.opacity=0.5*(1-((lt*1.6)%1));
     const dir=h.clone().sub(b); dir.y=0; if(dir.lengthSq()<1e-4) dir.set(1,0,0); dir.normalize();
-    const follow=new THREE.Vector3(h.x-dir.x*9,27,h.z-dir.z*9+4), flook=new THREE.Vector3(a.x+dir.x*3,0,a.z+dir.z*3);
+    const follow=new THREE.Vector3(h.x-dir.x*9,27,h.z-dir.z*9+4), flook=new THREE.Vector3(h.x,0,h.z);
     const ov=easeIO(cl((lt-2.0)/1.0)); const over=new THREE.Vector3(6,78,40), olook=new THREE.Vector3(6,0,9);
     const tp=follow.lerp(over,ov), tl2=flook.lerp(olook,ov);
     camP.copy(tp); camL.copy(tl2);
@@ -168,7 +168,7 @@ function pinMesh(color,num){ const g=new THREE.Group(); const m=new THREE.MeshSt
   const aRes=new THREE.Object3D(); aRes.position.set(-1.4,2.35,-2.4); G.add(aRes);
   const aPen=new THREE.Object3D(); aPen.position.set(0.9,1.3,0.12); G.add(aPen);
   const aTur=new THREE.Object3D(); aTur.position.set(0.9,0.32,1.25); G.add(aTur);
-  const aGen=new THREE.Object3D(); aGen.position.set(0,0.82,1.15); G.add(aGen);
+  const aGen=new THREE.Object3D(); aGen.position.set(-0.9,0.82,1.15); G.add(aGen);
   SCN[1]=function(lt0){ const lt=lt0*1.35; const s=-0.1+3.5*easeIO(cl((lt-0.05)/1.15)); clip.constant=s; const sv=cl(lt/0.1)*(1-cl((lt-1.15)/0.2));
     sheet.position.y=s; sheetE.position.y=s; sheet.material.opacity=0.02*sv; sheetE.material.opacity=0.9*sv;
     const fl=cl((lt-1.1)/0.4);
@@ -179,7 +179,7 @@ function pinMesh(color,num){ const g=new THREE.Group(); const m=new THREE.MeshSt
     water.position.y=2.3+0.02*Math.sin(lt*3); tick.rotation.y=lt*0.25; base.children.forEach((m,i)=>{ if(m.geometry&&m.geometry.type==='RingGeometry') m.rotation.z=lt*(0.2+i*0.1); });
     const ca=0.62-0.32*easeIO(cl(lt/3.4)), rad=20.5-2.5*ease(lt/3.2); cam.position.set(Math.sin(ca)*rad,9.5-1.5*ease(lt/3.2),Math.cos(ca)*rad); cam.lookAt(0,0.9,0.3);
     P.c.render();
-    layoutLabels([['l1_0',aRes,cl((lt-0.95)/0.2)],['l1_1',aPen,cl((lt-1.25)/0.2)],['l1_2',aTur,cl((lt-1.5)/0.2)],['l1_3',aGen,cl((lt-1.8)/0.2)]].map(([id,o,a])=>[document.getElementById(id),o,a]),cam,650,118);
+    layoutLabels([['l1_0',aRes,cl((lt-0.95)/0.2)],['l1_1',aPen,cl((lt-1.25)/0.2)],['l1_2',aTur,cl((lt-1.5)/0.2)],['l1_3',aGen,cl((lt-1.8)/0.2)]].map(([id,o,a])=>[document.getElementById(id),o,a]),cam,650,136);
     caption(1,lt); };
 })();
 
@@ -241,6 +241,6 @@ function pinMesh(color,num){ const g=new THREE.Group(); const m=new THREE.MeshSt
     const ang=Math.PI/4+0.22-0.3*easeIO(cl(lt/3.4)); const R=20; cam.position.set(Math.sin(ang)*R,15.5,Math.cos(ang)*R); cam.lookAt(0,0.2,0);
     const z=1.0+0.12*ease(lt/3); cam.zoom=z; cam.updateProjectionMatrix();
     P.c.render();
-    ['l2_0','l2_1','l2_2'].forEach((id,i)=>lbl(id,anc[i],cam,0,-6,cl((lt-PT[i]-0.15)/0.25)));
+    ['l2_0','l2_1','l2_2'].forEach((id,i)=>lbl(id,anc[i],cam,[-120,150,120][i],[-10,30,-10][i],cl((lt-PT[i]-0.15)/0.25)));
     caption(2,lt); };
 })();
