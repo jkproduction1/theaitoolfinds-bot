@@ -130,8 +130,8 @@ Jan's notes on uberad v3: open on a real phone mock-up with the app inside (not 
 just a word on it (reads cheap); key beats (e.g. "Your ride is here") stay readable ≥1.2 s; our code-built car looks toy-like,
 so prefer brands whose world we render best (cards, globes, UI, abstract 3D) — next: Revolut (hf/videos/revad).
 No big headline text pinned on top of the visuals (reads like a talking-head video). Text only as short, small, centred
-slogans on their own clean black/white beat ("Track your expenses"), like a product film. Spec ads for Jan's monitor shots
-are LANDSCAPE (1920x1080), he films the monitor himself.
+slogans on their own clean black/white beat ("Track your expenses"), like a product film. **Everything is 9:16 (1080x1920),
+spec ads too** (Jan, 2026-11-07; the 16:9 Revolut v1/v2 was a mistake).
 Transitions on motion (Jan, revad v2): outgoing layer does a small slow anticipation against the direction, then whips fast
 with directional motion blur (SVG feGaussianBlur on the layer/canvas); the incoming layer arrives in the SAME direction and
 decelerates (expo-out). Cuts on the music beat grid. Every scene keeps a subtle continuous move (slow push-in or drift).
