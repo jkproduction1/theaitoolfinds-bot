@@ -46,6 +46,6 @@ out=np.clip(out,-1,1)
 with wave.open(str(W/"sfx.wav"),"wb") as f: f.setnchannels(2); f.setsampwidth(2); f.setframerate(SR); f.writeframes((out*32767).astype("<i2").tobytes())
 M=Path(__file__).resolve().parents[3]/"video/public/music"; hs=json.load(open(M/"tracks.json"))["t1"]["hook_start"]
 subprocess.run(["ffmpeg","-v","error","-y","-ss",str(hs),"-i",str(M/"t1.mp3"),"-i",str(W/"sfx.wav"),"-filter_complex",
-  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.12,afade=t=in:d=0.05,afade=t=out:st={DUR-1.0}:d=1.0[m];[m][1:a]amix=inputs=2:normalize=0,atrim=0:{DUR},alimiter=limit=0.89:attack=4:release=80[o]",
+  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.07,afade=t=in:d=0.05,afade=t=out:st={DUR-1.0}:d=1.0[m];[m][1:a]amix=inputs=2:normalize=0,atrim=0:{DUR},alimiter=limit=0.89:attack=4:release=80[o]",
   "-map","[o]","-ar","44100",str(W/"mix.wav")],check=True)
 print("ok")
