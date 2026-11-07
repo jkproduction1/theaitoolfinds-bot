@@ -17,10 +17,22 @@ def tick(at,f,g=.03): put(sine(f,.08,.001,70)+.4*sine(f*1.5,.08,.001,90),at,g)
 for i,t in enumerate(ST): swish(t); tick(t+.02,1900+i*110)
 for i in range(10): put(sine(900+i*70,.12,.001,45),CTA+.04*i+.05,.022)
 for i,f in enumerate([1318.5,1760,2093]): put(sine(f,1.0,.003,4)+.3*sine(f*2,1.0,.003,6),CTA+.32+i*.07,.035*(.85**i))
-W=Path(sys.argv[1]); out=np.clip(out,-1,1)
+W=Path(sys.argv[1])
+# voice: each style name placed on its switch, "Comment penguin" on the grid
+VO=W/"voice.mp3"
+if VO.exists():
+    raw=subprocess.run(["ffmpeg","-v","error","-i",str(VO),"-f","f32le","-ac","1","-ar",str(SR),"-"],capture_output=True,check=True).stdout
+    v=np.frombuffer(raw,np.float32); words=json.load(open(W/"voice.json"))
+    groups=[];i=0
+    for n in [2,2,2,2,2,2,1,2,2,2,2]: groups.append(words[i:i+n]); i+=n
+    at=[.06]+[t+.05 for t in ST]+[CTA+.3]
+    for g,t0 in zip(groups,at):
+        a0=max(0,int((g[0]["start"]-.03)*SR)); a1=int((g[-1]["end"]+.12)*SR); seg=v[a0:a1].copy(); f=int(.012*SR); seg[:f]*=np.linspace(0,1,f); seg[-f:]*=np.linspace(1,0,f)
+        put(seg,t0,1.0)
+out=np.clip(out,-1,1)
 with wave.open(str(W/"sfx.wav"),"wb") as f: f.setnchannels(2); f.setsampwidth(2); f.setframerate(SR); f.writeframes((out*32767).astype("<i2").tobytes())
 M=Path(__file__).resolve().parents[3]/"video/public/music"; hs=json.load(open(M/"tracks.json"))["t1"]["hook_start"]
 subprocess.run(["ffmpeg","-v","error","-y","-ss",str(hs),"-i",str(M/"t1.mp3"),"-i",str(W/"sfx.wav"),"-filter_complex",
-  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.5,afade=t=in:d=0.05,afade=t=out:st={DUR-1.0}:d=1.0[m];[m][1:a]amix=inputs=2:normalize=0,atrim=0:{DUR},alimiter=limit=0.89:attack=4:release=80[o]",
+  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.32,afade=t=in:d=0.05,afade=t=out:st={DUR-1.0}:d=1.0[m];[m][1:a]amix=inputs=2:normalize=0,atrim=0:{DUR},alimiter=limit=0.89:attack=4:release=80[o]",
   "-map","[o]","-ar","44100",str(W/"mix.wav")],check=True)
 print("ok")
