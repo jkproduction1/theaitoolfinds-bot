@@ -3,7 +3,7 @@ Story beat: at the moment the phone dies (11.15 s) everything goes silent; one s
 import numpy as np, subprocess, json, sys
 from pathlib import Path
 SR=44100; DUR=13.0; N=int(SR*DUR); rng=np.random.default_rng(7)
-T={"type0":.9,"type1":1.7,"confirm":2.0,"fly0":2.35,"n1":4.0,"n2":6.9,"ride0":7.6,"arrHome":10.0,"n3":10.25,"die":11.15,"end":11.75}
+T={"type0":.3,"type1":.8,"confirm":1.0,"fly0":1.15,"c3":3.2,"n1":3.55,"c4":5.8,"n2":5.9,"ride0":5.95,"c5":8.2,"arrHome":9.3,"n3":9.45,"die":10.6,"end":11.0}
 t=np.arange(N)/SR; out=np.zeros((N,2))
 def lp(x,a):  # one-pole lowpass
     y=np.empty_like(x); s=0.0
@@ -34,11 +34,12 @@ def whoosh(d=1.3):
     for i in range(n): z+=a[i]*(w[i]-z); y[i]=z
     return y*np.sin(np.pi*s/d)**2*.35
 add(whoosh(), T["fly0"]-.1)
+for k in ("c3","c4","c5"): add(whoosh(.6)*.6, T[k]-.3)
 # engine: low rumble while the car is on screen, louder while it moves
 def engine():
     n=N; s=t; base=55+12*np.sin(2*np.pi*.2*s)
     ph=np.cumsum(2*np.pi*base/SR); x=(np.sin(ph)*.5+np.sin(2*ph)*.25+lp(rng.standard_normal(n),.01)*1.5)
-    g=np.clip((s-3.6)/.8,0,1)*np.clip((T["arrHome"]+.3-s)/.6,0,1)*.05; return x*g
+    g=np.clip((s-3.2)/.5,0,1)*np.clip((T["arrHome"]+.3-s)/.6,0,1)*.05; return x*g
 out[:,0]+=engine(); out[:,1]+=engine()
 def thunk():
     n=int(.35*SR); s=np.arange(n)/SR; return (np.sin(2*np.pi*70*s)*np.exp(-s*22)+lp(rng.standard_normal(n),.08)*np.exp(-s*40)*2)*.25
@@ -47,12 +48,22 @@ add(thunk(), T["ride0"]-.35, pan=-.2)
 def tone():
     n=int(1.4*SR); s=np.arange(n)/SR; x=(np.sin(2*np.pi*55*s)+.5*np.sin(2*np.pi*110*s)+.15*np.sin(2*np.pi*220*s))*np.exp(-s*1.6)*np.clip(s/.05,0,1); return x*.22
 add(tone(), T["end"]+.1)
+# female VO (ElevenLabs, per-job voice) placed line by line
+import json as _j
+H0=Path(__file__).parent; vw=_j.load(open(H0/"voice.json")); vraw=H0/"media"/"voice.mp3"
+if vraw.exists():
+    pcm=subprocess.run(["ffmpeg","-v","error","-i",str(vraw),"-f","s16le","-ac","1","-ar",str(SR),"-"],capture_output=True,check=True).stdout
+    v=np.frombuffer(pcm,dtype="<i2").astype(np.float64)/32768
+    LINES=[(0,3,.15),(4,5,2.0),(6,10,3.45),(11,13,5.95),(14,17,9.0)]
+    for a,b,at in LINES:
+        s0=max(0,vw[a]["start"]-.05); s1=vw[b]["end"]+.12; seg=v[int(s0*SR):int(s1*SR)].copy(); f=int(.01*SR); seg[:f]*=np.linspace(0,1,f); seg[-f:]*=np.linspace(1,0,f)
+        add(seg, at, gain=1.0)
 out=np.clip(out,-1,1); W=Path(sys.argv[1]); W.mkdir(parents=True,exist_ok=True)
 import wave
 with wave.open(str(W/"sfx.wav"),"wb") as f:
     f.setnchannels(2); f.setsampwidth(2); f.setframerate(SR); f.writeframes((out*32767).astype("<i2").tobytes())
 H=Path(__file__).resolve().parents[3]; tr=json.load(open(H/"video/public/music/tracks.json"))["t2"]
 subprocess.run(["ffmpeg","-v","error","-y","-ss",str(tr["hook_start"]),"-i",str(H/"video/public/music/t2.mp3"),"-i",str(W/"sfx.wav"),"-filter_complex",
-  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.16,afade=t=in:d=0.8,afade=t=out:st={T['die']-0.25}:d=0.3[m];[1:a]volume=1.0[s];[m][s]amix=inputs=2:normalize=0,atrim=0:{DUR}[o]",
+  f"[0:a]atrim=0:{DUR},asetpts=PTS-STARTPTS,volume=0.11,afade=t=in:d=0.8,afade=t=out:st={T['die']-0.25}:d=0.3[m];[1:a]volume=1.0[s];[m][s]amix=inputs=2:normalize=0,atrim=0:{DUR}[o]",
   "-map","[o]","-ar","44100",str(W/"mix.wav")],check=True)
 print("ok", W/"mix.wav")
