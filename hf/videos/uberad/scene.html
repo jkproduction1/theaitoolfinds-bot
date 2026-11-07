@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- uberad: unofficial spec ad, everything drawn in code (three.js + HTML/CSS). Style-frame harness: ?t=<seconds> renders that moment. -->
+<style>
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Regular.otf);font-weight:400}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Medium.otf);font-weight:500}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-SemiBold.otf);font-weight:600}
+@font-face{font-family:IDs;src:url(file:///usr/share/fonts/opentype/inter/InterDisplay-Bold.otf);font-weight:700}
+:root{--night:#0A0A0B;--graph:#1C1D20;--white:#F5F5F2;--blue:#276EF1;--amber:#FFB547;--red:#FF3B30}
+html,body{margin:0;background:var(--night);}
+#root{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--night);font-family:IDs,Inter,sans-serif;color:var(--white)}
+canvas#cv{position:absolute;inset:0;width:1080px;height:1920px}
+/* phone */
+#phone{position:absolute;left:50%;top:50%;width:860px;height:1780px;transform:translate(-50%,-50%);border-radius:120px;background:#000;box-shadow:0 0 0 14px #121214,0 0 0 16px #2a2b2f,0 60px 140px rgba(0,0,0,.8);overflow:hidden}
+#scr{position:absolute;inset:0;background:#0d0e10;overflow:hidden}
+#sb{position:absolute;left:96px;right:90px;top:58px;display:flex;justify-content:space-between;font-weight:600;font-size:44px;letter-spacing:-.01em}
+#bat{display:flex;align-items:center;gap:14px;color:var(--red)}
+#bat i{display:inline-block;width:76px;height:36px;border:4px solid rgba(245,245,242,.55);border-radius:11px;position:relative}
+#bat i::before{content:'';position:absolute;left:4px;top:4px;bottom:4px;width:6px;background:var(--red);border-radius:3px}
+#bat i::after{content:'';position:absolute;right:-11px;top:10px;width:5px;height:12px;background:rgba(245,245,242,.55);border-radius:0 3px 3px 0}
+#minimap{position:absolute;left:0;right:0;top:0;height:1040px;background:radial-gradient(120% 80% at 50% 40%,#17181b,#0d0e10);overflow:hidden}
+#minimap svg{position:absolute;inset:0}
+#sheet{position:absolute;left:0;right:0;bottom:0;height:820px;background:#141517;border-radius:64px 64px 0 0;box-shadow:0 -30px 80px rgba(0,0,0,.6)}
+#grab{position:absolute;left:50%;top:26px;width:110px;height:12px;border-radius:6px;background:#3a3b40;transform:translateX(-50%)}
+#hi{position:absolute;left:80px;top:96px;font-size:58px;font-weight:600;letter-spacing:-.025em}
+#where{position:absolute;left:80px;right:80px;top:200px;height:150px;border-radius:36px;background:#232428;display:flex;align-items:center;padding:0 46px;font-size:56px;font-weight:500;letter-spacing:-.02em;color:#8d8f96}
+#where b{display:inline-block;width:26px;height:26px;background:var(--white);margin-right:36px}
+#where .typed{color:var(--white)}
+#where .car{display:inline-block;width:5px;height:62px;background:var(--blue);margin-left:4px;vertical-align:-10px}
+.row{position:absolute;left:80px;right:80px;height:120px;display:flex;align-items:center;gap:40px;font-size:46px;font-weight:500;color:#cfd0d3;border-bottom:2px solid #232428}
+.row i{width:84px;height:84px;border-radius:50%;background:#232428;flex:none}
+.row span{display:block;font-size:34px;color:#7c7e85;font-weight:400;margin-top:4px}
+#cta{position:absolute;left:80px;right:80px;bottom:110px;height:150px;border-radius:36px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:54px;font-weight:600;letter-spacing:-.02em;opacity:0}
+#drops{position:absolute;inset:0;pointer-events:none}
+.drop{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.28),rgba(255,255,255,.05) 45%,rgba(0,0,0,.18) 70%,rgba(255,255,255,.1) 100%);box-shadow:0 3px 6px rgba(0,0,0,.35);backdrop-filter:blur(3px)}
+#glare{position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.07),rgba(255,255,255,0) 40%);pointer-events:none}
+#dead{position:absolute;inset:0;background:#000;opacity:0}
+/* notification banners (screen space) */
+.nt{position:absolute;left:70px;right:70px;top:150px;height:200px;border-radius:52px;background:rgba(26,27,30,.78);backdrop-filter:blur(30px) saturate(1.4);box-shadow:0 30px 80px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.06);display:flex;align-items:center;gap:36px;padding:0 44px;opacity:0;transform-origin:50% 0}
+.nt .ic{width:112px;height:112px;border-radius:30px;background:#000;box-shadow:inset 0 0 0 2px #2c2d31;display:flex;align-items:center;justify-content:center;flex:none}
+.nt .ic i{width:36px;height:36px;border-radius:50%;background:var(--blue);box-shadow:0 0 30px rgba(39,110,241,.8)}
+.nt b{display:block;font-size:48px;font-weight:600;letter-spacing:-.02em}
+.nt span{display:block;font-size:36px;color:#a5a7ad;margin-top:6px;letter-spacing:-.01em}
+.nt em{position:absolute;right:46px;top:38px;font-style:normal;font-size:30px;color:#7c7e85}
+/* end card */
+#end{position:absolute;inset:0;background:#000;opacity:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#end h1{margin:0;font-size:190px;font-weight:600;letter-spacing:-.045em}
+#end p{margin:26px 0 0;font-size:40px;color:#8d8f96;letter-spacing:-.01em}
+#end small{position:absolute;bottom:120px;font-size:28px;color:#55575d;letter-spacing:.02em}
+#vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(110% 70% at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+#grain{position:absolute;inset:-50%;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+</style>
+<script src="media/three.min.js"></script><script src="media/three-extras.js"></script>
+</head><body><div id="root">
+<canvas id="cv" width="1080" height="1920"></canvas>
+<div id="phone"><div id="scr">
+  <div id="minimap"><svg viewBox="0 0 1000 1260" id="mm"></svg></div>
+  <div id="sheet"><div id="grab"></div><div id="hi">Good evening</div>
+    <div id="where"><b></b><span id="wtxt">Where to?</span></div>
+    <div class="row" style="top:400px"><i></i><div>Home<span>12 Linden Street</span></div></div>
+    <div class="row" style="top:540px"><i></i><div>Work<span>Saved place</span></div></div>
+    <div id="cta">Confirm ride</div></div>
+  <div id="sb"><span>1:04</span><span id="bat">3% <i></i></span></div>
+  <div id="drops"></div><div id="glare"></div><div id="dead"></div>
+</div></div>
+<div class="nt" id="n1"><div class="ic"><i></i></div><div><b>Driver is 2 min away</b><span>Grey sedan · 7XK 492</span></div><em>now</em></div>
+<div class="nt" id="n2"><div class="ic"><i></i></div><div><b>Your ride is here</b><span>Look for the lights by the corner</span></div><em>now</em></div>
+<div class="nt" id="n3"><div class="ic"><i></i></div><div><b>You've arrived</b><span>Home · 12 Linden Street</span></div><em>now</em></div>
+<div id="end"><h1>Uber</h1><p>Wherever the night ends.</p><small>Unofficial spec ad · not affiliated with Uber</small></div>
+<div id="vig"></div><div id="grain"></div>
+</div>
+<script src="scene.js"></script>
+</body></html>
