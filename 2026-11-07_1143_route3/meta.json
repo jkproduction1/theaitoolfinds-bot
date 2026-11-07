@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code animation commands",
+ "tool_name": "Claude Code animation commands",
+ "keyword": "ANIMATE",
+ "summary_cs": "App demo „Type it, get it #6“ (Jan live): /route-map letiště → hotel (3D město, modrá trasa, pin), /holo-scan přehrada (hologram: nádrž → potrubí → turbíny → generátory), /iso-flow z domu do obchodu (izometrická destička, auto, piny 1–2–3). Všechno v kódu, prompty pro DM v hf/videos/route3/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 19.9,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-07_1143",
+ "run_id": null,
+ "artifact": null
+}
