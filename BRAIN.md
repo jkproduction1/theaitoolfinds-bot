@@ -126,6 +126,8 @@ speed continuous across the cut, cut where the eye already is, cut on action. Ul
 every cut frame). Pauses/silence rarely (max 1–2 per video, right before a release). SFX felt, not heard, under the VO,
 mix through a limiter (no clipping). Energetic VO with punch for ads; our house voice stays for all regular videos.
 Sweat invisible details: overshoot ≤3 %, 40 ms staggers, odometer numbers, stroke-drawn icons, 2-layer shadows, grain/vignette.
+**Read `hf/reference/spec_ads.md` before every spec ad** (5 analysed references: one world/one camera, object continuity,
+kinetic type with one key word in an accent pill, story = the product's core mechanic, end reveal grows out of the hero object).
 
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`),
