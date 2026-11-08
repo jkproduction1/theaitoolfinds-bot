@@ -50,13 +50,43 @@ def instagram_account() -> dict:
     raise RuntimeError("No Instagram account in Zernio")
 
 
-# 1st DM: friendly + button. Tap -> Instagram lets us check the follow ->
-# link (follower) or the "oops, follow first" follow-up with the same button.
-FOLLOW_GATE = {
-    "message": "Hey! 👋 Tap the button and I'll send you the link right away 🔗",
-    "buttonLabel": "Send me the link",
-    "notFollowingMessage": "Oops, looks like you're not following me yet 👀 Hit follow, then tap the button again and the link is yours 🔓",
-}
+# Comment-to-DM texts (Jan, 2026-11-08: "more natural, don't look like a bot").
+# Zernio takes 1 main text + up to 5 variations per automation and picks one at random per comment,
+# so every post draws its own 6 from these bigger pools (seeded by the post id) -> neighbouring posts
+# don't share the same set either. {tool} = tool_name, {kw} = the keyword. Keep them short, casual, varied.
+REPLY_POOL = [
+    "sent 🙌", "check your DMs!", "just sent it 📩", "it's in your inbox", "done, check DMs 👀",
+    "on its way 🚀", "sent you a message!", "you've got mail 📬", "DM'd you 🙌", "there you go, check DMs",
+    "just messaged you", "sent! enjoy 😄", "check your requests if you don't see it", "in your DMs now ✌️",
+    "sent it over!", "got you 🙌 check DMs", "done ✅", "messaged you!", "sent, have fun with it",
+    "it's in your DMs 🔥", "sending now 📩", "dropped it in your DMs", "check inbox 👀", "sent 🫡",
+]
+DM_POOL = [
+    "Here you go 🙌 everything for {kw} is below 👇",
+    "Hey! Here's the {kw} stuff you asked for 👇",
+    "As promised 👇 Have fun with it!",
+    "Here it is! Let me know what you make with it 🙌",
+    "Hey 👋 here's the link. Enjoy!",
+    "Here it is 👇 tag me if you try it!",
+    "Here you go! New one drops every day btw 🦝",
+    "There you go 🚀 hope it helps",
+    "Hey, thanks for the comment! Here it is 👇",
+    "Sent 🙌 here's everything for {kw}",
+    "Here's the link! Any questions, just reply here",
+    "Got it 👇 enjoy and thanks for watching!",
+]
+BUTTON_POOL = ["Open it", "Get it here", "Open the link", "Take me there", "Let's go", "Show me"]
+GATE_POOL = [
+    {"message": "Hey! 👋 Tap the button and I'll send it right over", "buttonLabel": "Send it",
+     "notFollowingMessage": "Looks like you're not following yet 👀 hit follow and tap the button again, then it's yours"},
+    {"message": "Hey 🙌 quick tap below and the link is yours", "buttonLabel": "Send me the link",
+     "notFollowingMessage": "Almost! Follow the account first, then tap again and I'll send it 🙌"},
+    {"message": "Thanks for the comment! Tap below and I'll send it 👇", "buttonLabel": "Yes please",
+     "notFollowingMessage": "Oops, I can only send it to followers 😅 follow, then tap the button again"},
+    {"message": "Hey! Tap here and it's on its way 🚀", "buttonLabel": "Send it over",
+     "notFollowingMessage": "You're not following yet 👀 follow and tap again, takes 2 seconds"},
+]
+FOLLOW_GATE = GATE_POOL[0]  # kept for autodm_debug.py
 
 
 def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> str:
@@ -68,21 +98,23 @@ def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> st
     prof = prof.get("_id") if isinstance(prof, dict) else prof
     kw, tool, url = meta["keyword"], meta["tool_name"], meta["url"]
     rnd = random.Random(post_id)
+    dms = [t.format(tool=tool, kw=kw) for t in rnd.sample(DM_POOL, 6)]
+    replies = rnd.sample(REPLY_POOL, 6)
+    dm_delay = rnd.randint(25, 90)  # Zernio delays are fixed per automation, so vary them per post
     body = {
         "profileId": prof, "accountId": acc.get("_id") or acc.get("id"),
         **({"platformPostId": platform_post_id} if platform_post_id else {"postId": post_id}),
         "postTitle": tool[:80], "name": f"{tool} ({kw})",
         "trigger": "comment", "keywords": [kw, kw.lower()], "matchMode": "word", "typoTolerance": True,
         "alsoMatchInDms": True,
-        "dmMessage": rnd.choice([f"Here you go 🙌 {tool} is right here 👇 More free AI finds every day 🦝",
-                                 f"As promised 👇 Here's {tool}. Thanks for the follow, more free tools coming 🦝"]),
-        "buttons": [{"type": "url", "title": f"Open {tool}"[:20], "url": url}],
-        "commentReply": rnd.choice(["Sent it to your DMs 📩", "Check your DMs 👀", "Just sent it over 📬"]),
-        "commentReplyVariations": ["Sent it to your DMs 📩", "Check your DMs 👀", "Just sent it over 📬",
-                                   "Done, check your inbox 🙌"],
+        "dmMessage": dms[0], "dmMessageVariations": dms[1:],
+        "buttons": [{"type": "url", "title": rnd.choice(BUTTON_POOL)[:20], "url": url}],
+        "commentReply": replies[0], "commentReplyVariations": replies[1:],
+        "actions": {"likeComment": True},
         "audience": {"followerStatus": "follower", "whenUnknown": "verify"},
-        "followGate": FOLLOW_GATE,
-        "dmDelaySeconds": 0,
+        "followGate": rnd.choice(GATE_POOL),
+        "dmDelaySeconds": dm_delay,
+        "commentReplyDelaySeconds": dm_delay + rnd.randint(20, 120),
     }
     res = _z("POST", "/comment-automations", json=body)
     return (res.get("automation") or res).get("_id") or (res.get("automation") or res).get("id") or "ok"
