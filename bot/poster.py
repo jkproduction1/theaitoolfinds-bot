@@ -100,7 +100,7 @@ def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> st
     rnd = random.Random(post_id)
     dms = [t.format(tool=tool, kw=kw) for t in rnd.sample(DM_POOL, 6)]
     replies = rnd.sample(REPLY_POOL, 6)
-    dm_delay = rnd.randint(25, 90)  # Zernio delays are fixed per automation, so vary them per post
+    dm_delay = rnd.randint(0, 5)  # Jan: no real delay, max 5 s (fixed per automation, varied per post)
     body = {
         "profileId": prof, "accountId": acc.get("_id") or acc.get("id"),
         **({"platformPostId": platform_post_id} if platform_post_id else {"postId": post_id}),
@@ -114,7 +114,7 @@ def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> st
         "audience": {"followerStatus": "follower", "whenUnknown": "verify"},
         "followGate": rnd.choice(GATE_POOL),
         "dmDelaySeconds": dm_delay,
-        "commentReplyDelaySeconds": dm_delay + rnd.randint(20, 120),
+        "commentReplyDelaySeconds": min(5, dm_delay + rnd.randint(0, 3)),
     }
     res = _z("POST", "/comment-automations", json=body)
     return (res.get("automation") or res).get("_id") or (res.get("automation") or res).get("id") or "ok"
