@@ -73,8 +73,9 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   related skills, or skip the format that day and tell Jan why.
 - post.json `"angle": "app-demo"`. Paper rules in §3/§5 that conflict (light paper, text block under the visual)
   don't apply here; margins, readability, real-claims and pacing rules do.
-- Daily mix (Jan, 2026-11-07, replaces 2+1): **3 App demos a day** ("Type /<command> … and you get this" + real result).
-  AI-tool (Paper) videos don't perform, so none by default; only when Jan asks. Ride what works while it works.
+- Daily mix (Jan, 2026-11-08, replaces "3 App demos"): **2 App demos + 1 normal Paper video a day**. 2× "Type /<command> …
+  and you get this" + real result, plus 1 "Free AI tool #N" video in the old Paper style (§3). Jan's picklist taps
+  (`data/picks.json` "picked") choose the Paper video's topic.
 - **What makes it work (Jan + stats, 2026-11-04):** the voice line "Type /<command> <prompt>… and you get this." is the format's
   engine: explain3d (/explain-3d, 3D explainers drawn in code) became the best IG post within hours (2,600 views, 38 likes).
   Keep that voice line in every App demo. This is an ADDITION for the App demo format only: all other formats in this
@@ -153,8 +154,9 @@ kinetic type with one key word in an accent pill, story = the product's core mec
    (compare `data/predictions.json` with `data/stats.json`; later also completion / watch time). Log the change.
 1. `git pull`. Pick 3 topics: Jan's taps in `data/picks.json` "picked" first (skip any already made, see
    `data/history.json` and the `videos` branch), then `items`, else research (WebSearch: trending repos,
-   launches this week). Mix pillars: e.g. 1 paid→free, 1 creator/dev tool, 1 listicle. **All 3 are App demo 1/3
-   videos (§3b, Jan 2026-11-07); no Paper/AI-tool videos unless Jan asks.**
+   launches this week). **Mix (Jan, 2026-11-08): 2 App demo 1/3 videos (§3b)
+   + 1 normal Paper AI-tool video (§3).** Picks/items/research choose the Paper video's tool; the 2 App demos use
+   commands/skills that make a strong visual result.
 2. **Verify every fact** in the tool's README/docs (clone with `git clone --depth 1`). No invented numbers.
    Alpha/beta → say "still early". Save media you'll show into `hf/videos/<name>/media/`.
 3. Write the 3 scripts. Save each as `hf/videos/<name>/script.txt` AND put all three in
@@ -202,7 +204,7 @@ in an Opuscar style, the other two in Paper, with equally strong topics so the c
 (Jan's PC, RTX 3060, render test still pending); until that works, only 2D Opuscar styles in the cloud.
 Our Opuscar edition may show the tool's real screenshots on its cards. Voice stays ElevenLabs. Compare in learnings.md.
 **Paused (Jan, 2026-11-04):** a real Opuscar film costs 30–60 min and many tokens per film; Jan prefers consistency and more
-videos in our own formats. Don't make Opuscar videos unless Jan asks again. Daily mix meanwhile: 1 App demo + 2 Paper.
+videos in our own formats. Don't make Opuscar videos unless Jan asks again. (Current daily mix: see §3b.)
 
 ## 7. Jan's standing preferences
 - Answer first, act after his OK when he is asking/weighing something (in chat). Scheduled runs: just do it.
@@ -216,4 +218,4 @@ videos in our own formats. Don't make Opuscar videos unless Jan asks again. Dail
 - When he's chatting live, he approves scripts before they're voiced.
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
 - Max 3 posts a day (5 in one day split the reach). Don't guess what works: check the stats.
-- 3 "App demo 1/3" videos every day (§3b, since 2026-11-07): command typed in a chat app → real result right away.
+- Every day 2 "App demo 1/3" videos (§3b) + 1 normal Paper AI-tool video (Jan, 2026-11-08).
