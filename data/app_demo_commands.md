@@ -27,3 +27,4 @@ Never reuse the reference creator's command name (/full-visual) — use our own 
 - motion3d2 (2026-11-04): /explain-3d camera lens, /motion3d laptop cooling, /hero-3d landing page
 - inside3 (2026-11-06): /explain-3d how an SSD stores data, /x-ray an e-bike, /explain-3d how a fridge stays cold
 - build3 (2026-11-06): /how-its-made a glass bottle, /explode a mechanical keyboard, /time-lapse a bridge being built
+- earth8 (2026-11-08): /zack-d-films what if Earth stopped spinning, /deep-dive the deepest ocean trench, /scale the Moon versus Earth (Jan, live)
