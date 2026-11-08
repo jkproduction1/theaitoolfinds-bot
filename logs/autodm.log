@@ -13,35 +13,48 @@ AUTOMATIONS: [
   ],
   "matchMode": "word",
   "typoTolerance": true,
-  "commentReply": "Just sent it over \ud83d\udcec",
+  "commentReply": "sending now \ud83d\udce9",
   "commentReplyVariations": [
-   "Sent it to your DMs \ud83d\udce9",
-   "Check your DMs \ud83d\udc40",
-   "Just sent it over \ud83d\udcec",
-   "Done, check your inbox \ud83d\ude4c"
+   "sent! enjoy \ud83d\ude04",
+   "in your DMs now \u270c\ufe0f",
+   "check your DMs!",
+   "done, check DMs \ud83d\udc40",
+   "got you \ud83d\ude4c check DMs"
   ],
   "repeatPolicy": {
    "mode": "once"
   },
   "linkTracking": true,
-  "dmMessage": "Here you go \ud83d\ude4c Claude Code Earth commands is right here \ud83d\udc47 More free AI finds every day \ud83e\udd9d",
+  "commentReplyDelaySeconds": 2,
+  "dmMessage": "Here it is! Let me know what you make with it \ud83d\ude4c",
+  "dmMessageVariations": [
+   "Here's the link! Any questions, just reply here",
+   "Got it \ud83d\udc47 enjoy and thanks for watching!",
+   "Here it is \ud83d\udc47 tag me if you try it!",
+   "As promised \ud83d\udc47 Have fun with it!",
+   "Hey! Here's the EARTH stuff you asked for \ud83d\udc47"
+  ],
   "buttons": [
    {
     "url": "https://code.claude.com/docs/en/slash-commands",
     "type": "url",
-    "title": "Open Claude Code Ear"
+    "title": "Let's go"
    }
   ],
   "publicReplyPolicy": "after_dm",
+  "actions": {
+   "likeComment": true
+  },
   "audience": {
    "whenUnknown": "verify",
    "followerStatus": "follower"
   },
   "followGate": {
-   "message": "Hey! \ud83d\udc4b Tap the button and I'll send you the link right away \ud83d\udd17",
+   "message": "Hey \ud83d\ude4c quick tap below and the link is yours",
    "buttonLabel": "Send me the link",
-   "notFollowingMessage": "Oops, looks like you're not following me yet \ud83d\udc40 Hit follow, then tap the button again and the link is yours \ud83d\udd13"
+   "notFollowingMessage": "Almost! Follow the account first, then tap again and I'll send it \ud83d\ude4c"
   },
+  "dmDelaySeconds": 2,
   "alsoMatchInDms": true,
   "isActive": true,
   "stats": {
@@ -60,7 +73,7 @@ AUTOMATIONS: [
    "followGatePassed": 0
   },
   "createdAt": "2026-11-08T17:35:45.186Z",
-  "updatedAt": "2026-11-08T17:35:45.186Z"
+  "updatedAt": "2026-11-08T20:24:41.954Z"
  },
  {
   "id": "6aefbcaa6864d32eef381060",
@@ -77,35 +90,48 @@ AUTOMATIONS: [
   ],
   "matchMode": "word",
   "typoTolerance": true,
-  "commentReply": "Sent it to your DMs \ud83d\udce9",
+  "commentReply": "it's in your inbox",
   "commentReplyVariations": [
-   "Sent it to your DMs \ud83d\udce9",
-   "Check your DMs \ud83d\udc40",
-   "Just sent it over \ud83d\udcec",
-   "Done, check your inbox \ud83d\ude4c"
+   "it's in your DMs \ud83d\udd25",
+   "messaged you!",
+   "check inbox \ud83d\udc40",
+   "got you \ud83d\ude4c check DMs",
+   "just sent it \ud83d\udce9"
   ],
   "repeatPolicy": {
    "mode": "once"
   },
   "linkTracking": true,
-  "dmMessage": "Here you go \ud83d\ude4c Claude Code space commands is right here \ud83d\udc47 More free AI finds every day \ud83e\udd9d",
+  "commentReplyDelaySeconds": 5,
+  "dmMessage": "Here you go \ud83d\ude4c everything for SPACE is below \ud83d\udc47",
+  "dmMessageVariations": [
+   "As promised \ud83d\udc47 Have fun with it!",
+   "Here's the link! Any questions, just reply here",
+   "Hey \ud83d\udc4b here's the link. Enjoy!",
+   "Hey, thanks for the comment! Here it is \ud83d\udc47",
+   "Here it is \ud83d\udc47 tag me if you try it!"
+  ],
   "buttons": [
    {
     "url": "https://code.claude.com/docs/en/slash-commands",
     "type": "url",
-    "title": "Open Claude Code spa"
+    "title": "Open it"
    }
   ],
   "publicReplyPolicy": "after_dm",
+  "actions": {
+   "likeComment": true
+  },
   "audience": {
    "whenUnknown": "verify",
    "followerStatus": "follower"
   },
   "followGate": {
-   "message": "Hey! \ud83d\udc4b Tap the button and I'll send you the link right away \ud83d\udd17",
-   "buttonLabel": "Send me the link",
-   "notFollowingMessage": "Oops, looks like you're not following me yet \ud83d\udc40 Hit follow, then tap the button again and the link is yours \ud83d\udd13"
+   "message": "Hey! Tap here and it's on its way \ud83d\ude80",
+   "buttonLabel": "Send it over",
+   "notFollowingMessage": "You're not following yet \ud83d\udc40 follow and tap again, takes 2 seconds"
   },
+  "dmDelaySeconds": 4,
   "alsoMatchInDms": true,
   "isActive": true,
   "stats": {
@@ -113,18 +139,18 @@ AUTOMATIONS: [
    "dmsSent": 218,
    "delivered": 199,
    "dmsFailed": 8,
-   "triggered": 555,
+   "triggered": 557,
    "linkClicks": 257,
    "trackedSends": 218,
    "uniqueClicks": 199,
-   "followGateSent": 518,
+   "followGateSent": 520,
    "uniqueContacts": 218,
    "audienceSkipped": 25,
-   "followGateFailed": 67,
+   "followGateFailed": 68,
    "followGatePassed": 214
   },
   "createdAt": "2026-11-08T00:04:58.959Z",
-  "updatedAt": "2026-11-08T20:24:00.544Z"
+  "updatedAt": "2026-11-08T20:26:04.815Z"
  },
  {
   "id": "6aef7603000650b4a80dc3b3",
@@ -141,35 +167,48 @@ AUTOMATIONS: [
   ],
   "matchMode": "word",
   "typoTolerance": true,
-  "commentReply": "Just sent it over \ud83d\udcec",
+  "commentReply": "it's in your inbox",
   "commentReplyVariations": [
-   "Sent it to your DMs \ud83d\udce9",
-   "Check your DMs \ud83d\udc40",
-   "Just sent it over \ud83d\udcec",
-   "Done, check your inbox \ud83d\ude4c"
+   "check inbox \ud83d\udc40",
+   "DM'd you \ud83d\ude4c",
+   "sent, have fun with it",
+   "sent you a message!",
+   "it's in your DMs \ud83d\udd25"
   ],
   "repeatPolicy": {
    "mode": "once"
   },
   "linkTracking": true,
-  "dmMessage": "As promised \ud83d\udc47 Here's 10 Claude animation styles. Thanks for the follow, more free tools coming \ud83e\udd9d",
+  "commentReplyDelaySeconds": 5,
+  "dmMessage": "Got it \ud83d\udc47 enjoy and thanks for watching!",
+  "dmMessageVariations": [
+   "There you go \ud83d\ude80 hope it helps",
+   "Hey, thanks for the comment! Here it is \ud83d\udc47",
+   "Hey! Here's the PENGUIN stuff you asked for \ud83d\udc47",
+   "Hey \ud83d\udc4b here's the link. Enjoy!",
+   "Sent \ud83d\ude4c here's everything for PENGUIN"
+  ],
   "buttons": [
    {
     "url": "https://claude.ai",
     "type": "url",
-    "title": "Open 10 Claude anima"
+    "title": "Take me there"
    }
   ],
   "publicReplyPolicy": "after_dm",
+  "actions": {
+   "likeComment": true
+  },
   "audience": {
    "whenUnknown": "verify",
    "followerStatus": "follower"
   },
   "followGate": {
-   "message": "Hey! \ud83d\udc4b Tap the button and I'll send you the link right away \ud83d\udd17",
+   "message": "Hey \ud83d\ude4c quick tap below and the link is yours",
    "buttonLabel": "Send me the link",
-   "notFollowingMessage": "Oops, looks like you're not following me yet \ud83d\udc40 Hit follow, then tap the button again and the link is yours \ud83d\udd13"
+   "notFollowingMessage": "Almost! Follow the account first, then tap again and I'll send it \ud83d\ude4c"
   },
+  "dmDelaySeconds": 4,
   "alsoMatchInDms": true,
   "isActive": true,
   "stats": {
@@ -180,33 +219,7 @@ AUTOMATIONS: [
    "triggered": 38,
    "linkClicks": 26,
    "trackedSends": 16,
-   "uniqueClicks": 12,
-   "followGateSent": 32,
-   "uniqueContacts": 16,
-   "audienceSkipped": 2,
-   "followGateFailed": 16,
-   "followGatePassed": 13
-  },
-  "createdAt": "2026-11-07T19:03:31.880Z",
-  "updatedAt": "2026-11-08T19:52:56.689Z"
- },
- {
-  "id": "6aef74df70d73fdd5906f1b0",
-  "name": "10 Claude animation styles (PENGUIN)",
-  "platform": "instagram",
-  "trigger": "comment",
-  "accountId": "6ad69dcdecad4ce8494e92b1",
-  "postId": "6aef74de517e1a8fd2264468",
-  "postTitle": "10 Claude animation styles",
-  "keywords": [
-   "PENGUIN",
-   "penguin"
-  ],
-  "matchMode": "word",
-  "typoTolerance": true,
-  "commentReply": "Check your DMs \ud83d\udc40",
-  "commentReplyVariations": [
-   "Sent it to your D
+   "uniqueC
 
 LOGS 6af0b2f1daa8d4544d6ff3b7: {
  "success": true,
@@ -227,6 +240,118 @@ LOGS 6af0b2f1daa8d4544d6ff3b7: {
 LOGS 6aefbcaa6864d32eef381060: {
  "success": true,
  "logs": [
+  {
+   "id": "6af0dae0f72100f224d2c452",
+   "commentId": "17911009215595043",
+   "commenterId": "1152049860780496",
+   "commenterName": "ahmedokka96",
+   "commenterUsername": "ahmedokka96",
+   "commentText": "Space",
+   "source": "comment",
+   "status": "pending",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": null,
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": "2026-11-08T20:26:12.825Z",
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-08T20:26:08.879Z"
+  },
+  {
+   "id": "6af0dac98ecc23623527eb09",
+   "commentId": "18181981066437346",
+   "commenterId": "1332289135639969",
+   "commenterName": "karanjot5351",
+   "commenterUsername": "karanjot5351",
+   "commentText": "space",
+   "source": "comment",
+   "status": "pending",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": null,
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": "2026-11-08T20:25:49.758Z",
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-08T20:25:45.837Z"
+  },
+  {
+   "id": "6af0dab869ac4f8d7b228e59",
+   "commentId": "17994503303865100",
+   "commenterId": "1108546955241616",
+   "commenterName": "neryjr_2601",
+   "commenterUsername": "neryjr_2601",
+   "commentText": "Space",
+   "source": "comment",
+   "status": "gated",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": "gate_sent",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-08T20:25:28.885Z"
+  },
+  {
+   "id": "6af0dab4abdd26366b5a3993",
+   "commentId": "18355914013269505",
+   "commenterId": "1681301413355605",
+   "commenterName": "youssef_elneweshy_",
+   "commenterUsername": "youssef_elneweshy_",
+   "commentText": "Space",
+   "source": "comment",
+   "status": "skipped",
+   "error": "Follow gate: not following",
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": "gate_failed",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": false,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": "2026-11-08T20:25:58.633Z",
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-08T20:25:24.023Z"
+  },
   {
    "id": "6af0da5d44fb22b002cdf77d",
    "commentId": "18119792834009072",
@@ -295,149 +420,7 @@ LOGS 6aefbcaa6864d32eef381060: {
    "error": null,
    "platformError": null,
    "privateReplyConsumed": null,
-   "commentReplyStatus": "sent",
-   "commentReplyError": null,
-   "publicReplyPostedAt": "2026-11-08T20:23:21.403Z",
-   "audienceOutcome": "gate_passed",
-   "gateButtonStatus": "delivered",
-   "commenterIsFollower": true,
-   "commenterFollowerCount": 5,
-   "gateResolvedAt": "2026-11-08T20:23:18.402Z",
-   "likeSkipped": null,
-   "hideSkipped": null,
-   "mediaError": null,
-   "nextDueAt": null,
-   "clickedAt": null,
-   "clickCount": 0,
-   "createdAt": "2026-11-08T20:23:02.416Z"
-  },
-  {
-   "id": "6af0da1b8ecc23623527e32d",
-   "commentId": "18039885506849248",
-   "commenterId": "1815754216372359",
-   "commenterName": "logan80kv",
-   "commenterUsername": "logan80kv",
-   "commentText": "space",
-   "source": "comment",
-   "status": "gated",
-   "error": null,
-   "platformError": null,
-   "privateReplyConsumed": null,
-   "commentReplyStatus": null,
-   "commentReplyError": null,
-   "publicReplyPostedAt": null,
-   "audienceOutcome": "gate_sent",
-   "gateButtonStatus": "delivered",
-   "commenterIsFollower": null,
-   "commenterFollowerCount": null,
-   "gateResolvedAt": null,
-   "likeSkipped": null,
-   "hideSkipped": null,
-   "mediaError": null,
-   "nextDueAt": null,
-   "clickedAt": null,
-   "clickCount": 0,
-   "createdAt": "2026-11-08T20:22:51.420Z"
-  },
-  {
-   "id": "6af0da0c8ecc23623527e2bf",
-   "commentId": "17995008162070656",
-   "commenterId": "2227084027844182",
-   "commenterName": "mo2skily_",
-   "commenterUsername": "mo2skily_",
-   "commentText": "Space",
-   "source": "comment",
-   "status": "gated",
-   "error": null,
-   "platformError": null,
-   "privateReplyConsumed": null,
-   "commentReplyStatus": null,
-   "commentReplyError": null,
-   "publicReplyPostedAt": null,
-   "audienceOutcome": "gate_sent",
-   "gateButtonStatus": "delivered",
-   "commenterIsFollower": null,
-   "commenterFollowerCount": null,
-   "gateResolvedAt": null,
-   "likeSkipped": null,
-   "hideSkipped": null,
-   "mediaError": null,
-   "nextDueAt": null,
-   "clickedAt": null,
-   "clickCount": 0,
-   "createdAt": "2026-11-08T20:22:36.578Z"
-  },
-  {
-   "id": "6af0d9fae048b04f6926dc7e",
-   "commentId": "18106930231993893",
-   "commenterId": "2180314162520679",
-   "commenterName": "ani1410_2010",
-   "commenterUsername": "ani1410_2010",
-   "commentText": "Space",
-   "source": "comment",
-   "status": "sent",
-   "error": null,
-   "platformError": null,
-   "privateReplyConsumed": null,
-   "commentReplyStatus": "sent",
-   "commentReplyError": null,
-   "publicReplyPostedAt": "2026-11-08T20:22:32.087Z",
-   "audienceOutcome": "gate_passed",
-   "gateButtonStatus": "delivered",
-   "commenterIsFollower": true,
-   "commenterFollowerCount": 243,
-   "gateResolvedAt": "2026-11-08T20:22:30.433Z",
-   "likeSkipped": null,
-   "hideSkipped": null,
-   "mediaError": null,
-   "nextDueAt": null,
-   "clickedAt": null,
-   "clickCount": 0,
-   "createdAt": "2026-11-08T20:22:18.527Z"
-  },
-  {
-   "id": "6af0d9c844fb22b002cdefee",
-   "commentId": "17913799260481279",
-   "commenterId": "2270413033690814",
-   "commenterName": "ryantheguy2221",
-   "commenterUsername": "ryantheguy2221",
-   "commentText": "Space",
-   "source": "comment",
-   "status": "gated",
-   "error": null,
-   "platformError": null,
-   "privateReplyConsumed": null,
-   "commentReplyStatus": null,
-   "commentReplyError": null,
-   "publicReplyPostedAt": null,
-   "audienceOutcome": "gate_sent",
-   "gateButtonStatus": "delivered",
-   "commenterIsFollower": null,
-   "commenterFollowerCount": null,
-   "gateResolvedAt": null,
-   "likeSkipped": null,
-   "hideSkipped": null,
-   "mediaError": null,
-   "nextDueAt": null,
-   "clickedAt": null,
-   "clickCount": 0,
-   "createdAt": "2026-11-08T20:21:28.168Z"
-  },
-  {
-   "id": "6af0d9be0e78f09f888d172e",
-   "commentId": "17895817815439814",
-   "commenterId": "1079315271794572",
-   "commenterName": "oli.bar_61",
-   "commenterUsername": "oli.bar_61",
-   "commentText": "Space",
-   "source": "comment",
-   "status": "sent",
-   "error": null,
-   "platformError": null,
-   "privateReplyConsumed": null,
-   "commentReplyStatus": "sent",
-   "commentReplyError": null,
-   "publicRepl
+   "com
 
 LOGS 6aef7603000650b4a80dc3b3: {
  "success": true,
@@ -1104,3 +1087,17 @@ patched 6aef7603000650b4a80dc3b3 10 Claude animation styles (PENGUIN) keywords=[
 patched 6aef74df70d73fdd5906f1b0 10 Claude animation styles (PENGUIN) keywords=['PENGUIN', 'penguin']
 
 patched 6aef07c48d3457da520c1351 Claude Code animation commands (ANIMATE) keywords=['ANIMATE', 'animate']
+
+patched 6aedbaa6121772f4f886e4bf Claude Code 3D commands (BUILD) keywords=['BUILD', 'build']
+
+patched 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE) keywords=['INSIDE', 'inside']
+
+patched 6aece3e99225e46fbd1924d6 Claude Code 3D commands (ZOOM) keywords=['ZOOM', 'zoom']
+
+patched 6aece3e24911175637e11f68 Claude Code 3D commands (SCALE) keywords=['SCALE', 'scale']
+
+patched 6aece39d7e16ad9b49a0e5fc Claude Code 3D commands (MEGA) keywords=['MEGA', 'mega']
+
+patched 6aec7302a937d2e60eb9cffb Agent Desktop (DESKTOP) keywords=['DESKTOP', 'desktop']
+
+patched 6aebae4aabeadde97b7907dd Claude Code 3D commands (MOTION) keywords=['MOTION', 'motion']
