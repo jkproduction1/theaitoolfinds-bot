@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code Earth commands",
+ "tool_name": "Claude Code Earth commands",
+ "keyword": "EARTH",
+ "summary_cs": "App demo „Type it, get it #8“ v2 (Jan live, opravené sekání + měřítko a živočichové v příkopu): /zack-d-films Země se zastaví (rychlost 1 670 → 0 km/h, věci letí na východ, přijde vlna), /deep-dive ponor do Marianského příkopu s měřítkem hloubky (ďas ~1 000 m, vorvaň ~2 000 m, Titanic 3 800 m, nejhlubší ryba 8 336 m, dno 10 935 m) a Everest s ~2 km rezervou, /scale Měsíc vs Země ve skutečném měřítku (×49, 384 400 km). Kontrolu pohybu prošlo (PASS). Prompty pro DM v hf/videos/earth8/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 25.2,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-08_1825",
+ "run_id": null,
+ "artifact": null
+}
