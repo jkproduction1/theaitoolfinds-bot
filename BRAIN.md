@@ -76,8 +76,8 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - Daily mix (Jan, 2026-11-08, replaces "3 App demos"): **2 App demos + 1 normal Paper video a day**. 2× "Type /<command> …
   and you get this" + real result, plus 1 "Free AI tool #N" video in the old Paper style (§3). Jan's picklist taps
   (`data/picks.json` "picked") choose the Paper video's topic.
-- **One command per App demo (Jan, 2026-11-08):** all 3 demos in one video use the SAME /command (e.g. 3× /x-ray),
-  only the prompt changes. Never mix /x-ray + /explain 3D in one video.
+- **No repeated command in an App demo (Jan, 2026-11-08):** the 3 demos in one video use 3 DIFFERENT /commands
+  (e.g. /x-ray, then /zack-d-films, then /explain 3D). Each /command at most once per video, never 2× /explain 3D.
 - **What makes it work (Jan + stats, 2026-11-04):** the voice line "Type /<command> <prompt>… and you get this." is the format's
   engine: explain3d (/explain-3d, 3D explainers drawn in code) became the best IG post within hours (2,600 views, 38 likes).
   Keep that voice line in every App demo. This is an ADDITION for the App demo format only: all other formats in this
