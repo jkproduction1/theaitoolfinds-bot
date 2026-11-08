@@ -207,6 +207,11 @@ videos in our own formats. Don't make Opuscar videos unless Jan asks again. Dail
 ## 7. Jan's standing preferences
 - Answer first, act after his OK when he is asking/weighing something (in chat). Scheduled runs: just do it.
 - Captions: max 1–2 sentences + CTA + 3 hashtags (§4.8).
+- **Tag the featured brand/tool (Jan, 2026-11-08):** when a video shows a specific tool, skill author or brand, put its official
+  @handle in the caption (after the first sentence). Verify the handle on the official site/README links first; no verified handle →
+  no tag. Never write "sponsored"/paid-partnership labels for unpaid videos; spec ads on big brands always say "unofficial spec ad" in
+  the caption and nothing that implies endorsement. Note the handle in post.json summary_cs so Jan can also invite them as IG
+  collaborator and DM them the link after posting (Jan does that, we never post or DM ourselves).
 - Not every video needs the on-screen "Comment X" CTA: curiosity pieces can end on a punchline instead.
 - When he's chatting live, he approves scripts before they're voiced.
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
