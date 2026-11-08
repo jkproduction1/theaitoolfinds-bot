@@ -1,6 +1,10 @@
 [
  {
-  "name": "space7",
-  "text": "Type slash Zack D Films, what if you jumped on the Moon\u2026 and you get this. Type slash explain 3D, our solar system\u2026 and you get this. Type slash deep dive, how a black hole works\u2026 and you get this. Comment SPACE and I'll send you the link."
+  "name": "home3",
+  "text": "Type slash explain 3D, how a microwave heats food\u2026 and you get this. Type slash x-ray, a hair dryer\u2026 and you get this. Type slash explain 3D, how a toilet flushes\u2026 and you get this. Comment HOME and I'll send you the prompts."
+ },
+ {
+  "name": "tech3",
+  "text": "Type slash explain 3D, how a speaker makes sound\u2026 and you get this. Type slash x-ray, a game controller\u2026 and you get this. Type slash explain 3D, how a 3D printer works\u2026 and you get this. Comment TECH and I'll send you the prompts."
  }
 ]

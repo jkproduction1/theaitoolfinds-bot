@@ -1,23 +1,23 @@
 {
  "weights": {
   "topic": 30,
-  "hook": 20,
+  "hook": 17,
   "payoff": 12,
   "pace": 8,
   "length": 12,
   "filler": 8,
-  "visuals": 8,
+  "visuals": 11,
   "ending": 2
  },
  "angle_prior": {
   "relatable-pain": 1.0,
-  "app-demo": 0.95,
-  "new-ability": 0.9,
+  "new-ability": 0.8,
   "news": 0.75,
+  "app-demo": 0.65,
   "fear": 0.5,
   "pain-command": 0.5,
-  "listicle": 0.3,
+  "listicle": 0.25,
   "alternative": 0.25
  },
- "note": "angle_prior = relative TikTok reach per topic type from data/stats.json (2026-11-04, 26 posts; Nov posts weighted up). app-demo is a guess from 1 post (styles5). Recalibrate Wed + Sun."
+ "note": "2026-11-08 (Sun): angle_prior from avg TikTok views since 11-01 (angle from hf/videos/*/post.json): relatable-pain 767 (5 posts) = 1.0; app-demo 495 (9) -> 0.65 (was 0.95; IG is the opposite, app-demo is our IG engine, but this prior is TT-only); new-ability 561 (3) = 0.73, blended with old 0.9 -> 0.8; fear 363 (1) blended -> 0.5; listicle 153 (1) blended 0.3 -> 0.25; news/alternative/pain-command no new posts, kept. Weights: hook 20->17, visuals 8->11 (hook score showed no link to TT views, rho ~0 on 16 Nov posts and negative on IG; visuals was the only feature positive in every cut, rho +0.3..+0.5; weak signal, small move). Length/filler were 1.0 on every Nov post, so untestable. 2026-11-04: first calibration, 26 posts."
 }
