@@ -18,7 +18,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {13: 1.8, 25: 1.8, 36: 1.8}
+GAPS = {13: 2.4, 25: 4.6, 36: 2.6}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
@@ -232,7 +232,7 @@ function apply(t){
 const clock={t:0}; tl.fromTo(clock,{t:0},{t:DUR,duration:DUR,ease:'none',onUpdate:()=>apply(clock.t)},0); apply(0);
 const NI={immediateRender:false}; function F2(sel,f,t,at){ return tl.fromTo(sel,f,Object.assign({},t,NI),at); }
 TY.forEach((d,k)=>{
-  if(k){ tl.set('#st'+(k-1),{opacity:0},d.T); tl.set(['#kbw','#inp'],{y:0,opacity:1},d.T); tl.set(['#ub','#run','#bot'],{opacity:0},d.T); }
+  if(k){ F2('#st'+(k-1),{scale:1,y:0,borderRadius:0},{scale:.58,y:110,borderRadius:60,duration:.4,ease:'power2.inOut'},d.T-0.62); F2('#st'+(k-1),{opacity:1,y:110},{opacity:0,y:-500,duration:.25,ease:'power2.in'},d.T-0.22); tl.set(['#kbw','#inp'],{y:0,opacity:1},d.T); tl.set(['#ub','#run','#bot'],{opacity:0},d.T); }
   F2('#chipc',{opacity:0,y:30},{opacity:1,y:0,duration:.2,ease:'power2.out'},d.slash);
   tl.set('#snd',{backgroundColor:'#ff4b1f'},d.slash+0.05);
   tl.set('#chipc',{opacity:0},d.p0);
@@ -243,10 +243,10 @@ TY.forEach((d,k)=>{
   F2('#bot',{opacity:0},{opacity:1,duration:.2},d.send+0.15);
   tl.set('#snd',{backgroundColor:'#3a3a3a'},d.send+0.3);
   F2('#st'+k,{opacity:0,scale:.5,y:140,borderRadius:60},{opacity:1,scale:.58,y:110,borderRadius:60,duration:.3,ease:'back.out(1.6)'},d.card);
-  F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.42,ease:'expo.inOut'},d.full);
+  F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.55,ease:'power2.inOut'},d.full);
 });
 tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
-tl.set('#st2',{opacity:0},END); tl.set('#ui',{opacity:0},END);
+F2('#st2',{opacity:1,scale:1},{opacity:0,scale:.9,duration:.25,ease:'power2.in'},END-0.2); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.15},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
 F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.3,ease:A},END+0.02);

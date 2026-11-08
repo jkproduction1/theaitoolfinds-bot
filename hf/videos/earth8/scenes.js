@@ -146,26 +146,29 @@ function liveTag(w,h,sx,style){ const c=document.createElement('canvas'); c.widt
   const NF=900, fp=new Float32Array(NF*3), fv=[]; for(let i=0;i<NF;i++) fv.push([R(),R()*120-60,R()]);
   const fg=new THREE.BufferGeometry(); fg.setAttribute('position',new THREE.BufferAttribute(fp,3));
   const foam=new THREE.Points(fg,new THREE.PointsMaterial({color:0xffffff,size:0.35,transparent:true,opacity:.9})); wave.add(foam);
-  const WAVE0=1.4, WAVE1=3.2;
-  SCN[0]=function(lt0){ const lt=lt0*1.15;
-    if(lt<1.0){ // shot A
+  sc.add(cam); const spdB=liveTag(640,140,2.4,{font:'800 70px Inter, Arial',bg:'rgba(255,75,31,.95)',fg:'#fff',hh:52}); cam.add(spdB); spdB.position.set(0,1.25,-8);
+  const WAVE0=1.75, WAVE1=3.4;
+  SCN[0]=function(lt0){ const lt=lt0;
+    if(false){ // (globe shot removed: hard cut)
       const w=lt<TS? 2.4*lt : 2.4*TS+0.05*Math.sin((lt-TS)*30)*Math.exp(-(lt-TS)*9);
       globe.rotation.y=w; const k=lt<TS?0:cl((lt-TS)/0.3); shock.scale.setScalar(1+k*0.6); shock.material.opacity=lt<TS?0:(1-k);
       spd.set(lt<TS?'1,670 km/h':(lt<TS+0.12?Math.round(1670*(1-(lt-TS)/0.12)).toLocaleString('en-US')+' km/h':'0 km/h'));
       spd.material.opacity=cl(lt/0.15);
       const sh=lt>TS?0.25*Math.exp(-(lt-TS)*7):0; camA.position.set(Math.sin(lt*90)*sh,1.0+Math.cos(lt*77)*sh,31-lt*2.0); camA.lookAt(0,-1.2,0);
       ren.render(scA,camA); caption(0,lt); return; }
-    const t=lt-1.0;
-    fly.forEach(f=>{ const dt=t-f.d; if(dt<=0){ f.o.position.set(f.x0,f.y0,f.z0); f.o.rotation.set(0,0,0); return; }
+    const t=lt-0.7;
+    const cd=cl((lt-0.3)/0.4); spdB.set((cd<1?Math.round(1670*(1-easeIO(cd))/10)*10:0).toLocaleString('en-US')+' km/h');
+    spdB.material.opacity=cl(lt/0.15)*(1-cl((lt-1.5)/0.3));
+    fly.forEach(f=>{ const dt=t-f.d; if(dt<=0||t<=0){ f.o.position.set(f.x0,f.y0,f.z0); f.o.rotation.set(0,0,0); return; }
       const x=f.x0+f.v*dt+9*dt*dt, y=f.y0+f.lift*dt*(1+dt)+0.3*dt; f.o.position.set(x,y,f.z0+0.4*dt*(f.spin[0]));
       f.o.rotation.set(f.spin[0]*dt,f.spin[1]*dt,f.spin[2]*dt); });
     for(let i=0;i<NW;i++){ const v=wv[i]; const x=((v[0]+v[3]*t+200)%160)-80; const L=2+v[3]*0.06; wp[i*6]=x; wp[i*6+1]=v[1]; wp[i*6+2]=v[2]; wp[i*6+3]=x+L; wp[i*6+4]=v[1]; wp[i*6+5]=v[2]; }
-    wg.attributes.position.needsUpdate=true; wind.material.opacity=0.55*cl(t/0.3);
+    wg.attributes.position.needsUpdate=true; wind.material.opacity=0.55*cl(t/0.3); wind.visible=t>0;
     const wu=cl((lt-WAVE0)/(WAVE1-WAVE0)); wave.position.x=-30+wu*42; wave.visible=lt>WAVE0-0.2;
     for(let i=0;i<NF;i++){ const v=fv[i]; const ang=Math.PI*(0.8+0.25*v[0]); const r=9; fp[i*3]=-r+Math.sin(ang)*r*1.15+2+v[2]*1.5+Math.sin(lt*6+i)*0.3; fp[i*3+1]=(1-Math.cos(ang))*r*0.95+v[2]*1.2; fp[i*3+2]=v[1]; }
     fg.attributes.position.needsUpdate=true;
-    const sh=0.22*Math.exp(-t*2.2)+0.06*cl((lt-WAVE0)/0.8);
-    cam.position.set(2+Math.sin(lt*83)*sh, 3.2+Math.cos(lt*71)*sh, 24-1.5*t); cam.lookAt(-2,3.2+0.4*t,0);
+    const sh=(t>0?0.22*Math.exp(-t*2.2):0)+0.06*cl((lt-WAVE0)/0.8);
+    cam.position.set(2+Math.sin(lt*83)*sh, 3.2+Math.cos(lt*71)*sh, 25-1.1*lt); cam.lookAt(-2,3.2+0.3*Math.max(0,t),0);
     ren.render(sc,cam); caption(0,lt); };
 })();
 
@@ -216,24 +219,56 @@ function liveTag(w,h,sx,style){ const c=document.createElement('canvas'); c.widt
   const bm=glowMat(0xff6a3d,1); brk.add(tubeBetween([2.9,peakY,ZW/2],[2.9,-0.05,ZW/2],0.05,bm)); brk.add(tubeBetween([2.5,peakY,ZW/2],[3.3,peakY,ZW/2],0.05,bm)); brk.add(tubeBetween([2.5,-0.05,ZW/2],[3.3,-0.05,ZW/2],0.05,bm));
   const gapT=liveTag(560,140,3.4,{font:'800 70px Inter, Arial',bg:'rgba(255,75,31,.95)',fg:'#fff',hh:52}); gapT.set('2 km to spare'); gapT.position.set(2.9,peakY/2,ZW/2+0.3); brk.add(gapT);
   const an=[new THREE.Object3D(),new THREE.Object3D()]; an[0].position.set(-0.8,peakY-1.2,ZW/2); an[1].position.set(-1.9,-D+1.7,ZW/2); an.forEach(a=>sc.add(a));
-  const DIVE=1.0, DROP0=1.05, DROP1=1.5;
-  SCN[1]=function(lt0){ const lt=lt0*1.15;
+  const DIVE=3.5, DROP0=3.5, DROP1=4.4;
+  // creatures/landmarks met on the way down (real depths): drawn as glowing silhouettes on canvas sprites
+  function sil(w,h,draw){ const t=canvasTex(w,h,(c,W,H)=>{ c.save(); draw(c,W,H); c.restore(); }); return new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthWrite:false,toneMapped:false})); }
+  const whale=sil(512,256,(c,w,h)=>{ c.fillStyle='#3d4a5c'; c.beginPath(); c.moveTo(40,120); c.quadraticCurveTo(60,60,190,62); c.lineTo(330,70); c.quadraticCurveTo(420,90,440,128); c.lineTo(480,96); c.lineTo(500,108); c.lineTo(476,140); c.lineTo(500,172); c.lineTo(480,180); c.lineTo(440,150);
+    c.quadraticCurveTo(330,185,190,172); c.quadraticCurveTo(50,175,40,120); c.fill(); c.fillStyle='#55667c'; c.fillRect(60,70,120,20); c.fillStyle='#0b0f16'; c.beginPath(); c.arc(150,118,6,0,7); c.fill(); });
+  const angler=sil(256,256,(c,w,h)=>{ const g=c.createRadialGradient(150,48,0,150,48,40); g.addColorStop(0,'rgba(190,255,240,1)'); g.addColorStop(1,'rgba(120,255,220,0)'); c.fillStyle=g; c.fillRect(100,0,100,100);
+    c.strokeStyle='#5a4a40'; c.lineWidth=5; c.beginPath(); c.moveTo(118,110); c.quadraticCurveTo(130,40,150,48); c.stroke();
+    c.fillStyle='#4a3c34'; c.beginPath(); c.ellipse(118,160,78,62,0,0,7); c.fill(); c.beginPath(); c.moveTo(190,150); c.lineTo(250,110); c.lineTo(250,200); c.fill();
+    c.fillStyle='#e8e2d0'; for(let i=0;i<7;i++){ c.beginPath(); c.moveTo(48+i*12,175); c.lineTo(54+i*12,192); c.lineTo(60+i*12,175); c.fill(); } c.fillStyle='#cfe9ff'; c.beginPath(); c.arc(90,140,7,0,7); c.fill(); });
+  const ship=sil(512,256,(c,w,h)=>{ c.fillStyle='#4a3a30'; c.beginPath(); c.moveTo(20,120); c.lineTo(492,110); c.lineTo(470,190); c.lineTo(60,196); c.closePath(); c.fill();
+    c.fillStyle='#6a5444'; c.fillRect(90,92,330,28); [140,210,280,350].forEach(x=>{ c.fillStyle='#5a4638'; c.save(); c.translate(x,92); c.rotate(-0.12); c.fillRect(-14,-62,28,62); c.restore(); });
+    c.fillStyle='rgba(20,15,10,.6)'; for(let i=0;i<22;i++) c.fillRect(70+i*18,140,8,8); });
+  const snail=sil(256,128,(c,w,h)=>{ c.fillStyle='#f0c9c4'; c.beginPath(); c.ellipse(80,64,58,34,0,0,7); c.fill(); c.beginPath(); c.moveTo(120,44); c.quadraticCurveTo(220,52,250,64); c.quadraticCurveTo(220,78,120,86); c.fill();
+    c.fillStyle='#2a1a1a'; c.beginPath(); c.arc(52,56,6,0,7); c.fill(); });
+  const pathX=(y)=>{ const du=(-0.3-y)/(D-0.6); return -6+6*du; };
+  const meets=[[whale,2.0,1.6,'Sperm whale','~2,000 m'],[angler,1.0,0.8,'Anglerfish','~1,000 m'],[ship,3.8,1.8,'Titanic wreck','3,800 m'],[snail,8.336,0.9,'Deepest fish seen','8,336 m']];
+  meets.forEach(m=>{ const [sp,dk,sz]=m; sp.scale.set(sz,sz*sp.material.map.image.height/sp.material.map.image.width,1); sp.position.set(pathX(-dk)+(sz>1.7?0.55:(dk>8?1.1:0.95)),-dk,ZW/2+0.5); sc.add(sp);
+    const t=liveTag(1000,160,1.6,{font:'700 58px Inter, Arial',bg:'rgba(8,10,14,.88)',fg:'#ffffff',hh:56}); t.set(m[3]+' · '+m[4]); t.position.set(pathX(-dk)+0.5,sp.position.y+sz*0.36+0.12,ZW/2+0.7); sc.add(t); m.push(t); });
+  // depth ruler (screen space, left edge): ticks every 500 m, scrolls with the dive; marks Titanic + Everest height
+  const st=document.getElementById('st1'); const rul=document.createElement('div'); rul.id='rul'; rul.innerHTML='<div id="rtape"></div><div id="rnow"><i></i><b id="rnum">0 m</b></div>'; st.appendChild(rul);
+  const tape=rul.querySelector('#rtape'), rnum=rul.querySelector('#rnum'); const PX=240;
+  let th=''; for(let m=0;m<=11000;m+=500){ th+='<div class="tk'+(m%1000?'':' big')+'" style="top:'+(m/1000*PX)+'px">'+(m%1000?'':'<span>'+(m/1000)+' km</span>')+'</div>'; }
+  th+='<div class="rm" style="top:'+(8.849*PX)+'px">Everest is 8,849 m tall</div>'; tape.innerHTML=th;
+  const css=document.createElement('style'); css.textContent='#rul{position:absolute;left:0;top:0;width:760px;height:1920px;pointer-events:none;opacity:0;-webkit-mask-image:linear-gradient(180deg,transparent 380px,#000 520px,#000 1380px,transparent 1520px)}'+
+   '#rtape{position:absolute;left:70px;top:960px;width:4px;height:'+(11*PX)+'px;background:rgba(255,255,255,.55)}'+
+   '.tk{position:absolute;left:0;width:22px;height:3px;background:rgba(255,255,255,.6)}.tk.big{width:40px;background:#fff}.tk span{position:absolute;white-space:nowrap;left:52px;top:-20px;font:700 34px Inter,Arial;color:#fff;text-shadow:0 2px 10px #000}'+
+   '.rm{position:absolute;left:300px;transform:translateY(-50%);white-space:nowrap;background:#ff4b1f;color:#fff;font:700 28px Inter,Arial;padding:6px 14px;border-radius:999px}'+
+   '#rnow{position:absolute;left:58px;top:960px;transform:translateY(-50%);display:flex;align-items:center;gap:10px}#rnow i{width:0;height:0;border-left:22px solid #ff4b1f;border-top:13px solid transparent;border-bottom:13px solid transparent}'+
+   '#rnow b{font:800 44px "JetBrains Mono",monospace;color:#fff;background:rgba(8,10,14,.9);padding:6px 14px;border-radius:12px}';
+  st.appendChild(css);
+  SCN[1]=function(lt0){ const lt=lt0;
     for(let i=0;i<sp.count;i++){ const x=sp.getX(i), y=sp.getY(i); sp.setZ(i,0.06*Math.sin(x*1.3+lt*3)+0.04*Math.sin(y*2+lt*2.3)); } sp.needsUpdate=true; surf.geometry.computeVertexNormals();
-    const du=easeIO(cl(lt/DIVE)); const subY=-0.3-(D-0.6)*du; const subX=-6+6*du+0.3*Math.sin(lt*2);
-    sub.position.set(subX,subY,ZW/2+0.4); sub.visible=lt<DROP1+0.2;
-    const depth=Math.round(cl(-subY/D)*D*1000/5)*5; gauge.set((lt>DIVE?10935:depth).toLocaleString('en-US')+' m');
-    gauge.position.set(subX,subY+0.62,ZW/2+0.6); gauge.material.opacity=cl(lt/0.2)*(1-cl((lt-DROP0)/0.25));
-    const eu=cl((lt-DROP0)/(DROP1-DROP0)); const ey=-D+H/2+ (1-easeOut2(eu))*22 + (eu>=1?0:0); everest.position.set(0,ey,0); everest.visible=lt>DROP0;
-    const bounce=eu>=1?0.25*Math.exp(-(lt-DROP1)*8)*Math.sin((lt-DROP1)*30):0; everest.position.y+=bounce;
-    const bu=cl((lt-DROP1-0.2)/0.3); brk.visible=bu>0; brk.scale.set(1,1,1); bm.opacity=bu; gapT.material.opacity=bu;
-    // camera: follow the sub down, then pull back to the full slice
-    const pu=easeIO(cl((lt-DIVE)/0.8));
-    const fx=subX+0.5, fy=subY, fz=ZW/2+6.5;
-    const wx=0.0, wy=-5.2, wz=ZW/2+30;
-    cam.position.set(fx+(wx-fx)*pu, fy+0.6+(wy-fy-0.6)*pu, fz+(wz-fz)*pu); cam.lookAt(fx+(wx-fx)*pu, fy+(wy-fy)*pu, 0);
-    const la=cl((lt-DROP1-0.35)/0.25);
-    layoutLabels([['l1_0',an[0],la],['l1_1',an[1],cl((lt-DIVE-0.5)/0.25)]].map(([id,o,a])=>[document.getElementById(id),o,a]),cam,90,150);
-    ren.render(sc,cam); caption(1,lt); };
+    const du=easeIO(cl(lt/DIVE)); const subY=-0.3-(D-0.6)*du; const subX=pathX(subY)+0.15*Math.sin(lt*2);
+    sub.position.set(subX,subY,ZW/2+0.4); sub.visible=lt<DROP1+0.2; gauge.visible=false;
+    const dkm=D*du; rnum.textContent=(Math.round(dkm*1000/5)*5).toLocaleString('en-US')+' m';
+    tape.style.transform='translateY('+(-dkm*PX)+'px)'; rul.style.opacity=cl(lt/0.25)*(1-cl((lt-DIVE)/0.3));
+    meets.forEach(m=>{ const near=1-cl((Math.abs(m[1]+subY)-0.7)/0.8); m[0].material.opacity=near; m[5].material.opacity=near*(1-cl((lt-DIVE)/0.3)); });
+    whale.position.x=pathX(-2.0)+0.95+0.2*Math.sin(lt*1.2); angler.position.y=-1.0+0.05*Math.sin(lt*3);
+    const eu=cl((lt-DROP0)/(DROP1-DROP0)); everest.position.set(0,-D+H/2+(1-easeIO(eu))*16,0); everest.visible=lt>DROP0;
+    const bu=cl((lt-DROP1-0.1)/0.3); brk.visible=bu>0; bm.opacity=bu; gapT.material.opacity=bu;
+    meets.forEach(m=>{ if(lt>DIVE) m[0].material.opacity*=1-cl((lt-DIVE)/0.4); });
+    // camera: follow the sub down (a little wider to see the creatures), then a smooth pull-back, then a slow push-in (never static)
+    const pu=easeIO(cl((lt-DIVE+0.15)/1.1));
+    const fx=subX+0.55, fy=subY, fz=ZW/2+7.5;
+    const push=Math.max(0,lt-DIVE-0.95)*0.8;
+    const wx=0.0, wy=-5.2, wz=ZW/2+30-push;
+    cam.position.set(fx+(wx-fx)*pu, fy+0.5+(wy-fy-0.5)*pu, fz+(wz-fz)*pu); cam.lookAt(fx+(wx-fx)*pu, fy+(wy-fy)*pu, 0);
+    const la=cl((lt-DROP1-0.25)/0.25);
+    layoutLabels([['l1_0',an[0],la],['l1_1',an[1],cl((lt-DIVE-0.6)/0.25)]].map(([id,o,a])=>[document.getElementById(id),o,a]),cam,90,150);
+    ren.render(sc,cam); caption(1,lt-DROP0+0.1); };
 })();
 
 // ---------- S2 /scale the Moon versus Earth, true to scale: the Moon is 3,474 km wide, Earth 12,742 km (~3.7x). Then Moons fly in and
@@ -250,30 +285,31 @@ function liveTag(w,h,sx,style){ const c=document.createElement('canvas'); c.widt
   const moonMat=new THREE.MeshStandardMaterial({map:mTex,roughness:.95});
   const moon=new THREE.Mesh(new THREE.SphereGeometry(RM,64,40),moonMat); sc.add(moon);
   const NM=48, mini=[]; const mg=new THREE.SphereGeometry(RM,32,20);
-  for(let i=0;i<NM;i++){ const m=new THREE.Mesh(mg,moonMat); const a=R()*Math.PI*2, e=(R()-.5)*1.6; m.userData={from:new THREE.Vector3((i%2?1:-1)*(6+R()*2),-1+R()*3.5,2+R()*2), t0:0.45+i*0.02}; m.visible=false; sc.add(m); mini.push(m); }
+  for(let i=0;i<NM;i++){ const m=new THREE.Mesh(mg,moonMat); const a=R()*Math.PI*2, e=(R()-.5)*1.6; m.userData={from:new THREE.Vector3((i%2?1:-1)*(6+R()*2),-1+R()*3.5,2+R()*2), t0:0.4+i*0.018}; m.visible=false; sc.add(m); mini.push(m); }
   const cnt=liveTag(560,160,2.4,{font:'900 92px Inter, Arial',bg:'rgba(255,75,31,.95)',fg:'#fff',hh:62}); sc.add(cnt);
   const line=new THREE.Mesh(new THREE.CylinderGeometry(1,1,1,12),glowMat(0xff6a3d,.95)); sc.add(line);
   const dT=liveTag(800,150,1,{font:'800 74px Inter, Arial',bg:'rgba(8,9,12,.9)',fg:'#fff',hh:54}); dT.set('384,400 km apart'); sc.add(dT);
   const tE=liveTag(400,130,1,{font:'800 64px Inter, Arial',bg:'rgba(8,9,12,.9)',fg:'#fff',hh:46}); tE.set('Earth'); sc.add(tE);
   const tM=liveTag(400,130,1,{font:'800 64px Inter, Arial',bg:'rgba(8,9,12,.9)',fg:'#fff',hh:46}); tM.set('Moon'); sc.add(tM);
   const an=[new THREE.Object3D(),new THREE.Object3D()]; earth.add(an[0]); an[0].position.set(RE*0.7,RE*0.2,RE*0.6); moon.add(an[1]); an[1].position.set(RM*0.6,0,RM*0.7);
-  const PULL=2.05;
-  SCN[2]=function(lt0){ const lt=lt0*1.15; earth.rotation.y=0.6+lt*0.15; moon.rotation.y=lt*0.1;
+  const mdot=new THREE.Sprite(new THREE.SpriteMaterial({map:canvasTex(64,64,(c,w,h)=>{ const g=c.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(235,235,230,1)'); g.addColorStop(.45,'rgba(220,220,215,1)'); g.addColorStop(.6,'rgba(220,220,215,.25)'); g.addColorStop(1,'rgba(220,220,215,0)'); c.fillStyle=g; c.fillRect(0,0,w,h); }),transparent:true,depthWrite:false,toneMapped:false})); sc.add(mdot);
+  const PULL=1.8;
+  SCN[2]=function(lt0){ const lt=lt0; earth.rotation.y=0.6+lt*0.35; moon.rotation.y=lt*0.2;
     const pop=backOut(cl(lt/0.45)), popM=backOut(cl((lt-0.25)/0.45));
     earth.scale.setScalar(Math.max(0.001,pop)); atm.scale.setScalar(Math.max(0.001,pop));
-    const pu=easeIO(cl((lt-PULL)/0.65)); const my=RE+RM+1.2+(DIST-(RE+RM+1.2))*pu;
+    const pu=easeIO(cl((lt-PULL)/1.15)); const my0=RE+RM+1.2; const my=my0*Math.pow(DIST/my0,pu);
     moon.position.set(0.9*(1-pu),my,0); moon.scale.setScalar(Math.max(0.001,popM));
     // moons diving into Earth + counter
     let n=0; mini.forEach((m,i)=>{ const u=cl((lt-m.userData.t0)/0.28); m.visible=u>0&&u<1&&lt<PULL; if(u>=1) n++;
       if(m.visible){ m.position.copy(m.userData.from).lerp(new THREE.Vector3(0,0,0),easeIO(u)); m.scale.setScalar(1-0.85*u*u); } });
-    const cn=lt<0.45?0:Math.min(49,n+1); cnt.set('×'+cn); cnt.position.set(-1.25,RE+1.15,1.0); cnt.material.opacity=cl((lt-0.45)/0.15)*(1-cl((lt-PULL)/0.3));
+    const cn=lt<0.4?0:Math.min(49,n+1); cnt.set('×'+cn); cnt.position.set(-1.25,RE+1.15,1.0); cnt.material.opacity=cl((lt-0.4)/0.15)*(1-cl((lt-PULL)/0.25));
     // distance line
     // camera: close two-shot -> very far, both in frame
-    const d0=16.5, d1=DIST*2.9; const d=d0*Math.pow(d1/d0,pu); const ty=1.9*(1-pu)+(DIST*0.45)*pu;
+    const d0=16.5, d1=DIST*2.9; const d=d0*Math.pow(d1/d0,pu); const ty=my*0.47;
     cam.position.set(1.0*(1-pu),ty,d); cam.lookAt(0,ty,0);
     line.visible=pu>0.02; line.position.set(0,(RE+my)/2,0); line.scale.set(0.0016*d,Math.max(0.01,my-RE-RM),0.0016*d);
-    dT.position.set(0,DIST*0.5,0); dT.scale.set(d*0.3,d*0.3*150/800,1); dT.material.opacity=cl((lt-PULL-0.42)/0.15);
-    const ft=cl((lt-PULL-0.45)/0.15); [tE,tM].forEach((t,i)=>{ t.material.opacity=ft; const k=d*0.11; t.scale.set(k,k*130/400,1); t.position.set(d*0.12,i?my:0,0); });
+    dT.position.set(0,my*0.5,0); mdot.position.copy(moon.position); mdot.scale.setScalar(0.03*d); mdot.material.opacity=cl((pu-0.5)/0.3); dT.scale.set(d*0.3,d*0.3*150/800,1); dT.material.opacity=cl((pu-0.8)/0.2);
+    const ft=cl((pu-0.8)/0.2); [tE,tM].forEach((t,i)=>{ t.material.opacity=ft; const k=d*0.11; t.scale.set(k,k*130/400,1); t.position.set(d*0.12,i?my:0,0); });
     const la=(1-cl((lt-PULL)/0.25));
     layoutLabels([['l2_0',an[0],cl((lt-0.3)/0.2)*la],['l2_1',an[1],cl((lt-0.45)/0.2)*la]].map(([id,o,a])=>[document.getElementById(id),o,a]),cam,640,150);
     ren.render(sc,cam); caption(2,lt); };
