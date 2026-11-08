@@ -32,12 +32,27 @@ for path in ["/inbox/comments", f"/inbox/comments/18086880842695673?accountId={a
         out.append(f"{path}: " + json.dumps(poster._z("GET", path), indent=1)[:3000])
     except Exception as e:
         out.append(f"{path} failed {e}")
-if os.getenv("AUTODM_PATCH"):  # push the current follow-gate copy to all automations
-    for a in items:
+if os.getenv("AUTODM_PATCH"):  # Jan 2026-11-08: new natural, varied copy on the newest automations.
+    # Only text/delay fields change; keywords, post binding, audience and the link stay as they are.
+    N = int(os.getenv("AUTODM_PATCH_N", "5"))
+    newest = sorted(items, key=lambda a: a.get("createdAt") or "", reverse=True)[:N]
+    for a in newest:
         aid = a.get("id") or a.get("_id")
-        poster._z("PATCH", f"/comment-automations/{aid}", json={"followGate": poster.FOLLOW_GATE,
-                  "dmDelaySeconds": 0, "audience": {"followerStatus": "follower", "whenUnknown": "verify"}})
-        out.append(f"patched {aid}")
+        kws = a.get("keywords") or [""]
+        tool = a.get("postTitle") or (a.get("name") or "").split(" (")[0]
+        c = poster.dm_copy(a.get("postId") or a.get("platformPostId") or aid, kws[0], tool)
+        btns = a.get("buttons") or []
+        for b in btns:
+            if b.get("type") == "url":
+                b["title"] = c["btn"]
+        patch = {k: v for k, v in c.items() if k != "btn"}
+        if btns:
+            patch["buttons"] = btns
+        try:
+            poster._z("PATCH", f"/comment-automations/{aid}", json=patch)
+            out.append(f"patched {aid} {a.get('name')} keywords={kws}")
+        except Exception as e:
+            out.append(f"patch FAILED {aid} {a.get('name')}: {e}")
 if os.getenv("AUTODM_FIX"):  # recreate ArtCraft automation bound to the Instagram media id
     for a in items:
         if a.get("postId") == "6ad776bdf5e93b04321197ea" and not a.get("platformPostId"):

@@ -89,32 +89,37 @@ GATE_POOL = [
 FOLLOW_GATE = GATE_POOL[0]  # kept for autodm_debug.py
 
 
+def dm_copy(seed: str, kw: str, tool: str) -> dict:
+    """The varied text fields of one automation (same seed -> same picks). Keywords are not touched."""
+    import random
+    rnd = random.Random(seed)
+    dms = [t.format(tool=tool, kw=kw) for t in rnd.sample(DM_POOL, 6)]
+    replies = rnd.sample(REPLY_POOL, 6)
+    dm_delay = rnd.randint(0, 5)  # Jan: no real delay, max 5 s (fixed per automation, varied per post)
+    return {"dmMessage": dms[0], "dmMessageVariations": dms[1:],
+            "commentReply": replies[0], "commentReplyVariations": replies[1:],
+            "btn": rnd.choice(BUTTON_POOL)[:20], "followGate": rnd.choice(GATE_POOL),
+            "actions": {"likeComment": True},
+            "dmDelaySeconds": dm_delay, "commentReplyDelaySeconds": min(5, dm_delay + rnd.randint(0, 3))}
+
+
 def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> str:
     """Comment-to-DM for this post (Instagram, via Zernio = official Meta private replies).
     Keyword = tool name. Follow gate: unknown followers get a confirm DM first."""
-    import random
     acc = instagram_account()
     prof = acc.get("profileId")
     prof = prof.get("_id") if isinstance(prof, dict) else prof
     kw, tool, url = meta["keyword"], meta["tool_name"], meta["url"]
-    rnd = random.Random(post_id)
-    dms = [t.format(tool=tool, kw=kw) for t in rnd.sample(DM_POOL, 6)]
-    replies = rnd.sample(REPLY_POOL, 6)
-    dm_delay = rnd.randint(0, 5)  # Jan: no real delay, max 5 s (fixed per automation, varied per post)
+    c = dm_copy(post_id, kw, tool)
     body = {
         "profileId": prof, "accountId": acc.get("_id") or acc.get("id"),
         **({"platformPostId": platform_post_id} if platform_post_id else {"postId": post_id}),
         "postTitle": tool[:80], "name": f"{tool} ({kw})",
         "trigger": "comment", "keywords": [kw, kw.lower()], "matchMode": "word", "typoTolerance": True,
         "alsoMatchInDms": True,
-        "dmMessage": dms[0], "dmMessageVariations": dms[1:],
-        "buttons": [{"type": "url", "title": rnd.choice(BUTTON_POOL)[:20], "url": url}],
-        "commentReply": replies[0], "commentReplyVariations": replies[1:],
-        "actions": {"likeComment": True},
+        **{k: v for k, v in c.items() if k != "btn"},
+        "buttons": [{"type": "url", "title": c["btn"], "url": url}],
         "audience": {"followerStatus": "follower", "whenUnknown": "verify"},
-        "followGate": rnd.choice(GATE_POOL),
-        "dmDelaySeconds": dm_delay,
-        "commentReplyDelaySeconds": min(5, dm_delay + rnd.randint(0, 3)),
     }
     res = _z("POST", "/comment-automations", json=body)
     return (res.get("automation") or res).get("_id") or (res.get("automation") or res).get("id") or "ok"
