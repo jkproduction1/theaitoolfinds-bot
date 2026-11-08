@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-07",
-  "category": "github",
+  "date": "2026-11-08",
+  "category": "useful",
   "items": [
     {
       "name": "rea-video",
@@ -9,25 +9,16 @@
       "source": "gh-search",
       "angle": "wow-demo",
       "score": 9.0,
-      "why": "Rozebere libovoln\u00e9 video z\u00e1b\u011br po z\u00e1b\u011bru a prozrad\u00ed p\u0159esn\u00fd postup replikace."
+      "why": "Rozebere jak\u00e9koliv video z\u00e1b\u011br po z\u00e1b\u011bru a uk\u00e1\u017ee p\u0159esn\u00fd n\u00e1vod, jak ho zreplikovat."
     },
     {
-      "name": "openjutsu",
-      "url": "https://github.com/D3voz/openjutsu",
-      "desc": "One-click character swap for videos: an open-source, local Higgsfield Genjutsu alternative built on ComfyUI and MiniMax H3, with FLUX.3 Klein relighting.",
+      "name": "poki",
+      "url": "https://github.com/JosssphZhou/poki",
+      "desc": "Let AI agents operate a real iPhone. Local MCP server and agent, no jailbreak, no extra hardware.",
       "source": "gh-search",
-      "angle": "free-alternative",
-      "score": 8.0,
-      "why": "Lok\u00e1ln\u00ed open-source alternativa k placen\u00e9mu Higgsfield pro bleskovou v\u00fdm\u011bnu postav ve videu."
-    },
-    {
-      "name": "OpenMontage",
-      "url": "https://github.com/calesthio/OpenMontage",
-      "desc": "Sponsor                           Star                    calesthio /   OpenMontage      World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assis",
-      "source": "gh-trending",
-      "angle": "trending-repo",
-      "score": 8.0,
-      "why": "Kompletn\u00ed open-source syst\u00e9m pro automatizovanou tvorbu a st\u0159ih vide\u00ed pomoc\u00ed AI agent\u016f."
+      "angle": "wow-demo",
+      "score": 9.0,
+      "why": "Nech\u00e1 AI agenta ovl\u00e1dat re\u00e1ln\u00fd iPhone bez jailbreaku, brut\u00e1ln\u00ed vir\u00e1ln\u00ed potenci\u00e1l na s\u00edt\u00edch."
     },
     {
       "name": "cicada",
@@ -36,16 +27,25 @@
       "source": "gh-search",
       "angle": "free-alternative",
       "score": 8.0,
-      "why": "Bezplatn\u00e1 open-source n\u00e1hrada placen\u00fdch n\u00e1stroj\u016f na \u017eiv\u00e9 titulky, p\u0159eklady a z\u00e1pisy sch\u016fzek."
+      "why": "Bezplatn\u00e9 \u017eiv\u00e9 titulky, simult\u00e1nn\u00ed p\u0159eklad a z\u00e1pisy z hovor\u016f pro v\u0161echny platformy."
     },
     {
-      "name": "poki",
-      "url": "https://github.com/JosssphZhou/poki",
-      "desc": "Let AI agents operate a real iPhone. Local MCP server and agent, no jailbreak, no extra hardware.",
+      "name": "openjutsu",
+      "url": "https://github.com/D3voz/openjutsu",
+      "desc": "One-click character swap for videos: an open-source, local Higgsfield Genjutsu alternative built on ComfyUI and MiniMax H3, with FLUX.3 Klein relighting.",
       "source": "gh-search",
-      "angle": "wow-demo",
+      "angle": "free-alternative",
       "score": 8.0,
-      "why": "Umo\u017e\u0148uje AI agent\u016fm autonomn\u011b ovl\u00e1dat re\u00e1ln\u00fd iPhone bez nutnosti jailbreaku."
+      "why": "Open-source n\u00e1stroj pro v\u00fdm\u011bnu postav ve videu a nasv\u00edcen\u00ed sc\u00e9ny lok\u00e1ln\u011b a zdarma."
+    },
+    {
+      "name": "cinecode",
+      "url": "https://github.com/sarpstar/cinecode",
+      "desc": "Films made with code. Short films, long YouTube videos, ads, explainers and music videos: an AI coding agent writes the script, builds every frame in code, designs the sound and hands you an MP4.",
+      "source": "gh-search",
+      "angle": "time-saver",
+      "score": 8.0,
+      "why": "AI agent vygeneruje kompletn\u00ed video, sc\u00e9n\u00e1\u0159, animace i zvuk p\u0159\u00edmo z k\u00f3du."
     }
   ],
   "picked": []
