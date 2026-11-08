@@ -34,7 +34,7 @@ for path in ["/inbox/comments", f"/inbox/comments/18086880842695673?accountId={a
         out.append(f"{path} failed {e}")
 if os.getenv("AUTODM_PATCH"):  # Jan 2026-11-08: new natural, varied copy on the newest automations.
     # Only text/delay fields change; keywords, post binding, audience and the link stay as they are.
-    N = int(os.getenv("AUTODM_PATCH_N", "5"))
+    N = int(os.getenv("AUTODM_PATCH_N", "12"))
     newest = sorted(items, key=lambda a: a.get("createdAt") or "", reverse=True)[:N]
     for a in newest:
         aid = a.get("id") or a.get("_id")
