@@ -1,11 +1,2 @@
-[discover] github_trending: 18
-[discover] github_search: 62
-[discover] hf_spaces: 60
-[discover] reddit r/StableDiffusion: HTTP 403
-[discover] reddit: 0
-[discover] hackernews: 22
-[discover] 0 from queue, 131 candidates total
-[llm] attempt 1 failed: HTTP 503: '[{\n  "error": {\n    "code": 503,\n    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",\n    "status": "UNAVAILABLE"\n  }\n}\n]'
-[llm] attempt 2 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
-[llm] attempt 3 failed: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)
-[main] top picks: rea-video 9 wow-demo | poki 9 wow-demo | cicada 8 free-alternative | openjutsu 8 free-alternative | cinecode 8 time-saver | digital-human-koubo 8 money-saver | agent-browser 7 trending-repo | skills 7 time-saver
+[telegram] sent 2026-11-08_1741_earth8 for approval
+released 2026-11-08_1741_earth8
