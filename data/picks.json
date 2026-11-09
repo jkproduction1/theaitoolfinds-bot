@@ -29,7 +29,7 @@
       "source": "ideas",
       "angle": "trendy-tool",
       "score": 10,
-      "why": "Draw a stick figure\u2026 and get this.",
+      "why": "Draw a stick figure… and get this.",
       "handle": ""
     },
     {
@@ -64,7 +64,7 @@
       "why": "inside3 (71k IG) = curiosity about what's inside; viral 3D anatomy"
     },
     {
-      "title": "What if\u2026 (Zack D. Films style)",
+      "title": "What if… (Zack D. Films style)",
       "commands": [
         "/zack-d-films what if the Moon disappeared",
         "/deep-dive inside a volcano",
@@ -104,5 +104,7 @@
     "https://www.lovart.ai",
     "https://higgsfield.ai"
   ],
-  "picked_demo": []
+  "picked_demo": [
+    "What if… (Zack D. Films style)"
+  ]
 }
