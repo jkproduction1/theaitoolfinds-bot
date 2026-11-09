@@ -24,13 +24,25 @@ GAPS = {10: 1.8, 21: 1.8, 32: 1.8}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
-cuts = [round(vw[i]["end"] + 0.08, 3) for i in sorted(GAPS)]
+def _quiet_cut(i):  # cut in the quietest 10 ms after the word ends (no click), before the next word starts
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(A / "voice_raw.mp3"), "-f", "s16le", "-ac", "1", "-ar", "44100", "-"], capture_output=True).stdout
+    a = np.frombuffer(raw, np.int16).astype(float)
+    lo, hi = vw[i]["end"] + 0.03, min(vw[i]["end"] + 0.4, vw[i + 1]["start"] - 0.03)
+    best, bt = 1e18, vw[i]["end"] + 0.08
+    t = lo
+    while t < hi:
+        k = int(t * 44100); e = float((a[k:k + 441] ** 2).mean())
+        if e < best: best, bt = e, t + 0.005
+        t += 0.005
+    return round(bt, 3)
+cuts = [_quiet_cut(i) for i in sorted(GAPS)]
 filt, parts, prev = [], [], 0.0
 for k, (i, c) in enumerate(zip(sorted(GAPS), cuts)):
-    filt.append(f"[0:a]atrim={prev}:{c},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=mono[a{k}];"
+    filt.append(f"[0:a]atrim={prev}:{c},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=mono,afade=t=in:d=0.012,afade=t=out:st={max(0, c - prev - 0.04):.3f}:d=0.04[a{k}];"
                 f"anullsrc=r=44100:cl=mono,atrim=duration={GAPS[i]}[z{k}]")
     parts += [f"[a{k}]", f"[z{k}]"]; prev = c
-filt.append(f"[0:a]atrim=start={prev},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=mono[al]"); parts.append("[al]")
+filt.append(f"[0:a]atrim=start={prev},asetpts=PTS-STARTPTS,aformat=sample_rates=44100:channel_layouts=mono,afade=t=in:d=0.012[al]"); parts.append("[al]")
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(A / "voice_raw.mp3"), "-filter_complex",
                 ";".join(filt) + ";" + "".join(parts) + f"concat=n={len(parts)}:v=0:a=1[out]", "-map", "[out]", "-ar", "44100",
                 str(A / "voice.mp3")], check=True)
