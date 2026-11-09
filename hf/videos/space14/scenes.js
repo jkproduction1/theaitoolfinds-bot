@@ -40,28 +40,40 @@ function astronaut(){ const g=new THREE.Group(); const suit=new THREE.MeshStanda
   [[-0.09,-0.45],[0.09,-0.45]].forEach(([x,y])=>{ const l=new THREE.Mesh(new THREE.CylinderGeometry(0.065,0.065,0.42,10),suit); l.position.set(x,y,0); g.add(l); });
   const pack=new THREE.Mesh(new THREE.BoxGeometry(0.26,0.34,0.12),suit); pack.position.set(0,0.06,-0.17); g.add(pack); g.userData.suit=suit; return g; }
 
-// ---------- S0 /zack-d-films falling into a black hole: a black hole with a glowing accretion disk (and the bent "halo" of the disk
-// behind it); an astronaut falls in and is stretched long and thin by tidal forces ("spaghettification") before the event horizon
+// ---------- S0 /explain-3d how a supernova happens: a red supergiant breathes; its iron core collapses in under a second (core
+// shrinks and flares white), a shockwave bounces out and blasts the star apart in a coloured shell, leaving a tiny spinning neutron star
 (function(){ const ren=mkRenderer2('cv0'), sc=new THREE.Scene(); sc.background=new THREE.Color(0x020207); starField(sc,2600,17,500); ren.toneMappingExposure=1.0;
   const cam=new THREE.PerspectiveCamera(34,1080/1920,0.05,2000);
-  const P=mkComposer(ren,sc,cam,{bloom:0.6,radius:0.6,th:0.8});
-  sc.add(new THREE.AmbientLight(0x404a66,0.6)); const key=new THREE.PointLight(0xffa060,3,30,1.5); key.position.set(0,0,0); sc.add(key);
-  const BH=new THREE.Group(); BH.position.set(0,0,0); sc.add(BH);
-  const hole=new THREE.Mesh(new THREE.SphereGeometry(1,64,48),new THREE.MeshBasicMaterial({color:0x000000})); BH.add(hole);
-  const tex=diskTex(); const disk=ringMesh(1.35,4.2,tex,0.8); disk.rotation.x=-Math.PI/2+0.16; BH.add(disk);
-  const halo=ringMesh(1.08,1.9,tex,0.55); BH.add(halo); // the far side of the disk, bent over the top by gravity
-  const photon=new THREE.Mesh(new THREE.TorusGeometry(1.04,0.025,8,120),glowMat(0xffe2b0,0.95)); BH.add(photon);
-  const A=astronaut(); A.userData.k=0.45; sc.add(A);
-  const trail=[]; for(let i=0;i<10;i++){ const s=new THREE.Mesh(new THREE.SphereGeometry(0.05,8,6),glowMat(0xffb070,0)); sc.add(s); trail.push(s); }
-  const aEH=new THREE.Object3D(); aEH.position.set(0.72,0.72,0.3); BH.add(aEH); const aSp=new THREE.Object3D(); A.add(aSp); aSp.position.set(0.15,0.3,0);
-  SCN[0]=function(lt){ disk.rotation.z=-lt*0.6; halo.rotation.z=lt*0.4;
-    const f=easeIO(cl((lt-0.1)/2.4)); // fall path: from upper right toward the hole
-    const p=new THREE.Vector3(3.6,2.4,1.2).lerp(new THREE.Vector3(0.45,0.3,0.6),f); A.position.copy(p);
-    A.lookAt(0,0,0); A.rotateX(Math.PI/2); A.rotation.z+=lt*0.6;
-    const st=cl((lt-1.0)/1.5); const k=A.userData.k; A.scale.set(k*Math.max(0.2,1-0.75*st*st),k*(1+4*st*st),k*Math.max(0.2,1-0.75*st*st)); A.userData.suit.emissiveIntensity=0.8*st;
-    trail.forEach((s,i)=>{ const u=cl(f-i*0.03); s.position.copy(new THREE.Vector3(3.6,2.4,1.2).lerp(new THREE.Vector3(0.45,0.3,0.6),u)); s.material.opacity=0.35*cl((lt-0.4)/0.3)*(1-i/10); });
-    const z=easeIO(cl(lt/2.6)); cam.position.set(2.6-1.2*z,2.4-0.9*z,21-7*z); cam.lookAt(0.9*z,0.4*z,0); halo.lookAt(cam.position); photon.lookAt(cam.position); P.c.render();
-    layoutLabels(labs(0,[[0,aEH,cl((lt-0.35)/0.2)],[1,aSp,cl((lt-1.3)/0.2)]]),cam,640,140);
+  const P=mkComposer(ren,sc,cam,{bloom:0.9,radius:0.7,th:0.6});
+  const surf=canvasTex(512,256,(c,w,h)=>{ c.fillStyle='#c23a14'; c.fillRect(0,0,w,h); const r=rnd(12); c.filter='blur(3px)'; for(let i=0;i<1600;i++){ c.fillStyle=r()<.5?'#ff7a2a':'#7a1a08'; c.globalAlpha=0.08+r()*0.2; c.beginPath(); c.arc(r()*w,r()*h,2+r()*6,0,7); c.fill(); } c.globalAlpha=1; c.filter='none'; });
+  const starM=new THREE.MeshBasicMaterial({map:surf,toneMapped:false,transparent:true,opacity:1}); const star=new THREE.Mesh(new THREE.SphereGeometry(2.2,96,64),starM); sc.add(star);
+  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:canvasTex(256,256,(c,w,h)=>{ const g=c.createRadialGradient(128,128,60,128,128,128); g.addColorStop(0,'rgba(255,110,40,.0)'); g.addColorStop(.55,'rgba(255,100,30,.45)'); g.addColorStop(1,'rgba(255,60,20,0)'); c.fillStyle=g; c.fillRect(0,0,w,h); }),transparent:true,depthWrite:false,toneMapped:false,blending:THREE.AdditiveBlending})); halo.scale.set(8.5,8.5,1); sc.add(halo);
+  // cutaway view of the core (shown through a see-through star)
+  const core=new THREE.Mesh(new THREE.SphereGeometry(0.55,48,32),new THREE.MeshBasicMaterial({color:0xfff2c0,toneMapped:false})); sc.add(core);
+  const shellsC=[0xffd27a,0xff8a3a,0x9a7cff]; const layers=shellsC.map((c,i)=>{ const m=new THREE.Mesh(new THREE.SphereGeometry(0.85+i*0.42,48,32),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:0,toneMapped:false,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.BackSide})); sc.add(m); return m; });
+  const flash=new THREE.Sprite(new THREE.SpriteMaterial({map:canvasTex(256,256,(c,w,h)=>{ const g=c.createRadialGradient(128,128,0,128,128,128); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.3,'rgba(190,220,255,.8)'); g.addColorStop(1,'rgba(120,160,255,0)'); c.fillStyle=g; c.fillRect(0,0,w,h); }),transparent:true,opacity:0,depthWrite:false,toneMapped:false,blending:THREE.AdditiveBlending})); sc.add(flash);
+  const wave=new THREE.Mesh(new THREE.TorusGeometry(1,0.018,8,160),new THREE.MeshBasicMaterial({color:0x9fd0ff,transparent:true,opacity:0,toneMapped:false,blending:THREE.AdditiveBlending,depthWrite:false})); sc.add(wave);
+  const N=1400, R=rnd(21), dirs=[], cols=[]; const pg=new THREE.BufferGeometry(); const pos=new Float32Array(N*3), col=new Float32Array(N*3);
+  const pal=[new THREE.Color(0xff6a2a),new THREE.Color(0xffc24a),new THREE.Color(0x7a5cff),new THREE.Color(0x3ad0ff),new THREE.Color(0xff3a8a)];
+  for(let i=0;i<N;i++){ const v=new THREE.Vector3(R()-.5,R()-.5,R()-.5).normalize(); dirs.push([v,0.6+R()*0.8]); const c=pal[i%pal.length]; col.set([c.r,c.g,c.b],i*3); }
+  pg.setAttribute('position',new THREE.BufferAttribute(pos,3)); pg.setAttribute('color',new THREE.BufferAttribute(col,3));
+  const parts=new THREE.Points(pg,new THREE.PointsMaterial({size:0.16,vertexColors:true,transparent:true,opacity:0,toneMapped:false,blending:THREE.AdditiveBlending,depthWrite:false})); sc.add(parts);
+  const neb=new THREE.Sprite(new THREE.SpriteMaterial({map:canvasTex(512,512,(c,w,h)=>{ const r=rnd(33); c.filter='blur(18px)'; for(let i=0;i<60;i++){ const a=r()*6.28, d=60+r()*150; const x=256+Math.cos(a)*d, y=256+Math.sin(a)*d; const g=c.createRadialGradient(x,y,0,x,y,60+r()*60); const col=['255,106,42','255,194,74','122,92,255','58,208,255','255,58,138'][i%5]; g.addColorStop(0,`rgba(${col},.55)`); g.addColorStop(1,`rgba(${col},0)`); c.fillStyle=g; c.fillRect(0,0,w,h); } c.filter='none'; }),transparent:true,opacity:0,depthWrite:false,toneMapped:false,blending:THREE.AdditiveBlending})); sc.add(neb);
+  const ns=new THREE.Mesh(new THREE.SphereGeometry(0.12,24,16),new THREE.MeshBasicMaterial({color:0xcfe6ff,toneMapped:false})); sc.add(ns);
+  const beams=[1,-1].map(sg=>{ const b=new THREE.Mesh(new THREE.ConeGeometry(0.06,2.4,16,1,true),new THREE.MeshBasicMaterial({color:0x9fd0ff,transparent:true,opacity:0,toneMapped:false,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide})); b.geometry.translate(0,-1.2,0); b.rotation.z=sg>0?Math.PI:0; const g=new THREE.Group(); g.add(b); g.rotation.z=0.5; sc.add(g); return g; });
+  const aC=new THREE.Object3D(); aC.position.set(0.4,0.4,0.3); sc.add(aC); const aW=new THREE.Object3D(); sc.add(aW); const aN=new THREE.Object3D(); aN.position.set(0.12,0.12,0); sc.add(aN);
+  SCN[0]=function(lt){ star.rotation.y=lt*0.15;
+    const see=cl((lt-0.15)/0.3); starM.opacity=1-0.75*see; layers.forEach((m,i)=>m.material.opacity=0.22*see*(1-cl((lt-1.05)/0.15)));
+    const col_=easeIO(cl((lt-0.6)/0.4)); core.scale.setScalar(Math.max(0.15,1-0.8*col_)); core.material.color.copy(lerpC(0xfff2c0,0xffffff,col_));
+    const ex=cl((lt-1.05)/1.4), e1=1-Math.pow(1-ex,3);
+    star.visible=ex<0.12; star.scale.setScalar(1+0.6*e1); halo.material.opacity=1-cl(ex*3);
+    flash.material.opacity=0.95*cl((lt-1.0)/0.06)*(1-cl((lt-1.1)/0.3)); flash.scale.setScalar(3+7*e1);
+    wave.material.opacity=0.9*cl((lt-1.0)/0.1)*Math.pow(1-ex,2); wave.scale.setScalar(0.6+7*e1); wave.lookAt(cam.position);
+    parts.material.opacity=cl((lt-1.05)/0.1)*(1-0.4*ex); const p=pg.attributes.position.array; dirs.forEach(([v,sp],i)=>{ const r=(0.6+7.5*e1*sp); p[i*3]=v.x*r; p[i*3+1]=v.y*r; p[i*3+2]=v.z*r; }); pg.attributes.position.needsUpdate=true;
+    neb.material.opacity=0.9*cl((lt-1.05)/0.15)*(1-0.45*ex); neb.scale.setScalar(2+15*e1); neb.material.rotation=lt*0.1; core.visible=ex<0.02; ns.visible=ex>0.02; ns.scale.setScalar(1+0.25*Math.sin(lt*30)); beams.forEach(b=>{ b.rotation.y=lt*6; b.children[0].material.opacity=0.3*cl((lt-1.6)/0.3); });
+    aW.position.set(0.7*(0.6+7*e1),0.7*(0.6+7*e1)*0.0+0.0,0); aW.position.y=0.7*(0.6+7*e1);
+    const z=easeIO(cl(lt/2.6)); cam.position.set(1.2-0.6*z,0.8,22+6*cl((lt-1.0)/1.2)); cam.lookAt(0,0,0); P.c.render();
+    layoutLabels(labs(0,[[0,aC,cl((lt-0.5)/0.2)*(1-cl((lt-1.0)/0.15))],[1,aW,cl((lt-1.25)/0.2)*(1-cl((lt-1.85)/0.2))],[2,aN,cl((lt-1.85)/0.2)]]),cam,640,140);
     caption(0,lt); };
 })();
 

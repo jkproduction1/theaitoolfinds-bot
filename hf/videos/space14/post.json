@@ -3,7 +3,7 @@
  "tool_name": "Claude Code 3D space commands",
  "keyword": "COSMOS",
  "angle": "app-demo",
- "cover_at": 5.8,
- "summary_cs": "App demo „Type it, get it #14“: /zack-d-films pád do černé díry (spaghettifikace), /scale největší hvězda Stephenson 2-18 vs Slunce (~2 000× širší, odhad), /what-if Země s prstenci (z vesmíru a ze země nad městem). Vše v kódu, prompty v hf/videos/space14/prompts.md.",
- "caption": "Type one command and Claude shows you the scariest things in space.\n\nPart #14 of a daily series.\n\nComment COSMOS and I'll DM you the prompts.\n\n#claudecode #space #aitools"
+ "cover_at": 5.2,
+ "summary_cs": "App demo „Type it, get it #14“ (v2): /explain-3d supernova (jádro zkolabuje za méně než sekundu, rázová vlna, barevný výbuch, zbude neutronová hvězda), /scale největší hvězda Stephenson 2-18 vs Slunce (~2 000× širší, odhad), /what-if Země s prstenci. Starou verzi s černou dírou zahoď. Prompty v hf/videos/space14/prompts.md.",
+ "caption": "Type one command and Claude shows you how a star dies.\n\nPart #14 of a daily series.\n\nComment COSMOS and I'll DM you the prompts.\n\n#claudecode #space #aitools"
 }

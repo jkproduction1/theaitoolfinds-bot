@@ -18,7 +18,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {13: 1.8, 26: 1.8, 37: 1.8}
+GAPS = {11: 1.8, 24: 1.8, 35: 1.8}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
@@ -55,15 +55,15 @@ F.scenes([0])
 S, E = F.S, F.E
 
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
-    (0, (2, 4), (5, 9), 10, "zack-d-films", "falling into a black hole", "black hole, Zack D. Films style", "Stretched like / spaghetti.", 2, "Turn any what-if into a 3D short"),
-    (14, (16, 16), (17, 22), 23, "scale", "the biggest star versus the Sun", "biggest star vs the Sun", "The Sun is / a tiny dot.", 3, "Compare anything, true to scale"),
-    (27, (29, 30), (31, 33), 34, "what-if", "Earth had rings", "Earth with rings, what if", "Rings across / the whole sky.", 0, "See any what-if come to life"),
+    (0, (2, 3), (4, 7), 8, "explain-3d", "how a supernova happens", "supernova, explained in 3D", "A giant star dies / in one flash.", 3, "Explain how anything works in 3D"),
+    (12, (14, 14), (15, 20), 21, "scale", "the biggest star versus the Sun", "biggest star vs the Sun", "The Sun is / a tiny dot.", 3, "Compare anything, true to scale"),
+    (25, (27, 28), (29, 31), 32, "what-if", "Earth had rings", "Earth with rings, what if", "Rings across / the whole sky.", 0, "See any what-if come to life"),
 ]
 CMD = DEMOS[0][4]
 TY = []
 for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
     T = 0.0 if k == 0 else round(S[a] - 0.15, 3)
-    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[38] - 0.15, 3)
+    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[36] - 0.15, 3)
     t_slash = 0.0 if k == 0 else max(T + 0.05, S[a + 1] - 0.05)
     c0, c1 = (0.08 if k == 0 else S[ci0]), E[ci1]
     p0, p1 = S[pi0], E[pi1] - 0.05
@@ -97,7 +97,7 @@ keys_html += [f'<div class="k f" style="left:30px;top:{KY0 + 232}px;width:120px"
 KEYPOS[" "] = (460, y3)
 
 LABELS = [
-    [("Event horizon", "no way back"), ("Spaghettification", "gravity stretches you")],
+    [("Core collapses", "in under a second"), ("Shockwave", "blasts the star apart"), ("Neutron star", "what's left")],
     [("Earth", ""), ("The Sun", "109x wider than Earth"), ("Stephenson 2-18", "~2,000x wider than the Sun")],
     [("Rings", "ice and rock, like Saturn's"), ("From the ground", "an arch across the sky")],
 ]
@@ -267,7 +267,7 @@ tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
 F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.02);
-F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[39]-0.1,END+0.1));
+F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[37]-0.1,END+0.1));
 F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:A},END+0.22);
 [0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.55,ease:'back.out(1.4)'},END+0.15+k*0.08));
 F2('#handle',{opacity:0},{opacity:1,duration:.3},END+0.5);

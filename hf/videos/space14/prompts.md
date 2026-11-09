@@ -1,10 +1,11 @@
 # space14 prompts — DM for comment COSMOS
 Save as Claude Code commands (.claude/commands/<name>.md, "$ARGUMENTS" = your topic) or paste directly.
 
-/zack-d-films — Make a 9:16 full-screen 3D "what happens if" short (three.js, rendered frame by frame with HTML + GSAP, ~4 s) of $ARGUMENTS
-in the style of viral 3D explainer shorts: one dramatic shot, a simple character, real physics shown clearly, bloom, starfield.
-Labels with leader lines, a short caption word by word with one key word in a box. No invented numbers.
-  Example: /zack-d-films falling into a black hole  (glowing accretion disk, tidal forces stretch the astronaut: "spaghettification")
+/explain-3d — Make a 9:16 full-screen 3D explainer (three.js, rendered frame by frame with HTML + GSAP, ~4 s) of $ARGUMENTS: show the
+real process step by step, cutaway where it happens inside, then the dramatic payoff. Bloom, starfield, labels with leader lines,
+a short caption word by word with one key word in a box. No invented numbers.
+  Example: /explain-3d how a supernova happens  (a red supergiant's core collapses in under a second, a shockwave blasts the star
+  apart in a coloured shell, a tiny spinning neutron star is left)
 
 /scale — 3D size comparison of $ARGUMENTS with real numbers: start close on the smaller thing, pull the camera back fast until the
 bigger one fills the frame and the small one is a dot. Labels with the real ratio (say when it is an estimate).

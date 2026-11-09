@@ -31,4 +31,4 @@ Never reuse the reference creator's command name (/full-visual) — use our own 
 - kitchen11 (2026-11-09): /x-ray a coffee machine, /explain-3d how a microwave heats food, /explode a toaster (Jan, live)
 - made12 (2026-11-09): /how-its-made a pencil, /factory-line a Lego brick, /time-lapse a tunnel being dug (Jan, live)
 - motion13 (2026-11-09): /glassmorphism a music player, /ui-motion a phone notification, /kinetic-type a product launch (Jan, live)
-- space14 (2026-11-09): /zack-d-films falling into a black hole, /scale the biggest star versus the Sun, /what-if Earth had rings (Jan, live)
+- space14 (2026-11-09): /explain-3d how a supernova happens, /scale the biggest star versus the Sun, /what-if Earth had rings (Jan, live)
