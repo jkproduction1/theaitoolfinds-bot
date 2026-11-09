@@ -460,5 +460,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#made12",
     "date": "2026-11-09_0916",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code motion design commands",
+    "domain": "code.claude.com/docs/en/slash-commands#motion13",
+    "date": "2026-11-09_1028",
+    "source": "hyperframes"
   }
 ]

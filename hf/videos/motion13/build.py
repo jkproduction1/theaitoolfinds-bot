@@ -183,6 +183,10 @@ html,body,#root{background:#121212!important}
 """
 
 CSS += r"""
+.cw.hi{background:#ff4b1f!important}
+#serl > *{background:rgba(17,17,17,.85)!important}
+"""
+CSS += r"""
 .cap{text-shadow:0 3px 0 rgba(0,0,0,.55),0 6px 26px rgba(0,0,0,.95),0 0 40px rgba(0,0,0,.8)}
 .ttl{padding:22px 0 26px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 25%,rgba(0,0,0,.72) 75%,rgba(0,0,0,0))}
 """

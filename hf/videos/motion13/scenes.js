@@ -59,7 +59,7 @@ function fixLabel(id,x,y,a){ const el=document.getElementById(id); el.style.left
     const p2=eb((lt-0.45)/0.5), a2=cl((lt-0.45)/0.2); glass(90,420-40*(1-p2)+10*Math.sin(t*2),380,110,55,a2,0.9+0.1*p2); if(a2>0) txt('AirWaves Pro',150,488+10*Math.sin(t*2)-40*(1-p2),32,600,'#fff',a2);
     const p3=eb((lt-0.7)/0.5), a3=cl((lt-0.7)/0.2); glass(560,1360+40*(1-p3)+10*Math.cos(t*2),430,120,60,a3,0.9+0.1*p3);
     if(a3>0){ txt('Volume',610,1412+10*Math.cos(t*2)+40*(1-p3),28,600,'#fff',a3*0.8); rr(g,610,1432+10*Math.cos(t*2)+40*(1-p3),330,10,5); g.globalAlpha=a3; g.fillStyle='rgba(255,255,255,.3)'; g.fill(); rr(g,610,1432+10*Math.cos(t*2)+40*(1-p3),330*(0.4+0.3*cl((lt-0.9)/1)),10,5); g.fillStyle='#fff'; g.fill(); g.globalAlpha=1; }
-    fixLabel('l0_0',80,1350,cl((lt-1.0)/0.2)); fixLabel('l0_1',80,1440,cl((lt-1.3)/0.2));
+    fixLabel('l0_0',100,1372,cl((lt-1.0)/0.2)); fixLabel('l0_1',100,1460,cl((lt-1.3)/0.2));
     caption(0,lt); };
 })();
 
