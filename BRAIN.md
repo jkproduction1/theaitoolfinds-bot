@@ -151,6 +151,11 @@ First beat ≤1 s (the app-listing tap was too long). Frame renderer for spec ad
 **Skim `hf/reference/spec_ads.md` for smoothness principles only — we build OUR OWN style, never copy those ads** (5 analysed references: one world/one camera, object continuity,
 kinetic type with one key word in an accent pill, story = the product's core mechanic, end reveal grows out of the hero object).
 
+## Rendering note (2026-11-09)
+If `hf/render.sh` keeps getting killed (exit 137/143, render_cancelled), render in chunks with `hyperframes snapshot --at <times> --keep`
+(~60-120 frames per call, resumable), then join the PNGs with ffmpeg at 30 fps and mix assets/music + sfx (see adstyles15).
+Never `pkill -f chrome`/`pkill -f hyperframes` in the same shell command: it matches and kills your own shell. Use `pkill -f "[h]yperframes"`.
+
 ## 4. Each run (3 videos, every MORNING from ~05:00 Prague; all 3 must be in Telegram before ~07:30 so Jan can approve them for 08:00 / 15:00 / 21:00 the same day)
 0. **Learn first:** read `data/stats.json` (daily read-only pull from Zernio, workflow `stats.yml`),
    `data/learnings.md` and `data/retention.md` (Jan's watch-time screenshots). Prefer topic types and hook patterns that are winning; avoid the losing ones. On Wednesday and Sunday runs (Jan, 2026-11-04: analyse more often),
