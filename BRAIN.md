@@ -84,8 +84,8 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   (`data/picks.json` "picked") choose the Paper video's topic.
 - **No repeated command in an App demo (Jan, 2026-11-08):** the 3 demos in one video use 3 DIFFERENT /commands
   (e.g. /x-ray, then /zack-d-films, then /explain 3D). Each /command at most once per video, never 2× /explain 3D.
-- **Jan's quality feedback (2026-11-09, after whatif15 = "slop"):** no more `/zack-d-films` (overused): same kind of result, different
-  command name. Each result must be understandable at first watch: camera CLOSE to the action, slow enough to follow (a demo may run
+- **Jan's quality feedback (2026-11-09, after whatif15 = "slop"):** give `/zack-d-films` a break for now (it was in several videos
+  in a row; it is not banned): use other command names for the same kind of result. Each result must be understandable at first watch: camera CLOSE to the action, slow enough to follow (a demo may run
   5-7 s, longer gaps after "and you get this" are fine), one clear idea per shot, real-looking visuals (no toy/placeholder space,
   galaxies or planets). Fewer, better videos beat more videos. Show Jan 3-4 stills per video before rendering when he is live.
 - **What makes it work (Jan + stats, 2026-11-04):** the voice line "Type /<command> <prompt>… and you get this." is the format's
