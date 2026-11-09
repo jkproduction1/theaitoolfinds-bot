@@ -73,6 +73,12 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   related skills, or skip the format that day and tell Jan why.
 - post.json `"angle": "app-demo"`. Paper rules in §3/§5 that conflict (light paper, text block under the visual)
   don't apply here; margins, readability, real-claims and pacing rules do.
+- **Daily mix v3 (Jan, 2026-11-09, replaces the line below):** 2 App demos + 1 **trendy AI tool** video (Higgsfield, Lovart,
+  invideo, new launches of the week; NOT GitHub repos). The tool video uses the App-demo engine too ("Type this into <tool>…
+  and you get this" with the tool's REAL outputs), never a classic tool presentation. Tag the brand's verified @handle in the
+  caption (brand-collab opportunities). **Picklist v2:** the 07:52 check writes `data/picklist_ideas.json` (5 trios + 5 trendy
+  tools, Prague date) and dispatches mode=picklist → 2 Telegram messages; Jan's taps land in `data/picks.json` "picked_demo"
+  (trio titles, make these first) and "picked" (tool urls). Old GitHub list only as fallback.
 - Daily mix (Jan, 2026-11-08, replaces "3 App demos"): **2 App demos + 1 normal Paper video a day**. 2× "Type /<command> …
   and you get this" + real result, plus 1 "Free AI tool #N" video in the old Paper style (§3). Jan's picklist taps
   (`data/picks.json` "picked") choose the Paper video's topic.
