@@ -1,0 +1,1 @@
+Your AI can now use your iPhone. Poki is a free, open-source tool that taps, swipes and types on your phone for you. Plug it into Claude Code or Codex, then just ask: search esp32 in Chrome and summarize the top result. It remembers past tasks and runs them faster next time. You need a Mac. Comment POKI and I'll send you the link.
