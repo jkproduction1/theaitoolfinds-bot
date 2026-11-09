@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D what-if commands",
+ "tool_name": "Claude Code 3D what-if commands",
+ "keyword": "WHATIF",
+ "summary_cs": "App demo „Type it, get it #15“: /zack-d-films skok do díry skrz Zemi (~38 min na druhou stranu, odhad s reálnou hustotou; klasika ~42 min), /what-if zmizí Slunce (8 min 20 s ještě světlo, pak Země letí rovně), /zoom-out od města až po pozorovatelný vesmír. Navazuje na earth8/space7 (naše hity). Prompty v hf/videos/whatif15/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 21.9,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-10_0019",
+ "run_id": null,
+ "artifact": null
+}
