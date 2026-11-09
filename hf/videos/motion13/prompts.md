@@ -6,9 +6,10 @@ Save as Claude Code commands (.claude/commands/<name>.md, "$ARGUMENTS" = your to
 a soft diagonal highlight and a deep shadow; small floating glass chips; live details (waveform, progress bar) keep moving.
   Example: /glassmorphism a music player
 
-/liquid-chrome — Make a 9:16 3D clip (three.js, ~4 s): $ARGUMENTS written as thick liquid-chrome strokes that pour themselves along the
-letter paths, drips fall and stretch with gravity, the word turns slowly so coloured studio reflections slide across it. Bloom, dark bg.
-  Example: /liquid-chrome the word FLOW
+/ui-motion — Make a 9:16 UI-motion clip (HTML canvas + GSAP, ~4 s) of $ARGUMENTS on a phone mock-up: a small black pill at the top
+springs open into the element (real spring: overshoot, then settle), more items stack under it with older ones tucked behind and
+scaled down, the top one expands to show detail, then is swiped away and the stack slides up. Soft shadows, 2-layer depth.
+  Example: /ui-motion a phone notification
 
 /kinetic-type — Make a 9:16 kinetic-typography clip (~4 s) for $ARGUMENTS: one word per beat (~0.3 s), heavy sans, scale punches,
 mask wipes and slide-ins, a colour flip on every beat, thin moving bars and a 01/07 counter, ending on the big launch line.
