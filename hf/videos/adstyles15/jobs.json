@@ -1,0 +1,77 @@
+{
+ "model": "nano_banana_2_1 (Higgsfield)",
+ "aspect": "4:5 2k",
+ "items": [
+  {
+   "n": 1,
+   "style": "Minimal Studio",
+   "product": "perfume NOVA",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_194514_58ef7ae9-8860-42ec-826a-c9718d8e2dcb.png",
+   "job_id": "58ef7ae9-8860-42ec-826a-c9718d8e2dcb"
+  },
+  {
+   "n": 2,
+   "style": "Splash Shot",
+   "product": "orange juice SOL",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_194929_37e89c1b-2778-40d6-b2c3-920e5c04f254.png",
+   "job_id": "37e89c1b-2778-40d6-b2c3-920e5c04f254"
+  },
+  {
+   "n": 3,
+   "style": "Levitation",
+   "product": "sneaker",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195009_79eb1699-21f4-4e0a-a00f-33fa08cb4ae3.png",
+   "job_id": "79eb1699-21f4-4e0a-a00f-33fa08cb4ae3"
+  },
+  {
+   "n": 4,
+   "style": "Exploded View",
+   "product": "headphones",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195041_ec47a0ff-24ff-486b-82e4-47b7656d14d2.png",
+   "job_id": "ec47a0ff-24ff-486b-82e4-47b7656d14d2"
+  },
+  {
+   "n": 5,
+   "style": "Macro Detail",
+   "product": "lipstick",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195119_6c2c8650-9bf6-4fc8-b433-57ffc6a436de.png",
+   "job_id": "6c2c8650-9bf6-4fc8-b433-57ffc6a436de"
+  },
+  {
+   "n": 6,
+   "style": "Frozen in Ice",
+   "product": "smartwatch",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195155_3a5ceaaf-6340-4438-9904-5b369f03ee49.png",
+   "job_id": "3a5ceaaf-6340-4438-9904-5b369f03ee49"
+  },
+  {
+   "n": 7,
+   "style": "Neon Night",
+   "product": "game controller",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195247_4adbcfef-860d-4222-8226-4a318896cec1.png",
+   "job_id": "4adbcfef-860d-4222-8226-4a318896cec1"
+  },
+  {
+   "n": 8,
+   "style": "Miniature World",
+   "product": "latte",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195323_bf509c64-4189-4642-bfa4-e4db40220abf.png",
+   "job_id": "bf509c64-4189-4642-bfa4-e4db40220abf"
+  },
+  {
+   "n": 9,
+   "style": "Giant Product",
+   "product": "energy drink VOLT",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195401_97353b70-2dca-4f83-a60c-ba68de1d418d.png",
+   "job_id": "97353b70-2dca-4f83-a60c-ba68de1d418d"
+  },
+  {
+   "n": 10,
+   "style": "Clay World",
+   "product": "instant camera",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_195453_ee581899-d9ad-43e1-9fbb-3859d85f0cc5.png",
+   "job_id": "ee581899-d9ad-43e1-9fbb-3859d85f0cc5"
+  }
+ ],
+ "extra_test": "https://d8j0ntlcm91z4.cloudfront.net/user_2yohRy33kqiQSBjRFV4P5xSELT7/hf_20261109_194604_c81978c8-32a3-4db8-aa8b-2ccadd31b36f.png"
+}
