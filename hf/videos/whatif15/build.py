@@ -18,7 +18,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {14: 1.8, 25: 1.8, 39: 1.8}
+GAPS = {13: 4.2, 24: 4.4, 38: 4.6}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
@@ -55,15 +55,15 @@ F.scenes([0])
 S, E = F.S, F.E
 
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
-    (0, (2, 4), (5, 10), 11, "zack-d-films", "jumping into a hole through Earth", "hole through Earth, Zack D. Films style", "38 minutes / to the other side.", 0, "Turn any what-if into a 3D short"),
-    (15, (17, 18), (19, 21), 22, "what-if", "the Sun disappeared", "the Sun disappears, what if", "8 more minutes / of daylight.", 0, "See any what-if come to life"),
-    (26, (28, 29), (30, 35), 36, "zoom-out", "to the edge of the universe", "zoom out to the edge of everything", "From your street / to everything.", 4, "Zoom out from anything, true to scale"),
+    (0, (2, 3), (4, 9), 10, "physics-sim", "jumping into a hole through Earth", "a hole through Earth, physics sim", "38 minutes / to the other side.", 0, "Simulate any what-if with real physics"),
+    (14, (16, 17), (18, 20), 21, "what-if", "the Sun disappeared", "the Sun disappears, what if", "8 more minutes / of daylight.", 0, "See any what-if come to life"),
+    (25, (27, 28), (29, 34), 35, "zoom-out", "to the edge of the universe", "zoom out to the edge of everything", "From your street / to everything.", 4, "Zoom out from anything, true to scale"),
 ]
 CMD = DEMOS[0][4]
 TY = []
 for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
     T = 0.0 if k == 0 else round(S[a] - 0.15, 3)
-    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[40] - 0.15, 3)
+    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[39] - 0.15, 3)
     t_slash = 0.0 if k == 0 else max(T + 0.05, S[a + 1] - 0.05)
     c0, c1 = (0.08 if k == 0 else S[ci0]), E[ci1]
     p0, p1 = S[pi0], E[pi1] - 0.05
@@ -97,9 +97,9 @@ keys_html += [f'<div class="k f" style="left:30px;top:{KY0 + 232}px;width:120px"
 KEYPOS[" "] = (460, y3)
 
 LABELS = [
-    [("Fastest at the center", "then gravity slows you"), ("Other side", "~38 min later")],
-    [("8 min 20 s", "the last light is still on its way"), ("Straight line", "no Sun, no orbit")],
-    [("Your city", ""), ("Earth", "12,742 km wide"), ("Solar System", ""), ("Milky Way", "~100,000 light-years"), ("Observable universe", "~93 billion light-years")],
+    [("Mantle", "glowing hot rock"), ("The core", "about as hot as the Sun's surface"), ("Fastest at the center", "then gravity slows you"), ("The other side", "~38 minutes later")],
+    [("Light still on its way", "the Sun is already gone"), ("Straight line", "no Sun, no orbit")],
+    [("Your city", ""), ("Earth", "12,742 km wide"), ("Solar System", "8 planets"), ("Milky Way", "~100,000 light-years"), ("Observable universe", "~93 billion light-years")],
 ]
 ui = ['<script src="assets/three.min.js"></script><script src="assets/three-extras.js"></script><script src="assets/studio_exr.js"></script><div class="ui" id="ui">',
       '<div id="sb"><span>9:41</span><span>●●● <i></i></span></div>',
@@ -263,11 +263,11 @@ TY.forEach((d,k)=>{
   F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.42,ease:'expo.inOut'},d.full);
 });
 tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
-tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
+F2('#st2',{opacity:1},{opacity:0,duration:.18,ease:'none'},END-0.12); tl.set('#ui',{opacity:0},END-0.12);
 F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
 F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.02);
-F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[41]-0.1,END+0.1));
+F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[40]-0.1,END+0.1));
 F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:A},END+0.22);
 [0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.55,ease:'back.out(1.4)'},END+0.15+k*0.08));
 F2('#handle',{opacity:0},{opacity:1,duration:.3},END+0.5);

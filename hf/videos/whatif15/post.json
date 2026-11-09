@@ -4,6 +4,6 @@
  "keyword": "WHATIF",
  "angle": "app-demo",
  "cover_at": 5.4,
- "summary_cs": "App demo „Type it, get it #15“: /zack-d-films skok do díry skrz Zemi (~38 min na druhou stranu, odhad s reálnou hustotou; klasika ~42 min), /what-if zmizí Slunce (8 min 20 s ještě světlo, pak Země letí rovně), /zoom-out od města až po pozorovatelný vesmír. Navazuje na earth8/space7 (naše hity). Prompty v hf/videos/whatif15/prompts.md.",
+ "summary_cs": "App demo „Type it, get it #15“ v2: /physics-sim skok do díry skrz Zemi z boku (řez vrstvami, ~38 min na druhou stranu), /what-if zmizí Slunce (8 min 20 s ještě světlo, pak Země letí rovně), /zoom-out Země → Sluneční soustava → Mléčná dráha → pozorovatelný vesmír. Nahrazuje v1.",
  "caption": "Type one command and Claude shows you what would happen if...\n\nPart #15 of a daily series.\n\nComment WHATIF and I'll DM you the prompts.\n\n#claudecode #space #aitools"
 }
