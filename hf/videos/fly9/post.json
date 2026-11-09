@@ -1,1 +1,9 @@
-{"url":"https://code.claude.com/docs/en/slash-commands","tool_name":"Claude Code 3D commands","keyword":"FLY","angle":"app-demo"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "FLY",
+ "angle": "app-demo",
+ "cover_at": 5.3,
+ "summary_cs": "App demo „Type it, get it #10“: /explain-3d jak letí letadlo (křídlo tlačí vzduch dolů → vztlak), /cutaway raketa (náklad, kapalný kyslík, palivo, motory – většina rakety je palivo), /orbit ISS (~400 km nad Zemí, ~28 000 km/h, jedno kolo zhruba za 90 min, NASA). Všechno v kódu, prompty pro DM v hf/videos/fly9/prompts.md.",
+ "caption": "Type one command and Claude shows you how anything flies.\n\nPart #10 of a daily series.\n\nComment FLY and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
+}

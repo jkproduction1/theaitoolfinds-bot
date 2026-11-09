@@ -2261,5 +2261,114 @@
    "visuals": 11,
    "ending": 2
   }
+ },
+ {
+  "name": "poki",
+  "date": "2026-11-09",
+  "score": 79,
+  "mode": "script",
+  "features": {
+   "hook": 0.64,
+   "hook_words": 7,
+   "hook_end_s": 2.69,
+   "tool_named_s": 2.69,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 26.2,
+   "words": 64,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "new-ability",
+   "topic": 0.8
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "machine9",
+  "date": "2026-11-09",
+  "score": 61,
+  "mode": "script",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.85,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 17.0,
+   "words": 40,
+   "pace": 0.75,
+   "length": 0.87,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "fly9",
+  "date": "2026-11-09",
+  "score": 62,
+  "mode": "script",
+  "features": {
+   "hook": 0.34,
+   "hook_words": 12,
+   "hook_end_s": 4.62,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 16.6,
+   "words": 39,
+   "pace": 0.75,
+   "length": 0.83,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 4.6 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
  }
 ]

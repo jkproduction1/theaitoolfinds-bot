@@ -1,1 +1,9 @@
-{"url":"https://github.com/JosssphZhou/poki","tool_name":"Poki","keyword":"POKI","angle":"new-ability"}
+{
+ "url": "https://github.com/JosssphZhou/poki",
+ "tool_name": "Poki",
+ "keyword": "POKI",
+ "angle": "new-ability",
+ "cover_at": 1.9,
+ "summary_cs": "Free AI tool #3: Poki (open source, AGPL-3.0) přes MCP nechá Claude Code nebo Codex ovládat skutečný iPhone – ťuká, swipuje, píše a opakované úkoly dělá rychleji. Potřebuje Mac (macOS 15+), fyzický iPhone ověřený zatím jen v čínském rozhraní; ověřený @handle v README není, takže bez tagu.",
+ "caption": "Your AI can now use your iPhone.\n\nPart #3 of a daily series.\n\nComment POKI and I'll DM you the link.\n\n#aiagents #iphone #opensource"
+}
