@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D space commands",
+ "tool_name": "Claude Code 3D space commands",
+ "keyword": "COSMOS",
+ "summary_cs": "App demo „Type it, get it #14“: /zack-d-films pád do černé díry (spaghettifikace), /scale největší hvězda Stephenson 2-18 vs Slunce (~2 000× širší, odhad), /what-if Země s prstenci (z vesmíru a ze země nad městem). Vše v kódu, prompty v hf/videos/space14/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 21.5,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-09_1043",
+ "run_id": null,
+ "artifact": null
+}
