@@ -1,14 +1,10 @@
 [
  {
-  "name": "poki",
-  "text": "Your AI can now use your iPhone. Poki is a free, open-source tool that taps, swipes and types on your phone for you. Plug it into Claude Code or Codex, then just ask: search esp32 in Chrome and summarize the top result. It remembers past tasks and runs them faster next time. You need a Mac. Comment POKI and I'll send you the link."
+  "name": "kitchen11",
+  "text": "Type slash x-ray, a coffee machine… and you get this. Type slash explain 3D, how a microwave heats food… and you get this. Type slash explode, a toaster… and you get this. Comment KITCHEN and I'll send you the prompts."
  },
  {
-  "name": "machine9",
-  "text": "Type slash x-ray, a hard drive\u2026 and you get this. Type slash explain 3D, how a car engine works\u2026 and you get this. Type slash explode, a smartwatch\u2026 and you get this. Comment MACHINE and I'll send you the prompts."
- },
- {
-  "name": "fly9",
-  "text": "Type slash explain 3D, how a plane flies\u2026 and you get this. Type slash cutaway, a rocket\u2026 and you get this. Type slash orbit, the space station\u2026 and you get this. Comment FLY and I'll send you the prompts."
+  "name": "made12",
+  "text": "Type slash how it's made, a pencil… and you get this. Type slash factory line, a toy brick… and you get this. Type slash time-lapse, a tunnel being dug… and you get this. Comment MADE and I'll send you the prompts."
  }
 ]
