@@ -32,3 +32,11 @@ Never reuse the reference creator's command name (/full-visual) — use our own 
 - made12 (2026-11-09): /how-its-made a pencil, /factory-line a Lego brick, /time-lapse a tunnel being dug (Jan, live)
 - motion13 (2026-11-09): /glassmorphism a music player, /ui-motion a phone notification, /kinetic-type a product launch (Jan, live)
 - space14 (2026-11-09): /explain-3d how a supernova happens, /scale the biggest star versus the Sun, /what-if Earth had rings (Jan, live)
+
+## Idea from Jan (2026-11-09) — "Paste this prompt… and you get this poster" (DO LATER)
+Reference: @sebintel reel (2.4k likes, 6.2k comments, CTA "Drop AD"): tool logo on top (ChatGPT), plain product photo left →
+bold designed poster right, big kinetic word under it ("with bold").
+Our version: "Open ChatGPT, paste this prompt… and you get this poster." 3 before→after examples per video (plain product
+photo → finished ad poster), CTA "Comment POSTER and I'll send you the prompt" (DM = prompt + link to the tool).
+Generate the real posters ourselves (Higgsfield has GPT Image 2.6 "Sunburst" and Nano Banana; ~2 credits/image); fictional
+products/brands. Jan OK with showing the tool's logo (free promo for them) — use the official logo file, unmodified.
