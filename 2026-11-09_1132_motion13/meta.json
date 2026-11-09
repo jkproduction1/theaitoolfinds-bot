@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code motion design commands",
+ "tool_name": "Claude Code motion design commands",
+ "keyword": "MOTION",
+ "summary_cs": "App demo „Type it, get it #13“ (v2): /glassmorphism přehrávač (matné sklo nad barevnými bloby), /ui-motion notifikace na telefonu (pilulka se s pružinou rozbalí, notifikace se skládají a jedna se odswipuje), /kinetic-type launch produktu (vymyšlený AERO ONE). Starou verzi s FLOW zahoď. Prompty v hf/videos/motion13/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 20.5,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-09_1132",
+ "run_id": null,
+ "artifact": null
+}
