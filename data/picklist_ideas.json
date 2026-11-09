@@ -1,0 +1,87 @@
+{
+ "date": "2026-11-09",
+ "app_demo": [
+  {
+   "title": "Inside your body",
+   "commands": [
+    "/x-ray the human heart beating",
+    "/zoom-in a drop of blood",
+    "/explain-3d how your lungs breathe"
+   ],
+   "why": "inside3 (71k IG) = curiosity about what's inside; viral 3D anatomy"
+  },
+  {
+   "title": "What if… (Zack D. Films style)",
+   "commands": [
+    "/zack-d-films what if the Moon disappeared",
+    "/deep-dive inside a volcano",
+    "/scale the biggest star vs the Sun"
+   ],
+   "why": "earth8 67k + space7 132k IG: space/Earth what-ifs win"
+  },
+  {
+   "title": "Motion design 2",
+   "commands": [
+    "/neon-glow a city skyline at night",
+    "/isometric a tiny cozy workspace",
+    "/particles the word DREAM"
+   ],
+   "why": "follow-up to MOTION (#13): pure eye candy, high saves"
+  },
+  {
+   "title": "Everyday mysteries",
+   "commands": [
+    "/x-ray a vending machine",
+    "/explain-3d how an escalator works",
+    "/explode a car key"
+   ],
+   "why": "things everyone uses but never saw inside"
+  },
+  {
+   "title": "Nature in 3D",
+   "commands": [
+    "/time-lapse a seed growing into a tree",
+    "/explain-3d how lightning forms",
+    "/zoom-in a snowflake"
+   ],
+   "why": "calm, beautiful, very shareable"
+  }
+ ],
+ "tools": [
+  {
+   "name": "Higgsfield: 4 video models, 1 prompt",
+   "url": "https://higgsfield.ai",
+   "what": "Seedance 2.0, Kling 3.0, Veo 3.1, Sora 2 side by side in one workspace",
+   "hook": "Same prompt, 4 video models. Which one wins?",
+   "handle": ""
+  },
+  {
+   "name": "Lovart design agent",
+   "url": "https://www.lovart.ai",
+   "what": "One sentence -> a whole brand kit (logo, posters, social posts)",
+   "hook": "Type one sentence, get a whole brand.",
+   "handle": ""
+  },
+  {
+   "name": "OpenAI Images 2.6",
+   "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
+   "what": "Out Nov 5: sketch -> looping GIF, SVG export, saved characters",
+   "hook": "Draw a stick figure… and get this.",
+   "handle": ""
+  },
+  {
+   "name": "Kapwing MCP",
+   "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
+   "what": "Claude edits your video in Kapwing: subtitles, dubbing, export",
+   "hook": "I told Claude to edit my video. It did.",
+   "handle": ""
+  },
+  {
+   "name": "Ideogram Precise Edit",
+   "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
+   "what": "Change only one area of an image, the rest stays untouched",
+   "hook": "Change one thing. Keep everything else.",
+   "handle": ""
+  }
+ ]
+}

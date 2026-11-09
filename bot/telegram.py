@@ -109,6 +109,35 @@ def notify(text: str):
         print(f"[telegram] notify failed: {e}")
 
 
+def send_ideas(demos: list, tools: list):
+    """Picklist v2: 1) Type this / get this trios (tap 2), 2) trendy AI tools (tap 1)."""
+    if demos:
+        lines, kb = ["🎬 Type this / get this: zítřejší trojice (ťukni 2)", ""], []
+        for i, d in enumerate(demos):
+            lines.append(f"{i + 1}. {d.get('title', '')}")
+            for c in d.get("commands", [])[:3]:
+                lines.append(f"   {c}")
+            if d.get("why"):
+                lines.append(f"   ↳ {d['why']}")
+            kb.append([{"text": f"🎬 {i + 1}: {d.get('title', '')[:34]}", "callback_data": f"md:{i}"}])
+        _api("sendMessage", data={"chat_id": chat_id(), "text": "\n".join(lines)[:4000],
+                                  "disable_web_page_preview": "true",
+                                  "reply_markup": json.dumps({"inline_keyboard": kb})})
+    if tools:
+        lines, kb = ["🔥 Trendy AI nástroj: zítřejší video (ťukni 1)", ""], []
+        for i, t in enumerate(tools):
+            lines.append(f"{i + 1}. {t['name'][:50]}" + (f"  ({t['handle']})" if t.get("handle") else ""))
+            if t.get("desc"):
+                lines.append(f"   {t['desc'][:160]}")
+            if t.get("why"):
+                lines.append(f"   ↳ hook: {t['why'][:140]}")
+            lines.append(f"   {t['url']}")
+            kb.append([{"text": f"🔥 {i + 1}: {t['name'][:34]}", "callback_data": f"mk:{i}"}])
+        _api("sendMessage", data={"chat_id": chat_id(), "text": "\n".join(lines)[:4000],
+                                  "disable_web_page_preview": "true",
+                                  "reply_markup": json.dumps({"inline_keyboard": kb})})
+
+
 def send_pick_list(category: str, items: list):
     if not items:
         notify("Dnes jsem nenašel nic dost dobrýho (skóre 7+). Zkusím to zase zítra.")

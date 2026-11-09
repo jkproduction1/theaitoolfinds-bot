@@ -301,6 +301,18 @@ def main():
             except Exception:
                 pass
 
+        if action == "md":  # picklist v2: Jan picked a Type this / get this trio
+            try:
+                picks = json.loads((config.DATA / "picks.json").read_text())
+                d = picks["demos"][int(name)]
+                title = d.get("title", f"trio {name}")
+                if title not in picks.setdefault("picked_demo", []):
+                    picks["picked_demo"].append(title)
+                    (config.DATA / "picks.json").write_text(json.dumps(picks, indent=2, ensure_ascii=False))
+                    telegram.notify(f"🎬 Zapsáno: {title}. Udělám ji v ranním kole.")
+            except Exception as e:
+                telegram.notify(f"⚠️ Nepovedlo se zapsat trojici: {str(e)[:200]}")
+            continue
         if action == "mk":  # morning list: Jan picked a tool -> start the video job
             try:
                 picks = json.loads((config.DATA / "picks.json").read_text())
