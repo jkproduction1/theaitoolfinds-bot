@@ -46,7 +46,7 @@ ev += [(END, "whoosh"), (END + 0.35, "pop")]
 write_sfx(ev, DUR, A / "sfx.wav")
 
 LOGO = (HERE / "media" / "higgsfield_logo.png").exists()
-HF = '<img class="hl" src="assets/higgsfield_logo.png" alt="Higgsfield">' if LOGO else 'Higgsfield'
+HF = '<img class="hl" src="assets/higgsfield_logo.png" alt=""><b class="hn">Higgsfield</b>' if LOGO else 'Higgsfield'
 rows = "".join(f'<div class="row" id="r{i}"><span class="n">{i + 1:02d}</span><span class="t">{s}</span></div>' for i, (_, s, _) in enumerate(STYLES))
 cards = "".join(f'<div class="card" id="c{i}"><img src="assets/{f}" alt=""></div>' for i, (f, _, _) in enumerate(STYLES))
 names = "".join(f'<div class="nm" id="n{i}"><b>{s}</b><span>{p}</span></div>' for i, (_, s, p) in enumerate(STYLES))
@@ -72,7 +72,7 @@ html,body{{width:1080px;height:1920px;overflow:hidden;background:#0c0c0e}}
 .nm b{{display:block;font-size:56px;font-weight:800;letter-spacing:-.02em}}
 .nm span{{display:block;font-family:'EB Garamond',serif;font-style:italic;font-size:38px;color:rgba(255,255,255,.6);margin-top:2px}}
 #tool{{position:absolute;left:370px;top:1410px;display:flex;align-items:center;gap:10px;font-size:26px;font-weight:600;color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.16);padding:10px 20px;border-radius:30px}}
-#tool b{{color:#c8ff3d}} .hl{{height:34px;vertical-align:middle}} #end .tl .hl{{height:44px}}
+#tool b{{color:#c8ff3d}} .hl{{height:36px;border-radius:9px;vertical-align:middle}} .hn{{color:#fff!important}} #end .tl{{display:flex;justify-content:center;align-items:center;gap:12px}} #end .tl .hl{{height:56px;border-radius:13px}}
 #handle{{position:absolute;left:50%;top:1560px;transform:translateX(-50%);background:#ff4b1f;color:#fff;font-weight:700;font-size:34px;padding:12px 34px;border-radius:40px;box-shadow:0 10px 30px rgba(255,75,31,.35)}}
 #end{{position:absolute;inset:0;background:#0c0c0e;opacity:0}}
 #end .c{{position:absolute;left:0;right:0;top:300px;text-align:center;font-weight:800;font-size:92px}}
