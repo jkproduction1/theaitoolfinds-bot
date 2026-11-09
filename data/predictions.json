@@ -2487,5 +2487,45 @@
    "visuals": 11,
    "ending": 2
   }
+ },
+ {
+  "name": "space14",
+  "date": "2026-11-09",
+  "score": 63,
+  "mode": "full",
+  "features": {
+   "hook": 0.1,
+   "hook_words": 14,
+   "hook_end_s": 4.46,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.24,
+   "dur_s": 22.1,
+   "words": 46,
+   "pace": 0.45,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 33,
+   "visuals": 1.0,
+   "ending": 0.81,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 4.5 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
  }
 ]

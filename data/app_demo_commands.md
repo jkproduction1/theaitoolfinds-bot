@@ -28,3 +28,7 @@ Never reuse the reference creator's command name (/full-visual) — use our own 
 - inside3 (2026-11-06): /explain-3d how an SSD stores data, /x-ray an e-bike, /explain-3d how a fridge stays cold
 - build3 (2026-11-06): /how-its-made a glass bottle, /explode a mechanical keyboard, /time-lapse a bridge being built
 - earth8 (2026-11-08): /zack-d-films what if Earth stopped spinning, /deep-dive the deepest ocean trench, /scale the Moon versus Earth (Jan, live)
+- kitchen11 (2026-11-09): /x-ray a coffee machine, /explain-3d how a microwave heats food, /explode a toaster (Jan, live)
+- made12 (2026-11-09): /how-its-made a pencil, /factory-line a Lego brick, /time-lapse a tunnel being dug (Jan, live)
+- motion13 (2026-11-09): /glassmorphism a music player, /liquid-chrome the word FLOW, /kinetic-type a product launch (Jan, live)
+- space14 (2026-11-09): /zack-d-films falling into a black hole, /scale the biggest star versus the Sun, /what-if Earth had rings (Jan, live)

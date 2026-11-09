@@ -466,5 +466,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#motion13",
     "date": "2026-11-09_1028",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D space commands",
+    "domain": "code.claude.com/docs/en/slash-commands#space14",
+    "date": "2026-11-09_1043",
+    "source": "hyperframes"
   }
 ]
