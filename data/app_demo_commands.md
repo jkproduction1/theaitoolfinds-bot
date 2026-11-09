@@ -40,3 +40,4 @@ Our version: "Open ChatGPT, paste this prompt… and you get this poster." 3 bef
 photo → finished ad poster), CTA "Comment POSTER and I'll send you the prompt" (DM = prompt + link to the tool).
 Generate the real posters ourselves (Higgsfield has GPT Image 2.6 "Sunburst" and Nano Banana; ~2 credits/image); fictional
 products/brands. Jan OK with showing the tool's logo (free promo for them) — use the official logo file, unmodified.
+- whatif15 (2026-11-09): /zack-d-films jumping into a hole through Earth, /what-if the Sun disappeared, /zoom-out to the edge of the universe (Jan, live)
