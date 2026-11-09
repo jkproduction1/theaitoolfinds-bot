@@ -2370,5 +2370,44 @@
    "visuals": 11,
    "ending": 2
   }
+ },
+ {
+  "name": "kitchen11",
+  "date": "2026-11-09",
+  "score": 65,
+  "mode": "full",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.41,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.08,
+   "dur_s": 20.9,
+   "words": 40,
+   "pace": 0.31,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 39,
+   "visuals": 1.0,
+   "ending": 0.87,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.4 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
  }
 ]

@@ -45,8 +45,8 @@ F.scenes([0])
 S, E = F.S, F.E
 
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
-    (0, (2, 2), (3, 5), 6, "x-ray", "a coffee machine", "coffee machine, x-rayed", "Cold water in. Hot espresso out.", 4, "See inside anything with an x-ray scan"),
-    (10, (12, 13), (14, 18), 19, "explain-3d", "how a microwave heats food", "microwave, explained in 3D", "Waves shake the water in food.", 1, "Explain how anything works in 3D"),
+    (0, (2, 2), (3, 5), 6, "x-ray", "a coffee machine", "coffee machine, x-rayed", "Cold water in. / Hot espresso out.", 4, "See inside anything with an x-ray scan"),
+    (10, (12, 13), (14, 18), 19, "explain-3d", "how a microwave heats food", "microwave, explained in 3D", "Waves shake / the water in food.", 1, "Explain how anything works in 3D"),
     (23, (25, 25), (26, 27), 28, "explode", "a toaster", "toaster, exploded", "Hot wires glow. Bread browns.", 2, "Take anything apart, layer by layer"),
 ]
 CMD = DEMOS[0][4]
@@ -59,7 +59,7 @@ for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in e
     p0, p1 = S[pi0], E[pi1] - 0.05
     send = round(S[andi] - 0.12, 3)
     TY.append({"T": T, "slash": t_slash, "c0": c0, "c1": c1, "p0": p0, "p1": p1, "send": send, "card": send + 0.12,
-               "full": send + 0.5, "end": nxt, "prompt": prompt, "cap": cap.split(), "hi": hi, "cmd": cmd, "desc": desc})
+               "full": send + 0.5, "end": nxt, "prompt": prompt, "cap": [w for w in cap.split() if w != "/"], "hi": hi, "cmd": cmd, "desc": desc})
     F.sfx.append((T, "whoosh")); F.sfx.append((send, "click")); F.sfx.append((send + 0.12, "pop"))
     for i in range(len(cmd)):
         F.sfx.append((c0 + (c1 - c0) * i / len(cmd), "tick"))
@@ -103,7 +103,9 @@ stages = ""
 for k, (a, _c, _p, _a, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
     labs = "".join(f'<div class="lb" id="l{k}_{i}"><i class="ld" id="ld{k}_{i}"></i><b>{n}</b>' + (f'<span>{s}</span>' if s else '') + '</div>'
                    for i, (n, s) in enumerate(LABELS[k]))
-    capw = "".join(f'<span class="cw{" hi" if i == hi else ""}" id="c{k}_{i}">{w}</span> ' for i, w in enumerate(cap.split()))
+    _cw, capw = [w for w in cap.split() if w != "/"], ""
+    _br = {len([x for x in cap.split()[:j] if x != "/"]) for j, x in enumerate(cap.split()) if x == "/"}
+    capw = "".join(("<br>" if i in _br else "") + f'<span class="cw{" hi" if i == hi else ""}" id="c{k}_{i}">{w}</span> ' for i, w in enumerate(_cw))
     stages += (f'<div class="stage" id="st{k}"><canvas id="cv{k}" width="1080" height="1920"></canvas>'
                f'<div class="cap">{capw}</div>{labs}'
                f'<div class="ttl"><b>{title}</b><i>with Claude Code</i></div></div>')

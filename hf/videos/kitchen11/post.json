@@ -1,0 +1,9 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "KITCHEN",
+ "angle": "app-demo",
+ "cover_at": 4.6,
+ "summary_cs": "App demo „Type it, get it #11“: /x-ray kávovar (nádržka → pumpa → bojler → hlava → espresso), /explain-3d mikrovlnka (magnetron, vlny se odráží od stěn, voda v jídle se třese a hřeje), /explode toustovač (topné dráty na slídě, rošt, tácek na drobky). Vše v kódu, prompty v hf/videos/kitchen11/prompts.md.",
+ "caption": "Type one command and Claude shows you what's inside your kitchen.\n\nPart #11 of a daily series.\n\nComment KITCHEN and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
+}

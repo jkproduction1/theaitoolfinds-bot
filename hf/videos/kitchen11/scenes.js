@@ -60,12 +60,12 @@ function labs(k,list){ return list.map(([i,o,a])=>[document.getElementById('l'+k
   const stream=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,1,8),new THREE.MeshPhysicalMaterial({color:0x5a2e12,roughness:.1,clearcoat:1})); stream.position.set(0,0,0.22); M.add(stream);
   const steam=[]; for(let i=0;i<8;i++){ const s=new THREE.Mesh(new THREE.SphereGeometry(0.05,10,8),glowMat(0xffffff,0)); M.add(s); steam.push(s); }
   const scan=new THREE.Mesh(new THREE.PlaneGeometry(1.6,2.6),glowMat(0x7fe6ff,0)); scan.rotation.y=Math.PI/2; scan.position.y=1.2; sc.add(scan);
-  const scanL=new THREE.Mesh(new THREE.BoxGeometry(0.015,2.3,1.4),glowMat(0xbff4ff,0)); scanL.position.y=1.2; sc.add(scanL);
+  const scanL=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1.4,2.3)),new THREE.LineBasicMaterial({color:0xbff4ff,transparent:true,opacity:0,toneMapped:false})); scanL.rotation.y=Math.PI/2; scanL.position.y=1.2; sc.add(scanL);
   const grid=new THREE.GridHelper(14,28,0x2e6f99,0x173247); grid.material.transparent=true; grid.material.opacity=.5; grid.position.y=0.22; sc.add(grid);
   const A=(x,y,z)=>{ const o=new THREE.Object3D(); o.position.set(x,y,z); M.add(o); return o; };
   const aT=A(0.66,1.55,-0.38), aP=A(0.18,0.62,-0.2), aB=A(0.25,1.9,0), aG=A(0.15,1.3,0.3);
   SCN[0]=function(lt){ const s=1.5-3.0*easeIO(cl((lt-0.05)/0.85)); scanP.constant=s+0.3; scanX.constant=-(s+0.3); scan.position.x=s; scanL.position.x=s;
-    const sv=cl(lt/0.12)*(1-cl((lt-0.85)/0.15)); scan.material.opacity=0.12*sv; scanL.material.opacity=0.9*sv;
+    const sv=cl(lt/0.12)*(1-cl((lt-0.85)/0.15)); scan.material.opacity=0.06*sv; scanL.material.opacity=0.9*sv;
     const flow=cl((lt-0.85)/0.3), heat=cl((lt-1.05)/0.4);
     pump.material.emissiveIntensity=flow*(0.6+0.4*Math.sin(lt*30)); boilM.emissiveIntensity=heat*0.8; coilM.emissiveIntensity=heat*(1.6+0.3*Math.sin(lt*9));
     parts.forEach((m,i)=>{ const u=(i/NP+lt*0.55)%1; m.position.copy(path.getPointAt(u)); const hot=cl((u-0.6)/0.15)*heat; m.material.color.copy(lerpC(0x5fc8ff,0xffa040,hot)); m.material.opacity=flow*0.95; });
@@ -139,7 +139,7 @@ function labs(k,list){ return list.map(([i,o,a])=>[document.getElementById('l'+k
   const cam=new THREE.PerspectiveCamera(30,1080/1920,0.1,100);
   const P=mkComposer(ren,sc,cam,{bloom:0.55,radius:0.5,th:0.92});
   const key=new THREE.DirectionalLight(0xffffff,0.8); key.position.set(-3,7,5); sc.add(key); sc.add(new THREE.HemisphereLight(0xcfd8ff,0x201812,0.3));
-  const T=new THREE.Group(); T.rotation.y=0.55; sc.add(T);
+  const T=new THREE.Group(); T.rotation.y=0.55; T.scale.setScalar(0.9); sc.add(T);
   const chrome=new THREE.MeshPhysicalMaterial({color:0xd6dade,metalness:1,roughness:.3,clearcoat:.6,envMapIntensity:1.6});
   const dark=new THREE.MeshStandardMaterial({color:0x1c1e21,roughness:.5});
   // shell: rounded body with two slots cut in the top (built from a frame of slabs)
@@ -152,13 +152,13 @@ function labs(k,list){ return list.map(([i,o,a])=>[document.getElementById('l'+k
   const knob=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,0.05,24),dark); knob.rotation.x=Math.PI/2; knob.position.set(0.55,0.3,0.56); SH.add(knob);
   // base + crumb tray
   const base=new THREE.Mesh(rbox(1.75,0.08,1.1,0.04),dark); base.rotation.x=Math.PI/2; base.position.y=0.0; T.add(base);
-  const tray=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.03,0.9),new THREE.MeshStandardMaterial({color:0x5d6268,metalness:.8,roughness:.6})); T.add(tray);
+  const tray=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.03,0.9),new THREE.MeshStandardMaterial({color:0x4a4e54,metalness:.6,roughness:.75,envMapIntensity:.3})); T.add(tray);
   const crumbs=new THREE.InstancedMesh(new THREE.BoxGeometry(0.025,0.015,0.02),new THREE.MeshStandardMaterial({color:0x9a6a36,roughness:.9}),30); const R=rnd(3); const M4=new THREE.Matrix4();
   for(let i=0;i<30;i++){ M4.makeTranslation((R()-.5)*1.3,0.02,(R()-.5)*0.75); crumbs.setMatrixAt(i,M4); } tray.add(crumbs);
   // heating elements: mica sheet + zig-zag wire, at z = -0.38, 0, +0.38
-  const wireM=new THREE.MeshStandardMaterial({color:0x6b5a50,metalness:.6,roughness:.4,emissive:0xff3a10,emissiveIntensity:0});
+  const wireM=new THREE.MeshStandardMaterial({color:0x1a0a05,metalness:.3,roughness:.5,emissive:0xff2200,emissiveIntensity:0,toneMapped:false});
   const wireGlow=glowMat(0xff2a00,0);
-  const micaM=new THREE.MeshPhysicalMaterial({color:0xe9dcc0,roughness:.5,transparent:true,opacity:.55,side:THREE.DoubleSide});
+  const micaM=new THREE.MeshPhysicalMaterial({color:0x8a7a62,roughness:.6,transparent:true,opacity:.4,side:THREE.DoubleSide});
   const EL=[]; [-0.38,0,0.38].forEach(z=>{ const g=new THREE.Group(); g.userData.z=z; const mica=new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.7),micaM); g.add(mica);
     const zz=new THREE.Curve(); zz.getPoint=t=>new THREE.Vector3(-0.66+1.32*t,0.3*Math.sin(t*Math.PI*22),0.012*Math.cos(t*Math.PI*44)); const tg=new THREE.TubeGeometry(zz,600,0.009,5,false); g.add(new THREE.Mesh(tg,wireM)); const gl=new THREE.Mesh(tg,wireGlow); gl.scale.set(1,1,1.6); g.add(gl);
     g.position.set(0,0.5,z); T.add(g); EL.push(g); });
@@ -171,13 +171,13 @@ function labs(k,list){ return list.map(([i,o,a])=>[document.getElementById('l'+k
   const aW=new THREE.Object3D(); aW.position.set(0.5,0.2,0); EL[2].add(aW);
   const aB=new THREE.Object3D(); aB.position.set(0.4,0.3,0.06); slices[1].add(aB);
   const aTr=new THREE.Object3D(); aTr.position.set(0.7,0,0.4); tray.add(aTr);
-  SCN[2]=function(lt){ const e=easeIO(cl((lt-0.3)/0.9));
+  SCN[2]=function(lt){ const e=easeIO(cl((lt-0.1)/0.65));
     SH.position.y=1.75*e; tray.position.set(0.25*e,-0.03-0.62*e,0); base.position.y=-0.05-0.45*e;
     EL.forEach(g=>{ g.position.z=g.userData.z*(1+1.9*e); }); slices.forEach(g=>{ g.position.z=g.userData.z*(1+2.6*e); g.position.y=0.5+0.15*e; });
-    const heat=cl((lt-1.15)/0.5); wireM.emissiveIntensity=heat*(2.2+0.3*Math.sin(lt*11)); wireGlow.opacity=heat*(0.4+0.05*Math.sin(lt*11)); breadM.emissiveIntensity=0.08*heat;
-    const brown=cl((lt-1.3)/0.9); breadM.color.copy(lerpC(0xd9bf8c,0x7a3c14,brown)); crustM.color.copy(lerpC(0xb5803f,0x4a2410,brown));
+    const heat=cl((lt-0.6)/0.35); wireM.emissiveIntensity=heat*(1.6+0.2*Math.sin(lt*11)); wireGlow.opacity=heat*(0.5+0.05*Math.sin(lt*11)); breadM.emissiveIntensity=0.08*heat;
+    const brown=cl((lt-0.75)/0.8); breadM.color.copy(lerpC(0xd9bf8c,0x7a3c14,brown)); crustM.color.copy(lerpC(0xb5803f,0x4a2410,brown));
     T.rotation.y=0.55+0.25*easeIO(cl(lt/3));
-    const z=easeIO(cl((lt-0.2)/1.4)); cam.position.set(-1.2,3.2+1.0*z,8.6+1.2*z); cam.lookAt(0,0.8+0.3*z,0); P.c.render();
-    layoutLabels(labs(2,[[0,aSh,cl((lt-0.7)/0.2)],[1,aW,cl((lt-1.25)/0.2)],[2,aB,cl((lt-1.55)/0.2)],[3,aTr,cl((lt-0.95)/0.2)]]),cam,650,130);
+    const z=easeIO(cl((lt-0.1)/1.0)); cam.position.set(-1.2,3.2+1.0*z,8.6+1.2*z); cam.lookAt(0,0.62+0.3*z,0); P.c.render();
+    layoutLabels(labs(2,[[0,aSh,cl((lt-0.5)/0.2)],[1,aW,cl((lt-0.7)/0.2)],[2,aB,cl((lt-0.95)/0.2)],[3,aTr,cl((lt-0.6)/0.2)]]),cam,650,130);
     caption(2,lt); };
 })();

@@ -1,0 +1,9 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D commands",
+ "keyword": "MADE",
+ "angle": "app-demo",
+ "cover_at": 10.3,
+ "summary_cs": "App demo „Type it, get it #12“: /how-its-made tužka (grafit + jíl → tyčinky, drážky v prkénku, druhé prkénko, rozřezat a nalakovat), /factory-line Lego kostka (granule → vyhřívaný válec → ocelová forma → vyskočí na pás; logo nekreslíme), /time-lapse ražba tunelu (razicí štít, dopravník, betonové prstence). Vše v kódu, prompty v hf/videos/made12/prompts.md.",
+ "caption": "Type one command and watch how anything is made.\n\nPart #12 of a daily series.\n\nComment MADE and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
+}
