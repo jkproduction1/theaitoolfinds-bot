@@ -63,35 +63,42 @@ function fixLabel(id,x,y,a){ const el=document.getElementById(id); el.style.left
     caption(0,lt); };
 })();
 
-// ---------- S1 /liquid-chrome the word FLOW: chrome letters pour themselves along their strokes like liquid metal, drips fall
-// and stretch, the word turns slowly so the reflections slide across it (coloured studio light panels in the reflections)
-(function(){ const ren=mkRenderer2('cv1'), sc=new THREE.Scene(); ren.toneMappingExposure=1.15;
-  const es=new THREE.Scene(); es.background=new THREE.Color(0x05060a); const P_=(x,y,z,sx,sy,c)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({color:c,side:THREE.DoubleSide})); m.position.set(x,y,z); m.scale.set(sx,sy,1); m.lookAt(0,0,0); es.add(m); };
-  P_(0,7,2,14,3,0xffffff); P_(-8,1,3,3,10,0xff6a3d); P_(8,0,2,3,10,0x5aa8ff); P_(0,-6,5,12,2,0xc06bff); P_(0,2,-8,10,6,0x8a93a8); P_(4,4,8,4,2,0xffffff); P_(0,1.5,10,16,3.5,0xf2f4f8); P_(0,-1.5,10,16,2.5,0xff8a5a); P_(-5,-3,9,6,2,0x5aa8ff);
-  const pm=new THREE.PMREMGenerator(ren); sc.environment=pm.fromScene(es,0.02).texture; bgGrad(sc,'#1a1424','#05060a');
-  const cam=new THREE.PerspectiveCamera(30,1080/1920,0.1,100); cam.position.set(0,0.3,11); cam.lookAt(0,0,0);
-  const P=mkComposer(ren,sc,cam,{bloom:0.35,radius:0.4,th:0.9});
-  const chrome=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:1,roughness:0.06,clearcoat:1,clearcoatRoughness:0.05,envMapIntensity:1.4});
-  const G=new THREE.Group(); sc.add(G);
-  const V=(x,y)=>new THREE.Vector3(x,y,0);
-  const strokes=[ [V(0,0),V(0,1.6)],[V(0,1.6),V(0.9,1.6)],[V(0,0.85),V(0.7,0.85)],
-    [V(1.3,1.6),V(1.3,0),V(2.15,0)] ];
-  const O=[]; for(let i=0;i<=40;i++){ const a=Math.PI/2+i/40*Math.PI*2; O.push(V(3.05+0.62*Math.cos(a),0.8+0.8*Math.sin(a))); } strokes.push(O);
-  strokes.push([V(4.05,1.6),V(4.4,0),V(4.75,1.0),V(5.1,0),V(5.45,1.6)]);
-  const tubes=[]; strokes.forEach((pts,i)=>{ const c=new THREE.CatmullRomCurve3(pts,false,'catmullrom',pts.length>10?0.5:0.02); const geo=new THREE.TubeGeometry(c,pts.length>10?160:90,0.17,24,false);
-    const m=new THREE.Mesh(geo,chrome); m.position.x=-2.72; m.position.y=-0.8; G.add(m); const caps=[0,1].map(k=>{ const s=new THREE.Mesh(new THREE.SphereGeometry(0.17,20,14),chrome); s.position.copy(c.getPoint(k)); m.add(s); return s; }); tubes.push({m,geo,c,caps,delay:i*0.17}); });
-  G.scale.setScalar(0.4);
-  // drips under the letters
-  const drips=[]; [[-2.72,0],[-1.42,0],[-0.6,0],[1.68,0],[2.38,0]].forEach(([x,y],i)=>{ const d=new THREE.Mesh(new THREE.SphereGeometry(0.11,20,14),chrome); d.userData={x,i}; G.add(d); drips.push(d); });
-  const shd=shadowPlane(4,1.2,.6); shd.position.y=-1.3; sc.add(shd);
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshPhysicalMaterial({color:0x0a0a10,metalness:.8,roughness:.25})); floor.rotation.x=-Math.PI/2; floor.position.y=-1.32; floor.visible=false; sc.add(floor);
-  SCN[1]=function(lt){
-    tubes.forEach(T=>{ const u=easeIO(cl((lt-0.05-T.delay)/0.55)); const n=T.geo.index.count; T.geo.setDrawRange(0,Math.max(0,Math.floor(n*u/6)*6)); T.m.visible=u>0.001;
-      T.caps[0].visible=u>0.001; T.caps[1].visible=u>0.98; T.caps[1].scale.setScalar(u>0.98?1:0.01); if(u>0&&u<1){ T.caps[1].visible=true; T.caps[1].position.copy(T.c.getPoint(u)); T.caps[1].scale.setScalar(1.25); } else T.caps[1].position.copy(T.c.getPoint(1)); });
-    drips.forEach(d=>{ const s=lt-1.2-d.userData.i*0.15; const f=cl(s/0.9); d.visible=s>0&&f<1; d.position.set(d.userData.x,-0.85-f*f*1.6,0); d.scale.set(1-0.35*f,1+1.2*f*(1-f)*2,1-0.35*f); });
-    G.rotation.y=-0.35+0.6*easeIO(cl(lt/2.8)); G.rotation.x=0.06*Math.sin(lt*1.3); G.position.y=0.05*Math.sin(lt*2);
-    cam.position.set(0.4*Math.sin(lt*0.5),0.3,11-0.8*easeIO(cl(lt/2.8))); cam.lookAt(0,0,0); P.c.render();
-    fixLabel('l1_0',640,1240,cl((lt-1.0)/0.2)); fixLabel('l1_1',120,1240,cl((lt-1.4)/0.2));
+// ---------- S1 /ui-motion a phone notification: a phone on a dark gradient; a small black pill at the top springs open into a
+// notification banner (overshoot then settle), two more notifications stack under it (older ones tuck behind, scaled down),
+// the top one expands to show the message, then is swiped away
+(function(){ const cv=document.getElementById('cv1'), g=cv.getContext('2d'); const W=1080,H=1920;
+  const PX=190,PY=420,PW=700,PH=1140,PR=96; // phone
+  function txt(s,x,y,size,w,c,a,al){ g.globalAlpha=a; g.fillStyle=c; g.font=`${w} ${size}px Inter, sans-serif`; g.textAlign=al||'left'; g.fillText(s,x,y); g.globalAlpha=1; }
+  function spring(x){ x=cl(x); return 1-Math.exp(-6*x)*Math.cos(9*x); }
+  function card(x,y,w,h,r,a,icon,title,msg,time){ if(a<=0) return; g.save(); g.globalAlpha=a; g.shadowColor='rgba(0,0,0,.45)'; g.shadowBlur=40; g.shadowOffsetY=16;
+    rr(g,x,y,w,h,r); g.fillStyle='rgba(30,30,38,.97)'; g.fill(); g.shadowColor='transparent'; rr(g,x+0.5,y+0.5,w-1,h-1,r); g.strokeStyle='rgba(255,255,255,.12)'; g.lineWidth=2; g.stroke();
+    const ig=g.createLinearGradient(x+28,y+28,x+92,y+92); ig.addColorStop(0,icon[0]); ig.addColorStop(1,icon[1]); rr(g,x+28,y+38,64,64,16); g.fillStyle=ig; g.fill();
+    g.globalAlpha=a; txt(title,x+112,y+62,32,700,'#fff',a); txt(msg,x+112,y+100,28,500,'#c9c9d2',a); txt(time,x+w-28,y+62,24,500,'#8d8d98',a,'right'); g.restore(); }
+  SCN[1]=function(lt){ g.fillStyle='#0b0b10'; g.fillRect(0,0,W,H);
+    const bgG=g.createRadialGradient(540,900,50,540,900,900); bgG.addColorStop(0,'#2a1c4a'); bgG.addColorStop(1,'#0b0b10'); g.fillStyle=bgG; g.fillRect(0,0,W,H);
+    // phone body
+    const ph=easeIO(cl(lt/0.4)); g.save(); g.translate(0,60*(1-ph)); g.globalAlpha=ph;
+    g.shadowColor='rgba(0,0,0,.6)'; g.shadowBlur=80; g.shadowOffsetY=40; rr(g,PX-14,PY-14,PW+28,PH+28,PR+12); g.fillStyle='#1b1b20'; g.fill(); g.shadowColor='transparent';
+    g.save(); rr(g,PX,PY,PW,PH,PR); g.clip(); const wp=g.createLinearGradient(PX,PY,PX+PW,PY+PH); wp.addColorStop(0,'#ff6a3d'); wp.addColorStop(.5,'#7a3cff'); wp.addColorStop(1,'#00c2ff'); g.fillStyle=wp; g.fillRect(PX,PY,PW,PH);
+    g.fillStyle='rgba(0,0,0,.35)'; g.fillRect(PX,PY,PW,PH);
+    txt('9:41',PX+PW/2,PY+800,150,700,'#ffffff',0.95,'center'); txt('Monday, November 9',PX+PW/2,PY+860,34,600,'#ffffff',0.8,'center');
+    // pill -> banner
+    const o=spring((lt-0.35)/0.6); const pw=170+(PW-60-170)*o, phh=52+(140-52)*o, px=PX+(PW-pw)/2, py=PY+28+12*o;
+    const ex=spring((lt-1.2)/0.5), sw=easeIO(cl((lt-1.8)/0.3));
+    // stacked older notifications (appear after the first)
+    const s2=spring((lt-0.85)/0.5), s3=spring((lt-1.1)/0.5);
+    card(PX+46+12,PY+52+(160+170*ex)*(1-sw)+20+56*s3,PW-92-24,140,40,cl((lt-1.1)/0.15)*0.85*(1-sw*0.3),['#34c759','#0a8f3a'],'Messages','Sam: on my way!','now');
+    card(PX+38,PY+52+(160+170*ex)*(1-sw)+20+28*s2+(1-s2)*-60,PW-76,140,40,cl((lt-0.85)/0.15)*(1-sw*0.3),['#ff9f0a','#ff3b30'],'Calendar','Design review in 10 min','2m');
+    // top banner
+    if(o<0.5){ rr(g,px,py,pw,phh,phh/2); g.fillStyle='#000'; g.fill(); }
+    else { const hh=140+170*ex+20*(ex>0?1:0)*0; const xoff=-sw*(PW+200); const y0=PY+470-170*cl(o-0.5)*0+0; const by=PY+40+12*o;
+      card(PX+30+xoff,by,PW-60,hh,44,1,['#2f6bff','#00c2ff'],'Claude Code','Your animation is ready','now');
+      if(ex>0.05&&sw<1){ g.globalAlpha=cl(ex); rr(g,PX+60+xoff,by+140,PW-120,140,20); g.fillStyle='rgba(255,255,255,.08)'; g.fill(); txt('3 scenes · 18 s · 1080×1920',PX+90+xoff,by+222,28,600,'#ffffff',cl(ex)); g.globalAlpha=1; } }
+    if(o<0.5&&o>0){ const ib=PX+(PW-pw)/2; }
+    g.restore();
+    // phone rim
+    rr(g,PX,PY,PW,PH,PR); g.lineWidth=6; g.strokeStyle='#2c2c33'; g.stroke(); g.restore();
+    fixLabel('l1_0',90,1470,cl((lt-0.6)/0.2)); fixLabel('l1_1',600,1470,cl((lt-1.2)/0.2));
     caption(1,lt); };
 })();
 

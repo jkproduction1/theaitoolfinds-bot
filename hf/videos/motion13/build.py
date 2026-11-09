@@ -1,4 +1,4 @@
-"""motion13 - App demo (BRAIN 3b/3c), 2026-11-09 (Jan, live): /glassmorphism a music player, /liquid-chrome the word FLOW,
+"""motion13 - App demo (BRAIN 3b/3c), 2026-11-09 (Jan, live): /glassmorphism a music player, /ui-motion a phone notification,
 /kinetic-type a product launch. All results drawn in code (canvas 2D + three.js). Product "AERO ONE" is invented (no real brand).
 Series "Type it, get it #13"."""
 import json, shutil, subprocess, sys
@@ -55,7 +55,7 @@ S, E = F.S, F.E
 
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
     (0, (2, 2), (3, 5), 6, "glassmorphism", "a music player", "music player, glassmorphism", "Frosted glass, / floating in color.", 1, "Turn any UI into frosted glass"),
-    (10, (12, 13), (14, 16), 17, "liquid-chrome", "the word FLOW", "FLOW, liquid chrome", "Liquid metal / that writes itself.", 1, "Pour any word in liquid chrome"),
+    (10, (12, 13), (14, 16), 17, "ui-motion", "a phone notification", "notification, UI motion", "Springs in. / Stacks. Swipes away.", 1, "Animate any UI like a real app"),
     (21, (23, 24), (25, 27), 28, "kinetic-type", "a product launch", "product launch, kinetic type", "Every word hits / on the beat.", 2, "Animate any message, word by word"),
 ]
 CMD = DEMOS[0][4]
@@ -97,7 +97,7 @@ KEYPOS[" "] = (460, y3)
 
 LABELS = [
     [("Frosted glass", "blur + light edge"), ("Live waveform", "")],
-    [("Chrome", "reflects the room"), ("Drips", "real gravity")],
+    [("Spring physics", "overshoot, then settle"), ("Stacking", "older ones tuck behind")],
     [],
 ]
 ui = ['<script src="assets/three.min.js"></script><script src="assets/three-extras.js"></script><script src="assets/studio_exr.js"></script><div class="ui" id="ui">',
