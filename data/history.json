@@ -454,5 +454,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#kitchen11",
     "date": "2026-11-09_0909",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D commands",
+    "domain": "code.claude.com/docs/en/slash-commands#made12",
+    "date": "2026-11-09_0916",
+    "source": "hyperframes"
   }
 ]

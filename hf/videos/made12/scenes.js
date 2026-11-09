@@ -90,8 +90,8 @@ function labs(k,list){ return list.map(([i,o,a])=>[document.getElementById('l'+k
   const hop=new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.12,0.7,32,1,true),new THREE.MeshPhysicalMaterial({color:0xb7c0ca,metalness:1,roughness:.3,side:THREE.DoubleSide})); hop.position.set(-1.9,BY+0.6,0); sc.add(hop);
   const NG=90, gran=new THREE.InstancedMesh(new THREE.SphereGeometry(0.03,8,6),new THREE.MeshStandardMaterial({color:RED,roughness:.4}),NG); sc.add(gran); const R=rnd(7), gs=[]; for(let i=0;i<NG;i++) gs.push([R(),R()*0.5-0.25,R()*0.5-0.25]);
   // mould: two steel blocks, right half slides away
-  const mouldM=new THREE.MeshPhysicalMaterial({color:0x8d969f,metalness:1,roughness:.28}); const mL=new THREE.Mesh(new THREE.BoxGeometry(0.5,1.1,1.0),mouldM); mL.position.set(0.45,BY,0); sc.add(mL);
-  const mR=new THREE.Mesh(new THREE.BoxGeometry(0.5,1.1,1.0),new THREE.MeshPhysicalMaterial({color:0x8d969f,metalness:1,roughness:.28,transparent:true,opacity:.55,depthWrite:false})); sc.add(mR);
+  const mouldM=new THREE.MeshPhysicalMaterial({color:0xb7c0ca,metalness:.85,roughness:.35,emissive:0x1c2128}); mouldM.userData.keepEnv=true; const mL=new THREE.Mesh(new THREE.BoxGeometry(0.5,1.1,1.0),mouldM); mL.position.set(0.45,BY,0); sc.add(mL);
+  const mR=new THREE.Mesh(new THREE.BoxGeometry(0.5,1.1,1.0),new THREE.MeshPhysicalMaterial({color:0xb7c0ca,metalness:.85,roughness:.35,emissive:0x1c2128,transparent:true,opacity:.6,depthWrite:false})); mR.material.userData.keepEnv=true; sc.add(mR);
   const nozzle=new THREE.Mesh(new THREE.ConeGeometry(0.12,0.3,24),steel); nozzle.rotation.z=-Math.PI/2; nozzle.position.set(0.12,BY,0); sc.add(nozzle);
   // brick 2x4 with studs (no logo)
   function brick(){ const g=new THREE.Group(); const b=new THREE.Mesh(rbox(0.64,0.38,0.32,0.02),redM); b.rotation.y=Math.PI/2; b.rotation.x=0; g.add(b);
@@ -118,7 +118,7 @@ function labs(k,list){ return list.map(([i,o,a])=>[document.getElementById('l'+k
     const open=easeIO(cl((lt-1.55)/0.35)); mR.position.set(1.27+0.9*open,BY,0);
     const pop=cl((lt-1.85)/0.55); const py=BY-(BY-0.57)*easeIO(pop)+0.35*Math.sin(pop*Math.PI); B0.position.set(0.86+0.09*easeIO(pop),py,0.0+0.6*easeIO(pop)); B0.rotation.x=pop*Math.PI*2;
     const mv=easeIO(cl((lt-2.3)/0.4)); old.forEach((b,i)=>{ b.position.z=0.6+(i+1)*0.9+0.9*mv; }); if(pop>=1) B0.position.z=0.6+0.9*mv;
-    const z=easeIO(cl(lt/2.6)); const ca=0.75-0.25*z; const rad=11.5-1.2*z; cam.position.set(Math.sin(ca)*rad-0.4,4.2-0.6*z,Math.cos(ca)*rad); cam.lookAt(-0.4+0.3*z,0.9-0.1*z,0.6); P.c.render();
+    const z=easeIO(cl(lt/2.6)); const ca=0.75-0.25*z; const rad=11.5-1.2*z; cam.position.set(Math.sin(ca)*rad-0.4,4.2-0.6*z,Math.cos(ca)*rad); cam.lookAt(-0.1+0.3*z,0.9-0.1*z,0.6); P.c.render();
     layoutLabels(labs(1,[[0,aG,cl((lt-0.1)/0.2)],[1,aB,cl((lt-0.4)/0.2)],[2,aM,cl((lt-0.85)/0.2)],[3,aO,cl((lt-1.95)/0.2)]]),cam,660,130);
     caption(1,lt0); };
   sc.traverse(o=>{ const ms=o.material?(Array.isArray(o.material)?o.material:[o.material]):[]; ms.forEach(m=>{ if(m.envMapIntensity!==undefined&&!m.userData.keepEnv) m.envMapIntensity=0.4; }); });
