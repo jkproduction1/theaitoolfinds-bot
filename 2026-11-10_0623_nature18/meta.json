@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D nature commands",
+ "tool_name": "Claude Code 3D nature commands",
+ "keyword": "NATURE",
+ "summary_cs": "App demo „Type it, get it #18“ (Příroda): /time-lapse klíčící semínko (kořen dolů, výhonek nahoru), /explain-3d jak vzniká blesk (náboje v mraku, výboj, záblesk), /zoom-in vločka (šest ramen). Vše v kódu, prompty v hf/videos/nature18/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 24.9,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-10_0623",
+ "run_id": null,
+ "artifact": null
+}
