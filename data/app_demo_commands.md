@@ -53,3 +53,4 @@ Own command names, copy only the look: no logos, mascots or characters of the ch
   Trio: /flat-cosmos what if a black hole hit the Solar System · /flat-cosmos how your immune system fights a virus · /flat-cosmos the life of a star
 - TED-Ed look -> /storybook: hand-painted 2D, grainy texture, warm palette, riddle/history storytelling.
   Trio: /storybook how the pyramids were built · /storybook the riddle of the river crossing · /storybook how the first map was drawn
+- styles19 (2026-11-10): /paper-explainer why flights cost so much, /flat-cosmos how your body fights a virus, /storybook how the pyramids were built (Jan, live; style-channel idea)

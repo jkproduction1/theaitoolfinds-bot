@@ -514,5 +514,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#nature18",
     "date": "2026-11-10_0623",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code explainer style commands",
+    "domain": "code.claude.com/docs/en/slash-commands#styles19",
+    "date": "2026-11-10_1733",
+    "source": "hyperframes"
   }
 ]

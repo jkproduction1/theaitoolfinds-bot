@@ -2794,5 +2794,83 @@
    "visuals": 11,
    "ending": 2
   }
+ },
+ {
+  "name": "styles19",
+  "date": "2026-11-10",
+  "score": 60,
+  "mode": "script",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 5.0,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 19.7,
+   "words": 47,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 5.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "styles19",
+  "date": "2026-11-10",
+  "score": 58,
+  "mode": "full",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 4.4,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.76,
+   "dur_s": 28.2,
+   "words": 47,
+   "pace": 0.05,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 63,
+   "visuals": 0.7,
+   "ending": 0.91,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.4 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
  }
 ]

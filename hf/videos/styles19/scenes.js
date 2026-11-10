@@ -63,7 +63,7 @@ function arrowHead(g,x,y,ang,s,width,col){ g.save(); g.translate(x,y); g.rotate(
     // printed halftone on the shaded parts
     p.save(); p.globalCompositeOperation='source-atop'; for(let y=30;y<PH2;y+=8) for(let x=20+(y/8%2)*4;x<PW2;x+=8){ const d=CL((y-190)/120); if(d<=0) continue; p.fillStyle='rgba(25,35,50,.20)'; p.beginPath(); p.arc(x,y,0.6+2.1*d,0,7); p.fill(); }
     const R=R0(5); for(let i=0;i<9000;i++){ p.fillStyle=R()<.5?'rgba(0,0,0,'+(R()*.10)+')':'rgba(255,255,255,'+(R()*.14)+')'; p.fillRect(R()*PW2,R()*PH2,2,2); } p.restore(); });
-  const TAGS=[ ['Fuel','the biggest single cost',70,1160,-0.035,[85,95],0], ['Airport fees','and taxes, on every seat',470,1290,0.03,[-150,40],1], ['Demand','fewer seats left = higher price',90,1420,-0.02,[150,-38],0] ];
+  const TAGS=[ ['Fuel','the biggest single cost',70,1125,-0.035,[85,95],0], ['Airport fees','and taxes, on every seat',470,1250,0.03,[-150,40],1], ['Demand','fewer seats left = higher price',90,1375,-0.02,[150,-38],0] ];
   SCN[0]=function(lt){ g.clearRect(0,0,1080,1920); const z=1+0.05*EIO(lt/6.2), q=Math.floor(lt*12)/12;
     g.save(); g.translate(540,960); g.scale(z,z); g.translate(-540,-960);
     g.drawImage(sky,0,0); g.drawImage(clouds,-60-lt*26,60);
