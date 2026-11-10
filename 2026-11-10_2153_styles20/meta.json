@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Fable 5.2 explainer styles",
+ "tool_name": "Claude Fable 5.2 explainer styles",
+ "keyword": "FABLE",
+ "summary_cs": "App demo „Type it, get it #20“ klasická verze (nejdřív psaní): /paper-collage proč Eiffelovka v létě roste, /flat-science jak kofein probouzí mozek, /painted-story jak Vikingové dopluli do Ameriky. Vše kreslené v kódu s Claude Fable 5.2; dvojče styles20r má stejné scény v obráceném pořadí (nejdřív výsledek). Schval jen jednu verzi, nebo každou na jinou platformu.",
+ "style": "hyperframes-paper",
+ "duration": 29.5,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-10_2153",
+ "run_id": null,
+ "artifact": null
+}
