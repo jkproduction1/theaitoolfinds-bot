@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands#mystery17",
+ "name": "Claude Code 3D everyday commands",
+ "tool_name": "Claude Code 3D everyday commands",
+ "keyword": "MYSTERY",
+ "summary_cs": "App demo „Type it, get it #17“ (Everyday mysteries): /x-ray automat na sladkosti (spirála se otočí, sáček spadne), /explain-3d eskalátor (motor, ozubené kolo, řetěz schodů, madlo), /explode klíček od auta (baterie, deska, transpondér, rádiový signál). Vše v kódu, prompty v hf/videos/mystery17/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 23.1,
+ "domain": "code.claude.com/docs/en/slash-commands#mystery17",
+ "created": "2026-11-10_0604",
+ "run_id": null,
+ "artifact": null
+}
