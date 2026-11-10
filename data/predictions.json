@@ -2566,5 +2566,233 @@
    "visuals": 11,
    "ending": 2
   }
+ },
+ {
+  "name": "body16",
+  "date": "2026-11-10",
+  "score": 62,
+  "mode": "script",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.85,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 17.4,
+   "words": 41,
+   "pace": 0.75,
+   "length": 0.92,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "mystery17",
+  "date": "2026-11-10",
+  "score": 61,
+  "mode": "script",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.85,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 17.0,
+   "words": 40,
+   "pace": 0.75,
+   "length": 0.87,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "higgs18",
+  "date": "2026-11-10",
+  "score": 60,
+  "mode": "script",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 4.23,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 17.0,
+   "words": 40,
+   "pace": 0.75,
+   "length": 0.87,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 4.2 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "body16",
+  "date": "2026-11-10",
+  "score": 63,
+  "mode": "full",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.28,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.74,
+   "dur_s": 25.2,
+   "words": 41,
+   "pace": 0.03,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 53,
+   "visuals": 1.0,
+   "ending": 0.91,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.3 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "nature18",
+  "date": "2026-11-10",
+  "score": 59,
+  "mode": "full",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.73,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.79,
+   "dur_s": 23.3,
+   "words": 39,
+   "pace": 0.08,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.5,
+   "visual_changes": 46,
+   "visuals": 0.6,
+   "ending": 0.88,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.7 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "mystery17",
+  "date": "2026-11-10",
+  "score": 64,
+  "mode": "full",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.68,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.81,
+   "dur_s": 23.6,
+   "words": 40,
+   "pace": 0.1,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 49,
+   "visuals": 1.0,
+   "ending": 0.86,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.7 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
  }
 ]

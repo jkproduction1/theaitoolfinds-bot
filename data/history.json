@@ -496,5 +496,11 @@
     "domain": "www.anthropic.com/claude/fable",
     "date": "2026-11-10_0442",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D everyday commands",
+    "domain": "code.claude.com/docs/en/slash-commands#mystery17",
+    "date": "2026-11-10_0604",
+    "source": "hyperframes"
   }
 ]

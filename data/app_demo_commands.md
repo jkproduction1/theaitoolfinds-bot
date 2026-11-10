@@ -41,3 +41,6 @@ photo → finished ad poster), CTA "Comment POSTER and I'll send you the prompt"
 Generate the real posters ourselves (Higgsfield has GPT Image 2.6 "Sunburst" and Nano Banana; ~2 credits/image); fictional
 products/brands. Jan OK with showing the tool's logo (free promo for them) — use the official logo file, unmodified.
 - whatif15 (2026-11-09): /zack-d-films jumping into a hole through Earth, /what-if the Sun disappeared, /zoom-out to the edge of the universe (Jan, live)
+- body16 (2026-11-10): /x-ray the human heart, /zoom-in a drop of blood, /explain-3d how lungs breathe (picklist "Inside your body")
+- mystery17 (2026-11-10): /x-ray a vending machine, /explain-3d how an escalator works, /explode a car key (picklist "Everyday mysteries")
+- nature18 (2026-11-10): /time-lapse a seed sprouting, /explain-3d how lightning forms, /zoom-in a snowflake (picklist "Nature in 3D")
