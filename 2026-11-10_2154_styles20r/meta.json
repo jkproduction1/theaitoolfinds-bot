@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Fable 5.2 explainer styles (result first)",
+ "tool_name": "Claude Fable 5.2 explainer styles (result first)",
+ "keyword": "FABLE",
+ "summary_cs": "🧪 doporučuju Trial. styles20r = obrácená verze #20 (nejdřív výsledek): wow běží od prvního snímku, hned vyskočí „Want this?“ a řádek chatu „Claude Fable 5.2“, pak se naťuká příkaz. Eiffelovka (/paper-collage), kofein (/flat-science), Vikingové (/painted-story). Klasické dvojče je styles20.",
+ "style": "hyperframes-paper",
+ "duration": 19.6,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-10_2154",
+ "run_id": null,
+ "artifact": null
+}
