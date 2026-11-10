@@ -1,0 +1,7 @@
+Rough sketch on the left. Finished music-app UI on the right.
+
+Now playing → queue → AI playlist → your year in minutes → top 5. All animated with Claude Code from a 5-box sketch.
+
+Sketch → Motion #2. Comment SKETCH and I'll DM you the prompts.
+
+#claudecode #uidesign #motiondesign #aitools #wrapped

@@ -1,0 +1,13 @@
+{
+ "url": "https://claude.ai/code",
+ "name": "Claude Code (Sketch → Motion: music app UI)",
+ "tool_name": "Claude Code (Sketch → Motion: music app UI)",
+ "keyword": "SKETCH",
+ "summary_cs": "Sketch → Motion #2 (Jan): music-app UI v duchu Wrapped. Náčrt vlevo, motion vpravo: Now playing (Blinding Lights) s vlnou, Up next s přetažením, AI playlist „2AM DRIVE“, 48,213 minut + Top genre, Top 5 karty. Vlastní přehrávač (bez loga Spotify), jen názvy songů. Hudba: Timeless (instrumental) od 0:24 (Jan).",
+ "style": "hyperframes-paper",
+ "duration": 15.2,
+ "domain": "claude.ai/code",
+ "created": "2026-11-10_0244",
+ "run_id": null,
+ "artifact": null
+}
