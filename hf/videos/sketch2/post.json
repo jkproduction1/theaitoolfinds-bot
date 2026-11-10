@@ -3,7 +3,7 @@
  "tool_name": "Claude Code (Sketch → Motion: music app UI)",
  "keyword": "SKETCH",
  "angle": "app-demo",
- "cover_at": 3.6,
- "summary_cs": "Sketch → Motion #2 v2 (Jan: spicy, reálné UI): iPhone lock screen s notifikací Now Playing + Dynamic Island, ťuk → přehrávač (obal vyroste z notifikace), swipe Espresso → Nightcall → Starboy s barvou pozadí podle obalu, přepnutí na Living Room Speaker, share do story. Vlastní design bez loga Spotify. Hudba t4 Timeless od 0:24. Nahrazuje v1.",
- "caption": "Rough sketch on the left. Real-feel music app UI on the right.\n\nLock screen → Dynamic Island → now playing → swipe through songs → switch to the speaker → share to story. All animated with Claude Code from a 5-box sketch.\n\nSketch → Motion #2. Comment SKETCH and I'll DM you the prompts.\n\n#claudecode #uidesign #motiondesign #iphone #aitools"
+ "cover_at": 10.6,
+ "summary_cs": "Sketch → Motion #2 v3 (Jan: smooth jako After Effects, žádný telefon): jeden hudební widget, který se plynule morfuje – Introducing, pan přes pole widgetů, burst, malý → široký → loading pill → velký, 3D náklon, tělo widgetu se roztáhne do „Endless music“. 60 fps, prošlo 2 koly přísné kontroly plynulosti. Hudba t4 Timeless od 0:24. Nahrazuje v1 i v2.",
+ "caption": "Rough sketch on the left. Smooth widget motion design on the right.\n\nOne music widget that morphs: small → wide → loading → full player, with a 3D tilt. All animated with Claude Code from a 5-box sketch.\n\nSketch → Motion #2. Comment SKETCH and I'll DM you the prompts.\n\n#claudecode #motiondesign #uidesign #aftereffects #aitools"
 }
