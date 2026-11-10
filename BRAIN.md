@@ -73,6 +73,10 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   related skills, or skip the format that day and tell Jan why.
 - post.json `"angle": "app-demo"`. Paper rules in §3/§5 that conflict (light paper, text block under the visual)
   don't apply here; margins, readability, real-claims and pacing rules do.
+- **Test "result first" (Jan, 2026-11-10, styles19 v2):** Jan felt the chat-first opening doesn't hook, viewers leave before the wow.
+  Variant: the RESULT plays full screen from frame 0, voice sells that look ("Want that viral paper-collage look? Type slash
+  paper explainer."), the chat input slides up OVER the result and the command is typed, then the next result. ~20 s.
+  Template: hf/videos/styles19/build.py (v1 chat-first = build_v1.py). Compare its numbers with the chat-first demos before switching.
 - **Daily mix v3 (Jan, 2026-11-09, replaces the line below):** 2 App demos + 1 **trendy AI tool** video (Higgsfield, Lovart,
   invideo, new launches of the week; NOT GitHub repos). The tool video uses the App-demo engine too ("Type this into <tool>…
   and you get this" with the tool's REAL outputs), never a classic tool presentation. Tag the brand's verified @handle in the

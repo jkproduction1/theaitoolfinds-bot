@@ -3,7 +3,7 @@
  "tool_name": "Claude Code explainer style commands",
  "keyword": "STYLE",
  "angle": "app-demo",
- "cover_at": 7.9,
- "summary_cs": "🧪 doporučuju Trial. App demo „Type it, get it #19“ (Explainer styles): /paper-explainer proč jsou letenky drahé (papírová koláž přes celou obrazovku), /flat-cosmos jak tělo bojuje s virem (plochá svítící grafika), /storybook jak se stavěly pyramidy (malovaný styl). Vše kreslené v kódu, bez log a maskotů kanálů; prompty v hf/videos/styles19/prompts.md.",
- "caption": "Type one command and Claude explains anything in a famous video style.\n\nPart #19 of a daily series.\n\nComment STYLE and I'll DM you the prompts.\n\n#claudecode #motiondesign #aitools"
+ "cover_at": 2.2,
+ "summary_cs": "🧪 doporučuju Trial. styles19 v2 „nejdřív výsledek“ (20 s): wow běží přes celou obrazovku od prvního snímku, přes něj vyjede chat a naťuká se příkaz: /paper-explainer (papírová koláž), /flat-cosmos (svítící plochá grafika), /storybook (malovaný příběh). Hlas na míru každému stylu („Want that viral paper-collage look? Type…“). Starší verze v1 (28 s, nejdřív psaní) je na Telegramu taky.",
+ "caption": "Want your videos to look like the famous explainer channels? Type one command.\n\nPart #19 of a daily series.\n\nComment STYLE and I'll DM you the prompts.\n\n#claudecode #motiondesign #aitools"
 }

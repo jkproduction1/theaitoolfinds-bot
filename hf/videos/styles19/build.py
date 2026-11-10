@@ -1,10 +1,8 @@
-"""styles19 - App demo (BRAIN §3b/§3c), 2026-11-10 (Jan, live): three famous explainer LOOKS, one command each:
-/paper-explainer why flights cost so much (full-screen photo-collage look), /flat-cosmos how your body fights a virus (flat vector
-glow look), /storybook how the pyramids were built (hand-painted look). Every result is drawn here in code (2D canvas, scenes.js).
-Own designs only: no channel logos, wordmarks, mascots or characters. Facts: fuel is typically an airline's biggest single cost, fees and
-taxes are charged per seat, prices rise as seats sell; a white blood cell (phagocyte) engulfs and digests a virus, antibodies tag
-viruses; Egyptians dragged blocks on wooden sleds over wetted sand (Djehutihotep tomb painting), a long ramp is the leading theory.
-Prompts for DM: prompts.md. Series "Type it, get it #19"."""
+"""styles19 v2 - "result first" App demo (Jan, live, 2026-11-10): the WOW plays full screen from frame 0, the chat input slides up
+OVER it and the command is typed, then the next style. Voice: "Want that viral paper-collage look? Type slash paper explainer." etc.
+Scenes are the same 2D-canvas drawings as v1 (scenes.js): /paper-explainer why flights cost so much, /flat-cosmos how your body
+fights a virus, /storybook how the pyramids were built. Own designs only: no channel logos, wordmarks, mascots or characters.
+v1 (chat first, "Type… and you get this") is kept in build_v1.py. Prompts for DM: prompts.md. Series "Type it, get it #19"."""
 import json, shutil, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).parent
@@ -15,23 +13,17 @@ W = HERE.parent.parent / "work" / "styles19"
 A = W / "assets"
 for f in (HERE / "media").iterdir():
     shutil.copy(f, A / f.name)
-from PIL import Image
-for k in range(3):
-    if not (A / f"th{k}.jpg").exists():
-        Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
-# --- gaps after each "this." so the 3D result plays
-GAPS = {12: 4.0, 26: 4.0, 38: 4.0}
+GAPS = {4: 0.7, 8: 0.8, 14: 0.7, 18: 0.8, 22: 1.0, 25: 1.6}   # silence after these words so each result gets ~5.5 s
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
-def _quiet_cut(i):  # cut in the quietest 10 ms after the word ends (no click), before the next word starts
+def _quiet_cut(i):
     import numpy as np
     raw = subprocess.run(["ffmpeg", "-v", "error", "-i", str(A / "voice_raw.mp3"), "-f", "s16le", "-ac", "1", "-ar", "44100", "-"], capture_output=True).stdout
     a = np.frombuffer(raw, np.int16).astype(float)
-    lo, hi = vw[i]["end"] + 0.03, min(vw[i]["end"] + 0.4, vw[i + 1]["start"] - 0.03)
-    best, bt = 1e18, vw[i]["end"] + 0.08
-    t = lo
+    lo, hi = vw[i]["end"] + 0.01, max(vw[i]["end"] + 0.02, min(vw[i]["end"] + 0.4, vw[i + 1]["start"] - 0.01))
+    best, bt, t = 1e18, (vw[i]["end"] + vw[i + 1]["start"]) / 2, lo
     while t < hi:
         k = int(t * 44100); e = float((a[k:k + 441] ** 2).mean())
         if e < best: best, bt = e, t + 0.005
@@ -57,65 +49,41 @@ F = Film(W, (HERE / "script.txt").read_text(), A / "voice.json", tail=1.0)
 F.scenes([0])
 S, E = F.S, F.E
 
-DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
-    (0, (2, 3), (4, 8), 9, "paper-explainer", "why flights cost so much", "paper-collage explainer", "x", 0, "Explain anything as a paper collage"),
-    (13, (15, 16), (17, 22), 23, "flat-cosmos", "how your body fights a virus", "flat glowing explainer", "x", 0, "Explain anything in flat, glowing vector"),
-    (27, (29, 29), (30, 34), 35, "storybook", "how the pyramids were built", "hand-painted explainer", "x", 0, "Tell anything as a painted storybook"),
-]
-CMD = DEMOS[0][4]
-TY = []
-for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
-    T = 0.0 if k == 0 else round(S[a] - 0.15, 3)
-    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[39] - 0.15, 3)
-    t_slash = 0.0 if k == 0 else max(T + 0.05, S[a + 1] - 0.05)
-    c0, c1 = (0.08 if k == 0 else S[ci0]), E[ci1]
-    p0, p1 = S[pi0], E[pi1] - 0.05
-    send = round(S[andi] - 0.12, 3)
-    TY.append({"T": T, "slash": t_slash, "c0": c0, "c1": c1, "p0": p0, "p1": p1, "send": send, "card": send + 0.12,
-               "full": send + 0.5, "end": nxt, "prompt": prompt, "cap": [w for w in cap.split() if w != "/"], "hi": hi, "cmd": cmd, "desc": desc})
-    F.sfx.append((T, "whoosh")); F.sfx.append((send, "click")); F.sfx.append((send + 0.12, "pop"))
-    for i in range(len(cmd)):
-        F.sfx.append((c0 + (c1 - c0) * i / len(cmd), "tick"))
-    for i in range(len(prompt)):
-        if prompt[i] != " ":
-            F.sfx.append((p0 + (p1 - p0) * i / len(prompt), "tick"))
-END = TY[-1]["end"]
+# first word, 'Type' idx, last cmd word idx, command, prompt, scene-time offset (so the first frame is already rich)
+DEMOS = [(0, 5, 8, "paper-explainer", "why flights cost so much", 1.0),
+         (9, 15, 18, "flat-cosmos", "how your body fights a virus", 0.45),
+         (19, 23, 25, "storybook", "how the pyramids were built", 0.35)]
+END = round(S[26] - 0.15, 3)
+SEG = []
+for k, (a, ti, li, cmd, prompt, off) in enumerate(DEMOS):
+    T = 0.0 if k == 0 else round(S[a] - 0.12, 3)
+    end = round(S[DEMOS[k + 1][0]] - 0.12, 3) if k < 2 else END
+    bar = round(S[ti] - 0.35, 3)
+    c0, c1 = round(S[ti] - 0.05, 3), round(min(end - 0.75, E[li] + 0.55), 3)
+    full = "/" + cmd + " " + prompt
+    SEG.append({"T": T, "end": end, "bar": bar, "c0": c0, "c1": c1, "send": round(c1 + 0.18, 3), "txt": full, "n": len(cmd) + 1,
+                "off": off, "rate": round((6.25 - off) / (end - T), 4)})
+    if k: F.sfx.append((T, "whoosh"))
+    F.sfx.append((bar, "pop")); F.sfx.append((c1 + 0.18, "click"))
+    for i in range(0, len(full), 2):
+        if full[i] != " ": F.sfx.append((c0 + (c1 - c0) * i / len(full), "tick"))
 F.sfx.append((END, "whoosh"))
 
 SPARK = '<svg viewBox="0 0 100 100"><path fill="#ff6a3d" d="M50 6l9 33 33 11-33 11-9 33-9-33L8 50l33-11z"/></svg>'
-ROWS = ["qwertyuiop", "asdfghjkl", "zxcvbnm"]
-KW, KG, KY0 = 94, 10, 1440
-KEYPOS, keys_html = {}, []
-for r, row in enumerate(ROWS):
-    x0 = (1080 - (len(row) * KW + (len(row) - 1) * KG)) // 2
-    for c, ch in enumerate(row):
-        x, y = x0 + c * (KW + KG), KY0 + r * 116
-        KEYPOS[ch] = (x, y); keys_html.append(f'<div class="k" style="left:{x}px;top:{y}px;width:{KW}px">{ch}</div>')
-y3 = KY0 + 3 * 116
-keys_html += [f'<div class="k f" style="left:30px;top:{KY0 + 232}px;width:120px">⇧</div>',
-              f'<div class="k f" style="left:930px;top:{KY0 + 232}px;width:120px">⌫</div>',
-              f'<div class="k f" style="left:30px;top:{y3}px;width:150px">123</div>',
-              f'<div class="k" style="left:200px;top:{y3}px;width:620px;font-size:32px">space</div>',
-              f'<div class="k f" style="left:840px;top:{y3}px;width:210px">return</div>']
-KEYPOS[" "] = (460, y3)
-
-ui = ['<div style="position:absolute;opacity:0;pointer-events:none"><span style="font-family:\'DM Serif Display\';font-style:italic">a</span><span style="font-family:\'DM Serif Display\'">a</span><span style="font-family:\'EB Garamond\';font-weight:500">a</span><span style="font-family:\'EB Garamond\';font-style:italic;font-weight:500">a</span><span style="font-family:Inter;font-weight:800">a</span><span style="font-family:Inter;font-weight:700">a</span></div><div class="ui" id="ui">',
-      '<div id="sb"><span>9:41</span><span>●●● <i></i></span></div>',
-      '<div id="tabs"><span>Chat</span><span class="on">Code</span></div><div id="ctr"><b id="cn">1/3</b></div>',
-      '<div id="ub"><span class="c" id="ubc">/how-its-made</span> <span id="ubt"></span></div><div id="run">' + SPARK + '<span id="runt">Animating…</span></div>',
-      '<div id="chipc">' + SPARK + '<div><div class="n" id="chn">/how-its-made</div><div class="d" id="chd"></div></div></div>',
-      '<div id="inp"><span id="it"></span><span class="car"></span><span class="plus">+</span><div class="snd" id="snd"></div></div>',
-      '<div id="kbw"><div id="kb"></div><div id="sug"></div>' + "".join(keys_html) + '<div id="pop"></div></div>',
-      '<div id="bot">Reply…</div></div>']
-stages = ""
-for k, (a, _c, _p, _a, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
-    stages += (f'<div class="stage" id="st{k}"><canvas id="cv{k}" width="1080" height="1920"></canvas>'
-                              f'<div class="ttl"><b>{title}</b><i>with Claude Code</i></div></div>')
+fonts = ('<div style="position:absolute;opacity:0;pointer-events:none"><span style="font-family:\'DM Serif Display\';font-style:italic">a</span>'
+         '<span style="font-family:\'DM Serif Display\'">a</span><span style="font-family:\'EB Garamond\';font-weight:500">a</span>'
+         '<span style="font-family:\'EB Garamond\';font-style:italic;font-weight:500">a</span><span style="font-family:Inter;font-weight:800">a</span>'
+         '<span style="font-family:Inter;font-weight:700">a</span></div>')
+stages = "".join(f'<div class="stage" id="st{k}"><canvas id="cv{k}" width="1080" height="1920"></canvas></div>' for k in range(3))
+ui = ('<div id="ui"><div id="ctr"><b id="cn">1/3</b></div>'
+      '<div id="bar">' + SPARK + '<div id="bt"><span id="it"></span><span class="car"></span></div><div class="snd" id="snd"></div></div></div>')
 thumbs = "".join(f'<div class="th" id="th{k}" style="left:{x}px"><img src="assets/th{k}.jpg" alt=""></div>' for k, x in enumerate([90, 400, 710]))
 end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“STYLE”</div>'
-       '<div class="g" id="e3">and I\'ll send you the prompts</div>' + thumbs + '<div class="series" id="eser" style="left:0;right:0;margin:0 auto;width:fit-content;top:1400px">Type it, get it <b>#19</b></div>' + FOLLOW_LINE.replace('class="follow"', 'class="follow" id="efol" style="top:1490px;color:#fff"') + '</div>')
-F.body.append('<div class="layer" id="serl">' + series("Type it, get it", 19, x=70, y=116, dark=True) + '</div>')
-F.clip(0, "".join(ui) + stages + end)
+       '<div class="g" id="e3">and I\'ll send you the prompts</div>' + thumbs +
+       '<div class="series" id="eser" style="left:0;right:0;margin:0 auto;width:fit-content;top:1400px">Type it, get it <b>#19</b></div>' +
+       FOLLOW_LINE.replace('class="follow"', 'class="follow" id="efol" style="top:1490px;color:#fff"') + '</div>')
+F.body.append('<div class="layer" id="serl" style="z-index:20">' + series("Type it, get it", 19, x=70, y=116, dark=True) + '</div>')
+F.clip(0, fonts + stages + ui + end)
 
 CSS = r"""
 @font-face{font-family:'DM Serif Display';font-style:italic;font-weight:400;src:url(assets/dm-serif-display-latin-400-italic.woff2) format('woff2')}
@@ -124,52 +92,21 @@ CSS = r"""
 @font-face{font-family:'EB Garamond';font-style:italic;font-weight:500;src:url(assets/eb-garamond-latin-500-italic.woff2) format('woff2')}
 :root{--paper:#121212}
 html,body,#root{background:#121212!important}
-#grid,#stars,#grain{display:none}
-#vig{background:radial-gradient(120% 80% at 50% 40%,rgba(0,0,0,0) 60%,rgba(0,0,0,.35) 100%)}
+#grid,#stars,#grain,#vig{display:none}
 #handle{top:1700px;font-size:28px;padding:10px 28px;opacity:0;z-index:50}
-.ui{position:absolute;inset:0;font-family:var(--sans);color:#ececec}
-#sb{position:absolute;left:70px;right:70px;top:34px;display:flex;justify-content:space-between;font-weight:700;font-size:34px}
-#sb i{display:inline-block;width:46px;height:22px;border:3px solid #ececec;border-radius:7px;margin-left:14px;position:relative;top:3px}
-#sb i::after{content:'';position:absolute;left:3px;top:3px;bottom:3px;width:30px;background:#ececec;border-radius:3px}
-#tabs{position:absolute;left:50%;top:110px;transform:translateX(-50%);display:flex;background:#232323;border-radius:999px;padding:6px;font-weight:600;font-size:30px}
-#tabs span{padding:10px 30px;border-radius:999px;color:#8d8d8d}#tabs span.on{background:#3a3a3a;color:#fff}
-#menu{position:absolute;left:70px;top:112px;width:64px;height:64px;border-radius:50%;background:#232323}
-#menu::after{content:'';position:absolute;left:20px;top:24px;width:24px;height:16px;border-top:3px solid #ccc;border-bottom:3px solid #ccc}
-#ctr{position:absolute;right:70px;top:112px;height:64px;min-width:64px;border-radius:32px;background:#232323;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;padding:0 18px}
-#inp{position:absolute;left:70px;right:70px;top:1150px;min-height:170px;background:#1f1f1f;border-radius:34px;border:2px solid #2c2c2c;padding:26px 30px 74px;font-size:40px;line-height:1.3}
-#inp .ph{color:#6b6b6b}#inp .cmd{color:#ff6a3d;font-weight:600}
-#inp .car{display:inline-block;width:4px;height:44px;background:#ff6a3d;vertical-align:-8px;margin-left:3px}
-#inp .plus{position:absolute;left:30px;bottom:18px;font-size:40px;color:#8d8d8d}
-#inp .snd{position:absolute;right:20px;bottom:16px;width:62px;height:62px;border-radius:50%;background:#3a3a3a}
-#inp .snd::after{content:'';position:absolute;left:21px;top:16px;border-bottom:20px solid #fff;border-left:10px solid transparent;border-right:10px solid transparent}
-#inp .snd::before{content:'';position:absolute;left:29px;top:30px;width:4px;height:18px;background:#fff}
-#chipc{position:absolute;left:70px;right:70px;top:1010px;height:118px;background:#2a1d18;border-radius:26px;border:2px solid #4a2c22;display:flex;align-items:center;gap:22px;padding:0 28px;opacity:0}
-#chipc svg{width:52px;height:52px;flex:none}
-#chipc .n{font-weight:700;font-size:38px;color:#ff6a3d}#chipc .d{font-size:26px;color:#a98f86;margin-top:2px}
-#kb{position:absolute;left:0;right:0;top:1370px;height:550px;background:#1b1b1b}
-.k{position:absolute;height:96px;border-radius:14px;background:#3b3b3b;color:#f2f2f2;font-size:42px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 #0b0b0b}
-.k.f{background:#2a2a2a;font-size:30px}
-#pop{position:absolute;width:118px;height:170px;border-radius:22px;background:#5a5a5a;color:#fff;font-size:68px;display:flex;align-items:flex-start;justify-content:center;padding-top:16px;opacity:0;box-shadow:0 20px 40px rgba(0,0,0,.6)}
-#sug{position:absolute;left:0;right:0;top:1380px;text-align:center;color:#bdbdbd;font-size:32px}
-#ub{position:absolute;right:70px;top:200px;max-width:720px;background:#2a2a2a;border-radius:30px 30px 8px 30px;padding:16px 26px;font-size:32px;line-height:1.3;opacity:0}
-#ub .c{color:#ff6a3d}
-#run{position:absolute;left:70px;top:330px;font-size:30px;color:#9a9a9a;display:flex;align-items:center;gap:14px;opacity:0}
-#run svg{width:38px;height:38px}
-#bot{position:absolute;left:70px;right:70px;top:1720px;height:100px;background:#1f1f1f;border-radius:30px;border:2px solid #2c2c2c;color:#6b6b6b;font-size:34px;display:flex;align-items:center;padding-left:30px;opacity:0}
-.stage{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;opacity:0;transform-origin:540px 900px;
- background:radial-gradient(90% 60% at 50% 42%,#262a31 0%,#101114 60%,#08090b 100%)}
+.stage{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;opacity:0;transform-origin:540px 960px}
 .stage canvas{position:absolute;inset:0;width:1080px;height:1920px}
-.cap{position:absolute;left:80px;right:80px;top:250px;text-align:center;font-weight:700;font-size:62px;letter-spacing:-.02em;line-height:1.15;color:#fff}
-.cw{display:inline-block;opacity:0}
-.cw.hi{background:#2f6bff;padding:0 .18em;border-radius:10px}
-.lb{position:absolute;opacity:0;white-space:nowrap;font-family:var(--sans);transform:translate(0,-50%);isolation:isolate;background:rgba(10,11,14,.78);padding:8px 14px 10px;border-radius:12px}
-.lb .ld{z-index:-1}
-.lb b{display:block;font-weight:700;font-size:34px;color:#fff}
-.lb span{display:block;font-family:var(--mono);font-size:28px;color:#d5dbe3;margin-top:2px}
-.lb .ld{position:absolute;left:-14px;top:22px;height:2px;background:rgba(255,255,255,.55);transform-origin:0 50%}
-.lb .ld::after{content:'';position:absolute;right:-7px;top:-6px;width:14px;height:14px;border-radius:50%;background:#ff6a3d;box-shadow:0 0 0 6px rgba(255,106,61,.25)}
-.ttl{position:absolute;left:0;right:0;top:1580px;text-align:center}
-.ttl b{display:block;font-weight:700;font-size:44px;color:#fff}.ttl i{display:block;font-family:var(--serif);font-size:44px;color:#bdbdbd}
+#ui{position:absolute;inset:0;font-family:var(--sans);color:#ececec;z-index:10}
+#ctr{position:absolute;right:70px;top:112px;height:64px;min-width:64px;border-radius:32px;background:rgba(20,20,20,.78);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;padding:0 18px}
+#bar{position:absolute;left:54px;right:54px;top:1548px;min-height:156px;background:rgba(22,22,22,.94);border-radius:38px;border:2px solid #3a3a3a;
+ box-shadow:0 24px 60px rgba(0,0,0,.55);display:flex;align-items:center;gap:22px;padding:22px 110px 22px 30px}
+#bar svg{width:54px;height:54px;flex:none}
+#bt{font-size:43px;line-height:1.22;font-weight:500;letter-spacing:-.01em}
+#bt .cmd{color:#ff6a3d;font-weight:700}
+#bar .car{display:inline-block;width:4px;height:44px;background:#ff6a3d;vertical-align:-8px;margin-left:3px}
+#bar .snd{position:absolute;right:24px;top:50%;margin-top:-35px;width:70px;height:70px;border-radius:50%;background:#3a3a3a}
+#bar .snd::after{content:'';position:absolute;left:24px;top:18px;border-bottom:22px solid #fff;border-left:11px solid transparent;border-right:11px solid transparent}
+#bar .snd::before{content:'';position:absolute;left:33px;top:34px;width:4px;height:20px;background:#fff}
 #end{position:absolute;inset:0;background:#121212;opacity:0;font-family:var(--sans);z-index:30}
 #end svg{position:absolute;left:490px;top:300px;width:100px;height:100px}
 #end .c{position:absolute;left:0;right:0;top:420px;text-align:center;font-weight:800;font-size:90px;color:#fff}
@@ -179,64 +116,42 @@ html,body,#root{background:#121212!important}
 .th img{width:100%;height:100%;object-fit:cover}
 """
 
-CSS += r"""
-.cap{text-shadow:0 3px 0 rgba(0,0,0,.55),0 6px 26px rgba(0,0,0,.95),0 0 40px rgba(0,0,0,.8)}
-.ttl{padding:22px 0 26px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 25%,rgba(0,0,0,.72) 75%,rgba(0,0,0,0))}
-"""
-
 JS = r"""
-const TY=__TY__, KP=__KP__, CMD='__CMD__', END=__END__;
-const it=document.getElementById('it'), sug=document.getElementById('sug'), pop=document.getElementById('pop'), cn=document.getElementById('cn'), ubt=document.getElementById('ubt');
-const SCN=[];
-const cl=(x)=>x<0?0:x>1?1:x;
+const SEG=__SEG__, END=__END__;
+const SCN=[]; const cl=(x)=>x<0?0:x>1?1:x;
+const it=document.getElementById('it'), cn=document.getElementById('cn');
 __SCENES__
-// ================= chat + timeline =================
 let lastKey='';
 function apply(t){
-  let d=TY[0], k=0; for(let i=0;i<TY.length;i++){ if(TY[i].T<=t){ d=TY[i]; k=i; } }
-  let html='<span class="ph">Reply…</span>', sg='', pk='';
-  if(t>=d.slash && t<d.send){ let s='/'; let ch='';
-    if(t>=d.c0){ const n=Math.min(d.cmd.length,Math.floor((t-d.c0)/((d.c1-d.c0)/d.cmd.length))+1); s='/'+d.cmd.slice(0,n); ch=d.cmd[n-1]; }
-    let ptxt='';
-    if(t>=d.p0){ const m=d.prompt.length, n=Math.min(m,Math.floor((t-d.p0)/((d.p1-d.p0)/m))+1); ptxt=d.prompt.slice(0,n); ch=d.prompt[n-1]; }
-    html='<span class="cmd">'+s+'</span>'+(ptxt?' '+ptxt:''); const lw=(ptxt||s).split(' ').pop(); sg='"'+lw+'"'; if(ch&&KP[ch]&&ch!==' ') pk=ch; }
-  if(t>=d.p1-0.02 && t<d.send) pk='';
-  const key=[k,html,sg,pk].join('|');
-  if(key!==lastKey){ lastKey=key; it.innerHTML=html; sug.textContent=sg; cn.textContent=(k+1)+'/3'; ubt.textContent=d.prompt; document.getElementById('ubc').textContent='/'+d.cmd; document.getElementById('runt').textContent='Running /'+d.cmd+'…'; document.getElementById('chn').textContent='/'+d.cmd; document.getElementById('chd').textContent=d.desc;
-    if(pk){ const p=KP[pk]; pop.textContent=pk; pop.style.left=(p[0]-12)+'px'; pop.style.top=(p[1]-120)+'px'; pop.style.opacity=1; } else pop.style.opacity=0; }
-  // 3D: render the active result
-  if(t>=d.card && t<d.end+(k===2?0.32:0.05) && t<END+0.32){ SCN[k]((t-d.card)*1.32); }
+  let k=0; for(let i=0;i<SEG.length;i++){ if(SEG[i].T<=t) k=i; } const d=SEG[k];
+  let n=0; if(t>=d.c0) n=Math.min(d.txt.length,Math.floor((t-d.c0)/((d.c1-d.c0)/d.txt.length))+1);
+  const key=k+'|'+n; if(key!==lastKey){ lastKey=key; const s=d.txt.slice(0,n); it.innerHTML=n?('<span class="cmd">'+s.slice(0,d.n)+'</span>'+s.slice(d.n)):'<span style="color:#777">Reply…</span>'; cn.textContent=(k+1)+'/3'; }
+  if(t<END+0.3) SCN[k](d.off+(t-d.T)*d.rate);
 }
 const clock={t:0}; tl.fromTo(clock,{t:0},{t:DUR,duration:DUR,ease:'none',onUpdate:()=>apply(clock.t)},0); apply(0);
 const NI={immediateRender:false}; function F2(sel,f,t,at){ return tl.fromTo(sel,f,Object.assign({},t,NI),at); }
-TY.forEach((d,k)=>{
-  if(k){ tl.set('#st'+(k-1),{opacity:0},d.T); tl.set(['#kbw','#inp'],{y:0,opacity:1},d.T); tl.set(['#ub','#run','#bot'],{opacity:0},d.T); }
-  F2('#chipc',{opacity:0,y:30},{opacity:1,y:0,duration:.2,ease:'power2.out'},d.slash);
-  tl.set('#snd',{backgroundColor:'#ff4b1f'},d.slash+0.05);
-  tl.set('#chipc',{opacity:0},d.p0);
-  tl.to('#snd',{scale:.85,duration:.06,yoyo:true,repeat:1},d.send-0.08);
-  F2(['#kbw','#inp'],{y:0,opacity:1},{y:620,opacity:0,duration:.3,ease:'power3.in'},d.send);
-  F2('#ub',{opacity:0,y:30,scale:.9},{opacity:1,y:0,scale:1,duration:.25,ease:'back.out(2)'},d.send);
-  F2('#run',{opacity:0,x:-20},{opacity:1,x:0,duration:.2},d.send+0.06);
-  F2('#bot',{opacity:0},{opacity:1,duration:.2},d.send+0.15);
-  tl.set('#snd',{backgroundColor:'#3a3a3a'},d.send+0.3);
-  F2('#st'+k,{opacity:0,scale:.5,y:140,borderRadius:60},{opacity:1,scale:.58,y:110,borderRadius:60,duration:.3,ease:'back.out(1.6)'},d.card);
-  F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.42,ease:'expo.inOut'},d.full);
+tl.set(['#st1','#st2','#end','#e1','#e2','#e3','#th0','#th1','#th2','#handle','#eser','#efol'],{opacity:0},0); tl.set('#st0',{opacity:1},0); tl.set('#bar',{y:460,opacity:0},0);
+SEG.forEach((d,k)=>{
+  if(k){ tl.set('#st'+(k-1),{opacity:0},d.T); F2('#st'+k,{opacity:1,scale:1.08},{opacity:1,scale:1,duration:.45,ease:'power3.out'},d.T); }
+  F2('#bar',{y:460,opacity:0},{y:0,opacity:1,duration:.38,ease:'back.out(1.5)'},d.bar);
+  tl.set('#snd',{backgroundColor:'#ff4b1f'},d.c0+0.1);
+  tl.to('#snd',{scale:.8,duration:.07,yoyo:true,repeat:1},d.send-0.07);
+  F2('#bar',{scale:1},{scale:1.035,duration:.09,yoyo:true,repeat:1},d.send);
+  F2('#bar',{y:0,opacity:1},{y:460,opacity:0,duration:.25,ease:'power3.in'},d.end-0.27);
+  tl.set('#snd',{backgroundColor:'#3a3a3a'},d.end-0.02);
 });
-tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
 tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
 F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.02);
-F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[40]-0.1,END+0.1));
+F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[27]-0.1,END+0.1));
 F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:A},END+0.22);
 [0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.55,ease:'back.out(1.4)'},END+0.15+k*0.08));
 F2('#handle',{opacity:0},{opacity:1,duration:.3},END+0.5);
-tl.set(['#end','#e1','#e2','#e3','#th0','#th1','#th2','#handle','#eser','#efol'],{opacity:0},0);
 F2('#eser',{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:A},END+0.6);
 F2('#efol',{opacity:0,y:20},{opacity:1,y:0,duration:.3,ease:A},END+0.75);
 tl.set('#serl',{opacity:0},END);
 """
-JS = JS.replace("__SCENES__", (HERE / "scenes.js").read_text()).replace("__TY__", json.dumps(TY)).replace("__KP__", json.dumps(KEYPOS)).replace("__CMD__", CMD).replace("__END__", str(END))
+JS = JS.replace("__SCENES__", (HERE / "scenes.js").read_text()).replace("__SEG__", json.dumps(SEG)).replace("__END__", str(END))
 F.write(CSS, JS, music_vol=0.10)
 _ix = W / "index.html"; _ix.write_text(_ix.read_text().replace('data-motion-blur="on"', 'data-motion-blur="off"'))
