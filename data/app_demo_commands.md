@@ -54,3 +54,4 @@ Own command names, copy only the look: no logos, mascots or characters of the ch
 - TED-Ed look -> /storybook: hand-painted 2D, grainy texture, warm palette, riddle/history storytelling.
   Trio: /storybook how the pyramids were built · /storybook the riddle of the river crossing · /storybook how the first map was drawn
 - styles19 (2026-11-10): /paper-explainer why flights cost so much, /flat-cosmos how your body fights a virus, /storybook how the pyramids were built (Jan, live; style-channel idea)
+- styles20 + styles20r (2026-11-10): /paper-collage why the Eiffel Tower grows, /flat-science how caffeine wakes you up, /painted-story how Vikings reached America (Jan, live; classic + result-first twins, "with Claude Fable 5.2")

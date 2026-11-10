@@ -76,7 +76,9 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - **Test "result first" (Jan, 2026-11-10, styles19 v2):** Jan felt the chat-first opening doesn't hook, viewers leave before the wow.
   Variant: the RESULT plays full screen from frame 0, voice sells that look ("Want that viral paper-collage look? Type slash
   paper explainer."), the chat input slides up OVER the result and the command is typed, then the next result. ~20 s.
-  Template: hf/videos/styles19/build.py (v1 chat-first = build_v1.py). Compare its numbers with the chat-first demos before switching.
+  Template: hf/videos/styles19/build.py (v1 chat-first = build_v1.py).
+  Since styles20 (Jan): make BOTH twins per video: classic `<name>` + result-first `<name>r` (shares scenes.js; "Want this?" sticker and the
+  "Claude Fable 5.2" chat bar pop up in the first second). Credit line "with Claude Fable 5.2" when Fable made the scenes. Compare its numbers with the chat-first demos before switching.
 - **Daily mix v3 (Jan, 2026-11-09, replaces the line below):** 2 App demos + 1 **trendy AI tool** video (Higgsfield, Lovart,
   invideo, new launches of the week; NOT GitHub repos). The tool video uses the App-demo engine too ("Type this into <tool>…
   and you get this" with the tool's REAL outputs), never a classic tool presentation. Tag the brand's verified @handle in the

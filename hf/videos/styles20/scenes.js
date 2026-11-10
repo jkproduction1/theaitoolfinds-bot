@@ -118,6 +118,10 @@ function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((l
   const ADE=[[130,640],[330,540],[560,620],[780,530],[960,660]];
   SCN[1]=function(lt){ g.clearRect(0,0,1080,1920); g.drawImage(bg,0,0);
     DOTS.forEach(([x,y,r,a,c,ph])=>{ const yy=(y-lt*(8+r*4)+1920)%1920; g.globalAlpha=a*(0.6+0.4*Math.sin(lt*2+ph)); g.fillStyle=c; g.beginPath(); g.arc(x+Math.sin(lt*.5+ph)*12,yy,r,0,7); g.fill(); }); g.globalAlpha=1;
+    { const aw=CL((lt-3.6)/0.6), N=[[90,700],[300,930],[120,1120],[980,760],[840,980],[1010,1160],[560,820]], L=[[0,1],[1,2],[3,4],[4,5],[1,6],[6,4],[0,6],[6,3]];
+      g.save(); g.lineCap='round'; L.forEach(([a,b],i)=>{ g.strokeStyle='rgba(170,130,255,'+(0.16+0.22*aw)+')'; g.lineWidth=7; g.beginPath(); g.moveTo(N[a][0],N[a][1]); g.quadraticCurveTo((N[a][0]+N[b][0])/2+30,(N[a][1]+N[b][1])/2-40,N[b][0],N[b][1]); g.stroke();
+        if(aw>0){ const pr=(lt*0.8+i*0.23)%1, x=N[a][0]+(N[b][0]-N[a][0])*pr, y=N[a][1]+(N[b][1]-N[a][1])*pr-40*Math.sin(pr*Math.PI)*0.5; g.fillStyle='rgba(255,214,150,'+aw+')'; g.shadowColor='#ffb347'; g.shadowBlur=24; g.beginPath(); g.arc(x,y,9,0,7); g.fill(); g.shadowBlur=0; } });
+      N.forEach(([x,y],i)=>{ g.fillStyle='rgba(150,110,240,'+(0.35+0.35*aw)+')'; g.shadowColor='rgba(190,140,255,.8)'; g.shadowBlur=20+40*aw; g.beginPath(); g.arc(x,y,26+(i%3)*8,0,7); g.fill(); }); g.restore(); }
     const docked=SOCK.map((s,i)=>EIO((lt-2.0-i*0.24)/0.55)), allIn=CL((lt-3.6)/0.6), sleepy=EIO(lt/1.8)*(1-CL((lt-2.2)/0.8)), awake=allIn;
     const z=1+0.08*EIO((lt-1.6)/2.6); g.save(); g.translate(540,1150); g.scale(z,z); g.translate(-540,-1150);
     // the brain cell: dendrites + body; it dims when sleepy and lights up when the receptors are blocked
@@ -139,8 +143,13 @@ function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((l
     ADE.forEach(([x0,y0],i)=>{ const s=SOCK[i], ap=EIO((lt+0.6-i*0.12)/2.6)*0.78, bo=EIO((lt-2.1-i*0.22)/0.9); let x=x0+(s[0]-x0)*ap, y=y0+(s[1]-130-y0)*ap; x+=Math.cos(s[2])*bo*200+(i-2)*bo*70; y+=Math.sin(s[2])*bo*150; x+=Math.sin(lt*1.6+i)*10; y+=Math.cos(lt*1.3+i)*10;
       mol(x,y,46,lt*0.5+i,'#7fc0ff','#4c8fe6','rgba(255,255,255,.4)','rgba(110,170,255,.8)',CL(lt/0.4)*(1-0.45*bo),0);
       if(sleepy>0.05&&bo<0.3){ g.save(); g.globalAlpha=sleepy*0.9*(1-bo*3); g.fillStyle='#cfe4ff'; g.font='800 '+(46+i%2*14)+'px '+SANS; g.fillText('z',x+52,y-50-((lt*30+i*20)%40)); g.restore(); } });
+    // the coffee mug the caffeine comes from
+    { const ma=EBK((lt-1.35)/0.45); if(lt>1.35){ g.save(); g.translate(935,730); g.rotate(-0.12+Math.sin(lt*2)*0.03); g.scale(ma,ma); g.shadowColor='rgba(255,170,80,.7)'; g.shadowBlur=40;
+      g.strokeStyle='#f1ecff'; g.lineWidth=22; g.beginPath(); g.arc(92,10,44,-1.2,1.2); g.stroke(); g.fillStyle='#f6f2ff'; g.beginPath(); g.roundRect(-90,-80,180,180,[18,18,60,60]); g.fill(); g.shadowBlur=0;
+      g.fillStyle='#d9d2f2'; g.beginPath(); g.roundRect(-90,20,180,80,[0,0,60,60]); g.fill(); g.fillStyle='#7a4a2a'; g.beginPath(); g.ellipse(0,-78,82,20,0,0,7); g.fill(); g.fillStyle='#a8683a'; g.beginPath(); g.ellipse(-10,-80,56,11,0,0,7); g.fill();
+      g.strokeStyle='rgba(255,255,255,.55)'; g.lineWidth=9; g.lineCap='round'; for(let i=0;i<3;i++){ const ph=lt*2+i*2; g.beginPath(); g.moveTo(-44+i*44,-116); g.quadraticCurveTo(-64+i*44+Math.sin(ph)*16,-160,-44+i*44,-200-Math.sin(ph)*8); g.stroke(); } g.restore(); } }
     // caffeine (orange): shoots in and plugs every receptor
-    SOCK.forEach(([x,y,a],i)=>{ const d=docked[i]; if(lt<2.0+i*0.24-0.05) return; const sx=1240, sy=260+i*40, mx=x+Math.cos(a)*-0+ (sx-x)*(1-d), my=y-50+(sy-(y-50))*(1-d)-Math.sin(d*Math.PI)*120;
+    SOCK.forEach(([x,y,a],i)=>{ const d=docked[i]; if(lt<2.0+i*0.24-0.05) return; const sx=910, sy=680, mx=x+Math.cos(a)*-0+ (sx-x)*(1-d), my=y-50+(sy-(y-50))*(1-d)-Math.sin(d*Math.PI)*120;
       mol(mx-20,my,31,a+Math.PI/2+(1-d)*3,'#ffb45c','#f2792b','rgba(255,255,255,.5)','rgba(255,150,60,.9)',1,1); if(d>0.9){ const f=1-CL((lt-2.0-i*0.24-0.5)/0.4); if(f>0) spark(x,y-60,40*f+10,f); } });
     label('Adenosine: makes you sleepy',150,560,ADE[1][0]+(SOCK[1][0]-ADE[1][0])*0.45,ADE[1][1]+(SOCK[1][1]-130-ADE[1][1])*0.45-50,CL((lt-0.7)/0.25)*(1-CL((lt-2.2)/0.3)));
     label('Caffeine',SOCK[3][0]-30,SOCK[3][1]-280,SOCK[3][0]+4,SOCK[3][1]-110,CL((lt-3.0)/0.3));

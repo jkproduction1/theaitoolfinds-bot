@@ -520,5 +520,17 @@
     "domain": "code.claude.com/docs/en/slash-commands#styles19",
     "date": "2026-11-10_1733",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Fable 5.2 explainer styles",
+    "domain": "code.claude.com/docs/en/slash-commands#styles20",
+    "date": "2026-11-10_2153",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Fable 5.2 explainer styles (result first)",
+    "domain": "code.claude.com/docs/en/slash-commands#styles20r",
+    "date": "2026-11-10_2154",
+    "source": "hyperframes"
   }
 ]
