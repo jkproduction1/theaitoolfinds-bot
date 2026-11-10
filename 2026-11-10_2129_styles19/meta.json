@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code explainer style commands",
+ "tool_name": "Claude Code explainer style commands",
+ "keyword": "STYLE",
+ "summary_cs": "🧪 doporučuju Trial. styles19 v2 „nejdřív výsledek“ (20 s): wow běží přes celou obrazovku od prvního snímku, přes něj vyjede chat a naťuká se příkaz: /paper-explainer (papírová koláž), /flat-cosmos (svítící plochá grafika), /storybook (malovaný příběh). Hlas na míru každému stylu („Want that viral paper-collage look? Type…“). Starší verze v1 (28 s, nejdřív psaní) je na Telegramu taky.",
+ "style": "hyperframes-paper",
+ "duration": 19.8,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-10_2129",
+ "run_id": null,
+ "artifact": null
+}
