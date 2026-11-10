@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code planet commands",
+ "tool_name": "Claude Code planet commands",
+ "keyword": "PLANET",
+ "summary_cs": "Druhá vlna earth8 (513k na IG): stejné scény (Země se zastaví, Mariánský příkop, Měsíc vs. Země), nové slovo PLANET, nově namluvený hlas, BEZ hudby (přidáš si ji v IG), nový popisek. Klasická verze „Type it, get it #21“; obrácené dvojče je planet21r. Než schválíš: ověř, že je nastavená automatická DM na slovo PLANET.",
+ "style": "hyperframes-paper",
+ "duration": 25.2,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-11_0007",
+ "run_id": null,
+ "artifact": null
+}
