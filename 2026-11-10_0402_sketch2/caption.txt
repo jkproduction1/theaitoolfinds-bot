@@ -1,0 +1,7 @@
+Rough sketch on the left. Smooth widget motion design on the right.
+
+One music widget that morphs: small → wide → loading → full player, with a 3D tilt. All animated with Claude Code from a 5-box sketch.
+
+Sketch → Motion #2. Comment SKETCH and I'll DM you the prompts.
+
+#claudecode #motiondesign #uidesign #aftereffects #aitools

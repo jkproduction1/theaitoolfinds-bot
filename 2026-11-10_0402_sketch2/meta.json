@@ -1,0 +1,13 @@
+{
+ "url": "https://claude.ai/code",
+ "name": "Claude Code (Sketch → Motion: music app UI)",
+ "tool_name": "Claude Code (Sketch → Motion: music app UI)",
+ "keyword": "SKETCH",
+ "summary_cs": "Sketch → Motion #2 v3 (Jan: smooth jako After Effects, žádný telefon): jeden hudební widget, který se plynule morfuje – Introducing, pan přes pole widgetů, burst, malý → široký → loading pill → velký, 3D náklon, tělo widgetu se roztáhne do „Endless music“. 60 fps, prošlo 2 koly přísné kontroly plynulosti. Hudba t4 Timeless od 0:24. Nahrazuje v1 i v2.",
+ "style": "hyperframes-paper",
+ "duration": 15.6,
+ "domain": "claude.ai/code",
+ "created": "2026-11-10_0402",
+ "run_id": null,
+ "artifact": null
+}
