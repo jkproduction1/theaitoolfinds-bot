@@ -94,35 +94,37 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
     return off(N,N,(p)=>{ p.filter='blur(7px)'; p.globalAlpha=0.55; p.drawImage(raw,0,0); p.filter='blur(1.4px)'; p.globalAlpha=1; p.drawImage(raw,0,0); }); }
   const C1S=2.1, CL1=cloudTex(1536,3.1,120,0.60,1,[[tx(MIA[0])/C1S+75,ty(MIA[1])/C1S+30,150],[tx(-81.7)/C1S+75,ty(24.6)/C1S+30,190]]), CL2=cloudTex(1024,8.7,150,0.58,1.3), CL3=cloudTex(1024,5.3,230,0.52,2.6);
   const CSH=off(1536,1536,(p)=>{ p.filter='blur(5px)'; p.drawImage(CL1,0,0); p.globalCompositeOperation='source-in'; p.fillStyle='#031018'; p.fillRect(0,0,1536,1536); });
-  // ---------- camera
-  const SN=(t,t0)=>EBK((t-t0)/0.34), lerp=(a,b,u)=>a+(b-a)*u, ZC=1.55, ZM=0.95, ZH=0.6, ZE=2.15;
-  function camAt(t){ const o1=SN(t,1.0), o2=SN(t,1.55), i1=SN(t,3.85), i2=SN(t,4.4), fly=EIO((t-1.9)/1.9);
-    const lz=Math.log(ZC)+(Math.log(ZM)-Math.log(ZC))*o1+(Math.log(ZH)-Math.log(ZM))*o2+(Math.log(ZM)-Math.log(ZH))*i1+(Math.log(ZE)-Math.log(ZM))*i2;
-    const z=Math.exp(lz)*(1+0.05*CL(t/1.0)*(1-o1)+0.06*CL((t-4.7)/2.5)*i2);
-    return {lon:lerp(MIA[0]+0.1,KW[0],fly),lat:lerp(MIA[1]-0.12,KW[1],fly),z,rot:-0.12+0.08*o1+0.08*o2+0.12*fly-0.08*i1-0.08*i2, alt:CL((Math.log(ZC)-lz)/(Math.log(ZC)-Math.log(ZH)))}; }
+  // ---------- camera: ONE smooth eased move (like an After Effects camera with easy-ease keys): rise, glide, descend
+  const lerp=(a,b,u)=>a+(b-a)*u, ZC=1.55, ZH=0.6, ZE=2.15, T0=0.2, T1=3.45, SS=(u)=>{ u=u<0?0:u>1?1:u; return u*u*u*(u*(u*6-15)+10); };
+  function camAt(t){ const u=(t-T0)/(T1-T0), su=SS(u), pp=SS((u-0.10)/0.80), hump=Math.pow(Math.sin(Math.PI*su),1.6);
+    const base=lerp(Math.log(ZC),Math.log(ZE),su), lz=base+(Math.log(ZH)-lerp(Math.log(ZC),Math.log(ZE),0.5))*hump;
+    const z=Math.exp(lz)*(1+0.03*CL(t/T0)*(u<0?1:0)+0.05*SS((t-T1)/3.2));
+    return {lon:lerp(MIA[0]+0.1,KW[0],pp),lat:lerp(MIA[1]-0.12,KW[1],pp),z,rot:lerp(-0.10,0.05,su)+0.02*SS((t-T1)/3.2),su,pp,H:1/z}; }
   let cam=camAt(0);
   const SCR=(lon,lat)=>{ const dx=(tx(lon)-tx(cam.lon))*cam.z, dy=(ty(lat)-ty(cam.lat))*cam.z, c=Math.cos(cam.rot), s=Math.sin(cam.rot); return [540+dx*c-dy*s, 960+dx*s+dy*c]; };
+  let PA=1;
   function pin(lon,lat,a,name){ if(a<0) return; const s=SCR(lon,lat), dr=E3(a/0.32), x=s[0], y=s[1]-(1-dr)*600, b=1+0.22*Math.sin(CL(a/0.5)*Math.PI);
-    for(let k=0;k<2;k++){ const pr=((a*0.8+k*0.5)%1); g.save(); g.globalAlpha=(1-pr)*0.75*CL(a*3); g.strokeStyle='#ff3b3b'; g.lineWidth=6; g.beginPath(); g.arc(s[0],s[1],18+pr*80,0,7); g.stroke(); g.restore(); }
+    for(let k=0;k<2;k++){ const pr=((a*0.8+k*0.5)%1); g.save(); g.globalAlpha=(1-pr)*0.75*CL(a*3)*PA; g.strokeStyle='#ff3b3b'; g.lineWidth=6; g.beginPath(); g.arc(s[0],s[1],18+pr*80,0,7); g.stroke(); g.restore(); }
     g.save(); g.translate(x,y); g.scale(b,b); g.shadowColor='rgba(0,0,0,.5)'; g.shadowBlur=20; g.shadowOffsetY=10; g.fillStyle='#ff3030'; g.beginPath(); g.moveTo(0,0); g.bezierCurveTo(-62,-76,-54,-164,0,-164); g.bezierCurveTo(54,-164,62,-76,0,0); g.fill(); g.shadowColor='transparent'; g.fillStyle='#fff'; g.beginPath(); g.arc(0,-108,24,0,7); g.fill(); g.restore();
-    const la=E3((a-0.25)/0.35); if(la<=0) return; g.save(); g.globalAlpha=la; g.fillStyle='#fff'; g.shadowColor='rgba(0,0,0,.8)'; g.shadowBlur=18; g.shadowOffsetY=4; g.font='900 92px '+SANS; const w=g.measureText(name).width; const lx=Math.max(40,Math.min(x-w/2,1040-w)); g.fillText(name,lx,y-200+(1-la)*24); g.restore(); }
-  function cloudLayer(T,par,k,al,ox,oy,lt,sp,sz){ const z=cam.z*k; g.save(); g.globalAlpha=al; g.translate(540,960); g.rotate(cam.rot); g.scale(z,z); g.translate(-(tx(cam.lon)*par)-lt*sp+ox,-(ty(cam.lat)*par)+oy); g.imageSmoothingQuality='high'; g.drawImage(T,0,0,T.width*sz,T.height*sz); g.restore(); }
-  SCN[0]=function(lt){ g.clearRect(0,0,1080,1920); cam=camAt(lt);
-    g.save(); g.translate(540,960); g.rotate(cam.rot); g.scale(cam.z,cam.z); g.translate(-tx(cam.lon),-ty(cam.lat));
+    const la=E3((a-0.25)/0.35); if(la<=0) return; g.save(); g.globalAlpha=la*PA; g.fillStyle='#fff'; g.shadowColor='rgba(0,0,0,.8)'; g.shadowBlur=18; g.shadowOffsetY=4; g.font='900 92px '+SANS; const w=g.measureText(name).width; const lx=Math.max(40,Math.min(x-w/2,1040-w)); g.fillText(name,lx,y-200+(1-la)*24); g.restore(); }
+  // a cloud layer floating at height hc: true parallax (it grows and rushes past as the camera climbs or dives through it) + its own wind
+  function cloudLayer(T,hc,al,wx,wy,lt,sz,ox,oy){ if(cam.H<=hc*1.04) return; const k=cam.H/(cam.H-hc), z=cam.z*k, a=al*sm(hc*1.04,hc*1.45,cam.H); if(a<=0.004) return;
+    g.save(); g.globalAlpha=a; g.translate(540,960); g.rotate(cam.rot); g.scale(z,z); g.translate(-tx(cam.lon)+ox+lt*wx,-ty(cam.lat)+oy+lt*wy); g.imageSmoothingQuality='high'; g.drawImage(T,0,0,T.width*sz,T.height*sz); g.restore(); }
+  function ground(lt){ g.save(); g.translate(540,960); g.rotate(cam.rot); g.scale(cam.z,cam.z); g.translate(-tx(cam.lon),-ty(cam.lat));
     g.fillStyle='#05223f'; g.fillRect(-4000,-4000,TW+8000,TH+8000); g.imageSmoothingQuality='high'; g.drawImage(tex,0,0);
-    const rf=EIO((lt-2.0)/1.9); if(rf>0){ const pts=KEYSPATH.map(([lo,la])=>[tx(lo),ty(la)]); let L=0; for(let i=1;i<pts.length;i++) L+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);
+    const rf=cam.pp; if(rf>0.01){ const pts=KEYSPATH.map(([lo,la])=>[tx(lo),ty(la)]); let L=0; for(let i=1;i<pts.length;i++) L+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);
       g.save(); g.shadowColor='#35e6ff'; g.shadowBlur=16/cam.z; g.strokeStyle='#5ff0ff'; g.lineWidth=6/cam.z; g.lineJoin='round'; g.lineCap='round'; g.setLineDash([L*rf,L]); g.beginPath(); pts.forEach((p,j)=>j?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])); g.stroke(); g.restore(); }
     g.restore();
-    // layered clouds: ground shadows, low puffs, high thin veil (each layer moves at its own speed)
-    const A=cam.alt, lo=0.5+0.5*A;
-    cloudLayer(CSH,1,1,0.34*lo,-150+70,-60+56,lt,6,C1S); cloudLayer(CL1,1,1,0.95*lo,-150,-60,lt,6,C1S);
-    cloudLayer(CL2,0.8,1.9,0.05+0.8*A,-300,-250,lt,20,2.4); cloudLayer(CL3,0.62,3.2,0.03+0.6*A,-200,-100,lt,36,3.0);
-    g.fillStyle='rgba(150,200,235,'+(0.10*A)+')'; g.fillRect(0,0,1080,1920);
-    [1.0,1.55,3.85,4.4].forEach(t0=>{ const f=1-CL((lt-t0)/0.22); if(lt>=t0&&f>0){ g.fillStyle='rgba(255,255,255,'+(0.25*f)+')'; g.fillRect(0,0,1080,1920); } });
+    cloudLayer(CSH,0.0001,0.32,7,3,lt,C1S,-150+60,-60+50); cloudLayer(CL1,0.10,0.95,7,3,lt,C1S,-150,-60);
+    cloudLayer(CL2,0.66,0.85,-16,6,lt,2.6,-500,-350); cloudLayer(CL3,1.02,0.55,24,-9,lt,3.2,-300,-200);
+    g.fillStyle='rgba(150,200,235,'+(0.10*sm(0.5,1.6,cam.H))+')'; g.fillRect(0,0,1080,1920); }
+  SCN[0]=function(lt){ g.clearRect(0,0,1080,1920);
+    // motion blur: average a few sub-frames inside the shutter while the camera is moving
+    const moving=lt>T0-0.05&&lt<T1+0.1, NS=moving?5:1; for(let k=0;k<NS;k++){ cam=camAt(lt-(NS-1-k)*0.0075); g.globalAlpha=1/(k+1); ground(lt); } g.globalAlpha=1; cam=camAt(lt);
     const vg=g.createRadialGradient(540,960,520,540,960,1250); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,8,20,.55)'); g.fillStyle=vg; g.fillRect(0,0,1080,1920);
-    if(lt<1.05) pin(MIA[0],MIA[1],lt+0.6,'VICE CITY');
-    pin(-81.775,24.558,lt-4.75,'LEONIDA KEYS');
-    const cd=EBK((lt-5.4)/0.45); if(lt>5.4){ g.save(); g.translate(540,1380); g.scale(0.5+0.5*cd,0.5+0.5*cd); g.globalAlpha=CL((lt-5.4)/0.15); g.fillStyle='rgba(10,24,40,.62)'; g.strokeStyle='rgba(255,255,255,.85)'; g.lineWidth=4; g.beginPath(); g.roundRect(-430,-120,860,240,34); g.fill(); g.stroke();
+    if(cam.su<0.2){ PA=1-sm(0.02,0.16,cam.su); g.save(); g.globalAlpha=PA; pin(MIA[0],MIA[1],lt+0.8,'VICE CITY'); g.restore(); PA=1; }
+    pin(-81.775,24.558,lt-(T1-0.15),'LEONIDA KEYS');
+    const CT=T1+0.35, cd=EBK((lt-CT)/0.45); if(lt>CT){ g.save(); g.translate(540,1380); g.scale(0.5+0.5*cd,0.5+0.5*cd); g.globalAlpha=CL((lt-CT)/0.15); g.fillStyle='rgba(10,24,40,.62)'; g.strokeStyle='rgba(255,255,255,.85)'; g.lineWidth=4; g.beginPath(); g.roundRect(-430,-120,860,240,34); g.fill(); g.stroke();
       g.fillStyle='rgba(255,255,255,.85)'; g.font='700 36px '+SANS; g.fillText('VICE CITY  →  LEONIDA KEYS',-380,-58); g.fillStyle='#fff'; g.font='900 96px '+SANS; g.fillText('267 km',-382,44); g.font='700 44px '+SANS; g.fillStyle='#5ff0ff'; g.fillText('≈ 4 h by car',30,34); g.fillStyle='rgba(255,255,255,.6)'; g.font='500 28px '+SANS; g.fillText('real-world Miami → Key West',-380,92); g.restore(); }
     g.drawImage(GRAIN,0,0);
   };
