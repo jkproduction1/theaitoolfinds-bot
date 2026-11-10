@@ -2679,45 +2679,6 @@
   }
  },
  {
-  "name": "body16",
-  "date": "2026-11-10",
-  "score": 63,
-  "mode": "full",
-  "features": {
-   "hook": 0.28,
-   "hook_words": 10,
-   "hook_end_s": 3.28,
-   "tool_named_s": null,
-   "payoff": 0.5,
-   "wps": 1.74,
-   "dur_s": 25.2,
-   "words": 41,
-   "pace": 0.03,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 2.5,
-   "visual_changes": 53,
-   "visuals": 1.0,
-   "ending": 0.91,
-   "angle": "app-demo",
-   "topic": 0.65
-  },
-  "flags": [
-   "hook končí v 3.3 s (cíl ≤2,5 s)"
-  ],
-  "weights": {
-   "topic": 30,
-   "hook": 17,
-   "payoff": 12,
-   "pace": 8,
-   "length": 12,
-   "filler": 8,
-   "visuals": 11,
-   "ending": 2
-  }
- },
- {
   "name": "nature18",
   "date": "2026-11-10",
   "score": 59,
@@ -2783,6 +2744,45 @@
   },
   "flags": [
    "hook končí v 3.7 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "body16",
+  "date": "2026-11-10",
+  "score": 63,
+  "mode": "full",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.28,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.74,
+   "dur_s": 25.2,
+   "words": 41,
+   "pace": 0.03,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 55,
+   "visuals": 1.0,
+   "ending": 0.91,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.3 s (cíl ≤2,5 s)"
   ],
   "weights": {
    "topic": 30,

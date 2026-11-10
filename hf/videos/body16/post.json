@@ -1,6 +1,9 @@
 {
- "url": "https://code.claude.com/docs/en/slash-commands#body16",
+ "url": "https://code.claude.com/docs/en/slash-commands",
  "tool_name": "Claude Code 3D body commands",
  "keyword": "BODY",
- "angle": "app-demo"
+ "angle": "app-demo",
+ "cover_at": 6.4,
+ "summary_cs": "App demo „Type it, get it #16“ (Tělo): /x-ray srdce (4 komory, modrá krev doprava → plíce, červená zleva → tělo), /zoom-in kapka krve (červené a bílé krvinky, destičky), /explain-3d jak dýcháme (bránice dolů → plíce se nafouknou). Vše v kódu, prompty v hf/videos/body16/prompts.md.",
+ "caption": "Type one command and Claude shows you what's inside your body.\n\nPart #16 of a daily series.\n\nComment BODY and I'll DM you the prompts.\n\n#claudecode #3danimation #aitools"
 }
