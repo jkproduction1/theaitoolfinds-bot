@@ -508,5 +508,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#body16",
     "date": "2026-11-10_0612",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D nature commands",
+    "domain": "code.claude.com/docs/en/slash-commands#nature18",
+    "date": "2026-11-10_0623",
+    "source": "hyperframes"
   }
 ]
