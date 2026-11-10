@@ -1,110 +1,105 @@
 {
-  "date": "2026-11-09",
+  "date": "2026-11-10",
   "category": "ideas",
   "items": [
     {
-      "name": "Higgsfield: 4 video models, 1 prompt",
-      "url": "https://higgsfield.ai",
-      "desc": "Seedance 2.0, Kling 3.0, Veo 3.1, Sora 2 side by side in one workspace",
+      "name": "Autodesk 3D Editor + Canvas",
+      "url": "https://www.autodesk.com",
+      "desc": "Generative AI canvas + 3D editor for filmmakers: block a scene in 3D, AI renders the shots",
       "source": "ideas",
       "angle": "trendy-tool",
       "score": 10,
-      "why": "Same prompt, 4 video models. Which one wins?",
+      "why": "Drag a few 3D blocks… and AI turns them into a movie shot.",
       "handle": ""
     },
     {
-      "name": "Lovart design agent",
-      "url": "https://www.lovart.ai",
-      "desc": "One sentence -> a whole brand kit (logo, posters, social posts)",
+      "name": "PixVerse product videos",
+      "url": "https://pixverse.ai",
+      "desc": "Write a short brief + product photo -> finished product ad video",
       "source": "ideas",
       "angle": "trendy-tool",
       "score": 10,
-      "why": "Type one sentence, get a whole brand.",
+      "why": "Type one line about your product… and get this ad.",
       "handle": ""
     },
     {
-      "name": "OpenAI Images 2.6",
-      "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
-      "desc": "Out Nov 5: sketch -> looping GIF, SVG export, saved characters",
+      "name": "Neural4D AI 3D Agent",
+      "url": "https://www.neural4d.com",
+      "desc": "One panel that makes 3D models, images and video from a prompt",
       "source": "ideas",
       "angle": "trendy-tool",
       "score": 10,
-      "why": "Draw a stick figure… and get this.",
+      "why": "Type 'a cyberpunk sneaker'… and get a 3D model you can spin.",
       "handle": ""
     },
     {
-      "name": "Kapwing MCP",
-      "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
-      "desc": "Claude edits your video in Kapwing: subtitles, dubbing, export",
+      "name": "Adobe Project Neo update",
+      "url": "https://projectneo.adobe.com",
+      "desc": "Biggest update yet of Adobe's free web 3D design tool, easy 3D graphics for posters/social",
       "source": "ideas",
       "angle": "trendy-tool",
       "score": 10,
-      "why": "I told Claude to edit my video. It did.",
+      "why": "Type nothing, drag three shapes… and get this 3D poster.",
       "handle": ""
     },
     {
-      "name": "Ideogram Precise Edit",
-      "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
-      "desc": "Change only one area of an image, the rest stays untouched",
+      "name": "Reallusion AI Studio (Seedance)",
+      "url": "https://www.reallusion.com",
+      "desc": "3D character animation + ByteDance Seedance video gen with full camera/pose control",
       "source": "ideas",
       "angle": "trendy-tool",
       "score": 10,
-      "why": "Change one thing. Keep everything else.",
+      "why": "Pose a 3D puppet… and AI films the scene for you.",
       "handle": ""
     }
   ],
   "demos": [
     {
-      "title": "Inside your body",
+      "title": "Inside your body 2",
       "commands": [
-        "/x-ray the human heart beating",
-        "/zoom-in a drop of blood",
-        "/explain-3d how your lungs breathe"
+        "/x-ray the human eye",
+        "/zoom-in a single brain cell firing",
+        "/explain-3d how your stomach digests a burger"
       ],
-      "why": "inside3 (71k IG) = curiosity about what's inside; viral 3D anatomy"
+      "why": "inside3 (71.6k IG) = 'what's inside' curiosity; viral 3D anatomy explainers; new organs only"
     },
     {
-      "title": "What if… (Zack D. Films style)",
+      "title": "What if… (Zack D. Films)",
       "commands": [
-        "/zack-d-films what if the Moon disappeared",
-        "/deep-dive inside a volcano",
-        "/scale the biggest star vs the Sun"
+        "/zack-d-films what if you fell into a black hole",
+        "/what-if the Moon crashed into Earth",
+        "/deep-dive inside a volcano"
       ],
-      "why": "earth8 67k + space7 132k IG: space/Earth what-ifs win"
+      "why": "earth8 67k + space7 132k IG: space/Earth what-ifs are our biggest wins"
     },
     {
-      "title": "Motion design 2",
+      "title": "What's inside your gadgets",
       "commands": [
-        "/neon-glow a city skyline at night",
-        "/isometric a tiny cozy workspace",
-        "/particles the word DREAM"
+        "/x-ray a game controller",
+        "/explain-3d how a touchscreen feels your finger",
+        "/explode a pair of AirPods-style earbuds"
       ],
-      "why": "follow-up to MOTION (#13): pure eye candy, high saves"
+      "why": "inside3 hook 'what's inside anything' beat '3D animation' 5x; everyday tech everyone owns"
     },
     {
-      "title": "Everyday mysteries",
+      "title": "Liquid chrome motion",
       "commands": [
-        "/x-ray a vending machine",
-        "/explain-3d how an escalator works",
-        "/explode a car key"
+        "/liquid-chrome the word FUTURE",
+        "/glassmorphism a weather app",
+        "/isometric a tiny cozy gaming room"
       ],
-      "why": "things everyone uses but never saw inside"
+      "why": "follow-up to motion13: pure eye candy, high saves; chrome + glass looks are trending"
     },
     {
-      "title": "Nature in 3D",
+      "title": "How the city works",
       "commands": [
-        "/time-lapse a seed growing into a tree",
-        "/explain-3d how lightning forms",
-        "/zoom-in a snowflake"
+        "/explain-3d how a traffic light knows you're there",
+        "/x-ray an elevator",
+        "/map-story how water gets to your tap"
       ],
-      "why": "calm, beautiful, very shareable"
+      "why": "everyday mysteries format (mystery17) + infrastructure curiosity, all new objects"
     }
   ],
-  "picked": [
-    "https://www.lovart.ai",
-    "https://higgsfield.ai"
-  ],
-  "picked_demo": [
-    "What if… (Zack D. Films style)"
-  ]
+  "picked": [],
+  "picked_demo": []
 }
