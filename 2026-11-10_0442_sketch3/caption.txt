@@ -1,0 +1,7 @@
+Rough sketch on the left. A full booking-app flow on the right.
+
+Search → map → listing → dates → reserve → boarding pass. An Airbnb-style concept, animated from a 5-box sketch with the new Claude Fable 5.2.
+
+Sketch → Motion #3 · unofficial concept, not affiliated with any brand. Comment SKETCH and I'll DM you the prompts.
+
+#claude #fable52 #motiondesign #uidesign #aitools
