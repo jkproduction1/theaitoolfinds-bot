@@ -532,5 +532,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#styles20r",
     "date": "2026-11-10_2154",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code planet commands (result first)",
+    "domain": "code.claude.com/docs/en/slash-commands#planet21r",
+    "date": "2026-11-11_0001",
+    "source": "hyperframes"
   }
 ]
