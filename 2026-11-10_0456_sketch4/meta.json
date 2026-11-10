@@ -1,0 +1,13 @@
+{
+ "url": "https://www.anthropic.com/claude/fable",
+ "name": "Claude Fable 5.2 (Sketch → Motion: food-delivery app)",
+ "tool_name": "Claude Fable 5.2 (Sketch → Motion: food-delivery app)",
+ "keyword": "SKETCH",
+ "summary_cs": "Sketch → Motion #4, postaveno na Claude Fable 5.2 (Jan): koncept rozvozu jídla ve stylu Woltu, bez jejich loga a jména v obraze. Jeden plynulý morph: „Hungry?“ + kategorie → dlaždice vyroste v kartu burgeru, burger se poskládá po vrstvách → ×2 a hranolky, cena doběhne na €22 → košík → živé sledování, kurýr jede po trase a odpočet 12 → 1 min → Delivered → hodnocení s hvězdami a konfetami → „Built with Claude Fable 5.2“. 30 fps, okraje pro ořez IG, 1 kolo kontroly + opravy. Hudba t1.",
+ "style": "hyperframes-paper",
+ "duration": 16.8,
+ "domain": "www.anthropic.com/claude/fable",
+ "created": "2026-11-10_0456",
+ "run_id": null,
+ "artifact": null
+}
