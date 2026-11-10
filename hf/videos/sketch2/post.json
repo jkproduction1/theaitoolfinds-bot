@@ -1,0 +1,9 @@
+{
+ "url": "https://claude.ai/code",
+ "tool_name": "Claude Code (Sketch → Motion: music app UI)",
+ "keyword": "SKETCH",
+ "angle": "app-demo",
+ "cover_at": 13.6,
+ "summary_cs": "Sketch → Motion #2 (Jan): music-app UI v duchu Wrapped. Náčrt vlevo, motion vpravo: Now playing (Blinding Lights) s vlnou, Up next s přetažením, AI playlist „2AM DRIVE“, 48,213 minut + Top genre, Top 5 karty. Vlastní přehrávač (bez loga Spotify), jen názvy songů. Hudba: Timeless (instrumental) od 0:24 (Jan).",
+ "caption": "Rough sketch on the left. Finished music-app UI on the right.\n\nNow playing → queue → AI playlist → your year in minutes → top 5. All animated with Claude Code from a 5-box sketch.\n\nSketch → Motion #2. Comment SKETCH and I'll DM you the prompts.\n\n#claudecode #uidesign #motiondesign #aitools #wrapped"
+}
