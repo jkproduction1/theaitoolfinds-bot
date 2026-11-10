@@ -1,87 +1,17 @@
 {
- "date": "2026-11-09",
- "app_demo": [
-  {
-   "title": "Inside your body",
-   "commands": [
-    "/x-ray the human heart beating",
-    "/zoom-in a drop of blood",
-    "/explain-3d how your lungs breathe"
-   ],
-   "why": "inside3 (71k IG) = curiosity about what's inside; viral 3D anatomy"
-  },
-  {
-   "title": "What if… (Zack D. Films style)",
-   "commands": [
-    "/zack-d-films what if the Moon disappeared",
-    "/deep-dive inside a volcano",
-    "/scale the biggest star vs the Sun"
-   ],
-   "why": "earth8 67k + space7 132k IG: space/Earth what-ifs win"
-  },
-  {
-   "title": "Motion design 2",
-   "commands": [
-    "/neon-glow a city skyline at night",
-    "/isometric a tiny cozy workspace",
-    "/particles the word DREAM"
-   ],
-   "why": "follow-up to MOTION (#13): pure eye candy, high saves"
-  },
-  {
-   "title": "Everyday mysteries",
-   "commands": [
-    "/x-ray a vending machine",
-    "/explain-3d how an escalator works",
-    "/explode a car key"
-   ],
-   "why": "things everyone uses but never saw inside"
-  },
-  {
-   "title": "Nature in 3D",
-   "commands": [
-    "/time-lapse a seed growing into a tree",
-    "/explain-3d how lightning forms",
-    "/zoom-in a snowflake"
-   ],
-   "why": "calm, beautiful, very shareable"
-  }
- ],
- "tools": [
-  {
-   "name": "Higgsfield: 4 video models, 1 prompt",
-   "url": "https://higgsfield.ai",
-   "what": "Seedance 2.0, Kling 3.0, Veo 3.1, Sora 2 side by side in one workspace",
-   "hook": "Same prompt, 4 video models. Which one wins?",
-   "handle": ""
-  },
-  {
-   "name": "Lovart design agent",
-   "url": "https://www.lovart.ai",
-   "what": "One sentence -> a whole brand kit (logo, posters, social posts)",
-   "hook": "Type one sentence, get a whole brand.",
-   "handle": ""
-  },
-  {
-   "name": "OpenAI Images 2.6",
-   "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
-   "what": "Out Nov 5: sketch -> looping GIF, SVG export, saved characters",
-   "hook": "Draw a stick figure… and get this.",
-   "handle": ""
-  },
-  {
-   "name": "Kapwing MCP",
-   "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
-   "what": "Claude edits your video in Kapwing: subtitles, dubbing, export",
-   "hook": "I told Claude to edit my video. It did.",
-   "handle": ""
-  },
-  {
-   "name": "Ideogram Precise Edit",
-   "url": "https://dongiannatti.substack.com/p/ai-for-creatives-week-of-november",
-   "what": "Change only one area of an image, the rest stays untouched",
-   "hook": "Change one thing. Keep everything else.",
-   "handle": ""
-  }
- ]
+  "date": "2026-11-10",
+  "app_demo": [
+    {"title": "Inside your body 2", "commands": ["/x-ray the human eye", "/zoom-in a single brain cell firing", "/explain-3d how your stomach digests a burger"], "why": "inside3 (71.6k IG) = 'what's inside' curiosity; viral 3D anatomy explainers; new organs only"},
+    {"title": "What if… (Zack D. Films)", "commands": ["/zack-d-films what if you fell into a black hole", "/what-if the Moon crashed into Earth", "/deep-dive inside a volcano"], "why": "earth8 67k + space7 132k IG: space/Earth what-ifs are our biggest wins"},
+    {"title": "What's inside your gadgets", "commands": ["/x-ray a game controller", "/explain-3d how a touchscreen feels your finger", "/explode a pair of AirPods-style earbuds"], "why": "inside3 hook 'what's inside anything' beat '3D animation' 5x; everyday tech everyone owns"},
+    {"title": "Liquid chrome motion", "commands": ["/liquid-chrome the word FUTURE", "/glassmorphism a weather app", "/isometric a tiny cozy gaming room"], "why": "follow-up to motion13: pure eye candy, high saves; chrome + glass looks are trending"},
+    {"title": "How the city works", "commands": ["/explain-3d how a traffic light knows you're there", "/x-ray an elevator", "/map-story how water gets to your tap"], "why": "everyday mysteries format (mystery17) + infrastructure curiosity, all new objects"}
+  ],
+  "tools": [
+    {"name": "Autodesk 3D Editor + Canvas", "url": "https://www.autodesk.com", "what": "Generative AI canvas + 3D editor for filmmakers: block a scene in 3D, AI renders the shots", "hook": "Drag a few 3D blocks… and AI turns them into a movie shot.", "handle": ""},
+    {"name": "PixVerse product videos", "url": "https://pixverse.ai", "what": "Write a short brief + product photo -> finished product ad video", "hook": "Type one line about your product… and get this ad.", "handle": ""},
+    {"name": "Neural4D AI 3D Agent", "url": "https://www.neural4d.com", "what": "One panel that makes 3D models, images and video from a prompt", "hook": "Type 'a cyberpunk sneaker'… and get a 3D model you can spin.", "handle": ""},
+    {"name": "Adobe Project Neo update", "url": "https://projectneo.adobe.com", "what": "Biggest update yet of Adobe's free web 3D design tool, easy 3D graphics for posters/social", "hook": "Type nothing, drag three shapes… and get this 3D poster.", "handle": ""},
+    {"name": "Reallusion AI Studio (Seedance)", "url": "https://www.reallusion.com", "what": "3D character animation + ByteDance Seedance video gen with full camera/pose control", "hook": "Pose a 3D puppet… and AI films the scene for you.", "handle": ""}
+  ]
 }
