@@ -44,3 +44,12 @@ products/brands. Jan OK with showing the tool's logo (free promo for them) — u
 - body16 (2026-11-10): /x-ray the human heart, /zoom-in a drop of blood, /explain-3d how lungs breathe (picklist "Inside your body")
 - mystery17 (2026-11-10): /x-ray a vending machine, /explain-3d how an escalator works, /explode a car key (picklist "Everyday mysteries")
 - nature18 (2026-11-10): /time-lapse a seed sprouting, /explain-3d how lightning forms, /zoom-in a snowflake (picklist "Nature in 3D")
+
+## Style-channel ideas (Jan 2026-11-10: "Zack D. Films style was great, do more like it")
+Own command names, copy only the look: no logos, mascots or characters of the channels.
+- Vox look -> /paper-explainer: paper/cardboard texture, cut-out collage photos, halftone, marker underlines, map pins, yellow highlight.
+  Trio: /paper-explainer why plane tickets cost so much · /paper-explainer how a container ship crosses the ocean · /paper-explainer why every city has a grid
+- Kurzgesagt look -> /flat-cosmos: flat vector, deep blue/purple, glowing neon edges, cute simple shapes, slow parallax.
+  Trio: /flat-cosmos what if a black hole hit the Solar System · /flat-cosmos how your immune system fights a virus · /flat-cosmos the life of a star
+- TED-Ed look -> /storybook: hand-painted 2D, grainy texture, warm palette, riddle/history storytelling.
+  Trio: /storybook how the pyramids were built · /storybook the riddle of the river crossing · /storybook how the first map was drawn
