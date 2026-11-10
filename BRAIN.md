@@ -128,8 +128,8 @@ All 3D is three.js drawn in code (no AI images/video), rendered by HyperFrames. 
 Jan films his real screen (Claude Code writing the code + the ad playing), we deliver only the clean 9:16 ad (no UI, no handle)
 plus the prompt. Rules: a short STORY with a payoff (e.g. uberad "3 %": phone dying, ride home, screen dies on arrival);
 one continuous camera move; a locked palette (5–6 colours) and one typeface; expo-out arrivals, slow inOut camera, soft
-springs on UI; quiet emotional SFX, no cringe voice jokes. Brand name only as plain text + "Unofficial spec ad · not affiliated";
-**never draw real logos, logotypes or mascots** (plain-text name + brand colours + the product's world instead).
+springs on UI; quiet emotional SFX, no cringe voice jokes. Spec ads always say "Unofficial spec ad · not affiliated" in the caption
+(Jan, 2026-11-10: brand use is Jan's call and his responsibility).
 Paid "3D Ad Kit" (Gumroad/Payhip idea) = generic prompts/templates only, no brand names or colours.
 Process: style frames (stills from the real code) → Jan's OK → animation → render → director review → final.
 **Spec-ad craft rules (Jan, 2026-11-07):** story first, simple (not melodrama): e.g. uberad v3 = tap → "5 min" → car arrives →
