@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code explainer style commands",
+ "tool_name": "Claude Code explainer style commands",
+ "keyword": "STYLE",
+ "summary_cs": "🧪 doporučuju Trial. App demo „Type it, get it #19“ (Explainer styles): /paper-explainer proč jsou letenky drahé (papírová koláž přes celou obrazovku), /flat-cosmos jak tělo bojuje s virem (plochá svítící grafika), /storybook jak se stavěly pyramidy (malovaný styl). Vše kreslené v kódu, bez log a maskotů kanálů; prompty v hf/videos/styles19/prompts.md.",
+ "style": "hyperframes-paper",
+ "duration": 28.3,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-10_1733",
+ "run_id": null,
+ "artifact": null
+}
