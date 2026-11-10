@@ -1,0 +1,7 @@
+Rough sketch on the left. Real-feel music app UI on the right.
+
+Lock screen → Dynamic Island → now playing → swipe through songs → switch to the speaker → share to story. All animated with Claude Code from a 5-box sketch.
+
+Sketch → Motion #2. Comment SKETCH and I'll DM you the prompts.
+
+#claudecode #uidesign #motiondesign #iphone #aitools

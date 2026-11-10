@@ -1,0 +1,13 @@
+{
+ "url": "https://claude.ai/code",
+ "name": "Claude Code (Sketch → Motion: music app UI)",
+ "tool_name": "Claude Code (Sketch → Motion: music app UI)",
+ "keyword": "SKETCH",
+ "summary_cs": "Sketch → Motion #2 v2 (Jan: spicy, reálné UI): iPhone lock screen s notifikací Now Playing + Dynamic Island, ťuk → přehrávač (obal vyroste z notifikace), swipe Espresso → Nightcall → Starboy s barvou pozadí podle obalu, přepnutí na Living Room Speaker, share do story. Vlastní design bez loga Spotify. Hudba t4 Timeless od 0:24. Nahrazuje v1.",
+ "style": "hyperframes-paper",
+ "duration": 15.2,
+ "domain": "claude.ai/code",
+ "created": "2026-11-10_0302",
+ "run_id": null,
+ "artifact": null
+}
