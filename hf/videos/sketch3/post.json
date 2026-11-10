@@ -1,0 +1,9 @@
+{
+ "url": "https://www.anthropic.com/claude/fable",
+ "tool_name": "Claude Fable 5.2 (Sketch → Motion: stays-booking app)",
+ "keyword": "SKETCH",
+ "angle": "app-demo",
+ "cover_at": 6.0,
+ "summary_cs": "Sketch → Motion #3, postaveno na Claude Fable 5.2 (Jan): koncept rezervační appky ve stylu Airbnb, bez jejich loga a jména v obraze. Jeden plynulý morph: hledání „Lisbon“ → mapa s cenami → cenovka vyroste v kartu ubytování → swipe fotek → kalendář s tažením dat a součtem €360 → Reserve → pilulka → palubní lístek s konfetami → „Built with Claude Fable 5.2“. 30 fps, okraje 4 % pro ořez IG, prošlo kontrolou plynulosti (1 kolo + opravy). Hudba t2.",
+ "caption": "Rough sketch on the left. A full booking-app flow on the right.\n\nSearch → map → listing → dates → reserve → boarding pass. An Airbnb-style concept, animated from a 5-box sketch with the new Claude Fable 5.2.\n\nSketch → Motion #3 · unofficial concept, not affiliated with any brand. Comment SKETCH and I'll DM you the prompts.\n\n#claude #fable52 #motiondesign #uidesign #aitools"
+}

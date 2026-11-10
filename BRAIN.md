@@ -236,3 +236,11 @@ videos in our own formats. Don't make Opuscar videos unless Jan asks again. (Cur
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
 - Max 3 posts a day (5 in one day split the reach). Don't guess what works: check the stats.
 - Every day 2 "App demo 1/3" videos (§3b) + 1 normal Paper AI-tool video (Jan, 2026-11-08).
+
+## Sketch → Motion format (Jan, 2026-11-10)
+Left: hand-drawn sketch that draws itself (hf/sketchlib.py). Right: ONE hero object that morphs continuously, no cuts, no phone frame
+(reference: AE widget ad). Header names the model that really built it. Rules learned: every move eased, never a dead hold > ~0.5 s,
+start each new tween from the previous end values (overlapping transform tweens = one-frame twitches), no 2-sample frame blending
+(reads as ghosting; render plain 30 fps), keep ~4 % side margins (IG crops the sides: scale to 92 % + pad at encode).
+Before release run an independent strict smoothness review (subagent: per-frame diff + dense frames at transitions) and fix its findings.
+No real logos/mascots/wordmarks in the picture (Claude's own limit); brand names only in the caption. Examples: sketch1, sketch2, sketch3.
