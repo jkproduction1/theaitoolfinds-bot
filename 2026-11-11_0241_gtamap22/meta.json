@@ -1,0 +1,13 @@
+{
+ "url": "https://claude.ai",
+ "name": "Claude Fable 5.2 map animation tutorial",
+ "tool_name": "Claude Fable 5.2 map animation tutorial",
+ "keyword": "GTA",
+ "summary_cs": "🧪 doporučuju Trial. Tutoriál v2 (13 s): „How to make this GTA 6 map animation using Claude“. Přelet běží jen pod hookem, pak se mapa smrskne do náhledu v bílém chatu (morph), kroky: nahraj referenci, vyber Fable 5.2 a vlož prompt, řekni Claudovi, co opravit, a hotovo: výsledek se roztáhne zpět na celou obrazovku a přes něj „Comment GTA“. Bez pauz, hlas o 8 % rychlejší, bez hudby. Starší verzi v1 (20 s) neschvaluj.",
+ "style": "hyperframes-paper",
+ "duration": 12.8,
+ "domain": "claude.ai",
+ "created": "2026-11-11_0241",
+ "run_id": null,
+ "artifact": null
+}
