@@ -92,7 +92,7 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
         if(holes) holes.forEach(([hx,hy,r])=>{ a*=sm(r*0.5,r,Math.hypot(x-hx,y-hy)); }); a*=sm(0,40,Math.min(x,y,N-1-x,N-1-y));
         const sh=fbm2(X+0.035,Y+0.045,5)-n, thick=sm(t,t+0.4,n), l=214+34*thick+sm(0,0.02,-sh)*20-sm(0,0.025,sh)*46; const j=(y*N+x)*4; d[j]=l; d[j+1]=l+3; d[j+2]=l+9; d[j+3]=255*Math.pow(a,1.25); } p.putImageData(im,0,0); });
     return off(N,N,(p)=>{ p.filter='blur(7px)'; p.globalAlpha=0.55; p.drawImage(raw,0,0); p.filter='blur(1.4px)'; p.globalAlpha=1; p.drawImage(raw,0,0); }); }
-  const C1S=2.1, CL1=cloudTex(1536,3.1,120,0.60,1,[[tx(MIA[0])/C1S+75,ty(MIA[1])/C1S+30,150],[tx(-81.7)/C1S+75,ty(24.6)/C1S+30,190]]), CL2=cloudTex(1024,8.7,150,0.58,1.3), CL3=cloudTex(1024,5.3,230,0.52,2.6);
+  const C1S=2.1, CL1=cloudTex(1536,3.1,120,0.60,1,[[tx(MIA[0])/C1S+75,ty(MIA[1])/C1S+30,150],[tx(-81.76)/C1S+75,ty(24.57)/C1S+30,70]]), CL2=cloudTex(1024,8.7,150,0.58,1.3), CL3=cloudTex(1024,5.3,230,0.52,2.6);
   const CSH=off(1536,1536,(p)=>{ p.filter='blur(5px)'; p.drawImage(CL1,0,0); p.globalCompositeOperation='source-in'; p.fillStyle='#031018'; p.fillRect(0,0,1536,1536); });
   const ROUTE=(()=>{ const P=KEYSPATH.map(([lo,la])=>[tx(lo),ty(la)]), out=[]; for(let k=0;k<P.length-1;k++){ const a=P[Math.max(0,k-1)],b=P[k],c=P[k+1],d=P[Math.min(P.length-1,k+2)]; for(let i=0;i<24;i++){ const u=i/24, cr=(p0,p1,p2,p3)=>0.5*((2*p1)+(-p0+p2)*u+(2*p0-5*p1+4*p2-p3)*u*u+(-p0+3*p1-3*p2+p3)*u*u*u); out.push([cr(a[0],b[0],c[0],d[0]),cr(a[1],b[1],c[1],d[1])]); } } out.push(P[P.length-1]);
     const n=out.length; for(let i=1;i<n-1;i++){ const dx=out[i+1][0]-out[i-1][0], dy=out[i+1][1]-out[i-1][1], l=Math.hypot(dx,dy)||1, w=(Math.sin(i*0.55)*7+Math.sin(i*0.21+1)*11)*Math.sin(Math.PI*i/n); out[i]=[out[i][0]-dy/l*w,out[i][1]+dx/l*w]; }
@@ -102,11 +102,12 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
   // and levels out, glides, then tilts down into the destination. Position starts a bit later and ends a bit earlier than the zoom.
   const lerp=(a,b,u)=>a+(b-a)*u, ZC=1.62, ZH=0.62, ZE=2.05, T1=3.7;
   function bez(x){ x=x<0?0:x>1?1:x; let lo=0, hi=1, t=x; for(let i=0;i<22;i++){ t=(lo+hi)/2; const xx=3*(1-t)*(1-t)*t*0.72+3*(1-t)*t*t*0.28+t*t*t; if(xx<x) lo=t; else hi=t; } return 3*(1-t)*t*t+t*t*t; }
-  function camAt(t){ const u=t/T1, rise=bez(u/0.56), fall=bez((u-0.44)/0.56), pp=bez((u-0.16)/0.68), su=bez(u), aft=Math.max(0,t-T1);
-    const early=-0.14*(1-Math.exp(-Math.max(0,t)/0.5))*(1-rise);
-    const lz=Math.log(ZC)+early+(Math.log(ZH)-Math.log(ZC))*rise+(Math.log(ZE)-Math.log(ZH))*fall+0.02*aft, z=Math.exp(lz);
+  const SP=(x)=>0.4*Math.log(1+Math.exp(x/0.4));   // soft ramp: 0 → x, velocity fades in smoothly
+  function camAt(t){ const u=t/T1, rise=bez(u/0.56), fall=bez((u-0.44)/0.56), pp=bez((u-0.16)/0.68), su=bez(u), aft=SP(t-T1+0.35), e0=1-Math.exp(-Math.max(0,t)/0.6);
+    const early=-0.20*e0*(1-rise);
+    const lz=Math.log(ZC)+early+(Math.log(ZH)-Math.log(ZC))*rise+(Math.log(ZE)-Math.log(ZH))*fall+0.03*aft, z=Math.exp(lz);
     const alt=CL((Math.log(ZC)-lz)/(Math.log(ZC)-Math.log(ZH)));
-    return {lon:lerp(MIA[0]+0.06,KW[0],pp)+0.006*aft,lat:lerp(MIA[1]-0.02,KW[1]+0.03,pp)+0.001*aft,z,rot:lerp(-0.16,0.10,su)+0.005*aft,su,pp,H:1/z,alt,th:(lerp(40,13,alt)-1.2*CL(aft/3))*Math.PI/180}; }
+    return {lon:lerp(MIA[0]+0.06,KW[0],pp)+0.012*aft-0.012*e0*(1-pp),lat:lerp(MIA[1]-0.02,KW[1]+0.03,pp)+0.002*aft,z,rot:lerp(-0.16,0.10,su)+0.012*aft-0.03*e0*(1-su),su,pp,H:1/z,alt,th:(lerp(40,13,alt)-0.8*aft)*Math.PI/180}; }
   let cam=camAt(0);
   // ---------- tilted ground plane: the scene is drawn top-down into a buffer, then projected row by row (true perspective)
   const BW=1700, BH=2800, BCX=BW/2, BCY=1820, PD=2400;
@@ -124,8 +125,14 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
       c.strokeStyle='#eafcff'; c.lineWidth=w*0.75; c.setLineDash([w*3.2,w*2.2]); c.lineDashOffset=-lt*w*14; path(); c.stroke(); c.setLineDash([]);
       const h=ROUTE.pts[n-1]; c.fillStyle='#fff'; c.shadowColor='#19d3ff'; c.shadowBlur=30; c.beginPath(); c.arc(h[0],h[1],w*1.25,0,7); c.fill(); c.shadowBlur=0; }
     c.restore();
-    cloudLayer(c,CSH,0.0001,0.55,16,6,lt,C1S,-150+60,-60+50); cloudLayer(c,CL1,0.10,0.95,16,6,lt,C1S,-150,-60);
-    cloudLayer(c,CL2,0.66,0.85,-34,12,lt,2.6,-500,-350); cloudLayer(c,CL3,1.02,0.6,50,-18,lt,3.2,-300,-200); }
+    cloudLayer(c,CSH,0.0001,0.55,30,10,lt,C1S,-150+60,-60+50); cloudLayer(c,CL1,0.10,0.95,30,10,lt,C1S,-150,-60);
+    cloudLayer(c,CL2,0.66,0.85,-44,16,lt,2.6,-500,-350); cloudLayer(c,CL3,1.02,0.6,64,-22,lt,3.2,-300,-200);
+    { const ox=tx(-81.62)-700-36*5.2, oy=ty(24.5)-640-12*5.2; cloudLayer(c,CSH,0.0001,0.34,36,12,lt,0.9,ox+46,oy+40); cloudLayer(c,CL1,0.07,0.6,36,12,lt,0.9,ox,oy); }
+    mapLabel(c,MIA[0],MIA[1],'VICE CITY',1-sm(0.03,0.2,cam.su),lt+1,lt); mapLabel(c,-81.775,24.558,'LEONIDA KEYS',sm(0.9,1,cam.pp),lt-(T1-0.55),lt); }
+  function mapLabel(c,lon,lat,name,al,a,lt){ if(al<=0.003) return; const dx=(tx(lon)-tx(cam.lon))*cam.z, dy=(ty(lat)-ty(cam.lat))*cam.z, co=Math.cos(cam.rot), si=Math.sin(cam.rot), x=BCX+dx*co-dy*si, y=BCY+dx*si+dy*co;
+    c.save(); for(let k=0;k<3;k++){ const pr=((lt*0.5+k/3)%1); c.globalAlpha=(1-pr)*0.7*al; c.strokeStyle='#fff'; c.lineWidth=3; c.beginPath(); c.arc(x,y,14+pr*70,0,7); c.stroke(); }
+    c.globalAlpha=al; c.fillStyle='#fff'; c.shadowColor='rgba(90,220,255,1)'; c.shadowBlur=34; c.beginPath(); c.arc(x,y,13,0,7); c.fill(); c.beginPath(); c.arc(x,y,13,0,7); c.fill();
+    const la=E3((a-0.15)/0.5); c.globalAlpha=al*la; c.shadowColor='rgba(0,0,0,.85)'; c.shadowBlur=22; c.shadowOffsetY=5; c.font='700 78px '+SANS; c.letterSpacing='5px'; c.fillText(name,x+44+(1-la)*40,y+27); c.letterSpacing='0px'; c.restore(); }
   let PA=1;
   function pin(lon,lat,a,name,lt){ if(a<0) return; const s=SCR(lon,lat), x=s[0], y=s[1], gr=E3(a/0.4), la=E3((a-0.22)/0.4), H=150;
     g.save(); for(let k=0;k<2;k++){ const pr=((lt*0.55+k*0.5)%1); g.globalAlpha=(1-pr)*0.6*CL(a*3)*PA; g.strokeStyle='#fff'; g.lineWidth=2.5; g.beginPath(); g.ellipse(x,y,12+pr*46,(12+pr*46)*Math.cos(cam.th),0,0,7); g.stroke(); }
@@ -136,8 +143,8 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
     g.restore(); }
   SCN[0]=function(lt){ g.setTransform(1,0,0,1,0,0); g.globalAlpha=1; g.clearRect(0,0,1080,1920);
     // motion blur: average complete sub-frames inside the shutter (so shadows and haze never add up)
-    const sp=Math.abs(camAt(lt+0.01).z-camAt(lt-0.01).z)+Math.abs(camAt(lt+0.01).pp-camAt(lt-0.01).pp)*40, NS=sp>0.002?8:1;
-    bc.setTransform(1,0,0,1,0,0); for(let k=0;k<NS;k++){ cam=camAt(lt-(NS-1-k)*0.0024); topDown(tc,lt); bc.globalAlpha=1/(k+1); bc.drawImage(tmp,0,0); } bc.globalAlpha=1; cam=camAt(lt);
+    const sp=Math.abs(camAt(lt+0.01).z-camAt(lt-0.01).z)+Math.abs(camAt(lt+0.01).pp-camAt(lt-0.01).pp)*40, NS=6;
+    bc.setTransform(1,0,0,1,0,0); for(let k=0;k<NS;k++){ cam=camAt(lt-(NS-1-k)*0.0032); topDown(tc,lt); bc.globalAlpha=1/(k+1); bc.drawImage(tmp,0,0); } bc.globalAlpha=1; cam=camAt(lt);
     // perspective projection, 2 px strips
     const st=Math.sin(cam.th), ct=Math.cos(cam.th); g.imageSmoothingQuality='high';
     for(let y=0;y<1920;y+=2){ const ys=y+1-1020, Y=-ys*PD/(PD*ct+ys*st), k=PD/(PD+Y*st), ys2=ys+2, Y2=-ys2*PD/(PD*ct+ys2*st), sw=1080/k, sy=BCY-Y, sh=Math.max(0.5,Y-Y2);
@@ -146,12 +153,11 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
     let gr=g.createLinearGradient(0,0,0,760); gr.addColorStop(0,'rgba(6,20,44,'+(0.55+0.25*(1-cam.alt))+')'); gr.addColorStop(1,'rgba(6,20,44,0)'); g.fillStyle=gr; g.fillRect(0,0,1080,760);
     g.globalCompositeOperation='multiply'; g.fillStyle='rgb(166,186,214)'; g.fillRect(0,0,1080,1920); g.globalCompositeOperation='source-over';
     const vg=g.createRadialGradient(540,1000,480,540,1000,1280); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,6,18,.62)'); g.fillStyle=vg; g.fillRect(0,0,1080,1920);
-    if(cam.su<0.2){ PA=1-sm(0.03,0.18,cam.su); pin(MIA[0],MIA[1],lt+0.9,'VICE CITY',lt); PA=1; }
-    pin(-81.775,24.558,lt-(T1-0.25),'LEONIDA KEYS',lt);
-    const CT=T1+0.25, cd=E3((lt-CT)/0.5); if(lt>CT){ g.save(); g.globalAlpha=cd; g.translate(540,1420+(1-cd)*26+Math.sin(lt*1.3)*3);
-      g.fillStyle='rgba(6,14,24,.62)'; g.beginPath(); g.roundRect(-400,-104,800,208,40); g.fill(); g.strokeStyle='rgba(255,255,255,.38)'; g.lineWidth=1.5; g.stroke();
-      g.fillStyle='rgba(255,255,255,.72)'; g.font='600 28px '+SANS; g.letterSpacing='4px'; g.fillText('VICE CITY  —  LEONIDA KEYS',-352,-44); g.letterSpacing='0px';
-      g.fillStyle='#fff'; g.font='700 92px '+SANS; g.fillText('267 km',-356,58); g.fillStyle='rgba(255,255,255,.8)'; g.font='500 40px '+SANS; g.fillText('≈ 4 h by car',60,50); g.restore(); }
+    const CT=T1+0.15, cd=E3((lt-CT)/0.6); if(lt>CT){ const d=SCR(-81.775,24.558), cy=1410+(1-cd)*30+Math.sin(lt*1.3)*4, cx=330+Math.sin(lt*0.9)*3;
+      g.save(); g.globalAlpha=cd; g.strokeStyle='rgba(255,255,255,.85)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(cx+120,cy-104); g.lineTo(lerp(cx+120,d[0],cd),lerp(cy-104,d[1]+16,cd)); g.stroke();
+      g.translate(cx,cy); g.fillStyle='rgba(6,14,24,.6)'; g.beginPath(); g.roundRect(-270,-104,620,208,40); g.fill(); g.strokeStyle='rgba(255,255,255,.4)'; g.lineWidth=1.5; g.stroke();
+      g.fillStyle='rgba(255,255,255,.72)'; g.font='600 27px '+SANS; g.letterSpacing='4px'; g.fillText('VICE CITY  —  LEONIDA KEYS',-226,-46); g.letterSpacing='0px';
+      g.fillStyle='#fff'; g.font='700 90px '+SANS; g.fillText('267 km',-230,54); g.fillStyle='rgba(255,255,255,.8)'; g.font='500 38px '+SANS; g.fillText('≈ 4 h by car',128,46); g.restore(); }
     g.drawImage(GRAIN,0,0);
   };
 })();
