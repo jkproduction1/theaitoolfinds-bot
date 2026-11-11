@@ -1,105 +1,132 @@
 {
-  "date": "2026-11-10",
+  "date": "2026-11-11",
   "category": "ideas",
-  "items": [
-    {
-      "name": "Autodesk 3D Editor + Canvas",
-      "url": "https://www.autodesk.com",
-      "desc": "Generative AI canvas + 3D editor for filmmakers: block a scene in 3D, AI renders the shots",
-      "source": "ideas",
-      "angle": "trendy-tool",
-      "score": 10,
-      "why": "Drag a few 3D blocks… and AI turns them into a movie shot.",
-      "handle": ""
-    },
-    {
-      "name": "PixVerse product videos",
-      "url": "https://pixverse.ai",
-      "desc": "Write a short brief + product photo -> finished product ad video",
-      "source": "ideas",
-      "angle": "trendy-tool",
-      "score": 10,
-      "why": "Type one line about your product… and get this ad.",
-      "handle": ""
-    },
-    {
-      "name": "Neural4D AI 3D Agent",
-      "url": "https://www.neural4d.com",
-      "desc": "One panel that makes 3D models, images and video from a prompt",
-      "source": "ideas",
-      "angle": "trendy-tool",
-      "score": 10,
-      "why": "Type 'a cyberpunk sneaker'… and get a 3D model you can spin.",
-      "handle": ""
-    },
-    {
-      "name": "Adobe Project Neo update",
-      "url": "https://projectneo.adobe.com",
-      "desc": "Biggest update yet of Adobe's free web 3D design tool, easy 3D graphics for posters/social",
-      "source": "ideas",
-      "angle": "trendy-tool",
-      "score": 10,
-      "why": "Type nothing, drag three shapes… and get this 3D poster.",
-      "handle": ""
-    },
-    {
-      "name": "Reallusion AI Studio (Seedance)",
-      "url": "https://www.reallusion.com",
-      "desc": "3D character animation + ByteDance Seedance video gen with full camera/pose control",
-      "source": "ideas",
-      "angle": "trendy-tool",
-      "score": 10,
-      "why": "Pose a 3D puppet… and AI films the scene for you.",
-      "handle": ""
-    }
-  ],
+  "items": [],
   "demos": [
     {
-      "title": "Inside your body 2",
+      "title": "What if… Earth 2",
       "commands": [
-        "/x-ray the human eye",
-        "/zoom-in a single brain cell firing",
-        "/explain-3d how your stomach digests a burger"
+        "/zack-d-films what if an asteroid hit the ocean",
+        "/what-if Earth lost its atmosphere",
+        "/scale the tallest volcano on Mars versus Everest"
       ],
-      "why": "inside3 (71.6k IG) = 'what's inside' curiosity; viral 3D anatomy explainers; new organs only"
+      "why": "earth8 514k IG + whatif15: 'what would happen to Earth' is our biggest hook; all new objects"
     },
     {
-      "title": "What if… (Zack D. Films)",
+      "title": "The scariest things in space 2",
       "commands": [
-        "/zack-d-films what if you fell into a black hole",
-        "/what-if the Moon crashed into Earth",
-        "/deep-dive inside a volcano"
+        "/explain-3d how a neutron star spins",
+        "/zoom-in the surface of the Sun",
+        "/scale Jupiter's Great Red Spot versus Earth"
       ],
-      "why": "earth8 67k + space7 132k IG: space/Earth what-ifs are our biggest wins"
+      "why": "space7 165k TT + space14 40k TT: space is the only topic that breaks TikTok; keep the fear/scale word"
     },
     {
-      "title": "What's inside your gadgets",
+      "title": "The scariest things inside your body",
       "commands": [
-        "/x-ray a game controller",
-        "/explain-3d how a touchscreen feels your finger",
-        "/explode a pair of AirPods-style earbuds"
+        "/explain-3d how a virus hijacks a cell",
+        "/zoom-in a mosquito bite",
+        "/x-ray the human spine"
       ],
-      "why": "inside3 hook 'what's inside anything' beat '3D animation' 5x; everyday tech everyone owns"
+      "why": "learnings test: bring the fear framing to body topics (inside3 118k IG); organs used so far avoided"
     },
     {
-      "title": "Liquid chrome motion",
+      "title": "How Earth's disasters work",
       "commands": [
-        "/liquid-chrome the word FUTURE",
-        "/glassmorphism a weather app",
-        "/isometric a tiny cozy gaming room"
+        "/explain-3d how a tsunami forms",
+        "/x-ray a hurricane",
+        "/time-lapse a glacier melting"
       ],
-      "why": "follow-up to motion13: pure eye candy, high saves; chrome + glass looks are trending"
+      "why": "Earth + scale + fear = earth8 pattern; concrete scary objects beat generic 'how nature works' (nature18)"
     },
     {
-      "title": "How the city works",
+      "title": "Liquid chrome space motion",
       "commands": [
-        "/explain-3d how a traffic light knows you're there",
-        "/x-ray an elevator",
-        "/map-story how water gets to your tap"
+        "/liquid-chrome the word GRAVITY",
+        "/glassmorphism a space weather widget",
+        "/kinetic-type a rocket launch countdown"
       ],
-      "why": "everyday mysteries format (mystery17) + infrastructure curiosity, all new objects"
+      "why": "eye-candy variety (motion13) with a space theme, since space is what TT rewards"
+    }
+  ],
+  "tutorials": [
+    {
+      "title": "How to make this 3D snow globe of your city using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Začíná zimní/vánoční sezóna, snow-globe a 'tvoje město ve sněhu' edity se teď objevují na IG a TikToku.",
+      "steps": [
+        "Type your city's name",
+        "Pick Opus 5.5 and paste this prompt",
+        "Claude builds it, you tweak it"
+      ],
+      "seconds": 12,
+      "keyword": "GLOBE",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this survival arena map reveal using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "20. 11. jde do kin The Hunger Games: Sunrise on the Reaping (GamesRadar), fanouškovské mapy arén poletí; jen vlastní aréna 'inspired by', žádná oficiální mapa.",
+      "steps": [
+        "Describe your arena in one line",
+        "Pick Opus 5.5 and paste this prompt",
+        "Claude builds it, you tweak it"
+      ],
+      "seconds": 13,
+      "keyword": "ARENA",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this animated year-in-review recap using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Blíží se konec roku a sezóna 'rok v číslech' recapů (před Wrapped začátkem prosince); vlastní vzhled, žádné logo Spotify.",
+      "steps": [
+        "Paste your year in numbers",
+        "Pick Opus 5.5 and paste this prompt",
+        "Claude builds it, you tweak it"
+      ],
+      "seconds": 13,
+      "keyword": "RECAP",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this AI vs handmade side-by-side using Higgsfield",
+      "tool": "Higgsfield",
+      "url": "https://higgsfield.ai",
+      "trend": "Trend 'AI vs. Handmade' (Dame Hombro bounce) je teď na TikToku, SocialPilot ho má v přehledu 27. 10.–10. 11.",
+      "steps": [
+        "Upload a photo of your handmade thing",
+        "Ask Higgsfield for a polished AI version",
+        "Put both side by side, Higgsfield animates it, you tweak it"
+      ],
+      "seconds": 12,
+      "keyword": "HANDMADE",
+      "cost": "kredity Higgsfield, cca 10–20",
+      "handle": ""
+    },
+    {
+      "title": "How to make this giant monster in your city using Higgsfield",
+      "tool": "Higgsfield",
+      "url": "https://higgsfield.ai",
+      "trend": "Od 6. 11. běží v kinech Godzilla Minus Zero, kaiju edity s vlastním městem jedou; jen vlastní generické monstrum, ne Godzilla.",
+      "steps": [
+        "Upload a photo of your street",
+        "Describe your own giant monster",
+        "Higgsfield films it, you tweak it"
+      ],
+      "seconds": 12,
+      "keyword": "MONSTER",
+      "cost": "kredity Higgsfield, cca 20–40 (video)",
+      "handle": ""
     }
   ],
   "picked": [],
-  "picked_demo": []
+  "picked_demo": [],
+  "picked_tut": []
 }
