@@ -1,0 +1,9 @@
+{
+ "url": "https://claude.ai",
+ "tool_name": "Claude Fable 5.2 map animation tutorial",
+ "keyword": "GTA",
+ "angle": "new-ability",
+ "cover_at": 3.9,
+ "summary_cs": "🧪 doporučuju Trial. Nový formát tutoriál (20 s): „How to make this GTA 6 map animation using Claude“. Od prvního snímku běží přelet Vice City → Leonida Keys (krajina kreslená kódem podle skutečné Floridy, bez mapy a loga hry), pak 3 kroky: nahraj referenci, vyber Fable 5.2 a vlož prompt, Claude napíše kód a vyrenderuje. Slovo GTA, bez hudby (přidáš v IG). Prompt pro DM je v hf/videos/gtamap22/prompts.md.",
+ "caption": "How to make this GTA 6 style map animation with Claude Fable 5.2.\n\nComment GTA and I'll DM you the prompt.\n\n#gta6 #claude #motiondesign"
+}

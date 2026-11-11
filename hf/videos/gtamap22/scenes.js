@@ -154,7 +154,7 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
     g.globalCompositeOperation='multiply'; g.fillStyle='rgb(166,186,214)'; g.fillRect(0,0,1080,1920); g.globalCompositeOperation='source-over';
     const vg=g.createRadialGradient(540,1000,480,540,1000,1280); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,6,18,.62)'); g.fillStyle=vg; g.fillRect(0,0,1080,1920);
     const CT=T1+0.15, cd=E3((lt-CT)/0.6); if(lt>CT){ const d=SCR(-81.775,24.558), cy=1410+(1-cd)*30+Math.sin(lt*1.3)*4, cx=330+Math.sin(lt*0.9)*3;
-      g.save(); g.globalAlpha=cd; g.strokeStyle='rgba(255,255,255,.85)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(cx+120,cy-104); g.lineTo(lerp(cx+120,d[0],cd),lerp(cy-104,d[1]+16,cd)); g.stroke();
+      g.save(); g.globalAlpha=cd*(window.CARDA===undefined?1:window.CARDA); g.strokeStyle='rgba(255,255,255,.85)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(cx+120,cy-104); g.lineTo(lerp(cx+120,d[0],cd),lerp(cy-104,d[1]+16,cd)); g.stroke();
       g.translate(cx,cy); g.fillStyle='rgba(6,14,24,.6)'; g.beginPath(); g.roundRect(-270,-104,620,208,40); g.fill(); g.strokeStyle='rgba(255,255,255,.4)'; g.lineWidth=1.5; g.stroke();
       g.fillStyle='rgba(255,255,255,.72)'; g.font='600 27px '+SANS; g.letterSpacing='4px'; g.fillText('VICE CITY  —  LEONIDA KEYS',-226,-46); g.letterSpacing='0px';
       g.fillStyle='#fff'; g.font='700 90px '+SANS; g.fillText('267 km',-230,54); g.fillStyle='rgba(255,255,255,.8)'; g.font='500 38px '+SANS; g.fillText('≈ 4 h by car',128,46); g.restore(); }
