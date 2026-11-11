@@ -94,38 +94,53 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
     return off(N,N,(p)=>{ p.filter='blur(7px)'; p.globalAlpha=0.55; p.drawImage(raw,0,0); p.filter='blur(1.4px)'; p.globalAlpha=1; p.drawImage(raw,0,0); }); }
   const C1S=2.1, CL1=cloudTex(1536,3.1,120,0.60,1,[[tx(MIA[0])/C1S+75,ty(MIA[1])/C1S+30,150],[tx(-81.7)/C1S+75,ty(24.6)/C1S+30,190]]), CL2=cloudTex(1024,8.7,150,0.58,1.3), CL3=cloudTex(1024,5.3,230,0.52,2.6);
   const CSH=off(1536,1536,(p)=>{ p.filter='blur(5px)'; p.drawImage(CL1,0,0); p.globalCompositeOperation='source-in'; p.fillStyle='#031018'; p.fillRect(0,0,1536,1536); });
+  const ROUTE=(()=>{ const P=KEYSPATH.map(([lo,la])=>[tx(lo),ty(la)]), out=[]; for(let k=0;k<P.length-1;k++){ const a=P[Math.max(0,k-1)],b=P[k],c=P[k+1],d=P[Math.min(P.length-1,k+2)]; for(let i=0;i<24;i++){ const u=i/24, cr=(p0,p1,p2,p3)=>0.5*((2*p1)+(-p0+p2)*u+(2*p0-5*p1+4*p2-p3)*u*u+(-p0+3*p1-3*p2+p3)*u*u*u); out.push([cr(a[0],b[0],c[0],d[0]),cr(a[1],b[1],c[1],d[1])]); } } out.push(P[P.length-1]);
+    const n=out.length; for(let i=1;i<n-1;i++){ const dx=out[i+1][0]-out[i-1][0], dy=out[i+1][1]-out[i-1][1], l=Math.hypot(dx,dy)||1, w=(Math.sin(i*0.55)*7+Math.sin(i*0.21+1)*11)*Math.sin(Math.PI*i/n); out[i]=[out[i][0]-dy/l*w,out[i][1]+dx/l*w]; }
+    let L=0; const acc=[0]; for(let i=1;i<n;i++){ L+=Math.hypot(out[i][0]-out[i-1][0],out[i][1]-out[i-1][1]); acc.push(L); } return {pts:out,acc,L}; })();
+  const GL=[]; { const R=R0(77); for(let i=0;i<520;i++) GL.push([R()*TW,R()*TH,R()*6.28,1+R()*2.2]); }
   // ---------- camera: ONE smooth eased move (like an After Effects camera with easy-ease keys): rise, glide, descend
-  const lerp=(a,b,u)=>a+(b-a)*u, ZC=1.55, ZH=0.6, ZE=2.15, T0=0.2, T1=3.45, SS=(u)=>{ u=u<0?0:u>1?1:u; return u*u*u*(u*(u*6-15)+10); };
-  function camAt(t){ const u=(t-T0)/(T1-T0), su=SS(u), pp=SS((u-0.10)/0.80), hump=Math.pow(Math.sin(Math.PI*su),1.6);
-    const base=lerp(Math.log(ZC),Math.log(ZE),su), lz=base+(Math.log(ZH)-lerp(Math.log(ZC),Math.log(ZE),0.5))*hump;
-    const z=Math.exp(lz)*(1+0.03*CL(t/T0)*(u<0?1:0)+0.05*SS((t-T1)/3.2));
-    return {lon:lerp(MIA[0]+0.1,KW[0],pp),lat:lerp(MIA[1]-0.12,KW[1],pp),z,rot:lerp(-0.10,0.05,su)+0.02*SS((t-T1)/3.2),su,pp,H:1/z}; }
+  const lerp=(a,b,u)=>a+(b-a)*u, ZC=1.62, ZH=0.6, ZE=2.1, T0=0.0, T1=3.4, SS=(u)=>{ u=u<0?0:u>1?1:u; return u*u*u*(u*(u*6-15)+10); };
+  function camAt(t){ const u=(t-T0)/(T1-T0), su=SS(u), pp=SS((u-0.14)/0.78), hump=Math.pow(Math.sin(Math.PI*su),1.6), aft=Math.max(0,t-T1);
+    const base=lerp(Math.log(ZC),Math.log(ZE),su), early=-0.16*(1-Math.exp(-Math.max(0,t)/0.45))*(1-su);        // starts pulling back at once, then the big move takes over
+    const lz=base+early+(Math.log(ZH)-lerp(Math.log(ZC),Math.log(ZE),0.5))*hump+0.022*aft;                       // after landing: slow endless push-in
+    return {lon:lerp(MIA[0]+0.1,KW[0],pp)+0.006*aft,lat:lerp(MIA[1]-0.12,KW[1],pp)+0.0015*aft,z:Math.exp(lz),rot:lerp(-0.10,0.05,su)+0.006*aft,su,pp,H:1/Math.exp(lz)}; }
   let cam=camAt(0);
   const SCR=(lon,lat)=>{ const dx=(tx(lon)-tx(cam.lon))*cam.z, dy=(ty(lat)-ty(cam.lat))*cam.z, c=Math.cos(cam.rot), s=Math.sin(cam.rot); return [540+dx*c-dy*s, 960+dx*s+dy*c]; };
   let PA=1;
-  function pin(lon,lat,a,name){ if(a<0) return; const s=SCR(lon,lat), dr=E3(a/0.32), x=s[0], y=s[1]-(1-dr)*600, b=1+0.22*Math.sin(CL(a/0.5)*Math.PI);
-    for(let k=0;k<2;k++){ const pr=((a*0.8+k*0.5)%1); g.save(); g.globalAlpha=(1-pr)*0.75*CL(a*3)*PA; g.strokeStyle='#ff3b3b'; g.lineWidth=6; g.beginPath(); g.arc(s[0],s[1],18+pr*80,0,7); g.stroke(); g.restore(); }
-    g.save(); g.translate(x,y); g.scale(b,b); g.shadowColor='rgba(0,0,0,.5)'; g.shadowBlur=20; g.shadowOffsetY=10; g.fillStyle='#ff3030'; g.beginPath(); g.moveTo(0,0); g.bezierCurveTo(-62,-76,-54,-164,0,-164); g.bezierCurveTo(54,-164,62,-76,0,0); g.fill(); g.shadowColor='transparent'; g.fillStyle='#fff'; g.beginPath(); g.arc(0,-108,24,0,7); g.fill(); g.restore();
-    const la=E3((a-0.25)/0.35); if(la<=0) return; g.save(); g.globalAlpha=la*PA; g.fillStyle='#fff'; g.shadowColor='rgba(0,0,0,.8)'; g.shadowBlur=18; g.shadowOffsetY=4; g.font='900 92px '+SANS; const w=g.measureText(name).width; const lx=Math.max(40,Math.min(x-w/2,1040-w)); g.fillText(name,lx,y-200+(1-la)*24); g.restore(); }
+  function pin(lon,lat,a,name,lt){ if(a<0) return; const s=SCR(lon,lat), x=s[0], y=s[1], gr=E3(a/0.4), la=E3((a-0.22)/0.4), H=150;
+    g.save(); for(let k=0;k<2;k++){ const pr=((lt*0.55+k*0.5)%1); g.globalAlpha=(1-pr)*0.6*CL(a*3)*PA; g.strokeStyle='#fff'; g.lineWidth=2.5; g.beginPath(); g.arc(x,y,12+pr*46,0,7); g.stroke(); }
+    g.globalAlpha=CL(a*4)*PA; g.fillStyle='#fff'; g.shadowColor='rgba(0,0,0,.45)'; g.shadowBlur=10; g.beginPath(); g.arc(x,y,9,0,7); g.fill(); g.shadowBlur=0;
+    g.strokeStyle='rgba(255,255,255,.9)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(x,y-12); g.lineTo(x,y-12-H*gr); g.stroke();
+    if(la>0){ g.globalAlpha=la*PA; g.font='600 58px '+SANS; g.letterSpacing='6px'; const w=g.measureText(name).width+76, lx=Math.max(36,Math.min(x-w/2,1044-w)), ly=y-12-H-96+(1-la)*14;
+      g.fillStyle='rgba(8,16,26,.58)'; g.beginPath(); g.roundRect(lx,ly,w,96,48); g.fill(); g.strokeStyle='rgba(255,255,255,.38)'; g.lineWidth=1.5; g.stroke(); g.fillStyle='#fff'; g.fillText(name,lx+40,ly+67); g.letterSpacing='0px'; }
+    g.restore(); }
   // a cloud layer floating at height hc: true parallax (it grows and rushes past as the camera climbs or dives through it) + its own wind
   function cloudLayer(T,hc,al,wx,wy,lt,sz,ox,oy){ if(cam.H<=hc*1.04) return; const k=cam.H/(cam.H-hc), z=cam.z*k, a=al*sm(hc*1.04,hc*1.45,cam.H); if(a<=0.004) return;
     g.save(); g.globalAlpha=a; g.translate(540,960); g.rotate(cam.rot); g.scale(z,z); g.translate(-tx(cam.lon)+ox+lt*wx,-ty(cam.lat)+oy+lt*wy); g.imageSmoothingQuality='high'; g.drawImage(T,0,0,T.width*sz,T.height*sz); g.restore(); }
   function ground(lt){ g.save(); g.translate(540,960); g.rotate(cam.rot); g.scale(cam.z,cam.z); g.translate(-tx(cam.lon),-ty(cam.lat));
     g.fillStyle='#05223f'; g.fillRect(-4000,-4000,TW+8000,TH+8000); g.imageSmoothingQuality='high'; g.drawImage(tex,0,0);
-    const rf=cam.pp; if(rf>0.01){ const pts=KEYSPATH.map(([lo,la])=>[tx(lo),ty(la)]); let L=0; for(let i=1;i<pts.length;i++) L+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);
-      g.save(); g.shadowColor='#35e6ff'; g.shadowBlur=16/cam.z; g.strokeStyle='#5ff0ff'; g.lineWidth=6/cam.z; g.lineJoin='round'; g.lineCap='round'; g.setLineDash([L*rf,L]); g.beginPath(); pts.forEach((p,j)=>j?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])); g.stroke(); g.restore(); }
+    // sun glints on the water (always twinkling)
+    g.fillStyle='#fff'; GL.forEach(([x,y,ph,r])=>{ const a=Math.max(0,Math.sin(lt*3.2+ph))**6; if(a<0.05) return; g.globalAlpha=a*0.7; g.fillRect(x,y,r,r); }); g.globalAlpha=1;
+    // the route: winding, glowing, with dashes that keep flowing and a head that travels
+    const rf=CL(cam.pp*1.04); if(rf>0.005){ const n=Math.max(2,Math.ceil(ROUTE.pts.length*rf)), w=9/cam.z; g.save(); g.lineJoin='round'; g.lineCap='round';
+      const path=()=>{ g.beginPath(); for(let i=0;i<n;i++){ const p=ROUTE.pts[i]; i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]); } };
+      g.shadowColor='#19d3ff'; g.shadowBlur=26/cam.z; g.strokeStyle='rgba(30,200,255,.55)'; g.lineWidth=w*1.9; path(); g.stroke(); g.shadowBlur=0;
+      g.strokeStyle='#eafcff'; g.lineWidth=w*0.75; g.setLineDash([w*3.2,w*2.2]); g.lineDashOffset=-lt*w*14; path(); g.stroke(); g.setLineDash([]);
+      const h=ROUTE.pts[n-1]; g.fillStyle='#fff'; g.shadowColor='#19d3ff'; g.shadowBlur=30/cam.z; g.beginPath(); g.arc(h[0],h[1],w*1.25,0,7); g.fill(); g.restore(); }
     g.restore();
-    cloudLayer(CSH,0.0001,0.32,7,3,lt,C1S,-150+60,-60+50); cloudLayer(CL1,0.10,0.95,7,3,lt,C1S,-150,-60);
-    cloudLayer(CL2,0.66,0.85,-16,6,lt,2.6,-500,-350); cloudLayer(CL3,1.02,0.55,24,-9,lt,3.2,-300,-200);
+    cloudLayer(CSH,0.0001,0.32,16,6,lt,C1S,-150+60,-60+50); cloudLayer(CL1,0.10,0.95,16,6,lt,C1S,-150,-60);
+    cloudLayer(CL2,0.66,0.85,-34,12,lt,2.6,-500,-350); cloudLayer(CL3,1.02,0.55,50,-18,lt,3.2,-300,-200);
     g.fillStyle='rgba(150,200,235,'+(0.10*sm(0.5,1.6,cam.H))+')'; g.fillRect(0,0,1080,1920); }
   SCN[0]=function(lt){ g.clearRect(0,0,1080,1920);
     // motion blur: average a few sub-frames inside the shutter while the camera is moving
-    const moving=lt>T0-0.05&&lt<T1+0.1, NS=moving?5:1; for(let k=0;k<NS;k++){ cam=camAt(lt-(NS-1-k)*0.0075); g.globalAlpha=1/(k+1); ground(lt); } g.globalAlpha=1; cam=camAt(lt);
+    const moving=lt>0.3&&lt<T1+0.1, NS=moving?5:1; for(let k=0;k<NS;k++){ cam=camAt(lt-(NS-1-k)*0.0075); g.globalAlpha=1/(k+1); ground(lt); } g.globalAlpha=1; cam=camAt(lt);
     const vg=g.createRadialGradient(540,960,520,540,960,1250); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,8,20,.55)'); g.fillStyle=vg; g.fillRect(0,0,1080,1920);
-    if(cam.su<0.2){ PA=1-sm(0.02,0.16,cam.su); g.save(); g.globalAlpha=PA; pin(MIA[0],MIA[1],lt+0.8,'VICE CITY'); g.restore(); PA=1; }
-    pin(-81.775,24.558,lt-(T1-0.15),'LEONIDA KEYS');
-    const CT=T1+0.35, cd=EBK((lt-CT)/0.45); if(lt>CT){ g.save(); g.translate(540,1380); g.scale(0.5+0.5*cd,0.5+0.5*cd); g.globalAlpha=CL((lt-CT)/0.15); g.fillStyle='rgba(10,24,40,.62)'; g.strokeStyle='rgba(255,255,255,.85)'; g.lineWidth=4; g.beginPath(); g.roundRect(-430,-120,860,240,34); g.fill(); g.stroke();
-      g.fillStyle='rgba(255,255,255,.85)'; g.font='700 36px '+SANS; g.fillText('VICE CITY  →  LEONIDA KEYS',-380,-58); g.fillStyle='#fff'; g.font='900 96px '+SANS; g.fillText('267 km',-382,44); g.font='700 44px '+SANS; g.fillStyle='#5ff0ff'; g.fillText('≈ 4 h by car',30,34); g.fillStyle='rgba(255,255,255,.6)'; g.font='500 28px '+SANS; g.fillText('real-world Miami → Key West',-380,92); g.restore(); }
+    if(cam.su<0.2){ PA=1-sm(0.03,0.18,cam.su); pin(MIA[0],MIA[1],lt+0.9,'VICE CITY',lt); PA=1; }
+    pin(-81.775,24.558,lt-(T1-0.2),'LEONIDA KEYS',lt);
+    const CT=T1+0.3, cd=E3((lt-CT)/0.5); if(lt>CT){ g.save(); g.globalAlpha=cd; g.translate(540,1400+(1-cd)*26+Math.sin(lt*1.3)*3);
+      g.fillStyle='rgba(8,16,26,.58)'; g.beginPath(); g.roundRect(-400,-104,800,208,40); g.fill(); g.strokeStyle='rgba(255,255,255,.38)'; g.lineWidth=1.5; g.stroke();
+      g.fillStyle='rgba(255,255,255,.72)'; g.font='600 28px '+SANS; g.letterSpacing='4px'; g.fillText('VICE CITY  —  LEONIDA KEYS',-352,-44); g.letterSpacing='0px';
+      g.fillStyle='#fff'; g.font='700 92px '+SANS; g.fillText('267 km',-356,58); g.fillStyle='rgba(255,255,255,.8)'; g.font='500 40px '+SANS; g.fillText('≈ 4 h by car',60,50); g.restore(); }
     g.drawImage(GRAIN,0,0);
   };
 })();
