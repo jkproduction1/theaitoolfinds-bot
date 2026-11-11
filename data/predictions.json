@@ -2872,5 +2872,234 @@
    "visuals": 11,
    "ending": 2
   }
+ },
+ {
+  "name": "impact22",
+  "date": "2026-11-11",
+  "score": 60,
+  "mode": "script",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 5.0,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.5,
+   "words": 44,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 5.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "organs23",
+  "date": "2026-11-11",
+  "score": 63,
+  "mode": "script",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.85,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.1,
+   "words": 43,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 0.65
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "trip24",
+  "date": "2026-11-11",
+  "score": 64,
+  "mode": "script",
+  "features": {
+   "hook": 0.17,
+   "hook_words": 10,
+   "hook_end_s": 3.85,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 17.4,
+   "words": 41,
+   "pace": 0.75,
+   "length": 0.92,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "new-ability",
+   "topic": 0.8
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 17,
+   "payoff": 12,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 11,
+   "ending": 2
+  }
+ },
+ {
+  "name": "organs23",
+  "date": "2026-11-11",
+  "score": 77,
+  "mode": "full",
+  "features": {
+   "hook": 0.28,
+   "hook_words": 10,
+   "hook_end_s": 3.33,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.67,
+   "dur_s": 27.4,
+   "words": 43,
+   "pace": 0.0,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 58,
+   "visuals": 1.0,
+   "ending": 0.85,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 3.3 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "impact22",
+  "date": "2026-11-11",
+  "score": 76,
+  "mode": "full",
+  "features": {
+   "hook": 0.19,
+   "hook_words": 12,
+   "hook_end_s": 3.91,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.72,
+   "dur_s": 26.6,
+   "words": 43,
+   "pace": 0.02,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 57,
+   "visuals": 1.0,
+   "ending": 0.85,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 3.9 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "trip24",
+  "date": "2026-11-11",
+  "score": 63,
+  "mode": "full",
+  "features": {
+   "hook": 0.2,
+   "hook_words": 10,
+   "hook_end_s": 3.01,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 3.66,
+   "dur_s": 12.8,
+   "words": 41,
+   "pace": 0.37,
+   "length": 0.35,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 0.25,
+   "visual_changes": 48,
+   "visuals": 1.0,
+   "ending": 1.0,
+   "angle": "new-ability",
+   "topic": 0.72
+  },
+  "flags": [
+   "hook končí v 3.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
  }
 ]

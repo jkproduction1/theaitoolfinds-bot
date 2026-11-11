@@ -1,1 +1,9 @@
-{"angle": "app-demo", "keyword": "ORGANS"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D organ commands",
+ "keyword": "ORGANS",
+ "angle": "app-demo",
+ "cover_at": 6.6,
+ "summary_cs": "App demo „Type it, get it #23“ (Inside your body 2): /x-ray oko (obraz dopadne na sítnici vzhůru nohama), /zoom-in neuron, který vystřelí signál, /explain-3d jak žaludek tráví jídlo; vše 3D v kódu, bez hudby (přidáš v IG). Navazuje na body16 a inside3, ověř prosím, že je nastavená automatická DM na slovo ORGANS.",
+ "caption": "Your eye sees the world upside down. Claude Code animates how it works.\n\nPart #23 of a daily series.\n\nComment ORGANS and I'll DM you the prompts.\n\n#claudecode #anatomy #aitools"
+}
