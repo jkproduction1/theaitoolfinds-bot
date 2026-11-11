@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D organ commands",
+ "tool_name": "Claude Code 3D organ commands",
+ "keyword": "ORGANS",
+ "summary_cs": "App demo „Type it, get it #23“ (Inside your body 2): /x-ray oko (obraz dopadne na sítnici vzhůru nohama), /zoom-in neuron, který vystřelí signál, /explain-3d jak žaludek tráví jídlo; vše 3D v kódu, bez hudby (přidáš v IG). Navazuje na body16 a inside3, ověř prosím, že je nastavená automatická DM na slovo ORGANS.",
+ "style": "hyperframes-paper",
+ "duration": 26.8,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-11_0634",
+ "run_id": null,
+ "artifact": null
+}
