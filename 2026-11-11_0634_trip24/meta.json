@@ -1,0 +1,13 @@
+{
+ "url": "https://claude.ai",
+ "name": "Claude Opus 5.5 travel map animation tutorial",
+ "tool_name": "Claude Opus 5.5 travel map animation tutorial",
+ "keyword": "TRIP",
+ "summary_cs": "🧪 doporučuju Trial. Tutoriál (12,5 s) podle šablony gtamap22: „How to make this viral travel map animation using Claude“ – let Praha → Tokio po skutečné ortodromě na glóbu se skutečnými pobřežími (Natural Earth), na konci karta 9 070 km, bez hudby, jemné sfx; Claude ho opravdu vykreslil v kódu (Opus 5.5).",
+ "style": "hyperframes-paper",
+ "duration": 12.5,
+ "domain": "claude.ai",
+ "created": "2026-11-11_0634",
+ "run_id": null,
+ "artifact": null
+}
