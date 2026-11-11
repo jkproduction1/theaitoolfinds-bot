@@ -1,9 +1,9 @@
 # gtamap22 prompt — DM for comment GTA
-1. Open Claude and attach a short reference clip of the map transition you like (zoom out above the clouds, fly, zoom back in).
+1. Open Claude and attach a reference image: a screenshot of the map look you like (satellite view, clouds, pin and label).
 2. Pick the model Claude Fable 5.2.
 3. Paste:
 
-Make a 9:16, 30 fps map-transition animation like my reference clip, as one HTML file (canvas + JavaScript, no external images), then
+Make a 9:16, 30 fps map-transition animation in the look of my reference image (zoom out above the clouds, fly, zoom back in), as one HTML file (canvas + JavaScript, no external images), then
 render it to an mp4.
 - Route: start close over <CITY A>, pull back above the clouds, glide along the coast / islands and descend on <PLACE B>. Use the real
   coastline of the region (public-domain outline data) and draw everything else in code.

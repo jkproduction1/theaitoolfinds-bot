@@ -33,10 +33,10 @@ DONE = round(S[31] - 0.05, 3)             # "and you're done": the result morphs
 TM = {"S1": S1, "S2": S2, "S3": S3, "END": END, "DONE": DONE, "r0": round((T1 + 0.15) / (S1 + 0.1), 4), "r1": round((T1 + 0.6) / (F.dur - 0.25 - DONE), 4), "CTA": CTA,
       "pick": round(S[17], 3), "paste": round(S[22], 3), "fix": round(S[28] - 0.2, 3), "fixe": round(E[30] - 0.1, 3), "yd": round(S[32] - 0.05, 3)}
 FIX = "make the clouds softer"
-PROMPT = ("Make a 9:16 map-transition animation like my reference clip: start close over a coastal city, pull back above the clouds, "
+PROMPT = ("Make a 9:16 map-transition animation like my reference image: start close over a coastal city, pull back above the clouds, "
           "glide along the islands and descend on the last one. Satellite look, layered clouds with parallax, smooth easing…")
 CAPS = [  # step, lines of (word index, on-screen text, highlight)
-    (1, [[(10, "First,", 0), (11, "upload", 0)], [(12, "a", 0), (13, "reference", 1), (14, "clip.", 1)]]),
+    (1, [[(10, "First,", 0), (11, "upload", 0)], [(12, "a", 0), (13, "reference", 1), (14, "image.", 1)]]),
     (2, [[(15, "Then", 0), (16, "pick", 0), (17, "Fable", 1), (18, "5.2", 1)], [(21, "and", 0), (22, "paste", 0), (23, "this", 0), (24, "prompt.", 1)]]),
     (3, [[(25, "Claude", 0), (26, "builds", 1), (27, "it,", 0)], [(28, "you", 0), (29, "tweak", 1), (30, "it,", 0)]]),
 ]
@@ -46,7 +46,7 @@ SPARK = '<svg viewBox="0 0 100 100"><path fill="#ff5a2b" d="M50 6l9 33 33 11-33 
 body = ('<div id="bg"><div class="bl" id="bl0"></div><div class="bl" id="bl1"></div><div class="bl" id="bl2"></div></div><div id="fl"><div id="ui">'
         + caps_html
         + '<div id="panel"><div id="ph">' + SPARK + '<b>Claude</b><div id="mchip"><span id="mname">Choose model</span></div></div>'
-        '<div id="inp"><div id="file"><div id="slot"></div><div><b>reference.mp4</b><span>video · 25 s</span></div><div class="ok">✓</div></div>'
+        '<div id="inp"><div id="file"><div id="slot"></div><div><b>reference.png</b><span>image</span></div><div class="ok">✓</div></div>'
         '<div id="ptxt">' + html.escape(PROMPT) + '</div><div id="prog"></div><div id="fix"><span id="fixt"></span></div><div class="snd" id="snd"></div></div></div>'
         '</div>'
         '<div class="stage" id="st0"><canvas id="cv0" width="1080" height="1920"></canvas></div></div>'
