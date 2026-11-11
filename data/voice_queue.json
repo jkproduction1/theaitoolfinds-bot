@@ -1,6 +1,14 @@
 [
  {
-  "name": "gtamap22",
-  "text": "How to make this GTA six map animation using Claude. First, upload a reference image. Then pick Fable five point two and paste this prompt. Claude builds it, you tweak it, and you're done. Comment GTA and I'll send you the prompt."
+  "name": "impact22",
+  "text": "Type slash physics sim, into a black hole… and you get this. Type slash what if, the Moon hit Earth… and you get this. Type slash deep dive, inside a volcano… and you get this. Comment IMPACT and I'll send you the prompts."
+ },
+ {
+  "name": "organs23",
+  "text": "Type slash x-ray, the human eye… and you get this. Type slash zoom in, a brain cell firing… and you get this. Type slash explain 3D, how your stomach digests food… and you get this. Comment ORGANS and I'll send you the prompts."
+ },
+ {
+  "name": "trip24",
+  "text": "How to make this viral travel map animation using Claude. First, type your trip. Then pick Opus five point five and paste this prompt. Claude builds it, you tweak it, and you're done. Comment TRIP and I'll send you the prompt."
  }
 ]
