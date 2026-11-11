@@ -1,0 +1,13 @@
+{
+ "url": "https://claude.ai",
+ "name": "Claude Fable 5.2 map animation tutorial",
+ "tool_name": "Claude Fable 5.2 map animation tutorial",
+ "keyword": "GTA",
+ "summary_cs": "🧪 doporučuju Trial. Tutoriál v3 (13 s): „How to make this GTA 6 map animation using Claude“. Nově: věta „Claude builds it, you tweak it, and you're done“, titulky slovo po slovu u kroků (zvýrazněná klíčová slova), vlastní zvukové efekty (svist při přeletu a morfech, pípnutí u kroků, psaní, zvonek u „done“). Mapa se po hooku smrskne do náhledu v bílém chatu a na konci se roztáhne zpět. Bez hudby. Starší verze v1 (20 s) a v2 neschvaluj.",
+ "style": "hyperframes-paper",
+ "duration": 12.8,
+ "domain": "claude.ai",
+ "created": "2026-11-11_0300",
+ "run_id": null,
+ "artifact": null
+}
