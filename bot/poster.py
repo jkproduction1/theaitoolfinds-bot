@@ -313,6 +313,18 @@ def main():
             except Exception as e:
                 telegram.notify(f"⚠️ Nepovedlo se zapsat trojici: {str(e)[:200]}")
             continue
+        if action == "mt":  # picklist v3: Jan picked a tutorial idea ("How to make this X using <tool>")
+            try:
+                picks = json.loads((config.DATA / "picks.json").read_text())
+                t = picks["tutorials"][int(name)]
+                title = t.get("title", f"tutorial {name}")
+                if title not in picks.setdefault("picked_tut", []):
+                    picks["picked_tut"].append(title)
+                    (config.DATA / "picks.json").write_text(json.dumps(picks, indent=2, ensure_ascii=False))
+                    telegram.notify(f"🎓 Zapsáno: {title}. Udělám ho v ranním kole.")
+            except Exception as e:
+                telegram.notify(f"⚠️ Nepovedlo se zapsat tutoriál: {str(e)[:200]}")
+            continue
         if action == "mk":  # morning list: Jan picked a tool -> start the video job
             try:
                 picks = json.loads((config.DATA / "picks.json").read_text())

@@ -163,27 +163,29 @@ def sweep(dur, f0, f1, shape=2.0):          # band-passed noise whose pitch glid
     return y / (np.abs(y).max() + 1e-9) * np.sin(np.pi * t / t[-1]) ** shape
 def tone(f0, f1, dur, dec):                  # sine blip gliding f0 -> f1
     n = int(dur * SR); t = np.arange(n) / SR; f = f0 + (f1 - f0) * t / t[-1]
-    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.minimum(1, t / 0.003) * np.exp(-t / dec)
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.minimum(1, t / 0.008) * np.exp(-t / dec)
 def chime(notes, gap=0.07, dec=0.28):
     n = int((gap * len(notes) + 1.0) * SR); y = np.zeros(n)
     for k, f in enumerate(notes):
         x = tone(f, f, 0.9, dec) + 0.35 * tone(f * 2, f * 2, 0.9, dec * 0.6); i = int(k * gap * SR); y[i:i + len(x)] += x
     return y
-tick = tone(2400, 2400, 0.02, 0.003); click = tone(1700, 1700, 0.035, 0.004) * 0.6 + tone(150, 150, 0.035, 0.012)
-pop = tone(560, 260, 0.1, 0.03); thup = tone(300, 140, 0.16, 0.05); thump = tone(90, 55, 0.4, 0.12)
-put(0.05, sweep(1.9, 220, 1500), 0.20); put(1.5, sweep(1.9, 1500, 260), 0.20); put(S1 - 0.35, thump, 0.30)                 # the flight + landing
-for q, i in (("h", 0), ("h", 4), ("h", 8)): put(S[i] + 0.06, tone(700, 900, 0.05, 0.02), 0.07)                             # hook lines pulse
-put(S1 - 0.1, sweep(0.7, 2200, 420), 0.26); put(S1 + 0.5, pop, 0.22); put(S1 + 0.8, chime([1568], dec=0.12), 0.10)          # morph 1, chip lands, check
-for i in CW: put(S[i] - 0.05, tone(900, 1200, 0.04, 0.012), 0.045)                                                           # subtitle words
-put(S2, sweep(0.3, 900, 1800), 0.10); put(TM["pick"] - 0.02, click, 0.24); put(TM["pick"] + 0.02, tone(660, 990, 0.1, 0.04), 0.14)
-put(TM["paste"], thup, 0.30); put(TM["paste"] + 0.02, sweep(0.25, 1400, 600), 0.10)
-put(S3 + 0.03, click, 0.24); put(S3 + 0.1, sweep(max(0.3, TM["fix"] - S3 - 0.3), 500, 2400, 1.2), 0.12)                      # send + "builds it"
+# v4 (Jan: "quieter, pleasant"): low, round sounds only; no high clicks, no per-word blips; the whole bus is low-passed and sits well under the voice
+tick = tone(1000, 820, 0.035, 0.007); click = tone(620, 460, 0.06, 0.014) * 0.7 + tone(140, 110, 0.06, 0.02) * 0.6
+pop = tone(430, 250, 0.13, 0.045); thup = tone(230, 125, 0.2, 0.065); thump = tone(78, 50, 0.5, 0.15)
+put(0.05, sweep(1.9, 150, 650), 0.15); put(1.5, sweep(1.9, 650, 170), 0.15); put(S1 - 0.35, thump, 0.20)                    # the flight + landing
+put(S1 - 0.1, sweep(0.7, 1000, 280), 0.18); put(S1 + 0.5, pop, 0.15); put(S1 + 0.8, chime([784.0], dec=0.16), 0.06)          # morph 1, chip lands, check
+put(TM["pick"] - 0.02, click, 0.16); put(TM["pick"] + 0.02, tone(440, 660, 0.12, 0.05), 0.07)
+put(TM["paste"], thup, 0.20)
+put(S3 + 0.03, click, 0.15); put(S3 + 0.1, sweep(max(0.3, TM["fix"] - S3 - 0.3), 280, 1000, 1.2), 0.07)                      # send + "builds it"
 for i in range(len(FIX)):
-    if FIX[i] != " ": put(TM["fix"] + (TM["fixe"] - TM["fix"]) * i / len(FIX), tick, 0.13 + 0.05 * rng.random())
-put(DONE - 0.08, click, 0.22); put(DONE, sweep(0.8, 380, 2400), 0.30); put(TM["yd"], chime([1046.5, 1318.5, 1568.0]), 0.16)
-put(DONE + 0.5, sweep(1.6, 1500, 300), 0.12)                                                                                # replay flight
-put(CTA, pop, 0.24); put(CTA + 0.02, thump, 0.22); put(S[35] - 0.03, tone(880, 1320, 0.09, 0.05), 0.12)
-pk = np.abs(buf).max(); buf = buf * min(1.0, 0.5 / (pk + 1e-9))
+    if FIX[i] != " ": put(TM["fix"] + (TM["fixe"] - TM["fix"]) * i / len(FIX), tick, 0.05 + 0.02 * rng.random())
+put(DONE, sweep(0.8, 240, 1100), 0.20); put(TM["yd"], chime([523.25, 659.25, 783.99], gap=0.08, dec=0.42), 0.11)
+put(DONE + 0.5, sweep(1.6, 650, 190), 0.09)                                                                                 # replay flight
+put(CTA, pop, 0.15); put(CTA + 0.02, thump, 0.14)
+lp = 0.0; al = 1 - np.exp(-2 * np.pi * 4200 / SR)                                                                           # gentle low-pass on the whole sfx bus
+for i in range(len(buf)):
+    lp += al * (buf[i] - lp); buf[i] = lp
+pk = np.abs(buf).max(); buf = buf * (0.22 / (pk + 1e-9))
 with wave.open(str(A / "sfx.wav"), "wb") as wv:
     wv.setnchannels(1); wv.setsampwidth(2); wv.setframerate(SR); wv.writeframes((np.clip(buf, -1, 1) * 32767).astype(np.int16).tobytes())
 _ix = W / "index.html"; _ix.write_text(_ix.read_text().replace('data-motion-blur="on"', 'data-motion-blur="off"'))

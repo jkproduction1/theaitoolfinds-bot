@@ -109,8 +109,9 @@ def notify(text: str):
         print(f"[telegram] notify failed: {e}")
 
 
-def send_ideas(demos: list, tools: list):
-    """Picklist v2: 1) Type this / get this trios (tap 2), 2) trendy AI tools (tap 1)."""
+def send_ideas(demos: list, tools: list, tuts: list | None = None):
+    """Picklist v3: 1) Type this / get this trios (tap 2), 2) tutorial ideas "How to make this X using <tool>" (tap 1),
+    3) trendy AI tools (v2 list, inactive: only sent if the ideas file still has some)."""
     if demos:
         lines, kb = ["🎬 Type this / get this: zítřejší trojice (ťukni 2)", ""], []
         for i, d in enumerate(demos):
@@ -120,6 +121,35 @@ def send_ideas(demos: list, tools: list):
             if d.get("why"):
                 lines.append(f"   ↳ {d['why']}")
             kb.append([{"text": f"🎬 {i + 1}: {d.get('title', '')[:34]}", "callback_data": f"md:{i}"}])
+        _api("sendMessage", data={"chat_id": chat_id(), "text": "\n".join(lines)[:4000],
+                                  "disable_web_page_preview": "true",
+                                  "reply_markup": json.dumps({"inline_keyboard": kb})})
+    if tuts:
+        lines, kb = ["🎓 Tutoriál „How to make this… using <nástroj>“: zítřejší video (ťukni 1)", ""], []
+        for i, t in enumerate(tuts):
+            lines.append(f"{i + 1}. {str(t.get('title', ''))[:90]}")
+            meta = [str(t["tool"])[:40]] if t.get("tool") else []
+            if t.get("seconds"):
+                meta.append(f"~{t['seconds']} s")
+            if t.get("keyword"):
+                meta.append(f"slovo {t['keyword']}")
+            if t.get("handle"):
+                meta.append(str(t["handle"]))
+            if meta:
+                lines.append("   " + " · ".join(meta))
+            if t.get("trend"):
+                lines.append(f"   ↳ proč teď: {str(t['trend'])[:170]}")
+            steps = [str(x)[:60] for x in (t.get("steps") or [])[:5]]
+            if steps:
+                lines.append("   kroky: " + "  ".join(f"{k + 1}) {x}" for k, x in enumerate(steps)))
+            if t.get("cost"):
+                lines.append(f"   cena: {str(t['cost'])[:80]}")
+            short = str(t.get("title", ""))
+            for pre in ("How to make this ", "How to make "):  # every title starts the same: show the part that differs
+                if short.lower().startswith(pre.lower()):
+                    short = short[len(pre):]
+                    break
+            kb.append([{"text": f"🎓 {i + 1}: {short[:34]}", "callback_data": f"mt:{i}"}])
         _api("sendMessage", data={"chat_id": chat_id(), "text": "\n".join(lines)[:4000],
                                   "disable_web_page_preview": "true",
                                   "reply_markup": json.dumps({"inline_keyboard": kb})})

@@ -198,16 +198,18 @@ IDEAS = config.DATA / "picklist_ideas.json"
 
 
 def send_ideas_list() -> bool:
-    """Picklist v2 (Jan, 2026-11-09): the 07:52 Claude check writes data/picklist_ideas.json
+    """Picklist v3 (Jan, 2026-11-11): the 07:52 Claude check writes data/picklist_ideas.json
     {"date": "YYYY-MM-DD" (Prague), "app_demo": [{"title", "commands": [3 x "/cmd prompt"], "why"}] x5,
-     "tools": [{"name", "url", "what", "hook", "handle"}] x5}. Two Telegram messages: Jan taps 2 trios + 1 tool."""
+     "tutorials": [{"title", "tool", "url", "trend", "steps": [...], "seconds", "keyword", "cost", "handle"}] x5,
+     "tools": [{"name", "url", "what", "hook", "handle"}]  (trendy-tool list of v2: INACTIVE, normally empty)}.
+    One Telegram message per non-empty list: Jan taps 2 trios + 1 tutorial."""
     if not IDEAS.exists():
         return False
     try:
         from zoneinfo import ZoneInfo
         ideas = json.loads(IDEAS.read_text())
         today = datetime.now(ZoneInfo("Europe/Prague")).strftime("%Y-%m-%d")
-        if ideas.get("date") != today or not (ideas.get("app_demo") or ideas.get("tools")):
+        if ideas.get("date") != today or not (ideas.get("app_demo") or ideas.get("tools") or ideas.get("tutorials")):
             return False
     except Exception as e:
         print(f"[main] picklist_ideas.json unreadable ({e}), falling back")
@@ -216,10 +218,11 @@ def send_ideas_list() -> bool:
     tools = [{"name": t["name"], "url": t["url"], "desc": t.get("what", ""), "source": "ideas",
               "angle": "trendy-tool", "score": 10, "why": t.get("hook", ""), "handle": t.get("handle", "")}
              for t in ideas.get("tools", [])[:5]]
-    PICKS.write_text(json.dumps({"date": today, "category": "ideas", "items": tools, "demos": demos,
-                                 "picked": [], "picked_demo": []}, indent=2, ensure_ascii=False))
+    tuts = [t for t in ideas.get("tutorials", []) if isinstance(t, dict) and t.get("title")][:5]
+    PICKS.write_text(json.dumps({"date": today, "category": "ideas", "items": tools, "demos": demos, "tutorials": tuts,
+                                 "picked": [], "picked_demo": [], "picked_tut": []}, indent=2, ensure_ascii=False))
     if telegram.enabled():
-        telegram.send_ideas(demos, tools)
+        telegram.send_ideas(demos, tools, tuts)
     return True
 
 

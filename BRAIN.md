@@ -79,7 +79,13 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   Template: hf/videos/styles19/build.py (v1 chat-first = build_v1.py).
   Since styles20 (Jan): make BOTH twins per video: classic `<name>` + result-first `<name>r` (shares scenes.js; "Want this?" sticker and the
   "Claude Fable 5.2" chat bar pop up in the first second). Credit line "with Claude Fable 5.2" when Fable made the scenes. Compare its numbers with the chat-first demos before switching.
-- **Daily mix v3 (Jan, 2026-11-09, replaces the line below):** 2 App demos + 1 **trendy AI tool** video (Higgsfield, Lovart,
+- **Daily mix v4 (Jan, 2026-11-11, CURRENT):** 2 App demos (unchanged, "Type this… and you get this") + 1 **Tutorial**
+  "How to make this <viral thing> using <tool>" (§3e). The tutorial REPLACES the trendy-AI-tool video of v3: Jan: "nobody cares
+  about generic AI-tool videos; always one specific tool and a tutorial for ONE viral thing made with it". v3 below is INACTIVE
+  (kept for reference, not deleted). **Picklist v3:** the 07:52 check writes `data/picklist_ideas.json` with "app_demo" (5 trios)
+  and "tutorials" (5 ideas; "tools" stays empty) and dispatches mode=picklist → Telegram: trios (tap 2) + tutorials (tap 1).
+  Taps land in `data/picks.json`: "picked_demo" (trio titles) and "picked_tut" (tutorial titles); make those first.
+- **Daily mix v3 (INACTIVE since 2026-11-11; Jan, 2026-11-09):** 2 App demos + 1 **trendy AI tool** video (Higgsfield, Lovart,
   invideo, new launches of the week; NOT GitHub repos). The tool video uses the App-demo engine too ("Type this into <tool>…
   and you get this" with the tool's REAL outputs), never a classic tool presentation. Tag the brand's verified @handle in the
   caption (brand-collab opportunities). **Picklist v2:** the 07:52 check writes `data/picklist_ideas.json` (5 trios + 5 trendy
@@ -161,6 +167,38 @@ First beat ≤1 s (the app-listing tap was too long). Frame renderer for spec ad
 **Skim `hf/reference/spec_ads.md` for smoothness principles only — we build OUR OWN style, never copy those ads** (5 analysed references: one world/one camera, object continuity,
 kinetic type with one key word in an accent pill, story = the product's core mechanic, end reveal grows out of the hero object).
 
+## 3e. Format "Tutorial": "How to make this <viral thing> using <tool>" (Jan, 2026-11-11; 1 video every day, mix v4)
+Template: `hf/videos/gtamap22/` (build.py = v3 with subtitles + own sfx; scenes.js = the result). Built live with Jan over many
+rounds; these are his calls:
+- **Idea:** ONE specific tool + ONE viral thing people want to make right now. Go through what is trending (IG/TikTok/X edits and
+  formats, launches, events of the coming days such as a game or film release), decide which tool really makes it, write the steps.
+  Not "this tool exists" (that was v3 and nobody cared): the viewer must want the RESULT.
+- **Length 10–15 s** (gtamap22 = 13 s); longer only when the steps really need it. 3 steps, max 5.
+- **Structure:** the result plays full screen from frame 0 under the spoken hook "How to make this X using <tool>" (hook text on
+  screen from frame 0; the wow shot is ≤ 4 s) → the result MORPHS into the reference/attachment chip of the chat → steps on a light
+  background with pop and morph transitions → at "you're done" the result morphs back to full screen → "Comment <KEYWORD>" over the
+  moving result (no black end card).
+- **Voice:** no pauses between sentences, ~8 % faster (atempo), plain words: "First, … Then … <Tool> builds it, you tweak it, and
+  you're done. Comment X and I'll send you the prompt." Jan rejected "tell Claude what to fix" (sounds like something is broken).
+- **Subtitles = the on-screen text:** every spoken word pops in when it is said (key words in accent); no second copy of the same
+  text elsewhere on screen. Hook and CTA are full lines that pulse when spoken.
+- **Motion:** AE quality. Strong easy-ease on every move, no cuts or flashes inside the result, nothing ever stands still (float the
+  UI, drift the camera), check with a per-frame diff: no spikes, no dead frames. Model picker shows the model that really made it.
+- **Sfx:** own soft track per video (low, round sounds, bus low-passed, peaks ~10 dB under the voice): air for camera moves and
+  morphs, soft pops for UI, quiet typing, a small chime on "done". No high clicks, no blip per word. Jan: "quieter, pleasant".
+  gtamap22 has no music because Jan adds a track in Instagram himself; ask him before making that the rule for automated posts.
+- **Honesty:** the result is REALLY made with the named tool by the steps shown (Claude: drawn in code in this repo; other tools:
+  the tool's real output via its connector or Jan's screen recording). No fake UI of a real product: our own neutral chat/step
+  cards or Jan's recording. Don't say "one prompt and it's done" unless that was tested in a clean session; "you tweak it" is true.
+  The DM prompt (`prompts.md`) is the real consolidated prompt and says that a few rounds of feedback are normal.
+- **IP:** "inspired by" only. Names as plain text are fine ("GTA 6", "Vice City"); never redraw a game's or brand's map, logo,
+  wordmark or characters (gtamap22 = real Florida coastline + in-game place names, own look).
+- **Cost:** a tutorial whose result needs paid credits (Higgsfield, invideo…) is made only when Jan TAPPED that idea; the automatic
+  fallback (no tap) picks an idea that costs nothing extra. Say the expected cost in the idea ("cost").
+- **Idea file:** `data/picklist_ideas.json` "tutorials": 5 × {"title" (= the hook), "tool", "url" (official page), "trend" (why now
+  + where seen), "steps": [3–5 short steps], "seconds", "keyword" (CAPS, one word), "cost", "handle" (verified IG handle or "")}.
+- post.json `"angle": "new-ability"`, 🧪 Trial recommended until the format has numbers. Compare with the App demos in the stats.
+
 ## Rendering note (2026-11-09)
 If `hf/render.sh` keeps getting killed (exit 137/143, render_cancelled), render in chunks with `hyperframes snapshot --at <times> --keep`
 (~60-120 frames per call, resumable), then join the PNGs with ffmpeg at 30 fps and mix assets/music + sfx (see adstyles15).
@@ -179,7 +217,8 @@ Never `pkill -f chrome`/`pkill -f hyperframes` in the same shell command: it mat
    `data/history.json` and the `videos` branch), then `items`, else research (WebSearch: trending repos,
    launches this week). **Mix (Jan, 2026-11-08): 2 App demo 1/3 videos (§3b)
    + 1 normal Paper AI-tool video (§3).** Picks/items/research choose the Paper video's tool; the 2 App demos use
-   commands/skills that make a strong visual result.
+   commands/skills that make a strong visual result. **Current mix: §3b "Daily mix v4"** = 2 App demos + 1 Tutorial (§3e);
+   picks: `data/picks.json` "picked_demo" and "picked_tut", else the best ideas in `data/picklist_ideas.json`.
 2. **Verify every fact** in the tool's README/docs (clone with `git clone --depth 1`). No invented numbers.
    Alpha/beta → say "still early". Save media you'll show into `hf/videos/<name>/media/`.
 3. Write the 3 scripts. Save each as `hf/videos/<name>/script.txt` AND put all three in
@@ -241,7 +280,8 @@ videos in our own formats. Don't make Opuscar videos unless Jan asks again. (Cur
 - When he's chatting live, he approves scripts before they're voiced.
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
 - Max 3 posts a day (5 in one day split the reach). Don't guess what works: check the stats.
-- Every day 2 "App demo 1/3" videos (§3b) + 1 normal Paper AI-tool video (Jan, 2026-11-08).
+- Every day 2 "App demo 1/3" videos (§3b) + 1 Tutorial "How to make this X using <tool>" (§3e) (Jan, 2026-11-11; before: 1 trendy
+  AI-tool video, before that 1 Paper video).
 
 ## Sketch → Motion format (Jan, 2026-11-10)
 Left: hand-drawn sketch that draws itself (hf/sketchlib.py). Right: ONE hero object that morphs continuously, no cuts, no phone frame
