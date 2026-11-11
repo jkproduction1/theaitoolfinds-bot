@@ -1,7 +1,7 @@
 """gtamap22 v2 - tutorial "How to make this GTA 6 map animation using Claude" (Jan, live, 2026-11-11). v1 (map stays under the steps) =
 build_v1.py. v2: the flight plays only under the hook; then the map MORPHS into the reference chip of a clean white chat UI, the steps
 pop and morph on a light background, at "you're done" the result tile morphs back to full screen. No pauses between sentences, voice
-sped up 8 %. Keyword GTA, no music (Jan adds it in Instagram). Map = GTA-style transition over a code-drawn satellite-look landscape
+sped up 8 %. Keyword GTA, music added later (Jan, 2026-11-11: always with music). Map = GTA-style transition over a code-drawn satellite-look landscape
 (real Florida coastline; not a copy of the game's map, no Rockstar art/logo). Chat UI = our own generic design. Made with Claude Fable 5.2."""
 import json, shutil, subprocess, sys, html
 from pathlib import Path

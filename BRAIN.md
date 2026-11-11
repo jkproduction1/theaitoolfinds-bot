@@ -186,7 +186,7 @@ rounds; these are his calls:
   UI, drift the camera), check with a per-frame diff: no spikes, no dead frames. Model picker shows the model that really made it.
 - **Sfx:** own soft track per video (low, round sounds, bus low-passed, peaks ~10 dB under the voice): air for camera moves and
   morphs, soft pops for UI, quiet typing, a small chime on "done". No high clicks, no blip per word. Jan: "quieter, pleasant".
-  gtamap22 has no music because Jan adds a track in Instagram himself; ask him before making that the rule for automated posts.
+  **Always with music (Jan, 2026-11-11, final):** every video ships with a music bed (t1–t4, rotate; ~0.10–0.13 under a voice, ~0.3 without voice). No more "no music, Jan adds it in Instagram".
 - **Honesty:** the result is REALLY made with the named tool by the steps shown (Claude: drawn in code in this repo; other tools:
   the tool's real output via its connector or Jan's screen recording). No fake UI of a real product: our own neutral chat/step
   cards or Jan's recording. Don't say "one prompt and it's done" unless that was tested in a clean session; "you tweak it" is true.

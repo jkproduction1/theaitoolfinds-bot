@@ -1,7 +1,7 @@
 """trip24 - tutorial "How to make this viral travel map animation using Claude" (2026-11-11, scheduled run, BRAIN §3e, built from the gtamap22
 template). The result = a travel-reel flight map drawn in code by Claude Opus 5.5 (scenes.js): real Natural Earth coastlines/borders (public
 domain, world-atlas 2.0.2 countries-50m) on a d3-geo orthographic globe, real great circle Prague -> Tokyo, distance 9,070 km (haversine,
-R 6371 km, Prague 50.0755N 14.4378E, Tokyo 35.6762N 139.6503E). No airline/brand marks. Chat UI = our own neutral design. Keyword TRIP, no music."""
+R 6371 km, Prague 50.0755N 14.4378E, Tokyo 35.6762N 139.6503E). No airline/brand marks. Chat UI = our own neutral design. Keyword TRIP; music t2 mixed in later (Jan: always with music)."""
 import json, shutil, subprocess, sys, html
 from pathlib import Path
 HERE = Path(__file__).parent
