@@ -1,51 +1,60 @@
 # learnings.md: what works for @theaitoolfinds (rewrite on Wednesday + Sunday runs from data/stats.json)
 
-Last update: 2026-11-08 (Sunday run), from 35 videos (2026-10-20 → 11-07; stats pulled 11-07, so route3 is only hours old
-and inside3 ~1 day). Small sample: leads, not laws. Watch time: data/retention.md is still empty.
+Last update: 2026-11-11 (Wednesday run), stats pulled 2026-11-10; Nov posts mapped to videos via data/posted.json post_id.
+Posts from 11-09/11-10 are only 1–2 days old (numbers still climbing). Watch time: data/retention.md is still EMPTY, so nothing
+can be said about length vs. retention yet.
 
-## The big change
-- **Instagram exploded on App demos.** All 7 "Type one command…" 3D demos since 11-03 did 3.8k–72k IG views, against a
-  2.3k ceiling for everything else (Floorplan). inside3 = **71,596 IG / 2,747 saves / 789 shares / 588 comments**
-  (~20× our previous best). route3 = 12,937 IG / 440 saves / 85 comments within hours: a real IG hit (confirmed), 3rd by views
-  and still climbing. Save rate on these is ~3–4% of views (Floorplan 3.2%), comments are mostly the DM keyword.
-- **TikTok did not follow.** App demos average 495 TT views (9 posts); the first three were ~800 (explain3d 843,
-  styles5 811, motion3dv 798), the last six all 285–438. Relatable-pain posts average 767 TT (5 posts).
-  Guess: repeated near-identical "Type one command" hooks are wearing out on TT; age of the newest posts is part of it.
-- So the two platforms now want different things: IG rewards the App demo series, TT still rewards a vibe-coder pain hook.
+## The big change since Sunday
+- **The App demo series went viral on both platforms.** earth8 = **513,871 IG views / 24,361 saves / 7,492 shares / 9,250 comments**
+  (our best ever by ~4×). space7 = **165,156 TT + 164,178 IG** (first real TikTok hit: 8,872 likes, 6,780 saves, 860 comments).
+  space14 ("the scariest things in space") = **40,494 TT + 40,212 IG**. inside3 kept climbing to 117,894 IG.
+- **TikTok finally followed, but only for SPACE / EARTH.** The two TT hits are both space; all other App demos on TT stay 377–2,473
+  (median 879). So it is the topic, not the format, that broke TT (guess, 2 data points, but consistent).
+- On IG every App demo since 11-04 is 4.3k–514k; the median App demo (9.2k) beats every non-demo post we ever made except penguin10.
 
-## Top / bottom 3 (views / likes / saves / shares / comments)
-TikTok top: unslop 901 / 38 / 24 / 1 / 10 · floorplan 866 / 31 / 19 / 2 / 2 · opuscar2 845 / 28 / 22 / 1 / 2 (explain3d 843 just behind).
-TikTok bottom: rea 80 · opencode 88 · claude7 89 (all 10-24, old style). Since 11-01: tstack 153, route3 285, mega3 296.
-Instagram top: inside3 71,596 / 1,071 / 2,747 / 789 / 588 · mega3 13,064 / 146 / 436 / 83 / 81 · route3 12,937 / 181 / 440 / 93 / 85.
-Instagram bottom: claudemem 100 · claudeseo 109 · ponytail 110 (claudemem was #4 on TT: no overlap between platforms).
+## Top / bottom 3 since 11-01 (views / likes / saves / shares / comments)
+TikTok top: space7 165,156 / 8,872 / 6,780 / 621 / 860 · space14 40,494 / 1,668 / 1,204 / 92 / 218 · mystery17 2,473 / 105 / 57 / 7 / 31
+(then build3 2,348, kitchen11 1,525, earth8 1,236).
+TikTok bottom: tstack 162 · nature18 377 (1 day old) · visual3 384.
+Instagram top: earth8 513,871 / 16,285 / 24,361 / 7,492 / 9,250 · space7 164,178 / 3,758 / 6,222 / 1,526 / 3,290 · inside3 117,894 / 2,056 / 4,741 / 1,421 / 1,181
+(then space14 40,212, route3 39,032).
+Instagram bottom: unslop 448 · claudemem 460 · hallmark 477 (all old Paper pain posts, 11-01/02).
 
-## Hook patterns
-- IG winner: "Type one command and Claude shows you what's inside anything." (inside3). The 3 biggest IG posts all
-  start with "Type one command" + a concrete result; inside3's "what's inside anything" beat "a 3D animation of anything" (mega3, scale3) by 5×.
-  Guess: curiosity about the object beats the word "3D animation".
-- TT winners still: a symptom the viewer recognises ("Purple gradients, glows, emoji labels?", "Vibe coded an app? No idea how it works?",
-  "Ever closed Claude Code and lost…") and "can now" + surprising ability (opuscar2).
-- Weak everywhere: "Paying for X? There's a free one.", "Most people use X like…", listicles, a person's name (tstack).
+## Hook / topic patterns
+- **Winners are "what would happen" + space/Earth + fear/scale:** "…what would happen to Earth…" (earth8), "…animates space…" (space7),
+  "…the scariest things in space" (space14). "What's inside anything" (inside3) is the non-space runner-up.
+- Generic framing ("…how nature works" nature18 4.3k IG / 377 TT, "…like a motion designer" motion13 837 TT, "3D animation of anything")
+  is clearly weaker than a concrete scary/curious object.
+- Comments are ~1–2% of IG views on the hits (keyword DMs work at scale: 9,250 on earth8). TT comments now also come (860 on space7).
+- Old TT pain hooks ("Purple gradients…?", "Vibe coded an app?") still do ~800–960 TT but ≤ 2.6k IG: not worth the slot any more.
+- Sketch → Motion (sketch2): 3.9k IG / 524 TT on day 1 — below the App demo median; keep as occasional variety only.
 
 ## Formats
-- **App demo ("Type /<command>… and you get this") = our IG engine**: 9 posts, IG avg ~15.6k (median ~8.7k, 8 with IG data), TT avg 495.
-  Keep 3 a day (Jan, 11-07). Comment-keyword + DM prompts works on IG (15–588 comments), not on TT (0–2).
-- Paper / AI-tool videos: none since 11-04; last ones did 300–900 TT and 260–2.3k IG.
-- Length vs. watch time: no retention data yet. All Nov videos were 19–27 s; no visible length effect on views inside that range.
-- Predictor: total score barely tracks TT views (rho 0.19, 16 Nov posts) and runs opposite on IG. Hook score showed nothing.
-  Recalibrated 2026-11-08 (app-demo prior 0.95 → 0.65 because it is TT-based; hook 20 → 17, visuals 8 → 11). See hf/predict_weights.json.
+- **App demo = the engine on both platforms now.** 19 TT posts avg 11.7k (median 879); IG avg 63k (median 9.2k).
+- Re-release test: planet21/planet21r (earth8 scenes, new voice, no music) and the result-first twins (styles20r, planet21r) have no
+  numbers yet — compare on the next Sunday run.
+- Tutorial format (§3e, gtamap22) starts today; no numbers yet.
+- Length: all Nov videos 16–27 s; within that range dur_s shows no link to views (rho ~0 on both platforms). No retention data.
+
+## Predictor (recalibrated 2026-11-11)
+- Total score runs AGAINST views (Spearman TT −0.37 n=24, IG −0.70 n=21): App demos score low on hook/payoff and win anyway.
+  Inside App demos only, visuals is the one feature tracking TT views (+0.42, n=14); hook ≈ 0.
+- Change: weights hook 17→14, payoff 12→10, visuals 11→16; angle_prior app-demo 0.65→1.0 (best TT avg), relatable-pain 0.98,
+  new-ability 0.72, fear 0.48, listicle 0.22, styles-list 0.71 (others kept). Details in hf/predict_weights.json "note".
+- Treat the predictor as a checklist for flags, not a forecast: it still can't see the topic (space vs. kitchen), which is what mattered.
 
 ## Test next
-- Keep the "inside / what's inside anything" object-curiosity framing for App demos (inside3 is the outlier to copy), vary objects.
-- TT: give App demos a pain-style first line instead of the identical "Type one command…" (e.g. "Can't explain how X works?
-  Type one command…"). Compare TT views vs. the last six (285–438).
-- Ask Jan for 2–3 retention screenshots (inside3 IG, route3 TT) so length vs. watch time can finally be judged.
-- Research leads (2026-11-08 WebSearch, not verified yet; check README before scripting):
-  - "Claude Opus 5.5 makes motion-design videos by writing a program that draws every frame" is being covered in 6+ languages
-    (pasqualepillitteri.it). Test a hook that says it outright: "No video model. Claude writes the code for every frame."
-  - HyperFrames (heygen-com/hyperframes) and remotion-dev/skills are installable Claude skills with slash workflows
-    (/pr-to-video, /faceless-explainer, /product-launch-video; roo.beehiiv.com, 10-11). Good fit for an App demo: "Type /pr-to-video…".
-  - Revid keeps a ranking of the 64 most-liked Opus 5.5 motion-graphics videos: skim it for formats/objects before the next week.
-  - Viral 3D health/anatomy explainers (viralpromptslab, "Viral 3D Health Videos") match inside3's pattern: guess, test
-    "what's inside the heart / an engine / a phone" demos.
+- **More space / Earth / "what if" / "scariest" App demos** (black holes, impacts, volcanoes, deep ocean), at least 1 a day while it holds;
+  vary objects, keep the concrete fear/curiosity word in the hook. Watch for fatigue: compare planet21 (re-release) with the originals.
+- Bring the same fear/scale framing to body/inside topics ("the scariest thing inside your body"?) — guess, test once.
+- Ask Jan again for 2–3 watch-time screenshots (earth8 IG, space7 TT, one weak demo) so length vs. retention can be judged.
+- Tutorial: compare its first numbers with App demos of the same day before deciding how often.
+- Research leads (2026-11-11 WebSearch, not verified; check sources before scripting):
+  - "Opus 5.5 makes motion-design videos by writing a program that draws every frame" is still spreading (pasqualepillitteri.it in 10+
+    languages, officechai "10 best examples" list). A tutorial or hook that says it outright is still timely.
+  - "anything2explainer turns Claude into a motion-graphics film studio" (hermes-ai.net) and a Claude + Higgsfield MCP "Vox-style motion
+    graphics" workflow (ai.joaoqueiros.com) are circulating: possible tutorial/App-demo topics (check repos/licences first).
+  - Travel route / flight-path map animations remain a big evergreen reel format (Splice, Travel Animator, travelmap.video): fits the
+    Tutorial format with a code-drawn globe.
+  - Higgsfield released a virality predictor (creatorstoolbox newsletter); could cross-check our own predictor (paid credits: only if Jan taps).
 - data/viral_inbox.md: empty this week.
