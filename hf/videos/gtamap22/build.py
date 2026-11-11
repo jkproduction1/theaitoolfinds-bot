@@ -27,27 +27,30 @@ F = Film(W, (HERE / "script.txt").read_text(), A / "voice.json", tail=1.1)
 F.scenes([0])
 S, E = F.S, F.E
 T1 = 3.7
-S1, S2, S3, CTA = round(S[10] - 0.12, 3), round(S[15] - 0.12, 3), round(S[25] - 0.12, 3), round(S[33] - 0.12, 3)
+S1, S2, S3, CTA = round(S[10] - 0.12, 3), round(S[15] - 0.12, 3), round(S[25] - 0.12, 3), round(S[34] - 0.12, 3)
 END = round(F.dur + 1, 3)
-DONE = round(S[30] - 0.05, 3)             # "and you're done": the result morphs back to full screen
+DONE = round(S[31] - 0.05, 3)             # "and you're done": the result morphs back to full screen
 TM = {"S1": S1, "S2": S2, "S3": S3, "END": END, "DONE": DONE, "r0": round((T1 + 0.15) / (S1 + 0.1), 4), "r1": round((T1 + 0.6) / (F.dur - 0.25 - DONE), 4), "CTA": CTA,
-      "pick": round(S[17], 3), "paste": round(S[22], 3), "fix": round(S[25] + 0.05, 3), "fixe": round(E[29], 3)}
-for t, k in [(0.0, "whoosh"), (S1, "whoosh"), (S1 + 0.5, "pop"), (S2, "pop"), (TM["pick"], "click"), (TM["paste"], "pop"), (S3, "pop"), (DONE, "whoosh"), (DONE + 0.35, "pop"), (CTA, "pop")]:
-    F.sfx.append((t, k))
+      "pick": round(S[17], 3), "paste": round(S[22], 3), "fix": round(S[28] - 0.2, 3), "fixe": round(E[30] - 0.1, 3), "yd": round(S[32] - 0.05, 3)}
 FIX = "make the clouds softer"
-for i in range(0, len(FIX), 2): F.sfx.append((TM["fix"] + (TM["fixe"] - TM["fix"]) * i / len(FIX), "tick"))
-
 PROMPT = ("Make a 9:16 map-transition animation like my reference clip: start close over a coastal city, pull back above the clouds, "
           "glide along the islands and descend on the last one. Satellite look, layered clouds with parallax, smooth easing…")
+CAPS = [  # step, lines of (word index, on-screen text, highlight)
+    (1, [[(10, "First,", 0), (11, "upload", 0)], [(12, "a", 0), (13, "reference", 1), (14, "clip.", 1)]]),
+    (2, [[(15, "Then", 0), (16, "pick", 0), (17, "Fable", 1), (18, "5.2", 1)], [(21, "and", 0), (22, "paste", 0), (23, "this", 0), (24, "prompt.", 1)]]),
+    (3, [[(25, "Claude", 0), (26, "builds", 1), (27, "it,", 0)], [(28, "you", 0), (29, "tweak", 1), (30, "it,", 0)]]),
+]
+caps_html = "".join(f'<div class="cap" id="cap{k}"><i>{k}</i><span>' + "<br>".join(" ".join(f'<b class="cw{" hi" if h else ""}" id="cw{i}">{html.escape(t)}</b>' for i, t, h in line) for line in lines) + '</span></div>' for k, lines in CAPS)
+CW = [i for _, lines in CAPS for line in lines for i, _, _ in line]
 SPARK = '<svg viewBox="0 0 100 100"><path fill="#ff5a2b" d="M50 6l9 33 33 11-33 11-9 33-9-33L8 50l33-11z"/></svg>'
 body = ('<div id="bg"><div class="bl" id="bl0"></div><div class="bl" id="bl1"></div><div class="bl" id="bl2"></div></div><div id="fl"><div id="ui">'
-        + "".join(f'<div class="cap" id="cap{k}"><i>{k}</i><span>{t}</span></div>' for k, t in ((1, "Upload a reference clip"), (2, "Pick Fable 5.2, paste the prompt"), (3, "Tell Claude what to fix")))
+        + caps_html
         + '<div id="panel"><div id="ph">' + SPARK + '<b>Claude</b><div id="mchip"><span id="mname">Choose model</span></div></div>'
         '<div id="inp"><div id="file"><div id="slot"></div><div><b>reference.mp4</b><span>video · 25 s</span></div><div class="ok">✓</div></div>'
-        '<div id="ptxt">' + html.escape(PROMPT) + '</div><div id="fix"><span id="fixt"></span></div><div class="snd" id="snd"></div></div></div>'
-        '<div id="donep">✓ Done</div></div>'
+        '<div id="ptxt">' + html.escape(PROMPT) + '</div><div id="prog"></div><div id="fix"><span id="fixt"></span></div><div class="snd" id="snd"></div></div></div>'
+        '</div>'
         '<div class="stage" id="st0"><canvas id="cv0" width="1080" height="1920"></canvas></div></div>'
-        '<div id="hook"><span>How to make this</span><b>GTA 6 map animation</b><em>' + SPARK + 'using Claude</em></div>')
+        '<div id="donep">✓ You\'re done</div><div id="hook"><span>How to make this</span><b>GTA 6 map animation</b><em>' + SPARK + 'using Claude</em></div>')
 cta = ('<div id="cta"><div class="c1">Comment</div><div class="c2">“GTA”</div><div class="c3">and I\'ll send you the prompt</div></div>')
 thumbs = "".join(f'<div class="th2" id="th{k}" style="left:{x}px"><img src="assets/th{k}.jpg" alt=""></div>' for k, x in enumerate([90, 400, 710]))
 end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“GTA”</div>'
@@ -74,7 +77,8 @@ html,body,#root{background:#f3efe8!important}
 #hook em svg{width:38px;height:38px}
 .cap{position:absolute;left:60px;right:40px;top:400px;display:flex;align-items:center;gap:26px;opacity:0}
 .cap i{font-style:normal;flex:none;width:104px;height:104px;border-radius:50%;background:#ff5a2b;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:62px}
-.cap span{font-weight:900;font-size:66px;letter-spacing:-.035em;line-height:1.04}
+.cap span{font-weight:900;font-size:70px;letter-spacing:-.035em;line-height:1.12}
+.cw{display:inline-block;font-weight:900;opacity:0}.cw.hi{color:#ff5a2b}
 #panel{position:absolute;left:54px;right:54px;top:640px;height:820px;background:#fff;border-radius:56px;box-shadow:0 40px 100px rgba(60,40,20,.18),0 0 0 1.5px rgba(0,0,0,.06);padding:36px 38px;transform-origin:50% 50%}
 #ph{display:flex;align-items:center;gap:16px;font-size:44px}#ph svg{width:52px;height:52px}#ph b{font-weight:800}
 #mchip{margin-left:auto;background:#f1eee9;border:2px solid #e2ddd5;border-radius:36px;padding:12px 28px;font-weight:700;font-size:34px;color:#6b665e;transform-origin:100% 50%}
@@ -84,11 +88,12 @@ html,body,#root{background:#f3efe8!important}
 #file b{display:block;font-size:40px;font-weight:800}#file span{display:block;font-size:30px;color:#8a857d;margin-top:4px}
 #file .ok{margin-left:auto;width:60px;height:60px;border-radius:50%;background:#2fbf71;color:#fff;font-weight:900;font-size:36px;display:flex;align-items:center;justify-content:center;opacity:0}
 #ptxt{font-size:35px;line-height:1.32;color:#23262b;opacity:0;margin-top:26px;padding-right:20px}
+#prog{position:absolute;left:30px;right:30px;bottom:132px;height:12px;border-radius:6px;background:#ff5a2b;transform-origin:0 50%;transform:scaleX(0);opacity:0}
 #fix{position:absolute;left:30px;bottom:30px;right:130px;height:84px;background:#fff;border:2px solid #e8e3db;border-radius:42px;display:flex;align-items:center;padding:0 30px;font-size:36px;font-weight:600;opacity:0}
 #inp .snd{position:absolute;right:26px;bottom:30px;width:84px;height:84px;border-radius:50%;background:#16181c}
 #inp .snd::after{content:'';position:absolute;left:29px;top:22px;border-bottom:26px solid #fff;border-left:13px solid transparent;border-right:13px solid transparent}
 #inp .snd::before{content:'';position:absolute;left:40px;top:42px;width:4px;height:22px;background:#fff}
-#donep{position:absolute;left:50%;top:150px;transform:translateX(-50%);background:#2fbf71;color:#fff;font-weight:900;font-size:64px;padding:16px 46px;border-radius:60px;opacity:0;z-index:26;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+#donep{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;top:720px;font-family:var(--sans);background:#2fbf71;color:#fff;font-weight:900;font-size:84px;padding:20px 56px;border-radius:70px;opacity:0;z-index:26;box-shadow:0 20px 50px rgba(0,0,0,.4)}
 #cta{position:absolute;left:70px;right:70px;top:230px;text-align:center;font-family:var(--sans);color:#fff;z-index:27;background:rgba(6,14,24,.66);border:1.5px solid rgba(255,255,255,.38);border-radius:56px;padding:34px 20px 40px;opacity:0;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 #cta .c1{font-weight:800;font-size:78px}#cta .c2{font-weight:900;font-size:170px;color:#ff5a2b;letter-spacing:-.04em;line-height:1.02}#cta .c3{font-weight:700;font-size:46px;margin-top:6px}
 #end{position:absolute;inset:0;background:#0a0f16;opacity:0;font-family:var(--sans);z-index:30}
@@ -113,7 +118,7 @@ const clock={t:0}; tl.fromTo(clock,{t:0},{t:DUR,duration:DUR,ease:'none',onUpdat
 const NI={immediateRender:false}; function F2(sel,f,t,at){ return tl.fromTo(sel,f,Object.assign({},t,NI),at); }
 // thumbnail slot of the file chip (where the map morphs to)
 const SX=54+38+30+18+2, SY=640+136+28+18+2, SSC=90/1080, SR=18/SSC;
-tl.set(['.cap','#file .ok','#ptxt','#fix','#donep','#cta','#handle'],{opacity:0},0);
+tl.set(['.cap','.cw','#file .ok','#ptxt','#fix','#prog','#donep','#cta','#handle'],{opacity:0},0);
 tl.set('#st0',{x:0,y:0,scale:1,borderRadius:0},0); tl.set('#panel',{scale:.6,opacity:0,y:200},0); tl.set('#file',{opacity:1},0);
 F2('#hook',{opacity:0,y:-30,scale:.9},{opacity:1,y:0,scale:1,duration:.4,ease:'back.out(1.6)'},0.05);
 F2('#hook',{opacity:1,y:0,scale:1},{opacity:0,y:-60,scale:.8,duration:.3,ease:'power2.in'},TM.S1-0.22);
@@ -122,24 +127,64 @@ F2('#panel',{scale:.6,opacity:0,y:200},{scale:1,opacity:1,y:0,duration:.6,ease:'
 F2('#st0',{x:0,y:0,scale:1,borderRadius:0},{x:SX,y:SY,scale:SSC,borderRadius:SR,duration:.75,ease:'expo.inOut'},TM.S1-0.08);
 F2('#file',{scale:.7},{scale:1,duration:.5,ease:'back.out(2.2)'},TM.S1+0.42);
 F2('#file .ok',{opacity:0,scale:0},{opacity:1,scale:1,duration:.3,ease:'back.out(2.6)'},TM.S1+0.8);
-[[1,TM.S1,TM.S2],[2,TM.S2,TM.S3],[3,TM.S3,TM.DONE]].forEach(([k,a,b])=>{ F2('#cap'+k,{opacity:0,x:120,scale:.9},{opacity:1,x:0,scale:1,duration:.45,ease:'back.out(1.5)'},a+0.1); F2('#cap'+k,{opacity:1,x:0},{opacity:0,x:-140,duration:.22,ease:'power2.in'},b-0.16); });
+[[1,TM.S1,TM.S2],[2,TM.S2,TM.S3],[3,TM.S3,TM.DONE]].forEach(([k,a,b])=>{ F2('#cap'+k,{opacity:0,x:120,scale:.9},{opacity:1,x:0,scale:1,duration:.3,ease:'back.out(1.5)'},a-0.02); F2('#cap'+k,{opacity:1,x:0},{opacity:0,x:-140,duration:.22,ease:'power2.in'},b-0.16); });
+__CW__.forEach(i=>F2('#cw'+i,{opacity:0,y:26,scale:.86},{opacity:1,y:0,scale:1,duration:.22,ease:'back.out(2.2)'},Math.max(0,S[i]-0.05)));
+// the hook lines and the CTA lines pulse when they are spoken
+[['#hook span',0],['#hook b',4],['#hook em',8]].forEach(([q,i])=>F2(q,{scale:1},{scale:1.07,duration:.15,ease:'power2.out',yoyo:true,repeat:1},S[i]+0.08));
 // step 2: model chip morphs into "Fable 5.2", prompt pops in
 F2('#mchip',{scale:1},{scale:1.18,duration:.16,ease:'power2.out'},TM.pick-0.18);
 tl.call(()=>{document.getElementById('mname').textContent='Fable 5.2';},null,TM.pick); tl.set('#mchip',{backgroundColor:'#ff5a2b',borderColor:'#ff5a2b',color:'#fff'},TM.pick);
 F2('#mchip',{scale:1.18},{scale:1,duration:.5,ease:'elastic.out(1,0.5)'},TM.pick);
 F2('#ptxt',{opacity:0,y:40,scale:.92},{opacity:1,y:0,scale:1,duration:.45,ease:'back.out(1.7)'},TM.paste); F2('#inp',{borderColor:'#ff5a2b'},{borderColor:'#e8e3db',duration:.7},TM.paste);
 // step 3: follow-up, then MORPH 2: result goes full screen
-F2('#fix',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:'back.out(1.8)'},TM.S3+0.02); tl.set('#snd',{backgroundColor:'#ff5a2b'},TM.fix);
+tl.to('#snd',{scale:.78,duration:.08,yoyo:true,repeat:1},TM.S3+0.04); tl.set('#prog',{opacity:1},TM.S3+0.1); F2('#prog',{scaleX:0},{scaleX:1,duration:TM.fix-TM.S3-0.28,ease:'power1.inOut'},TM.S3+0.1); F2('#prog',{opacity:1},{opacity:0,duration:.18},TM.fix-0.16);
+F2('#fix',{opacity:0,y:40},{opacity:1,y:0,duration:.3,ease:'back.out(1.8)'},TM.fix-0.14); tl.set('#snd',{backgroundColor:'#ff5a2b'},TM.fix);
 tl.to('#snd',{scale:.78,duration:.08,yoyo:true,repeat:1},TM.DONE-0.2);
-F2('#st0',{x:SX,y:SY,scale:SSC,borderRadius:SR},{x:0,y:0,scale:1,borderRadius:0,duration:.7,ease:'expo.inOut'},TM.DONE-0.1);
-F2('#panel',{scale:1,opacity:1},{scale:1.25,opacity:0,duration:.45,ease:'power2.in'},TM.DONE);
-F2('#donep',{opacity:0,scale:.4,y:-40},{opacity:1,scale:1,y:0,duration:.4,ease:'back.out(2)'},TM.DONE+0.35);
-F2('#donep',{opacity:1,scale:1},{opacity:0,scale:.7,duration:.2},TM.CTA-0.2);
+F2('#st0',{x:SX,y:SY,scale:SSC,borderRadius:SR},{x:0,y:0,scale:1,borderRadius:0,duration:.7,ease:'expo.inOut'},TM.DONE);
+F2('#panel',{scale:1,opacity:1},{scale:1.25,opacity:0,duration:.45,ease:'power2.in'},TM.DONE+0.1);
+F2('#donep',{opacity:0,scale:.4,y:40},{opacity:1,scale:1,y:0,duration:.4,ease:'back.out(2)'},TM.yd);
+F2('#donep',{opacity:1,scale:1},{opacity:0,scale:.8,y:-30,duration:.3,ease:'power2.in'},TM.yd+1.35);
+[['#cta .c1',34],['#cta .c3',36]].forEach(([q,i])=>F2(q,{scale:1},{scale:1.08,duration:.15,ease:'power2.out',yoyo:true,repeat:1},S[i]+0.1));
 F2('#cta',{opacity:0,scale:.6,y:-60},{opacity:1,scale:1,y:0,duration:.5,ease:'back.out(1.7)'},TM.CTA);
 tl.fromTo('#cta .c2',{scale:1},{scale:1.06,duration:.5,ease:'sine.inOut',yoyo:true,repeat:5,immediateRender:false},TM.CTA+0.5);
 F2('#handle',{opacity:0},{opacity:1,duration:.3},TM.CTA+0.4);
 """
-JS = JS.replace("__SCENES__", (HERE / "scenes.js").read_text()).replace("__TM__", json.dumps(TM)).replace("__FIX__", FIX)
+JS = JS.replace("__SCENES__", (HERE / "scenes.js").read_text()).replace("__TM__", json.dumps(TM)).replace("__FIX__", FIX).replace("__CW__", json.dumps(CW))
 F.write(CSS, JS, music_vol=0.0)
+# ---------- sound design for this video (no music): airy sweeps for the camera and the morphs, soft UI pops, typing, a chime on "done"
+import numpy as np, wave
+SR = 44100; rng = np.random.default_rng(7); buf = np.zeros(int((F.dur + 1) * SR))
+def put(t, x, g):
+    i = int(max(0, t) * SR); x = x[:len(buf) - i]; buf[i:i + len(x)] += x * g
+def sweep(dur, f0, f1, shape=2.0):          # band-passed noise whose pitch glides f0 -> f1
+    n = int(dur * SR); t = np.arange(n) / SR; x = rng.standard_normal(n); f = f0 * (f1 / f0) ** (t / t[-1]); lp = bp = 0.0; y = np.empty(n)
+    for i in range(n):
+        w = 2 * np.sin(np.pi * min(f[i], SR / 6.5) / SR); hp = x[i] - lp - 0.8 * bp; bp += w * hp; lp += w * bp; y[i] = bp
+    return y / (np.abs(y).max() + 1e-9) * np.sin(np.pi * t / t[-1]) ** shape
+def tone(f0, f1, dur, dec):                  # sine blip gliding f0 -> f1
+    n = int(dur * SR); t = np.arange(n) / SR; f = f0 + (f1 - f0) * t / t[-1]
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.minimum(1, t / 0.003) * np.exp(-t / dec)
+def chime(notes, gap=0.07, dec=0.28):
+    n = int((gap * len(notes) + 1.0) * SR); y = np.zeros(n)
+    for k, f in enumerate(notes):
+        x = tone(f, f, 0.9, dec) + 0.35 * tone(f * 2, f * 2, 0.9, dec * 0.6); i = int(k * gap * SR); y[i:i + len(x)] += x
+    return y
+tick = tone(2400, 2400, 0.02, 0.003); click = tone(1700, 1700, 0.035, 0.004) * 0.6 + tone(150, 150, 0.035, 0.012)
+pop = tone(560, 260, 0.1, 0.03); thup = tone(300, 140, 0.16, 0.05); thump = tone(90, 55, 0.4, 0.12)
+put(0.05, sweep(1.9, 220, 1500), 0.20); put(1.5, sweep(1.9, 1500, 260), 0.20); put(S1 - 0.35, thump, 0.30)                 # the flight + landing
+for q, i in (("h", 0), ("h", 4), ("h", 8)): put(S[i] + 0.06, tone(700, 900, 0.05, 0.02), 0.07)                             # hook lines pulse
+put(S1 - 0.1, sweep(0.7, 2200, 420), 0.26); put(S1 + 0.5, pop, 0.22); put(S1 + 0.8, chime([1568], dec=0.12), 0.10)          # morph 1, chip lands, check
+for i in CW: put(S[i] - 0.05, tone(900, 1200, 0.04, 0.012), 0.045)                                                           # subtitle words
+put(S2, sweep(0.3, 900, 1800), 0.10); put(TM["pick"] - 0.02, click, 0.24); put(TM["pick"] + 0.02, tone(660, 990, 0.1, 0.04), 0.14)
+put(TM["paste"], thup, 0.30); put(TM["paste"] + 0.02, sweep(0.25, 1400, 600), 0.10)
+put(S3 + 0.03, click, 0.24); put(S3 + 0.1, sweep(max(0.3, TM["fix"] - S3 - 0.3), 500, 2400, 1.2), 0.12)                      # send + "builds it"
+for i in range(len(FIX)):
+    if FIX[i] != " ": put(TM["fix"] + (TM["fixe"] - TM["fix"]) * i / len(FIX), tick, 0.13 + 0.05 * rng.random())
+put(DONE - 0.08, click, 0.22); put(DONE, sweep(0.8, 380, 2400), 0.30); put(TM["yd"], chime([1046.5, 1318.5, 1568.0]), 0.16)
+put(DONE + 0.5, sweep(1.6, 1500, 300), 0.12)                                                                                # replay flight
+put(CTA, pop, 0.24); put(CTA + 0.02, thump, 0.22); put(S[35] - 0.03, tone(880, 1320, 0.09, 0.05), 0.12)
+pk = np.abs(buf).max(); buf = buf * min(1.0, 0.5 / (pk + 1e-9))
+with wave.open(str(A / "sfx.wav"), "wb") as wv:
+    wv.setnchannels(1); wv.setsampwidth(2); wv.setframerate(SR); wv.writeframes((np.clip(buf, -1, 1) * 32767).astype(np.int16).tobytes())
 _ix = W / "index.html"; _ix.write_text(_ix.read_text().replace('data-motion-blur="on"', 'data-motion-blur="off"'))
 print(TM)
