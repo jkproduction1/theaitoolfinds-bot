@@ -57,7 +57,7 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
       if(M[j]<=100){ // ---- water: depth from the distance to land + sand banks + tidal channels
         let s=Math.max(B2[j]/255*1.9, BK[j]/255*(0.55+0.5*fbm2(x/130,y/130,3))); const n=fbm2(x/60,y/60,4), ch=1-Math.abs(2*fbm2(x/120+3,y/120,3)-1); s+= (n-0.5)*0.34; if(s>0.25) s-=sm(0.9,1,ch)*0.16*sm(0.25,0.6,s); s+=B1[j]/255*0.9; s=s<0?0:s>1.25?1.25:s;
         c= s<0.18?mixc(W0,W1,s/0.18): s<0.42?mixc(W1,W2,(s-0.18)/0.24): s<0.7?mixc(W2,W3,(s-0.42)/0.28): s<0.98?mixc(W3,W4,(s-0.7)/0.28): mixc(W4,W5,sm(0.98,1.25,s));
-        const wv=vn(x/3.1,y/2.2)*0.5+vn(x/11,y/7)*0.5; const k=0.92+0.16*wv; c=[c[0]*k,c[1]*k,c[2]*k];
+        const wv=vn(x/3.1,y/2.2)*0.5+vn(x/11,y/7)*0.5; const k=0.92+0.16*wv; c=[c[0]*k,c[1]*k,c[2]*k]; const bd=Math.min(x,y,TW-1-x,TH-1-y); if(bd<160) c=mixc([5,34,66],c,sm(0,160,bd));
       } else { // ---- land
         const h=H[i], hs=(h-H[i-TW-1>=0?i-TW-1:i])*9, m=fbm2(x/150+40,y/150,3), edge=1-B1[j]/255;
         c= m<0.42?mixc(G0,G1,sm(0.25,0.42,m)): m<0.6?mixc(G1,G2,(m-0.42)/0.18): mixc(G2,G3,sm(0.6,0.8,m));
@@ -98,47 +98,58 @@ const FL=[[[-85.004,31.001],[-84.982,30.933],[-84.943,30.888],[-84.936,30.817],[
     const n=out.length; for(let i=1;i<n-1;i++){ const dx=out[i+1][0]-out[i-1][0], dy=out[i+1][1]-out[i-1][1], l=Math.hypot(dx,dy)||1, w=(Math.sin(i*0.55)*7+Math.sin(i*0.21+1)*11)*Math.sin(Math.PI*i/n); out[i]=[out[i][0]-dy/l*w,out[i][1]+dx/l*w]; }
     let L=0; const acc=[0]; for(let i=1;i<n;i++){ L+=Math.hypot(out[i][0]-out[i-1][0],out[i][1]-out[i-1][1]); acc.push(L); } return {pts:out,acc,L}; })();
   const GL=[]; { const R=R0(77); for(let i=0;i<520;i++) GL.push([R()*TW,R()*TH,R()*6.28,1+R()*2.2]); }
-  // ---------- camera: ONE smooth eased move (like an After Effects camera with easy-ease keys): rise, glide, descend
-  const lerp=(a,b,u)=>a+(b-a)*u, ZC=1.62, ZH=0.6, ZE=2.1, T0=0.0, T1=3.4, SS=(u)=>{ u=u<0?0:u>1?1:u; return u*u*u*(u*(u*6-15)+10); };
-  function camAt(t){ const u=(t-T0)/(T1-T0), su=SS(u), pp=SS((u-0.14)/0.78), hump=Math.pow(Math.sin(Math.PI*su),1.6), aft=Math.max(0,t-T1);
-    const base=lerp(Math.log(ZC),Math.log(ZE),su), early=-0.16*(1-Math.exp(-Math.max(0,t)/0.45))*(1-su);        // starts pulling back at once, then the big move takes over
-    const lz=base+early+(Math.log(ZH)-lerp(Math.log(ZC),Math.log(ZE),0.5))*hump+0.022*aft;                       // after landing: slow endless push-in
-    return {lon:lerp(MIA[0]+0.1,KW[0],pp)+0.006*aft,lat:lerp(MIA[1]-0.12,KW[1],pp)+0.0015*aft,z:Math.exp(lz),rot:lerp(-0.10,0.05,su)+0.006*aft,su,pp,H:1/Math.exp(lz)}; }
+  // ---------- camera: After-Effects style. One master timeline with strong easy-ease (cubic-bezier .72,0,.28,1): the camera pulls back
+  // and levels out, glides, then tilts down into the destination. Position starts a bit later and ends a bit earlier than the zoom.
+  const lerp=(a,b,u)=>a+(b-a)*u, ZC=1.62, ZH=0.62, ZE=2.05, T1=3.7;
+  function bez(x){ x=x<0?0:x>1?1:x; let lo=0, hi=1, t=x; for(let i=0;i<22;i++){ t=(lo+hi)/2; const xx=3*(1-t)*(1-t)*t*0.72+3*(1-t)*t*t*0.28+t*t*t; if(xx<x) lo=t; else hi=t; } return 3*(1-t)*t*t+t*t*t; }
+  function camAt(t){ const u=t/T1, rise=bez(u/0.56), fall=bez((u-0.44)/0.56), pp=bez((u-0.16)/0.68), su=bez(u), aft=Math.max(0,t-T1);
+    const early=-0.14*(1-Math.exp(-Math.max(0,t)/0.5))*(1-rise);
+    const lz=Math.log(ZC)+early+(Math.log(ZH)-Math.log(ZC))*rise+(Math.log(ZE)-Math.log(ZH))*fall+0.02*aft, z=Math.exp(lz);
+    const alt=CL((Math.log(ZC)-lz)/(Math.log(ZC)-Math.log(ZH)));
+    return {lon:lerp(MIA[0]+0.06,KW[0],pp)+0.006*aft,lat:lerp(MIA[1]-0.02,KW[1]+0.03,pp)+0.001*aft,z,rot:lerp(-0.16,0.10,su)+0.005*aft,su,pp,H:1/z,alt,th:(lerp(40,13,alt)-1.2*CL(aft/3))*Math.PI/180}; }
   let cam=camAt(0);
-  const SCR=(lon,lat)=>{ const dx=(tx(lon)-tx(cam.lon))*cam.z, dy=(ty(lat)-ty(cam.lat))*cam.z, c=Math.cos(cam.rot), s=Math.sin(cam.rot); return [540+dx*c-dy*s, 960+dx*s+dy*c]; };
+  // ---------- tilted ground plane: the scene is drawn top-down into a buffer, then projected row by row (true perspective)
+  const BW=1700, BH=2800, BCX=BW/2, BCY=1820, PD=2400;
+  const tmp=off(BW,BH,()=>{}), buf=off(BW,BH,()=>{}), tc=tmp.getContext('2d'), bc=buf.getContext('2d');
+  const PRJ=(dx,dy)=>{ const Y=-dy, k=PD/(PD+Y*Math.sin(cam.th)); return [540+dx*k, 1020-Y*Math.cos(cam.th)*k, k]; };
+  const SCR=(lon,lat)=>{ const dx=(tx(lon)-tx(cam.lon))*cam.z, dy=(ty(lat)-ty(cam.lat))*cam.z, c=Math.cos(cam.rot), s=Math.sin(cam.rot); return PRJ(dx*c-dy*s,dx*s+dy*c); };
+  function cloudLayer(c,T,hc,al,wx,wy,lt,sz,ox,oy){ if(cam.H<=hc*1.04) return; const k=cam.H/(cam.H-hc), z=cam.z*k, a=al*sm(hc*1.04,hc*1.45,cam.H); if(a<=0.004) return;
+    c.save(); c.globalAlpha=a; c.translate(BCX,BCY); c.rotate(cam.rot); c.scale(z,z); c.translate(-tx(cam.lon)+ox+lt*wx,-ty(cam.lat)+oy+lt*wy); c.imageSmoothingQuality='high'; c.drawImage(T,0,0,T.width*sz,T.height*sz); c.restore(); }
+  function topDown(c,lt){ c.setTransform(1,0,0,1,0,0); c.globalAlpha=1; c.fillStyle='#052242'; c.fillRect(0,0,BW,BH);
+    c.save(); c.translate(BCX,BCY); c.rotate(cam.rot); c.scale(cam.z,cam.z); c.translate(-tx(cam.lon),-ty(cam.lat)); c.imageSmoothingQuality='high'; c.drawImage(tex,0,0);
+    c.fillStyle='#fff'; GL.forEach(([x,y,ph,r])=>{ const a=Math.pow(Math.max(0,Math.sin(lt*3.2+ph)),6); if(a<0.05) return; c.globalAlpha=a*0.7; c.fillRect(x,y,r,r); }); c.globalAlpha=1;
+    const rf=CL(cam.pp*1.04); if(rf>0.005){ const n=Math.max(2,Math.ceil(ROUTE.pts.length*rf)), w=9/cam.z; c.lineJoin='round'; c.lineCap='round';
+      const path=()=>{ c.beginPath(); for(let i=0;i<n;i++){ const p=ROUTE.pts[i]; i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]); } };
+      c.shadowColor='#19d3ff'; c.shadowBlur=26; c.strokeStyle='rgba(30,200,255,.6)'; c.lineWidth=w*1.9; path(); c.stroke(); c.shadowBlur=0;
+      c.strokeStyle='#eafcff'; c.lineWidth=w*0.75; c.setLineDash([w*3.2,w*2.2]); c.lineDashOffset=-lt*w*14; path(); c.stroke(); c.setLineDash([]);
+      const h=ROUTE.pts[n-1]; c.fillStyle='#fff'; c.shadowColor='#19d3ff'; c.shadowBlur=30; c.beginPath(); c.arc(h[0],h[1],w*1.25,0,7); c.fill(); c.shadowBlur=0; }
+    c.restore();
+    cloudLayer(c,CSH,0.0001,0.55,16,6,lt,C1S,-150+60,-60+50); cloudLayer(c,CL1,0.10,0.95,16,6,lt,C1S,-150,-60);
+    cloudLayer(c,CL2,0.66,0.85,-34,12,lt,2.6,-500,-350); cloudLayer(c,CL3,1.02,0.6,50,-18,lt,3.2,-300,-200); }
   let PA=1;
   function pin(lon,lat,a,name,lt){ if(a<0) return; const s=SCR(lon,lat), x=s[0], y=s[1], gr=E3(a/0.4), la=E3((a-0.22)/0.4), H=150;
-    g.save(); for(let k=0;k<2;k++){ const pr=((lt*0.55+k*0.5)%1); g.globalAlpha=(1-pr)*0.6*CL(a*3)*PA; g.strokeStyle='#fff'; g.lineWidth=2.5; g.beginPath(); g.arc(x,y,12+pr*46,0,7); g.stroke(); }
-    g.globalAlpha=CL(a*4)*PA; g.fillStyle='#fff'; g.shadowColor='rgba(0,0,0,.45)'; g.shadowBlur=10; g.beginPath(); g.arc(x,y,9,0,7); g.fill(); g.shadowBlur=0;
+    g.save(); for(let k=0;k<2;k++){ const pr=((lt*0.55+k*0.5)%1); g.globalAlpha=(1-pr)*0.6*CL(a*3)*PA; g.strokeStyle='#fff'; g.lineWidth=2.5; g.beginPath(); g.ellipse(x,y,12+pr*46,(12+pr*46)*Math.cos(cam.th),0,0,7); g.stroke(); }
+    g.globalAlpha=CL(a*4)*PA; g.fillStyle='#fff'; g.shadowColor='rgba(120,220,255,.9)'; g.shadowBlur=22; g.beginPath(); g.arc(x,y,9,0,7); g.fill(); g.shadowBlur=0;
     g.strokeStyle='rgba(255,255,255,.9)'; g.lineWidth=2.5; g.beginPath(); g.moveTo(x,y-12); g.lineTo(x,y-12-H*gr); g.stroke();
     if(la>0){ g.globalAlpha=la*PA; g.font='600 58px '+SANS; g.letterSpacing='6px'; const w=g.measureText(name).width+76, lx=Math.max(36,Math.min(x-w/2,1044-w)), ly=y-12-H-96+(1-la)*14;
-      g.fillStyle='rgba(8,16,26,.58)'; g.beginPath(); g.roundRect(lx,ly,w,96,48); g.fill(); g.strokeStyle='rgba(255,255,255,.38)'; g.lineWidth=1.5; g.stroke(); g.fillStyle='#fff'; g.fillText(name,lx+40,ly+67); g.letterSpacing='0px'; }
+      g.fillStyle='rgba(6,14,24,.62)'; g.beginPath(); g.roundRect(lx,ly,w,96,48); g.fill(); g.strokeStyle='rgba(255,255,255,.38)'; g.lineWidth=1.5; g.stroke(); g.fillStyle='#fff'; g.fillText(name,lx+40,ly+67); g.letterSpacing='0px'; }
     g.restore(); }
-  // a cloud layer floating at height hc: true parallax (it grows and rushes past as the camera climbs or dives through it) + its own wind
-  function cloudLayer(T,hc,al,wx,wy,lt,sz,ox,oy){ if(cam.H<=hc*1.04) return; const k=cam.H/(cam.H-hc), z=cam.z*k, a=al*sm(hc*1.04,hc*1.45,cam.H); if(a<=0.004) return;
-    g.save(); g.globalAlpha=a; g.translate(540,960); g.rotate(cam.rot); g.scale(z,z); g.translate(-tx(cam.lon)+ox+lt*wx,-ty(cam.lat)+oy+lt*wy); g.imageSmoothingQuality='high'; g.drawImage(T,0,0,T.width*sz,T.height*sz); g.restore(); }
-  function ground(lt){ g.save(); g.translate(540,960); g.rotate(cam.rot); g.scale(cam.z,cam.z); g.translate(-tx(cam.lon),-ty(cam.lat));
-    g.fillStyle='#05223f'; g.fillRect(-4000,-4000,TW+8000,TH+8000); g.imageSmoothingQuality='high'; g.drawImage(tex,0,0);
-    // sun glints on the water (always twinkling)
-    g.fillStyle='#fff'; GL.forEach(([x,y,ph,r])=>{ const a=Math.max(0,Math.sin(lt*3.2+ph))**6; if(a<0.05) return; g.globalAlpha=a*0.7; g.fillRect(x,y,r,r); }); g.globalAlpha=1;
-    // the route: winding, glowing, with dashes that keep flowing and a head that travels
-    const rf=CL(cam.pp*1.04); if(rf>0.005){ const n=Math.max(2,Math.ceil(ROUTE.pts.length*rf)), w=9/cam.z; g.save(); g.lineJoin='round'; g.lineCap='round';
-      const path=()=>{ g.beginPath(); for(let i=0;i<n;i++){ const p=ROUTE.pts[i]; i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]); } };
-      g.shadowColor='#19d3ff'; g.shadowBlur=26/cam.z; g.strokeStyle='rgba(30,200,255,.55)'; g.lineWidth=w*1.9; path(); g.stroke(); g.shadowBlur=0;
-      g.strokeStyle='#eafcff'; g.lineWidth=w*0.75; g.setLineDash([w*3.2,w*2.2]); g.lineDashOffset=-lt*w*14; path(); g.stroke(); g.setLineDash([]);
-      const h=ROUTE.pts[n-1]; g.fillStyle='#fff'; g.shadowColor='#19d3ff'; g.shadowBlur=30/cam.z; g.beginPath(); g.arc(h[0],h[1],w*1.25,0,7); g.fill(); g.restore(); }
-    g.restore();
-    cloudLayer(CSH,0.0001,0.32,16,6,lt,C1S,-150+60,-60+50); cloudLayer(CL1,0.10,0.95,16,6,lt,C1S,-150,-60);
-    cloudLayer(CL2,0.66,0.85,-34,12,lt,2.6,-500,-350); cloudLayer(CL3,1.02,0.55,50,-18,lt,3.2,-300,-200);
-    g.fillStyle='rgba(150,200,235,'+(0.10*sm(0.5,1.6,cam.H))+')'; g.fillRect(0,0,1080,1920); }
-  SCN[0]=function(lt){ g.clearRect(0,0,1080,1920);
-    // motion blur: average a few sub-frames inside the shutter while the camera is moving
-    const moving=lt>0.3&&lt<T1+0.1, NS=moving?5:1; for(let k=0;k<NS;k++){ cam=camAt(lt-(NS-1-k)*0.0075); g.globalAlpha=1/(k+1); ground(lt); } g.globalAlpha=1; cam=camAt(lt);
-    const vg=g.createRadialGradient(540,960,520,540,960,1250); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,8,20,.55)'); g.fillStyle=vg; g.fillRect(0,0,1080,1920);
+  SCN[0]=function(lt){ g.setTransform(1,0,0,1,0,0); g.globalAlpha=1; g.clearRect(0,0,1080,1920);
+    // motion blur: average complete sub-frames inside the shutter (so shadows and haze never add up)
+    const sp=Math.abs(camAt(lt+0.01).z-camAt(lt-0.01).z)+Math.abs(camAt(lt+0.01).pp-camAt(lt-0.01).pp)*40, NS=sp>0.002?8:1;
+    bc.setTransform(1,0,0,1,0,0); for(let k=0;k<NS;k++){ cam=camAt(lt-(NS-1-k)*0.0024); topDown(tc,lt); bc.globalAlpha=1/(k+1); bc.drawImage(tmp,0,0); } bc.globalAlpha=1; cam=camAt(lt);
+    // perspective projection, 2 px strips
+    const st=Math.sin(cam.th), ct=Math.cos(cam.th); g.imageSmoothingQuality='high';
+    for(let y=0;y<1920;y+=2){ const ys=y+1-1020, Y=-ys*PD/(PD*ct+ys*st), k=PD/(PD+Y*st), ys2=ys+2, Y2=-ys2*PD/(PD*ct+ys2*st), sw=1080/k, sy=BCY-Y, sh=Math.max(0.5,Y-Y2);
+      if(sy<0||sy+sh>BH) { g.fillStyle='#052242'; g.fillRect(0,y,1080,2); continue; } g.drawImage(buf,BCX-sw/2,sy,sw,sh,0,y,1080,2.4); }
+    // constant dark, cinematic grade: far haze, deep blue multiply, vignette
+    let gr=g.createLinearGradient(0,0,0,760); gr.addColorStop(0,'rgba(6,20,44,'+(0.55+0.25*(1-cam.alt))+')'); gr.addColorStop(1,'rgba(6,20,44,0)'); g.fillStyle=gr; g.fillRect(0,0,1080,760);
+    g.globalCompositeOperation='multiply'; g.fillStyle='rgb(166,186,214)'; g.fillRect(0,0,1080,1920); g.globalCompositeOperation='source-over';
+    const vg=g.createRadialGradient(540,1000,480,540,1000,1280); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,6,18,.62)'); g.fillStyle=vg; g.fillRect(0,0,1080,1920);
     if(cam.su<0.2){ PA=1-sm(0.03,0.18,cam.su); pin(MIA[0],MIA[1],lt+0.9,'VICE CITY',lt); PA=1; }
-    pin(-81.775,24.558,lt-(T1-0.2),'LEONIDA KEYS',lt);
-    const CT=T1+0.3, cd=E3((lt-CT)/0.5); if(lt>CT){ g.save(); g.globalAlpha=cd; g.translate(540,1400+(1-cd)*26+Math.sin(lt*1.3)*3);
-      g.fillStyle='rgba(8,16,26,.58)'; g.beginPath(); g.roundRect(-400,-104,800,208,40); g.fill(); g.strokeStyle='rgba(255,255,255,.38)'; g.lineWidth=1.5; g.stroke();
+    pin(-81.775,24.558,lt-(T1-0.25),'LEONIDA KEYS',lt);
+    const CT=T1+0.25, cd=E3((lt-CT)/0.5); if(lt>CT){ g.save(); g.globalAlpha=cd; g.translate(540,1420+(1-cd)*26+Math.sin(lt*1.3)*3);
+      g.fillStyle='rgba(6,14,24,.62)'; g.beginPath(); g.roundRect(-400,-104,800,208,40); g.fill(); g.strokeStyle='rgba(255,255,255,.38)'; g.lineWidth=1.5; g.stroke();
       g.fillStyle='rgba(255,255,255,.72)'; g.font='600 28px '+SANS; g.letterSpacing='4px'; g.fillText('VICE CITY  —  LEONIDA KEYS',-352,-44); g.letterSpacing='0px';
       g.fillStyle='#fff'; g.font='700 92px '+SANS; g.fillText('267 km',-356,58); g.fillStyle='rgba(255,255,255,.8)'; g.font='500 40px '+SANS; g.fillText('≈ 4 h by car',60,50); g.restore(); }
     g.drawImage(GRAIN,0,0);
