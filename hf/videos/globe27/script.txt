@@ -1,0 +1,1 @@
+How to make this snow globe of your city using Claude. First, type your city's name. Then pick Opus five point five and paste this prompt. Claude builds it, you tweak it, and you're done. Comment GLOBE and I'll send you the prompt.
