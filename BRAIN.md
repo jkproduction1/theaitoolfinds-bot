@@ -79,6 +79,9 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   Template: hf/videos/styles19/build.py (v1 chat-first = build_v1.py).
   Since styles20 (Jan): make BOTH twins per video: classic `<name>` + result-first `<name>r` (shares scenes.js; "Want this?" sticker and the
   "Claude Fable 5.2" chat bar pop up in the first second). Credit line "with Claude Fable 5.2" when Fable made the scenes. Compare its numbers with the chat-first demos before switching.
+- **Prompt first, then the result (Jan, 2026-11-12, hard rule):** in the classic App demo nothing of the result may be visible before
+  the prompt is sent: no dimmed/blurred "ghost" preview behind the chat while typing (impact22, asteroid24, space25, body26 had one
+  = wrong, don't copy it). Order is always: chat + typing → send → result. Template without it: hf/videos/styles28/build.py.
 - **Daily mix v4 (Jan, 2026-11-11, CURRENT):** 2 App demos (unchanged, "Type this… and you get this") + 1 **Tutorial**
   "How to make this <viral thing> using <tool>" (§3e). The tutorial REPLACES the trendy-AI-tool video of v3: Jan: "nobody cares
   about generic AI-tool videos; always one specific tool and a tutorial for ONE viral thing made with it". v3 below is INACTIVE

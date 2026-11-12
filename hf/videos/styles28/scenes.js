@@ -95,7 +95,7 @@ function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((l
     const pf=EIO((lt-1.6)/2.2);
     if(pf>0){ const n=Math.max(2,Math.round(pf*120)); const pts=GC.slice(0,n+1); g.save(); g.strokeStyle='#f0541c'; g.lineWidth=10; g.lineCap='round'; g.lineJoin='round'; g.shadowColor='rgba(120,40,10,.35)'; g.shadowBlur=8; g.beginPath(); pts.forEach((pp,i)=>i?g.lineTo(pp[0],pp[1]):g.moveTo(pp[0],pp[1])); g.stroke(); g.restore(); }
     [[A,'Los Angeles',-1],[B,'London',1]].forEach(([P,nm,s],i)=>{ const a=EBK((lt-0.7-i*0.15)/0.4); if(a<=0) return; g.save(); g.translate(P[0],P[1]); g.scale(a,a); g.fillStyle='#f0541c'; g.beginPath(); g.arc(0,0,15,0,7); g.fill(); g.strokeStyle='#fff'; g.lineWidth=5; g.stroke();
-      g.font="italic 500 44px "+SERIF; const w=g.measureText(nm).width; const x=s<0?-w/2+40:-w-24, y=s<0?62:-28; g.fillStyle='rgba(246,241,228,.92)'; g.fillRect(x-12,y-38,w+24,52); g.fillStyle='#17222b'; g.fillText(nm,x,y); g.restore(); });
+      g.font="italic 500 44px "+SERIF; const w=g.measureText(nm).width; const x=s<0?-w/2+40:-w-70, y=s<0?62:84; g.fillStyle='rgba(246,241,228,.92)'; g.fillRect(x-12,y-38,w+24,52); g.fillStyle='#17222b'; g.fillText(nm,x,y); g.restore(); });
     if(pf>0){ const k=Math.min(119,Math.floor(pf*120)), u=pf*120-k, P0=GC[k], P1=GC[k+1], x=P0[0]+(P1[0]-P0[0])*u, y=P0[1]+(P1[1]-P0[1])*u, an=Math.atan2(P1[1]-P0[1],P1[0]-P0[0]);
       const s=0.9+0.12*Math.sin(Math.PI*pf); g.save(); g.translate(x,y-10); g.rotate(an); g.scale(s,s); g.drawImage(jet,-120-jet.ox,-120-jet.oy); g.restore(); }
     g.restore();
@@ -104,13 +104,13 @@ function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((l
     g.fillStyle='#fff'; g.font="500 70px "+SERIF; g.fillText('on purpose',58,708); g.restore();
     // tags + the globe
     const MT=(P)=>{ const c=Math.cos(mr), s2=Math.sin(mr), x=P[0]-MW/2, y=P[1]-MH/2; return [540+x*c-y*s2, 960+x*s2+y*c]; };
-    [[2.6,TAGS[0],MT([(A[0]+B[0])/2+60,(A[1]+B[1])/2+8])],[3.6,TAGS[1],MT(GC[22])]].forEach(([t0,T,tgt],i)=>{ const cf=EIO((lt-t0-0.25)/0.4); if(cf>0){ const sx=T[2]+420, sy=T[3]; const e=marker(g,[[sx,sy],[(sx+tgt[0])/2+40,(sy+tgt[1])/2+30],[tgt[0],tgt[1]+14]],cf,6,'#23313d'); if(cf>0.97) arrowHead(g,e[0],e[1],e[2],22,6,'#23313d'); } });
+    [[2.6,TAGS[0],MT([(A[0]+B[0])/2+60,(A[1]+B[1])/2+8])],[3.6,TAGS[1],MT(GC[60])]].forEach(([t0,T,tgt],i)=>{ const cf=EIO((lt-t0-0.25)/0.4); if(cf>0){ const sx=T[2]+420, sy=T[3]; const e=marker(g,i?[[sx,sy],[610,1235],[tgt[0]+20,(1235+tgt[1])/2],[tgt[0],tgt[1]+14]]:[[sx,sy],[(sx+tgt[0])/2+40,(sy+tgt[1])/2+30],[tgt[0],tgt[1]+14]],cf,6,'#23313d'); if(cf>0.97) arrowHead(g,e[0],e[1],e[2],22,6,'#23313d'); } });
     paperTag(g,lt,2.6,TAGS[0][2],TAGS[0][3],TAGS[0][4],TAGS[0][0],TAGS[0][1],50,0);
     paperTag(g,lt,3.6,TAGS[1][2],TAGS[1][3],TAGS[1][4],TAGS[1][0],TAGS[1][1],51,0);
-    const gl=EBK((lt-4.5)/0.5); if(lt>4.5){ g.save(); g.translate(860,1395); g.rotate(0.06*Math.sin(q)); g.scale(gl*0.95,gl*0.95); g.rotate(-gAng); g.drawImage(globe,-170-globe.ox,-170-globe.oy);
+    const gl=EBK((lt-4.5)/0.5); if(lt>4.5){ g.save(); g.translate(840,1400); g.rotate(0.06*Math.sin(q)); g.scale(gl*0.84,gl*0.84); g.rotate(-gAng); g.drawImage(globe,-170-globe.ox,-170-globe.oy);
         const lf=EIO((lt-4.9)/0.6); if(lf>0){ g.strokeStyle='#f0541c'; g.lineWidth=7; g.lineCap='round'; g.beginPath(); g.moveTo(ga[0]-170,ga[1]-170); g.lineTo(ga[0]-170+(gb[0]-ga[0])*lf,ga[1]-170+(gb[1]-ga[1])*lf); g.stroke(); [ga,gb].forEach(P=>{ g.fillStyle='#f0541c'; g.beginPath(); g.arc(P[0]-170,P[1]-170,9,0,7); g.fill(); }); }
         g.restore();
-      const hw=EIO((lt-5.4)/0.4); if(hw>0){ g.save(); g.globalAlpha=hw; g.translate(1030+120*(1-hw),1205); g.rotate(-0.05); g.fillStyle='#d6331a'; g.font="italic 500 50px "+SERIF; g.textAlign='right'; g.fillText('on a globe: straight',0,0); g.restore(); } }
+      const hw=EIO((lt-5.4)/0.4); if(hw>0){ g.save(); g.globalAlpha=hw; g.translate(1000+120*(1-hw),1215); g.rotate(-0.05); g.fillStyle='#d6331a'; g.font="italic 500 50px "+SERIF; g.textAlign='right'; g.fillText('on a globe: straight',0,0); g.restore(); } }
     g.restore();
     g.globalCompositeOperation='multiply'; g.fillStyle='rgba(244,236,214,.45)'; g.fillRect(0,0,1080,1920); g.globalCompositeOperation='source-over';
     g.drawImage(GRAIN,0,0);
@@ -166,11 +166,11 @@ function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((l
     label('Brain cells',70,640,CELLS[0][0]+20,CELLS[0][1]-110,CL((lt-0.6)/0.25)*(1-CL((lt-2.6)/0.3)));
     label('Waste from the day',470,640,cr(CH[2],WASTE[13][1])[0],cr(CH[2],WASTE[13][1])[1]-20,CL((lt-1.0)/0.25)*(1-CL((lt-2.8)/0.3)));
     label('Gaps open up',600,700,cr(CH[2],0.45)[0],cr(CH[2],0.45)[1],CL((lt-2.9)/0.3)*(1-CL((lt-4.2)/0.3)));
-    label('Fluid washes it out',90,1700,cr(CH[1],0.3)[0],cr(CH[1],0.3)[1]+20,CL((lt-3.0)/0.3));
+    label('Fluid washes it out',90,1430,cr(CH[1],0.3)[0],cr(CH[1],0.3)[1]+20,CL((lt-3.0)/0.3));
     g.restore();
     // night: moon + z's
-    { const ma=EBK((lt-0.4)/0.5); if(lt>0.4){ g.save(); g.translate(910,560); g.scale(ma,ma); g.shadowColor='rgba(255,230,160,.8)'; g.shadowBlur=50; g.drawImage(MOON,-80,-80); g.shadowBlur=0; g.restore();
-      g.save(); for(let i=0;i<3;i++){ const ph=(lt*0.5+i/3)%1; g.globalAlpha=Math.sin(ph*Math.PI)*ma; g.fillStyle='#dfe8ff'; g.font='800 '+(34+i*10)+'px '+SANS; g.fillText('z',800-i*34-ph*20,560-ph*120-i*14); } g.restore(); } }
+    { const ma=EBK((lt-0.4)/0.5); if(lt>0.4){ g.save(); g.translate(930,660); g.scale(ma,ma); g.shadowColor='rgba(255,230,160,.8)'; g.shadowBlur=50; g.drawImage(MOON,-80,-80); g.shadowBlur=0; g.restore();
+      g.save(); for(let i=0;i<3;i++){ const ph=(lt*0.5+i/3)%1; g.globalAlpha=Math.sin(ph*Math.PI)*ma; g.fillStyle='#dfe8ff'; g.font='800 '+(34+i*10)+'px '+SANS; g.fillText('z',830-i*34-ph*20,660-ph*90-i*14); } g.restore(); } }
     const h1=E3((lt-0.15)/0.4), h2=E3((lt-0.35)/0.4); g.save(); g.textAlign='center'; g.shadowColor='rgba(0,0,0,.5)'; g.shadowBlur=20;
     g.globalAlpha=h1; g.fillStyle='#fff'; g.font='800 84px '+SANS; g.fillText('While you sleep,',540,320+(1-h1)*24);
     g.globalAlpha=h2; const wA=g.measureText('your brain ').width, wB=g.measureText('cleans up').width, x0=540-(wA+wB)/2; g.textAlign='left'; g.fillText('your brain ',x0,420+(1-h2)*24); g.fillStyle='#7fe3ff'; g.shadowColor='rgba(80,210,255,.8)'; g.shadowBlur=30; g.fillText('cleans up',x0+wA,420+(1-h2)*24); g.restore();
@@ -220,7 +220,11 @@ function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((l
   function band(b,lt,q,pat){ g.beginPath(); g.moveTo(-220,H); for(let x=-220;x<=W;x+=20) g.lineTo(x,wy(b,x,lt)); g.lineTo(W,H); g.closePath(); g.fillStyle=b[4]; g.fill(); g.save(); g.clip(); g.globalAlpha=0.45; g.fillStyle=pat; g.fillRect(-220,b[0]-60,W+220,H); g.globalAlpha=1; g.restore();
     g.strokeStyle='rgba(150,180,215,.28)'; g.lineWidth=4; g.lineCap='round'; const Rr=R0(q*7+b[0]); for(let x=-200;x<W;x+=80+Rr()*110){ const l=30+Rr()*60; g.beginPath(); g.moveTo(x,wy(b,x,lt)+3); g.lineTo(x+l,wy(b,x+l,lt)+3); g.stroke(); } }
   // draw part of the ship [x0,x1] with a pivot (px,py in image coords) placed at (X,Y) on screen, rotated by a
-  function piece(x0,x1,px,py,X,Y,a,s){ g.save(); g.translate(X,Y); g.rotate(a); g.scale(s,s); g.beginPath(); g.rect(x0-px,-py-40,x1-x0,SH+80); g.clip(); g.drawImage(shipImg,-px,-py); g.restore(); }
+  const py0=WLI+40, JAG=(()=>{ const Rj=R0(12), a=[]; for(let i=0;i<=16;i++) a.push([(Rj()-.5)*26,-py0+i*(SH+80)/16]); return a; })();
+  // draw part of the ship (bow: x>=BRK, stern: x<=BRK) with a torn, jagged break edge
+  function piece(bow,X,Y,a,s){ g.save(); g.translate(X,Y); g.rotate(a); g.scale(s,s); g.beginPath();
+    if(bow){ g.moveTo(SW,-py0); JAG.forEach(([dx,y])=>g.lineTo(dx,y)); g.lineTo(SW,SH); } else { g.moveTo(-BRK-20,-py0); JAG.forEach(([dx,y])=>g.lineTo(dx,y)); g.lineTo(-BRK-20,SH); }
+    g.closePath(); g.clip(); g.drawImage(shipImg,-BRK,-WLI); g.globalCompositeOperation='lighter'; g.globalAlpha=0.4*(1-CL((Y-1100)/200)); g.drawImage(lights,-BRK,-WLI); g.restore(); }
   const CAP=[['11:40 pm: an iceberg.',0.35],['Water floods the bow.',2.0],['Gone in 2 h 40 min.',3.9]];
   SCN[2]=function(lt){ g.clearRect(0,0,1080,1920); const q=Math.floor(lt*8), pat=g.createPattern(tex,'repeat');
     const zf=EIO((lt-3.4)/2.8), zb=1.12-0.12*zf, cx=560, cy=1060+(980-1060)*zf;
@@ -239,7 +243,10 @@ function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((l
     // lights' warm reflection on the water
     if(lt<5.2){ g.save(); g.globalAlpha=0.35*(1-CL((lt-4.2)/1.0)); for(let i=0;i<20;i++){ const xx=shx+60+i*40, w=10+Math.sin(q+i)*4; g.fillStyle='#ffcf7a'; g.fillRect(xx-w/2,WL+8+(i%3)*10,w,4+(i%2)*3); } g.restore(); }
     if(brk<=0.02){ const ang=tilt; g.save(); g.translate(shx+BRK*S,WL+bowDy*0.6); g.rotate(ang); g.scale(S,S); g.drawImage(shipImg,-BRK,-WLI); g.globalCompositeOperation='lighter'; g.globalAlpha=0.55+0.1*Math.sin(lt*9); g.drawImage(lights,-BRK,-WLI); g.restore(); }
-    else { piece(BRK-1,SW,BRK,WLI,shx+BRK*S+brk*14,WL+bowDy,bowA,S); piece(0,BRK+1,BRK,WLI,shx+BRK*S-brk*6,WL+sternDy*0.9,sternA,S); }
+    else { piece(1,shx+BRK*S+brk*14,WL+bowDy,bowA,S); piece(0,shx+BRK*S-brk*6,WL+sternDy*0.9,sternA,S);
+      // spray + dark smoke where it breaks
+      const bk=CL((lt-3.7)/1.6), X0=shx+BRK*S; if(bk>0&&bk<1){ for(let i=0;i<16;i++){ const a2=((bk*1.4+i/16)%1), an=-1.57+(i-8)*0.13; g.save(); g.globalAlpha=(1-a2)*0.75*(1-bk*0.6); g.fillStyle=i%3?'#cfe0ee':'#8fa8c0'; g.beginPath(); g.arc(X0+Math.cos(an)*a2*170,WL-10+Math.sin(an)*a2*190+a2*a2*140,6+a2*14,0,7); g.fill(); g.restore(); }
+        for(let i=0;i<6;i++){ const a2=CL(bk*1.3-i*0.08); g.save(); g.globalAlpha=0.35*Math.sin(a2*Math.PI); g.fillStyle='#05070c'; g.filter='blur(14px)'; g.beginPath(); g.arc(X0-30+i*22,WL-60-a2*220-i*20,40+a2*60,0,7); g.fill(); g.restore(); } } }
     // ice chunks + spray at the graze
     for(let i=0;i<7;i++){ const t0=1.35+i*0.06, a=CL((lt-t0)/0.9); if(a<=0||a>=1) continue; const x=bx-210+i*16+a*30, y=HZ+150-Math.sin(a*Math.PI)*90+a*a*60; g.globalAlpha=1-a; g.fillStyle=i%2?'#e8f2f8':'#a9c2d6'; g.beginPath(); g.moveTo(x,y-10); g.lineTo(x+12,y); g.lineTo(x,y+9); g.lineTo(x-11,y); g.closePath(); g.fill(); } g.globalAlpha=1;
     band(BANDS[2],lt,q,pat);
