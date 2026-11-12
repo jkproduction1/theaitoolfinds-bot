@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Fable 5.2 explainer styles 2",
+ "tool_name": "Claude Fable 5.2 explainer styles 2",
+ "keyword": "FABLE",
+ "summary_cs": "App demo „Type it, get it #27“ (klasická verze, nejdřív prompt, pak výsledek, žádný náhled předem): /paper-collage proč letadla neletí rovně (velký kruh LA → Londýn přes Grónsko), /flat-science jak spánek čistí mozek, /painted-story jak se potopil Titanic. Vše kreslené v kódu s Claude Fable 5.2, styl jako styles19/20. Auto-DM na FABLE už máš.",
+ "style": "hyperframes-paper",
+ "duration": 28.9,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-12_1627",
+ "run_id": null,
+ "artifact": null
+}
