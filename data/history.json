@@ -562,5 +562,17 @@
     "domain": "code.claude.com/docs/en/slash-commands#asteroid24",
     "date": "2026-11-12_0236",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D scary body commands",
+    "domain": "code.claude.com/docs/en/slash-commands#body26",
+    "date": "2026-11-12_0642",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D scary space commands 2",
+    "domain": "code.claude.com/docs/en/slash-commands#space25",
+    "date": "2026-11-12_0643",
+    "source": "hyperframes"
   }
 ]

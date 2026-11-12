@@ -3142,5 +3142,236 @@
    "visuals": 16,
    "ending": 2
   }
+ },
+ {
+  "name": "space25",
+  "date": "2026-11-12",
+  "score": 74,
+  "mode": "script",
+  "features": {
+   "hook": 0.29,
+   "hook_words": 13,
+   "hook_end_s": 5.0,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 19.7,
+   "words": 47,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 5.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "body26",
+  "date": "2026-11-12",
+  "score": 74,
+  "mode": "script",
+  "features": {
+   "hook": 0.25,
+   "hook_words": 14,
+   "hook_end_s": 5.38,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.1,
+   "words": 43,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 5.4 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "globe27",
+  "date": "2026-11-12",
+  "score": 65,
+  "mode": "script",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 4.23,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.1,
+   "words": 43,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "new-ability",
+   "topic": 0.72
+  },
+  "flags": [
+   "hook končí v 4.2 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "body26",
+  "date": "2026-11-12",
+  "score": 75,
+  "mode": "full",
+  "features": {
+   "hook": 0.25,
+   "hook_words": 14,
+   "hook_end_s": 5.01,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.77,
+   "dur_s": 25.9,
+   "words": 43,
+   "pace": 0.06,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.75,
+   "visual_changes": 48,
+   "visuals": 0.9,
+   "ending": 0.94,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 5.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "globe27",
+  "date": "2026-11-12",
+  "score": 64,
+  "mode": "full",
+  "features": {
+   "hook": 0.3,
+   "hook_words": 11,
+   "hook_end_s": 2.79,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 3.74,
+   "dur_s": 13.1,
+   "words": 43,
+   "pace": 0.3,
+   "length": 0.39,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 0.0,
+   "visual_changes": 49,
+   "visuals": 1.0,
+   "ending": 1.0,
+   "angle": "new-ability",
+   "topic": 0.72
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "space25",
+  "date": "2026-11-12",
+  "score": 70,
+  "mode": "full",
+  "features": {
+   "hook": 0.29,
+   "hook_words": 13,
+   "hook_end_s": 4.82,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.82,
+   "dur_s": 27.4,
+   "words": 47,
+   "pace": 0.1,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.75,
+   "visual_changes": 54,
+   "visuals": 0.5,
+   "ending": 0.92,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.8 s (cíl ≤2,5 s)",
+   "3.8 s bez změny obrazu (cíl ≤3 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
  }
 ]
