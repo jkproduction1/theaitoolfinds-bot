@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D what-if Earth commands",
+ "tool_name": "Claude Code 3D what-if Earth commands",
+ "keyword": "ASTEROID",
+ "summary_cs": "„Type it, get it #24“ z tvého ťuknutí „What if… Earth 2“: asteroid dopadne do oceánu, Země přijde o atmosféru, Olympus Mons vs. Everest (2,5×); vše v kódu, s hudbou t3. Než schválíš: nastav automatickou DM na slovo ASTEROID.",
+ "style": "hyperframes-paper",
+ "duration": 29.6,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-12_0236",
+ "run_id": null,
+ "artifact": null
+}
