@@ -3101,5 +3101,47 @@
    "visuals": 16,
    "ending": 2
   }
+ },
+ {
+  "name": "asteroid24",
+  "date": "2026-11-12",
+  "score": 55,
+  "mode": "full",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 4.39,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.64,
+   "dur_s": 30.2,
+   "words": 47,
+   "pace": 0.0,
+   "length": 0.98,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 45,
+   "visuals": 0.7,
+   "ending": 0.82,
+   "angle": null,
+   "topic": 0.5
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.4 s (cíl ≤2,5 s)",
+   "video má 30 s (cíl 18–30 s)",
+   "post.json nemá \"angle\" (typ tématu) → topic 0,5"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
  }
 ]
