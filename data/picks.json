@@ -1,78 +1,63 @@
 {
-  "date": "2026-11-11",
+  "date": "2026-11-12",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What if… Earth 2",
+      "title": "What if… Earth 3",
       "commands": [
-        "/zack-d-films what if an asteroid hit the ocean",
-        "/what-if Earth lost its atmosphere",
-        "/scale the tallest volcano on Mars versus Everest"
+        "/zack-d-films what if the Moon disappeared",
+        "/what-if Earth's core stopped spinning",
+        "/scale the biggest crater on Earth versus a city"
       ],
-      "why": "earth8 514k IG + whatif15: 'what would happen to Earth' is our biggest hook; all new objects"
+      "why": "earth8 514k IG + asteroid24/impact22: 'what would happen to Earth' is still our biggest hook; all new objects"
     },
     {
-      "title": "The scariest things in space 2",
+      "title": "The scariest things in space 3",
       "commands": [
-        "/explain-3d how a neutron star spins",
-        "/zoom-in the surface of the Sun",
-        "/scale Jupiter's Great Red Spot versus Earth"
+        "/explain-3d how a black hole swallows a star",
+        "/scale the biggest black hole versus the Solar System",
+        "/what-if a rogue planet flew past Earth"
       ],
-      "why": "space7 165k TT + space14 40k TT: space is the only topic that breaks TikTok; keep the fear/scale word"
+      "why": "space7 165k TT + space14 40k TT: space is the only topic that breaks TikTok; black holes are the obvious unused scary object"
     },
     {
-      "title": "The scariest things inside your body",
+      "title": "The scariest things in the deep ocean",
       "commands": [
-        "/explain-3d how a virus hijacks a cell",
-        "/zoom-in a mosquito bite",
-        "/x-ray the human spine"
+        "/deep-dive a shipwreck 4,000 m down",
+        "/x-ray a giant squid",
+        "/explain-3d how a submarine survives the pressure"
       ],
-      "why": "learnings test: bring the fear framing to body topics (inside3 118k IG); organs used so far avoided"
+      "why": "learnings 'test next': deep ocean + fear/scale; earth8's trench scene was a strong part of the hit"
     },
     {
-      "title": "How Earth's disasters work",
+      "title": "The scariest things inside your body 2",
       "commands": [
-        "/explain-3d how a tsunami forms",
-        "/x-ray a hurricane",
-        "/time-lapse a glacier melting"
+        "/explain-3d how a broken bone heals",
+        "/x-ray a sneeze",
+        "/zoom-in a tooth until you see a cavity"
       ],
-      "why": "Earth + scale + fear = earth8 pattern; concrete scary objects beat generic 'how nature works' (nature18)"
+      "why": "body26 continues the fear framing on body topics (inside3 118k IG); heart, blood, lungs, eye, virus, mosquito, spine avoided"
     },
     {
-      "title": "Liquid chrome space motion",
+      "title": "Earth's deadliest disasters",
       "commands": [
-        "/liquid-chrome the word GRAVITY",
-        "/glassmorphism a space weather widget",
-        "/kinetic-type a rocket launch countdown"
+        "/explain-3d how a supervolcano erupts",
+        "/x-ray a tornado",
+        "/time-lapse a sinkhole opening"
       ],
-      "why": "eye-candy variety (motion13) with a space theme, since space is what TT rewards"
+      "why": "Earth + scale + fear = earth8 pattern; concrete scary objects beat generic 'how nature works' (nature18 377 TT)"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this 3D snow globe of your city using Claude",
+      "title": "How to make this survival arena map using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Začíná zimní/vánoční sezóna, snow-globe a 'tvoje město ve sněhu' edity se teď objevují na IG a TikToku.",
-      "steps": [
-        "Type your city's name",
-        "Pick Opus 5.5 and paste this prompt",
-        "Claude builds it, you tweak it"
-      ],
-      "seconds": 12,
-      "keyword": "GLOBE",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this survival arena map reveal using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "20. 11. jde do kin The Hunger Games: Sunrise on the Reaping (GamesRadar), fanouškovské mapy arén poletí; jen vlastní aréna 'inspired by', žádná oficiální mapa.",
+      "trend": "20. 11. jde do kin The Hunger Games: Sunrise on the Reaping (GamesRadar, listopadové premiéry); vlastní aréna 'inspired by', žádná oficiální mapa.",
       "steps": [
         "Describe your arena in one line",
-        "Pick Opus 5.5 and paste this prompt",
+        "Pick Fable 5.2 and paste this prompt",
         "Claude builds it, you tweak it"
       ],
       "seconds": 13,
@@ -81,13 +66,43 @@
       "handle": ""
     },
     {
+      "title": "How to make this heist blueprint animation using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "13. 11. má premiéru film How to Rob a Bank (GamesRadar); 'heist plan' blueprinty s trasou přes trezor sedí přesně na víkend premiéry.",
+      "steps": [
+        "Describe your building and the vault",
+        "Pick Fable 5.2 and paste this prompt",
+        "Claude draws the plan, you tweak it"
+      ],
+      "seconds": 13,
+      "keyword": "HEIST",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this Halloween-to-Christmas house switch using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Trend 'Christmas Switch' (přechod z halloweenské výzdoby na vánoční v jednom záběru) je teď na TikToku, SocialPilot ho má v přehledu do 10. 11.",
+      "steps": [
+        "Describe your house in one line",
+        "Pick Fable 5.2 and paste this prompt",
+        "Claude builds the switch, you tweak it"
+      ],
+      "seconds": 12,
+      "keyword": "SWITCH",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
       "title": "How to make this animated year-in-review recap using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Blíží se konec roku a sezóna 'rok v číslech' recapů (před Wrapped začátkem prosince); vlastní vzhled, žádné logo Spotify.",
+      "trend": "Blíží se konec roku a sezóna 'rok v číslech' recapů (Wrapped začátkem prosince); vlastní vzhled, žádné logo Spotify.",
       "steps": [
         "Paste your year in numbers",
-        "Pick Opus 5.5 and paste this prompt",
+        "Pick Fable 5.2 and paste this prompt",
         "Claude builds it, you tweak it"
       ],
       "seconds": 13,
@@ -96,39 +111,22 @@
       "handle": ""
     },
     {
-      "title": "How to make this AI vs handmade side-by-side using Higgsfield",
+      "title": "How to make this costume loading transition using Higgsfield",
       "tool": "Higgsfield",
       "url": "https://higgsfield.ai",
-      "trend": "Trend 'AI vs. Handmade' (Dame Hombro bounce) je teď na TikToku, SocialPilot ho má v přehledu 27. 10.–10. 11.",
+      "trend": "'Costume loading…' přechod (běžné oblečení → freeze → celý kostým na drop) jede na TikToku, SocialPilot přehled 27. 10.–10. 11.",
       "steps": [
-        "Upload a photo of your handmade thing",
-        "Ask Higgsfield for a polished AI version",
-        "Put both side by side, Higgsfield animates it, you tweak it"
+        "Upload a photo of you in everyday clothes",
+        "Describe your costume",
+        "Higgsfield animates the switch, you tweak it"
       ],
       "seconds": 12,
-      "keyword": "HANDMADE",
-      "cost": "kredity Higgsfield, cca 10–20",
-      "handle": ""
-    },
-    {
-      "title": "How to make this giant monster in your city using Higgsfield",
-      "tool": "Higgsfield",
-      "url": "https://higgsfield.ai",
-      "trend": "Od 6. 11. běží v kinech Godzilla Minus Zero, kaiju edity s vlastním městem jedou; jen vlastní generické monstrum, ne Godzilla.",
-      "steps": [
-        "Upload a photo of your street",
-        "Describe your own giant monster",
-        "Higgsfield films it, you tweak it"
-      ],
-      "seconds": 12,
-      "keyword": "MONSTER",
+      "keyword": "COSTUME",
       "cost": "kredity Higgsfield, cca 20–40 (video)",
       "handle": ""
     }
   ],
   "picked": [],
-  "picked_demo": [
-    "What if… Earth 2"
-  ],
+  "picked_demo": [],
   "picked_tut": []
 }
