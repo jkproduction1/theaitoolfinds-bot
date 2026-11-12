@@ -556,5 +556,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#impact22",
     "date": "2026-11-11_0634",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D what-if Earth commands",
+    "domain": "code.claude.com/docs/en/slash-commands#asteroid24",
+    "date": "2026-11-12_0236",
+    "source": "hyperframes"
   }
 ]

@@ -3105,7 +3105,7 @@
  {
   "name": "asteroid24",
   "date": "2026-11-12",
-  "score": 55,
+  "score": 70,
   "mode": "full",
   "features": {
    "hook": 0.14,
@@ -3124,14 +3124,13 @@
    "visual_changes": 45,
    "visuals": 0.7,
    "ending": 0.82,
-   "angle": null,
-   "topic": 0.5
+   "angle": "app-demo",
+   "topic": 1.0
   },
   "flags": [
    "hook má 13 slov (cíl ≤10)",
    "hook končí v 4.4 s (cíl ≤2,5 s)",
-   "video má 30 s (cíl 18–30 s)",
-   "post.json nemá \"angle\" (typ tématu) → topic 0,5"
+   "video má 30 s (cíl 18–30 s)"
   ],
   "weights": {
    "topic": 30,
