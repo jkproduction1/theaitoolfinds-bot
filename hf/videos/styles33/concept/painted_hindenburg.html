@@ -1,0 +1,84 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles33 concept: /painted-story how the Hindenburg burned (hand-painted look of styles28 "Titanic"; own painted silhouette, no photo copied).
+// Facts (Britannica / Wikipedia): 6 May 1937, landing at Lakehurst, New Jersey; filled with hydrogen; fire started near the tail and
+// destroyed the 245 m airship in about half a minute; 62 of the 97 people aboard survived.
+const E3=(x)=>x<0?0:x>1?1:1-Math.pow(1-x,3), EIO=(x)=>x<0?0:x>1?1:x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, CL=(x)=>x<0?0:x>1?1:x;
+const EBK=(x)=>{ x=CL(x); const c1=1.70158,c3=c1+1; return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2); };
+const SERIF="'EB Garamond','Lora','DejaVu Serif',Georgia,serif", DISP="'DM Serif Display','EB Garamond','Lora','DejaVu Serif',serif", SANS="Inter,'DejaVu Sans',Helvetica,Arial,sans-serif";
+function R0(s){ return function(){ s=(s*16807)%2147483647; return (s-1)/2147483646; }; }
+function off(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h); return c; }
+function tornPath(g,x,y,w,h,seed,j){ const R=R0(seed); j=j||6; g.beginPath(); g.moveTo(x,y+R()*j);
+  for(let i=1;i<=24;i++) g.lineTo(x+w*i/24,y+(R()-.5)*j); for(let i=1;i<=12;i++) g.lineTo(x+w+(R()-.5)*j,y+h*i/12);
+  for(let i=23;i>=0;i--) g.lineTo(x+w*i/24,y+h+(R()-.5)*j); for(let i=11;i>=1;i--) g.lineTo(x+(R()-.5)*j,y+h*i/12); g.closePath(); }
+function blobPath(g,cx,cy,r,seed,amp,n,t,bulge){ const R=R0(seed); const ph=[],fq=[]; for(let i=0;i<4;i++){ ph.push(R()*6.28); fq.push(2+Math.floor(R()*4)); }
+  g.beginPath(); for(let i=0;i<=n;i++){ const a=i/n*Math.PI*2; let rr=r; for(let k=0;k<4;k++) rr+=r*amp*Math.sin(a*fq[k]+ph[k]+t*(0.6+k*0.3))/(k+1);
+    if(bulge) rr+=bulge(a); const x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr; i?g.lineTo(x,y):g.moveTo(x,y); } g.closePath(); }
+const GRAIN=off(1080,1920,(p,w,h)=>{ const R=R0(77); for(let i=0;i<140000;i++){ p.fillStyle=R()<.5?'rgba(0,0,0,'+(R()*.10)+')':'rgba(255,255,255,'+(R()*.10)+')'; p.fillRect(R()*w,R()*h,1+R()*2,1+R()*2); } });
+// hand-drawn marker line through pts (Catmull-Rom), drawn up to fraction f; returns the end point + angle
+function marker(g,pts,f,width,col,dash){ const N=80, P=[]; for(let i=0;i<=N;i++){ const t=i/N*(pts.length-1), k=Math.min(pts.length-2,Math.floor(t)), u=t-k; const a=pts[Math.max(0,k-1)],b=pts[k],c=pts[k+1],d=pts[Math.min(pts.length-1,k+2)];
+    const cr=(p0,p1,p2,p3)=>0.5*((2*p1)+(-p0+p2)*u+(2*p0-5*p1+4*p2-p3)*u*u+(-p0+3*p1-3*p2+p3)*u*u*u); P.push([cr(a[0],b[0],c[0],d[0]),cr(a[1],b[1],c[1],d[1])]); }
+  const n=Math.max(1,Math.floor(N*CL(f))); g.save(); g.strokeStyle=col; g.lineCap='round'; g.lineJoin='round'; if(dash) g.setLineDash(dash);
+  for(let pass=0;pass<(dash?1:2);pass++){ g.lineWidth=width*(pass?0.55:1); g.globalAlpha=pass?0.55:0.9; g.beginPath(); for(let i=0;i<=n;i++){ const j=pass?Math.sin(i*1.7)*1.6:0; i?g.lineTo(P[i][0]+j,P[i][1]-j):g.moveTo(P[i][0]+j,P[i][1]-j); } g.stroke(); }
+  g.restore(); const e=P[n], q=P[Math.max(0,n-3)]; return [e[0],e[1],Math.atan2(e[1]-q[1],e[0]-q[0])]; }
+function arrowHead(g,x,y,ang,s,width,col){ g.save(); g.translate(x,y); g.rotate(ang); g.strokeStyle=col; g.lineWidth=width; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); g.moveTo(-s,-s*0.62); g.lineTo(0,0); g.lineTo(-s*0.85,s*0.7); g.stroke(); g.restore(); }
+// white sticker edge + drop shadow around any drawn cut-out (content origin moves to [r+20, r+20])
+function sticker(src,r){ const w=src.width+2*r+40, h=src.height+2*r+60, ox=r+20, oy=r+20;
+  const sil=off(src.width,src.height,(q)=>{ q.drawImage(src,0,0); q.globalCompositeOperation='source-in'; q.fillStyle='#fbfaf5'; q.fillRect(0,0,src.width,src.height); });
+  const ring=off(w,h,(q)=>{ for(let i=0;i<28;i++){ const a=i/28*6.283; q.drawImage(sil,ox+Math.cos(a)*r,oy+Math.sin(a)*r); } q.drawImage(sil,ox,oy); });
+  const c=off(w,h,(p)=>{ p.shadowColor='rgba(20,30,45,.45)'; p.shadowBlur=24; p.shadowOffsetY=16; p.drawImage(ring,0,0); p.shadowColor='transparent'; p.drawImage(src,ox,oy); }); c.ox=ox; c.oy=oy; return c; }
+function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((lt-t0)/0.4);
+  g.font="400 66px "+DISP; const hw=g.measureText(h).width; g.font="italic 500 40px "+SERIF; const sw=g.measureText(s).width; const W=Math.max(hw,sw)+76, H=146;
+  g.save(); g.translate(x+W/2,y+H/2); g.rotate(r+(1-a)*0.25); g.scale(0.4+0.6*a,0.4+0.6*a); g.globalAlpha=CL((lt-t0)/0.12); g.translate(-W/2,-H/2);
+  tornPath(g,0,0,W,H,seed,7); g.fillStyle='#f6f1e4'; g.shadowColor='rgba(30,20,10,.4)'; g.shadowBlur=18; g.shadowOffsetY=10; g.fill(); g.shadowColor='transparent';
+  const hl=EIO((lt-t0-0.3)/0.4); if(hl>0){ g.fillStyle='rgba(255,214,0,.9)'; g.beginPath(); g.moveTo(26,22); g.lineTo(26+(hw+22)*hl,18); g.lineTo(26+(hw+22)*hl,86); g.lineTo(26,82); g.closePath(); g.fill(); }
+  g.fillStyle='#17222b'; g.font="400 66px "+DISP; g.fillText(h,36,74); g.fillStyle='#4c4338'; g.font="italic 500 40px "+SERIF; g.fillText(s,36,124);
+  g.fillStyle='rgba(240,232,200,.8)'; g.save(); g.translate(side?W-30:30,-4); g.rotate(side?0.5:-0.5); g.fillRect(-46,-14,92,30); g.restore(); g.restore(); return W; }
+
+
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const HZ=1480;
+const sky=off(1080,1920,(p,w,h)=>{const R=R0(15);const s=p.createLinearGradient(0,0,0,HZ);s.addColorStop(0,'#0a1026');s.addColorStop(.45,'#232a52');s.addColorStop(.8,'#6a4460');s.addColorStop(1,'#c9744e');p.fillStyle=s;p.fillRect(0,0,w,HZ+10);
+  strokes(p,2200,R,0,0,w,HZ,['#0c1430','#1c2550','#3a3566','#101a3c'],170,34,0);
+  // storm clouds
+  strokes(p,700,R,-50,560,1180,520,['#3b3a5e','#55506f','#2a2c4c','#7a5f74'],150,46,0.05,0.06,0.16);
+  strokes(p,300,R,-50,1250,1180,220,['#e0915c','#c9744e','#f0b070'],160,26,0,0.05,0.14);
+  // ground
+  p.fillStyle='#14110f';p.fillRect(0,HZ,w,h-HZ);strokes(p,900,R,0,HZ,w,h-HZ,['#241c16','#0c0a09','#3a2a1c'],120,24,0,0.08,0.2);});
+const ship=off(1100,460,(p)=>{const R=R0(8);const body=()=>{p.beginPath();p.moveTo(20,230);p.bezierCurveTo(90,60,560,30,880,110);p.bezierCurveTo(1010,150,1080,200,1090,230);p.bezierCurveTo(1080,260,1010,310,880,350);p.bezierCurveTo(560,430,90,400,20,230);p.closePath();};
+  body();const gr=p.createLinearGradient(0,60,0,400);gr.addColorStop(0,'#e9edf2');gr.addColorStop(.45,'#aeb6c2');gr.addColorStop(1,'#4a5262');p.fillStyle=gr;p.fill();p.save();body();p.clip();
+  p.strokeStyle='rgba(40,50,70,.35)';p.lineWidth=3;for(let i=1;i<14;i++){const x=40+i*76;p.beginPath();p.moveTo(x,40);p.quadraticCurveTo(x-30,230,x,420);p.stroke();}
+  strokes(p,700,R,0,30,1100,400,['#ffffff','#6f7a8c','#c9d2de','#2f3848'],90,14,0,0.08,0.22);p.restore();
+  // tail fins (left = tail)
+  p.fillStyle='#8d96a6';[[60,150,-1],[60,310,1]].forEach(([x,y,s])=>{p.beginPath();p.moveTo(x,y);p.lineTo(x+170,y+s*-10);p.lineTo(x+120,y+s*90);p.lineTo(x-30,y+s*80);p.closePath();p.fill();});
+  // gondola + engine cars
+  p.fillStyle='#2a2f3a';p.beginPath();p.roundRect(840,360,110,34,10);p.fill();[[420,392],[620,398]].forEach(([x,y])=>{p.beginPath();p.ellipse(x,y,34,16,0,0,7);p.fill();});
+  p.fillStyle='#ffd27a';for(let x=850;x<940;x+=14)p.fillRect(x,368,8,10);});
+const FIRE=off(900,900,(p)=>{const R=R0(5);p.filter='blur(18px)';for(let i=0;i<60;i++){const x=450+(R()-.5)*520,y=560-R()*460,r=60+R()*130;const c=y<260?'rgba(200,60,20,.5)':y<400?'rgba(255,130,30,.7)':'rgba(255,220,120,.9)';p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();}
+  p.filter='none';strokes(p,500,R,120,80,660,560,['#fff3c0','#ff9a2e','#e0481a','#ffd060'],110,22,-1.4,0.12,0.3);});
+const SMOKE=off(900,900,(p)=>{const R=R0(6);p.filter='blur(22px)';for(let i=0;i<40;i++){p.fillStyle='rgba(12,10,16,'+(.35+R()*.3)+')';p.beginPath();p.arc(450+(R()-.5)*600,450+(R()-.5)*600,70+R()*130,0,7);p.fill();}p.filter='none';strokes(p,300,R,100,100,700,700,['#07060a','#2a2430','#3d3038'],120,30,-1.2,0.08,0.2);});
+const BOIL=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#9fb6d6','#020812','#f4d79c'],120,22,0.1,0.02,0.05);});
+function draw(lt){g.drawImage(sky,0,0);
+  // mooring mast
+  g.save();g.strokeStyle='#0d0b0a';g.lineWidth=14;g.beginPath();g.moveTo(960,HZ+10);g.lineTo(930,1010);g.moveTo(900,HZ+10);g.lineTo(930,1010);g.stroke();g.lineWidth=5;for(let y=1060;y<HZ;y+=60){g.beginPath();g.moveTo(905+(y-1010)*-.06,y);g.lineTo(955+(y-1010)*.06,y+40);g.stroke();}g.restore();
+  // smoke, airship (tail down, burning), fire
+  g.save();g.translate(520,960);g.rotate(-0.30);
+  g.globalAlpha=.9;g.drawImage(SMOKE,-760,-900,900,900);g.globalAlpha=1;
+  g.drawImage(ship,-550,-230);
+  g.globalCompositeOperation='lighter';g.drawImage(FIRE,-760,-560,760,760);g.globalCompositeOperation='source-over';g.restore();
+  // fire glow on clouds + ground
+  const gl=g.createRadialGradient(250,1150,40,250,1150,900);gl.addColorStop(0,'rgba(255,170,70,.55)');gl.addColorStop(1,'rgba(255,120,40,0)');g.fillStyle=gl;g.fillRect(0,0,1080,1920);
+  // falling burning scraps
+  const R=R0(31);for(let i=0;i<26;i++){const x=80+R()*520,y=1150+R()*330;g.fillStyle=R()<.5?'#ffd27a':'#ff8a3a';g.globalAlpha=.5+R()*.5;g.beginPath();g.arc(x,y,3+R()*6,0,7);g.fill();}g.globalAlpha=1;
+  // ground crew running (tiny painted silhouettes) + rim light
+  for(let i=0;i<11;i++){const x=120+i*82+(i%3)*14,y=HZ+40+(i%4)*46,s=1+((i*7)%5)/10;g.save();g.translate(x,y);g.scale(s,s);g.fillStyle='#070605';g.beginPath();g.arc(0,-46,9,0,7);g.fill();g.lineCap='round';g.strokeStyle='#070605';g.lineWidth=9;g.beginPath();g.moveTo(0,-36);g.lineTo(4,-8);g.lineTo(-10,16);g.moveTo(4,-8);g.lineTo(18,14);g.moveTo(2,-28);g.lineTo(18,-20);g.stroke();
+    g.strokeStyle='rgba(255,170,80,.8)';g.lineWidth=2.5;g.beginPath();g.arc(0,-46,9,Math.PI*.9,Math.PI*1.7);g.stroke();g.restore();}
+  [['6 May 1937: time to land.',-0.02],['A spark. Then hydrogen.',0.015],['Gone in half a minute.',-0.01]].forEach(([t,r],i)=>{g.save();g.font='italic 500 '+(i===2?80:72)+'px '+SERIF;const w=g.measureText(t).width+64,y=200+i*112;
+    g.translate(60,y);g.rotate(r);tornPath(g,0,0,w,96,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=i===2?'#8a1c10':'#2c1c0e';g.fillText(t,32,70);g.restore();});
+  g.drawImage(BOIL,0,0);g.drawImage(GRAIN,0,0);
+  const vg=g.createRadialGradient(540,1000,380,540,1000,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(2,6,16,.6)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
