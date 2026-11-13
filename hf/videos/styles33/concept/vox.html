@@ -1,0 +1,144 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'DM Serif Display';font-style:italic;src:url(../../styles28/media/dm-serif-display-latin-400-italic.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;src:url(eb-garamond-latin-500-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}#w{position:relative;width:1080px;height:1920px}canvas{position:absolute;left:0;top:0}</style>
+<script src="three.min.js"></script><script src="three-extras.js"></script></head><body><div id="w"><canvas id="c3" width="1080" height="1920"></canvas><canvas id="c" width="1080" height="1920"></canvas></div>
+<script id="main" type="text/plain">
+// styles33: /paper-collage "Vox style": a REAL-looking gallery wall (3D render: plaster, gallery spotlight, parquet, gilded frame with depth)
+// + paper cut-out layer on top (torn labels, highlighter, marker arrows). Facts: History.com / Smithsonian (21 Aug 1911, ~7:15 am, Peruggia;
+// crowds came to see the empty wall; found Dec 1913). Painting texture = placeholder drawing until Jan supplies a public-domain photo.
+const E3=(x)=>x<0?0:x>1?1:1-Math.pow(1-x,3), EIO=(x)=>x<0?0:x>1?1:x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2, CL=(x)=>x<0?0:x>1?1:x;
+const EBK=(x)=>{ x=CL(x); const c1=1.70158,c3=c1+1; return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2); };
+const SERIF="'EB Garamond','Lora','DejaVu Serif',Georgia,serif", DISP="'DM Serif Display','EB Garamond','Lora','DejaVu Serif',serif", SANS="Inter,'DejaVu Sans',Helvetica,Arial,sans-serif";
+function R0(s){ return function(){ s=(s*16807)%2147483647; return (s-1)/2147483646; }; }
+function off(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h); return c; }
+function tornPath(g,x,y,w,h,seed,j){ const R=R0(seed); j=j||6; g.beginPath(); g.moveTo(x,y+R()*j);
+  for(let i=1;i<=24;i++) g.lineTo(x+w*i/24,y+(R()-.5)*j); for(let i=1;i<=12;i++) g.lineTo(x+w+(R()-.5)*j,y+h*i/12);
+  for(let i=23;i>=0;i--) g.lineTo(x+w*i/24,y+h+(R()-.5)*j); for(let i=11;i>=1;i--) g.lineTo(x+(R()-.5)*j,y+h*i/12); g.closePath(); }
+function blobPath(g,cx,cy,r,seed,amp,n,t,bulge){ const R=R0(seed); const ph=[],fq=[]; for(let i=0;i<4;i++){ ph.push(R()*6.28); fq.push(2+Math.floor(R()*4)); }
+  g.beginPath(); for(let i=0;i<=n;i++){ const a=i/n*Math.PI*2; let rr=r; for(let k=0;k<4;k++) rr+=r*amp*Math.sin(a*fq[k]+ph[k]+t*(0.6+k*0.3))/(k+1);
+    if(bulge) rr+=bulge(a); const x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr; i?g.lineTo(x,y):g.moveTo(x,y); } g.closePath(); }
+const GRAIN=off(1080,1920,(p,w,h)=>{ const R=R0(77); for(let i=0;i<140000;i++){ p.fillStyle=R()<.5?'rgba(0,0,0,'+(R()*.10)+')':'rgba(255,255,255,'+(R()*.10)+')'; p.fillRect(R()*w,R()*h,1+R()*2,1+R()*2); } });
+// hand-drawn marker line through pts (Catmull-Rom), drawn up to fraction f; returns the end point + angle
+function marker(g,pts,f,width,col,dash){ const N=80, P=[]; for(let i=0;i<=N;i++){ const t=i/N*(pts.length-1), k=Math.min(pts.length-2,Math.floor(t)), u=t-k; const a=pts[Math.max(0,k-1)],b=pts[k],c=pts[k+1],d=pts[Math.min(pts.length-1,k+2)];
+    const cr=(p0,p1,p2,p3)=>0.5*((2*p1)+(-p0+p2)*u+(2*p0-5*p1+4*p2-p3)*u*u+(-p0+3*p1-3*p2+p3)*u*u*u); P.push([cr(a[0],b[0],c[0],d[0]),cr(a[1],b[1],c[1],d[1])]); }
+  const n=Math.max(1,Math.floor(N*CL(f))); g.save(); g.strokeStyle=col; g.lineCap='round'; g.lineJoin='round'; if(dash) g.setLineDash(dash);
+  for(let pass=0;pass<(dash?1:2);pass++){ g.lineWidth=width*(pass?0.55:1); g.globalAlpha=pass?0.55:0.9; g.beginPath(); for(let i=0;i<=n;i++){ const j=pass?Math.sin(i*1.7)*1.6:0; i?g.lineTo(P[i][0]+j,P[i][1]-j):g.moveTo(P[i][0]+j,P[i][1]-j); } g.stroke(); }
+  g.restore(); const e=P[n], q=P[Math.max(0,n-3)]; return [e[0],e[1],Math.atan2(e[1]-q[1],e[0]-q[0])]; }
+function arrowHead(g,x,y,ang,s,width,col){ g.save(); g.translate(x,y); g.rotate(ang); g.strokeStyle=col; g.lineWidth=width; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); g.moveTo(-s,-s*0.62); g.lineTo(0,0); g.lineTo(-s*0.85,s*0.7); g.stroke(); g.restore(); }
+// white sticker edge + drop shadow around any drawn cut-out (content origin moves to [r+20, r+20])
+function sticker(src,r){ const w=src.width+2*r+40, h=src.height+2*r+60, ox=r+20, oy=r+20;
+  const sil=off(src.width,src.height,(q)=>{ q.drawImage(src,0,0); q.globalCompositeOperation='source-in'; q.fillStyle='#fbfaf5'; q.fillRect(0,0,src.width,src.height); });
+  const ring=off(w,h,(q)=>{ for(let i=0;i<28;i++){ const a=i/28*6.283; q.drawImage(sil,ox+Math.cos(a)*r,oy+Math.sin(a)*r); } q.drawImage(sil,ox,oy); });
+  const c=off(w,h,(p)=>{ p.shadowColor='rgba(20,30,45,.45)'; p.shadowBlur=24; p.shadowOffsetY=16; p.drawImage(ring,0,0); p.shadowColor='transparent'; p.drawImage(src,ox,oy); }); c.ox=ox; c.oy=oy; return c; }
+function paperTag(g,lt,t0,x,y,r,h,s,seed,side){ if(lt<t0) return; const a=EBK((lt-t0)/0.4);
+  g.font="400 66px "+DISP; const hw=g.measureText(h).width; g.font="italic 500 40px "+SERIF; const sw=g.measureText(s).width; const W=Math.max(hw,sw)+76, H=146;
+  g.save(); g.translate(x+W/2,y+H/2); g.rotate(r+(1-a)*0.25); g.scale(0.4+0.6*a,0.4+0.6*a); g.globalAlpha=CL((lt-t0)/0.12); g.translate(-W/2,-H/2);
+  tornPath(g,0,0,W,H,seed,7); g.fillStyle='#f6f1e4'; g.shadowColor='rgba(30,20,10,.4)'; g.shadowBlur=18; g.shadowOffsetY=10; g.fill(); g.shadowColor='transparent';
+  const hl=EIO((lt-t0-0.3)/0.4); if(hl>0){ g.fillStyle='rgba(255,214,0,.9)'; g.beginPath(); g.moveTo(26,22); g.lineTo(26+(hw+22)*hl,18); g.lineTo(26+(hw+22)*hl,86); g.lineTo(26,82); g.closePath(); g.fill(); }
+  g.fillStyle='#17222b'; g.font="400 66px "+DISP; g.fillText(h,36,74); g.fillStyle='#4c4338'; g.font="italic 500 40px "+SERIF; g.fillText(s,36,124);
+  g.fillStyle='rgba(240,232,200,.8)'; g.save(); g.translate(side?W-30:30,-4); g.rotate(side?0.5:-0.5); g.fillRect(-46,-14,92,30); g.restore(); g.restore(); return W; }
+
+
+function portrait(w,h){return off(w,h,(p)=>{
+  const bg=p.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#9aa58a');bg.addColorStop(.35,'#7f8c6c');bg.addColorStop(.6,'#5c6446');bg.addColorStop(1,'#2e2a1a');p.fillStyle=bg;p.fillRect(0,0,w,h);
+  p.filter='blur(14px)';const L=(pts,c)=>{p.fillStyle=c;p.beginPath();pts.forEach((q,i)=>i?p.lineTo(q[0]*w,q[1]*h):p.moveTo(q[0]*w,q[1]*h));p.fill();};
+  L([[0,.42],[.12,.30],[.25,.36],[.36,.31],[.42,.5],[0,.62]],'rgba(170,190,170,.7)');L([[1,.36],[.86,.27],[.72,.34],[.6,.3],[.58,.52],[1,.6]],'rgba(170,190,170,.7)');
+  L([[0,.55],[.2,.5],[.3,.62],[0,.7]],'rgba(120,100,60,.8)');L([[1,.5],[.8,.48],[.7,.6],[1,.68]],'rgba(120,100,60,.8)');
+  p.strokeStyle='rgba(210,180,120,.8)';p.lineWidth=w*.012;p.beginPath();p.moveTo(w*.06,h*.62);p.bezierCurveTo(w*.16,h*.55,w*.04,h*.5,w*.22,h*.46);p.stroke();
+  p.beginPath();p.moveTo(w*.9,h*.56);p.bezierCurveTo(w*.84,h*.5,w*.95,h*.46,w*.8,h*.42);p.stroke();p.filter='blur(2px)';
+  // body / dress
+  const dr=p.createLinearGradient(0,h*.5,0,h);dr.addColorStop(0,'#3a2c1a');dr.addColorStop(1,'#16110a');p.fillStyle=dr;
+  p.beginPath();p.moveTo(w*.12,h);p.bezierCurveTo(w*.16,h*.66,w*.3,h*.55,w*.5,h*.53);p.bezierCurveTo(w*.7,h*.55,w*.84,h*.66,w*.9,h);p.fill();
+  // skin: neck/chest
+  const sk=(x,y)=>{const r=p.createRadialGradient(x,y,2,x,y,w*.18);r.addColorStop(0,'#e6c08a');r.addColorStop(1,'#a87e4c');return r;};
+  p.fillStyle=sk(w*.5,h*.52);p.beginPath();p.moveTo(w*.4,h*.5);p.quadraticCurveTo(w*.5,h*.66,w*.61,h*.5);p.lineTo(w*.58,h*.43);p.lineTo(w*.42,h*.43);p.closePath();p.fill();
+  // hair: thin dark cap + two curtains falling past the face to the shoulders
+  p.fillStyle='#1d150c';p.beginPath();p.ellipse(w*.5,h*.27,w*.135,h*.125,0,Math.PI,0);p.fill();
+  [[-1],[1]].forEach(([s])=>{p.beginPath();p.moveTo(w*(.5+s*.11),h*.24);p.bezierCurveTo(w*(.5+s*.16),h*.32,w*(.5+s*.15),h*.44,w*(.5+s*.22),h*.57);p.lineTo(w*(.5+s*.13),h*.57);p.bezierCurveTo(w*(.5+s*.1),h*.46,w*(.5+s*.11),h*.36,w*(.5+s*.09),h*.3);p.closePath();p.fill();});
+  // face (soft, sfumato)
+  p.filter='blur(3px)';const fg=p.createRadialGradient(w*.48,h*.28,4,w*.5,h*.31,w*.13);fg.addColorStop(0,'#f0cf9a');fg.addColorStop(.7,'#d3a86c');fg.addColorStop(1,'#9c7343');
+  p.fillStyle=fg;p.beginPath();p.ellipse(w*.5,h*.315,w*.098,h*.112,0,0,7);p.fill();
+  p.fillStyle='rgba(110,70,35,.28)';p.beginPath();p.ellipse(w*.565,h*.33,w*.03,h*.08,0,0,7);p.fill();
+  p.filter='blur(1.5px)';p.fillStyle='rgba(70,45,25,.55)';[[.462,.3],[.54,.3]].forEach(([x,y])=>{p.beginPath();p.ellipse(w*x,h*y,w*.018,h*.006,0,0,7);p.fill();});
+  p.fillStyle='rgba(120,80,45,.25)';p.beginPath();p.moveTo(w*.5,h*.305);p.lineTo(w*.49,h*.345);p.lineTo(w*.507,h*.348);p.fill();
+  p.strokeStyle='rgba(120,65,45,.6)';p.lineWidth=w*.005;p.beginPath();p.moveTo(w*.468,h*.37);p.quadraticCurveTo(w*.5,h*.38,w*.534,h*.366);p.stroke();
+  p.filter='blur(2px)';
+  // veil line + hands
+  p.strokeStyle='rgba(40,30,20,.5)';p.lineWidth=w*.004;p.beginPath();p.moveTo(w*.38,h*.24);p.quadraticCurveTo(w*.5,h*.19,w*.62,h*.24);p.stroke();
+  p.fillStyle=sk(w*.5,h*.85);p.beginPath();p.ellipse(w*.46,h*.87,w*.15,h*.05,-.12,0,7);p.fill();p.beginPath();p.ellipse(w*.58,h*.85,w*.12,h*.045,.15,0,7);p.fill();
+  p.filter='none';
+  // varnish + craquelure
+  p.fillStyle='rgba(200,170,60,.16)';p.fillRect(0,0,w,h);const R=R0(9);p.strokeStyle='rgba(40,30,10,.18)';p.lineWidth=1;
+  for(let i=0;i<500;i++){let x=R()*w,y=R()*h;p.beginPath();p.moveTo(x,y);for(let k=0;k<4;k++){x+=(R()-.5)*30;y+=(R()-.5)*30;p.lineTo(x,y);}p.stroke();}
+  const v=p.createRadialGradient(w/2,h*.45,w*.25,w/2,h*.5,w*.85);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(30,20,5,.55)');p.fillStyle=v;p.fillRect(0,0,w,h);});}
+
+// ---------- 3D gallery ----------
+const ren=new THREE.WebGLRenderer({canvas:document.getElementById('c3'),antialias:true,preserveDrawingBuffer:true});
+ren.setSize(1080,1920,false);ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.0;ren.outputColorSpace=THREE.SRGBColorSpace;
+const tex=(c,srgb=true)=>{const t=new THREE.CanvasTexture(c);if(srgb)t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=16;return t;};
+const sc=new THREE.Scene();sc.background=new THREE.Color(0x0d0c0a);
+const cam=new THREE.PerspectiveCamera(34,1080/1920,.1,100);
+sc.add(new THREE.HemisphereLight(0xfff6ea,0x6b5a48,0.3));
+const spot=new THREE.SpotLight(0xfff0dc,0.95,0,0.42,0.7,1.4);spot.position.set(-1.5,8.5,11);spot.target.position.set(0,2.1,0);sc.add(spot,spot.target);
+spot.castShadow=true;spot.shadow.mapSize.set(2048,2048);spot.shadow.radius=6;spot.shadow.bias=-0.0006;
+const fillL=new THREE.DirectionalLight(0xdfe6ff,0.18);fillL.position.set(-5,2,8);sc.add(fillL);
+// plaster wall
+const plC=off(1024,2048,(p,w,h)=>{p.fillStyle='#ece8e0';p.fillRect(0,0,w,h);const R=R0(4);p.filter='blur(18px)';for(let i=0;i<80;i++){p.fillStyle=(R()<.5?'rgba(255,255,255,':'rgba(160,150,135,')+R()*.10+')';p.beginPath();p.arc(R()*w,R()*h,40+R()*120,0,7);p.fill();}p.filter='none';
+  for(let i=0;i<90000;i++){p.fillStyle=(R()<.5?'rgba(0,0,0,':'rgba(255,255,255,')+R()*.04+')';p.fillRect(R()*w,R()*h,1,1);}
+  // cleaner patch where the painting hung (dust outline)
+  const x0=w*.5-0.95/5*w*1.0, gw=w*1.9/5*1.0;});
+const bmC=off(1024,2048,(p,w,h)=>{p.fillStyle='#808080';p.fillRect(0,0,w,h);const R=R0(7);for(let i=0;i<160000;i++){p.fillStyle='rgba('+(R()<.5?'0,0,0':'255,255,255')+','+R()*.25+')';p.fillRect(R()*w,R()*h,1+R()*2,1+R()*2);}});
+const wall=new THREE.Mesh(new THREE.PlaneGeometry(10,20),new THREE.MeshStandardMaterial({map:tex(plC),roughness:.95}));wall.position.y=4;wall.receiveShadow=true;sc.add(wall);
+// ghost of the painting: slightly lighter, cleaner rectangle with a soft dust outline
+const ghC=off(256,360,(p,w,h)=>{p.fillStyle='rgba(255,255,255,.35)';p.fillRect(14,14,w-28,h-28);p.strokeStyle='rgba(110,95,70,.30)';p.lineWidth=10;p.filter='blur(5px)';p.strokeRect(14,14,w-28,h-28);});
+const ghost=new THREE.Mesh(new THREE.PlaneGeometry(2.25,3.15),new THREE.MeshStandardMaterial({map:tex(ghC),transparent:true,roughness:1,depthWrite:false}));ghost.position.set(0,2.4,.005);ghost.receiveShadow=true;sc.add(ghost);
+// picture rail + baseboard + parquet floor
+const wood=new THREE.MeshStandardMaterial({color:0xdcd6ca,roughness:.6});
+const rail=new THREE.Mesh(new THREE.BoxGeometry(10,.08,.08),wood);rail.position.set(0,6.4,.04);rail.castShadow=true;sc.add(rail);
+const base=new THREE.Mesh(new THREE.BoxGeometry(10,.42,.1),wood);base.position.set(0,-3.0,.05);base.castShadow=base.receiveShadow=true;sc.add(base);
+const parC=off(1024,1024,(p,w,h)=>{const R=R0(9);for(let y=0;y<h;y+=64)for(let x=-(y/64%2)*128;x<w;x+=256){const c=110+R()*40;p.fillStyle=`rgb(${c+40},${c},${c-40})`;p.fillRect(x,y,254,62);
+  p.strokeStyle='rgba(60,35,15,.25)';for(let k=0;k<8;k++){p.beginPath();p.moveTo(x,y+4+k*7+R()*3);p.bezierCurveTo(x+80,y+k*7,x+170,y+8+k*7,x+254,y+4+k*7);p.stroke();}}});
+const flT=tex(parC);flT.wrapS=flT.wrapT=THREE.RepeatWrapping;flT.repeat.set(3,3);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(10,10),new THREE.MeshStandardMaterial({map:flT,roughness:.35,metalness:0}));floor.rotation.x=-Math.PI/2;floor.position.set(0,-3.2,5);floor.receiveShadow=true;sc.add(floor);
+// the 4 iron hooks
+[[-.95,3.75],[.95,3.75],[-.95,1.05],[.95,1.05]].forEach(([x,y])=>{const k=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.22,12),new THREE.MeshStandardMaterial({color:0x2b2b2b,metalness:.8,roughness:.35}));k.rotation.x=Math.PI/2;k.position.set(x,y,.11);k.castShadow=true;sc.add(k);});
+// gilded frame + painting (a group we can move)
+const gold=new THREE.MeshStandardMaterial({color:0xd0a548,metalness:.25,roughness:.45});const inner=new THREE.MeshStandardMaterial({color:0x8a6626,metalness:.2,roughness:.5});
+const art=new THREE.Group();const FW=1.9,FH=2.8,B=.22;
+[[0,FH/2-B/2,FW,B],[0,-FH/2+B/2,FW,B],[-FW/2+B/2,0,B,FH],[FW/2-B/2,0,B,FH]].forEach(([x,y,w,h])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,.14),gold);m.position.set(x,y,.07);m.castShadow=m.receiveShadow=true;art.add(m);});
+[[0,FH/2-B-.03,FW-2*B,.06],[0,-FH/2+B+.03,FW-2*B,.06],[-FW/2+B+.03,0,.06,FH-2*B],[FW/2-B-.03,0,.06,FH-2*B]].forEach(([x,y,w,h])=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,.08),inner);m.position.set(x,y,.05);art.add(m);});
+const pic=new THREE.Mesh(new THREE.PlaneGeometry(FW-2*B-.06,FH-2*B-.06),new THREE.MeshStandardMaterial({map:tex(portrait(420,626)),roughness:.95}));pic.position.z=.03;pic.receiveShadow=true;art.add(pic);
+sc.add(art);
+const comp=new THREE.EffectComposer(ren);comp.addPass(new THREE.RenderPass(sc,cam));comp.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(1080,1920),0.12,0.4,0.95));if(THREE.OutputPass)comp.addPass(new THREE.OutputPass());
+
+// ---------- paper layer on top ----------
+const g=document.getElementById('c').getContext('2d');
+function toScreen(v){const p=v.clone().project(cam);return [(p.x*.5+.5)*1080,(-p.y*.5+.5)*1920];}
+function draw(T){const lt=T,q=Math.floor(lt*12)/12;
+  const mv=EIO((lt-0.6)/3.2);
+  art.position.set(0+mv*1.15,2.4-mv*1.55,.08+mv*.9);art.rotation.set(0,.10*mv,-.15*mv);
+  cam.position.set(0.25,1.3,15.5-0.4*EIO(lt/8));cam.lookAt(0.2,1.4,0);ren.render(sc,cam);
+  g.clearRect(0,0,1080,1920);
+  // headline on paper strips
+  g.save();g.rotate(-0.012);tornPath(g,30,90,700,120,11,6);g.fillStyle='#f6f1e4';g.shadowColor='rgba(0,0,0,.35)';g.shadowBlur=16;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#2f5f86';g.font='500 76px '+SERIF;g.fillText('The theft that made her',60,174);g.restore();
+  g.save();g.translate(60,250);g.rotate(0.015);tornPath(g,0,0,640,200,12,8);g.fillStyle='#f6f1e4';g.shadowColor='rgba(0,0,0,.35)';g.shadowBlur=16;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.fillStyle='rgba(255,214,0,.92)';g.fillRect(24,40,590,130);g.fillStyle='#17222b';g.font='italic 400 190px '+DISP;g.fillText('famous',26,165);g.restore();
+  // orange label
+  g.save();g.rotate(-0.02);tornPath(g,-20,520,470,92,31,5);g.fillStyle='#f0541c';g.shadowColor='rgba(0,0,0,.35)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';g.fillStyle='#fff';g.font='500 66px '+SERIF;g.fillText('21 Aug 1911',50,586);g.restore();
+  // marker arrow from the empty spot to the moving painting
+  const a0=toScreen(new THREE.Vector3(0,2.6,.1)), a1=toScreen(new THREE.Vector3(art.position.x-0.2,art.position.y+1.55,art.position.z));
+  const e=marker(g,[[a0[0]-40,a0[1]],[(a0[0]+a1[0])/2+60,a0[1]-120],[a1[0],a1[1]-30]],CL(mv*1.3),9,'#d6331a',[22,15]);if(mv>.6)arrowHead(g,e[0],e[1],e[2],28,9,'#d6331a');
+  // empty-wall callout
+  const gh=toScreen(new THREE.Vector3(-.9,3.2,0));
+  paperTag(g,lt,0,40,1180,-0.03,'7:15 am','a handyman walks out with her',50,0);
+  const e2=marker(g,[[300,1180],[330,1050],[gh[0]+30,gh[1]+120]],1,6,'#23313d');arrowHead(g,e2[0],e2[1],e2[2],22,6,'#23313d');
+  paperTag(g,lt,0,470,1660,0.025,'2 years','hidden in a trunk in Paris',51,1);
+  }
+window.DUR=8;window.draw=draw;draw(2.6);document.title='ok';
+</script>
+<script>Promise.all(["400 40px 'DM Serif Display'","italic 400 40px 'DM Serif Display'","500 30px 'EB Garamond'","italic 500 30px 'EB Garamond'"].map(f=>document.fonts.load(f))).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script>
+</body></html>
