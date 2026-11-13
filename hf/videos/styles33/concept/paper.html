@@ -1,0 +1,147 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;src:url(eb-garamond-latin-500-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}
+</style>
+<script src="geo.js"></script><script src="world50.js"></script></head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+// styles33 concept v2: /paper-collage why the Panama Canal goes uphill. Stop-motion collage (12 fps steps), own design.
+// Facts: canal opened 1914; Gatún Lake ~26 m above sea level; Atlantic side = Gatún Locks, 3 steps up.
+const cv=document.getElementById('c'), g=cv.getContext('2d');
+const DISP="'DM Serif Display',serif", SERIF="'EB Garamond',serif", SANS="Inter,'DejaVu Sans',Arial,sans-serif";
+const CL=x=>x<0?0:x>1?1:x, E3=x=>1-Math.pow(1-CL(x),3), EIO=x=>{x=CL(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const EBK=x=>{x=CL(x);const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+function R0(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;};}
+function off(w,h,d){const c=document.createElement('canvas');c.width=w;c.height=h;d(c.getContext('2d'),w,h);return c;}
+function torn(p,x,y,w,h,seed,j){const R=R0(seed);p.beginPath();p.moveTo(x,y);
+  for(let i=1;i<=28;i++)p.lineTo(x+w*i/28,y+(R()-.5)*j);for(let i=1;i<=16;i++)p.lineTo(x+w+(R()-.5)*j,y+h*i/16);
+  for(let i=27;i>=0;i--)p.lineTo(x+w*i/28,y+h+(R()-.5)*j);for(let i=15;i>=1;i--)p.lineTo(x+(R()-.5)*j,y+h*i/16);p.closePath();}
+function sticker(src,r){const w=src.width+2*r+40,h=src.height+2*r+60,ox=r+20,oy=r+20;
+  const sil=off(src.width,src.height,q=>{q.drawImage(src,0,0);q.globalCompositeOperation='source-in';q.fillStyle='#fbfaf5';q.fillRect(0,0,src.width,src.height);});
+  const ring=off(w,h,q=>{for(let i=0;i<28;i++){const a=i/28*6.283;q.drawImage(sil,ox+Math.cos(a)*r,oy+Math.sin(a)*r);}q.drawImage(sil,ox,oy);});
+  const c=off(w,h,p=>{p.shadowColor='rgba(20,30,45,.45)';p.shadowBlur=22;p.shadowOffsetY=14;p.drawImage(ring,0,0);p.shadowColor='transparent';p.drawImage(src,ox,oy);});c.ox=ox;c.oy=oy;return c;}
+function halftone(p,w,h,col,step,fn){for(let y=0;y<h;y+=step)for(let x=(y/step%2)*step/2;x<w;x+=step){const r=fn(x,y);if(r<=0)continue;p.fillStyle=col;p.beginPath();p.arc(x,y,r,0,7);p.fill();}}
+const W=window.WORLD50, LAND=topojson.feature(W,W.objects.land);
+
+// ---------- static pieces ----------
+const BG=off(1080,1920,(p,w,h)=>{p.fillStyle='#d9c7a3';p.fillRect(0,0,w,h);const R=R0(5);   // kraft board
+  for(let i=0;i<9000;i++){p.fillStyle='rgba('+(R()<.5?'110,80,40':'255,240,210')+','+R()*.12+')';p.fillRect(R()*w,R()*h,1+R()*3,1+R()*2);}
+  p.filter='blur(40px)';for(let i=0;i<26;i++){p.fillStyle='rgba(120,90,50,'+(.06+R()*.08)+')';p.beginPath();p.arc(R()*w,R()*h,120+R()*200,0,7);p.fill();}p.filter='none';
+  // newspaper scraps
+  [[ -40,700,520,380,-0.08,7],[640,1500,520,420,0.06,8],[700,40,460,300,0.09,9]].forEach(([x,y,ww,hh,r,s])=>{p.save();p.translate(x,y);p.rotate(r);torn(p,0,0,ww,hh,s,10);p.fillStyle='#e9e4d6';p.shadowColor='rgba(40,25,10,.25)';p.shadowBlur=10;p.fill();p.shadowColor='transparent';p.clip();
+    const Q=R0(s);p.fillStyle='rgba(30,30,30,.5)';for(let yy=30;yy<hh;yy+=18){for(let col=0;col<3;col++){const cx=20+col*(ww-40)/3;let xx=cx;while(xx<cx+(ww-40)/3-16){const l=10+Q()*40;p.fillRect(xx,yy,Math.min(l,cx+(ww-40)/3-16-xx),5);xx+=l+7;}}}
+    p.fillStyle='rgba(20,20,20,.75)';p.font="400 46px "+DISP;p.fillText(['THE CANAL','LOCKS','1914'][s-7],22,0+56);p.restore();});
+  // graph-paper piece
+  p.save();p.translate(30,1180);p.rotate(0.05);torn(p,0,0,420,300,12,8);p.fillStyle='#f3f6f2';p.fill();p.clip();p.strokeStyle='rgba(60,140,170,.35)';p.lineWidth=1.5;
+  for(let x=0;x<420;x+=24){p.beginPath();p.moveTo(x,0);p.lineTo(x,300);p.stroke();}for(let y=0;y<300;y+=24){p.beginPath();p.moveTo(0,y);p.lineTo(420,y);p.stroke();}p.restore();});
+
+const MW=860,MH=560;const proj=d3.geoMercator().fitExtent([[0,0],[MW,MH]],{type:'MultiPoint',coordinates:[[-80.4,8.7],[-79.2,9.55]]});
+const ROUTE=[[-79.92,9.37],[-79.92,9.27],[-79.86,9.2],[-79.76,9.12],[-79.68,9.05],[-79.62,8.99],[-79.57,8.93],[-79.53,8.88]].map(c=>proj(c));
+const MAP=off(MW+40,MH+40,(p)=>{p.translate(20,20);torn(p,0,0,MW,MH,11,18);p.save();p.clip();
+  p.fillStyle='#8ec3cf';p.fillRect(0,0,MW,MH);halftone(p,MW,MH,'rgba(30,85,105,.3)',9,(x,y)=>1.2+1.2*Math.sin(x*.01+y*.008));
+  const path=d3.geoPath(proj,p);p.fillStyle='#f0dfb2';p.beginPath();path(LAND);p.fill();
+  p.save();p.beginPath();path(LAND);p.clip();halftone(p,MW,MH,'rgba(170,120,50,.25)',8,(x,y)=>1.0+1.4*CL((y-100)/500));
+  // green jungle blotches
+  const R=R0(21);p.filter='blur(8px)';for(let i=0;i<40;i++){p.fillStyle='rgba(90,140,70,'+(.08+R()*.1)+')';p.beginPath();p.arc(R()*MW,R()*MH,30+R()*60,0,7);p.fill();}p.filter='none';p.restore();
+  const lk=proj([-79.87,9.17]);p.fillStyle='#6fb0c0';p.beginPath();p.ellipse(lk[0],lk[1],70,44,-.6,0,7);p.fill();
+  p.strokeStyle='#5a4730';p.lineWidth=3;p.beginPath();path(LAND);p.stroke();
+  p.fillStyle='#17222b';p.font="italic 500 34px "+SERIF;p.fillText('Caribbean Sea',30,60);p.fillText('Pacific Ocean',MW-230,MH-34);
+  p.font="italic 500 26px "+SERIF;p.fillText('Gatún Lake',lk[0]-150,lk[1]+70);
+  p.strokeStyle='rgba(255,255,255,.4)';p.lineWidth=3;p.beginPath();p.moveTo(MW*.5,0);p.lineTo(MW*.5,MH);p.stroke();
+  const Q=R0(3);for(let i=0;i<20000;i++){p.fillStyle=Q()<.5?'rgba(40,30,15,'+Q()*.1+')':'rgba(255,250,235,'+Q()*.14+')';p.fillRect(Q()*MW,Q()*MH,2,2);}p.restore();});
+
+// container ship, side view, bow to the right
+const SHIP=sticker(off(330,150,(p)=>{
+  // containers
+  const cols=['#d6402a','#2f6f9f','#e8a33a','#3f8f5a','#7a4ea0','#d6402a','#e8a33a','#2f6f9f','#3f8f5a','#d6402a','#2f6f9f'];
+  for(let r=0;r<3;r++)for(let i=0;i<9-r%2;i++){const x=80+i*24,y=66-r*16;p.fillStyle=cols[(i*3+r*5)%cols.length];p.fillRect(x,y,23,15);p.fillStyle='rgba(0,0,0,.18)';for(let k=2;k<23;k+=4)p.fillRect(x+k,y+1,1,13);}
+  // bridge
+  p.fillStyle='#f4f1ea';p.fillRect(30,28,40,54);p.fillStyle='#26343f';p.fillRect(26,24,48,8);p.fillStyle='#9fd0e8';for(let i=0;i<4;i++)p.fillRect(34+i*9,38,6,6);
+  p.fillStyle='#26343f';p.fillRect(44,8,8,18);
+  // hull
+  p.beginPath();p.moveTo(8,82);p.lineTo(318,82);p.lineTo(300,128);p.lineTo(30,128);p.lineTo(8,100);p.closePath();p.fillStyle='#1d2b3a';p.fill();
+  p.beginPath();p.moveTo(26,118);p.lineTo(304,118);p.lineTo(300,128);p.lineTo(30,128);p.closePath();p.fillStyle='#b23a2a';p.fill();
+  p.fillStyle='#f4f1ea';p.fillRect(14,86,296,3);
+  halftone(p,330,150,'rgba(255,255,255,.12)',5,(x,y)=>y>82&&y<118?1:0);}),7);
+
+function water(p,x,y,w,h,t){p.fillStyle='#6fb0c0';p.fillRect(x,y,w,h);p.fillStyle='rgba(255,255,255,.55)';for(let i=0;i<w;i+=26){p.fillRect(x+i+((t*30)%26),y,14,3);}
+  halftone(p,w,h,'rgba(20,70,90,.25)',8,()=>1.4);}
+
+// ---------- frame ----------
+function draw(T){
+  const t=Math.floor(T*12)/12;  // stop-motion
+  const J=(s,a)=>{const R=R0(1+s*97+Math.floor(t*12)*7);return (R()-.5)*a;};  // per-frame paper jitter
+  g.setTransform(1,0,0,1,0,0);
+  // camera: slow push-in
+  const z=1+0.04*EIO(T/7);g.setTransform(z,0,0,z,-540*(z-1),-960*(z-1));
+  g.drawImage(BG,0,0);
+  const pop=(t0,fn)=>{const a=EBK((t-t0)/0.35);if(t<t0)return;g.save();fn(a);g.restore();};
+  // headline strip
+  pop(0.0,a=>{g.translate(60+J(1,3),120);g.rotate(-0.03+(1-a)*0.2);g.scale(a,a);
+    torn(g,0,0,700,150,31,8);g.fillStyle='#f6f1e4';g.shadowColor='rgba(30,20,10,.45)';g.shadowBlur=20;g.shadowOffsetY=12;g.fill();g.shadowColor='transparent';
+    g.fillStyle='#17222b';g.font="400 112px "+DISP;g.fillText('The canal',34,112);});
+  pop(0.25,a=>{g.translate(170+J(2,3),262);g.rotate(0.04+(1-a)*-0.3);g.scale(a,a);
+    g.fillStyle='#d6402a';g.shadowColor='rgba(30,20,10,.45)';g.shadowBlur=18;g.shadowOffsetY=10;torn(g,0,0,720,150,32,6);g.fill();g.shadowColor='transparent';
+    g.fillStyle='#fff6e0';g.font="400 112px "+DISP;g.fillText('goes uphill',30,112);});
+  // tape on headline
+  pop(0.4,a=>{g.globalAlpha=a;g.fillStyle='rgba(240,230,190,.75)';g.translate(720,150);g.rotate(0.6);g.fillRect(-60,-18,120,38);});
+  // map
+  pop(0.45,a=>{g.translate(110+J(3,4),470);g.rotate(0.025+(1-a)*0.15);g.scale(a,a);
+    g.shadowColor='rgba(30,20,10,.5)';g.shadowBlur=30;g.shadowOffsetY=20;g.drawImage(MAP,0,0);g.shadowColor='transparent';
+    // marker route
+    const f=EIO((t-1.0)/1.3);if(f>0){g.translate(20,20);g.strokeStyle='#d6402a';g.lineCap='round';g.lineJoin='round';
+      for(let pass=0;pass<2;pass++){g.lineWidth=pass?6:12;g.globalAlpha=pass?.5:.92;g.beginPath();const n=Math.max(1,Math.floor((ROUTE.length-1)*f*10));
+        for(let i=0;i<=n;i++){const u=i/10,k=Math.min(ROUTE.length-2,Math.floor(u)),v=u-k;const x=ROUTE[k][0]+(ROUTE[k+1][0]-ROUTE[k][0])*v+(pass?Math.sin(i)*2:0),y=ROUTE[k][1]+(ROUTE[k+1][1]-ROUTE[k][1])*v;i?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();}
+      g.globalAlpha=1;
+      // push pins
+      [[ROUTE[0],'Colón'],[ROUTE[ROUTE.length-1],'Panama City']].forEach(([q,n],i)=>{const b=EBK((t-1.0-i*1.1)/.3);if(b<=0)return;g.save();g.translate(q[0],q[1]);g.scale(b,b);
+        g.fillStyle='rgba(0,0,0,.3)';g.beginPath();g.ellipse(6,6,10,5,0,0,7);g.fill();g.fillStyle='#ffd400';g.beginPath();g.arc(0,-14,14,0,7);g.fill();g.fillStyle='#17222b';g.fillRect(-2,-2,4,10);
+        g.font="700 30px "+SANS;g.fillStyle='#17222b';g.fillText(n,20,-6);g.restore();});}
+  });
+  // "82 km" doodle
+  pop(2.3,a=>{g.globalAlpha=CL((t-2.3)/.2);g.translate(760,690);g.rotate(-0.12);g.strokeStyle='#17222b';g.lineWidth=5;g.beginPath();g.ellipse(60,-14,105,52,0,0,6.283*E3((t-2.3)/.5));g.stroke();
+    g.fillStyle='#17222b';g.font="400 54px "+DISP;g.fillText('82 km',0,4);});
+  // locks section (cardboard cut-out)
+  pop(1.6,a=>{const PX=70,PY=1110;g.translate(PX+J(4,3),PY);g.rotate(-0.02+(1-a)*-0.12);g.scale(a,a);
+    const PW=940,PH=600;g.shadowColor='rgba(30,20,10,.45)';g.shadowBlur=26;g.shadowOffsetY=16;torn(g,0,0,PW,PH,44,10);g.fillStyle='#fbf7ec';g.fill();g.shadowColor='transparent';
+    g.save();torn(g,0,0,PW,PH,44,10);g.clip();
+    const L=[440,360,280,200], X=[0,170,300,430,560,PW], FL=[560,520,440,360,320];
+    // chamber water levels over time
+    const lev=[L[0],L[0],L[1],L[2],L[3]];
+    const rise=(k,t0)=>L[k-1]+(L[k]-L[k-1])*EIO((t-t0)/0.6);
+    lev[1]=t<3.0?L[0]:rise(1,3.0); lev[2]=t<4.2?L[1]:rise(2,4.2); lev[3]=t<5.4?L[2]:rise(3,5.4);
+    for(let i=0;i<5;i++){const y=lev[i];water(g,X[i],y,X[i+1]-X[i],FL[i]-y,t);}
+    // ground (cardboard) steps
+    g.fillStyle='#b48a58';g.beginPath();g.moveTo(0,PH);for(let i=0;i<5;i++){g.lineTo(X[i],FL[i]);g.lineTo(X[i+1],FL[i]);}g.lineTo(PW,PH);g.closePath();g.fill();
+    g.save();g.clip();g.strokeStyle='rgba(80,50,20,.3)';g.lineWidth=2;for(let x=0;x<PW;x+=10){g.beginPath();g.moveTo(x,0);g.lineTo(x,PH);g.stroke();}g.restore();  // corrugation
+    // gates
+    for(let i=1;i<5;i++){g.fillStyle='#3a2a1a';g.fillRect(X[i]-7,Math.min(L[Math.min(i,3)],L[i-1])-30,14,FL[i-1]-Math.min(L[Math.min(i,3)],L[i-1])+30);}
+    // ship path
+    let sx=70,sy=L[0];const mv=(x0,x1,t0,t1)=>x0+(x1-x0)*EIO((t-t0)/(t1-t0));
+    if(t<3.0){sx=mv(40,235,2.3,3.0);sy=L[0];}else if(t<3.6){sx=235;sy=lev[1];}else if(t<4.2){sx=mv(235,365,3.6,4.2);sy=L[1];}
+    else if(t<4.8){sx=365;sy=lev[2];}else if(t<5.4){sx=mv(365,495,4.8,5.4);sy=L[2];}else if(t<6.0){sx=495;sy=lev[3];}else{sx=mv(495,760,6.0,6.9);sy=L[3];}
+    const sc=0.5;g.save();g.translate(sx-SHIP.width*sc/2,sy-128*sc-SHIP.oy*sc+2+Math.sin(t*6)*1.5);g.scale(sc,sc);g.drawImage(SHIP,0,0);g.restore();
+    // labels
+    g.fillStyle='#17222b';g.font="italic 500 32px "+SERIF;g.fillText('sea level',22,L[0]-16);g.fillText('Gatún Lake',700,L[3]-70);
+    g.font="700 26px "+SANS;g.fillStyle='#3a2a1a';['STEP 1','STEP 2','STEP 3'].forEach((s,i)=>g.fillText(s,X[i+1]+18,FL[i+1]+40));
+    g.restore();
+    // +26 m stamp
+    const b=EBK((t-6.0)/.3);if(b>0){g.save();g.translate(250,130);g.rotate(-0.14);g.scale(1.6-0.6*b,1.6-0.6*b);g.globalAlpha=CL((t-6.0)/.1);
+      g.strokeStyle='#d6402a';g.lineWidth=7;g.strokeRect(-150,-62,300,124);g.fillStyle='#d6402a';g.font="400 92px "+DISP;g.textAlign='center';g.fillText('+26 m',0,32);g.restore();}
+    // marker arrow up the steps
+    const f=E3((t-3.0)/2.6);if(f>0){g.strokeStyle='#ffd400';g.lineWidth=12;g.lineCap='round';g.globalAlpha=.9;g.beginPath();const pts=[[90,500],[235,420],[365,340],[495,260],[560,230]];
+      const n=Math.max(1,Math.floor(40*f));for(let i=0;i<=n;i++){const u=i/40*(pts.length-1),k=Math.min(pts.length-2,Math.floor(u)),v=u-k;const x=pts[k][0]+(pts[k+1][0]-pts[k][0])*v,y=pts[k][1]+(pts[k+1][1]-pts[k][1])*v+70;i?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();g.globalAlpha=1;}
+  });
+  // tag
+  pop(3.2,a=>{g.translate(560+J(5,3),1745);g.rotate(0.035+(1-a)*0.3);g.scale(a,a);torn(g,0,0,460,120,3,7);g.fillStyle='#f6f1e4';g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=16;g.fill();g.shadowColor='transparent';
+    g.fillStyle='rgba(255,214,0,.9)';g.fillRect(20,18,330,58);g.fillStyle='#17222b';g.font="400 54px "+DISP;g.fillText('3 water steps',26,64);g.fillStyle='#4c4338';g.font="italic 500 32px "+SERIF;g.fillText('lift every ship 26 m',26,104);});
+  // grain
+  g.setTransform(1,0,0,1,0,0);g.globalAlpha=.55;g.drawImage(GRAIN,(Math.floor(t*12)%3)*-6,0);g.globalAlpha=1;
+}
+const GRAIN=off(1100,1920,(p,w,h)=>{const R=R0(77);for(let i=0;i<70000;i++){p.fillStyle=R()<.5?'rgba(0,0,0,'+R()*.12+')':'rgba(255,255,255,'+R()*.12+')';p.fillRect(R()*w,R()*h,2,2);}});
+window.DUR=7.4;window.draw=draw;
+document.fonts.load("400 40px 'DM Serif Display'").then(()=>document.fonts.load("italic 500 30px 'EB Garamond'")).then(()=>{draw(0);document.title='ok';});
+</script></body></html>

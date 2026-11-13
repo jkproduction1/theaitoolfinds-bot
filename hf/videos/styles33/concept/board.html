@@ -1,0 +1,165 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;src:url(eb-garamond-latin-500-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Marker';src:url(permanent-marker-latin-400-normal.woff2)}
+@font-face{font-family:'Typewriter';src:url(special-elite-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}
+</style>
+<script src="geo.js"></script><script src="world50.js"></script></head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script id="main" type="text/plain">
+// styles33 concept v3 (Jan, 2026-11-13: "investigation board" look): /paper-collage why the Panama Canal goes uphill.
+// Cork board, pinned papers, red string, warm lamp light with blind shadows that drift, slight flicker, papers that breathe.
+// Own design (no reference artwork copied). Fonts: Permanent Marker + Special Elite (OFL, via @fontsource).
+// Facts: opened 1914; Gatún Lake ~26 m above sea level; Gatún Locks = 3 steps up from the Atlantic side; canal ~82 km.
+const cv=document.getElementById('c'), g=cv.getContext('2d');
+const DISP="'DM Serif Display',serif", SERIF="'EB Garamond',serif", MK="'Marker',sans-serif", TW="'Typewriter',monospace", SANS="Inter,sans-serif";
+const CL=x=>x<0?0:x>1?1:x, E3=x=>1-Math.pow(1-CL(x),3), EIO=x=>{x=CL(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const EBK=x=>{x=CL(x);const c1=2.2,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+function R0(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;};}
+function off(w,h,d){const c=document.createElement('canvas');c.width=w;c.height=h;d(c.getContext('2d'),w,h);return c;}
+function torn(p,x,y,w,h,seed,j){const R=R0(seed);p.beginPath();p.moveTo(x,y);
+  for(let i=1;i<=28;i++)p.lineTo(x+w*i/28,y+(R()-.5)*j);for(let i=1;i<=16;i++)p.lineTo(x+w+(R()-.5)*j,y+h*i/16);
+  for(let i=27;i>=0;i--)p.lineTo(x+w*i/28,y+h+(R()-.5)*j);for(let i=15;i>=1;i--)p.lineTo(x+(R()-.5)*j,y+h*i/16);p.closePath();}
+function aged(p,w,h,seed,base){const R=R0(seed);p.fillStyle=base;p.fill();p.save();p.clip();
+  p.filter='blur(20px)';for(let i=0;i<14;i++){p.fillStyle='rgba(150,110,50,'+R()*.14+')';p.beginPath();p.arc(R()*w,R()*h,40+R()*120,0,7);p.fill();}p.filter='none';
+  for(let i=0;i<w*h/60;i++){p.fillStyle=R()<.5?'rgba(90,60,20,'+R()*.08+')':'rgba(255,255,255,'+R()*.1+')';p.fillRect(R()*w,R()*h,2,2);}
+  const e=p.createRadialGradient(w/2,h/2,Math.min(w,h)*.3,w/2,h/2,Math.max(w,h)*.75);e.addColorStop(0,'rgba(0,0,0,0)');e.addColorStop(1,'rgba(120,80,30,.35)');p.fillStyle=e;p.fillRect(0,0,w,h);p.restore();}
+const W=window.WORLD50, LAND=topojson.feature(W,W.objects.land);
+
+// ---------- cork ----------
+const CORK=off(1240,2100,(p,w,h)=>{p.fillStyle='#a8763f';p.fillRect(0,0,w,h);const R=R0(5);
+  for(let i=0;i<90000;i++){const c=R();p.fillStyle=c<.33?'rgba(70,40,15,'+(.15+R()*.3)+')':c<.66?'rgba(200,150,90,'+(.12+R()*.3)+')':'rgba(130,85,40,'+(.2+R()*.3)+')';p.beginPath();p.ellipse(R()*w,R()*h,1+R()*3.5,1+R()*2.5,R()*3,0,7);p.fill();}
+  // old pin holes
+  for(let i=0;i<120;i++){p.fillStyle='rgba(30,15,5,.6)';p.beginPath();p.arc(R()*w,R()*h,1.6,0,7);p.fill();}
+  // ghosts of removed paper (lighter rectangles)
+  for(let i=0;i<6;i++){p.fillStyle='rgba(220,180,120,.08)';p.save();p.translate(R()*w,R()*h);p.rotate((R()-.5)*.3);p.fillRect(0,0,200+R()*200,150+R()*200);p.restore();}});
+
+// ---------- papers ----------
+const MW=620,MH=430;const proj=d3.geoMercator().fitExtent([[0,0],[MW,MH]],{type:'MultiPoint',coordinates:[[-80.4,8.65],[-79.15,9.6]]});
+const ROUTE=[[-79.92,9.37],[-79.92,9.27],[-79.86,9.2],[-79.76,9.12],[-79.68,9.05],[-79.62,8.99],[-79.57,8.93],[-79.53,8.88]].map(c=>proj(c));
+const MAP=off(MW,MH,(p)=>{p.save();torn(p,0,0,MW,MH,11,10);aged(p,MW,MH,2,'#e9dfc8');torn(p,0,0,MW,MH,11,10);p.clip();
+  const path=d3.geoPath(proj,p);p.fillStyle='rgba(70,120,135,.75)';p.fillRect(0,0,MW,MH);p.fillStyle='#d9c393';p.beginPath();path(LAND);p.fill();
+  p.strokeStyle='#4a3a28';p.lineWidth=2;p.beginPath();path(LAND);p.stroke();
+  const lk=proj([-79.87,9.17]);p.fillStyle='rgba(80,130,145,.8)';p.beginPath();p.ellipse(lk[0],lk[1],52,32,-.6,0,7);p.fill();
+  p.strokeStyle='rgba(60,40,20,.25)';p.lineWidth=1;for(let x=0;x<MW;x+=62){p.beginPath();p.moveTo(x,0);p.lineTo(x,MH);p.stroke();}for(let y=0;y<MH;y+=62){p.beginPath();p.moveTo(0,y);p.lineTo(MW,y);p.stroke();}
+  p.strokeStyle='#b02a1e';p.lineWidth=5;p.setLineDash([14,8]);p.beginPath();ROUTE.forEach((q,i)=>i?p.lineTo(q[0],q[1]):p.moveTo(q[0],q[1]));p.stroke();p.setLineDash([]);
+  p.fillStyle='#2a2018';p.font="20px "+TW;p.fillText('CARIBBEAN SEA',20,36);p.fillText('PACIFIC OCEAN',MW-200,MH-24);p.fillText('GATÚN LAKE',lk[0]-150,lk[1]+56);
+  p.font="26px "+MK;p.fillStyle='#b02a1e';p.fillText('Colón',ROUTE[0][0]+14,ROUTE[0][1]-6);p.fillText('Panama City',ROUTE[7][0]-190,ROUTE[7][1]+40);p.restore();});
+
+const TITLE=off(760,560,(p,w,h)=>{torn(p,0,0,w,h,21,12);aged(p,w,h,3,'#f1ead8');p.save();torn(p,0,0,w,h,21,12);p.clip();
+  // burnt corner
+  const b=p.createRadialGradient(w-20,h-10,10,w-20,h-10,150);b.addColorStop(0,'rgba(40,20,5,.9)');b.addColorStop(.55,'rgba(110,60,20,.45)');b.addColorStop(1,'rgba(0,0,0,0)');p.fillStyle=b;p.fillRect(0,0,w,h);
+  const mk=(txt,x,y,sz,rot,seed)=>{const R=R0(seed);let cx=x;for(const ch of txt){p.save();const s=sz*(0.92+R()*.16);p.font=s+"px "+MK;p.translate(cx,y+(R()-.5)*10);p.rotate(rot+(R()-.5)*.09);
+      for(let k=0;k<2;k++){p.fillStyle='rgba(176,36,26,'+(k?.3:.95)+')';p.fillText(ch,(R()-.5)*2.5,(R()-.5)*2.5);}const cw=p.measureText(ch).width;p.restore();cx+=cw*0.96;}};
+  mk('THE CANAL',40,180,110,-0.04,4);mk('GOES',40,345,96,0.02,5);mk('UPHILL',320,362,104,-0.03,6);
+  p.strokeStyle='rgba(176,36,26,.85)';p.lineWidth=7;p.lineCap='round';p.beginPath();p.moveTo(300,400);p.bezierCurveTo(420,392,560,410,700,388);p.stroke();
+  p.restore();});
+
+const DOC=off(470,620,(p,w,h)=>{p.beginPath();p.rect(0,0,w,h);aged(p,w,h,6,'#ece4cf');
+  p.fillStyle='#2a2420';p.font="26px "+TW;const L=['      PANAMA CANAL','','Atlantic → Pacific: 82 km','Gatún Lake: 26 m','  ABOVE SEA LEVEL','','Ships climb 3 lock','"steps" up ... and','3 steps back down.','','Water only. No pumps.'];
+  L.forEach((s,i)=>{p.globalAlpha=.75+((i*37)%10)/40;p.fillText(s,28,60+i*44);});p.globalAlpha=1;
+  p.save();p.translate(300,560);p.rotate(-.2);p.strokeStyle='rgba(170,30,25,.75)';p.lineWidth=5;p.strokeRect(-110,-40,220,70);p.fillStyle='rgba(170,30,25,.75)';p.font="34px "+TW;p.fillText('FILE COPY',-92,8);p.restore();});
+
+// photo of a container ship (polaroid)
+const PHOTO=off(400,460,(p,w,h)=>{p.beginPath();p.rect(0,0,w,h);aged(p,w,h,8,'#f4efe2');
+  const ph=off(350,330,(q,W2,H2)=>{const sk=q.createLinearGradient(0,0,0,H2);sk.addColorStop(0,'#c9b48c');sk.addColorStop(.55,'#d8c8a0');sk.addColorStop(.56,'#5d6a62');sk.addColorStop(1,'#3e4842');q.fillStyle=sk;q.fillRect(0,0,W2,H2);
+    // jungle hills
+    q.fillStyle='#4f5a40';q.beginPath();q.moveTo(0,190);for(let x=0;x<=W2;x+=10)q.lineTo(x,170-Math.sin(x*.03)*16-Math.sin(x*.011)*20);q.lineTo(W2,190);q.closePath();q.fill();
+    // lock walls
+    q.fillStyle='#8c8a7e';q.fillRect(0,200,W2,14);q.fillRect(0,300,W2,30);
+    // ship
+    q.fillStyle='#1d2422';q.beginPath();q.moveTo(20,262);q.lineTo(330,262);q.lineTo(318,292);q.lineTo(34,292);q.closePath();q.fill();
+    const cols=['#7d3a2c','#3d5560','#8a6a3a','#4a5e46'];for(let r=0;r<3;r++)for(let i=0;i<11;i++){q.fillStyle=cols[(i*3+r)%4];q.fillRect(90+i*20,246-r*14,19,13);}
+    q.fillStyle='#d8d4c6';q.fillRect(40,220,40,42);q.fillStyle='#1d2422';q.fillRect(36,216,48,6);
+    // sepia + grain
+    const d=q.getImageData(0,0,W2,H2),a=d.data,R=R0(4);for(let i=0;i<a.length;i+=4){const l=.3*a[i]+.59*a[i+1]+.11*a[i+2]+(R()-.5)*30;const m=l*1.3+25;a[i]=m*1.07;a[i+1]=m*.95;a[i+2]=m*.78;}q.putImageData(d,0,0);});
+  p.drawImage(ph,25,25);p.fillStyle='#2a2018';p.font="30px "+MK;p.fillText('Gatún, step 3',40,415);});
+
+// locks section sketch on graph paper
+const SEC=off(560,400,(p,w,h)=>{torn(p,0,0,w,h,31,8);aged(p,w,h,9,'#eef0e6');p.save();torn(p,0,0,w,h,31,8);p.clip();
+  p.strokeStyle='rgba(60,130,160,.35)';p.lineWidth=1.2;for(let x=0;x<w;x+=22){p.beginPath();p.moveTo(x,0);p.lineTo(x,h);p.stroke();}for(let y=0;y<h;y+=22){p.beginPath();p.moveTo(0,y);p.lineTo(w,y);p.stroke();}
+  p.strokeStyle='#1d2a5a';p.lineWidth=4;p.lineJoin='round';p.lineCap='round';
+  const st=[[20,330],[110,330],[110,270],[200,270],[200,210],[290,210],[290,150],[540,150]];p.beginPath();st.forEach((q,i)=>i?p.lineTo(q[0],q[1]):p.moveTo(q[0],q[1]));p.stroke();
+  p.strokeStyle='rgba(40,110,170,.8)';p.lineWidth=3;[[20,110,310],[110,200,250],[200,290,190],[290,540,130]].forEach(([a,b,y])=>{p.beginPath();for(let x=a;x<=b;x+=8)p.lineTo(x,y+Math.sin(x*.3)*2);p.stroke();});
+  p.fillStyle='#1d2a5a';p.font="30px "+MK;p.fillText('sea',30,370);p.fillText('lake +26 m',330,115);p.font="24px "+MK;p.fillText('1',148,300);p.fillText('2',238,240);p.fillText('3',328,180);
+  // little ship
+  p.fillStyle='#b02a1e';p.beginPath();p.moveTo(400,128);p.lineTo(470,128);p.lineTo(460,142);p.lineTo(408,142);p.closePath();p.fill();p.fillRect(415,112,20,16);
+  p.restore();});
+
+const NOTE=off(360,250,(p,w,h)=>{p.beginPath();p.rect(0,0,w,h);aged(p,w,h,12,'#f3dc6a');p.fillStyle='#2a2018';p.font="38px "+MK;p.fillText('how does a ship',22,80);p.fillText('climb a',22,135);p.fillText('MOUNTAIN?!',22,195);});
+
+function label(txt,size,bg,fg,seed){const ctx=document.createElement('canvas').getContext('2d');ctx.font=size+"px "+DISP;const tw=ctx.measureText(txt).width;
+  return off(tw+40,size*1.45,(p,w,h)=>{torn(p,0,0,w,h,seed,5);p.fillStyle=bg;p.fill();p.fillStyle=fg;p.font=size+"px "+DISP;p.fillText(txt,20,size*1.05);
+    const R=R0(seed);for(let i=0;i<w*h/30;i++){p.fillStyle='rgba(0,0,0,'+R()*.12+')';p.fillRect(R()*w,R()*h,2,2);}});}
+const LB=[label('Panama',62,'#a8261c','#f6efe0',41),label('1914',62,'#f2ead6','#1d1712',42),label('+26 m',78,'#a8261c','#f6efe0',43),label('3 steps',58,'#f2ead6','#a8261c',44)];
+
+// items: [canvas, x, y (centre), rot, appear time, pin offset (relative to item centre)]
+const IT=[
+  [CORK,0,0,0,0],
+  [MAP,330,560,-0.05,0,[0,-195]],
+  [DOC,830,520,0.06,0,[0,-290]],
+  [TITLE,560,1010,0.025,0,[-300,-230]],
+  [SEC,330,1460,0.04,0,[200,-170]],
+  [PHOTO,820,1450,-0.07,0,[0,-205]],
+  [NOTE,800,1780,0.08,0,[0,-100]],
+  [LB[0],270,330,-0.06,0.9],[LB[1],760,250,0.05,1.25],[LB[2],760,1220,-0.05,3.2],[LB[3],250,1215,0.06,2.4]
+];
+// string route between pins (item indices)
+const ROUTEPINS=[1,3,4,5,2,1];
+
+// light map (warm lamp from upper left + window-blind stripes)
+function lightLayer(t,flick){return off(1080,1920,(p,w,h)=>{p.fillStyle='#000';p.fillRect(0,0,w,h);
+  const lx=300+Math.sin(t*.4)*20,ly=520;const gr=p.createRadialGradient(lx,ly,60,lx,ly,1500);gr.addColorStop(0,'rgba(255,214,150,'+(1*flick)+')');gr.addColorStop(.45,'rgba(220,160,95,'+(.75*flick)+')');gr.addColorStop(1,'rgba(70,45,25,.55)');
+  p.fillStyle=gr;p.fillRect(0,0,w,h);
+  // blind shadows (diagonal soft bars) drifting slowly
+  p.save();p.translate(540,960);p.rotate(-0.55);p.filter='blur(26px)';p.fillStyle='rgba(0,0,0,.32)';const o=(t*14)%170;
+  for(let k=-14;k<14;k++)p.fillRect(-1600,k*170+o,3200,62);p.restore();
+  // window frame shadow
+  p.save();p.filter='blur(40px)';p.fillStyle='rgba(0,0,0,.55)';p.beginPath();p.moveTo(980,0);p.lineTo(1080,0);p.lineTo(1080,1920);p.lineTo(700,1920);p.closePath();p.fill();p.restore();});}
+
+function pinAt(i,t){const it=IT[i],[x,y,r]=pose(i,t),o=it[5];return [x+o[0]*Math.cos(r)-o[1]*Math.sin(r),y+o[0]*Math.sin(r)+o[1]*Math.cos(r)];}
+function pose(i,t){const it=IT[i];const br=Math.sin(t*1.3+i*1.7)*0.006+Math.sin(t*.7+i)*0.004;return [it[1],it[2],it[3]+br];}
+function drawPin(x,y,LX,LY){g.save();g.translate(x,y);g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse((x-LX)*.012+6,(y-LY)*.012+8,13,9,0,0,7);g.fill();
+  const gr=g.createRadialGradient(-5,-6,2,0,0,16);gr.addColorStop(0,'#ff8a7a');gr.addColorStop(.5,'#c41f14');gr.addColorStop(1,'#6a0d08');g.fillStyle=gr;g.beginPath();g.arc(0,0,15,0,7);g.fill();g.restore();}
+
+function draw(T){
+  const t=T;
+  // light-on flicker at start, then gentle breathing
+  let flick=0.94+0.04*Math.sin(t*2.3)+0.02*Math.sin(t*7.1+1);
+  if(t<0.7){const s=[0,0,.7,.15,.9,.4,1,1];flick*=s[Math.min(7,Math.floor(t/0.09))];}
+  const LX=300,LY=520;
+  g.setTransform(1,0,0,1,0,0);g.fillStyle='#000';g.fillRect(0,0,1080,1920);
+  const z=1.02+0.06*EIO(t/8), px=-20*EIO(t/8);g.setTransform(z,0,0,z,-540*(z-1)+px,-960*(z-1));
+  g.drawImage(CORK,-80,-90);
+  for(let i=1;i<IT.length;i++){const it=IT[i];if(t<it[4])continue;const a=it[4]?EBK((t-it[4])/.3):1;const [x,y,r]=pose(i,t);
+    const c=it[0];g.save();
+    // shadow direction from the lamp; lift slightly with the "breathing"
+    const lift=6+Math.sin(t*1.3+i*1.7)*3;const sx=(x-LX)*.02+lift*.6,sy=(y-LY)*.02+lift;
+    g.translate(x,y);g.rotate(r+(1-a)*.25);g.scale(a*(1+(1-a)*.3),a*(1+(1-a)*.3));
+    g.shadowColor='rgba(20,8,0,.6)';g.shadowBlur=18+lift*2;g.shadowOffsetX=sx*z;g.shadowOffsetY=sy*z;g.drawImage(c,-c.width/2,-c.height/2);g.restore();}
+  // red string, drawn progressively 0.6s -> 3.6s
+  const pins=ROUTEPINS.map(i=>pinAt(i,t));const segs=pins.length-1;const f=CL((t-0.6)/3.0)*segs;
+  for(let pass=0;pass<2;pass++){for(let k=0;k<segs;k++){const u=CL(f-k);if(u<=0)break;const [ax,ay]=pins[k],[bx,by]=pins[k+1];const ex=ax+(bx-ax)*E3(u),ey=ay+(by-ay)*E3(u);
+      const mx=(ax+ex)/2,my=(ay+ey)/2+Math.hypot(ex-ax,ey-ay)*.04;g.beginPath();
+      if(pass===0){g.strokeStyle='rgba(20,5,0,.35)';g.lineWidth=5;g.moveTo(ax+10,ay+14);g.quadraticCurveTo(mx+14,my+22,ex+10,ey+14);}else{g.strokeStyle='#c0261a';g.lineWidth=4;g.moveTo(ax,ay);g.quadraticCurveTo(mx,my,ex,ey);}g.stroke();}}
+  ROUTEPINS.slice(0,5).forEach(i=>{const [x,y]=pinAt(i,t);drawPin(x,y,LX,LY);});
+  // labels get their own pins
+  [7,8,9,10].forEach(i=>{if(t<IT[i][4]+0.15)return;const [x,y]=pose(i,t);drawPin(x-IT[i][0].width*.35,y-IT[i][0].height*.3,LX,LY);});
+  // lighting
+  g.setTransform(1,0,0,1,0,0);const L=lightLayer(t,flick);g.globalCompositeOperation='multiply';g.drawImage(L,0,0);
+  g.globalCompositeOperation='screen';g.globalAlpha=.18*flick;const gl=g.createRadialGradient(LX,LY,0,LX,LY,700);gl.addColorStop(0,'#ffcf8a');gl.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gl;g.fillRect(0,0,1080,1920);
+  g.globalAlpha=1;g.globalCompositeOperation='source-over';
+  // dust in the light beam
+  const R=R0(11);for(let i=0;i<70;i++){const x=(R()*1080+t*(8+R()*14))%1080,y=(R()*1300+Math.sin(t*.6+i)*30)%1920;g.fillStyle='rgba(255,230,180,'+(R()*.35*flick)+')';g.beginPath();g.arc(x,y,1+R()*2.2,0,7);g.fill();}
+  // film grain + vignette
+  const vg=g.createRadialGradient(540,860,500,540,960,1250);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.55)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  g.globalAlpha=.5;g.drawImage(GRAIN,-(Math.floor(t*24)%4)*7,-(Math.floor(t*24)%3)*5);g.globalAlpha=1;
+}
+const GRAIN=off(1120,1960,(p,w,h)=>{const R=R0(77);for(let i=0;i<90000;i++){p.fillStyle=R()<.5?'rgba(0,0,0,'+R()*.14+')':'rgba(255,240,220,'+R()*.10+')';p.fillRect(R()*w,R()*h,2,2);}});
+window.DUR=8.0;window.draw=draw;
+draw(0);document.title='ok';
+</script>
+<script>Promise.all(["40px Marker","40px Typewriter","400 40px 'DM Serif Display'","500 30px 'EB Garamond'"].map(f=>document.fonts.load(f))).then(()=>{const sc=document.createElement("script");sc.textContent=document.getElementById("main").textContent;document.body.appendChild(sc);});</script></body></html>
