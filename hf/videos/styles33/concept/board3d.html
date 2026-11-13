@@ -106,13 +106,21 @@ const cam=new THREE.PerspectiveCamera(38,1080/1920,.1,100);
 sc.add(new THREE.AmbientLight(0xffe2c0,0.035));
 const hemi=new THREE.HemisphereLight(0x9fb4d0,0x2a1a0e,0.05);sc.add(hemi);
 const sun=new THREE.SpotLight(0xffa955,2.1,0,0.30,0.75,1.6);sun.position.set(-15,12.5,23);sun.target.position.set(0.3,1.8,0);sc.add(sun,sun.target);
-sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.03;sun.shadow.radius=22;sun.shadow.blurSamples=24;sun.shadow.camera.near=4;sun.shadow.camera.far=60;
+sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.03;sun.shadow.radius=10;sun.shadow.blurSamples=16;sun.shadow.camera.near=4;sun.shadow.camera.far=60;
 // blinds between sun and board (out of frame) -> diagonal hard stripes
 const blinds=new THREE.Group();const bm=new THREE.MeshBasicMaterial({color:0});const bar=(x,y,w,h)=>{const s=new THREE.Mesh(new THREE.BoxGeometry(w,h,.3),bm);s.position.set(x,y,0);s.castShadow=true;blinds.add(s);};
 [-1.6,0,1.6].forEach(x=>bar(x,0,.16,12));[-3.6,-2.4,-1.2,0,1.2,2.4,3.6].forEach(y=>bar(0,y,6,.14));bar(-3.2,0,1.2,12);bar(3.4,0,1.4,12);bar(0,5.2,8,1.2);bar(0,-5.4,8,1.6);
 // a hanging plant / curtain edge for organic shapes in the light
 for(let i=0;i<9;i++){const l=new THREE.Mesh(new THREE.SphereGeometry(.38,10,8),bm);l.scale.set(1,.45,.2);l.position.set(2.0+Math.sin(i)*0.6,3.8-i*.42,0.2);l.rotation.z=i*.7;l.castShadow=true;blinds.add(l);}
-blinds.position.set(-10.2,8.6,16);blinds.lookAt(sun.position);blinds.rotateZ(-0.12);sc.add(blinds);
+blinds.visible=false;  // replaced by a soft projected window pattern (gobo) -> no hard shadow edges
+const gobo=off(1024,1024,(p,w,h)=>{p.fillStyle='#fff';p.fillRect(0,0,w,h);p.save();p.translate(w/2,h/2);p.rotate(-0.5);p.fillStyle='#000';
+  const bw=70;[-300,-60,180].forEach(x=>p.fillRect(x-bw/2,-900,bw,1800));[-330,-90,150,390].forEach(y=>p.fillRect(-900,y-24,1800,48));
+  // leaves of a plant hanging in the window
+  const R=R0(4);for(let i=0;i<26;i++){p.save();p.translate(160+R()*220,-360+i*28);p.rotate(R()*6);p.beginPath();p.ellipse(0,0,70,24,0,0,7);p.fill();p.restore();}
+  p.restore();const b=off(w,h,q=>{q.filter='blur(16px)';q.drawImage(p.canvas,0,0);});p.clearRect(0,0,w,h);p.drawImage(b,0,0);
+  // soften: never fully black (light scatters)
+  p.globalCompositeOperation='lighter';p.fillStyle='rgba(14,12,10,1)';p.fillRect(0,0,w,h);});
+sun.map=tex(gobo);
 // lamp-ish warm fill from bottom right (dim)
 const fill=new THREE.PointLight(0xff9a50,1.2,18,2);fill.position.set(5,-7,5);sc.add(fill);
 
@@ -198,7 +206,7 @@ const bok=new THREE.BokehPass(sc,cam,{focus:22,aperture:0.0016,maxblur:0.012});c
 comp.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(1080,1920),0.25,0.5,0.9));
 if(THREE.OutputPass)comp.addPass(new THREE.OutputPass());
 function draw(t){cam.position.set(0.9-0.4*EIO(t/8),-1.2,27.5-1.2*EIO(t/8));cam.lookAt(0.2,-0.2,0);
-  blinds.position.x=-10.2+0.12*Math.sin(t*.3);sun.intensity=2.1*(0.97+0.03*Math.sin(t*2.1));
+  if(sun.map){sun.map.offset.set(0.004*Math.sin(t*.3),0);}sun.intensity=2.1*(0.97+0.03*Math.sin(t*2.1));
   bok.uniforms.focus.value=cam.position.z;if(location.search.includes('raw'))ren.render(sc,cam);else comp.render();}
 window.DUR=8;window.draw=draw;draw(0);document.title='ok';
 </script>
