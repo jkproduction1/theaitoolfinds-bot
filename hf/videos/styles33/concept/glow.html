@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles33 concept: /glow-science what happens to your body in space without a suit (flat glow look of styles19/29; own design).
+// Facts TO VERIFY before the final build (NASA): ~15 s of useful consciousness; you don't explode and don't freeze instantly;
+// moisture on the tongue boils (low pressure); the body swells (ebullism); rescue within ~1-2 min can be survived.
+const g=document.getElementById('c').getContext('2d'),SANS="Inter,'DejaVu Sans',Arial,sans-serif";
+const CL=x=>x<0?0:x>1?1:x,E3=x=>1-Math.pow(1-CL(x),3);
+function R0(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;};}
+function off(w,h,d){const c=document.createElement('canvas');c.width=w;c.height=h;d(c.getContext('2d'),w,h);return c;}
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.52,60,w*.5,h*.5,1300);gr.addColorStop(0,'#232a7a');gr.addColorStop(.5,'#12154a');gr.addColorStop(1,'#04051c');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[160,560,260,'rgba(120,90,255,.30)'],[960,1420,300,'rgba(40,190,255,.24)'],[900,620,220,'rgba(255,110,190,.16)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});});
+const R=R0(9),ST=[];for(let i=0;i<170;i++)ST.push([R()*1080,R()*1920,.8+R()*R()*4,R()*6]);
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(x+w/2,y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(9,12,44,.88)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+function draw(t){g.drawImage(bg,0,0);ST.forEach(([x,y,r,ph])=>{g.globalAlpha=.35+.4*(.5+.5*Math.sin(t*2+ph));g.fillStyle='#e8e4ff';g.beginPath();g.arc(x,y,r,0,7);g.fill();});g.globalAlpha=1;
+  // Earth limb at the bottom
+  g.save();g.shadowColor='rgba(90,190,255,.9)';g.shadowBlur=70;g.fillStyle='#1d4fb8';g.beginPath();g.arc(540,2900,1250,0,7);g.fill();g.shadowBlur=0;g.fillStyle='#2f8f6a';[[300,1730,170,60],[760,1700,220,70],[560,1830,140,40]].forEach(([x,y,a,b])=>{g.beginPath();g.ellipse(x,y,a,b,-.1,0,7);g.fill();});
+  g.fillStyle='rgba(255,255,255,.55)';[[200,1800,120,22],[820,1790,160,24],[520,1720,110,18]].forEach(([x,y,a,b])=>{g.beginPath();g.ellipse(x,y,a,b,0,0,7);g.fill();});g.restore();
+  // open airlock / station edge (top right)
+  g.save();g.translate(900,640);g.rotate(.18);g.fillStyle='#c9cbe0';g.beginPath();g.roundRect(-60,-190,330,380,40);g.fill();g.fillStyle='#0a0c2c';g.beginPath();g.roundRect(-20,-130,200,260,30);g.fill();
+  g.strokeStyle='#ff5b6e';g.lineWidth=10;g.shadowColor='#ff5b6e';g.shadowBlur=30;g.beginPath();g.roundRect(-20,-130,200,260,30);g.stroke();g.restore();
+  // the person: flat figure, no helmet, slightly puffed, drifting
+  const bob=Math.sin(t*1.2)*14;g.save();g.translate(500,1060+bob);g.rotate(-.35+Math.sin(t*.7)*.05);const sw=1.12;g.scale(sw,sw);
+  g.shadowColor='rgba(140,200,255,.8)';g.shadowBlur=50;g.lineCap='round';
+  g.strokeStyle='#3d6fe0';g.lineWidth=58;g.beginPath();g.moveTo(-36,150);g.lineTo(-70,330);g.moveTo(36,150);g.lineTo(84,320);g.stroke();            // legs
+  g.fillStyle='#ffb14a';g.beginPath();g.roundRect(-92,-70,184,250,70);g.fill();                                                                        // torso
+  g.strokeStyle='#ffb14a';g.lineWidth=50;g.beginPath();g.moveTo(-80,-20);g.lineTo(-190,-110);g.moveTo(80,-20);g.lineTo(200,40);g.stroke();            // arms
+  g.shadowBlur=0;g.fillStyle='#f3c9a0';g.beginPath();g.arc(-196,-116,30,0,7);g.arc(206,44,30,0,7);g.fill();
+  g.fillStyle='#f3c9a0';g.beginPath();g.arc(0,-150,92,0,7);g.fill();g.fillStyle='#3a2a4a';g.beginPath();g.ellipse(0,-205,96,52,0,Math.PI,0);g.fill();   // head, hair
+  g.fillStyle='#1a1436';g.beginPath();g.arc(-32,-150,10,0,7);g.arc(34,-150,10,0,7);g.fill();g.beginPath();g.ellipse(0,-104,18,22,0,0,7);g.fill();      // eyes, open mouth
+  // bubbles from the mouth (moisture boiling off)
+  for(let i=0;i<9;i++){const u=((t*.5+i/9)%1);g.globalAlpha=1-u;g.strokeStyle='#9fe8ff';g.lineWidth=4;g.beginPath();g.arc(Math.sin(i*2.1)*30+u*60,-104-u*170,6+u*16,0,7);g.stroke();}g.globalAlpha=1;g.restore();
+  // countdown ring
+  g.save();g.translate(210,1420);g.strokeStyle='rgba(255,255,255,.18)';g.lineWidth=22;g.beginPath();g.arc(0,0,110,0,7);g.stroke();g.strokeStyle='#ff5b6e';g.shadowColor='#ff5b6e';g.shadowBlur=30;g.lineCap='round';g.beginPath();g.arc(0,0,110,-Math.PI/2,-Math.PI/2+Math.PI*2*.72);g.stroke();
+  g.shadowBlur=0;g.fillStyle='#fff';g.textAlign='center';g.font='800 84px '+SANS;g.fillText('15',0,18);g.font='700 30px '+SANS;g.fillStyle='#b9c2ff';g.fillText('seconds awake',0,64);g.restore();
+  label('You don’t explode',560,1500,560,1230,'#7dffb0');label('Saliva boils on your tongue',70,760,470,930);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('In space',540,300);const a='without ',b='a suit';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,400);g.fillStyle='#ff6b7c';g.shadowColor='rgba(255,90,110,.8)';g.shadowBlur=30;g.fillText(b,x0+wa,400);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>
