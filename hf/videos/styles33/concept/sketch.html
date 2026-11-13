@@ -1,0 +1,162 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;src:url(eb-garamond-latin-500-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}
+</style>
+<script src="geo.js"></script><script src="world50.js"></script></head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+// styles33 concept stills (Jan, 2026-11-13): /paper-collage, /map-doc, /pixel-quest. Own designs, drawn in code; no channel logos/characters.
+const S=+(new URLSearchParams(location.search).get('s')||0);
+const cv=document.getElementById('c'), g=cv.getContext('2d');
+const DISP="'DM Serif Display',serif", SERIF="'EB Garamond',serif", SANS="Inter,'DejaVu Sans',Arial,sans-serif";
+function R0(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;};}
+function off(w,h,d){const c=document.createElement('canvas');c.width=w;c.height=h;d(c.getContext('2d'),w,h);return c;}
+function torn(p,x,y,w,h,seed,j){const R=R0(seed);p.beginPath();p.moveTo(x,y);
+  for(let i=1;i<=24;i++)p.lineTo(x+w*i/24,y+(R()-.5)*j);for(let i=1;i<=14;i++)p.lineTo(x+w+(R()-.5)*j,y+h*i/14);
+  for(let i=23;i>=0;i--)p.lineTo(x+w*i/24,y+h+(R()-.5)*j);for(let i=13;i>=1;i--)p.lineTo(x+(R()-.5)*j,y+h*i/14);p.closePath();}
+const W=window.WORLD50, LAND=topojson.feature(W,W.objects.land), CTRY=topojson.feature(W,W.objects.countries);
+const BORD=topojson.mesh(W,W.objects.countries,(a,b)=>a!==b);
+
+function caption(cmd,topic,dark){ // label for Jan only (not part of the final frame)
+  g.save();g.fillStyle=dark?'rgba(0,0,0,.72)':'rgba(255,255,255,.85)';g.fillRect(0,1820,1080,100);
+  g.fillStyle=dark?'#fff':'#111';g.font="700 32px "+SANS;g.fillText('NÁČRT  '+cmd+'  '+topic,40,1882);g.restore();}
+
+// ============ S0 /paper-collage: why the Panama Canal goes uphill ============
+function paper(){
+  // paper background
+  g.fillStyle='#ebe1cb';g.fillRect(0,0,1080,1920);const R=R0(5);g.filter='blur(36px)';
+  for(let i=0;i<40;i++){g.fillStyle='rgba('+(R()<.5?'255,250,235':'200,184,150')+','+(.15+R()*.25)+')';g.beginPath();g.arc(R()*1080,R()*1920,90+R()*220,0,7);g.fill();}
+  g.filter='none';for(let i=0;i<2600;i++){g.strokeStyle='rgba(120,100,70,'+R()*.1+')';const x=R()*1080,y=R()*1920,a=R()*6.3,l=6+R()*22;g.beginPath();g.moveTo(x,y);g.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);g.stroke();}
+  // big headline
+  g.save();g.translate(70,250);g.rotate(-0.025);g.fillStyle='#17222b';g.font="400 118px "+DISP;g.fillText('The canal',0,0);g.fillText('goes ',0,122);
+  const w=g.measureText('goes ').width;g.fillStyle='rgba(255,214,0,.92)';g.fillRect(w-10,40,350,100);g.fillStyle='#17222b';g.fillText('uphill',w,122);g.restore();
+  // printed map of Panama (torn)
+  const MW=900,MH=560;const proj=d3.geoMercator().fitExtent([[0,0],[MW,MH]],{type:'MultiPoint',coordinates:[[-80.6,8.6],[-79.0,9.6]]});
+  const map=off(MW+40,MH+40,(p)=>{p.translate(20,20);torn(p,0,0,MW,MH,11,16);p.save();p.clip();
+    p.fillStyle='#9fc2c9';p.fillRect(0,0,MW,MH);for(let y=0;y<MH;y+=9)for(let x=(y/9%2)*4.5;x<MW;x+=9){p.fillStyle='rgba(40,80,95,.22)';p.beginPath();p.arc(x,y,1.6,0,7);p.fill();}
+    const path=d3.geoPath(proj,p);p.fillStyle='#ecdcb4';p.beginPath();path(LAND);p.fill();
+    p.save();p.beginPath();path(LAND);p.clip();for(let y=0;y<MH;y+=8)for(let x=(y/8%2)*4;x<MW;x+=8){p.fillStyle='rgba(150,120,70,.17)';p.beginPath();p.arc(x,y,1.4,0,7);p.fill();}p.restore();
+    p.strokeStyle='#6f5a3e';p.lineWidth=2.4;p.beginPath();path(LAND);p.stroke();
+    // canal route (approx.: Colón -> Gatún Lake -> Culebra Cut -> Panama City)
+    const route=[[-79.92,9.35],[-79.92,9.27],[-79.85,9.2],[-79.75,9.12],[-79.68,9.05],[-79.6,8.98],[-79.56,8.93]].map(c=>proj(c));
+    // Gatun lake blob
+    const lk=proj([-79.87,9.18]);p.fillStyle='#7fb0bb';p.beginPath();p.ellipse(lk[0],lk[1],60,38,-.6,0,7);p.fill();
+    p.strokeStyle='#d6402a';p.lineWidth=9;p.lineCap='round';p.lineJoin='round';p.beginPath();route.forEach((q,i)=>i?p.lineTo(q[0],q[1]):p.moveTo(q[0],q[1]));p.stroke();
+    p.fillStyle='#17222b';p.font="italic 500 30px "+SERIF;p.fillText('Atlantic',30,60);p.fillText('Pacific',MW-170,MH-40);
+    p.strokeStyle='rgba(255,255,255,.35)';p.lineWidth=3;p.beginPath();p.moveTo(MW*.55,0);p.lineTo(MW*.55,MH);p.stroke();p.restore();});
+  g.save();g.translate(90,470);g.rotate(0.03);g.shadowColor='rgba(30,20,10,.45)';g.shadowBlur=30;g.shadowOffsetY=18;g.drawImage(map,0,0);g.restore();
+  // cut-out: side section of the locks staircase (the core explanation)
+  const sec=off(940,520,(p)=>{p.fillStyle='#fbfaf5';p.fillRect(0,0,940,520);
+    p.fillStyle='#8fb5bf';p.fillRect(20,360,170,140);p.fillRect(750,360,170,140);
+    const steps=[[190,300],[260,240],[330,180],[400,130],[540,130],[610,180],[680,240],[750,300]];
+    p.fillStyle='#b9a37c';p.beginPath();p.moveTo(20,500);p.lineTo(20,370);steps.forEach(([x,y],i)=>{p.lineTo(x,i<4?y+60+70*0:y+60);});p.lineTo(920,370);p.lineTo(920,500);p.closePath();
+    // simple staircase water levels
+    p.fillStyle='#7fb0bb';[[190,260,300],[260,330,240],[330,400,180],[400,540,130],[540,610,180],[610,680,240],[680,750,300]].forEach(([a,b,y])=>p.fillRect(a,y,b-a,500-y));
+    p.fillStyle='#8a7350';[[190,300],[260,240],[330,180],[540,180],[610,240],[680,300],[750,360]].forEach(([x,y])=>p.fillRect(x-6,y-10,12,520-y));
+    // ship cut-out on the top level
+    p.fillStyle='#d6402a';p.beginPath();p.moveTo(420,128);p.lineTo(520,128);p.lineTo(505,150);p.lineTo(432,150);p.closePath();p.fill();p.fillStyle='#17222b';p.fillRect(470,96,26,32);
+    p.fillStyle='#17222b';p.font="400 48px "+DISP;p.fillText('+26 m',420,80);p.font="italic 500 30px "+SERIF;p.fillText('Gatún Lake',412,210);
+    p.fillText('sea level',40,348);p.fillText('sea level',770,348);});
+  g.save();g.translate(70,1130);g.rotate(-0.035);g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=24;g.shadowOffsetY=14;g.drawImage(sec,0,0);g.restore();
+  // torn tag + tape
+  g.save();g.translate(560,1700);g.rotate(0.04);torn(g,0,0,440,120,3,7);g.fillStyle='#f6f1e4';g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=16;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#17222b';g.font="400 54px "+DISP;g.fillText('3 lock "steps"',26,62);g.fillStyle='#4c4338';g.font="italic 500 32px "+SERIF;g.fillText('lift ships up, then down',26,102);g.restore();
+  // marker arrow
+  g.strokeStyle='#d6402a';g.lineWidth=10;g.lineCap='round';g.beginPath();g.moveTo(980,1080);g.quadraticCurveTo(1040,1200,940,1260);g.stroke();
+  g.beginPath();g.moveTo(940,1260);g.lineTo(975,1225);g.moveTo(940,1260);g.lineTo(985,1272);g.stroke();
+  const GR=R0(77);for(let i=0;i<60000;i++){g.fillStyle=GR()<.5?'rgba(0,0,0,'+GR()*.08+')':'rgba(255,255,255,'+GR()*.08+')';g.fillRect(GR()*1080,GR()*1920,2,2);}
+  caption('/paper-collage','why the Panama Canal goes uphill');
+}
+
+// ============ S1 /map-doc: why Egyptians live along the Nile ============
+function mapdoc(){
+  const bg=g.createLinearGradient(0,0,0,1920);bg.addColorStop(0,'#0d1620');bg.addColorStop(1,'#060a0f');g.fillStyle=bg;g.fillRect(0,0,1080,1920);
+  // tilted "3D" map: draw flat map to offscreen, then project with a vertical squash + perspective-ish slices
+  const MW=1400,MH=1400;const proj=d3.geoMercator().fitExtent([[60,60],[MW-60,MH-60]],{type:'MultiPoint',coordinates:[[24.5,21.5],[36.5,31.8]]});
+  const egypt=CTRY.features.find(f=>f.id==='818');
+  const NILE=[[31.5,21.8],[31.3,22.4],[32.0,23.2],[32.9,24.1],[32.88,24.6],[32.75,25.2],[32.64,25.7],[32.25,26.1],[31.85,26.5],[31.4,27.1],[31.18,27.2],[30.9,27.8],[30.75,28.5],[31.1,29.1],[31.24,30.04],[31.15,30.4]];
+  const DELTA_W=[[31.15,30.4],[30.9,30.8],[30.4,31.2],[30.05,31.4]], DELTA_E=[[31.15,30.4],[31.4,30.8],[31.65,31.2],[31.8,31.5]];
+  const flat=off(MW,MH,(p)=>{const path=d3.geoPath(proj,p);
+    p.fillStyle='#0f2a38';p.fillRect(0,0,MW,MH);
+    p.fillStyle='#2b2620';p.beginPath();path(LAND);p.fill();
+    // desert texture inside Egypt
+    p.save();p.beginPath();path(egypt);p.clip();const dg=p.createLinearGradient(0,0,MW,MH);dg.addColorStop(0,'#c9a46a');dg.addColorStop(1,'#a8834d');p.fillStyle=dg;p.fillRect(0,0,MW,MH);
+    const R=R0(4);for(let i=0;i<900;i++){p.strokeStyle='rgba(255,230,180,'+R()*.18+')';p.lineWidth=2;const x=R()*MW,y=R()*MH;p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+20,y-8,x+44,y);p.stroke();}
+    // green strip along the river + delta fan
+    const line=(pts,w,c,blur)=>{p.save();p.filter='blur('+blur+'px)';p.strokeStyle=c;p.lineWidth=w;p.lineCap='round';p.lineJoin='round';p.beginPath();pts.map(q=>proj(q)).forEach((q,i)=>i?p.lineTo(q[0],q[1]):p.moveTo(q[0],q[1]));p.stroke();p.restore();};
+    const d0=proj([31.15,30.4]),d1=proj([30.05,31.45]),d2=proj([31.85,31.5]);p.fillStyle='#4f8a3a';p.filter='blur(6px)';p.beginPath();p.moveTo(d0[0],d0[1]);p.lineTo(d1[0],d1[1]);p.quadraticCurveTo((d1[0]+d2[0])/2,d1[1]-40,d2[0],d2[1]);p.closePath();p.fill();p.filter='none';
+    line(NILE,26,'#4f8a3a',5);line(NILE,6,'#5fc4ff',0);line(DELTA_W,4,'#5fc4ff',0);line(DELTA_E,4,'#5fc4ff',0);
+    p.restore();
+    p.strokeStyle='rgba(255,255,255,.55)';p.lineWidth=3;p.beginPath();path(egypt);p.stroke();
+    p.strokeStyle='rgba(255,255,255,.18)';p.lineWidth=1.5;p.beginPath();path(BORD);p.stroke();
+    // population dots (glow) along the green strip
+    const R2=R0(8);for(let i=0;i<700;i++){const k=R2()*(NILE.length-1),a=NILE[Math.floor(k)],b=NILE[Math.min(NILE.length-1,Math.floor(k)+1)],u=k%1;
+      let q=proj([a[0]+(b[0]-a[0])*u+(R2()-.5)*.12,a[1]+(b[1]-a[1])*u+(R2()-.5)*.12]);p.fillStyle='rgba(255,230,140,.85)';p.beginPath();p.arc(q[0],q[1],1.6+R2()*1.6,0,7);p.fill();}
+    for(let i=0;i<500;i++){const q=proj([30.2+R2()*1.6,30.4+R2()*1.1]);p.fillStyle='rgba(255,230,140,.85)';p.beginPath();p.arc(q[0],q[1],1.6+R2()*1.8,0,7);p.fill();}
+    [[31.24,30.04,'Cairo'],[32.64,25.69,'Luxor'],[32.9,24.09,'Aswan'],[29.92,31.2,'Alexandria']].forEach(([lo,la,n])=>{const q=proj([lo,la]);p.fillStyle='#fff';p.beginPath();p.arc(q[0],q[1],8,0,7);p.fill();p.font="700 34px "+SANS;p.fillText(n,q[0]+16,q[1]+12);});
+  });
+  // perspective tilt: draw horizontal slices with growing width
+  const top=430, bot=1600, n=240;
+  for(let i=0;i<n;i++){const v=i/n, sy=v*MH, sh=MH/n+1; const t=(v*v*.35+v*.65); const y=top+(bot-top)*t; const y2=top+(bot-top)*(((v+1/n)**2)*.35+(v+1/n)*.65);
+    const sc=0.62+0.55*v; const w=MW*sc*0.86; g.drawImage(flat,0,sy,MW,sh,540-w/2,y,w,y2-y+1);}
+  // vignette + atmosphere
+  const vg=g.createRadialGradient(540,1050,300,540,1050,1100);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.7)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  const sky=g.createLinearGradient(0,380,0,620);sky.addColorStop(0,'rgba(13,22,32,1)');sky.addColorStop(1,'rgba(13,22,32,0)');g.fillStyle=sky;g.fillRect(0,380,1080,240);
+  // headline + stat callout
+  g.fillStyle='#fff';g.font="800 78px "+SANS;g.fillText('95% of Egyptians',60,170);g.fillStyle='#ffd34d';g.fillText('live on 5% of the land',60,260);
+  g.save();g.fillStyle='rgba(10,16,24,.85)';g.strokeStyle='#ffd34d';g.lineWidth=3;g.beginPath();g.roundRect(600,1330,420,170,18);g.fill();g.stroke();
+  g.fillStyle='#ffd34d';g.font="800 64px "+SANS;g.fillText('~5 km',630,1405);g.fillStyle='#d9e2ea';g.font="500 32px "+SANS;g.fillText('green strip each side,',630,1450);g.fillText('then desert',630,1485);g.restore();
+  g.strokeStyle='#ffd34d';g.lineWidth=3;g.setLineDash([10,8]);g.beginPath();g.moveTo(600,1400);g.lineTo(500,1300);g.stroke();g.setLineDash([]);
+  caption('/map-doc','why Egyptians live along the Nile',true);
+}
+
+// ============ S2 /pixel-quest: how a text message travels ============
+function pixel(){
+  const LW=270,LH=480;const lo=off(LW,LH,(p)=>{p.imageSmoothingEnabled=false;
+    const sky=['#1a1c4b','#26296b','#35388a','#4b4fae'];for(let i=0;i<4;i++){p.fillStyle=sky[i];p.fillRect(0,i*60,LW,60);}
+    const R=R0(2);for(let i=0;i<40;i++){p.fillStyle=R()<.3?'#ffe9a8':'#c9ccff';p.fillRect(Math.floor(R()*LW),Math.floor(R()*170),1,1);}
+    // far city silhouettes
+    p.fillStyle='#2a2d66';for(let x=0;x<LW;x+=14){const h=20+Math.floor(R()*40);p.fillRect(x,300-h,12,h);}
+    p.fillStyle='#ffd34d';for(let i=0;i<50;i++)p.fillRect(Math.floor(R()*LW),250+Math.floor(R()*45),1,1);
+    // ground
+    p.fillStyle='#3fa34d';p.fillRect(0,300,LW,8);p.fillStyle='#7a4a2a';p.fillRect(0,308,LW,172);p.fillStyle='#5e3820';for(let i=0;i<120;i++)p.fillRect(Math.floor(R()*LW),310+Math.floor(R()*170),2,1);
+    // LVL 1 phone (left), tower (middle), server (message center), phone (right)
+    const phone=(x,y,lit)=>{p.fillStyle='#111';p.fillRect(x,y,16,28);p.fillStyle=lit?'#7cf3ff':'#3a4a6a';p.fillRect(x+2,y+3,12,20);p.fillStyle='#666';p.fillRect(x+6,y+24,4,2);};
+    phone(14,268,true);phone(238,268,false);
+    const tower=(x)=>{p.fillStyle='#c0c4d8';for(let y=180;y<300;y+=2){const w=Math.floor((y-180)/12)+2;p.fillRect(x-w,y,1,1);p.fillRect(x+w,y,1,1);}for(let y=184;y<300;y+=10){const w=Math.floor((y-180)/12)+2;p.fillRect(x-w,y,2*w+1,1);}
+      p.fillStyle='#ff4d4d';p.fillRect(x-1,176,3,3);p.fillStyle='#e8ecff';p.fillRect(x-5,188,3,6);p.fillRect(x+3,188,3,6);};
+    tower(70);tower(200);
+    // message center building
+    p.fillStyle='#3b3f63';p.fillRect(116,228,40,72);p.fillStyle='#24273f';p.fillRect(116,228,40,4);for(let y=236;y<296;y+=8)for(let x=120;x<152;x+=8){p.fillStyle=R()<.7?'#7cf3ff':'#2c3a55';p.fillRect(x,y,5,4);}
+    // signal arcs (dotted) and the envelope "hero" mid-jump
+    p.fillStyle='#7cf3ff';const arc=(x0,y0,x1,y1,h,step)=>{for(let t=0;t<=1;t+=step){const x=x0+(x1-x0)*t,y=y0+(y1-y0)*t-h*4*t*(1-t);p.fillRect(Math.round(x),Math.round(y),2,2);}};
+    arc(22,264,70,176,30,.05);arc(70,176,136,226,40,.05);arc(136,226,200,176,40,.05);
+    const ex=166,ey=150;p.fillStyle='#000';p.fillRect(ex-1,ey-1,22,16);p.fillStyle='#fff8e0';p.fillRect(ex,ey,20,14);p.fillStyle='#d6402a';
+    for(let i=0;i<10;i++){p.fillRect(ex+i,ey+Math.floor(i*0.7),1,1);p.fillRect(ex+19-i,ey+Math.floor(i*0.7),1,1);}
+    p.fillStyle='#ffd34d';p.fillRect(ex-6,ey+4,3,2);p.fillRect(ex-10,ey+8,3,2);p.fillRect(ex-7,ey+11,2,2); // speed lines
+    // underground cable
+    p.fillStyle='#222';p.fillRect(0,360,LW,4);for(let x=6;x<LW;x+=24){p.fillStyle='#7cf3ff';p.fillRect(x,361,6,2);}
+  });
+  g.imageSmoothingEnabled=false;g.drawImage(lo,0,0,1080,1920);
+  // pixel UI: draw text tiny then threshold + upscale for crisp pixels
+  const ptext=(txt,x,y,size,col,shadow)=>{const sc=4;const t=off(600,40,(p)=>{p.font='bold '+size+'px monospace';p.fillStyle='#fff';p.textBaseline='top';p.fillText(txt,1,1);
+      const d=p.getImageData(0,0,600,40);for(let i=3;i<d.data.length;i+=4)d.data[i]=d.data[i]>110?255:0;p.putImageData(d,0,0);
+      p.globalCompositeOperation='source-in';p.fillStyle=col;p.fillRect(0,0,600,40);});
+    if(shadow){const s=off(600,40,(p)=>{p.drawImage(t,0,0);p.globalCompositeOperation='source-in';p.fillStyle='#000';p.fillRect(0,0,600,40);});g.drawImage(s,0,0,600,40,x+sc,y+sc,600*sc,40*sc);}
+    g.drawImage(t,0,0,600,40,x,y,600*sc,40*sc);};
+  // HUD bar
+  g.fillStyle='#000';g.fillRect(0,0,1080,150);g.fillStyle='#fff';g.fillRect(0,146,1080,4);
+  ptext('LVL 3/4  MESSAGE CENTER',36,30,12,'#ffd34d');ptext('SPEED 300000 KM/S',36,86,10,'#7cf3ff');
+  // HP-like progress
+  g.fillStyle='#fff';g.fillRect(700,88,340,36);g.fillStyle='#000';g.fillRect(708,96,324,20);g.fillStyle='#3fd36b';for(let i=0;i<9;i++)g.fillRect(712+i*36,100,30,12);
+  // dialog box
+  g.fillStyle='#000';g.fillRect(40,1500,1000,280);g.fillStyle='#fff';g.fillRect(48,1508,984,264);g.fillStyle='#000';g.fillRect(60,1520,960,240);
+  ptext('Your text hops: phone > tower >',84,1550,11,'#fff');ptext('message center > tower > phone.',84,1610,11,'#fff');ptext('LEVEL UP: DELIVERED',84,1680,11,'#3fd36b');
+  ptext('LVL 1',20,1170,10,'#fff',1);ptext('LVL 4',930,1170,10,'#fff',1);
+  caption('/pixel-quest','how a text message travels',true);
+}
+document.fonts.load("400 40px 'DM Serif Display'").then(()=>document.fonts.load("italic 500 30px 'EB Garamond'")).then(()=>document.fonts.load("500 30px 'EB Garamond'")).then(()=>{[paper,mapdoc,pixel][S]();document.title='ok';});
+</script></body></html>
