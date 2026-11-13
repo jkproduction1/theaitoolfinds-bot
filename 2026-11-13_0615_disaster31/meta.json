@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D deadliest disasters commands",
+ "tool_name": "Claude Code 3D deadliest disasters commands",
+ "keyword": "DISASTER",
+ "summary_cs": "„Type it, get it #29“ z picklistu „Earth's deadliest disasters“ (nic jsi netapnul): supervulkán v řezu (přes 1 000 km³, USGS), tornádo v rentgenu (vítr může přesáhnout 300 mph, NWS) a propad v time-lapse (může se otevřít během hodin, USGS), vše v kódu s Opus 5.5, hudba t1, 21,7 s. Než schválíš, nastav automatickou DM na slovo DISASTER.",
+ "style": "hyperframes-paper",
+ "duration": 21.7,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-13_0615",
+ "run_id": null,
+ "artifact": null
+}
