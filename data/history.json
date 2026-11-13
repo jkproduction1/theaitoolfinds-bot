@@ -580,5 +580,17 @@
     "domain": "code.claude.com/docs/en/slash-commands#styles28",
     "date": "2026-11-12_1627",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D scary deep ocean commands",
+    "domain": "code.claude.com/docs/en/slash-commands#ocean30",
+    "date": "2026-11-13_0614",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D deadliest disasters commands",
+    "domain": "code.claude.com/docs/en/slash-commands#disaster31",
+    "date": "2026-11-13_0615",
+    "source": "hyperframes"
   }
 ]

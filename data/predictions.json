@@ -3451,5 +3451,121 @@
    "visuals": 16,
    "ending": 2
   }
+ },
+ {
+  "name": "ocean30",
+  "date": "2026-11-13",
+  "score": 74,
+  "mode": "full",
+  "features": {
+   "hook": 0.29,
+   "hook_words": 13,
+   "hook_end_s": 4.03,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.23,
+   "dur_s": 21.3,
+   "words": 44,
+   "pace": 0.44,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.5,
+   "visual_changes": 37,
+   "visuals": 0.6,
+   "ending": 0.97,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "disaster31",
+  "date": "2026-11-13",
+  "score": 74,
+  "mode": "full",
+  "features": {
+   "hook": 0.34,
+   "hook_words": 12,
+   "hook_end_s": 4.35,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.87,
+   "dur_s": 22.5,
+   "words": 39,
+   "pace": 0.14,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 49,
+   "visuals": 0.7,
+   "ending": 0.91,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 4.3 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
+ },
+ {
+  "name": "heist32",
+  "date": "2026-11-13",
+  "score": 65,
+  "mode": "full",
+  "features": {
+   "hook": 0.3,
+   "hook_words": 9,
+   "hook_end_s": 2.66,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 3.69,
+   "dur_s": 13.5,
+   "words": 44,
+   "pace": 0.34,
+   "length": 0.44,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 0.25,
+   "visual_changes": 50,
+   "visuals": 1.0,
+   "ending": 1.0,
+   "angle": "new-ability",
+   "topic": 0.72
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 14,
+   "payoff": 10,
+   "pace": 8,
+   "length": 12,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
  }
 ]
