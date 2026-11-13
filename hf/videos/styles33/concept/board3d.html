@@ -20,7 +20,7 @@ const DISP="'DM Serif Display',serif", SERIF="'EB Garamond',serif", MK="'Marker'
 const W=window.WORLD50, LAND=topojson.feature(W,W.objects.land);
 
 const ren=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,preserveDrawingBuffer:true});
-ren.setSize(1080,1920,false);ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;
+ren.setSize(1080,1920,false);ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.VSMShadowMap;
 ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.0;ren.outputColorSpace=THREE.SRGBColorSpace;
 const tex=(c)=>{const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=16;return t;};
 
@@ -105,11 +105,14 @@ const sc=new THREE.Scene();sc.background=new THREE.Color(0x050403);
 const cam=new THREE.PerspectiveCamera(38,1080/1920,.1,100);
 sc.add(new THREE.AmbientLight(0xffe2c0,0.035));
 const hemi=new THREE.HemisphereLight(0x9fb4d0,0x2a1a0e,0.05);sc.add(hemi);
-const sun=new THREE.SpotLight(0xffb36b,1.9,0,0.25,0.9,1.6);sun.position.set(-15,12.5,23);sun.target.position.set(0.3,1.8,0);sc.add(sun,sun.target);
-sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);sun.shadow.bias=-0.00015;sun.shadow.normalBias=0.02;sun.shadow.radius=2;sun.shadow.camera.near=4;sun.shadow.camera.far=60;
+const sun=new THREE.SpotLight(0xffa955,2.1,0,0.30,0.75,1.6);sun.position.set(-15,12.5,23);sun.target.position.set(0.3,1.8,0);sc.add(sun,sun.target);
+sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.03;sun.shadow.radius=22;sun.shadow.blurSamples=24;sun.shadow.camera.near=4;sun.shadow.camera.far=60;
 // blinds between sun and board (out of frame) -> diagonal hard stripes
-const blinds=new THREE.Group();for(let i=-9;i<10;i++){const s=new THREE.Mesh(new THREE.BoxGeometry(9,0.30,0.5),new THREE.MeshBasicMaterial({color:0}));s.position.y=i*0.62;s.rotation.x=0.25;s.castShadow=true;blinds.add(s);}
-blinds.position.set(-11.2,9.3,17.2);blinds.lookAt(sun.position);blinds.rotateZ(-0.42);sc.add(blinds);
+const blinds=new THREE.Group();const bm=new THREE.MeshBasicMaterial({color:0});const bar=(x,y,w,h)=>{const s=new THREE.Mesh(new THREE.BoxGeometry(w,h,.3),bm);s.position.set(x,y,0);s.castShadow=true;blinds.add(s);};
+[-1.6,0,1.6].forEach(x=>bar(x,0,.16,12));[-3.6,-2.4,-1.2,0,1.2,2.4,3.6].forEach(y=>bar(0,y,6,.14));bar(-3.2,0,1.2,12);bar(3.4,0,1.4,12);bar(0,5.2,8,1.2);bar(0,-5.4,8,1.6);
+// a hanging plant / curtain edge for organic shapes in the light
+for(let i=0;i<9;i++){const l=new THREE.Mesh(new THREE.SphereGeometry(.38,10,8),bm);l.scale.set(1,.45,.2);l.position.set(2.0+Math.sin(i)*0.6,3.8-i*.42,0.2);l.rotation.z=i*.7;l.castShadow=true;blinds.add(l);}
+blinds.position.set(-10.2,8.6,16);blinds.lookAt(sun.position);blinds.rotateZ(-0.12);sc.add(blinds);
 // lamp-ish warm fill from bottom right (dim)
 const fill=new THREE.PointLight(0xff9a50,1.2,18,2);fill.position.set(5,-7,5);sc.add(fill);
 
@@ -117,13 +120,13 @@ const fill=new THREE.PointLight(0xff9a50,1.2,18,2);fill.position.set(5,-7,5);sc.
 const corkC=off(2048,3600,(p,w,h)=>{p.fillStyle='#9a6a36';p.fillRect(0,0,w,h);const R=R0(5);
   for(let i=0;i<260000;i++){const c=R();p.fillStyle=c<.33?'rgba(80,48,18,'+(.08+R()*.18)+')':c<.66?'rgba(185,135,80,'+(.08+R()*.18)+')':'rgba(130,88,42,'+(.1+R()*.2)+')';p.beginPath();p.ellipse(R()*w,R()*h,1+R()*4,1+R()*3,R()*3,0,7);p.fill();}});
 const corkB=off(1024,1800,(p,w,h)=>{p.fillStyle='#808080';p.fillRect(0,0,w,h);const R=R0(6);for(let i=0;i<120000;i++){p.fillStyle='rgba('+(R()<.5?'0,0,0':'255,255,255')+','+R()*.5+')';p.fillRect(R()*w,R()*h,1+R()*2,1+R()*2);}});
-const board=new THREE.Mesh(new THREE.PlaneGeometry(14,24),new THREE.MeshStandardMaterial({map:tex(corkC),bumpMap:new THREE.CanvasTexture(corkB),bumpScale:.5,roughness:.95}));board.receiveShadow=true;sc.add(board);
+const board=new THREE.Mesh(new THREE.PlaneGeometry(14,24),new THREE.MeshStandardMaterial({map:tex(corkC),bumpMap:new THREE.CanvasTexture(corkB),bumpScale:.18,roughness:.95}));board.receiveShadow=true;sc.add(board);
 // wooden frame bits at edges
 [[0,12.3,14.6,.8],[0,-12.3,14.6,.8],[-7.3,0,.8,25],[7.3,0,.8,25]].forEach(([x,y,w,h])=>{const f=new THREE.Mesh(new THREE.BoxGeometry(w,h,.6),new THREE.MeshStandardMaterial({color:0x3b2414,roughness:.6}));f.position.set(x,y,.3);f.castShadow=f.receiveShadow=true;sc.add(f);});
 
 const ITEMS=[], PINS=[];
-function paper(canvas,w,x,y,rot,z,curl,seed){const h=w*canvas.height/canvas.width;const g=new THREE.PlaneGeometry(w,h,24,24);const P=g.attributes.position,R=R0(seed);const cx=(R()-.5)*2,cy=(R()-.5)*2;
-  for(let i=0;i<P.count;i++){const u=P.getX(i)/(w/2),v=P.getY(i)/(h/2);P.setZ(i,curl*(Math.pow(Math.max(0,u*cx+v*cy),2.2)*.5+Math.pow(Math.abs(u*v),3)*.6)+.004*Math.sin(u*9+v*7));}g.computeVertexNormals();
+function paper(canvas,w,x,y,rot,z,curl,seed,crum){crum=crum||0.006;const h=w*canvas.height/canvas.width;const g=new THREE.PlaneGeometry(w,h,24,24);const P=g.attributes.position,R=R0(seed);const cx=(R()-.5)*2,cy=(R()-.5)*2;
+  for(let i=0;i<P.count;i++){const u=P.getX(i)/(w/2),v=P.getY(i)/(h/2);P.setZ(i,curl*(Math.pow(Math.max(0,u*cx+v*cy),2.2)*.5+Math.pow(Math.abs(u*v),3)*.6)+.004*Math.sin(u*9+v*7)+crum*(Math.sin(u*23+v*17+cx*5)*.5+Math.sin(u*41-v*29+cy*7)*.3));}g.computeVertexNormals();
   const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({map:tex(canvas),roughness:.85,side:THREE.DoubleSide}));m.position.set(x,y,z);m.rotation.z=rot;m.castShadow=m.receiveShadow=true;sc.add(m);ITEMS.push(m);return m;}
 function pin(x,y,z,col){const g=new THREE.Group();const head=new THREE.Mesh(new THREE.SphereGeometry(.13,24,16),new THREE.MeshStandardMaterial({color:col||0xc01c12,roughness:.25,metalness:.1}));head.position.z=.22;
   const neck=new THREE.Mesh(new THREE.CylinderGeometry(.05,.08,.18,12),head.material);neck.rotation.x=Math.PI/2;neck.position.z=.1;g.add(head,neck);g.position.set(x,y,z);g.traverse(o=>{o.castShadow=true;});sc.add(g);PINS.push(new THREE.Vector3(x,y,z+.2));return PINS.length-1;}
@@ -145,6 +148,37 @@ paper(clipping(640,760,31,'GATÚN LAKE\n26 M ABOVE\nTHE SEA',null),2.8,3.9,-9.0,
 paper(sticky(['how does','a ship climb','a hill?!'],'#f2d64b',8),2.1,-3.9,-9.2,-0.08,.07,.06,8);
 paper(sticky(['NO','PUMPS!'],'#f4e07a',9),1.6,-4.6,2.0,0.1,.09,.05,9);
 paper(sticky(['3 steps','up + down'],'#f2d64b',10),1.7,4.8,-2.6,-0.06,.1,.05,10);
+// fill the board edge to edge with more clippings (back layer)
+[[ -5.2,9.6,3.2,.012,-0.04,'TEN HOURS\nOCEAN TO\nOCEAN'],[5.6,3.0,2.6,.015,0.05,'THE LAKE\nTHAT LIFTS\nSHIPS'],[-5.6,-1.0,2.6,.012,0.07,'NO PUMPS\nNEEDED'],[5.4,-6.6,2.6,.012,-0.05,'WHY NOT\nFLAT?'],[-0.6,-9.6,3.4,.01,0.03,'THE LOCKS\nOF GATÚN'],[0.6,10.6,3.6,.01,-0.02,'A MOUNTAIN\nIN THE WAY']].forEach(([x,y,w,z,r,h],i)=>paper(clipping(640,820,40+i,h,null),w,x,y,r,z,.22,20+i,.02));
+// foreground: an out-of-focus desk lamp at the bottom right (very close to the lens)
+{const lm=new THREE.MeshStandardMaterial({color:0x1b130c,roughness:.5,metalness:.4});const lamp=new THREE.Group();
+ const shade=new THREE.Mesh(new THREE.ConeGeometry(1.6,1.7,32,1,true),lm);shade.rotation.z=-0.9;shade.position.set(0,0,0);lamp.add(shade);
+ const bulb=new THREE.Mesh(new THREE.SphereGeometry(.45,16,12),new THREE.MeshBasicMaterial({color:new THREE.Color(2.2,1.5,0.7),toneMapped:false}));bulb.position.set(-.55,-.55,0);lamp.add(bulb);
+ const arm=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,6,12),lm);arm.position.set(1.2,-3.4,0);arm.rotation.z=.25;lamp.add(arm);
+ lamp.position.set(4.6,-9.6,16.5);sc.add(lamp);}
+// desk props on top for contrast (dark, glossy, partly out of frame)
+{const blk=new THREE.MeshStandardMaterial({color:0x111111,roughness:.25,metalness:.3}), brass=new THREE.MeshStandardMaterial({color:0xb88a3e,roughness:.3,metalness:.9}),
+   chrome=new THREE.MeshStandardMaterial({color:0xc8c8c8,roughness:.2,metalness:1}), leather=new THREE.MeshStandardMaterial({color:0x1e1610,roughness:.8});
+ const add=(m,x,y,z,rx,ry,rz)=>{m.position.set(x,y,z);m.rotation.set(rx||0,ry||0,rz||0);m.traverse(o=>{if(o.isMesh){o.castShadow=!o.userData.noShadow;o.receiveShadow=true;}});sc.add(m);return m;};
+ // magnifying glass
+ const mg=new THREE.Group();mg.add(new THREE.Mesh(new THREE.TorusGeometry(1.25,.11,16,64),brass));
+ const lens=new THREE.Mesh(new THREE.CircleGeometry(1.2,64),new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:0,metalness:0,transparent:true,opacity:.12,clearcoat:1}));
+ const hd=new THREE.Mesh(new THREE.CylinderGeometry(.16,.2,2.8,16),blk);hd.position.set(0,-2.6,0);mg.add(hd);add(mg,4.4,-0.6,.9,0,0,.7);
+ // fountain pen
+ const pen=new THREE.Group();const b1=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,4.2,20),blk);pen.add(b1);const cap=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,.5,20),brass);cap.position.y=1.6;pen.add(cap);
+ const nib=new THREE.Mesh(new THREE.ConeGeometry(.12,.6,20),brass);nib.position.y=-2.4;nib.rotation.x=Math.PI;pen.add(nib);add(pen,-5.4,6.8,.35,0,0,-.75);
+ // vintage camera, bottom-left, partly out of frame
+ const camg=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(4.2,2.6,1.4),chrome);camg.add(body);const lea=new THREE.Mesh(new THREE.BoxGeometry(4.25,1.6,1.45),leather);camg.add(lea);
+ [[0,0,1.0,.95,.95],[0,0,1.5,.75,.6]].forEach(([x,y,z,r,l])=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(r,r,l,40),blk);c.rotation.x=Math.PI/2;c.position.set(x,y,z);camg.add(c);});
+ const glass=new THREE.Mesh(new THREE.CircleGeometry(.55,40),new THREE.MeshStandardMaterial({color:0x223344,roughness:.05,metalness:.6}));glass.position.z=1.82;camg.add(glass);add(camg,-4.7,-8.2,1.0,0,0,.25);
+ // coffee cup + ring stain, top-right, partly out of frame
+ const cup=new THREE.Group();const cw=new THREE.Mesh(new THREE.CylinderGeometry(1.15,.95,1.9,48,1,true),new THREE.MeshStandardMaterial({color:0xece7de,roughness:.35,side:THREE.DoubleSide}));cw.rotation.x=Math.PI/2;cup.add(cw);
+ const cf=new THREE.Mesh(new THREE.CircleGeometry(1.08,48),new THREE.MeshStandardMaterial({color:0x2a160a,roughness:.1}));cf.position.z=.8;cup.add(cf);add(cup,4.6,7.6,1.0);
+ // stamps
+ const stamp=(col,txt)=>off(220,260,(p,w,h)=>{p.fillStyle='#f4efe4';for(let x=0;x<w;x+=14)for(let y=0;y<h;y+=14){if(x===0||y===0||x>=w-14||y>=h-14){p.beginPath();p.arc(x+7,y+7,5,0,7);p.fill();}}p.fillRect(8,8,w-16,h-16);p.fillStyle=col;p.fillRect(22,22,w-44,h-80);
+   p.fillStyle='#f4efe4';p.font='400 44px '+DISP;p.fillText(txt,34,100);p.fillStyle='#2a2018';p.font='22px '+TW;p.fillText('PANAMÁ 1914',22,h-26);});
+ paper(stamp('#7a2a30','5c'),1.0,2.2,-8.6,.2,.12,.02,31);paper(stamp('#2a4a6a','10c'),1.0,3.1,-8.9,-.15,.13,.02,32);
+}
 // pins + strings (a web)
 const p=[pin(-2.2,8.9,.06),pin(3.0,9.6,.08),pin(2.3,4.4,.1),pin(-0.6,0.9,.13),pin(-4.6,2.7,.14),pin(-3.4,-3.1,.11),pin(2.2,-3.9,.1),pin(4.8,-1.9,.15),pin(3.9,-7.4,.08),pin(-3.9,-8.4,.12),pin(-4.2,6.6,.06),pin(4.9,6.0,.08)];
 [[0,1],[0,3],[1,2],[2,3],[3,4],[3,5],[3,6],[6,7],[2,7],[6,8],[5,9],[9,8],[4,10],[10,0],[11,1],[11,7],[5,6],[4,9]].forEach(([a,b],i)=>string(p[a],p[b],.02+(i%4)*.012));
@@ -160,11 +194,11 @@ const dustG=new THREE.BufferGeometry();{const a=[],R=R0(12);for(let i=0;i<700;i+
 const dust=new THREE.Points(dustG,new THREE.PointsMaterial({color:0xffd6a0,size:.05,transparent:true,opacity:.55,blending:THREE.AdditiveBlending,depthWrite:false}));sc.add(dust);
 // ---------- post ----------
 const comp=new THREE.EffectComposer(ren);comp.addPass(new THREE.RenderPass(sc,cam));
-const bok=new THREE.BokehPass(sc,cam,{focus:22,aperture:0.0009,maxblur:0.006});comp.addPass(bok);
+const bok=new THREE.BokehPass(sc,cam,{focus:22,aperture:0.0016,maxblur:0.012});comp.addPass(bok);
 comp.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(1080,1920),0.25,0.5,0.9));
 if(THREE.OutputPass)comp.addPass(new THREE.OutputPass());
 function draw(t){cam.position.set(0.9-0.4*EIO(t/8),-1.2,27.5-1.2*EIO(t/8));cam.lookAt(0.2,-0.2,0);
-  blinds.position.x=-11.2+0.15*Math.sin(t*.3);sun.intensity=1.9*(0.97+0.03*Math.sin(t*2.1));
+  blinds.position.x=-10.2+0.12*Math.sin(t*.3);sun.intensity=2.1*(0.97+0.03*Math.sin(t*2.1));
   bok.uniforms.focus.value=cam.position.z;if(location.search.includes('raw'))ren.render(sc,cam);else comp.render();}
 window.DUR=8;window.draw=draw;draw(0);document.title='ok';
 </script>
