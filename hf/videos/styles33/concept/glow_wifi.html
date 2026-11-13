@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles33 concept: /glow-science what happens to your body in space without a suit (flat glow look of styles19/29; own design).
+// Facts TO VERIFY before the final build (NASA): ~15 s of useful consciousness; you don't explode and don't freeze instantly;
+// moisture on the tongue boils (low pressure); the body swells (ebullism); rescue within ~1-2 min can be survived.
+const g=document.getElementById('c').getContext('2d'),SANS="Inter,'DejaVu Sans',Arial,sans-serif";
+const CL=x=>x<0?0:x>1?1:x,E3=x=>1-Math.pow(1-CL(x),3);
+function R0(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;};}
+function off(w,h,d){const c=document.createElement('canvas');c.width=w;c.height=h;d(c.getContext('2d'),w,h);return c;}
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.52,60,w*.5,h*.5,1300);gr.addColorStop(0,'#232a7a');gr.addColorStop(.5,'#12154a');gr.addColorStop(1,'#04051c');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[160,560,260,'rgba(120,90,255,.30)'],[960,1420,300,'rgba(40,190,255,.24)'],[900,620,220,'rgba(255,110,190,.16)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});});
+const R=R0(9),ST=[];for(let i=0;i<170;i++)ST.push([R()*1080,R()*1920,.8+R()*R()*4,R()*6]);
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(x+w/2,y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(9,12,44,.88)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+function draw(t){g.drawImage(bg,0,0);ST.forEach(([x,y,r,ph])=>{g.globalAlpha=.2+.25*(.5+.5*Math.sin(t*2+ph));g.fillStyle='#e8e4ff';g.beginPath();g.arc(x,y,r,0,7);g.fill();});g.globalAlpha=1;
+  // /glow-science how WiFi gets through walls. Facts (ScienceABC): WiFi = radio waves, 2.4 GHz ~12.5 cm long; drywall/wood/glass are almost
+  // transparent; thick concrete with steel, metal, mirrors block or bounce it; water absorbs 2.4 GHz; 5 GHz is faster but walls absorb it more.
+  const X0=60,X1=1020,Y0=560,Y1=1500, W1=440, W2=760, RX=230, RY=1030;      // flat seen from above: 3 rooms
+  // floor
+  g.save();g.fillStyle='rgba(20,26,90,.55)';g.beginPath();g.roundRect(X0,Y0,X1-X0,Y1-Y0,26);g.fill();
+  // waves from the router, clipped per room with falling strength
+  const zone=(xa,xb,alpha)=>{g.save();g.beginPath();g.rect(xa,Y0,xb-xa,Y1-Y0);g.clip();for(let i=0;i<14;i++){const r=((t*90+i*70)%980);const a=alpha*(1-r/980);g.strokeStyle='rgba(120,230,255,'+a+')';g.shadowColor='rgba(120,230,255,.9)';g.shadowBlur=24*alpha;g.lineWidth=7;g.beginPath();g.arc(RX,RY,r,0,7);g.stroke();}g.restore();};
+  zone(X0,W1,1);zone(W1,W2,.6);zone(W2,X1,.14);
+  // reflected waves off the metal fridge (bottom of room 1)
+  g.save();g.beginPath();g.rect(X0,Y0,W1-X0,Y1-Y0);g.clip();for(let i=0;i<5;i++){const r=((t*90+i*70)%350);g.strokeStyle='rgba(255,190,90,'+(.75*(1-r/350))+')';g.shadowColor='#ffbe5a';g.shadowBlur=20;g.lineWidth=6;g.beginPath();g.arc(250,1400,r,Math.PI*1.15,Math.PI*1.85);g.stroke();}g.restore();
+  // outer walls
+  g.strokeStyle='#c9cbe0';g.lineWidth=16;g.shadowColor='rgba(160,170,255,.6)';g.shadowBlur=20;g.beginPath();g.roundRect(X0,Y0,X1-X0,Y1-Y0,26);g.stroke();g.shadowBlur=0;
+  // wall 1: drywall (thin, light, dashed texture)
+  g.fillStyle='#e9e3d6';g.fillRect(W1-9,Y0,18,Y1-Y0-190);g.fillStyle='rgba(20,26,90,.9)';g.fillRect(W1-10,Y1-190,20,180);     // door gap
+  // wall 2: concrete with steel bars (thick, grey)
+  g.fillStyle='#6f7689';g.fillRect(W2-26,Y0,52,Y1-Y0);g.fillStyle='#2a2f45';for(let y=Y0+30;y<Y1;y+=70){g.beginPath();g.arc(W2,y,9,0,7);g.fill();}
+  g.strokeStyle='rgba(255,255,255,.12)';g.lineWidth=3;for(let y=Y0;y<Y1;y+=34){g.beginPath();g.moveTo(W2-26,y);g.lineTo(W2+26,y+20);g.stroke();}
+  // router
+  g.save();g.translate(RX,RY);g.shadowColor='#7de6ff';g.shadowBlur=40;g.fillStyle='#fff';g.beginPath();g.roundRect(-58,-26,116,52,16);g.fill();g.shadowBlur=0;g.fillStyle='#3ddc84';[-30,-8,14].forEach(x=>{g.beginPath();g.arc(x,0,6,0,7);g.fill();});
+  g.strokeStyle='#fff';g.lineWidth=9;g.lineCap='round';g.beginPath();g.moveTo(-40,-26);g.lineTo(-56,-84);g.moveTo(40,-26);g.lineTo(56,-84);g.stroke();g.restore();
+  // fridge (metal)
+  g.save();g.fillStyle='#b9c0d4';g.shadowColor='#ffbe5a';g.shadowBlur=26;g.beginPath();g.roundRect(170,1400,160,76,12);g.fill();g.shadowBlur=0;g.fillStyle='#7c8399';g.fillRect(246,1408,6,60);g.restore();
+  // phones with signal bars
+  const phone=(x,y,bars,col)=>{g.save();g.translate(x,y);g.fillStyle='#0a0c2c';g.strokeStyle='#fff';g.lineWidth=6;g.beginPath();g.roundRect(-52,-92,104,184,20);g.fill();g.stroke();
+    for(let i=0;i<4;i++){g.fillStyle=i<bars?col:'rgba(255,255,255,.18)';if(i<bars){g.shadowColor=col;g.shadowBlur=16;}else g.shadowBlur=0;g.beginPath();g.roundRect(-36+i*20,40-i*22,14,22+i*22,4);g.fill();}g.restore();};
+  phone(600,760,3,'#7dffb0');phone(900,1250,1,'#ff5b6e');
+  g.restore();
+  label('Drywall: almost see-through',300,1620,W1,1180,'#7dffb0');label('Concrete + steel: blocks most',420,1750,W2,1380,'#ff5b6e');label('Metal bounces it back',90,480,250,1400,'#ffbe5a');
+  // wavelength ruler
+  g.save();g.translate(560,1010);g.strokeStyle='#fff';g.lineWidth=4;g.beginPath();g.moveTo(0,0);g.lineTo(70,0);g.moveTo(0,-12);g.lineTo(0,12);g.moveTo(70,-12);g.lineTo(70,12);g.stroke();g.fillStyle='#fff';g.font='800 34px '+SANS;g.fillText('12 cm waves',-20,52);g.restore();
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('How WiFi gets',540,250);const a='through ',b='your walls';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,350);g.fillStyle='#7de6ff';g.shadowColor='rgba(125,230,255,.9)';g.shadowBlur=30;g.fillText(b,x0+wa,350);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>
