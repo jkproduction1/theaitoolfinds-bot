@@ -1,0 +1,201 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;src:url(eb-garamond-latin-500-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Marker';src:url(permanent-marker-latin-400-normal.woff2)}
+@font-face{font-family:'Typewriter';src:url(special-elite-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}
+</style>
+<script src="three.min.js"></script><script src="three-extras.js"></script><script src="geo.js"></script><script src="world50.js"></script></head><body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script id="main" type="text/plain">
+// styles33 concept: /paper-collage the theft that made the Mona Lisa famous (Jan, 2026-11-13: paper collage, the painting moves on the wall).
+// Real 3D scene: cork board, curled papers, pins, red string, hard sunlight through blinds (shadow-mapped), low fill = high contrast.
+// Newspaper photos are small 3D renders made here (ship in a lock), printed as halftone. Fictional paper names. Fonts: OFL.
+const CL=x=>x<0?0:x>1?1:x, E3=x=>1-Math.pow(1-CL(x),3), EIO=x=>{x=CL(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+function R0(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646;};}
+function off(w,h,d){const c=document.createElement('canvas');c.width=w;c.height=h;d(c.getContext('2d'),w,h);return c;}
+const DISP="'DM Serif Display',serif", SERIF="'EB Garamond',serif", MK="'Marker',sans-serif", TW="'Typewriter',monospace", SANS="Inter,sans-serif";
+const W=window.WORLD50, LAND=topojson.feature(W,W.objects.land);
+
+const ren=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,preserveDrawingBuffer:true});
+ren.setSize(1080,1920,false);ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.VSMShadowMap;
+ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.0;ren.outputColorSpace=THREE.SRGBColorSpace;
+const tex=(c)=>{const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=16;return t;};
+
+// ---------- a tiny 3D "photo": container ship inside a lock chamber ----------
+function shipPhoto(w,h,seed,view){
+  const s=new THREE.Scene();s.background=new THREE.Color(0x9aa3a6);s.fog=new THREE.Fog(0x9aa3a6,40,110);
+  const c=new THREE.PerspectiveCamera(view.fov||38,w/h,.1,200);c.position.set(...view.pos);c.lookAt(...view.at);
+  s.add(new THREE.HemisphereLight(0xe8eef0,0x3a3a34,0.55));const sun=new THREE.DirectionalLight(0xffffff,1.7);sun.position.set(-20,30,15);s.add(sun);
+  const mat=(col,r)=>new THREE.MeshStandardMaterial({color:col,roughness:r||.8});
+  const box=(x,y,z,sx,sy,sz,m)=>{const b=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),m);b.position.set(x,y,z);s.add(b);return b;};
+  // water + chamber walls + gate
+  const wat=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:0x3f5a5c,roughness:.25,metalness:.2}));wat.rotation.x=-Math.PI/2;s.add(wat);
+  box(0,2,-11,120,8,4,mat(0x8f8d84));box(0,2,11,120,8,4,mat(0x8f8d84));            // lock walls
+  box(-8,5.5,-11,1,3,3.6,mat(0x6d6b63));for(let i=-50;i<50;i+=8)box(i,6.4,-11,.4,1.2,.4,mat(0x2c2c2c)); // bollards
+  box(44,3,0,2,10,18,mat(0x4b4f52));                                                      // lock gate
+  // jungle hills
+  for(let i=0;i<14;i++){const b=new THREE.Mesh(new THREE.SphereGeometry(10+i%3*4,16,10),mat(0x4a5a3c,.95));b.position.set(-70+i*12,-2,-40-(i%2)*8);s.add(b);}
+  // ship: hull + containers + bridge
+  const hull=box(0,1.6,0,52,4.2,9,mat(0x1d2422,.6));box(0,0.1,0,51,1.2,8.9,mat(0x7a2a20,.6));
+  const bow=new THREE.Mesh(new THREE.CylinderGeometry(4.5,4.5,4.2,3),mat(0x1d2422,.6));bow.rotation.y=Math.PI/2;bow.scale.set(1,1,.9);bow.position.set(27,1.6,0);s.add(bow);
+  const cols=[0x8a3a2c,0x2f5a72,0xb08a3a,0x456a48,0x6a4a7a,0xa84a2a];const R=R0(seed);
+  for(let x=-12;x<22;x+=2.6)for(let y=0;y<4;y++)for(let z=-3.2;z<=3.2;z+=2.1){if(R()<.12)continue;box(x,4.9+y*2.1,z,2.5,2.05,2,mat(cols[Math.floor(R()*cols.length)],.7));}
+  box(-19,7,0,7,9,8.6,mat(0xe6e2d8,.6));box(-19,11.8,0,8,.6,9.6,mat(0x2a2a2a));box(-22,14,0,1.4,4,1.4,mat(0x3a3a3a));
+  const rt=new THREE.WebGLRenderTarget(w,h,{samples:4});ren.setRenderTarget(rt);ren.render(s,c);ren.setRenderTarget(null);
+  const px=new Uint8Array(w*h*4);ren.readRenderTargetPixels(rt,0,0,w,h,px);
+  return off(w,h,(p)=>{const d=p.createImageData(w,h);for(let y=0;y<h;y++)d.data.set(px.subarray((h-1-y)*w*4,(h-y)*w*4),y*w*4);p.putImageData(d,0,0);});}
+function printed(src,w,h,mode){ // newspaper halftone (mode 'ht') or faded polaroid colour ('pol')
+  return off(w,h,(p)=>{p.drawImage(src,0,0,w,h);const d=p.getImageData(0,0,w,h),a=d.data,R=R0(5);
+    if(mode==='pol'){for(let i=0;i<a.length;i+=4){const n=(R()-.5)*22;a[i]=Math.min(255,a[i]*.85+40+n);a[i+1]=Math.min(255,a[i+1]*.82+30+n);a[i+2]=Math.min(255,a[i+2]*.7+18+n);}p.putImageData(d,0,0);
+      const v=p.createRadialGradient(w/2,h/2,w*.2,w/2,h/2,w*.75);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(60,30,0,.35)');p.fillStyle=v;p.fillRect(0,0,w,h);return;}
+    const L=new Float32Array(w*h);for(let i=0;i<w*h;i++)L[i]=(.3*a[i*4]+.59*a[i*4+1]+.11*a[i*4+2])/255;
+    p.fillStyle='#e9e3d3';p.fillRect(0,0,w,h);p.fillStyle='#1b1a18';const st=5;
+    for(let y=0;y<h;y+=st)for(let x=(y/st%2)*st/2;x<w;x+=st){const l=L[Math.min(h-1,Math.round(y))*w+Math.min(w-1,Math.round(x))];const r=st*.66*Math.sqrt(Math.max(0,1-Math.pow(l,1.5)*1.1+.06));if(r>.2){p.beginPath();p.arc(x,y,r,0,7);p.fill();}}});}
+
+// ---------- paper textures ----------
+function grain(p,w,h,seed,amt){const R=R0(seed);for(let i=0;i<w*h/30;i++){p.fillStyle=R()<.5?'rgba(80,55,20,'+R()*amt+')':'rgba(255,255,255,'+R()*amt+')';p.fillRect(R()*w,R()*h,2,2);}
+  p.filter='blur(30px)';for(let i=0;i<10;i++){p.fillStyle='rgba(150,110,50,'+R()*.12+')';p.beginPath();p.arc(R()*w,R()*h,60+R()*160,0,7);p.fill();}p.filter='none';}
+function body(p,x,y,w,h,size,seed){const R=R0(seed);p.fillStyle='rgba(30,28,25,.85)';p.font=size+'px '+SERIF;
+  const words='the canal locks lift every ship twenty six metres up to the lake and down again on the other side water flows by gravity no pumps are needed engineers built three chambers on each side ships cross from ocean to ocean in about ten hours'.split(' ');
+  let yy=y+size;while(yy<y+h){let line='',xx=0;while(true){const wd=words[Math.floor(R()*words.length)];if(p.measureText(line+wd+' ').width>w)break;line+=wd+' ';}p.fillText(line,x,yy);yy+=size*1.2;}}
+function newspaper(W2,H2,seed,name,headline,sub,photo){return off(W2,H2,(p,w,h)=>{p.fillStyle='#e8e1cf';p.fillRect(0,0,w,h);
+  p.fillStyle='#1b1a18';p.font='400 92px '+DISP;p.textAlign='center';p.fillText(name,w/2,110);p.fillRect(40,135,w-80,4);p.fillRect(40,145,w-80,1.5);
+  p.font='italic 500 26px '+SERIF;p.fillText('Colón · Panama City · Price 5 cents',w/2,178);p.textAlign='left';
+  p.font='400 '+(headline.length>22?74:96)+'px '+DISP;const lines=headline.split('\n');lines.forEach((l,i)=>p.fillText(l,44,290+i*92));
+  const top=290+lines.length*92-30;p.font='italic 500 34px '+SERIF;p.fillText(sub,44,top+20);
+  if(photo){p.drawImage(photo,44,top+50,w-88,(w-88)*photo.height/photo.width);const ph=top+50+(w-88)*photo.height/photo.width;
+    p.font='italic 500 24px '+SERIF;p.fillText('A cargo ship rises in the third chamber.',44,ph+34);
+    const cw=(w-88-40)/3;for(let k=0;k<3;k++)body(p,44+k*(cw+20),ph+50,cw,h-ph-80,22,seed+k);}
+  else{const cw=(w-88-40)/3;for(let k=0;k<3;k++)body(p,44+k*(cw+20),top+60,cw,h-top-90,22,seed+k);}
+  grain(p,w,h,seed,.10);});}
+function clipping(W2,H2,seed,head,photo){return off(W2,H2,(p,w,h)=>{p.fillStyle='#ebe5d4';p.fillRect(0,0,w,h);p.fillStyle='#1b1a18';
+  p.font='400 64px '+DISP;head.split('\n').forEach((l,i)=>p.fillText(l,30,80+i*68));const y0=80+(head.split('\n').length-1)*68+30;
+  if(photo){p.drawImage(photo,30,y0,w-60,(w-60)*photo.height/photo.width);body(p,30,y0+(w-60)*photo.height/photo.width+10,w-60,h-y0-(w-60)*photo.height/photo.width-30,22,seed);}
+  else body(p,30,y0,w-60,h-y0-20,22,seed);grain(p,w,h,seed,.1);});}
+function polaroid(photo,cap,seed){return off(560,660,(p,w,h)=>{p.fillStyle='#f3efe6';p.fillRect(0,0,w,h);p.drawImage(photo,34,34,492,470);
+  p.fillStyle='rgba(30,30,40,.9)';p.font='44px '+MK;p.fillText(cap,50,600);grain(p,w,h,seed,.06);});}
+function sticky(lines,col,seed){return off(380,380,(p,w,h)=>{p.fillStyle=col;p.fillRect(0,0,w,h);const g=p.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(255,255,255,.15)');g.addColorStop(1,'rgba(0,0,0,.12)');p.fillStyle=g;p.fillRect(0,0,w,h);
+  p.fillStyle='#1d1d2a';lines.forEach((l,i)=>{p.font=(l.length>9?54:66)+'px '+MK;p.fillText(l,28,100+i*84);});grain(p,w,h,seed,.05);});}
+function mapSheet(){const MW=900,MH=640;const proj=d3.geoMercator().fitExtent([[40,40],[MW-40,MH-40]],{type:'MultiPoint',coordinates:[[-80.4,8.7],[-79.15,9.6]]});
+  return off(MW,MH,(p)=>{p.fillStyle='#e6dcc2';p.fillRect(0,0,MW,MH);const path=d3.geoPath(proj,p);
+    p.fillStyle='#8fb3b5';p.fillRect(0,0,MW,MH);p.fillStyle='#e3d5ad';p.beginPath();path(LAND);p.fill();p.strokeStyle='#3e3020';p.lineWidth=2.5;p.beginPath();path(LAND);p.stroke();
+    const lk=proj([-79.87,9.17]);p.fillStyle='#6f9ea3';p.beginPath();p.ellipse(lk[0],lk[1],70,44,-.6,0,7);p.fill();
+    const RT=[[-79.92,9.37],[-79.92,9.27],[-79.86,9.2],[-79.76,9.12],[-79.68,9.05],[-79.62,8.99],[-79.57,8.93],[-79.53,8.88]].map(c=>proj(c));
+    p.strokeStyle='#b8231a';p.lineWidth=7;p.lineCap='round';p.beginPath();RT.forEach((q,i)=>i?p.lineTo(q[0],q[1]):p.moveTo(q[0],q[1]));p.stroke();
+    p.fillStyle='#1b1a18';p.font='30px '+TW;p.fillText('CARIBBEAN SEA',50,80);p.fillText('PACIFIC OCEAN',MW-290,MH-50);p.fillText('GATÚN LAKE',lk[0]-210,lk[1]+70);
+    p.strokeStyle='rgba(40,30,20,.3)';p.lineWidth=1.2;for(let x=0;x<MW;x+=80){p.beginPath();p.moveTo(x,0);p.lineTo(x,MH);p.stroke();}for(let y=0;y<MH;y+=80){p.beginPath();p.moveTo(0,y);p.lineTo(MW,y);p.stroke();}
+    grain(p,MW,MH,4,.1);});}
+function titleSheet(){return off(980,700,(p,w,h)=>{p.fillStyle='#f0e9d6';p.fillRect(0,0,w,h);grain(p,w,h,9,.08);
+  const mk=(txt,x,y,sz,rot,seed)=>{const R=R0(seed);let cx=x;for(const ch of txt){p.save();const s=sz*(0.92+R()*.16);p.font=s+'px '+MK;p.translate(cx,y+(R()-.5)*10);p.rotate(rot+(R()-.5)*.08);
+      p.fillStyle='rgba(178,30,22,.95)';p.fillText(ch,0,0);const cw=p.measureText(ch).width;p.restore();cx+=cw*0.97;}};
+  mk('THE CANAL',50,230,140,-0.03,4);mk('GOES',50,450,118,0.02,5);mk('UPHILL',440,470,122,-0.03,6);
+  p.strokeStyle='rgba(178,30,22,.9)';p.lineWidth=9;p.lineCap='round';p.beginPath();p.moveTo(440,520);p.bezierCurveTo(560,508,760,530,930,500);p.stroke();});}
+function sectionSheet(){return off(760,520,(p,w,h)=>{p.fillStyle='#eef0e8';p.fillRect(0,0,w,h);p.strokeStyle='rgba(60,130,160,.35)';p.lineWidth=1.3;
+  for(let x=0;x<w;x+=26){p.beginPath();p.moveTo(x,0);p.lineTo(x,h);p.stroke();}for(let y=0;y<h;y+=26){p.beginPath();p.moveTo(0,y);p.lineTo(w,y);p.stroke();}
+  p.strokeStyle='#1d2a5a';p.lineWidth=5;p.lineJoin='round';const st=[[30,430],[160,430],[160,350],[290,350],[290,270],[420,270],[420,190],[730,190]];p.beginPath();st.forEach((q,i)=>i?p.lineTo(q[0],q[1]):p.moveTo(q[0],q[1]));p.stroke();
+  p.strokeStyle='rgba(40,110,170,.85)';p.lineWidth=4;[[30,160,405],[160,290,325],[290,420,245],[420,730,165]].forEach(([a,b,y])=>{p.beginPath();for(let x=a;x<=b;x+=8)p.lineTo(x,y+Math.sin(x*.3)*2.5);p.stroke();});
+  p.fillStyle='#1d2a5a';p.font='40px '+MK;p.fillText('sea',40,480);p.fillText('lake +26 m',470,140);p.font='34px '+MK;p.fillText('1',210,390);p.fillText('2',340,310);p.fillText('3',470,230);
+  p.fillStyle='#b8231a';p.beginPath();p.moveTo(540,162);p.lineTo(640,162);p.lineTo(625,182);p.lineTo(552,182);p.closePath();p.fill();p.fillRect(560,140,26,22);grain(p,w,h,7,.06);});}
+
+
+// Facts (History.com, Smithsonian): taken from the Louvre on the morning of 21 Aug 1911 by Vincenzo Peruggia, an Italian handyman who had
+// worked at the museum; he hid overnight, wore a white smock, left the frame in a stairwell; thousands came to see the empty wall;
+// recovered in Florence in Dec 1913; back in the Louvre Jan 1914. Portrait here = own stylised drawing of a public-domain painting.
+function portrait(w,h){return off(w,h,(p)=>{const g=p.createLinearGradient(0,0,0,h);g.addColorStop(0,'#7d8a6a');g.addColorStop(.55,'#5f6b4c');g.addColorStop(1,'#3b3a26');p.fillStyle=g;p.fillRect(0,0,w,h);
+  p.filter='blur(6px)';p.fillStyle='#8fa08a';p.beginPath();p.moveTo(0,h*.45);p.bezierCurveTo(w*.2,h*.3,w*.3,h*.42,w*.45,h*.36);p.lineTo(w*.45,h*.6);p.lineTo(0,h*.6);p.fill();
+  p.beginPath();p.moveTo(w,h*.4);p.bezierCurveTo(w*.85,h*.3,w*.7,h*.42,w*.55,h*.38);p.lineTo(w*.55,h*.6);p.lineTo(w,h*.6);p.fill();
+  p.strokeStyle='#b39a62';p.lineWidth=6;p.beginPath();p.moveTo(w*.08,h*.62);p.bezierCurveTo(w*.15,h*.55,w*.05,h*.5,w*.2,h*.47);p.stroke();p.filter='none';
+  // figure
+  p.fillStyle='#2a2216';p.beginPath();p.moveTo(w*.18,h);p.bezierCurveTo(w*.2,h*.62,w*.32,h*.52,w*.5,h*.5);p.bezierCurveTo(w*.68,h*.52,w*.8,h*.62,w*.84,h);p.fill();
+  p.fillStyle='#c79a63';p.beginPath();p.ellipse(w*.5,h*.33,w*.12,h*.12,0,0,7);p.fill();                      // face
+  p.beginPath();p.moveTo(w*.42,h*.48);p.quadraticCurveTo(w*.5,h*.6,w*.58,h*.48);p.lineTo(w*.56,h*.44);p.lineTo(w*.44,h*.44);p.fill(); // neck/chest
+  p.fillStyle='#1c150d';p.beginPath();p.moveTo(w*.38,h*.33);p.bezierCurveTo(w*.36,h*.16,w*.64,h*.16,w*.62,h*.33);p.bezierCurveTo(w*.68,h*.45,w*.66,h*.55,w*.7,h*.6);p.lineTo(w*.62,h*.6);p.bezierCurveTo(w*.6,h*.42,w*.6,h*.3,w*.5,h*.24);p.bezierCurveTo(w*.4,h*.3,w*.4,h*.42,w*.38,h*.6);p.lineTo(w*.3,h*.6);p.bezierCurveTo(w*.34,h*.55,w*.32,h*.45,w*.38,h*.33);p.fill(); // hair
+  p.fillStyle='#c79a63';p.beginPath();p.ellipse(w*.48,h*.86,w*.14,h*.05,-.15,0,7);p.fill();p.beginPath();p.ellipse(w*.58,h*.84,w*.11,h*.045,.1,0,7);p.fill(); // hands
+  p.fillStyle='rgba(60,30,20,.55)';p.beginPath();p.ellipse(w*.46,h*.31,w*.018,h*.007,0,0,7);p.ellipse(w*.55,h*.31,w*.018,h*.007,0,0,7);p.fill();p.strokeStyle='rgba(90,45,30,.6)';p.lineWidth=2;p.beginPath();p.moveTo(w*.46,h*.39);p.quadraticCurveTo(w*.5,h*.405,w*.545,h*.385);p.stroke();
+  const v=p.createRadialGradient(w/2,h/2,w*.2,w/2,h/2,w*.8);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(30,20,5,.5)');p.fillStyle=v;p.fillRect(0,0,w,h);});}
+// white-edged cut-out of any drawing with transparency
+function sticker(src,r){const w=src.width+2*r,h=src.height+2*r;const sil=off(src.width,src.height,q=>{q.drawImage(src,0,0);q.globalCompositeOperation='source-in';q.fillStyle='#f7f3ea';q.fillRect(0,0,src.width,src.height);});
+  return off(w,h,(p)=>{for(let i=0;i<32;i++){const a=i/32*6.283;p.drawImage(sil,r+Math.cos(a)*r,r+Math.sin(a)*r);}p.drawImage(src,r,r);});}
+function thief(){return off(520,900,(p,w,h)=>{
+  p.fillStyle='#1d1a17';p.beginPath();p.moveTo(200,600);p.lineTo(150,880);p.lineTo(205,885);p.lineTo(250,640);p.lineTo(290,885);p.lineTo(345,880);p.lineTo(300,600);p.fill();     // legs
+  p.fillStyle='#eae6dc';p.beginPath();p.moveTo(170,260);p.lineTo(330,260);p.lineTo(370,640);p.lineTo(130,640);p.closePath();p.fill();                                                       // white smock
+  p.strokeStyle='rgba(0,0,0,.18)';p.lineWidth=3;for(let i=0;i<6;i++){p.beginPath();p.moveTo(180+i*28,280);p.lineTo(160+i*36,630);p.stroke();}
+  p.fillStyle='#caa27a';p.beginPath();p.arc(250,200,58,0,7);p.fill();p.fillStyle='#211a12';p.beginPath();p.ellipse(250,160,62,34,0,Math.PI,0);p.fill();p.fillRect(196,150,12,40);    // head, hair
+  p.fillStyle='#211a12';p.fillRect(222,222,56,10);                                                                                                                                          // moustache
+  // wooden panel (back side of the painting) carried under the arm
+  p.save();p.translate(330,430);p.rotate(.18);p.fillStyle='#8a6a42';p.fillRect(-60,-190,190,280);p.strokeStyle='rgba(60,40,20,.5)';p.lineWidth=2;for(let y=-185;y<88;y+=9){p.beginPath();p.moveTo(-60,y);p.bezierCurveTo(0,y+4,60,y-4,130,y+2);p.stroke();}
+  p.fillStyle='#5e4528';p.fillRect(-60,-110,190,16);p.fillRect(-60,10,190,16);p.restore();
+  p.fillStyle='#caa27a';p.beginPath();p.ellipse(372,520,26,18,.3,0,7);p.fill();});}
+function emptyFrame(){return off(560,740,(p,w,h)=>{const g=p.createLinearGradient(0,0,w,h);g.addColorStop(0,'#d9b45a');g.addColorStop(.5,'#8e6a22');g.addColorStop(1,'#e2c070');
+  p.fillStyle=g;p.fillRect(0,0,w,h);p.clearRect(70,70,w-140,h-140);p.strokeStyle='rgba(60,40,10,.6)';p.lineWidth=4;p.strokeRect(20,20,w-40,h-40);p.strokeRect(70,70,w-140,h-140);
+  p.fillStyle='rgba(200,220,230,.25)';p.fillRect(70,70,w-140,h-140);p.strokeStyle='rgba(255,255,255,.6)';p.lineWidth=5;p.beginPath();p.moveTo(110,140);p.lineTo(220,90);p.moveTo(120,200);p.lineTo(300,110);p.stroke();});}
+function crowd(){return off(1400,520,(p,w,h)=>{const R=R0(9);for(let i=0;i<16;i++){const x=40+i*85+(R()-.5)*30,s=.8+R()*.5,y=h;p.fillStyle=['#1b1a18','#2a2622','#24211d'][i%3];
+  p.beginPath();p.arc(x,y-300*s,42*s,0,7);p.fill();p.beginPath();p.moveTo(x-75*s,y);p.quadraticCurveTo(x-80*s,y-230*s,x,y-250*s);p.quadraticCurveTo(x+80*s,y-230*s,x+75*s,y);p.fill();
+  if(R()<.5){p.beginPath();p.ellipse(x,y-338*s,58*s,14*s,0,0,7);p.fill();p.fillRect(x-34*s,y-380*s,68*s,44*s);}}});}
+function torn(p,x,y,w,h,seed,j){const R=R0(seed);p.beginPath();p.moveTo(x,y);for(let i=1;i<=24;i++)p.lineTo(x+w*i/24,y+(R()-.5)*j);for(let i=1;i<=10;i++)p.lineTo(x+w+(R()-.5)*j,y+h*i/10);for(let i=23;i>=0;i--)p.lineTo(x+w*i/24,y+h+(R()-.5)*j);for(let i=9;i>=1;i--)p.lineTo(x+(R()-.5)*j,y+h*i/10);p.closePath();}
+function strip(txt,size,bg,fg,seed,hl){const c=document.createElement('canvas').getContext('2d');c.font=size+'px '+DISP;const tw=c.measureText(txt).width;
+  return off(tw+70,size*1.5,(p,w,h)=>{torn(p,4,4,w-8,h-8,seed,10);p.fillStyle=bg;p.fill();if(hl){p.fillStyle='rgba(255,214,0,.95)';p.fillRect(26,h*.18,w-52,h*.62);}p.fillStyle=fg;p.font=size+'px '+DISP;p.fillText(txt,35,size*1.08);grain(p,w,h,seed,.08);});}
+function mapScrap(){const MW=760,MH=640;const proj=d3.geoMercator().fitExtent([[30,30],[MW-30,MH-30]],{type:'MultiPoint',coordinates:[[1.5,49.6],[12.5,42.6]]});
+  return off(MW,MH,(p)=>{torn(p,0,0,MW,MH,14,14);p.fillStyle='#9fbac0';p.fill();p.save();torn(p,0,0,MW,MH,14,14);p.clip();const path=d3.geoPath(proj,p);
+    p.fillStyle='#e8dcb8';p.beginPath();path(LAND);p.fill();p.strokeStyle='#4a3a28';p.lineWidth=2;p.beginPath();path(LAND);p.stroke();
+    const a=proj([2.35,48.86]),b=proj([11.25,43.77]);p.strokeStyle='#b8231a';p.lineWidth=7;p.setLineDash([16,10]);p.lineCap='round';p.beginPath();p.moveTo(a[0],a[1]);p.quadraticCurveTo((a[0]+b[0])/2+80,(a[1]+b[1])/2-60,b[0],b[1]);p.stroke();p.setLineDash([]);
+    [[a,'Paris'],[b,'Florence']].forEach(([q,n])=>{p.fillStyle='#b8231a';p.beginPath();p.arc(q[0],q[1],12,0,7);p.fill();p.fillStyle='#1b1a18';p.font='44px '+MK;p.fillText(n,q[0]+18,q[1]-14);});
+    p.font='52px '+MK;p.fillStyle='#b8231a';p.fillText('2 years!',(a[0]+b[0])/2+60,(a[1]+b[1])/2);grain(p,MW,MH,3,.1);p.restore();});}
+
+// halftone print that keeps the cut-out's alpha
+function halfA(src){const w=src.width,h=src.height;const sd=src.getContext('2d').getImageData(0,0,w,h).data;return off(w,h,(p)=>{p.fillStyle='#ece6d6';
+  p.save();p.drawImage(src,0,0);p.globalCompositeOperation='source-in';p.fillRect(0,0,w,h);p.restore();p.fillStyle='#1b1a18';const st=7;
+  for(let y=0;y<h;y+=st)for(let x=(y/st%2)*st/2;x<w;x+=st){const k=(Math.min(h-1,y|0)*w+Math.min(w-1,x|0))*4;if(sd[k+3]<128)continue;const l=(.3*sd[k]+.59*sd[k+1]+.11*sd[k+2])/255;const r=st*.62*Math.sqrt(Math.max(0,1-l*1.05+.05));if(r>.3){p.beginPath();p.arc(x,y,r,0,7);p.fill();}}});}
+// ---------- scene ----------
+const sc=new THREE.Scene();sc.background=new THREE.Color(0x120c08);
+const cam=new THREE.PerspectiveCamera(36,1080/1920,.1,100);
+sc.add(new THREE.AmbientLight(0xfff0e0,0.08));sc.add(new THREE.HemisphereLight(0xfff4e6,0x3a2214,0.12));
+const sun=new THREE.SpotLight(0xffe0b8,1.7,0,0.40,0.9,1.6);sun.position.set(-4,13,20);sun.target.position.set(0,1,0);sc.add(sun,sun.target);
+sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-0.0004;sun.shadow.normalBias=0.03;sun.shadow.radius=9;sun.shadow.blurSamples=16;sun.shadow.camera.near=4;sun.shadow.camera.far=60;
+
+// museum wall (paper): warm red damask with a lighter rectangle where the painting hung
+const wallC=off(2048,3600,(p,w,h)=>{p.fillStyle='#5e231b';p.fillRect(0,0,w,h);const R=R0(3);
+  p.globalAlpha=.05;p.fillStyle='#e8b07a';for(let y=0;y<h;y+=160)for(let x=((y/160)%2)*90;x<w;x+=180){p.save();p.translate(x,y);p.beginPath();p.moveTo(0,-50);p.bezierCurveTo(40,-20,40,20,0,50);p.bezierCurveTo(-40,20,-40,-20,0,-50);p.fill();p.restore();}
+  p.globalAlpha=1;for(let i=0;i<60000;i++){p.fillStyle=R()<.5?'rgba(0,0,0,'+R()*.12+')':'rgba(255,220,180,'+R()*.07+')';p.fillRect(R()*w,R()*h,2,2);}
+  // ghost of the painting: cleaner, lighter patch + dust outline
+  const gx=w*.30,gy=h*.20,gw=w*.40,gh=h*.30;p.fillStyle='rgba(255,200,160,.16)';p.fillRect(gx,gy,gw,gh);p.strokeStyle='rgba(40,10,5,.35)';p.lineWidth=10;p.filter='blur(6px)';p.strokeRect(gx,gy,gw,gh);p.filter='none';
+  // chalk/marker doodle on the wall
+  p.strokeStyle='rgba(255,236,200,.85)';p.lineWidth=14;p.lineCap='round';p.font='170px '+MK;p.fillStyle='rgba(255,236,200,.9)';p.fillText('?',gx+gw*.42,gy+gh*.6);});
+const wall=new THREE.Mesh(new THREE.PlaneGeometry(14,24.6),new THREE.MeshStandardMaterial({map:tex(wallC),roughness:.9}));wall.receiveShadow=true;sc.add(wall);
+// the four iron hooks that held it
+[[-1.5,6.8],[1.5,6.8],[-1.5,1.3],[1.5,1.3]].forEach(([x,y])=>{const k=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.5,12),new THREE.MeshStandardMaterial({color:0x2a2a2a,metalness:.8,roughness:.4}));k.rotation.x=Math.PI/2;k.position.set(x,y,.25);k.castShadow=true;sc.add(k);});
+
+function cut(canvas,w,x,y,rot,z,seed,curl){const h=w*canvas.height/canvas.width;const g=new THREE.PlaneGeometry(w,h,16,16);const P=g.attributes.position,R=R0(seed||1);
+  for(let i=0;i<P.count;i++){const u=P.getX(i)/(w/2),v=P.getY(i)/(h/2);P.setZ(i,(curl||.05)*(u*u*.5+v*v*.3)+.01*Math.sin(u*13+v*9+R()*6));}g.computeVertexNormals();
+  const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({map:tex(canvas),roughness:.85,alphaTest:.5,side:THREE.DoubleSide}));m.position.set(x,y,z);m.rotation.z=rot;m.castShadow=m.receiveShadow=true;m.customDepthMaterial=new THREE.MeshDepthMaterial({depthPacking:THREE.RGBADepthPacking,map:m.material.map,alphaTest:.5});sc.add(m);return m;}
+
+// headline strips (top)
+cut(strip('THE THEFT THAT',120,'#efe7d4','#1b1a18',11),7.4,-1.1,9.5,-0.035,.12,1);
+cut(strip('MADE HER FAMOUS',120,'#efe7d4','#1b1a18',12,true),8.4,0.2,8.0,0.025,.18,2);
+// the empty frame, tilted, sliding off the wall
+cut(emptyFrame(),3.6,-0.2,4.2,0.12,.3,3,.02);
+// the thief walking off with the panel
+cut(sticker(halfA(thief()),12),4.6,3.6,-1.4,-0.05,.45,4,.03);
+// newspaper clipping with the portrait printed in halftone
+const clipC=off(760,1000,(p,w,h)=>{p.fillStyle='#ebe5d4';p.fillRect(0,0,w,h);p.fillStyle='#1b1a18';p.font='400 70px '+DISP;p.fillText('MONA LISA',36,92);p.fillText('STOLEN',36,166);
+  p.font='italic 500 30px '+SERIF;p.fillText('Paris, 22 August 1911',36,212);p.drawImage(printed(portrait(520,620),640,560,'ht'),36,236,688,560);body(p,36,812,w-72,170,24,8);grain(p,w,h,8,.1);});
+cut(clipC,3.6,-3.6,-1.2,0.06,.25,5,.08);
+// map scrap Paris -> Florence
+cut(mapScrap(),3.8,-2.8,-6.4,-0.07,.3,6,.06);
+// labels
+cut(strip('21 AUG 1911',90,'#a8261c','#f6efe0',21),3.0,3.2,5.6,0.08,.5,7);
+cut(strip('found: Dec 1913',80,'#f2ead6','#a8261c',22),3.6,3.0,-6.6,-0.05,.55,8);
+// crowd staring at the empty wall (foreground, out of focus)
+cut(halfA(crowd()),17,0.2,-9.4,0,3.0,9,.0);
+
+const comp=new THREE.EffectComposer(ren);comp.addPass(new THREE.RenderPass(sc,cam));
+const bok=new THREE.BokehPass(sc,cam,{focus:26,aperture:0.0012,maxblur:0.009});comp.addPass(bok);
+comp.addPass(new THREE.UnrealBloomPass(new THREE.Vector2(1080,1920),0.2,0.5,0.92));if(THREE.OutputPass)comp.addPass(new THREE.OutputPass());
+function draw(t){cam.position.set(0.4,-0.6,30.5-1.0*EIO(t/8));cam.lookAt(0,0,0);bok.uniforms.focus.value=cam.position.z-1;comp.render();}
+window.DUR=8;window.draw=draw;draw(0);document.title='ok';
+</script>
+<script>Promise.all(["40px Marker","40px Typewriter","400 40px 'DM Serif Display'","500 30px 'EB Garamond'","italic 500 30px 'EB Garamond'"].map(f=>document.fonts.load(f))).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script>
+</body></html>
