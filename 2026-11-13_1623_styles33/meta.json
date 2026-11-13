@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Fable 5.2 explainer styles 3",
+ "tool_name": "Claude Fable 5.2 explainer styles 3",
+ "keyword": "FABLE",
+ "summary_cs": "App demo „Type it, get it #30“ (nejdřív prompt, pak výsledek), stejné tři styly jako styles19/28 na nových tématech: /paper-collage proč věž v Pise nespadne, /flat-science proč tetování vydrží navždy (imunitní buňky polykají inkoust; studie 2018 na myších), /painted-story jak shořel Hindenburg (6. 5. 1937, asi půl minuty). Vše kreslené v kódu s Claude Fable 5.2. Auto-DM na FABLE už máš.",
+ "style": "hyperframes-paper",
+ "duration": 30.5,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-13_1623",
+ "run_id": null,
+ "artifact": null
+}
