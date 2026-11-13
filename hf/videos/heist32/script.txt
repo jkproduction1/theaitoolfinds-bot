@@ -1,0 +1,1 @@
+How to make this heist blueprint animation using Claude. First, describe your building and the vault. Then pick Opus five point five and paste this prompt. Claude draws the plan, you tweak it, and you're done. Comment HEIST and I'll send you the prompt.

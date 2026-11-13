@@ -1,6 +1,14 @@
 [
  {
-  "name": "styles28",
-  "text": "Type slash paper collage, why planes don't fly straight… and you get this. Type slash flat science, how sleep cleans your brain… and you get this. Type slash painted story, how the Titanic sank… and you get this. Comment FABLE and I'll send you the prompts."
+  "name": "ocean30",
+  "text": "Type slash deep dive, a shipwreck four kilometers down… and you get this. Type slash x-ray, a giant squid… and you get this. Type slash explain 3D, how submarines survive the pressure… and you get this. Comment OCEAN and I'll send you the prompts."
+ },
+ {
+  "name": "disaster31",
+  "text": "Type slash explain 3D, how a supervolcano erupts… and you get this. Type slash x-ray, a tornado… and you get this. Type slash time-lapse, a sinkhole opening… and you get this. Comment DISASTER and I'll send you the prompts."
+ },
+ {
+  "name": "heist32",
+  "text": "How to make this heist blueprint animation using Claude. First, describe your building and the vault. Then pick Opus five point five and paste this prompt. Claude draws the plan, you tweak it, and you're done. Comment HEIST and I'll send you the prompt."
  }
 ]
