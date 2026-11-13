@@ -1,128 +1,128 @@
 {
-  "date": "2026-11-12",
+  "date": "2026-11-13",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What if… Earth 3",
+      "title": "What if… Earth 4",
       "commands": [
-        "/zack-d-films what if the Moon disappeared",
-        "/what-if Earth's core stopped spinning",
-        "/scale the biggest crater on Earth versus a city"
+        "/zack-d-films what if Earth had two suns",
+        "/what-if the oceans drained in one minute",
+        "/scale Olympus Mons versus Mount Everest"
       ],
-      "why": "earth8 514k IG + asteroid24/impact22: 'what would happen to Earth' is still our biggest hook; all new objects"
+      "why": "earth8 514k IG + impact22/asteroid24: 'what would happen to Earth' stays our biggest hook; all objects new"
     },
     {
-      "title": "The scariest things in space 3",
+      "title": "The scariest things in space 4",
       "commands": [
-        "/explain-3d how a black hole swallows a star",
-        "/scale the biggest black hole versus the Solar System",
-        "/what-if a rogue planet flew past Earth"
+        "/explain-3d how a solar flare hits Earth",
+        "/x-ray Jupiter down to its core",
+        "/scale the biggest sunspot versus Earth"
       ],
-      "why": "space7 165k TT + space14 40k TT: space is the only topic that breaks TikTok; black holes are the obvious unused scary object"
+      "why": "space7 165k TT + space14 40k TT: space is still the only topic that breaks TikTok; Sun and Jupiter not used yet"
     },
     {
-      "title": "The scariest things in the deep ocean",
+      "title": "Earth's deadliest disasters 2",
       "commands": [
-        "/deep-dive a shipwreck 4,000 m down",
-        "/x-ray a giant squid",
-        "/explain-3d how a submarine survives the pressure"
+        "/explain-3d how an earthquake shakes a city",
+        "/time-lapse an avalanche breaking loose",
+        "/zack-d-films what if hail grew as big as a car"
       ],
-      "why": "learnings 'test next': deep ocean + fear/scale; earth8's trench scene was a strong part of the hit"
+      "why": "disaster31 pattern (Earth + scale + fear); concrete scary objects beat generic nature (nature18 377 TT)"
     },
     {
-      "title": "The scariest things inside your body 2",
+      "title": "The scariest things inside your body 3",
       "commands": [
-        "/explain-3d how a broken bone heals",
-        "/x-ray a sneeze",
-        "/zoom-in a tooth until you see a cavity"
+        "/zoom-in the bacteria on your phone screen",
+        "/explain-3d how a fever fights an infection",
+        "/x-ray your stomach digesting a burger"
       ],
-      "why": "body26 continues the fear framing on body topics (inside3 118k IG); heart, blood, lungs, eye, virus, mosquito, spine avoided"
+      "why": "inside3 118k IG + body26: fear framing on body topics; heart, blood, lungs, eye, neuron, mosquito avoided"
     },
     {
-      "title": "Earth's deadliest disasters",
+      "title": "Liquid chrome UI",
       "commands": [
-        "/explain-3d how a supervolcano erupts",
-        "/x-ray a tornado",
-        "/time-lapse a sinkhole opening"
+        "/liquid-chrome a smartwatch face",
+        "/glassmorphism a weather app",
+        "/kinetic-type a New Year countdown"
       ],
-      "why": "Earth + scale + fear = earth8 pattern; concrete scary objects beat generic 'how nature works' (nature18 377 TT)"
+      "why": "variety slot in the motion-design look Jan likes; motion13 was weak on TT (837), so only if Jan wants a break from space/Earth"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this survival arena map using Claude",
+      "title": "How to make this 5-star police chase map of your city using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "20. 11. jde do kin The Hunger Games: Sunrise on the Reaping (GamesRadar, listopadové premiéry); vlastní aréna 'inspired by', žádná oficiální mapa.",
+      "trend": "GTA 6 vychází příští týden (preload běží od 10. 11., dlcompare); honička přes vlastní město s hvězdami 'wanted', vlastní styl, žádná herní mapa.",
       "steps": [
-        "Describe your arena in one line",
+        "Type your city and a start street",
         "Pick Fable 5.2 and paste this prompt",
-        "Claude builds it, you tweak it"
+        "Claude draws the chase, you tweak it"
       ],
       "seconds": 13,
-      "keyword": "ARENA",
+      "keyword": "CHASE",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this heist blueprint animation using Claude",
+      "title": "How to make this animated football tactics board using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "13. 11. má premiéru film How to Rob a Bank (GamesRadar); 'heist plan' blueprinty s trasou přes trezor sedí přesně na víkend premiéry.",
+      "trend": "10. 11. vyšel Football Manager 27 (dlcompare, týden 46); animované taktické tabule s pohybem hráčů jsou stálice fotbalových reelsů.",
       "steps": [
-        "Describe your building and the vault",
+        "Pick a formation and one famous goal",
         "Pick Fable 5.2 and paste this prompt",
-        "Claude draws the plan, you tweak it"
+        "Claude animates the play, you tweak it"
       ],
       "seconds": 13,
-      "keyword": "HEIST",
+      "keyword": "TACTICS",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this Halloween-to-Christmas house switch using Claude",
+      "title": "How to make this animated advent calendar using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Trend 'Christmas Switch' (přechod z halloweenské výzdoby na vánoční v jednom záběru) je teď na TikToku, SocialPilot ho má v přehledu do 10. 11.",
+      "trend": "Vánoční přepnutí feedů běží od 1. 11. ('Christmas Switch', SocialPilot); adventní kalendář s 24 okénky se bude sdílet až do 1. 12.",
       "steps": [
-        "Describe your house in one line",
+        "Describe your theme in one line",
         "Pick Fable 5.2 and paste this prompt",
-        "Claude builds the switch, you tweak it"
+        "Claude builds 24 doors, you tweak it"
+      ],
+      "seconds": 14,
+      "keyword": "ADVENT",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this movie-style countdown poster using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "20. 11. jde do kin The Hunger Games: Sunrise on the Reaping a 25. 11. Focker-In-Law (GamesRadar); animovaný odpočet 'X dní do premiéry' vlastním stylem, bez oficiálních plakátů.",
+      "steps": [
+        "Type the movie name and release date",
+        "Pick Fable 5.2 and paste this prompt",
+        "Claude animates the countdown, you tweak it"
       ],
       "seconds": 12,
-      "keyword": "SWITCH",
+      "keyword": "PREMIERE",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this animated year-in-review recap using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "Blíží se konec roku a sezóna 'rok v číslech' recapů (Wrapped začátkem prosince); vlastní vzhled, žádné logo Spotify.",
-      "steps": [
-        "Paste your year in numbers",
-        "Pick Fable 5.2 and paste this prompt",
-        "Claude builds it, you tweak it"
-      ],
-      "seconds": 13,
-      "keyword": "RECAP",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this costume loading transition using Higgsfield",
+      "title": "How to make this AI version of your drawing using Higgsfield",
       "tool": "Higgsfield",
       "url": "https://higgsfield.ai",
-      "trend": "'Costume loading…' přechod (běžné oblečení → freeze → celý kostým na drop) jede na TikToku, SocialPilot přehled 27. 10.–10. 11.",
+      "trend": "'AI vs. Handmade' (Dame Hombro bounce) jede na TikToku – nejdřív AI verze, pak ruční originál (SocialPilot, 27. 10.–10. 11.).",
       "steps": [
-        "Upload a photo of you in everyday clothes",
-        "Describe your costume",
-        "Higgsfield animates the switch, you tweak it"
+        "Snap a photo of your drawing",
+        "Upload it and pick Nano Banana",
+        "Higgsfield animates the AI version, you tweak it"
       ],
       "seconds": 12,
-      "keyword": "COSTUME",
-      "cost": "kredity Higgsfield, cca 20–40 (video)",
+      "keyword": "DRAWING",
+      "cost": "kredity Higgsfield, cca 20–30 (obrázek + krátké video)",
       "handle": ""
     }
   ],
