@@ -4,6 +4,101 @@
  "posts": [
   {
    "name": null,
+   "post_id": "6af89c9cdfc8528010ec1010",
+   "published_at": "2026-11-14T15:57:55.000Z",
+   "status": "published",
+   "hook": "",
+   "total": {
+    "views": 301,
+    "reach": 227,
+    "impressions": 301,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/stories/theaitoolfinds/4030322391992301136",
+     "views": 301,
+     "reach": 227,
+     "impressions": 301,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-14_1641_styles37",
+   "post_id": "6af88466bc0e1e956661fc78",
+   "published_at": "2026-11-14T15:56:41.000Z",
+   "status": "published",
+   "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style.",
+   "total": {
+    "views": 3322,
+    "reach": 2294,
+    "impressions": 3322,
+    "likes": 47,
+    "comments": 22,
+    "shares": 0,
+    "saves": 103,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/Dfuk_6Qst-v/",
+     "views": 3322,
+     "reach": 2294,
+     "impressions": 3322,
+     "likes": 47,
+     "comments": 22,
+     "shares": 0,
+     "saves": 103,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-14_1641_styles37",
+   "post_id": "6af88466bc0e1e956661fc78",
+   "published_at": "2026-11-14T15:56:14.000Z",
+   "status": "published",
+   "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style. Part #33 of a daily series. Comment FABLE and I'll DM you the prompts. #claude #motiondesign #aitools",
+   "total": {
+    "views": 264,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 13,
+    "comments": 3,
+    "shares": 1,
+    "saves": 9,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7708056635264077088?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 264,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 13,
+     "comments": 3,
+     "shares": 1,
+     "saves": 9,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": null,
    "post_id": "6af73be769a4c213542b0f47",
    "published_at": "2026-11-13T15:33:02.000Z",
    "status": "published",
@@ -40,26 +135,26 @@
    "status": "published",
    "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style.",
    "total": {
-    "views": 87011,
-    "reach": 70502,
-    "impressions": 87011,
-    "likes": 2344,
-    "comments": 1024,
-    "shares": 1129,
-    "saves": 5103,
+    "views": 113899,
+    "reach": 93413,
+    "impressions": 113899,
+    "likes": 2965,
+    "comments": 1249,
+    "shares": 1736,
+    "saves": 6515,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfr9XXgpnhQ/",
-     "views": 87011,
-     "reach": 70502,
-     "impressions": 87011,
-     "likes": 2344,
-     "comments": 1024,
-     "shares": 1129,
-     "saves": 5103,
+     "views": 113899,
+     "reach": 93413,
+     "impressions": 113899,
+     "likes": 2965,
+     "comments": 1249,
+     "shares": 1736,
+     "saves": 6515,
      "reposts": 0
     }
    ]
@@ -71,10 +166,10 @@
    "status": "published",
    "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style. Part #30 of a daily series. Comment FABLE and I'll DM you the prompts. #claude #motiondesign #aitools",
    "total": {
-    "views": 608,
+    "views": 656,
     "reach": 0,
     "impressions": 0,
-    "likes": 23,
+    "likes": 24,
     "comments": 7,
     "shares": 2,
     "saves": 17,
@@ -85,10 +180,10 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7707679152001895712?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 608,
+     "views": 656,
      "reach": 0,
      "impressions": 0,
-     "likes": 23,
+     "likes": 24,
      "comments": 7,
      "shares": 2,
      "saves": 17,
@@ -104,10 +199,10 @@
    "status": "published",
    "hook": "Want your videos to look like the famous explainer channels? Type one command.",
    "total": {
-    "views": 1604,
-    "reach": 1370,
-    "impressions": 1604,
-    "likes": 16,
+    "views": 1665,
+    "reach": 1426,
+    "impressions": 1665,
+    "likes": 18,
     "comments": 7,
     "shares": 3,
     "saves": 29,
@@ -117,10 +212,10 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfr2tjHzB3I/",
-     "views": 1604,
-     "reach": 1370,
-     "impressions": 1604,
-     "likes": 16,
+     "views": 1665,
+     "reach": 1426,
+     "impressions": 1665,
+     "likes": 18,
      "comments": 7,
      "shares": 3,
      "saves": 29,
@@ -135,7 +230,7 @@
    "status": "published",
    "hook": "Want your videos to look like the famous explainer channels? Type one command. Part #19 of a daily series. Comment STYLE and I'll DM you the prompts. #claudecode #motiondesign #aitools",
    "total": {
-    "views": 325,
+    "views": 348,
     "reach": 0,
     "impressions": 0,
     "likes": 7,
@@ -149,7 +244,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7707664037407952160?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 325,
+     "views": 348,
      "reach": 0,
      "impressions": 0,
      "likes": 7,
@@ -232,26 +327,26 @@
    "status": "published",
    "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style.",
    "total": {
-    "views": 33862,
-    "reach": 28223,
-    "impressions": 33862,
-    "likes": 859,
-    "comments": 478,
-    "shares": 701,
-    "saves": 1914,
+    "views": 34401,
+    "reach": 28583,
+    "impressions": 34401,
+    "likes": 871,
+    "comments": 492,
+    "shares": 712,
+    "saves": 1933,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfpge5XhXdA/",
-     "views": 33862,
-     "reach": 28223,
-     "impressions": 33862,
-     "likes": 859,
-     "comments": 478,
-     "shares": 701,
-     "saves": 1914,
+     "views": 34401,
+     "reach": 28583,
+     "impressions": 34401,
+     "likes": 871,
+     "comments": 492,
+     "shares": 712,
+     "saves": 1933,
      "reposts": 0
     }
    ]
@@ -263,13 +358,13 @@
    "status": "published",
    "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style. Part #27 of a daily series. Comment FABLE and I'll DM you the prompts. #claude #motiondesign #aitools",
    "total": {
-    "views": 2469,
+    "views": 2639,
     "reach": 608,
     "impressions": 0,
-    "likes": 91,
-    "comments": 17,
-    "shares": 7,
-    "saves": 70,
+    "likes": 93,
+    "comments": 19,
+    "shares": 8,
+    "saves": 71,
     "follows": 10,
     "reposts": 0
    },
@@ -277,13 +372,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7707325887699504416?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 2469,
+     "views": 2639,
      "reach": 608,
      "impressions": 0,
-     "likes": 91,
-     "comments": 17,
-     "shares": 7,
-     "saves": 70,
+     "likes": 93,
+     "comments": 19,
+     "shares": 8,
+     "saves": 71,
      "follows": 10,
      "reposts": 0
     }
@@ -296,28 +391,28 @@
    "status": "published",
    "hook": "What if an asteroid hit the ocean? I asked Claude Code to animate it. Part #24 of a daily series. Comment ASTEROID and I'll DM you the prompts. #claudecode #whatif #aitools",
    "total": {
-    "views": 723,
+    "views": 749,
     "reach": 469,
     "impressions": 0,
     "likes": 12,
-    "comments": 9,
+    "comments": 10,
     "shares": 0,
     "saves": 11,
-    "follows": 4,
+    "follows": 5,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7707100239458602273?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 723,
+     "views": 749,
      "reach": 469,
      "impressions": 0,
      "likes": 12,
-     "comments": 9,
+     "comments": 10,
      "shares": 0,
      "saves": 11,
-     "follows": 4,
+     "follows": 5,
      "reposts": 0
     }
    ]
@@ -329,13 +424,13 @@
    "status": "published",
    "hook": "Type one command and Claude shows you how a star dies. Part #14 of a daily series. Comment COSMOS and I'll DM you the prompts. #claudecode #space #aitools",
    "total": {
-    "views": 1309,
+    "views": 1321,
     "reach": 1000,
     "impressions": 0,
-    "likes": 35,
-    "comments": 15,
+    "likes": 36,
+    "comments": 16,
     "shares": 1,
-    "saves": 26,
+    "saves": 27,
     "follows": 6,
     "reposts": 0
    },
@@ -343,13 +438,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706914042245336353?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 1309,
+     "views": 1321,
      "reach": 1000,
      "impressions": 0,
-     "likes": 35,
-     "comments": 15,
+     "likes": 36,
+     "comments": 16,
      "shares": 1,
-     "saves": 26,
+     "saves": 27,
      "follows": 6,
      "reposts": 0
     }
@@ -393,26 +488,26 @@
    "status": "published",
    "hook": "How to make this viral travel map animation with Claude.",
    "total": {
-    "views": 7300,
-    "reach": 5632,
-    "impressions": 7300,
-    "likes": 75,
-    "comments": 59,
-    "shares": 42,
-    "saves": 122,
+    "views": 7436,
+    "reach": 5719,
+    "impressions": 7436,
+    "likes": 76,
+    "comments": 62,
+    "shares": 43,
+    "saves": 123,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfmbf45R3Qg/",
-     "views": 7300,
-     "reach": 5632,
-     "impressions": 7300,
-     "likes": 75,
-     "comments": 59,
-     "shares": 42,
-     "saves": 122,
+     "views": 7436,
+     "reach": 5719,
+     "impressions": 7436,
+     "likes": 76,
+     "comments": 62,
+     "shares": 43,
+     "saves": 123,
      "reposts": 0
     }
    ]
@@ -424,7 +519,7 @@
    "status": "published",
    "hook": "How to make this viral travel map animation with Claude. Comment TRIP and I'll DM you the prompt. #travelreels #claude #motiondesign",
    "total": {
-    "views": 940,
+    "views": 970,
     "reach": 572,
     "impressions": 0,
     "likes": 17,
@@ -438,7 +533,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706882330333351200?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 940,
+     "views": 970,
      "reach": 572,
      "impressions": 0,
      "likes": 17,
@@ -457,12 +552,12 @@
    "status": "published",
    "hook": "How to make this GTA 6 map animation using Claude.",
    "total": {
-    "views": 2937,
-    "reach": 2495,
-    "impressions": 2937,
-    "likes": 36,
+    "views": 2950,
+    "reach": 2504,
+    "impressions": 2950,
+    "likes": 37,
     "comments": 4,
-    "shares": 10,
+    "shares": 16,
     "saves": 29,
     "reposts": 0
    },
@@ -470,12 +565,12 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfmbH3Ughnd/",
-     "views": 2937,
-     "reach": 2495,
-     "impressions": 2937,
-     "likes": 36,
+     "views": 2950,
+     "reach": 2504,
+     "impressions": 2950,
+     "likes": 37,
      "comments": 4,
-     "shares": 10,
+     "shares": 16,
      "saves": 29,
      "reposts": 0
     }
@@ -488,9 +583,9 @@
    "status": "published",
    "hook": "Claude animates it from one command.",
    "total": {
-    "views": 3164,
+    "views": 3166,
     "reach": 2652,
-    "impressions": 3164,
+    "impressions": 3166,
     "likes": 37,
     "comments": 7,
     "shares": 8,
@@ -501,9 +596,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DflEzsWgJFa/",
-     "views": 3164,
+     "views": 3166,
      "reach": 2652,
-     "impressions": 3164,
+     "impressions": 3166,
      "likes": 37,
      "comments": 7,
      "shares": 8,
@@ -519,26 +614,26 @@
    "status": "published",
    "hook": "Comment PLANET and I’ll DM you the prompts.",
    "total": {
-    "views": 12935,
-    "reach": 10779,
-    "impressions": 12935,
-    "likes": 306,
-    "comments": 125,
-    "shares": 233,
-    "saves": 499,
+    "views": 13045,
+    "reach": 10832,
+    "impressions": 13045,
+    "likes": 307,
+    "comments": 126,
+    "shares": 234,
+    "saves": 504,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DflD-DZA_17/",
-     "views": 12935,
-     "reach": 10779,
-     "impressions": 12935,
-     "likes": 306,
-     "comments": 125,
-     "shares": 233,
-     "saves": 499,
+     "views": 13045,
+     "reach": 10832,
+     "impressions": 13045,
+     "likes": 307,
+     "comments": 126,
+     "shares": 234,
+     "saves": 504,
      "reposts": 0
     }
    ]
@@ -581,26 +676,26 @@
    "status": "published",
    "hook": "Type one command and Claude explains anything in a famous video style.",
    "total": {
-    "views": 53556,
-    "reach": 41478,
-    "impressions": 53556,
-    "likes": 1530,
-    "comments": 1052,
-    "shares": 1358,
-    "saves": 3408,
+    "views": 54316,
+    "reach": 41800,
+    "impressions": 54316,
+    "likes": 1543,
+    "comments": 1069,
+    "shares": 1370,
+    "saves": 3444,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfkucraALWz/",
-     "views": 53556,
-     "reach": 41478,
-     "impressions": 53556,
-     "likes": 1530,
-     "comments": 1052,
-     "shares": 1358,
-     "saves": 3408,
+     "views": 54316,
+     "reach": 41800,
+     "impressions": 54316,
+     "likes": 1543,
+     "comments": 1069,
+     "shares": 1370,
+     "saves": 3444,
      "reposts": 0
     }
    ]
@@ -612,7 +707,7 @@
    "status": "published",
    "hook": "Type one command and Claude explains anything in a famous video style. Part #19 of a daily series. Comment STYLE and I'll DM you the prompts. #claudecode #motiondesign #aitools",
    "total": {
-    "views": 833,
+    "views": 838,
     "reach": 647,
     "impressions": 0,
     "likes": 36,
@@ -626,7 +721,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706636788051217696?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 833,
+     "views": 838,
      "reach": 647,
      "impressions": 0,
      "likes": 36,
@@ -645,26 +740,26 @@
    "status": "published",
    "hook": "Type one command and Claude shows you how nature works.",
    "total": {
-    "views": 8108,
-    "reach": 6333,
-    "impressions": 8108,
-    "likes": 165,
-    "comments": 122,
-    "shares": 73,
-    "saves": 231,
+    "views": 8228,
+    "reach": 6407,
+    "impressions": 8228,
+    "likes": 168,
+    "comments": 126,
+    "shares": 76,
+    "saves": 235,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfkHcD5Bo-Y/",
-     "views": 8108,
-     "reach": 6333,
-     "impressions": 8108,
-     "likes": 165,
-     "comments": 122,
-     "shares": 73,
-     "saves": 231,
+     "views": 8228,
+     "reach": 6407,
+     "impressions": 8228,
+     "likes": 168,
+     "comments": 126,
+     "shares": 76,
+     "saves": 235,
      "reposts": 0
     }
    ]
@@ -676,7 +771,7 @@
    "status": "published",
    "hook": "Type one command and Claude shows you how nature works. Part #18 of a daily series. Comment NATURE and I'll DM you the prompts. #claudecode #3danimation #aitools",
    "total": {
-    "views": 683,
+    "views": 692,
     "reach": 528,
     "impressions": 0,
     "likes": 27,
@@ -690,7 +785,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706548729066556704?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 683,
+     "views": 692,
      "reach": 528,
      "impressions": 0,
      "likes": 27,
@@ -709,10 +804,10 @@
    "status": "published",
    "hook": "Type one command and Claude shows you what's inside the stuff you use every day.",
    "total": {
-    "views": 10277,
-    "reach": 8927,
-    "impressions": 10277,
-    "likes": 152,
+    "views": 10337,
+    "reach": 8982,
+    "impressions": 10337,
+    "likes": 155,
     "comments": 74,
     "shares": 77,
     "saves": 247,
@@ -722,10 +817,10 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfjxYfOB9B4/",
-     "views": 10277,
-     "reach": 8927,
-     "impressions": 10277,
-     "likes": 152,
+     "views": 10337,
+     "reach": 8982,
+     "impressions": 10337,
+     "likes": 155,
      "comments": 74,
      "shares": 77,
      "saves": 247,
@@ -740,13 +835,13 @@
    "status": "published",
    "hook": "Type one command and Claude shows you what's inside the stuff you use every day. Part #17 of a daily series. Comment MYSTERY and I'll DM you the prompts. #claudecode #3danimation #aitools",
    "total": {
-    "views": 4516,
+    "views": 4556,
     "reach": 3522,
     "impressions": 0,
-    "likes": 143,
-    "comments": 38,
+    "likes": 144,
+    "comments": 39,
     "shares": 9,
-    "saves": 81,
+    "saves": 80,
     "follows": 12,
     "reposts": 0
    },
@@ -754,13 +849,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706499202590854433?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 4516,
+     "views": 4556,
      "reach": 3522,
      "impressions": 0,
-     "likes": 143,
-     "comments": 38,
+     "likes": 144,
+     "comments": 39,
      "shares": 9,
-     "saves": 81,
+     "saves": 80,
      "follows": 12,
      "reposts": 0
     }
@@ -804,26 +899,26 @@
    "status": "published",
    "hook": "Rough sketch on the left. Smooth widget motion design on the right.",
    "total": {
-    "views": 4980,
-    "reach": 3954,
-    "impressions": 4980,
-    "likes": 41,
+    "views": 5023,
+    "reach": 4003,
+    "impressions": 5023,
+    "likes": 43,
     "comments": 18,
     "shares": 3,
-    "saves": 25,
+    "saves": 26,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfi8btGAjil/",
-     "views": 4980,
-     "reach": 3954,
-     "impressions": 4980,
-     "likes": 41,
+     "views": 5023,
+     "reach": 4003,
+     "impressions": 5023,
+     "likes": 43,
      "comments": 18,
      "shares": 3,
-     "saves": 25,
+     "saves": 26,
      "reposts": 0
     }
    ]
@@ -835,7 +930,7 @@
    "status": "published",
    "hook": "Rough sketch on the left. Smooth widget motion design on the right. One music widget that morphs: small → wide → loading → full player, with a 3D tilt. All animated with Claude Code from a 5-box sketc",
    "total": {
-    "views": 732,
+    "views": 737,
     "reach": 584,
     "impressions": 0,
     "likes": 15,
@@ -849,7 +944,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706379808715885857?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 732,
+     "views": 737,
      "reach": 584,
      "impressions": 0,
      "likes": 15,
@@ -868,13 +963,13 @@
    "status": "published",
    "hook": "Type one command and Claude animates it like a motion designer. Part #13 of a daily series. Comment MOTION and I'll DM you the prompts. #claudecode #motiondesign #aitools",
    "total": {
-    "views": 1363,
+    "views": 1374,
     "reach": 1073,
     "impressions": 0,
     "likes": 35,
     "comments": 2,
     "shares": 1,
-    "saves": 27,
+    "saves": 28,
     "follows": 4,
     "reposts": 0
    },
@@ -882,13 +977,13 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706326320157936928?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 1363,
+     "views": 1374,
      "reach": 1073,
      "impressions": 0,
      "likes": 35,
      "comments": 2,
      "shares": 1,
-     "saves": 27,
+     "saves": 28,
      "follows": 4,
      "reposts": 0
     }
@@ -901,26 +996,26 @@
    "status": "published",
    "hook": "Type one command and Claude shows you the scariest things in space.",
    "total": {
-    "views": 52648,
-    "reach": 42610,
-    "impressions": 52648,
-    "likes": 909,
-    "comments": 732,
-    "shares": 538,
-    "saves": 1365,
+    "views": 53247,
+    "reach": 43272,
+    "impressions": 53247,
+    "likes": 928,
+    "comments": 744,
+    "shares": 553,
+    "saves": 1379,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfhhSTTFMUt/",
-     "views": 52648,
-     "reach": 42610,
-     "impressions": 52648,
-     "likes": 909,
-     "comments": 732,
-     "shares": 538,
-     "saves": 1365,
+     "views": 53247,
+     "reach": 43272,
+     "impressions": 53247,
+     "likes": 928,
+     "comments": 744,
+     "shares": 553,
+     "saves": 1379,
      "reposts": 0
     }
    ]
@@ -932,28 +1027,28 @@
    "status": "published",
    "hook": "Type one command and Claude shows you the scariest things in space. Part #14 of a daily series. Comment COSMOS and I'll DM you the prompts. #claudecode #space #aitools",
    "total": {
-    "views": 60383,
+    "views": 60587,
     "reach": 53229,
     "impressions": 0,
-    "likes": 2493,
+    "likes": 2497,
     "comments": 284,
     "shares": 155,
-    "saves": 1758,
-    "follows": 220,
+    "saves": 1762,
+    "follows": 221,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706174762631957792?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 60383,
+     "views": 60587,
      "reach": 53229,
      "impressions": 0,
-     "likes": 2493,
+     "likes": 2497,
      "comments": 284,
      "shares": 155,
-     "saves": 1758,
-     "follows": 220,
+     "saves": 1762,
+     "follows": 221,
      "reposts": 0
     }
    ]
@@ -996,26 +1091,26 @@
    "status": "published",
    "hook": "Type one command and Claude shows you what's inside your kitchen.",
    "total": {
-    "views": 10524,
-    "reach": 7681,
-    "impressions": 10524,
-    "likes": 138,
+    "views": 10626,
+    "reach": 7724,
+    "impressions": 10626,
+    "likes": 140,
     "comments": 163,
     "shares": 77,
-    "saves": 233,
+    "saves": 235,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfg9aXgklex/",
-     "views": 10524,
-     "reach": 7681,
-     "impressions": 10524,
-     "likes": 138,
+     "views": 10626,
+     "reach": 7724,
+     "impressions": 10626,
+     "likes": 140,
      "comments": 163,
      "shares": 77,
-     "saves": 233,
+     "saves": 235,
      "reposts": 0
     }
    ]
@@ -1027,10 +1122,10 @@
    "status": "published",
    "hook": "Type one command and Claude shows you what's inside your kitchen. Part #11 of a daily series. Comment KITCHEN and I'll DM you the prompts. #claudecode #3danimation #aitools",
    "total": {
-    "views": 1962,
+    "views": 1974,
     "reach": 1482,
     "impressions": 0,
-    "likes": 71,
+    "likes": 73,
     "comments": 26,
     "shares": 3,
     "saves": 33,
@@ -1041,10 +1136,10 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7706093729773358368?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 1962,
+     "views": 1974,
      "reach": 1482,
      "impressions": 0,
-     "likes": 71,
+     "likes": 73,
      "comments": 26,
      "shares": 3,
      "saves": 33,
@@ -1060,26 +1155,26 @@
    "status": "published",
    "hook": "Type one command and Claude shows you what would happen to Earth.",
    "total": {
-    "views": 676096,
-    "reach": 541403,
-    "impressions": 676096,
-    "likes": 22074,
-    "comments": 12849,
-    "shares": 11552,
-    "saves": 32283,
+    "views": 683932,
+    "reach": 547629,
+    "impressions": 683932,
+    "likes": 22346,
+    "comments": 12992,
+    "shares": 11766,
+    "saves": 32609,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DffoLPBCEza/",
-     "views": 676096,
-     "reach": 541403,
-     "impressions": 676096,
-     "likes": 22074,
-     "comments": 12849,
-     "shares": 11552,
-     "saves": 32283,
+     "views": 683932,
+     "reach": 547629,
+     "impressions": 683932,
+     "likes": 22346,
+     "comments": 12992,
+     "shares": 11766,
+     "saves": 32609,
      "reposts": 0
     }
    ]
@@ -1091,12 +1186,12 @@
    "status": "published",
    "hook": "Type one command and Claude shows you what would happen to Earth. Part #8 of a daily series. Comment EARTH and I'll DM you the prompts. #claudecode #space #aitools",
    "total": {
-    "views": 1884,
+    "views": 1918,
     "reach": 1348,
     "impressions": 0,
     "likes": 37,
     "comments": 16,
-    "shares": 5,
+    "shares": 6,
     "saves": 28,
     "follows": 4,
     "reposts": 0
@@ -1105,12 +1200,12 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7705901861601152289?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 1884,
+     "views": 1918,
      "reach": 1348,
      "impressions": 0,
      "likes": 37,
      "comments": 16,
-     "shares": 5,
+     "shares": 6,
      "saves": 28,
      "follows": 4,
      "reposts": 0
@@ -1124,10 +1219,10 @@
    "status": "published",
    "hook": "Type one command and watch anything get made in 3D. Part #5 of a daily series. Comment BUILD and I'll DM you the prompts. #claudecode #3danimation #aitools",
    "total": {
-    "views": 3099,
+    "views": 3111,
     "reach": 2449,
     "impressions": 0,
-    "likes": 106,
+    "likes": 107,
     "comments": 31,
     "shares": 8,
     "saves": 82,
@@ -1138,10 +1233,10 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7705800481649528097?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 3099,
+     "views": 3111,
      "reach": 2449,
      "impressions": 0,
-     "likes": 106,
+     "likes": 107,
      "comments": 31,
      "shares": 8,
      "saves": 82,
@@ -1157,26 +1252,26 @@
    "status": "published",
    "hook": "Type one command and Claude animates space for you.",
    "total": {
-    "views": 172624,
-    "reach": 129241,
-    "impressions": 172624,
-    "likes": 3968,
-    "comments": 3569,
-    "shares": 1636,
-    "saves": 6480,
+    "views": 173160,
+    "reach": 129631,
+    "impressions": 173160,
+    "likes": 3976,
+    "comments": 3595,
+    "shares": 1640,
+    "saves": 6495,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfe593Gj84o/",
-     "views": 172624,
-     "reach": 129241,
-     "impressions": 172624,
-     "likes": 3968,
-     "comments": 3569,
-     "shares": 1636,
-     "saves": 6480,
+     "views": 173160,
+     "reach": 129631,
+     "impressions": 173160,
+     "likes": 3976,
+     "comments": 3595,
+     "shares": 1640,
+     "saves": 6495,
      "reposts": 0
     }
    ]
@@ -1188,28 +1283,28 @@
    "status": "published",
    "hook": "Type one command and Claude animates space for you. Part #7 of a daily series. Comment SPACE and I'll DM you the link. #claudecode #space #aitools",
    "total": {
-    "views": 251826,
+    "views": 255601,
     "reach": 195714,
     "impressions": 0,
-    "likes": 13187,
-    "comments": 1117,
-    "shares": 1009,
-    "saves": 9876,
-    "follows": 872,
+    "likes": 13349,
+    "comments": 1128,
+    "shares": 1025,
+    "saves": 9973,
+    "follows": 880,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7705798013037432097?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 251826,
+     "views": 255601,
      "reach": 195714,
      "impressions": 0,
-     "likes": 13187,
-     "comments": 1117,
-     "shares": 1009,
-     "saves": 9876,
-     "follows": 872,
+     "likes": 13349,
+     "comments": 1128,
+     "shares": 1025,
+     "saves": 9973,
+     "follows": 880,
      "reposts": 0
     }
    ]
@@ -1221,7 +1316,7 @@
    "status": "published",
    "hook": "Type one command and Claude shows you how anything works inside. Part #2 of a daily series. Comment ZOOM and I'll DM you the prompts. #claudecode #3danimation #aitools",
    "total": {
-    "views": 879,
+    "views": 889,
     "reach": 713,
     "impressions": 0,
     "likes": 22,
@@ -1235,7 +1330,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7705537557525761313?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 879,
+     "views": 889,
      "reach": 713,
      "impressions": 0,
      "likes": 22,
@@ -1254,26 +1349,26 @@
    "status": "published",
    "hook": "Same penguin, 10 animation styles. Every frame made by Claude in code.",
    "total": {
-    "views": 14214,
-    "reach": 10997,
-    "impressions": 14214,
-    "likes": 239,
-    "comments": 134,
-    "shares": 133,
-    "saves": 491,
+    "views": 14326,
+    "reach": 11080,
+    "impressions": 14326,
+    "likes": 244,
+    "comments": 135,
+    "shares": 134,
+    "saves": 495,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfc463PETr-/",
-     "views": 14214,
-     "reach": 10997,
-     "impressions": 14214,
-     "likes": 239,
-     "comments": 134,
-     "shares": 133,
-     "saves": 491,
+     "views": 14326,
+     "reach": 11080,
+     "impressions": 14326,
+     "likes": 244,
+     "comments": 135,
+     "shares": 134,
+     "saves": 495,
      "reposts": 0
     }
    ]
@@ -1285,7 +1380,7 @@
    "status": "published",
    "hook": "Same penguin, 10 animation styles. Every frame made by Claude in code. Comment PENGUIN and I'll DM you all 10 prompts. #claude #animation #aitools",
    "total": {
-    "views": 857,
+    "views": 876,
     "reach": 555,
     "impressions": 0,
     "likes": 25,
@@ -1299,7 +1394,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7705507451080101152?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 857,
+     "views": 876,
      "reach": 555,
      "impressions": 0,
      "likes": 25,
