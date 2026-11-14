@@ -1,0 +1,65 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles37 concept: /painted-story how a volcano made 1816 a year without summer (hand-painted look of styles28/33).
+// Facts (Britannica, NOAA, Smithsonian GVP): Mount Tambora (Sumbawa, Indonesia) erupted in April 1815, the largest eruption in recorded
+// history; its sulfur haze in the stratosphere cooled the Northern Hemisphere; in 1816 snow fell in June in New England and Canada,
+// harvests failed across Europe and North America. Montage: the volcano is far away in reality; here it stands on the horizon as a story device.
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const HZ=1180, SX=800, SY=780;
+const sky=off(1080,1920,(p,w,h)=>{const R=R0(16);const s=p.createLinearGradient(0,0,0,HZ);s.addColorStop(0,'#3b3a40');s.addColorStop(.4,'#7a7062');s.addColorStop(.75,'#b39a6e');s.addColorStop(1,'#c9b48a');p.fillStyle=s;p.fillRect(0,0,w,HZ+10);
+  strokes(p,2200,R,0,0,w,HZ,['#4a4650','#6e6658','#8c7f68','#3c3a44'],170,34,0);
+  // haze bands across the sky (the sulfur veil)
+  strokes(p,900,R,-50,380,1180,620,['#c2ac7c','#a99470','#d6c49a','#8e8070'],220,40,-0.04,0.05,0.14);
+  // distant hills
+  p.fillStyle='#4f4d58';p.beginPath();p.moveTo(0,HZ);for(let x=0;x<=w;x+=40)p.lineTo(x,HZ-60-Math.sin(x*.006)*40-Math.sin(x*.017)*18);p.lineTo(w,HZ+20);p.lineTo(0,HZ+20);p.fill();
+  strokes(p,260,R,0,HZ-120,w,130,['#5d5c66','#7d7c86','#4e4d57'],90,18,0,0.1,0.2);
+  // snowy fields
+  const f=p.createLinearGradient(0,HZ,0,h);f.addColorStop(0,'#c9ced8');f.addColorStop(1,'#eef1f5');p.fillStyle=f;p.fillRect(0,HZ,w,h-HZ);
+  strokes(p,1600,R,-40,HZ,w+80,h-HZ,['#ffffff','#d5dbe6','#b9c1d0','#e8ecf2'],150,22,0.02,0.1,0.3);
+  // furrows
+  p.strokeStyle='rgba(110,118,140,.35)';p.lineWidth=6;for(let i=0;i<14;i++){const y=HZ+30+i*i*4.2;p.beginPath();p.moveTo(-20,y);p.quadraticCurveTo(540,y-12,1100,y+6);p.stroke();}});
+// volcano far away on the left horizon with an ash column that bends into the haze
+const VOL=off(1080,1300,(p)=>{const R=R0(9);p.fillStyle='#3a3238';p.beginPath();p.moveTo(40,1180);p.lineTo(210,1010);p.lineTo(270,1004);p.lineTo(440,1180);p.closePath();p.fill();
+  strokes(p,200,R,60,1010,360,170,['#2a2328','#4c4048','#5e4a40'],60,12,-0.6,0.15,0.25);
+  p.filter='blur(18px)';for(let i=0;i<90;i++){const t=i/90,x=240+Math.sin(t*4)*25+t*t*120-t*t*t*260,y=990-t*560,r=34+t*170;p.fillStyle='rgba(58,52,56,'+(0.55-t*0.35)+')';p.beginPath();p.arc(x+(R()-.5)*50,y+(R()-.5)*30,r,0,7);p.fill();}
+  p.filter='blur(30px)';for(let i=0;i<30;i++){p.fillStyle='rgba(70,64,66,.22)';p.beginPath();p.ellipse(R()*700,430+R()*140,160+R()*120,60,0,0,7);p.fill();}p.filter='none';
+  p.fillStyle='rgba(255,120,40,.85)';p.filter='blur(6px)';p.beginPath();p.ellipse(240,1004,40,14,0,0,7);p.fill();p.filter='none';});
+// wheat stalks bent under snow
+const WHEAT=off(1080,700,(p)=>{const R=R0(44);for(let i=0;i<70;i++){const x=R()*1080,y=330+R()*360,L=90+R()*120,b=(R()-.3)*60;
+  p.strokeStyle=R()<.5?'#9a8a4e':'#7b7040';p.lineWidth=4+R()*3;p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+b*.3,y-L*.6,x+b,y-L);p.stroke();
+  p.fillStyle='#b8a25a';p.save();p.translate(x+b,y-L);p.rotate(b/120);p.beginPath();p.ellipse(0,-14,9,24,0,0,7);p.fill();p.fillStyle='#fbfcff';p.beginPath();p.ellipse(2,-30,12,9,0,0,7);p.fill();p.restore();}
+  strokes(p,300,R,0,320,1080,380,['#ffffff','#e6ebf2'],60,14,0.05,0.2,0.4);});
+const BOIL=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#9fb6d6','#020812','#f4d79c'],120,22,0.1,0.02,0.05);});
+function farmer(x,y,s){g.save();g.translate(x,y);g.scale(s,s);g.fillStyle='#1a1614';
+  g.beginPath();g.ellipse(0,-150,46,10,0,0,7);g.fill();g.beginPath();g.roundRect(-22,-178,44,30,8);g.fill(); // hat
+  g.beginPath();g.arc(0,-130,20,0,7);g.fill();
+  g.beginPath();g.moveTo(-34,-110);g.quadraticCurveTo(-44,-20,-40,30);g.lineTo(40,30);g.quadraticCurveTo(44,-20,34,-110);g.closePath();g.fill(); // coat
+  g.lineWidth=14;g.lineCap='round';g.strokeStyle='#1a1614';g.beginPath();g.moveTo(-20,30);g.lineTo(-24,110);g.moveTo(18,30);g.lineTo(22,110);g.stroke();
+  g.lineWidth=12;g.beginPath();g.moveTo(28,-100);g.lineTo(44,-140);g.lineTo(10,-146);g.stroke(); // hand shading the eyes
+  g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=5;g.beginPath();g.arc(0,-150,46,Math.PI*1.05,Math.PI*1.95);g.stroke(); // snow on hat
+  g.restore();}
+function draw(lt){g.drawImage(sky,0,0);
+  // veiled sun: pale disc behind haze
+  const sg=g.createRadialGradient(SX,SY,10,SX,SY,320);sg.addColorStop(0,'rgba(255,236,190,.85)');sg.addColorStop(.3,'rgba(240,210,150,.45)');sg.addColorStop(1,'rgba(200,170,120,0)');g.fillStyle=sg;g.fillRect(0,0,1080,1300);
+  g.save();g.shadowColor='rgba(255,235,180,.9)';g.shadowBlur=60;g.fillStyle='rgba(255,244,214,.95)';g.beginPath();g.arc(SX,SY,78,0,7);g.fill();g.restore();
+  const R2=R0(61);g.save();for(let i=0;i<40;i++){const x=SX-220+R2()*440,y=SY-90+R2()*180;g.strokeStyle=R2()<.5?'rgba(170,150,115,.28)':'rgba(120,110,100,.22)';g.lineWidth=8+R2()*12;g.lineCap='round';g.beginPath();g.moveTo(x,y);g.lineTo(x+80+R2()*90,y+(R2()-.5)*10);g.stroke();}g.restore();
+  g.drawImage(VOL,-30,0);
+  g.drawImage(WHEAT,0,1150);
+  // cottage
+  g.save();g.translate(140,1300);g.fillStyle='#3c2f28';g.fillRect(0,0,170,110);g.fillStyle='#2a201c';g.beginPath();g.moveTo(-20,4);g.lineTo(85,-80);g.lineTo(190,4);g.closePath();g.fill();
+  g.fillStyle='#f4f6fa';g.beginPath();g.moveTo(-20,4);g.lineTo(85,-80);g.lineTo(190,4);g.lineTo(170,-6);g.lineTo(85,-62);g.lineTo(0,-6);g.closePath();g.fill();g.fillStyle='#ffcf7a';g.fillRect(30,36,34,30);g.fillRect(110,36,34,30);g.restore();
+  farmer(540,1560,1.25);
+  // falling snow
+  const R=R0(81);for(let i=0;i<220;i++){const x=(R()*1180+lt*20*(R()+.5))%1080,y=(R()*1920+lt*90*(R()+.4))%1920,r=2+R()*5;g.fillStyle='rgba(255,255,255,'+(0.5+R()*.5)+')';g.beginPath();g.arc(x,y,r,0,7);g.fill();}
+  // calendar scrap pinned in the snow
+  g.save();g.translate(880,1420);g.rotate(0.08);tornPath(g,-80,-90,160,180,7,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.5)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#8a1c10';g.fillRect(-80,-90,160,46);g.fillStyle='#f3e6c8';g.font='italic 500 38px '+SERIF;g.textAlign='center';g.fillText('June',0,-55);g.fillStyle='#2c1c0e';g.font='italic 500 76px '+SERIF;g.fillText('1816',0,40);g.restore();
+  [['April 1815: a volcano erupts.',-0.02],['Its ash veils the sun.',0.015],['1816: snow in June.',-0.01]].forEach(([t,r],i)=>{g.save();g.font='italic 500 '+(i===2?80:72)+'px '+SERIF;const w=g.measureText(t).width+64,y=170+i*112;
+    g.translate(60,y);g.rotate(r);tornPath(g,0,0,w,96,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=i===2?'#8a1c10':'#2c1c0e';g.fillText(t,32,70);g.restore();});
+  g.drawImage(BOIL,0,0);g.drawImage(GRAIN,0,0);
+  const vg=g.createRadialGradient(540,1000,380,540,1000,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,12,20,.55)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

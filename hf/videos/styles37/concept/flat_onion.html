@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles37 concept: /flat-science why onions make you cry (flat glowing vector look of styles28/33).
+// Facts (Library of Congress "Everyday Mysteries", Imai et al. Nature 2002): cutting breaks the onion's cells; enzymes turn sulfur
+// compounds into a gas (syn-propanethial-S-oxide); it reaches your eyes, irritates the nerves, and tear glands wash it away.
+const g=document.getElementById('c').getContext('2d');
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.62,60,w*.5,h*.55,1300);gr.addColorStop(0,'#3d1a5e');gr.addColorStop(.5,'#1d0f48');gr.addColorStop(1,'#07051f');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[200,1500,300,'rgba(255,90,190,.24)'],[900,700,300,'rgba(200,255,90,.10)'],[860,1350,240,'rgba(160,110,255,.22)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});});
+const R=R0(29),DOTS=[];for(let i=0;i<60;i++)DOTS.push([R()*1080,420+R()*1500,2+R()*6,R()*.35+.1,R()<.5?'#ff9ad0':'#b99bff',R()*6]);
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:x+w/2,y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(12,8,44,.9)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+const OX=520,OY=1480,OR=330; // onion cross-section (cut face toward us)
+function onion(lt){g.save();
+  // board
+  g.fillStyle='#2a1a4a';g.beginPath();g.roundRect(60,OY+150,960,170,40);g.fill();g.fillStyle='#3a2662';g.beginPath();g.roundRect(60,OY+150,960,40,20);g.fill();
+  // skin rim + rings
+  g.shadowColor='rgba(220,120,255,.7)';g.shadowBlur=60;g.fillStyle='#8a3b9e';g.beginPath();g.ellipse(OX,OY,OR,OR*.92,0,0,7);g.fill();g.shadowBlur=0;
+  const cols=['#f6e9ff','#e9c9f7','#f8eefe','#dcb2ef'];
+  for(let i=0;i<9;i++){const k=1-i*0.105;g.fillStyle=i===0?'#b764c9':cols[i%4];g.beginPath();g.ellipse(OX+i*5,OY+i*7,OR*k*.95,OR*k*.87,0,0,7);g.fill();
+    g.strokeStyle='rgba(150,70,180,.55)';g.lineWidth=5;g.stroke();}
+  g.fillStyle='#fff7ff';g.beginPath();g.ellipse(OX+46,OY+66,26,36,0,0,7);g.fill();
+  g.restore();}
+// burst cells along the knife cut
+function cell(x,y,s,burst,lt,ph){g.save();g.translate(x,y);g.rotate(ph*.3);g.fillStyle=burst?'rgba(255,240,255,.95)':'rgba(255,240,255,.75)';g.strokeStyle='#c27ad8';g.lineWidth=4;
+  if(!burst){g.beginPath();g.roundRect(-s,-s*.7,s*2,s*1.4,s*.5);g.fill();g.stroke();}
+  else{for(const sx of[-1,1]){g.save();g.translate(sx*s*.35,0);g.rotate(sx*.35);g.beginPath();g.moveTo(0,-s*.7);g.lineTo(sx*s,-s*.7);g.quadraticCurveTo(sx*s*1.2,0,sx*s,s*.7);g.lineTo(0,s*.7);g.lineTo(sx*s*.2,s*.25);g.lineTo(-sx*s*.05,0);g.lineTo(sx*s*.2,-s*.3);g.closePath();g.fill();g.stroke();g.restore();}}
+  g.restore();}
+function gas(lt){g.save();
+  // glowing wisps from the cut up to the eye
+  for(let i=0;i<7;i++){const Q=R0(200+i),sx=690+(Q()-.5)*60,sy=1270,ex=520+(Q()-.5)*160,ey=720,w=Math.sin(lt*.8+i)*40;
+    g.strokeStyle=i%2?'rgba(216,255,106,.55)':'rgba(157,255,176,.45)';g.lineWidth=14+Q()*16;g.lineCap='round';g.shadowColor='#c8ff60';g.shadowBlur=40;
+    g.beginPath();g.moveTo(sx,sy);g.bezierCurveTo(sx-120+w+Q()*80,1100,ex+140-w,900+Q()*60,ex,ey);g.stroke();}
+  g.shadowBlur=0;g.restore();
+  for(let i=0;i<34;i++){const Q=R0(100+i),u=(Q()+lt*.12)%1,x=690+(520+(Q()-.5)*180-690)*E3(u)+Math.sin(u*7+i)*18*u,y=1270-u*540,r=5+Q()*9;
+    g.globalAlpha=.85*(1-u*.6);g.fillStyle=Q()<.5?'#e8ff8a':'#b6ffc4';g.shadowColor='#c8ff60';g.shadowBlur=20;g.beginPath();g.arc(x,y,r,0,7);g.fill();}
+  g.globalAlpha=1;g.shadowBlur=0;
+  [[650,1140,1],[610,960,.95],[540,820,.85]].forEach(([x,y,s],i)=>{g.save();g.translate(x+Math.sin(lt+i)*10,y);g.scale(s,s);g.strokeStyle='#e8ff9a';g.lineWidth=6;g.beginPath();g.moveTo(-30,0);g.lineTo(30,0);g.stroke();
+    [[-30,'#f6ff7a','S'],[30,'#ff6a8a','O']].forEach(([dx,c,t])=>{g.fillStyle=c;g.shadowColor=c;g.shadowBlur=24;g.beginPath();g.arc(dx,0,24,0,7);g.fill();g.shadowBlur=0;g.fillStyle='#1a0d3a';g.font='800 28px '+SANS;g.textAlign='center';g.fillText(t,dx,10);});g.restore();});}
+function eye(lt){const X=540,Y=560;g.save();
+  // almond white
+  g.shadowColor='rgba(255,120,160,.7)';g.shadowBlur=50;g.fillStyle='#ffd5e2';g.beginPath();g.moveTo(X-260,Y);g.quadraticCurveTo(X,Y-210,X+260,Y);g.quadraticCurveTo(X,Y+190,X-260,Y);g.fill();g.shadowBlur=0;
+  g.save();g.beginPath();g.moveTo(X-250,Y);g.quadraticCurveTo(X,Y-196,X+250,Y);g.quadraticCurveTo(X,Y+176,X-250,Y);g.clip();g.fillStyle='#fff5f8';g.fillRect(X-260,Y-200,520,400);
+  g.strokeStyle='rgba(255,70,110,.55)';g.lineWidth=4;[[-220,10,-120,-30],[-210,30,-130,50],[220,0,130,-40],[215,25,140,60]].forEach(([a,b,c,d])=>{g.beginPath();g.moveTo(X+a,Y+b);g.quadraticCurveTo(X+(a+c)/2,Y+(b+d)/2+12,X+c,Y+d);g.stroke();});
+  g.fillStyle='#6b3fd8';g.beginPath();g.arc(X,Y,92,0,7);g.fill();g.fillStyle='#8f66ff';g.beginPath();g.arc(X,Y,70,0,7);g.fill();g.fillStyle='#120a30';g.beginPath();g.arc(X,Y,40,0,7);g.fill();g.fillStyle='#fff';g.beginPath();g.arc(X-24,Y-26,14,0,7);g.fill();
+  g.restore();
+  // lids
+  g.strokeStyle='#ff9ec0';g.lineWidth=12;g.lineCap='round';g.beginPath();g.moveTo(X-262,Y);g.quadraticCurveTo(X,Y-214,X+262,Y);g.stroke();
+  g.strokeStyle='#2a1450';g.lineWidth=7;for(let i=0;i<7;i++){const t=.2+i*.1,px=X-262+524*t,py=Y-214*2*t*(1-t)*1.0;g.beginPath();g.moveTo(px,py-4);g.lineTo(px+(t-.5)*40,py-34);g.stroke();}
+  // tears
+  [[X+235,Y+80,1],[X+255,Y+215,.75],[X-240,Y+100,.7]].forEach(([x,y,s],i)=>{const yy=y+((lt*.4+i*.3)%1)*30;g.save();g.translate(x,yy);g.scale(s,s);g.shadowColor='#6fd8ff';g.shadowBlur=36;g.fillStyle='#7fe3ff';g.beginPath();g.moveTo(0,-56);g.quadraticCurveTo(38,0,30,22);g.arc(0,22,30,0,Math.PI);g.quadraticCurveTo(-38,0,0,-56);g.fill();g.shadowBlur=0;g.fillStyle='rgba(255,255,255,.7)';g.beginPath();g.ellipse(-10,14,7,12,.3,0,7);g.fill();g.restore();});
+  g.restore();}
+function knife(lt){g.save();g.translate(700,1285);g.rotate(-.5);
+  g.shadowColor='#bfeaff';g.shadowBlur=40;g.fillStyle='#e6ecff';g.beginPath();g.moveTo(-20,-30);g.lineTo(250,-48);g.lineTo(256,30);g.quadraticCurveTo(160,40,-20,30);g.closePath();g.fill();g.shadowBlur=0;
+  g.fillStyle='#b8c2e6';g.beginPath();g.moveTo(-20,10);g.quadraticCurveTo(120,24,256,14);g.lineTo(256,30);g.quadraticCurveTo(160,40,-20,30);g.fill();
+  g.fillStyle='#ff6aa8';g.beginPath();g.roundRect(246,-56,190,86,40);g.fill();g.fillStyle='#ffd0e4';[300,360,420].forEach(x=>{g.beginPath();g.arc(x,-13,9,0,7);g.fill();});g.restore();}
+function draw(lt){g.drawImage(bg,0,0);
+  DOTS.forEach(([x,y,r,a,c,ph])=>{g.globalAlpha=a*(.6+.4*Math.sin(lt*2+ph));g.fillStyle=c;g.beginPath();g.arc(x+Math.sin(lt*.5+ph)*12,y,r,0,7);g.fill();});g.globalAlpha=1;
+  onion(lt);
+  const CC=[[700,1290,26,1,0],[760,1330,22,1,1],[650,1250,20,0,2],[820,1380,24,1,3],[720,1380,18,0,4],[600,1330,18,0,5]];CC.forEach(([x,y,s,b,ph])=>cell(x,y,s,b,lt,ph));
+  gas(lt);knife(lt);eye(lt);
+  label('The knife bursts the cells',60,1190,690,1275,'#ff9ad0');
+  label('Enzymes make a gas',60,1040,590,1010,'#d8ff6a');
+  label('Tears wash it out',600,900,790,700,'#7fe3ff');
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('Cutting an onion makes',540,200);
+  const a='a tiny ',b='tear gas';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,300);g.fillStyle='#d8ff6a';g.shadowColor='rgba(200,255,90,.9)';g.shadowBlur=30;g.fillText(b,x0+wa,300);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>
