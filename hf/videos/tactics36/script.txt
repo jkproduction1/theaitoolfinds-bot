@@ -1,0 +1,1 @@
+How to make this football tactics animation using Claude. First, pick a formation and a goal. Then pick Opus five point five and paste this prompt. Claude animates the play, you tweak it, and you're done. Comment TACTICS and I'll send you the prompt.
