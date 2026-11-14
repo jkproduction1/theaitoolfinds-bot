@@ -1,1 +1,9 @@
-{"angle": "new-ability"}
+{
+ "angle": "new-ability",
+ "url": "https://claude.ai",
+ "tool_name": "Claude Opus 5.5 football tactics tutorial",
+ "keyword": "TACTICS",
+ "cover_at": 2.4,
+ "summary_cs": "🧪 doporučuju Trial. Tutoriál (13,8 s): „How to make this football tactics animation using Claude“ – animovaná taktická tabule (4-3-3, přihrávky, náběh za obranu, gól) nakreslená v kódu s Opus 5.5, vlastní generický design bez klubů a hráčů, hudba t3; sezóna Football Manageru a taktické reels jedou. Než schválíš, nastav automatickou DM na slovo TACTICS.",
+ "caption": "How to make a football tactics animation with Claude.\n\nComment TACTICS and I'll DM you the prompt.\n\n#football #tactics #claude"
+}

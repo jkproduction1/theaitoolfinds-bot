@@ -1,1 +1,9 @@
-{"angle": "app-demo"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D what-if Earth commands 4",
+ "keyword": "WORLD",
+ "angle": "app-demo",
+ "cover_at": 18.6,
+ "summary_cs": "„Type it, get it #31“ z picklistu „What if… Earth 4“ (nic jsi netapnul; Olympus Mons už byl v asteroid24, tak jsem ho vyměnil za Mauna Kea a /zack-d-films za /simulate): Země se dvěma slunci (Kepler-16b je skutečná, NASA), vypuštěné oceány s Mid-Atlantic Ridge (hřbet ~65 000 km, NOAA) a Mauna Kea vs. Everest v řezu (10 211 m od základny vs. 8 848 m, USGS), vše v kódu s Opus 5.5, hudba t1, 21,5 s. Než schválíš, nastav automatickou DM na slovo WORLD.",
+ "caption": "Mauna Kea is 10,211 m tall from its base, taller than Everest. I asked Claude Code to show it.\n\nPart #31 of a daily series.\n\nComment WORLD and I'll DM you the prompts.\n\n#claudecode #earth #aitools"
+}

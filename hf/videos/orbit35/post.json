@@ -1,1 +1,9 @@
-{"angle": "app-demo"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D scary space commands 4",
+ "keyword": "ORBIT",
+ "angle": "app-demo",
+ "cover_at": 5.8,
+ "summary_cs": "„Type it, get it #32“ z picklistu „The scariest things in space 4“ (nic jsi netapnul): sluneční erupce dopadající na Zemi (světlo letí ~8 minut, NASA), Jupiter v rentgenu až k „rozmazanému“ jádru (Juno, NASA) a průlet do Saturnových prstenců (často jen ~10 m tlusté, NASA), vše v kódu s Opus 5.5, hudba t2, 21,5 s. Než schválíš, nastav automatickou DM na slovo ORBIT.",
+ "caption": "Light from a solar flare reaches Earth in about 8 minutes. I asked Claude Code to show it.\n\nPart #32 of a daily series.\n\nComment ORBIT and I'll DM you the prompts.\n\n#claudecode #space #aitools"
+}
