@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Fable 5.2 explainer styles 4",
+ "tool_name": "Claude Fable 5.2 explainer styles 4",
+ "keyword": "FABLE",
+ "summary_cs": "App demo „Type it, get it #33“ (nejdřív prompt, pak výsledek), stejné tři styly jako styles33 na nových tématech: /paper-collage proč mizí Mrtvé moře (klesá asi o 1 m ročně, přes 6 000 propadů, Jordán odčerpaný), /flat-science proč cibule rozpláče (rozbité buňky → enzymy → plyn → slzy), /painted-story rok bez léta (Tambora 1815 → sníh v červnu 1816). Vše kreslené v kódu s Claude Fable 5.2. Auto-DM na FABLE už máš.",
+ "style": "hyperframes-paper",
+ "duration": 30.4,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-14_1641",
+ "run_id": null,
+ "artifact": null
+}
