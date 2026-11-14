@@ -3,51 +3,72 @@
 @font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
 @font-face{font-family:'Permanent Marker';src:url(permanent-marker-latin-400-normal.woff2)}
 html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
-// styles37 concept: /paper-collage why the Dead Sea is disappearing (Vox-like paper collage look of styles19/28/33; own map drawing,
-// simplified shape, no copied map). Facts (USGS/EcoPeace/GSI, BBC, Britannica): the surface drops about 1 m a year; most of the
-// Jordan River's water is taken upstream for farms and cities; mineral evaporation ponds in the south basin add to the loss;
-// thousands of sinkholes (6,000+) have opened along the retreating shore. Shapes are schematic.
+// styles37 concept v2: /paper-collage why the Dead Sea is disappearing. SIDE VIEW so it reads at first glance (Jan: the map was not
+// clear): a floating bather with a newspaper (the Dead Sea icon), a beach pier left high and dry, the 1960 water line far above today's.
+// Facts (USGS/EcoPeace/GSI, BBC, Britannica): the surface drops about 1 m a year; most of the Jordan River's water is taken upstream
+// for farms and cities; 6,000+ sinkholes have opened on the exposed shore. Schematic, own drawing.
 const g=document.getElementById('c').getContext('2d'), MK="'Permanent Marker',cursive";
-const DX=140;
-const TODAY=[[520,700],[600,720],[640,820],[650,950],[640,1100],[610,1230],[560,1300],[500,1290],[470,1200],[450,1050],[455,900],[470,780]].map(([x,y])=>[x+DX,y]);
-const OLD=[[500,640],[620,660],[690,800],[705,980],[695,1150],[682,1300],[702,1450],[684,1600],[600,1668],[520,1648],[466,1520],[448,1380],[418,1220],[398,1050],[402,880],[428,730]].map(([x,y])=>[x+DX,y]);
-function smooth(p,pts){const n=pts.length;p.beginPath();const m=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];let s=m(pts[n-1],pts[0]);p.moveTo(s[0],s[1]);for(let i=0;i<n;i++){const q=m(pts[i],pts[(i+1)%n]);p.quadraticCurveTo(pts[i][0],pts[i][1],q[0],q[1]);}p.closePath();}
+const BANK=900, OLD=930, NOW=1250, SX0=330, SX1=620, SY1=1560; // bank top, old level, today's level, slope
+const slopeX=(y)=>SX0+(SX1-SX0)*(y-BANK)/(SY1-BANK);
 const paper=off(1080,1920,(p,w,h)=>{p.fillStyle='#efe6d2';p.fillRect(0,0,w,h);const R=R0(4);
   for(let i=0;i<9000;i++){p.strokeStyle='rgba(120,95,60,'+(R()*.08)+')';p.lineWidth=1;const x=R()*w,y=R()*h,a=R()*6.28,l=4+R()*14;p.beginPath();p.moveTo(x,y);p.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}
-  p.strokeStyle='rgba(90,120,150,.10)';p.lineWidth=2;for(let x=0;x<w;x+=60){p.beginPath();p.moveTo(x,0);p.lineTo(x,h);p.stroke();}for(let y=0;y<h;y+=60){p.beginPath();p.moveTo(0,y);p.lineTo(w,y);p.stroke();}});
-// desert land: big torn paper pieces with halftone shading
-const land=off(1080,1920,(p)=>{[[ -40,470,700,1500,'#e2c991',11,-0.02],[520,500,620,1460,'#d7b77c',12,0.015],[180,1500,940,420,'#cfa96e',13,0]].forEach(([x,y,w,h,c,s,r])=>{p.save();p.translate(x+w/2,y+h/2);p.rotate(r);tornPath(p,-w/2,-h/2,w,h,s,14);p.fillStyle=c;p.shadowColor='rgba(60,40,20,.3)';p.shadowBlur=16;p.shadowOffsetY=8;p.fill();p.restore();});
-  p.save();p.globalCompositeOperation='source-atop';for(let y=480;y<1920;y+=12)for(let x=(y/12%2)*6;x<1080;x+=12){const d=CL(0.5+0.5*Math.sin(x*.004+y*.003)*Math.cos(y*.005));p.fillStyle='rgba(120,80,40,.22)';p.beginPath();p.arc(x,y,0.6+3*d,0,7);p.fill();}p.restore();});
-// today's sea: turquoise cut-out with halftone + sticker edge
-const SEA=(()=>{const c=off(1080,1920,(p)=>{smooth(p,TODAY);const gr=p.createLinearGradient(0,700,0,1300);gr.addColorStop(0,'#3fb6c4');gr.addColorStop(1,'#1f8ea3');p.fillStyle=gr;p.fill();
-  p.save();smooth(p,TODAY);p.clip();for(let y=690;y<1310;y+=10)for(let x=(y/10%2)*5+580;x<800;x+=10){p.fillStyle='rgba(255,255,255,.35)';p.beginPath();p.arc(x,y,1.2+1.8*CL((x-600)/200),0,7);p.fill();}
-  p.strokeStyle='rgba(255,255,255,.55)';p.lineWidth=5;for(let i=0;i<5;i++){p.beginPath();p.moveTo(620+i*25,820+i*90);p.quadraticCurveTo(660+i*25,800+i*90,700+i*20,825+i*90);p.stroke();}p.restore();});return sticker(c,9);})();
-// salt crust ring between the old and new shore
-const SALT=off(1080,1920,(p)=>{smooth(p,OLD);p.fillStyle='#f6f3ea';p.fill();const R=R0(9);p.save();smooth(p,OLD);p.clip();for(let i=0;i<2600;i++){p.fillStyle=R()<.5?'rgba(200,190,170,.5)':'rgba(255,255,255,.8)';p.beginPath();p.arc(500+R()*400,630+R()*1050,1+R()*4,0,7);p.fill();}p.restore();});
-function ponds(){g.save();const cols=['#9fe1dc','#7fd3d6','#b8ece4','#6cc4cc'];let k=0;for(let r=0;r<3;r++)for(let c=0;c<2;c++){const x=630+c*100+(r%2)*10,y=1390+r*82;g.save();g.translate(x,y);g.rotate((k%3-1)*0.02);g.fillStyle=cols[k%4];g.shadowColor='rgba(40,60,70,.3)';g.shadowBlur=8;g.shadowOffsetY=4;g.fillRect(0,0,92,72);g.shadowColor='transparent';g.strokeStyle='#f6f3ea';g.lineWidth=5;g.strokeRect(0,0,92,72);g.restore();k++;}g.restore();}
-function sinkholes(){const P=[[598,960,26],[586,1040,18],[602,1110,30],[575,1180,16],[612,1250,22],[562,900,14],[620,1330,18]];P.forEach(([x,y,r],i)=>{g.save();g.fillStyle='#2b2018';g.beginPath();blobPath(g,x,y,r,i+3,0.15,30,0);g.fill();g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=3;g.stroke();g.restore();});}
-function title(){g.save();g.translate(60,140);g.rotate(-0.015);const W=960,H=260;tornPath(g,0,0,W,H,21,8);g.fillStyle='#fbf8f0';g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=20;g.shadowOffsetY=10;g.fill();g.shadowColor='transparent';
-  g.fillStyle='#17222b';g.font='400 96px '+DISP;g.fillText('The Dead Sea drops',44,108);
-  g.font='400 96px '+DISP;const a='1 meter';const wa=g.measureText(a).width;g.fillStyle='rgba(255,214,0,.92)';g.beginPath();g.moveTo(36,150);g.lineTo(60+wa,144);g.lineTo(62+wa,232);g.lineTo(36,226);g.closePath();g.fill();
-  g.fillStyle='#17222b';g.fillText(a+' every year',44,212);
-  g.fillStyle='rgba(240,232,200,.85)';g.save();g.translate(W-60,-6);g.rotate(0.5);g.fillRect(-56,-16,112,34);g.restore();g.restore();}
+  // sky scrap
+  p.save();p.translate(540,720);p.rotate(0.008);tornPath(p,-580,-270,1160,560,5,12);p.fillStyle='#bfe0e6';p.fill();p.restore();
+  // sun sticker
+  p.fillStyle='#ffd23c';p.shadowColor='rgba(60,40,20,.3)';p.shadowBlur=10;p.shadowOffsetY=6;p.beginPath();p.arc(930,560,62,0,7);p.fill();p.shadowColor='transparent';
+  // far mountains (torn, halftone)
+  const m=off(1080,400,(q)=>{q.beginPath();q.moveTo(380,292);const R2=R0(12);for(let x=380;x<=1100;x+=36){q.lineTo(x,150-Math.sin(x*.012)*60-Math.sin(x*.031)*26+(R2()-.5)*14);}q.lineTo(1100,292);q.closePath();q.fillStyle='#c79a7a';q.fill();
+    q.globalCompositeOperation='source-atop';for(let y=0;y<400;y+=10)for(let x=(y/10%2)*5;x<1080;x+=10){q.fillStyle='rgba(90,50,40,.25)';q.beginPath();q.arc(x,y,0.6+2.4*CL(y/300),0,7);q.fill();}});
+  p.shadowColor='rgba(60,40,20,.3)';p.shadowBlur=12;p.shadowOffsetY=-4;p.drawImage(m,0,640);p.shadowColor='transparent';});
+// lost water (1960 -> today): pale striped paper
+const LOST=off(1080,1920,(p)=>{p.beginPath();p.moveTo(slopeX(OLD),OLD);p.lineTo(1080,OLD);p.lineTo(1080,NOW);p.lineTo(slopeX(NOW),NOW);p.closePath();p.fillStyle='rgba(150,214,224,.55)';p.fill();p.save();p.clip();p.strokeStyle='rgba(255,255,255,.6)';p.lineWidth=6;for(let x=200;x<1500;x+=34){p.beginPath();p.moveTo(x,OLD);p.lineTo(x-330,NOW);p.stroke();}p.restore();});
+// today's water: turquoise cut-out
+const WATER=off(1080,1920,(p)=>{p.beginPath();p.moveTo(slopeX(NOW)-6,NOW);for(let x=slopeX(NOW);x<=1090;x+=30)p.lineTo(x,NOW+Math.sin(x*.05)*5);p.lineTo(1090,1700);p.lineTo(SX1+20,SY1+30);p.closePath();const gr=p.createLinearGradient(0,NOW,0,1700);gr.addColorStop(0,'#3fb6c4');gr.addColorStop(1,'#167a92');p.fillStyle=gr;p.fill();
+  p.save();p.clip();for(let y=NOW;y<1700;y+=10)for(let x=(y/10%2)*5+460;x<1080;x+=10){p.fillStyle='rgba(255,255,255,.3)';p.beginPath();p.arc(x,y,0.8+2.2*CL((1500-y)/300),0,7);p.fill();}p.restore();});
+// land: bank + slope + sea floor, torn kraft paper with halftone
+const LAND=off(1080,1920,(p)=>{const R=R0(21);p.beginPath();p.moveTo(-20,BANK);for(let x=0;x<=SX0;x+=30)p.lineTo(x,BANK+(R()-.5)*8);
+  for(let i=1;i<=22;i++){const y=BANK+(SY1-BANK)*i/22;p.lineTo(slopeX(y)+(R()-.5)*12,y);}
+  for(let x=SX1+30;x<=1100;x+=30)p.lineTo(x,SY1+(x-SX1)*0.2+(R()-.5)*8);p.lineTo(1100,1940);p.lineTo(-20,1940);p.closePath();
+  p.fillStyle='#d9b877';p.shadowColor='rgba(60,40,20,.4)';p.shadowBlur=18;p.shadowOffsetY=-6;p.fill();p.shadowColor='transparent';
+  p.save();p.clip();p.fillStyle='#c79f62';p.fillRect(-20,1500,1120,440);for(let y=BANK;y<1920;y+=12)for(let x=(y/12%2)*6;x<1080;x+=12){const d=CL((y-BANK)/900);p.fillStyle='rgba(110,70,35,.24)';p.beginPath();p.arc(x,y,0.8+3*d,0,7);p.fill();}p.restore();});
+// salt crust on the exposed slope
+function salt(){g.save();g.strokeStyle='#fbf8f0';g.lineWidth=34;g.lineCap='round';g.beginPath();g.moveTo(slopeX(OLD)+4,OLD);g.lineTo(slopeX(NOW)+4,NOW);g.stroke();const R=R0(9);for(let i=0;i<160;i++){const y=OLD+R()*(NOW-OLD),x=slopeX(y)+4+(R()-.5)*30;g.fillStyle=R()<.5?'rgba(190,180,160,.6)':'#fff';g.beginPath();g.arc(x,y,1.5+R()*3.5,0,7);g.fill();}g.restore();}
+// the pier that used to reach the water, now hanging over dry ground
+const PIER=sticker(off(300,470,(p)=>{p.fillStyle='#8a5a34';p.fillRect(0,60,270,22);p.fillStyle='#6f4526';[[30,22],[130,118],[240,366]].forEach(([x,l])=>{p.fillRect(x,82,14,l);});
+  p.strokeStyle='#6f4526';p.lineWidth=5;p.beginPath();p.moveTo(0,36);p.lineTo(270,36);p.stroke();[2,90,180,268].forEach(x=>{p.beginPath();p.moveTo(x,36);p.lineTo(x,60);p.stroke();});
+  p.lineWidth=6;p.beginPath();p.moveTo(262,82);p.lineTo(262,210);p.moveTo(292,82);p.lineTo(292,210);for(let y=104;y<210;y+=26){p.moveTo(262,y);p.lineTo(292,y);}p.stroke();}),7);
+const UMB=sticker(off(240,250,(p)=>{p.strokeStyle='#5a4a3a';p.lineWidth=8;p.beginPath();p.moveTo(120,110);p.lineTo(120,246);p.stroke();
+  for(let i=0;i<5;i++){p.fillStyle=i%2?'#fbf8f0':'#e4483c';p.beginPath();p.moveTo(120,120);p.arc(120,120,110,Math.PI*(1+i*.2),Math.PI*(1+(i+1)*.2)+0.01);p.closePath();p.fill();}}),6);
+// the floating reader
+const FLOAT=sticker(off(330,190,(p)=>{p.lineCap='round';
+  p.strokeStyle='#e9b48e';p.lineWidth=30;p.beginPath();p.moveTo(92,150);p.lineTo(250,156);p.stroke(); // torso+legs
+  p.strokeStyle='#2f6fb3';p.lineWidth=32;p.beginPath();p.moveTo(170,152);p.lineTo(210,154);p.stroke(); // shorts
+  p.strokeStyle='#e9b48e';p.lineWidth=22;p.beginPath();p.moveTo(250,156);p.lineTo(292,126);p.stroke(); // feet up
+  p.fillStyle='#e9b48e';p.beginPath();p.arc(58,128,30,0,7);p.fill();p.fillStyle='#3a2a20';p.beginPath();p.arc(50,116,30,Math.PI*.95,Math.PI*1.75);p.fill(); // head + hair
+  p.fillStyle='#1b1b1b';p.fillRect(60,118,34,10); // sunglasses
+  p.strokeStyle='#e9b48e';p.lineWidth=16;p.beginPath();p.moveTo(110,140);p.lineTo(140,96);p.stroke();
+  p.save();p.translate(150,60);p.rotate(-0.12);p.fillStyle='#fbf8f0';p.fillRect(-56,-52,128,100);p.strokeStyle='#bdb5a4';p.lineWidth=2;p.strokeRect(-56,-52,128,100);p.fillStyle='#17222b';p.fillRect(-44,-40,104,14);p.fillStyle='#8b8578';for(let i=0;i<5;i++){p.fillRect(-44,-16+i*12,46,5);p.fillRect(12,-16+i*12,48,5);}p.restore();}),7);
+function sinkholes(){[[0.30,30],[0.52,22],[0.72,34],[0.9,20]].forEach(([u,r],i)=>{const y=OLD+(NOW-OLD)*u,x=slopeX(y)-40-(i%2)*46;g.save();blobPath(g,x,y,r,i+3,0.14,30,0);g.fillStyle='#2b2018';g.fill();g.strokeStyle='#fbf8f0';g.lineWidth=4;g.stroke();g.restore();});}
+function title(){g.save();g.translate(60,120);g.rotate(-0.015);const W=960,H=260;tornPath(g,0,0,W,H,21,8);g.fillStyle='#fbf8f0';g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=20;g.shadowOffsetY=10;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#17222b';g.font='400 96px '+DISP;g.fillText('The Dead Sea drops',44,108);const a='1 meter';const wa=g.measureText(a).width;g.fillStyle='rgba(255,214,0,.92)';g.beginPath();g.moveTo(36,150);g.lineTo(60+wa,144);g.lineTo(62+wa,232);g.lineTo(36,226);g.closePath();g.fill();
+  g.fillStyle='#17222b';g.fillText(a+' every year',44,212);g.fillStyle='rgba(240,232,200,.85)';g.save();g.translate(W-60,-6);g.rotate(0.5);g.fillRect(-56,-16,112,34);g.restore();g.restore();}
 function hand(t,x,y,col,size,rot){g.save();g.translate(x,y);g.rotate(rot||0);g.font=(size||52)+'px '+MK;g.fillStyle=col;g.fillText(t,0,0);g.restore();}
-function draw(lt){g.drawImage(paper,0,0);g.drawImage(land,0,0);g.drawImage(SALT,0,0);
-  // 1960 shoreline
-  g.save();g.setLineDash([22,16]);g.strokeStyle='#1b2a3a';g.lineWidth=7;g.lineCap='round';smooth(g,OLD);g.stroke();g.restore();
-  ponds();g.drawImage(SEA,-SEA.ox,-SEA.oy);sinkholes();
-  // Jordan River coming in from the north, mostly pumped away
-  marker(g,[[720,470],[690,520],[730,580],[690,640],[706,700]],1,16,'#2a7fb8');
-  [[[712,540],[800,500],[880,520]],[[700,610],[650,540],[600,490]]].forEach((pts)=>{const [x,y,a]=marker(g,pts,1,9,'#d7262e');arrowHead(g,x,y,a,26,9,'#d7262e');});
-  title();
-  hand('1960',860,700,'#1b2a3a',58,-0.05);hand('today',862,1010,'#0f6f86',54,-0.04);
-  // big red "-1 m / year" call-out with down arrow
-  hand('−1 m',870,1170,'#d7262e',72,-0.06);hand('a year',872,1236,'#d7262e',50,-0.06);
-  {const [x,y,a]=marker(g,[[930,1270],[924,1350],[932,1420]],1,10,'#d7262e');arrowHead(g,x,y,a,30,10,'#d7262e');}
-  paperTag(g,10,0,30,520,-0.025,'Jordan River','mostly pumped away upstream',31,0);
-  paperTag(g,10,0,30,1040,0.02,'6,000+ sinkholes','opening on the old shore',32,1);
-  paperTag(g,10,0,30,1470,-0.015,'Mineral ponds','evaporate even more',33,0);
-  {const [x,y,a]=marker(g,[[540,1560],[580,1530],[615,1490]],1,8,'#17222b');arrowHead(g,x,y,a,22,8,'#17222b');}
-  g.drawImage(GRAIN,0,0);}
+function draw(lt){g.drawImage(paper,0,0);g.drawImage(LOST,0,0);g.drawImage(WATER,0,0);
+  g.drawImage(FLOAT,735-FLOAT.ox,NOW-162-FLOAT.oy+Math.sin(lt*1.4)*4);
+  // water strip in front of the floater's back
+  g.fillStyle='rgba(63,182,196,.8)';g.fillRect(720,NOW+2,360,16);
+  g.drawImage(LAND,0,0);salt();sinkholes();
+  g.drawImage(PIER,250-PIER.ox,BANK-82-PIER.oy);g.drawImage(UMB,40-UMB.ox,BANK-246-UMB.oy);
+  // 1960 water line
+  g.save();g.setLineDash([24,16]);g.strokeStyle='#1b2a3a';g.lineWidth=7;g.lineCap='round';g.beginPath();g.moveTo(slopeX(OLD)+10,OLD);g.lineTo(1080,OLD);g.stroke();g.restore();
+  hand('water in 1960',700,OLD-18,'#1b2a3a',46,-0.02);hand('today',920,NOW+70,'#fbf8f0',50,-0.03);
+  // big red drop arrow
+  {const [x,y,a]=marker(g,[[620,OLD+26],[612,1080],[622,NOW-22]],1,12,'#d7262e');arrowHead(g,x,y,a,34,12,'#d7262e');}
+  hand('−1 m',650,1030,'#d7262e',72,-0.05);hand('a year',652,1088,'#d7262e',48,-0.05);
+  hand('the old pier',300,800,'#17222b',44,-0.04);
+  paperTag(g,10,0,30,1400,0.02,'6,000+ sinkholes','open on the old shore',32,1);
+  {const [x,y,a]=marker(g,[[300,1385],[330,1300],[352,1230]],1,8,'#17222b');arrowHead(g,x,y,a,22,8,'#17222b');}
+  paperTag(g,10,0,30,1660,-0.015,'Why? Its river','is pumped away for farms and cities',33,0);
+  title();g.drawImage(GRAIN,0,0);}
 window.DUR=6;window.draw=draw;draw(2);document.title='ok';
 </script><script>Promise.all([document.fonts.load("400 40px 'DM Serif Display'"),document.fonts.load("italic 500 30px 'EB Garamond'"),document.fonts.load("40px 'Permanent Marker'")]).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
