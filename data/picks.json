@@ -1,128 +1,129 @@
 {
-  "date": "2026-11-13",
+  "date": "2026-11-14",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What if… Earth 4",
+      "title": "What if… Earth 5",
       "commands": [
-        "/zack-d-films what if Earth had two suns",
-        "/what-if the oceans drained in one minute",
-        "/scale Olympus Mons versus Mount Everest"
+        "/zack-d-films what if the Moon were twice as close",
+        "/what-if a mega-tsunami hit New York",
+        "/scale a Category 5 hurricane versus Europe"
       ],
-      "why": "earth8 514k IG + impact22/asteroid24: 'what would happen to Earth' stays our biggest hook; all objects new"
+      "why": "earth8 514k IG + world34: 'what would happen to Earth' is still the biggest hook; Moon-distance, tsunami and hurricane are new objects"
     },
     {
-      "title": "The scariest things in space 4",
+      "title": "The scariest things in space 5",
       "commands": [
-        "/explain-3d how a solar flare hits Earth",
-        "/x-ray Jupiter down to its core",
-        "/scale the biggest sunspot versus Earth"
+        "/explain-3d how a black hole eats a star",
+        "/x-ray Venus under its acid clouds",
+        "/scale a magnetar versus Manhattan"
       ],
-      "why": "space7 165k TT + space14 40k TT: space is still the only topic that breaks TikTok; Sun and Jupiter not used yet"
+      "why": "space7 165k TT + space14 40k TT: space is the only topic that breaks TikTok; black hole, Venus, magnetar not used yet"
     },
     {
-      "title": "Earth's deadliest disasters 2",
+      "title": "The scariest things in the deep ocean 2",
       "commands": [
-        "/explain-3d how an earthquake shakes a city",
-        "/time-lapse an avalanche breaking loose",
-        "/zack-d-films what if hail grew as big as a car"
+        "/x-ray an anglerfish",
+        "/explain-3d how a sperm whale dives 2 km deep",
+        "/zoom-in a black smoker vent on the seafloor"
       ],
-      "why": "disaster31 pattern (Earth + scale + fear); concrete scary objects beat generic nature (nature18 377 TT)"
+      "why": "deep-ocean fear + scale pattern (earth8 trench scene); new creatures/objects, squid and shipwreck avoided"
     },
     {
-      "title": "The scariest things inside your body 3",
+      "title": "The scariest things inside your body 4",
       "commands": [
-        "/zoom-in the bacteria on your phone screen",
-        "/explain-3d how a fever fights an infection",
-        "/x-ray your stomach digesting a burger"
+        "/x-ray a broken bone healing",
+        "/explain-3d how a sneeze travels across a room",
+        "/zoom-in a tick bite"
       ],
-      "why": "inside3 118k IG + body26: fear framing on body topics; heart, blood, lungs, eye, neuron, mosquito avoided"
+      "why": "inside3 118k IG + body16: fear framing on body topics; heart, blood, lungs, eye, spine, neuron, mosquito avoided"
     },
     {
-      "title": "Liquid chrome UI",
+      "title": "Liquid chrome UI 2",
       "commands": [
-        "/liquid-chrome a smartwatch face",
-        "/glassmorphism a weather app",
-        "/kinetic-type a New Year countdown"
+        "/liquid-chrome a Black Friday sale badge",
+        "/glassmorphism a banking app card",
+        "/ui-motion a boarding pass"
       ],
-      "why": "variety slot in the motion-design look Jan likes; motion13 was weak on TT (837), so only if Jan wants a break from space/Earth"
+      "why": "variety slot in the motion-design look Jan likes; Black Friday is in 2 weeks"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this 5-star police chase map of your city using Claude",
+      "title": "How to make this 80s neon intro of your name using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "GTA 6 vychází příští týden (preload běží od 10. 11., dlcompare); honička přes vlastní město s hvězdami 'wanted', vlastní styl, žádná herní mapa.",
+      "trend": "GTA 6 vychází 19. 11. a Vice City/80s neon estetika teď zaplavuje TikTok edity; jen styl, žádné logo hry.",
       "steps": [
-        "Type your city and a start street",
-        "Pick Fable 5.2 and paste this prompt",
-        "Claude draws the chase, you tweak it"
+        "Type your name and say 80s neon synthwave intro",
+        "Ask for a palm-tree sunset, chrome letters and a grid floor",
+        "Claude builds it, you tweak it"
       ],
       "seconds": 13,
-      "keyword": "CHASE",
+      "keyword": "NEON",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this animated football tactics board using Claude",
+      "title": "How to make your own animated year-in-review stats using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "10. 11. vyšel Football Manager 27 (dlcompare, týden 46); animované taktické tabule s pohybem hráčů jsou stálice fotbalových reelsů.",
+      "trend": "Začátkem prosince přijdou výroční shrnutí (Wrapped apod.) a lidi chtějí vlastní verzi; slide-style statistiky jedou každý rok.",
       "steps": [
-        "Pick a formation and one famous goal",
-        "Pick Fable 5.2 and paste this prompt",
-        "Claude animates the play, you tweak it"
+        "Paste your numbers from this year",
+        "Ask for bold animated slides, one stat per screen",
+        "Claude builds it, you tweak it"
       ],
       "seconds": 13,
-      "keyword": "TACTICS",
+      "keyword": "RECAP",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this animated advent calendar using Claude",
+      "title": "How to make this snow globe of your city using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Vánoční přepnutí feedů běží od 1. 11. ('Christmas Switch', SocialPilot); adventní kalendář s 24 okénky se bude sdílet až do 1. 12.",
+      "trend": "Vánoční sezóna začíná, snow globe / mini-city edity se vrací každý listopad; tvoje město jako vlastní skyline.",
       "steps": [
-        "Describe your theme in one line",
-        "Pick Fable 5.2 and paste this prompt",
-        "Claude builds 24 doors, you tweak it"
-      ],
-      "seconds": 14,
-      "keyword": "ADVENT",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this movie-style countdown poster using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "20. 11. jde do kin The Hunger Games: Sunrise on the Reaping a 25. 11. Focker-In-Law (GamesRadar); animovaný odpočet 'X dní do premiéry' vlastním stylem, bez oficiálních plakátů.",
-      "steps": [
-        "Type the movie name and release date",
-        "Pick Fable 5.2 and paste this prompt",
-        "Claude animates the countdown, you tweak it"
+        "Name your city and 3 landmarks",
+        "Ask for a glass snow globe that shakes and snows",
+        "Claude builds it, you tweak it"
       ],
       "seconds": 12,
-      "keyword": "PREMIERE",
+      "keyword": "GLOBE",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this AI version of your drawing using Higgsfield",
+      "title": "How to make this animated Black Friday sale reel using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Black Friday je 27. 11.; malé firmy teď hledají rychlé sale reely s kinetickou typografií.",
+      "steps": [
+        "Type your product and the discount",
+        "Ask for bold kinetic type with a countdown",
+        "Claude builds it, you tweak it"
+      ],
+      "seconds": 12,
+      "keyword": "SALE",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to turn your photo into a crime-game loading screen using Higgsfield",
       "tool": "Higgsfield",
       "url": "https://higgsfield.ai",
-      "trend": "'AI vs. Handmade' (Dame Hombro bounce) jede na TikToku – nejdřív AI verze, pak ruční originál (SocialPilot, 27. 10.–10. 11.).",
+      "trend": "Před vydáním GTA 6 (19. 11.) frčí na IG/TikToku 'udělej ze sebe postavu z loading screenu'; jen inspirovaný styl, bez loga a postav hry.",
       "steps": [
-        "Snap a photo of your drawing",
-        "Upload it and pick Nano Banana",
-        "Higgsfield animates the AI version, you tweak it"
+        "Upload a selfie",
+        "Ask for a painted 80s crime-game loading screen of you",
+        "Animate it into a short video",
+        "Higgsfield builds it, you tweak it"
       ],
-      "seconds": 12,
-      "keyword": "DRAWING",
-      "cost": "kredity Higgsfield, cca 20–30 (obrázek + krátké video)",
+      "seconds": 14,
+      "keyword": "LOADING",
+      "cost": "kredity Higgsfield, cca 10–20 (obrázek + krátké video)",
       "handle": ""
     }
   ],
