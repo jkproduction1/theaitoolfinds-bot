@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles42 concept: /flat-science how your eyes see colours (flat glowing look of styles19/28/33/37).
+// Facts (NEI/NIH "How the eyes work", Britannica "colour vision"): the retina has three kinds of cone cells, most sensitive to short
+// (blue), medium (green) and long (red) wavelengths; the brain compares how strongly each kind fires. Yellow light from a lemon
+// drives the red and green cones strongly and the blue ones barely, and the brain reads that mix as yellow.
+const g=document.getElementById('c').getContext('2d');
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.55,60,w*.5,h*.5,1300);gr.addColorStop(0,'#27328a');gr.addColorStop(.5,'#151c57');gr.addColorStop(1,'#070a25');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[150,1000,260,'rgba(255,220,80,.22)'],[900,700,260,'rgba(255,90,120,.20)'],[800,1600,300,'rgba(60,200,140,.20)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});});
+const R=R0(29),DOTS=[];for(let i=0;i<60;i++)DOTS.push([R()*1080,R()*1920,2+R()*7,R()*.4+.12,['#ff8aa0','#7dffb0','#7fb8ff'][i%3],R()*6]);
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:(tx>x+w?x+w:x+w/2),y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(9,12,44,.88)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+const EX=600,EY=880,ER=250, RET=[EX+ER*0.93,EY];
+function lemon(lt){g.save();g.translate(150,EY+Math.sin(lt*1.1)*8);g.rotate(-0.3);g.shadowColor='#ffe25a';g.shadowBlur=60;g.fillStyle='#ffd83a';g.beginPath();g.ellipse(0,0,95,70,0,0,7);g.fill();
+  g.beginPath();g.ellipse(-96,0,20,14,0,0,7);g.fill();g.beginPath();g.ellipse(96,0,20,14,0,0,7);g.fill();g.shadowBlur=0;g.fillStyle='#fff3a6';g.beginPath();g.ellipse(-30,-28,34,14,-0.4,0,7);g.fill();
+  g.fillStyle='#5cc46a';g.beginPath();g.ellipse(70,-70,40,16,-0.7,0,7);g.fill();g.restore();}
+function rays(lt){g.save();g.lineCap='round';[-60,0,60].forEach((d,i)=>{const w=Math.sin(lt*2+i)*4;g.strokeStyle='rgba(255,226,90,.8)';g.shadowColor='#ffe25a';g.shadowBlur=24;g.lineWidth=12;
+    g.beginPath();g.moveTo(250,EY+d*.6);g.lineTo(EX-ER+30,EY+d+w);g.lineTo(RET[0]-8,RET[1]);g.stroke();});
+  for(let i=0;i<10;i++){const u=(i/10+lt*.25)%1;const x=250+(RET[0]-250)*u;g.fillStyle='#fff6b0';g.shadowBlur=18;g.beginPath();g.arc(x,EY+Math.sin(u*9+i)*10*(1-u),6,0,7);g.fill();}g.restore();}
+function eye(lt){g.save();
+  g.shadowColor='rgba(170,190,255,.6)';g.shadowBlur=60;g.fillStyle='#e9ecff';g.beginPath();g.arc(EX,EY,ER,0,7);g.fill();g.shadowBlur=0;
+  g.fillStyle='#f5f6ff';g.beginPath();g.arc(EX-10,EY-12,ER*.92,0,7);g.fill();
+  // retina band at the back
+  g.strokeStyle='#ff8aa0';g.lineWidth=22;g.beginPath();g.arc(EX,EY,ER-16,-1.1,1.1);g.stroke();
+  // cornea + iris + lens at the front (left)
+  g.fillStyle='rgba(140,220,255,.55)';g.beginPath();g.ellipse(EX-ER+4,EY,40,120,0,Math.PI/2,Math.PI*1.5);g.fill();
+  g.fillStyle='#6b4fd8';g.fillRect(EX-ER+18,EY-150,26,96);g.fillRect(EX-ER+18,EY+54,26,96);
+  g.fillStyle='rgba(180,240,255,.9)';g.shadowColor='#8fdcff';g.shadowBlur=20;g.beginPath();g.ellipse(EX-ER+70,EY,30,70,0,0,7);g.fill();g.shadowBlur=0;
+  // optic nerve to the brain (exits right)
+  g.strokeStyle='#ffb36a';g.lineWidth=40;g.lineCap='round';g.beginPath();g.moveTo(EX+ER-10,EY+40);g.quadraticCurveTo(EX+ER+80,EY+60,1100,EY-40);g.stroke();
+  g.restore();}
+// zoom bubble: three kinds of cones, red + green lit, blue dim
+const BX=540,BY=1460,BR=270;
+function bubble(lt){g.save();g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=4;g.setLineDash([14,12]);g.beginPath();g.moveTo(RET[0]-30,RET[1]+60);g.lineTo(BX+BR*.7,BY-BR*.7);g.moveTo(RET[0]-60,RET[1]+20);g.lineTo(BX-BR*.8,BY-BR*.6);g.stroke();g.setLineDash([]);
+  g.shadowColor='rgba(170,190,255,.5)';g.shadowBlur=50;g.fillStyle='#1b2370';g.beginPath();g.arc(BX,BY,BR,0,7);g.fill();g.shadowBlur=0;g.strokeStyle='#e9ecff';g.lineWidth=8;g.stroke();
+  g.save();g.beginPath();g.arc(BX,BY,BR-4,0,7);g.clip();
+  const C=[['#ff5d7a',1],['#4fe08a',1],['#5d8bff',0.15]];
+  for(let i=0;i<9;i++){const [col,on]=C[[0,1,2,1,0,1,0,2,1][i]];const x=BX-240+i*60,y=BY+60,pulse=on*(0.7+0.3*Math.sin(lt*5+i));
+    g.globalAlpha=0.35+0.65*on;g.fillStyle=col;if(on>0.5){g.shadowColor=col;g.shadowBlur=40*pulse;}
+    g.beginPath();g.moveTo(x-22,y+120);g.lineTo(x-22,y);g.quadraticCurveTo(x,y-110,x+22,y);g.lineTo(x+22,y+120);g.closePath();g.fill();g.shadowBlur=0;
+    g.fillStyle='rgba(255,255,255,.35)';g.beginPath();g.ellipse(x-6,y-20,6,22,0,0,7);g.fill();g.globalAlpha=1;}
+  // incoming yellow photons
+  for(let i=0;i<8;i++){const u=(i/8+lt*.4)%1;g.fillStyle='#fff3a0';g.shadowColor='#ffe25a';g.shadowBlur=16;g.beginPath();g.arc(BX-220+i*58,BY-200+u*200,7,0,7);g.fill();}g.shadowBlur=0;
+  g.restore();g.restore();}
+function brainMix(lt){const x=880,y=1800;g.save();
+  [['#ff5d7a',-70],['#4fe08a',70]].forEach(([c,dx])=>{g.fillStyle=c;g.globalAlpha=.85;g.shadowColor=c;g.shadowBlur=24;g.beginPath();g.arc(x+dx-160,y,34,0,7);g.fill();});
+  g.globalAlpha=1;g.shadowBlur=0;g.fillStyle='#fff';g.font='800 56px '+SANS;g.textAlign='center';g.fillText('+',x-160,y+18);g.fillText('=',x-30,y+18);
+  g.fillStyle='#ffd83a';g.shadowColor='#ffe25a';g.shadowBlur=40;g.beginPath();g.arc(x+70,y,46,0,7);g.fill();g.restore();}
+function draw(lt){g.drawImage(bg,0,0);
+  DOTS.forEach(([x,y,r,a,c,ph])=>{g.globalAlpha=a*(.6+.4*Math.sin(lt*2+ph));g.fillStyle=c;g.beginPath();g.arc(x+Math.sin(lt*.5+ph)*12,y,r,0,7);g.fill();});g.globalAlpha=1;
+  eye(lt);rays(lt);lemon(lt);bubble(lt);brainMix(lt);
+  label('Light hits the retina',380,560,RET[0]-14,RET[1]-60,'#ffe25a');
+  label('Red, green & blue cones',40,1150,BX-200,BY-160,'#ff8aa0');
+  label('Brain mixes:',60,1800,640,1800,'#4fe08a');
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('Your eye sees colour',540,200);
+  const a='with just ',b='3 sensors';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,300);
+  const gr=g.createLinearGradient(x0+wa,0,x0+wa+wb,0);gr.addColorStop(0,'#ff5d7a');gr.addColorStop(.5,'#4fe08a');gr.addColorStop(1,'#5d8bff');g.fillStyle=gr;g.shadowColor='rgba(160,200,255,.7)';g.shadowBlur=30;g.fillText(b,x0+wa,300);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>
