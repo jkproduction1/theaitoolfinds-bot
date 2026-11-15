@@ -1,0 +1,64 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Permanent Marker';src:url(permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles42 concept: /paper-collage why the Netherlands is below sea level. SIDE VIEW: the North Sea on the left sits HIGHER than the
+// fields behind the dike; a windmill lifts water from the polder ditch up into the canal.
+// Facts (Rijkswaterstaat, Britannica): about a quarter of the country lies below sea level; lowest point about 6.7 m below
+// (Zuidplaspolder); lakes and marshes were drained into polders with windmills (today electric pumps) and the drained peat sank further.
+const g=document.getElementById('c').getContext('2d'), MK="'Permanent Marker',cursive";
+const SEA=930, POL=1230, DX0=300, DX1=470; // sea level, polder level, dike foot/top
+const paper=off(1080,1920,(p,w,h)=>{p.fillStyle='#efe6d2';p.fillRect(0,0,w,h);const R=R0(4);
+  for(let i=0;i<9000;i++){p.strokeStyle='rgba(120,95,60,'+(R()*.08)+')';p.lineWidth=1;const x=R()*w,y=R()*h,a=R()*6.28,l=4+R()*14;p.beginPath();p.moveTo(x,y);p.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}
+  p.save();p.translate(540,760);p.rotate(-0.006);tornPath(p,-580,-300,1160,600,5,12);p.fillStyle='#c6dfe8';p.fill();p.restore();
+  // clouds (torn white scraps)
+  [[180,560,200,70,3],[760,520,240,80,4],[560,640,160,56,6]].forEach(([x,y,w2,h2,s])=>{p.save();p.shadowColor='rgba(60,40,20,.25)';p.shadowBlur=10;p.shadowOffsetY=6;tornPath(p,x-w2/2,y-h2/2,w2,h2,s,14);p.fillStyle='#fbfaf5';p.fill();p.restore();});});
+// sea (left, above the dike line)
+const slX=(y)=>DX0-100+100*(1500-y)/(1500-SEA+90);
+const WATER=off(1080,1920,(p)=>{p.beginPath();p.moveTo(-20,SEA);for(let x=-20;x<=slX(SEA);x+=24)p.lineTo(x,SEA+Math.sin(x*.06)*7);p.lineTo(slX(SEA),SEA);p.lineTo(DX0-100,1500);p.lineTo(-20,1500);p.closePath();
+  const gr=p.createLinearGradient(0,SEA,0,1500);gr.addColorStop(0,'#3a8fb0');gr.addColorStop(1,'#16506e');p.fillStyle=gr;p.fill();
+  p.save();p.clip();for(let y=SEA;y<1500;y+=10)for(let x=(y/10%2)*5;x<500;x+=10){p.fillStyle='rgba(255,255,255,.28)';p.beginPath();p.arc(x,y,0.8+2.2*CL((1300-y)/300),0,7);p.fill();}p.restore();
+  // waves as white torn strips
+  p.strokeStyle='#fbfaf5';p.lineWidth=8;p.lineCap='round';for(let i=0;i<3;i++){p.beginPath();for(let x=10+i*40;x<slX(SEA+30+i*60)-10;x+=8)p.lineTo(x,SEA+30+i*60+Math.sin(x*.05+i)*8);p.stroke();}});
+// land: dike + low polder + ground, kraft paper halftone
+const LAND=off(1080,1920,(p)=>{const R=R0(21);p.beginPath();p.moveTo(-20,1500);p.lineTo(DX0-100,1500);p.lineTo(DX0,SEA-90);p.lineTo(DX1,SEA-90);p.lineTo(DX1+150,POL);
+  for(let x=DX1+150;x<=1100;x+=30)p.lineTo(x,POL+(R()-.5)*6);p.lineTo(1100,1940);p.lineTo(-20,1940);p.closePath();
+  p.fillStyle='#d9b877';p.shadowColor='rgba(60,40,20,.4)';p.shadowBlur=18;p.shadowOffsetY=-6;p.fill();p.shadowColor='transparent';
+  p.save();p.clip();for(let y=SEA-90;y<1920;y+=12)for(let x=(y/12%2)*6;x<1080;x+=12){p.fillStyle='rgba(110,70,35,.22)';p.beginPath();p.arc(x,y,0.8+3*CL((y-SEA)/900),0,7);p.fill();}p.restore();
+  // green grass skin on dike and polder
+  p.strokeStyle='#6aa04a';p.lineWidth=22;p.lineJoin='round';p.beginPath();p.moveTo(slX(SEA)+6,SEA-4);p.lineTo(DX0,SEA-90);p.lineTo(DX1,SEA-90);p.lineTo(DX1+150,POL);p.lineTo(1100,POL);p.stroke();
+  // polder ditch
+  p.fillStyle='#3a8fb0';p.beginPath();p.moveTo(640,POL+8);p.quadraticCurveTo(670,POL+56,700,POL+8);p.closePath();p.fill();});
+const HOUSE=sticker(off(220,220,(p)=>{p.fillStyle='#b5482f';p.beginPath();p.moveTo(10,90);p.lineTo(70,10);p.lineTo(130,90);p.closePath();p.fill();p.fillStyle='#8e2f1f';p.fillRect(14,90,112,110);
+  p.fillStyle='#fbf8f0';p.fillRect(36,110,26,30);p.fillRect(80,110,26,30);p.fillRect(56,160,28,40);p.fillStyle='#2f6fb3';p.fillRect(150,120,60,80);p.fillStyle='#24548a';p.beginPath();p.moveTo(146,120);p.lineTo(180,74);p.lineTo(214,120);p.closePath();p.fill();}),6);
+const COW=sticker(off(170,110,(p)=>{p.fillStyle='#fbf8f0';p.beginPath();p.roundRect(20,20,120,56,22);p.fill();p.fillStyle='#1b1b1b';p.beginPath();p.ellipse(60,40,20,14,.3,0,7);p.fill();p.beginPath();p.ellipse(110,56,16,12,0,0,7);p.fill();
+  p.fillStyle='#fbf8f0';p.beginPath();p.ellipse(150,32,20,16,0,0,7);p.fill();p.fillStyle='#e9a3a3';p.beginPath();p.ellipse(162,38,9,8,0,0,7);p.fill();p.strokeStyle='#fbf8f0';p.lineWidth=10;[34,56,108,128].forEach(x=>{p.beginPath();p.moveTo(x,70);p.lineTo(x,104);p.stroke();});}),5);
+function windmill(lt){const x=960,y=POL;g.save();g.translate(x,y);g.scale(.75,.75);g.translate(-x,-y);
+  g.shadowColor='rgba(40,30,20,.4)';g.shadowBlur=16;g.shadowOffsetY=10;g.fillStyle='#5b4636';g.beginPath();g.moveTo(x-70,y);g.lineTo(x-38,y-330);g.lineTo(x+38,y-330);g.lineTo(x+70,y);g.closePath();g.fill();
+  g.fillStyle='#3e2f24';g.beginPath();g.moveTo(x-50,y-326);g.quadraticCurveTo(x,y-410,x+50,y-326);g.fill();g.shadowColor='transparent';
+  g.fillStyle='#fbf8f0';g.fillRect(x-16,y-80,32,80);
+  g.translate(x,y-350);g.rotate(lt*0.9);for(let i=0;i<4;i++){g.rotate(Math.PI/2);g.fillStyle='#fbf8f0';g.strokeStyle='#3e2f24';g.lineWidth=4;g.beginPath();g.rect(12,-26,230,52);g.fill();g.stroke();
+    g.beginPath();for(let k=40;k<240;k+=34){g.moveTo(k,-26);g.lineTo(k,26);}g.moveTo(12,0);g.lineTo(242,0);g.stroke();}
+  g.fillStyle='#3e2f24';g.beginPath();g.arc(0,0,18,0,7);g.fill();g.restore();}
+function hand(t,x,y,col,size,rot){g.save();g.translate(x,y);g.rotate(rot||0);g.font=(size||52)+'px '+MK;g.fillStyle=col;g.fillText(t,0,0);g.restore();}
+function title(){g.save();g.translate(50,110);g.rotate(-0.012);const W=980,H=270;tornPath(g,0,0,W,H,21,8);g.fillStyle='#fbf8f0';g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=20;g.shadowOffsetY=10;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#17222b';g.font='400 88px '+DISP;g.fillText('A quarter of this country',40,106);const a='lies below';const wa=g.measureText(a).width;
+  g.fillStyle='rgba(255,214,0,.92)';g.beginPath();g.moveTo(32,148);g.lineTo(56+wa,142);g.lineTo(58+wa,226);g.lineTo(32,222);g.closePath();g.fill();g.fillStyle='#17222b';g.fillText(a+' the sea',40,210);
+  g.fillStyle='rgba(240,232,200,.85)';g.save();g.translate(60,-6);g.rotate(-0.5);g.fillRect(-56,-16,112,34);g.restore();g.restore();}
+function draw(lt){g.drawImage(paper,0,0);g.drawImage(WATER,0,0);g.drawImage(LAND,0,0);
+  g.drawImage(HOUSE,700-HOUSE.ox,POL-200-HOUSE.oy);g.drawImage(COW,580+150-COW.ox+130+Math.sin(lt)*3,POL-104-COW.oy);
+  windmill(lt);
+  // sea level dashed line across the whole frame
+  g.save();g.setLineDash([24,16]);g.strokeStyle='#1b2a3a';g.lineWidth=7;g.lineCap='round';g.beginPath();g.moveTo(DX1+10,SEA);g.lineTo(1080,SEA);g.stroke();g.restore();
+  hand('sea level',490,SEA-22,'#1b2a3a',50,-0.02);hand('north sea',30,SEA+150,'#fbf8f0',54,-0.04);hand('dike',DX0+30,SEA-112,'#17222b',50,-0.05);
+  // red drop arrow from sea level down to the polder
+  {const [x,y,a]=marker(g,[[610,SEA+24],[604,1080],[612,POL-16]],1,12,'#d7262e');arrowHead(g,x,y,a,34,12,'#d7262e');}
+  hand('−6.7 m',330,1100,'#d7262e',72,-0.05);hand('lowest spot',330,1156,'#d7262e',42,-0.05);
+  // water lifted by the windmill: blue marker arc from the ditch over the dike
+  {const [x,y,a]=marker(g,[[670,POL+20],[560,POL-120],[470,SEA-170],[330,SEA-150],[200,SEA+20]],1,10,'#2f6fb3',[18,14]);arrowHead(g,x,y,a,26,10,'#2f6fb3');}
+  paperTag(g,10,0,40,1420,0.02,'Why? People pumped','lakes dry with windmills',32,1);
+  paperTag(g,10,0,220,1650,-0.02,'Then the land sank','as the drained peat dried out',33,0);
+  title();g.drawImage(GRAIN,0,0);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>Promise.all([document.fonts.load("400 40px 'DM Serif Display'"),document.fonts.load("italic 500 30px 'EB Garamond'"),document.fonts.load("40px 'Permanent Marker'")]).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

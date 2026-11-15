@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles42 concept: /flat-science what happens in your brain when you yawn (flat glowing vector look of styles28/33/37).
+// Facts (Gallup & Gallup 2007; Gallup & Eldakar 2013; Smithsonian): the leading hypothesis is brain cooling: the deep jaw stretch
+// speeds blood flow to the skull and the deep breath brings in cooler air; warm blood leaves, cooler blood arrives. "Scientists think":
+// it is a hypothesis, not settled, so the copy says "may".
+const g=document.getElementById('c').getContext('2d');
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.6,60,w*.5,h*.55,1300);gr.addColorStop(0,'#3a1d66');gr.addColorStop(.5,'#1c1050');gr.addColorStop(1,'#07051f');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[220,1500,300,'rgba(90,200,255,.20)'],[860,800,280,'rgba(255,140,80,.18)'],[820,1450,240,'rgba(160,110,255,.22)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});
+  p.filter='none';const R=R0(5);const N=[];for(let i=0;i<26;i++)N.push([R()*w,400+R()*1500]);p.strokeStyle='rgba(180,160,255,.08)';p.lineWidth=2;
+  N.forEach((a,i)=>N.forEach((b,j)=>{if(j>i&&Math.hypot(a[0]-b[0],a[1]-b[1])<260){p.beginPath();p.moveTo(a[0],a[1]);p.lineTo(b[0],b[1]);p.stroke();}}));});
+const R=R0(29),DOTS=[];for(let i=0;i<60;i++)DOTS.push([R()*1080,420+R()*1500,2+R()*6,R()*.35+.1,R()<.5?'#8fdcff':'#b99bff',R()*6]);
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:x+w/2,y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(12,8,44,.9)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+// head in profile facing left, mouth wide open in a yawn
+const HX=600,HY=1050;
+function head(lt){g.save();g.translate(HX,HY);
+  g.shadowColor='rgba(170,130,255,.6)';g.shadowBlur=60;g.fillStyle='#7c5bd6';
+  g.beginPath();g.moveTo(40,-380);g.bezierCurveTo(300,-380,360,-120,320,60);g.bezierCurveTo(300,170,250,250,200,300); // back of skull, neck
+  g.lineTo(200,520);g.lineTo(-60,520);g.lineTo(-60,330); // neck
+  g.bezierCurveTo(-120,330,-210,310,-230,250); // chin (jaw dropped)
+  g.lineTo(-250,170);g.quadraticCurveTo(-200,120,-150,120); // lower lip
+  g.lineTo(-170,20);g.quadraticCurveTo(-240,0,-250,-30); // upper lip
+  g.lineTo(-270,-70);g.lineTo(-320,-120);g.lineTo(-262,-150);g.bezierCurveTo(-270,-260,-220,-380,40,-380);g.closePath();g.fill();g.shadowBlur=0;
+  // mouth cavity
+  g.fillStyle='#2a1450';g.beginPath();g.moveTo(-250,-20);g.quadraticCurveTo(-120,-10,-90,60);g.quadraticCurveTo(-120,140,-245,175);g.quadraticCurveTo(-200,80,-250,-20);g.fill();
+  g.fillStyle='#ff7aa8';g.beginPath();g.ellipse(-170,140,50,18,-0.2,0,7);g.fill();
+  // closed eye
+  g.strokeStyle='#2a1450';g.lineWidth=8;g.lineCap='round';g.beginPath();g.arc(-150,-190,34,0.2,Math.PI-0.2);g.stroke();
+  // brain: warm core cooling at the front
+  const br=g.createRadialGradient(90,-200,20,60,-190,240);br.addColorStop(0,'#ff8a4c');br.addColorStop(.55,'#ff5d7a');br.addColorStop(1,'#8fdcff');
+  g.shadowColor='#ff8a4c';g.shadowBlur=50;g.fillStyle=br;g.beginPath();g.ellipse(70,-200,210,150,-0.08,0,7);g.fill();g.shadowBlur=0;
+  g.strokeStyle='rgba(255,255,255,.45)';g.lineWidth=6;[[-80,-260,40,-300,140,-250],[-110,-180,0,-160,80,-210],[20,-110,120,-140,220,-110],[120,-300,200,-260,250,-200]].forEach(([a,b,c,d,e,f])=>{g.beginPath();g.moveTo(a,b);g.quadraticCurveTo(c,d,e,f);g.stroke();});
+  // blood vessels: warm going out (back), cool coming in (neck)
+  g.lineWidth=14;g.strokeStyle='#ff6a6a';g.shadowColor='#ff6a6a';g.shadowBlur=20;g.beginPath();g.moveTo(200,-120);g.quadraticCurveTo(230,120,150,500);g.stroke();
+  g.strokeStyle='#6fd8ff';g.shadowColor='#6fd8ff';g.beginPath();g.moveTo(40,500);g.quadraticCurveTo(-20,200,-40,-80);g.stroke();g.shadowBlur=0;
+  // flow chevrons
+  [[176,200,1.4,'#ff9a9a'],[194,0,1.5,'#ff9a9a'],[-10,250,-1.75,'#bff0ff'],[-34,50,-1.62,'#bff0ff']].forEach(([x,y,a,c],i)=>{const o=((lt*.6+i*.25)%1)*30;g.save();g.translate(x,y+(a>0?o:-o));g.rotate(a);g.strokeStyle=c;g.lineWidth=7;g.beginPath();g.moveTo(-12,-14);g.lineTo(4,0);g.lineTo(-12,14);g.stroke();g.restore();});
+  g.restore();}
+function air(lt){g.save();for(let i=0;i<5;i++){const Q=R0(300+i),w=Math.sin(lt*.9+i)*16;g.strokeStyle='rgba(130,220,255,.45)';g.lineWidth=12+Q()*10;g.lineCap='round';g.shadowColor='#6fd8ff';g.shadowBlur=30;
+    g.beginPath();g.moveTo(-40,950+i*36);g.bezierCurveTo(120,930+i*30+w,220,1000+i*14,HX-200,1100+i*6);g.stroke();}g.shadowBlur=0;
+  for(let i=0;i<30;i++){const Q=R0(400+i),u=(Q()+lt*.15)%1,x=-20+(HX-190+20)*u,y=950+Q()*170+Math.sin(u*6+i)*14*(1-u),r=4+Q()*8;g.globalAlpha=.9*(1-u*.5);g.fillStyle=Q()<.5?'#bff0ff':'#8fdcff';g.shadowColor='#6fd8ff';g.shadowBlur=18;g.beginPath();g.arc(x,y,r,0,7);g.fill();}
+  g.globalAlpha=1;g.shadowBlur=0;g.restore();}
+function draw(lt){g.drawImage(bg,0,0);
+  DOTS.forEach(([x,y,r,a,c,ph])=>{g.globalAlpha=a*(.6+.4*Math.sin(lt*2+ph));g.fillStyle=c;g.beginPath();g.arc(x+Math.sin(lt*.5+ph)*12,y,r,0,7);g.fill();});g.globalAlpha=1;
+  head(lt);air(lt);
+  label('Warm brain cools down',70,640,640,800,'#ff8a4c');
+  label('Cool air rushes in',60,1300,260,1110,'#8fdcff');
+  label('Jaw stretch pumps blood',300,1690,620,1520,'#ff9a9a');
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('Every yawn may be',540,200);
+  const a='a ',b='brain cooler';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,300);g.fillStyle='#8fdcff';g.shadowColor='rgba(111,216,255,.9)';g.shadowBlur=30;g.fillText(b,x0+wa,300);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>

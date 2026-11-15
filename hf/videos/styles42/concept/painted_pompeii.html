@@ -1,0 +1,68 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles42 concept: /painted-story how Pompeii vanished in one day (hand-painted look of styles28/33/37).
+// Facts (Britannica, Smithsonian, Pompeii Archaeological Park): Vesuvius erupted in AD 79; a tall column of ash and pumice rained
+// on Pompeii for many hours, then pyroclastic surges the next morning buried the town under several metres of ash; it was found
+// again in 1748. Own drawing: a generic Roman street (columns, temple front), no specific building copied.
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const HZ=1050;
+const sky=off(1080,1920,(p,w,h)=>{const R=R0(16);const s=p.createLinearGradient(0,0,0,HZ);s.addColorStop(0,'#2a1e22');s.addColorStop(.45,'#6b3a2a');s.addColorStop(.8,'#c0623a');s.addColorStop(1,'#e59a58');p.fillStyle=s;p.fillRect(0,0,w,HZ+10);
+  strokes(p,2200,R,0,0,w,HZ,['#3a2a2c','#6e4434','#9a5636','#2e2226'],170,34,0);
+  strokes(p,700,R,-50,700,1180,380,['#e8a868','#d07a46','#f2c08a'],220,40,-0.03,0.06,0.16);});
+// Vesuvius with the umbrella-shaped (Plinian) ash column
+const VES=off(1080,1300,(p)=>{const R=R0(9);
+  // trunk of the ash column
+  p.filter='blur(10px)';for(let i=0;i<110;i++){const t=i/110,x=560+Math.sin(t*6)*18,y=900-t*320,r=30+t*50;p.fillStyle='rgba(52,42,44,'+(0.7-t*0.2)+')';p.beginPath();p.arc(x+(R()-.5)*40,y+(R()-.5)*24,r,0,7);p.fill();}
+  // umbrella top: billows spreading wide, lit orange from below
+  p.filter='blur(4px)';for(let i=0;i<150;i++){const u=R(),x=560+(u-.5)*2*(140+430*R()),y=590+(R()-.5)*90+Math.abs(x-560)*0.08,r=40+R()*60;
+    p.fillStyle='rgba(60,46,48,.85)';p.beginPath();p.arc(x,y,r,0,7);p.fill();p.fillStyle='rgba(200,110,60,.22)';p.beginPath();p.arc(x,y+r*.45,r*.7,0,Math.PI);p.fill();}
+  for(let i=0;i<70;i++){const x=200+R()*720,y=540+R()*40,r=36+R()*44;p.fillStyle='rgba(90,72,70,.6)';p.beginPath();p.arc(x,y,r,Math.PI,0);p.fill();}
+  p.filter='blur(30px)';for(let i=0;i<20;i++){p.fillStyle='rgba(40,32,36,.25)';p.beginPath();p.ellipse(100+R()*900,640+R()*120,200,60,0,0,7);p.fill();}p.filter='none';
+  p.fillStyle='#3a2a2a';p.beginPath();p.moveTo(120,HZ+20);p.quadraticCurveTo(380,940,500,905);p.lineTo(620,905);p.quadraticCurveTo(760,940,1000,HZ+20);p.closePath();p.fill();
+  strokes(p,260,R,180,910,780,140,['#2a1e20','#4a3430','#6a4030'],70,14,-0.3,0.15,0.25);
+  p.fillStyle='rgba(255,130,40,.9)';p.filter='blur(8px)';p.beginPath();p.ellipse(560,906,60,16,0,0,7);p.fill();p.filter='none';
+  // lava glow streaks down the flank
+  p.strokeStyle='rgba(255,120,40,.6)';p.lineWidth=6;p.filter='blur(2px)';[[530,920,470,1000],[600,920,660,1010]].forEach(([a,b,c,d])=>{p.beginPath();p.moveTo(a,b);p.quadraticCurveTo((a+c)/2+10,(b+d)/2,c,d);p.stroke();});p.filter='none';});
+// Roman street: columns, a temple front, houses; painted in dark warm tones, rim-lit by the glow
+const TOWN=off(1080,900,(p)=>{const R=R0(33);
+  p.fillStyle='#5a3a2e';p.fillRect(0,120,1080,780);
+  // temple front (generic): steps, 6 columns, pediment
+  p.fillStyle='#9a6a52';p.beginPath();p.moveTo(380,40);p.lineTo(560,-40);p.lineTo(740,40);p.closePath();p.fill();p.fillRect(390,40,340,24);
+  for(let i=0;i<6;i++){const x=405+i*60;p.fillStyle='#6a4434';p.fillRect(x-6,64,72,230);p.fillStyle='#b07a5c';p.fillRect(x,64,34,230);p.fillStyle='rgba(255,180,110,.55)';p.fillRect(x+24,64,10,230);p.fillStyle='#c48a68';p.fillRect(x-6,58,46,12);}
+  p.fillStyle='#5a382c';for(let i=0;i<4;i++)p.fillRect(370-i*16,294+i*18,380+i*32,18);
+  // houses left and right
+  [[0,150,330,240],[60,90,180,300],[760,140,320,250],[880,70,200,320]].forEach(([x,y,w,h])=>{p.fillStyle='#55352a';p.fillRect(x,y,w,h);p.fillStyle='#3e261f';p.fillRect(x-6,y-14,w+12,18);
+    p.fillStyle='#2a1814';for(let k=0;k<3;k++)p.fillRect(x+20+k*(w/3),y+60,30,50);p.fillStyle='rgba(255,170,100,.25)';p.fillRect(x+w-10,y,10,h);});
+  strokes(p,900,R,0,0,1080,900,['#5e3a2c','#3e261f','#7a4a36','#2e1c18'],80,16,0,0.1,0.2);
+  // street with stepping stones
+  p.fillStyle='#3a2420';p.beginPath();p.moveTo(380,900);p.lineTo(500,400);p.lineTo(620,400);p.lineTo(760,900);p.closePath();p.fill();
+  p.fillStyle='#5e4036';[[480,620],[560,620],[640,620]].forEach(([x,y])=>{p.beginPath();p.ellipse(x,y,26,12,0,0,7);p.fill();});
+  strokes(p,300,R,380,400,380,500,['#4a2e28','#2a1814','#5a3a30'],50,10,1.4,0.1,0.25);});
+const BOIL=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#e8a868','#120808','#f4d79c'],120,22,0.1,0.02,0.05);});
+function runner(x,y,s){g.save();g.translate(x,y);g.scale(s,s);g.fillStyle='#140c0a';
+  g.beginPath();g.arc(0,-150,20,0,7);g.fill();
+  g.beginPath();g.moveTo(-26,-128);g.quadraticCurveTo(-46,-40,-30,20);g.lineTo(34,20);g.quadraticCurveTo(30,-60,22,-128);g.closePath();g.fill(); // tunic
+  g.strokeStyle='#140c0a';g.lineCap='round';g.lineWidth=13;g.beginPath();g.moveTo(-10,18);g.lineTo(-44,96);g.moveTo(14,18);g.lineTo(40,92);g.stroke();
+  g.lineWidth=11;g.beginPath();g.moveTo(-14,-112);g.lineTo(-60,-150);g.moveTo(16,-112);g.lineTo(40,-170);g.stroke(); // arms up over the head
+  g.fillStyle='rgba(255,150,80,.5)';g.beginPath();g.arc(-6,-156,20,Math.PI*1.2,Math.PI*1.8);g.fill();
+  g.restore();}
+function draw(lt){g.drawImage(sky,0,0);g.drawImage(VES,0,0);
+  const gl=g.createRadialGradient(560,900,20,560,900,520);gl.addColorStop(0,'rgba(255,140,60,.5)');gl.addColorStop(1,'rgba(255,140,60,0)');g.fillStyle=gl;g.fillRect(0,300,1080,1000);
+  g.drawImage(TOWN,0,1020);
+  // ash and pumice falling, heavier toward the top
+  const R=R0(81);for(let i=0;i<320;i++){const x=(R()*1180+lt*14*(R()+.5))%1080,y=(R()*1920+lt*110*(R()+.4))%1920,r=1.5+R()*4.5;g.fillStyle=R()<.7?'rgba(70,60,60,'+(0.5+R()*.4)+')':'rgba(230,200,170,'+(0.4+R()*.4)+')';g.beginPath();g.arc(x,y,r,0,7);g.fill();}
+  // ash drifts on the street
+  g.fillStyle='rgba(150,130,120,.55)';g.beginPath();g.moveTo(0,1920);g.quadraticCurveTo(300,1780,560,1830);g.quadraticCurveTo(820,1870,1080,1760);g.lineTo(1080,1920);g.fill();
+  runner(450,1640,1.3);runner(640,1560,0.9);
+  // date scrap
+  g.save();g.translate(860,1640);g.rotate(0.06);tornPath(g,-90,-90,180,180,7,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.5)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#8a1c10';g.fillRect(-90,-90,180,46);g.fillStyle='#f3e6c8';g.font='italic 500 38px '+SERIF;g.textAlign='center';g.fillText('Pompeii',0,-55);g.fillStyle='#2c1c0e';g.font='italic 500 62px '+SERIF;g.fillText('AD 79',0,36);g.restore();
+  [['AD 79: Vesuvius wakes up.',-0.02],['Ash rains down all night.',0.015],['By morning, the town is gone.',-0.01]].forEach(([t,r],i)=>{g.save();g.font='italic 500 '+(i===2?72:70)+'px '+SERIF;const w=g.measureText(t).width+64,y=150+i*112;
+    g.translate(50,y);g.rotate(r);tornPath(g,0,0,w,96,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=i===2?'#8a1c10':'#2c1c0e';g.fillText(t,32,70);g.restore();});
+  g.drawImage(BOIL,0,0);g.drawImage(GRAIN,0,0);
+  const vg=g.createRadialGradient(540,1000,380,540,1000,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,6,6,.6)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
