@@ -1,6 +1,14 @@
 [
  {
-  "name": "styles42",
-  "text": "Type slash flat science, how your eyes see color… and you get this. Type slash paper collage, how the Great Wall was built… and you get this. Type slash painted story, the lighthouse of Alexandria… and you get this. Comment FABLE and I'll send you the prompts."
+  "name": "vsl_planes",
+  "text": "Why don't planes fly straight? On a flat map, the straight line from New York to Tokyo crosses the Pacific. But Earth is a sphere. The shortest path curves north, over Alaska. It's called a great circle. So the curve on your screen is the straight line."
+ },
+ {
+  "name": "vsl_coffee",
+  "text": "Why does coffee wake you up? All day, a molecule called adenosine builds up in your brain and makes you sleepy. Caffeine has almost the same shape. It blocks adenosine's receptors, so your brain never gets the tired signal. When it wears off, the sleepiness hits all at once."
+ },
+ {
+  "name": "vsl_venice",
+  "text": "Venice is sinking. The city stands on millions of wooden piles, driven into soft mud. Last century, pumping groundwater made it sink even faster. The pumping stopped. But the sea keeps rising. And the floods keep coming."
  }
 ]
