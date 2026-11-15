@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D what-if Earth commands 5",
+ "tool_name": "Claude Code 3D what-if Earth commands 5",
+ "keyword": "TIDE",
+ "summary_cs": "„Type it, get it #35“ z picklistu „What if… Earth 5“ (nic jsi netapnul; nahrazuje verzi s tsunami, která dvakrát neprošla režisérskou kontrolou): Měsíc v poloviční vzdálenosti = 8× silnější slapová síla (slapová síla klesá s třetí mocninou vzdálenosti, NOAA), Země v řezu až k jádru (kůra ~30 km, plášť ~2 900 km, tekuté vnější jádro, pevné vnitřní jádro až 5 400 °C, NASA) a tajfun Tip 1979 přes Evropu (vítr o síle vichřice až 1 100 km od oka ≈ 2 200 km napříč, NOAA AOML), vše v kódu s Opus 5.5, hudba t1, 25,2 s. Než schválíš, nastav automatickou DM na slovo TIDE.",
+ "style": "hyperframes-paper",
+ "duration": 25.3,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-15_0649",
+ "run_id": null,
+ "artifact": null
+}
