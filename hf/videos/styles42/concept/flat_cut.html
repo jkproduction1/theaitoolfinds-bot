@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles42 concept: /flat-science how your body heals a cut (same cell look as styles19 "how your body fights a virus", Jan's favourite).
+// Facts (MedlinePlus "Wound healing", NIH NHLBI "Blood clotting"): within seconds platelets stick to the torn vessel and plug it; a fibrin
+// net forms and traps red blood cells into a clot (the scab); white blood cells move in and eat germs; new skin then grows under it.
+const g=document.getElementById('c').getContext('2d');
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.55,h*.55,60,w*.5,h*.5,1300);gr.addColorStop(0,'#27328a');gr.addColorStop(.5,'#151c57');gr.addColorStop(1,'#070a25');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[200,1500,260,'rgba(170,70,200,.35)'],[900,1300,300,'rgba(60,120,255,.30)'],[700,700,240,'rgba(255,90,120,.22)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});});
+const rbc=(blur)=>off(260,260,(p)=>{p.filter='blur('+blur+'px)';p.translate(130,130);p.fillStyle='#d94a66';p.beginPath();p.ellipse(0,0,96,84,0,0,7);p.fill();p.fillStyle='#b83754';p.beginPath();p.ellipse(6,8,52,42,0,0,7);p.fill();p.fillStyle='#ee6a82';p.beginPath();p.ellipse(-30,-36,30,14,-0.6,0,7);p.fill();});
+const RB=[rbc(14),rbc(0)],R=R0(7),DOTS=[],BG=[];
+for(let i=0;i<60;i++)DOTS.push([R()*1080,R()*1920,2+R()*8,R()*.45+.15,R()<.5?'#6fd3ff':'#c39bff',R()*6]);
+for(let i=0;i<7;i++)BG.push([R()*1080,1200+R()*700,0.6+R()*0.6,R()*6]);
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:(tx>x+w?x+w:x+w/2),y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(9,12,44,.85)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+// skin cross-section with a V-shaped cut in the middle
+const SK=820, GAP0=420, GAP1=660, DEEP=1460;
+function skin(lt){g.save();
+  const layer=(y0,y1,c,sh)=>{g.beginPath();g.moveTo(-20,y0);for(let x=-20;x<=GAP0;x+=30)g.lineTo(x,y0+Math.sin(x*.02+lt*.6)*6);g.lineTo(GAP0+(540-GAP0)*(y0-SK)/(DEEP-SK),y0);
+    g.lineTo(GAP0+(540-GAP0)*(y1-SK)/(DEEP-SK),y1);g.lineTo(-20,y1);g.closePath();g.fillStyle=c;g.fill();
+    g.beginPath();g.moveTo(1100,y0);for(let x=1100;x>=GAP1;x-=30)g.lineTo(x,y0+Math.sin(x*.02+lt*.6)*6);g.lineTo(GAP1-(GAP1-540)*(y0-SK)/(DEEP-SK),y0);
+    g.lineTo(GAP1-(GAP1-540)*(y1-SK)/(DEEP-SK),y1);g.lineTo(1100,y1);g.closePath();g.fill();};
+  g.shadowColor='rgba(255,140,120,.55)';g.shadowBlur=60;layer(SK,SK+70,'#ffb59c');g.shadowBlur=0;layer(SK+70,SK+300,'#ff8a72');layer(SK+300,DEEP,'#ef6f5e');g.fillStyle='#e0605a';g.fillRect(0,DEEP,1080,1920-DEEP);g.fillStyle='rgba(255,200,120,.35)';const Q=R0(3);for(let i=0;i<40;i++){g.beginPath();g.arc(Q()*1080,DEEP+40+Q()*420,24+Q()*30,0,7);g.fill();}
+  // skin cells (rounded tiles) in the top layer
+  g.fillStyle='rgba(255,220,200,.7)';for(let x=10;x<1080;x+=64){if(x>GAP0-60&&x<GAP1+20)continue;g.beginPath();g.roundRect(x,SK+14,52,40,16);g.fill();}
+  // torn blood vessel crossing the cut
+  g.strokeStyle='#c43a5a';g.lineWidth=46;g.lineCap='round';g.beginPath();g.moveTo(-20,DEEP-90);g.lineTo(470,DEEP-90);g.moveTo(610,DEEP-90);g.lineTo(1100,DEEP-90);g.stroke();
+  g.strokeStyle='#e85a78';g.lineWidth=26;g.stroke();g.restore();}
+function platelet(x,y,s,lt,ph){g.save();g.translate(x,y);g.rotate(ph+lt*.3);g.shadowColor='#ffd36a';g.shadowBlur=26;g.fillStyle='#ffd36a';g.beginPath();
+  for(let i=0;i<10;i++){const a=i/10*6.283,r=(i%2?14:22)*s;g.lineTo(Math.cos(a)*r,Math.sin(a)*r);}g.closePath();g.fill();g.shadowBlur=0;g.fillStyle='#fff3c4';g.beginPath();g.arc(-4*s,-4*s,6*s,0,7);g.fill();g.restore();}
+function fibrin(lt){g.save();g.strokeStyle='rgba(255,236,150,.85)';g.shadowColor='#ffe08a';g.shadowBlur=18;g.lineWidth=5;g.lineCap='round';const Q=R0(55);
+  for(let i=0;i<26;i++){const x0=GAP0+30+Q()*200,y0=SK+20+Q()*560,x1=x0+(Q()-.5)*260,y1=y0+(Q()-.5)*200;g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo((x0+x1)/2+Math.sin(lt+i)*12,(y0+y1)/2-20,x1,y1);g.stroke();}g.restore();}
+function bacterium(x,y,lt,k){g.save();g.translate(x+Math.sin(lt*1.4+k)*8,y);g.rotate(k+lt*.2);g.shadowColor='rgba(120,255,160,.7)';g.shadowBlur=30;g.fillStyle='#4fe08a';g.beginPath();g.roundRect(-40,-18,80,36,18);g.fill();g.shadowBlur=0;
+  g.strokeStyle='#a6ffbf';g.lineWidth=4;for(let i=-1;i<=1;i+=2){g.beginPath();g.moveTo(40*i,0);g.quadraticCurveTo(58*i,-14,72*i,4);g.stroke();}g.restore();}
+function wbc(x,y,r,lt){g.save();g.shadowColor='rgba(200,220,255,.7)';g.shadowBlur=50;blobPath(g,x,y,r,11,0.05,140,lt*1.4);g.fillStyle='#e9ecff';g.fill();g.shadowBlur=0;
+  blobPath(g,x-8,y-10,r*0.86,11,0.05,140,lt*1.4);g.fillStyle='#f5f6ff';g.fill();g.fillStyle='#8f6be0';[[30,40,40],[78,52,34],[100,6,28]].forEach(([dx,dy,rr])=>{g.beginPath();g.arc(x+dx,y+dy,rr,0,7);g.fill();});g.restore();}
+function draw(lt){g.drawImage(bg,0,0);
+  BG.forEach(([x,y,s,ph])=>{g.save();g.globalAlpha=.4;g.translate(x+Math.sin(lt*.4+ph)*20,y);g.rotate(ph+lt*.15);g.scale(s*1.4,s*1.4);g.drawImage(RB[0],-130,-130);g.restore();});
+  DOTS.forEach(([x,y,r,a,c,ph])=>{g.globalAlpha=a*(.6+.4*Math.sin(lt*2+ph));g.fillStyle=c;g.beginPath();g.arc(x+Math.sin(lt*.5+ph)*12,y,r,0,7);g.fill();});g.globalAlpha=1;
+  skin(lt);
+  // clot: red cells caught in the fibrin net inside the cut
+  [[520,900,.38,.3],[580,960,.34,1.2],[500,1040,.36,2],[570,1120,.32,.8],[540,1220,.3,2.6],[600,870,.3,1.7],[470,940,.3,.5],[530,1320,.26,1.1]].forEach(([x,y,s,ph])=>{g.save();g.translate(x,y);g.rotate(ph+Math.sin(lt*.5+ph)*.1);g.scale(s,s);g.drawImage(RB[1],-130,-130);g.restore();});
+  fibrin(lt);
+  [[GAP0+20,SK+40],[GAP0+60,SK+220],[GAP0+100,SK+420],[GAP1-30,SK+60],[GAP1-70,SK+240],[GAP1-100,SK+440],[520,DEEP-130],[560,DEEP-80],[600,SK+140]].forEach(([x,y],i)=>platelet(x,y,1,lt,i));
+  // germs trying to get in, a white blood cell grabbing one
+  bacterium(230,560,lt,0);bacterium(880,620,lt,1);bacterium(720,1640,lt,2);wbc(860,1680,130,lt);
+  // red cells leaking out of the torn vessel below
+  label('Platelets plug the hole',40,1120,GAP0+60,SK+220,'#ffd36a');
+  label('A net traps blood cells',560,1000,580,960,'#ffe08a');
+  label('White cells eat germs',60,1820,760,1700,'#c9d2ff');
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('How a cut',540,220);
+  const b='seals itself';g.fillStyle='#ffd36a';g.shadowColor='rgba(255,211,106,.8)';g.shadowBlur=30;g.fillText(b,540,320);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>
