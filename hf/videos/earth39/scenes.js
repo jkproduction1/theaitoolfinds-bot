@@ -117,7 +117,7 @@ const nf39=new Intl.NumberFormat('en-US');
 // ocean tidal bulge (exaggerated ellipsoid shell) swells toward the Moon and on the far side; odometers run 384,400 -> 192,200 km and x1 -> x8.
 function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=vnoise(9); const im=c.createImageData(w,h);
   for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const u=x/w*10, v=y/h*5; let e=fbm(n,u,v,6); const mare=fbm(n2,u*0.5+3,v*0.5,4)>0.56?0.55:1; let g=(95+120*e)*mare; const i=(y*w+x)*4; im.data[i]=g; im.data[i+1]=g*0.98; im.data[i+2]=g*0.95; im.data[i+3]=255; }
-  c.putImageData(im,0,0); const r=rnd(12); for(let i=0;i<420;i++){ const x=r()*w,y=r()*h,rr=2+Math.pow(r(),3)*26; c.strokeStyle='rgba(30,30,30,.35)'; c.lineWidth=rr*0.25; c.beginPath(); c.arc(x,y,rr,0,7); c.stroke(); c.strokeStyle='rgba(255,255,255,.25)'; c.lineWidth=rr*0.12; c.beginPath(); c.arc(x-rr*0.15,y-rr*0.15,rr,3.6,5.6); c.stroke(); } }); }
+  c.putImageData(im,0,0); const r=rnd(12); for(let i=0;i<520;i++){ const x=r()*w,y=r()*h,rr=1.5+Math.pow(r(),3)*22; let g=c.createRadialGradient(x+rr*0.2,y+rr*0.2,0,x,y,rr); g.addColorStop(0,'rgba(20,20,20,.22)'); g.addColorStop(0.75,'rgba(20,20,20,.08)'); g.addColorStop(0.92,'rgba(255,255,255,.10)'); g.addColorStop(1,'rgba(255,255,255,0)'); c.fillStyle=g; c.beginPath(); c.arc(x,y,rr,0,7); c.fill(); } }); }
 (function(){ const ren=mkRenderer2('cv0'), sc=new THREE.Scene(); sc.background=new THREE.Color(0x020306); ren.toneMappingExposure=1.0;
   const cam=new THREE.PerspectiveCamera(42,1080/1920,0.05,500); const P=mkComposer(ren,sc,cam,{bloom:0.55,radius:0.5,th:0.8});
   starField(sc,1800,31,300);
@@ -131,7 +131,7 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
   earth.rotation.set(0.35,-2.2,0); sc.add(earth);
   // tidal bulge: translucent ocean shell stretched along the Moon direction
   const BU={uK:{value:0},uSun:{value:SUN},uT:{value:0}};
-  const bulge=new THREE.Mesh(new THREE.SphereGeometry(1.004,120,90),new THREE.ShaderMaterial({uniforms:BU,transparent:true,depthWrite:false,toneMapped:false,
+  const bulge=new THREE.Mesh(new THREE.SphereGeometry(1.015,200,160),new THREE.ShaderMaterial({uniforms:BU,transparent:true,depthWrite:false,toneMapped:false,
     vertexShader:'varying vec3 vN; varying vec3 vW; varying vec3 vL; void main(){ vL=position; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }',
     fragmentShader:GLN+`uniform float uK,uT; uniform vec3 uSun; varying vec3 vN; varying vec3 vW; varying vec3 vL;
       void main(){ vec3 N=normalize(vN); vec3 V=normalize(cameraPosition-vW); float ax=abs(normalize(vL).y); float lift=pow(ax,3.);
@@ -139,7 +139,7 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
         float n=fbm(vL.xz*9.+vec2(uT*0.3,0.))*0.5+fbm(vL.yx*14.-uT*0.2)*0.5;
         vec3 col=mix(vec3(0.05,0.32,0.62),vec3(0.35,0.75,1.0),lift)*(0.25+0.9*k)+vec3(0.8,0.95,1.)*pow(max(dot(reflect(-uSun,N),V),0.),40.)*k*0.8;
         col+=vec3(0.6,0.9,1.)*smoothstep(0.62,0.7,n)*lift*0.25;
-        float a=(0.12+0.75*lift)*uK*(0.6+0.4*fr); gl_FragColor=vec4(col,a); }`}));
+        float a=(0.03+0.95*lift*lift)*uK*(0.6+0.4*fr)*smoothstep(0.0,0.18,dot(N,V)); col+=vec3(0.4,0.8,1.)*lift*lift*0.6; gl_FragColor=vec4(col,a); }`}));
   sc.add(bulge);
   const moon=new THREE.Mesh(new THREE.SphereGeometry(0.273,96,64),new THREE.MeshStandardMaterial({map:moonTex(),roughness:0.95,metalness:0}));
   sc.add(moon); const dl=new THREE.DirectionalLight(0xffffff,2.6); dl.position.copy(SUN).multiplyScalar(10); sc.add(dl); sc.add(new THREE.AmbientLight(0x223040,0.25));
@@ -148,12 +148,12 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
   const pull=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1,8),glowMat(0xff6a3d,0.9)); sc.add(pull);
   const W0=new THREE.Vector3();
   SCN[0]=function(lt){ U.uT.value=lt; BU.uT.value=lt;
-    const a=easeIO(cl((lt-0.35)/2.6)); const d=lerp(5.6,2.8,a); moon.position.copy(MD).multiplyScalar(d); moon.rotation.y=0.6+lt*0.05;
+    const a=easeIO(cl((lt-0.35)/3.4)); const d=lerp(5.6,2.8,a); moon.position.copy(MD).multiplyScalar(d); moon.rotation.y=0.6+lt*0.05;
     const pullK=Math.pow(5.6/d,3); // 1 -> 8
-    const b=0.02*pullK; bulge.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),MD); bulge.scale.set(1-b*0.35,1+b,1-b*0.35); BU.uK.value=cl(lt/0.5);
+    const b=0.03*pullK; bulge.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),MD); bulge.scale.set(1,1+b,1); BU.uK.value=cl(lt/0.5);
     pull.position.copy(MD).multiplyScalar((1.08+d-0.3)/2); pull.scale.y=d-0.3-1.08; pull.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),MD); pull.material.opacity=0.25+0.1*pullK*win(lt,0.3,9);
     earth.rotation.y=-2.2+lt*0.06;
-    const u=easeIO(cl(lt/4.2)); cam.position.set(lerp(1.0,0.7,u),lerp(0.5,0.7,u),lerp(6.2,7.0,u)); cam.lookAt(lerp(-0.6,-0.7,u),lerp(1.5,1.35,u),-0.3);
+    const u=easeIO(cl(lt/5.6)); cam.position.set(lerp(1.0,0.7,u),lerp(0.5,0.7,u),lerp(6.2,7.0,u)); cam.lookAt(lerp(-0.6,-0.7,u),lerp(1.5,1.35,u),-0.3);
     P.c.render();
     let [x,y]=proj(moon.position,cam); setLab('l0_0',x+110,y-40,win(lt,0.3,9),'Moon',nf39.format(Math.round(384400/(5.6/d)/100)*100)+' km away');
     W0.copy(MD).multiplyScalar(1.0+b+0.02); [x,y]=proj(W0,cam); setLab('l0_1',x+60,y+30,win(lt,0.9,9),'Tidal pull','×'+pullK.toFixed(1));
@@ -161,56 +161,77 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
     caption(0,lt); };
 })();
 
-// ---------- S1 /what-if a mega tsunami hit New York: generic dusk skyline of our own design (inspired by a dense harbour city, no real
-// landmark copied). A wave crest rises out of the bay and marches into the city; the water level behind it stays high and swallows the
-// lower floors. Hypothetical: no height claimed. Caption = the real record (Lituya Bay 1958, 525 m run-up, NOAA JetStream).
+// ---------- S1 /what-if a mega tsunami hit New York (v2): low camera on the waterfront at dusk, our own generic towers (setbacks, soft
+// window lights) on the left, a huge wave rolling in from the bay with a curling lip, foam and spray. Hypothetical: no height claimed.
+// Caption = the real record (Lituya Bay 1958, 525 m run-up, NOAA JetStream).
 (function(){ const ren=mkRenderer2('cv1'), sc=new THREE.Scene(); ren.toneMappingExposure=1.0;
-  sc.background=canvasTex(16,512,(c,w,h)=>{ const g=c.createLinearGradient(0,0,0,h); g.addColorStop(0,'#0b1430'); g.addColorStop(0.42,'#3a3f6e'); g.addColorStop(0.62,'#c8644a'); g.addColorStop(0.72,'#ffb36b'); g.addColorStop(0.78,'#4a3a4a'); g.addColorStop(1,'#141822'); c.fillStyle=g; c.fillRect(0,0,w,h); });
-  const cam=new THREE.PerspectiveCamera(46,1080/1920,0.1,400); const P=mkComposer(ren,sc,cam,{bloom:0.45,radius:0.5,th:0.9});
-  const WU={uT:{value:0},uF:{value:30},uH:{value:0},uL:{value:0}};
-  const WH=`uniform float uT,uF,uH,uL; float wh(vec2 p){ float z=p.y; float s=0.06*sin(p.x*1.3+uT*1.6)+0.05*sin(p.x*0.7-p.y*1.1+uT*1.2)+0.04*sin(p.y*2.1+uT*2.0);
-    float dz=z-uF; float crest=uH*(dz>0.?exp(-dz*dz/9.):exp(-dz*dz/1.3)); float plat=uL*smoothstep(4.,-1.,dz)*smoothstep(-40.,-5.,dz);
-    return s+max(crest,plat)+0.25*uH*sin(p.x*0.45+uT)*exp(-dz*dz/9.); }`;
-  const wg=new THREE.PlaneGeometry(80,80,320,320); wg.rotateX(-Math.PI/2);
+  sc.background=canvasTex(16,512,(c,w,h)=>{ const g=c.createLinearGradient(0,0,0,h); g.addColorStop(0,'#070b1c'); g.addColorStop(0.35,'#262a4c'); g.addColorStop(0.55,'#7a4a52'); g.addColorStop(0.63,'#e08a5a'); g.addColorStop(0.68,'#3a2c38'); g.addColorStop(1,'#0c1018'); c.fillStyle=g; c.fillRect(0,0,w,h); });
+  const cam=new THREE.PerspectiveCamera(46,1080/1920,0.1,400); const P=mkComposer(ren,sc,cam,{bloom:0.45,radius:0.5,th:0.88});
+  const WU={uT:{value:0},uF:{value:40},uH:{value:0}};
+  const WH=`uniform float uT,uF,uH; float wh(vec2 p){ float dz=p.y-uF; float s=0.07*sin(p.x*1.3+uT*1.6)+0.06*sin(p.x*0.7-p.y*1.1+uT*1.2)+0.05*sin(p.y*2.1+uT*2.0);
+    float hx=uH*(1.+0.12*sin(p.x*0.21+1.3)); float crest=hx*(dz<0.?exp(-dz*dz/2.2):exp(-dz*dz/40.)); float trough=-0.35*uH*exp(-pow((dz+5.5)/2.5,2.));
+    return s+crest+trough; }`;
+  const wg=new THREE.PlaneGeometry(120,90,360,300); wg.rotateX(-Math.PI/2); wg.translate(0,0,30);
+  const WFS=`varying vec3 vW; varying vec3 vNn; varying float vFo; varying float vSl; uniform float uT;
+    void main(){ vec3 N=normalize(vNn+vec3(fbm(vW.xz*1.5+vW.y*0.8+uT)-.5,0.,fbm(vW.zx*1.5-vW.y*0.8-uT)-.5)*0.07); vec3 V=normalize(cameraPosition-vW); float fr=0.03+0.97*pow(1.-max(dot(N,V),0.),5.);
+      vec3 R=reflect(-V,N); float sky=clamp(R.y,0.,1.); vec3 skyC=mix(vec3(0.9,0.52,0.36),vec3(0.16,0.17,0.32),smoothstep(0.,0.45,sky));
+      vec3 deep=vec3(0.012,0.04,0.055); vec3 col=mix(deep,skyC*0.6,fr);
+      col+=vec3(0.015,0.10,0.09)*vSl*max(dot(N,V),0.); // light through the thin wave face
+      vec3 S=normalize(vec3(0.,0.10,1.)); col+=vec3(1.,0.68,0.42)*pow(max(dot(R,S),0.),160.)*1.4;
+      float n=fbm(vec2(vW.x*1.4,vW.y*1.6+vW.z*1.2)+vec2(0.,-uT*1.5)); float foam=vFo*smoothstep(0.35,0.7,n+vFo*0.3); col=mix(col,vec3(0.72,0.72,0.74),clamp(foam,0.,0.92));
+      gl_FragColor=vec4(col,1.); }`;
   const water=new THREE.Mesh(wg,new THREE.ShaderMaterial({uniforms:WU,toneMapped:false,
-    vertexShader:GLN+WH+`varying vec3 vW; varying vec3 vNn; varying float vFo; void main(){ vec3 p=position; float h=wh(p.xz); float e=0.08; float dz=p.z-uF;
-      vec3 N=normalize(vec3(-(wh(p.xz+vec2(e,0.))-h)/e,1.,-(wh(p.xz+vec2(0.,e))-h)/e)); vNn=N; vFo=smoothstep(1.2,-0.2,dz)*smoothstep(-3.5,-0.6,dz)*smoothstep(0.5*uH,0.9*uH,h)*step(0.5,uH)+0.35*smoothstep(-0.5,-6.,dz)*step(0.3,uL)*smoothstep(-14.,-4.,dz); p.y=h; vec4 w=modelMatrix*vec4(p,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
-    fragmentShader:GLN+`varying vec3 vW; varying vec3 vNn; varying float vFo; uniform float uT; void main(){ vec3 N=normalize(vNn+vec3(fbm(vW.xz*2.+uT)-.5,0.,fbm(vW.zx*2.-uT)-.5)*0.25);
-      vec3 V=normalize(cameraPosition-vW); float fr=0.04+0.96*pow(1.-max(dot(N,V),0.),5.);
-      vec3 R=reflect(-V,N); float sky=clamp(R.y,0.,1.); vec3 skyC=mix(vec3(1.0,0.62,0.38),vec3(0.25,0.27,0.48),smoothstep(0.,0.5,sky));
-      vec3 deep=vec3(0.02,0.07,0.10); vec3 col=mix(deep,skyC*0.55,fr);
-      vec3 S=normalize(vec3(0.,0.12,-1.)); col+=vec3(1.,0.7,0.4)*pow(max(dot(R,S),0.),120.)*1.2;
-      col+=vec3(0.05,0.18,0.2)*clamp(vW.y*0.4,0.,1.)*max(dot(N,V),0.);
-      float foam=vFo*(smoothstep(0.4,0.7,fbm(vW.xz*2.5+vec2(0.,uT*2.)))*0.9+0.15); col=mix(col,vec3(0.78,0.74,0.72),clamp(foam,0.,0.9));
-      gl_FragColor=vec4(col,1.); }`}));
+    vertexShader:GLN+WH+`varying vec3 vW; varying vec3 vNn; varying float vFo; varying float vSl; void main(){ vec3 p=position; float h=wh(p.xz); float e=0.08; float dz=p.z-uF;
+      vec3 N=normalize(vec3(-(wh(p.xz+vec2(e,0.))-h)/e,1.,-(wh(p.xz+vec2(0.,e))-h)/e)); vNn=N; vSl=clamp(-N.z*1.5,0.,1.)*step(0.5,uH)*smoothstep(0.,0.6*uH,h);
+      vFo=smoothstep(0.75*uH,0.98*uH,h)*step(1.,uH)+0.3*smoothstep(1.,4.,dz)*smoothstep(12.,5.,dz)*step(1.,uH);
+      p.y=h; vec4 w=modelMatrix*vec4(p,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,fragmentShader:GLN+WFS}));
   sc.add(water);
-  // city: instanced towers with procedural lit windows
-  const R=rnd(77); const N=420; const bg=new THREE.BoxGeometry(1,1,1); bg.translate(0,0.5,0);
-  const bm=new THREE.ShaderMaterial({toneMapped:false,uniforms:{uT:{value:0}},
+  // curling lip: a sheet that leaves the crest top and curls forward/down toward the camera
+  const NX=220, NA=26; const lg=new THREE.PlaneGeometry(1,1,NX-1,NA-1); const LP=lg.attributes.position;
+  const LU={uT:{value:0},uF:{value:40},uH:{value:0},uC:{value:0}};
+  const lip=new THREE.Mesh(lg,new THREE.ShaderMaterial({uniforms:LU,side:THREE.DoubleSide,toneMapped:false,transparent:true,
+    vertexShader:'varying vec3 vW; varying vec3 vNn; varying float vFo; varying float vSl; varying float vA; attribute float aa; void main(){ vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; vNn=normalize(mat3(modelMatrix)*normal); vFo=smoothstep(0.55,1.,aa)*0.9+0.15; vSl=1.-aa; vA=aa; gl_Position=projectionMatrix*viewMatrix*w; }',
+    fragmentShader:GLN+WFS.replace('gl_FragColor=vec4(col,1.);','gl_FragColor=vec4(col,1.-smoothstep(0.93,1.,vA)*0.6);').replace('varying float vSl;','varying float vSl; varying float vA;')}));
+  const AA=new Float32Array(NX*NA); lg.setAttribute('aa',new THREE.BufferAttribute(AA,1)); lip.frustumCulled=false; sc.add(lip);
+  function updLip(lt){ const H=WU.uH.value, F=WU.uF.value, curl=LU.uC.value;
+    for(let j=0;j<NA;j++) for(let i=0;i<NX;i++){ const k=j*NX+i; const x=-60+120*i/(NX-1); const a=j/(NA-1); AA[k]=a;
+      const hx=H*(1+0.12*Math.sin(x*0.21+1.3)); const r=0.22*hx*(0.75+0.25*Math.sin(x*0.13+lt*0.8)); const ang=a*(0.3+2.3*curl);
+      const z=F-r*Math.sin(ang)*1.35, y=hx-r+r*Math.cos(ang)-0.05; LP.setXYZ(k,x,y,z); }
+    LP.needsUpdate=true; lg.computeVertexNormals(); }
+  // spray: soft particles thrown off the lip
+  const NS=1600, spr=cloudPoints(NS,softDot(),650,THREE.NormalBlending); sc.add(spr); const SR=rnd(9); const SD=[]; for(let i=0;i<NS;i++) SD.push([SR()*120-60,SR(),SR(),SR()]);
+  function updSpray(lt){ const H=WU.uH.value, F=WU.uF.value, g=spr.geometry; const pa=g.attributes.position, ca=g.attributes.color, sa=g.attributes.sz, al=g.attributes.al;
+    for(let i=0;i<NS;i++){ const [x,ph,v,s]=SD[i]; const life=((lt*0.55+ph)%1); const hx=H*(1+0.12*Math.sin(x*0.21+1.3));
+      pa.setXYZ(i,x+Math.sin(ph*40)*0.6,hx*0.98+life*(0.8+1.6*v)-life*life*1.4,F-0.6-life*(1.5+2.5*s)); ca.setXYZ(i,0.78,0.78,0.8); sa.setX(i,0.6+2.4*s*life+0.4); al.setX(i,0.13*Math.sin(Math.PI*life)*cl((H-1)/3)); }
+    pa.needsUpdate=ca.needsUpdate=sa.needsUpdate=al.needsUpdate=true; }
+  // towers with setbacks, soft window lights
+  const bg=new THREE.BoxGeometry(1,1,1); bg.translate(0,0.5,0);
+  const bm=new THREE.ShaderMaterial({toneMapped:false,
     vertexShader:'varying vec3 vW; varying vec3 vN; varying float vS; void main(){ vec4 w=modelMatrix*instanceMatrix*vec4(position,1.); vW=w.xyz; vN=normalize(mat3(modelMatrix*instanceMatrix)*normal); vS=instanceMatrix[3].x*13.1+instanceMatrix[3].z*7.7; gl_Position=projectionMatrix*viewMatrix*w; }',
     fragmentShader:GLN+`varying vec3 vW; varying vec3 vN; varying float vS; void main(){ vec3 N=normalize(vN); float fx=abs(N.x)>0.5?vW.z:vW.x;
-      vec2 g=vec2(fx*5.,vW.y*4.); vec2 id=floor(g), f=fract(g); float win=step(0.18,f.x)*step(f.x,0.82)*step(0.2,f.y)*step(f.y,0.75);
-      float on=step(0.74,h21(id+vec2(vS,vS*1.7)))*win*step(0.5,1.-abs(N.y));
-      vec3 base=mix(vec3(0.07,0.075,0.10),vec3(0.16,0.15,0.18),clamp(vW.y*0.06,0.,1.)); base+=vec3(0.55,0.3,0.2)*max(dot(N,normalize(vec3(0.,0.15,-1.))),0.)*0.0+vec3(0.35,0.22,0.2)*max(-N.z,0.)*0.15;
-      base+=vec3(0.18,0.2,0.3)*max(N.x,0.)*0.35; vec3 wc=mix(vec3(1.,0.78,0.45),vec3(0.75,0.85,1.),h21(id+3.1));
-      vec3 col=base*0.38+wc*on*0.8; col*=0.65+0.35*smoothstep(-1.,3.,vW.y); gl_FragColor=vec4(col,1.); }`});
-  const city=new THREE.InstancedMesh(bg,bm,N); const M=new THREE.Matrix4(); let k=0; const TOP=[];
-  for(let i=0;i<N;i++){ const x=(R()-0.5)*30, z=-1.5-R()*16; const c=Math.exp(-Math.pow(x/7,2))*Math.exp(-Math.pow((z+7)/6,2));
-    const h=0.8+R()*2.2+c*(5+R()*7); const w=0.7+R()*0.9, d=0.7+R()*0.9; M.compose(new THREE.Vector3(x,-0.2,z),new THREE.Quaternion(),new THREE.Vector3(w,h,d)); city.setMatrixAt(k++,M); TOP.push([x,h,z]); }
-  sc.add(city);
-  const spire=new THREE.Group(); const tw=new THREE.Mesh(bg,bm); tw.scale.set(1.3,12.5,1.3); spire.add(tw); const t2=new THREE.Mesh(bg,bm); t2.scale.set(0.8,2.2,0.8); t2.position.y=12.5; spire.add(t2);
-  const ant=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.06,2.2,8),new THREE.MeshBasicMaterial({color:0x9aa0b0})); ant.position.y=15.8; spire.add(ant);
-  const red=new THREE.Mesh(new THREE.SphereGeometry(0.08,8,8),glowMat(0xff3020,1)); red.position.y=16.9; spire.add(red); spire.position.set(-1.5,-0.2,-8); sc.add(spire);
-  // shore / quay
-  const quay=new THREE.Mesh(new THREE.BoxGeometry(80,0.6,30),new THREE.MeshBasicMaterial({color:0x101218})); quay.position.set(0,-0.15,-15.6); sc.add(quay);
+      vec2 g=vec2(fx*2.2,vW.y*1.9); vec2 id=floor(g), f=fract(g); float win=smoothstep(0.1,0.25,f.x)*smoothstep(0.9,0.75,f.x)*smoothstep(0.12,0.3,f.y)*smoothstep(0.85,0.68,f.y);
+      float side=step(0.5,1.-abs(N.y)); float r=h21(id+vec2(vS,vS*1.7)); float on=smoothstep(0.62,0.75,r)*win*side;
+      float band=smoothstep(0.02,0.0,abs(f.y-0.06))*0.25*side; float mull=step(0.5,fract(fx*0.5))*0.0;
+      vec3 base=vec3(0.010,0.012,0.018)+vec3(0.05,0.03,0.03)*max(N.z,0.)*0.5+vec3(0.012,0.014,0.025)*max(N.x,0.); base+=band*vec3(0.06,0.06,0.08);
+      vec3 wc=mix(vec3(1.,0.72,0.42),vec3(0.8,0.86,1.),h21(id+3.1))*(0.45+0.4*h21(id+7.))*1.0; vec3 col=base+wc*on*0.6+win*side*vec3(0.006,0.008,0.012);
+      col+=vec3(0.9,0.5,0.3)*pow(max(N.z,0.),2.)*0.06*smoothstep(0.,14.,vW.y); gl_FragColor=vec4(col,1.); }`});
+  const R=rnd(61); const PARTS=[]; let tallest=null;
+  for(let i=0;i<52;i++){ const x=0.5-Math.pow(R(),0.8)*16, z=3+R()*10; const w=1.4+R()*1.8, d=1.4+R()*1.8; let h=2+R()*5+Math.exp(-Math.pow((x+5)/4,2))*(6+R()*8);
+    let y=-0.3, ww=w, dd=d; const tiers=1+(h>7?2:h>4?1:0); for(let t=0;t<tiers;t++){ const th=t===tiers-1?h*(t?0.3:1):h*(t?0.25:0.6); PARTS.push([x,y,z,ww,th,dd]); y+=th; ww*=0.78; dd*=0.78; }
+    if(!tallest||y>tallest[1]) tallest=[x,y,z]; }
+  const city=new THREE.InstancedMesh(bg,bm,PARTS.length); const M=new THREE.Matrix4(); PARTS.forEach((p,i)=>{ M.compose(new THREE.Vector3(p[0],p[1],p[2]),new THREE.Quaternion(),new THREE.Vector3(p[3],p[4],p[5])); city.setMatrixAt(i,M); }); sc.add(city);
+  const ant=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.07,2.4,8),new THREE.MeshBasicMaterial({color:0x6a7080})); ant.position.set(tallest[0],tallest[1]+1.2,tallest[2]); sc.add(ant);
+  const red=new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),glowMat(0xff3020,1)); red.position.set(tallest[0],tallest[1]+2.45,tallest[2]); sc.add(red);
+  const quay=new THREE.Mesh(new THREE.BoxGeometry(44,0.5,13),new THREE.MeshBasicMaterial({color:0x0b0d13})); quay.position.set(-20.5,-0.05,8.5); sc.add(quay);
   const pW=new THREE.Vector3();
-  SCN[1]=function(lt){ WU.uT.value=lt; bm.uniforms.uT.value=lt; red.material.opacity=0.4+0.6*(Math.sin(lt*6)>0?1:0.3);
-    const a=cl(lt/4.4); WU.uF.value=lerp(18,-3,easeIO(cl((lt-0.1)/4.4))*0.85+a*0.15); WU.uH.value=lerp(0.2,4.6,easeIO(cl(lt/1.8))); WU.uL.value=lerp(0,2.4,easeIO(cl((lt-1.2)/2.4)));
-    const u=easeIO(cl(lt/4.6)); cam.position.set(lerp(15,12,u),lerp(7.0,8.2,u),lerp(36,25,u)); cam.lookAt(lerp(0,-1,u),lerp(3.4,3.8,u),lerp(2,-6,u));
+  SCN[1]=function(lt){ WU.uT.value=lt; LU.uT.value=lt; red.material.opacity=Math.sin(lt*5)>0?1:0.35;
+    const a=easeIO(cl(lt/5.6)); WU.uF.value=lerp(48,19,a); WU.uH.value=lerp(3,13,easeIO(cl(lt/3.4))); LU.uC.value=easeIO(cl((lt-0.6)/3.4)); LU.uF.value=WU.uF.value;
+    updLip(lt); updSpray(lt);
+    const u=easeIO(cl(lt/5.6)); cam.position.set(lerp(7,6,u),lerp(2.2,1.8,u),lerp(-17,-13,u)); cam.lookAt(lerp(0.5,1.5,u),lerp(6.5,7.5,u),25);
     P.c.render();
-    pW.set(5,WU.uH.value+0.3,WU.uF.value.valueOf()); let [x,y]=proj(pW,cam); setLab('l1_0',x+60,y-20,win(lt,0.5,9));
-    [x,y]=proj(new THREE.Vector3(-1.5,15,-8),cam); setLab('l1_1',x+50,y,win(lt,1.0,9));
-    setLab('l1_2',90,1050,win(lt,1.8,9));
+    pW.set(6,WU.uH.value*1.05,WU.uF.value); let [x,y]=proj(pW,cam); setLab('l1_0',x+30,y-30,win(lt,0.5,99));
+    [x,y]=proj(new THREE.Vector3(tallest[0],tallest[1],tallest[2]),cam); setLab('l1_1',Math.max(70,x-40),y+170,win(lt,1.2,99));
+    setLab('l1_2',90,1050,win(lt,2.0,99));
     caption(1,lt); };
 })();
 
@@ -218,14 +239,14 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
 // eyewall, eye) centred over central Europe, its gale-force wind field 1,100 km in radius (Typhoon Tip, Oct 1979, NOAA AOML TC FAQ E5),
 // i.e. ~2,200 km across = 0.1727 rad of Earth's surface. Counter-clockwise spin (northern hemisphere).
 (function(){ const ren=mkRenderer2('cv2'), sc=new THREE.Scene(); sc.background=new THREE.Color(0x020306); ren.toneMappingExposure=1.0;
-  const cam=new THREE.PerspectiveCamera(40,1080/1920,0.01,500); const P=mkComposer(ren,sc,cam,{bloom:0.5,radius:0.5,th:0.82});
+  const cam=new THREE.PerspectiveCamera(40,1080/1920,0.01,500); const P=mkComposer(ren,sc,cam,{bloom:0.4,radius:0.5,th:0.92});
   starField(sc,1500,58,300);
   const C=llVec(49,11,1).normalize(); const SUN=C.clone().add(new THREE.Vector3(0.5,0.35,0)).normalize();
   const E=earthReal(); const U={uDay:{value:E.day},uCl:{value:E.clouds},uT:{value:0},uSun:{value:SUN}};
   const earth=new THREE.Mesh(new THREE.SphereGeometry(1,220,160),new THREE.ShaderMaterial({uniforms:U,vertexShader:EARTH_VS,toneMapped:false,
     fragmentShader:`uniform sampler2D uDay,uCl; uniform float uT; uniform vec3 uSun; varying vec2 vU; varying vec3 vN; varying vec3 vW;
       void main(){ vec3 d=texture2D(uDay,vU).rgb; float c=texture2D(uCl,vU).r; vec3 N=normalize(vN); float k=smoothstep(-0.2,0.5,dot(N,uSun));
-        vec3 col=mix(d,vec3(1.),c*0.35)*(0.08+1.15*k); vec3 V=normalize(cameraPosition-vW); col+=vec3(0.35,0.6,1.)*pow(1.-max(dot(N,V),0.),3.)*0.7; gl_FragColor=vec4(col,1.); }`}));
+        vec3 col=mix(d,vec3(1.),c*0.35)*(0.08+1.0*k); col=1.-exp(-col*1.25); vec3 V=normalize(cameraPosition-vW); col+=vec3(0.35,0.6,1.)*pow(1.-max(dot(N,V),0.),3.)*0.7; gl_FragColor=vec4(col,1.); }`}));
   sc.add(earth);
   const T1=new THREE.Vector3(0,1,0).cross(C).normalize(), T2=C.clone().cross(T1).normalize();
   const TU={uT:{value:0},uC:{value:C},uA:{value:T1},uB:{value:T2},uR:{value:0.1727},uG:{value:0},uRing:{value:0},uSun:{value:SUN}};
@@ -249,11 +270,11 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
   sc.add(storm);
   const W=new THREE.Vector3();
   SCN[2]=function(lt){ TU.uT.value=lt; TU.uG.value=easeIO(cl((lt+0.2)/1.6)); TU.uRing.value=easeIO(cl((lt-1.4)/0.5));
-    const u=easeIO(cl(lt/4.0)); const d=lerp(1.75,3.2,u); const up=new THREE.Vector3(0,1,0);
+    const u=easeIO(cl(lt/5.6)); const d=lerp(1.75,3.2,u); const up=new THREE.Vector3(0,1,0);
     const dir=C.clone().add(T2.clone().multiplyScalar(lerp(-0.05,-0.12,u))).normalize(); cam.position.copy(dir).multiplyScalar(d); cam.up.copy(up); cam.lookAt(C.clone().multiplyScalar(0.92).add(T2.clone().multiplyScalar(lerp(0.0,0.06,u))));
     P.c.render();
     let [x,y]=proj(C,cam); setLab('l2_0',x+50,y-40,win(lt,0.3,9));
     W.copy(C).multiplyScalar(Math.cos(0.1727)).add(T1.clone().multiplyScalar(Math.sin(0.1727))).multiplyScalar(1.01); [x,y]=proj(W,cam); setLab('l2_1',x-20,y+70,win(lt,1.5,9));
-    W.copy(llVec(41,-4,1.0)); [x,y]=proj(W,cam); setLab('l2_2',x-180,y+40,win(lt,2.0,9));
+    W.copy(llVec(40,-4,1.0)); [x,y]=proj(W,cam); setLab('l2_2',x+14,y,win(lt,2.0,99));
     caption(2,lt); };
 })();

@@ -16,7 +16,7 @@ Make a 4-second 9:16 (1080x1920, 30 fps) three.js "what if" animation: the Moon 
 Make a 4-second 9:16 three.js animation at dusk: a dense harbour skyline (your own generic towers with lit windows, one tall spire, no real
 landmarks), a calm bay in front. A huge wave crest rises out of the bay, marches toward the city and the water stays high behind it,
 swallowing the lower floors. Physically based water: Fresnel sky reflection, a low orange sun glint, foam only on the crest.
-- Slow push-in from above the bay. Headline "Real record: a 525 m tsunami, Alaska 1958." (Lituya Bay run-up, NOAA). No made-up heights.
+- Slow push-in from above the bay. Headline "Real record: 525 m tsunami run-up, Alaska 1958." (Lituya Bay run-up, NOAA). No made-up heights.
 - Labels: "The wave – rising out of the bay", "Downtown", "What if – no real forecast".
 
 ## /scale the biggest typhoon versus Europe

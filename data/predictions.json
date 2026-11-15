@@ -3909,85 +3909,6 @@
   }
  },
  {
-  "name": "space38",
-  "date": "2026-11-15",
-  "score": 81,
-  "mode": "full",
-  "features": {
-   "hook": 0.25,
-   "hook_words": 14,
-   "hook_end_s": 4.16,
-   "tool_named_s": null,
-   "payoff": 0.5,
-   "wps": 2.12,
-   "dur_s": 22.9,
-   "words": 45,
-   "pace": 0.35,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 1.75,
-   "visual_changes": 49,
-   "visuals": 1.0,
-   "ending": 1.0,
-   "angle": "app-demo",
-   "topic": 1.0
-  },
-  "flags": [
-   "hook má 14 slov (cíl ≤10)",
-   "hook končí v 4.2 s (cíl ≤2,5 s)"
-  ],
-  "weights": {
-   "topic": 30,
-   "hook": 12,
-   "payoff": 9,
-   "pace": 8,
-   "length": 13,
-   "filler": 8,
-   "visuals": 18,
-   "ending": 2
-  }
- },
- {
-  "name": "earth39",
-  "date": "2026-11-15",
-  "score": 79,
-  "mode": "full",
-  "features": {
-   "hook": 0.19,
-   "hook_words": 12,
-   "hook_end_s": 3.83,
-   "tool_named_s": null,
-   "payoff": 0.5,
-   "wps": 2.08,
-   "dur_s": 23.7,
-   "words": 46,
-   "pace": 0.32,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 2.75,
-   "visual_changes": 51,
-   "visuals": 0.9,
-   "ending": 1.0,
-   "angle": "app-demo",
-   "topic": 1.0
-  },
-  "flags": [
-   "hook končí v 3.8 s (cíl ≤2,5 s)"
-  ],
-  "weights": {
-   "topic": 30,
-   "hook": 12,
-   "payoff": 9,
-   "pace": 8,
-   "length": 13,
-   "filler": 8,
-   "visuals": 18,
-   "ending": 2
-  }
- },
- {
   "name": "neon40",
   "date": "2026-11-15",
   "score": 68,
@@ -4013,6 +3934,122 @@
    "topic": 0.78
   },
   "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "space38",
+  "date": "2026-11-15",
+  "score": 78,
+  "mode": "full",
+  "features": {
+   "hook": 0.25,
+   "hook_words": 14,
+   "hook_end_s": 4.16,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.82,
+   "dur_s": 26.3,
+   "words": 45,
+   "pace": 0.1,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.75,
+   "visual_changes": 61,
+   "visuals": 0.9,
+   "ending": 1.0,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 4.2 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "earth39",
+  "date": "2026-11-15",
+  "score": 75,
+  "mode": "full",
+  "features": {
+   "hook": 0.19,
+   "hook_words": 12,
+   "hook_end_s": 3.83,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.79,
+   "dur_s": 27.2,
+   "words": 46,
+   "pace": 0.08,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.0,
+   "visual_changes": 63,
+   "visuals": 0.8,
+   "ending": 1.0,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 3.8 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "earth41",
+  "date": "2026-11-15",
+  "score": 74,
+  "mode": "script",
+  "features": {
+   "hook": 0.19,
+   "hook_words": 12,
+   "hook_end_s": 4.62,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.5,
+   "words": 44,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 4.6 s (cíl ≤2,5 s)"
+  ],
   "weights": {
    "topic": 30,
    "hook": 12,

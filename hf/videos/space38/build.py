@@ -21,7 +21,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {13: 2.7, 25: 2.6, 36: 2.6}
+GAPS = {13: 3.9, 25: 3.8, 36: 3.6}
 TEMPO = 1.18  # voice ~12 % faster (reviewer: aim for ~20 s)
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
@@ -109,7 +109,7 @@ KEYPOS[" "] = (460, y3)
 LABELS = [
     [("Black hole", "nothing escapes it"), ("Tidal stream", "the star, stretched thin"), ("Hot disk", "debris glowing as it falls")],
     [("Acid clouds", "sulfuric acid droplets"), ("Crushing air", "~90× Earth's pressure"), ("Volcanic surface", "hot enough to melt lead")],
-    [("Magnetar", "~20 km across"), ("Manhattan", "~21.6 km long"), ("Magnetic field", "strongest known in the universe")],
+    [("Magnetar", "~20 km across"), ("Manhattan", "~21.6 km long"), ("Magnetic field", "strongest known")],
 ]
 ui = ['<script src="assets/three.min.js"></script><script src="assets/three-extras.js"></script><script src="assets/studio_exr.js"></script><script src="assets/earth_tex.js"></script><div class="ui" id="ui">',
       '<div id="sb"><span>9:41</span><span>●●● <i></i></span></div>',
@@ -265,10 +265,10 @@ TY.forEach((d,k)=>{
   tl.set('#snd',{backgroundColor:'#ff4b1f'},d.slash+0.05);
   tl.set('#chipc',{opacity:0},d.p0);
   tl.to('#snd',{scale:.85,duration:.06,yoyo:true,repeat:1},d.send-0.08);
-  F2(['#kbw','#inp'],{y:0,opacity:1},{y:620,opacity:0,duration:.3,ease:'power3.in'},d.send);
+  F2(['#kbw','#inp'],{y:0,opacity:1},{y:620,opacity:0,duration:.26,ease:'power3.in'},d.send-0.1);
   F2('#ub',{opacity:0,y:30,scale:.9},{opacity:1,y:0,scale:1,duration:.25,ease:'back.out(2)'},d.send);
   F2('#run',{opacity:0,x:-20},{opacity:1,x:0,duration:.2},d.send+0.06);
-  F2('#bot',{opacity:0},{opacity:1,duration:.2},d.send+0.15);
+  F2('#bot',{opacity:0},{opacity:1,duration:.2},d.send+0.15); F2(['#bot','#ub','#run'],{opacity:1},{opacity:0,duration:.15},d.full+0.1);
   tl.set('#snd',{backgroundColor:'#3a3a3a'},d.send+0.3);
   F2('#st'+k,{opacity:0,scale:.5,y:140,borderRadius:60},{opacity:1,scale:.58,y:110,borderRadius:60,duration:.3,ease:'back.out(1.6)'},d.card);
   F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.36,ease:'expo.inOut'},d.full);

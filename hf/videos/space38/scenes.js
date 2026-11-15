@@ -148,13 +148,13 @@ function cloudPoints(n,tex,size,blend){ const g=new THREE.BufferGeometry(); g.se
   const pStar=new THREE.Object3D(); sc.add(pStar); const pDisk=new THREE.Object3D(); pDisk.position.set(RH*3.4,0,RH*1.2); sc.add(pDisk);
   SCN[0]=function(lt){ SU.uT.value=lt; DU.uT.value=lt;
     // star falls in along the path head, then is torn into a stream
-    const head=0.32*easeIO(cl(lt/1.3))+0.55*cl((lt-1.3)/2.4); const tear=smooth(0.7,1.7,lt);
+    const head=0.32*easeIO(cl(lt/1.3))+0.6*cl((lt-1.3)/4.0); const tear=smooth(0.7,1.7,lt);
     const hp=path(head*0.55); star.position.set(hp[0],hp[1],hp[2]);
     const toBH=star.position.clone().negate().normalize(); star.quaternion.setFromUnitVectors(new THREE.Vector3(1,0,0),toBH);
     star.scale.set(1+2.2*tear,1-0.45*tear,1-0.45*tear); star.material.opacity=1-smooth(1.0,1.8,lt); star.visible=lt<1.85;
     halo.position.copy(star.position); halo.scale.setScalar(1.6*(1-0.6*tear)); halo.material.opacity=0.5*(1-smooth(1.1,1.9,lt));
     pStar.position.copy(star.position);
-    for(let i=0;i<NP;i++){ const o=PA[i]; const spread=tear*(0.15+1.15*cl((lt-0.9)/2.4));
+    for(let i=0;i<NP;i++){ const o=PA[i]; const spread=tear*(0.15+1.15*cl((lt-0.9)/3.8));
       let s=head*0.55+(o.u-0.5)*0.12*(1-tear)+(o.u-0.35)*spread; s=Math.max(0,s);
       const p=path(Math.min(s,1.0)); let x=p[0],y=p[1],z=p[2];
       if(s>1.0){ const k=s-1.0; const a=Math.atan2(z,x)-k*7.0, r=RH*(1.6+2.6*o.h); x=Math.cos(a)*r; z=Math.sin(a)*r; y*=0.3; }
@@ -163,8 +163,8 @@ function cloudPoints(n,tex,size,blend){ const g=new THREE.BufferGeometry(); g.se
       const hot=cl(s); col[i*3]=1.0; col[i*3+1]=0.55+0.35*(1-hot)*o.h+0.2*hot; col[i*3+2]=0.18+0.4*hot*o.h;
       sz[i]=o.s*(0.7+0.5*hot); al[i]=smooth(0.6,1.1,lt)*0.3; }
     ['position','color','sz','al'].forEach(k=>cloud.geometry.attributes[k].needsUpdate=true);
-    DU.uFeed.value=0.15+0.85*smooth(1.5,3.4,lt);
-    const u=easeIO(cl(lt/4.2)); cam.position.set(-0.8+0.8*u,3.9-0.9*u,9.6-2.6*u); cam.lookAt(-0.6+0.6*u,-0.75+0.35*u,-0.3+0.3*u);
+    DU.uFeed.value=0.15+0.85*smooth(1.5,4.2,lt);
+    const u=easeIO(cl(lt/5.6)); cam.position.set(-0.8+0.8*u,3.9-0.9*u,9.6-2.6*u); cam.lookAt(-0.6+0.6*u,-0.75+0.35*u,-0.3+0.3*u);
     pr.position.set(0,0,0); P.c.render();
     fixLab('l0_0',640,1080,win(lt,0.3,9)); fixLab('l0_1',90,560,win(lt,1.2,9)); fixLab('l0_2',600,640,win(lt,2.3,9));
     caption(0,lt); };
@@ -200,19 +200,20 @@ function cloudPoints(n,tex,size,blend){ const g=new THREE.BufferGeometry(); g.se
   const atm=new THREE.Mesh(new THREE.SphereGeometry(1.04,64,48),new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.BackSide,
     vertexShader:'varying vec3 vN; void main(){ vN=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
     fragmentShader:'varying vec3 vN; void main(){ float i=pow(max(0.,0.72-dot(vN,vec3(0,0,1.))),3.); gl_FragColor=vec4(1.,0.8,0.5,1.)*i*1.2; }'})); sc.add(atm);
-  SCN[1]=function(lt){ U.uT.value=lt+2.; U.uX.value=smooth(0.45,0.7,lt); U.uS.value=1.05-1.75*easeIO(cl((lt-0.55)/1.7));
-    const u=easeIO(cl(lt/4.2)); const az=0.25+0.22*u; const d=7.6-1.8*u;
+  SCN[1]=function(lt){ U.uT.value=lt+2.; U.uX.value=smooth(0.45,0.7,lt); U.uS.value=1.05-1.85*easeIO(cl((lt-0.55)/2.2));
+    const u=easeIO(cl(lt/5.6)); const az=0.25+0.3*u; const d=7.6-2.0*u;
     cam.position.set(Math.sin(az)*d,0.55-0.15*u,Math.cos(az)*d); cam.lookAt(0.05*u,0.2*u,0); clouds.rotation.y=surf.rotation.y=-0.05*lt; P.c.render();
     fixLab('l1_0',560,560,win(lt,0.35,9)); fixLab('l1_1',90,600,win(lt,1.5,9)); fixLab('l1_2',520,1030,win(lt,2.2,9));
     caption(1,lt); };
 })();
 
-// ---------- S2 /scale a magnetar versus Manhattan: 1 unit = 1 km. A magnetar ~20 km across (NASA) beside a long, narrow island city of our
-// own generic design, 21.6 km long (Manhattan's length). Night, the star's blue glow and field lines light the water. Camera pulls back.
+// ---------- S2 /scale a magnetar versus Manhattan: TRUE scale, 1 unit = 1 km, long-lens camera (little perspective) so both share one
+// km-per-pixel scale. Magnetar ~20 km across (NASA) on the left; on the right an island city 21.6 km long (Manhattan's length): simple
+// narrow island outline with a street grid of our own (no copied map art). Orange scale bars with their own labels. Camera zooms out.
 (function(){ const ren=mkRenderer2('cv2'), sc=new THREE.Scene(); sc.background=new THREE.Color(0x02040a); ren.toneMappingExposure=1.0;
-  const cam=new THREE.PerspectiveCamera(40,1080/1920,0.05,2000); const P=mkComposer(ren,sc,cam,{bloom:0.5,radius:0.55,th:0.8});
-  starField(sc,1500,29,900);
-  const MC=new THREE.Vector3(-8.5,10,0), MR=10;
+  const cam=new THREE.PerspectiveCamera(6,1080/1920,1,3000); const P=mkComposer(ren,sc,cam,{bloom:0.45,radius:0.55,th:0.82});
+  starField(sc,1500,29,2000);
+  const MR=10, MC=new THREE.Vector3(-11.5,MR,0);
   const MU={uT:{value:0}};
   const mag=new THREE.Mesh(new THREE.SphereGeometry(MR,128,96),new THREE.ShaderMaterial({uniforms:MU,toneMapped:false,
     vertexShader:'varying vec3 vN; varying vec3 vP; void main(){ vN=normalize(normalMatrix*normal); vP=normalize(position); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
@@ -222,47 +223,50 @@ function cloudPoints(n,tex,size,blend){ const g=new THREE.BufferGeometry(); g.se
         vec3 c=mix(vec3(0.18,0.30,0.75),vec3(0.75,0.85,1.1),g*0.8+pole*0.5)*(0.45+0.55*pow(mu,0.4));
         c+=vec3(0.45,0.35,1.2)*pow(1.-mu,2.5)*0.7; gl_FragColor=vec4(c*0.7,1.); }`}));
   mag.position.copy(MC); mag.rotation.z=0.35; sc.add(mag);
-  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:softDot(),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,color:0x7aa0ff,opacity:0.3}));
-  glow.position.copy(MC); glow.scale.setScalar(MR*3.2); sc.add(glow);
-  // dipole field lines
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:softDot(),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,color:0x7aa0ff,opacity:0.28}));
+  glow.position.copy(MC); glow.scale.setScalar(MR*3.0); sc.add(glow);
   const FG=new THREE.Group(); FG.position.copy(MC); FG.rotation.z=0.35; sc.add(FG); const fm=glowMat(0x9a7dff,0.0);
-  [1.8,2.5,3.4].forEach(L=>{ for(let k=0;k<6;k++){ const ph=k/6*Math.PI*2; const pts=[]; const t0=Math.asin(Math.sqrt(1/L));
+  [1.6,2.1,2.7].forEach(L=>{ for(let k=0;k<6;k++){ const ph=k/6*Math.PI*2; const pts=[]; const t0=Math.asin(Math.sqrt(1/L));
       for(let i=0;i<=60;i++){ const th=t0+(Math.PI-2*t0)*i/60, r=MR*L*Math.pow(Math.sin(th),2); pts.push(new THREE.Vector3(r*Math.sin(th)*Math.cos(ph),r*Math.cos(th),r*Math.sin(th)*Math.sin(ph))); }
-      FG.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),80,0.09,6,false),fm)); } });
-  // water
-  const water=new THREE.Mesh(new THREE.PlaneGeometry(400,400),new THREE.MeshStandardMaterial({color:0x07101c,roughness:0.75,metalness:0.25})); water.rotation.x=-Math.PI/2; sc.add(water);
-  const pl=new THREE.PointLight(0x8fb0ff,3.0,0,1.2); pl.position.copy(MC); sc.add(pl); sc.add(new THREE.AmbientLight(0x2a3550,0.6));
-  const refl=new THREE.Sprite(new THREE.SpriteMaterial({map:softDot(),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,toneMapped:false,color:0x4f74ff,opacity:0.2}));
-  refl.position.set(MC.x,0.05,MC.z+2); refl.scale.set(30,8,1); sc.add(refl);
-  // island: long narrow lens shape, 21.6 km along z, max ~3.6 km wide, our own generic outline
-  const IL=21.6, IWm=3.6; const half=(z)=>{ const t=(z+IL/2)/IL; return IWm/2*Math.pow(Math.sin(Math.PI*Math.min(1,Math.max(0,t))),0.55)*(0.85+0.15*Math.sin(t*9.)); };
-  const sh=new THREE.Shape(); for(let i=0;i<=80;i++){ const z=-IL/2+IL*i/80; const x=half(z); i?sh.lineTo(x,z):sh.moveTo(x,z); } for(let i=80;i>=0;i--){ const z=-IL/2+IL*i/80; sh.lineTo(-half(z),z); }
-  const ig=new THREE.ExtrudeGeometry(sh,{depth:0.06,bevelEnabled:false}); ig.rotateX(Math.PI/2); ig.translate(0,0.06,0);
-  const ISL=new THREE.Group(); ISL.position.set(6.5,0,-1); ISL.rotation.y=0.12; sc.add(ISL);
-  ISL.add(new THREE.Mesh(ig,new THREE.MeshStandardMaterial({color:0x1b2230,roughness:0.9})));
-  // street-grid buildings
-  const R=rnd(77), B=[]; for(let z=-IL/2+0.3;z<IL/2-0.3;z+=0.16){ const hw=half(z)-0.12; for(let x=-hw;x<hw;x+=0.13){ if(R()<0.2) continue; const dz=Math.abs(z+3.5);
-      const tall=Math.exp(-dz*dz/6)*0.35+Math.exp(-Math.pow(z-6.5,2)/2)*0.22; const h=0.02+R()*0.05+tall*R()*1.6; B.push([x,z,h]); } }
-  const bm=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshStandardMaterial({color:0x8a9bb8,roughness:0.6,emissive:0xffc070,emissiveIntensity:0.0}),B.length);
-  const M=new THREE.Matrix4(), bc=new THREE.Color(); B.forEach(([x,z,h],i)=>{ M.compose(new THREE.Vector3(x,0.06+h/2,z),new THREE.Quaternion(),new THREE.Vector3(0.1,h,0.12)); bm.setMatrixAt(i,M);
-    const g=0.35+R()*0.35; bc.setRGB(g,g*1.02,g*1.1); bm.setColorAt(i,bc); }); ISL.add(bm);
-  // window lights as points
-  const NL=Math.min(B.length*2,16000), lp=cloudPoints(NL,softDot(),7,THREE.AdditiveBlending); ISL.add(lp);
-  { const pos=lp.geometry.attributes.position.array, col=lp.geometry.attributes.color.array, sz=lp.geometry.attributes.sz.array, al=lp.geometry.attributes.al.array;
-    for(let i=0;i<NL;i++){ const b=B[(R()*B.length)|0]; pos[i*3]=b[0]+(R()-.5)*0.1; pos[i*3+1]=0.06+R()*b[2]; pos[i*3+2]=b[1]+(R()-.5)*0.12;
-      const w=R(); col[i*3]=1; col[i*3+1]=0.78+0.15*w; col[i*3+2]=0.5+0.4*w; sz[i]=0.5+R()*0.8; al[i]=0.9; } }
-  // scale bars
-  const barM=new THREE.MeshBasicMaterial({color:0xff6a3d,toneMapped:false,transparent:true,opacity:0});
-  const bar1=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,1),barM); ISL.add(bar1); bar1.position.set(IWm/2+0.9,0.15,0);
-  const bar2=new THREE.Mesh(new THREE.BoxGeometry(1,0.12,0.12),barM.clone()); sc.add(bar2); bar2.position.set(MC.x,0.15,MC.z+MR+1.2);
-  const pMag=new THREE.Object3D(); pMag.position.copy(MC).add(new THREE.Vector3(0,MR,0)); sc.add(pMag);
-  SCN[2]=function(lt){ MU.uT.value=lt; const u=easeIO(cl((lt-0.05)/3.6));
-    // start close on the magnetar surface, pull back to see both side by side
-    const C0=new THREE.Vector3(-7,30,44), L0=MC.clone().add(new THREE.Vector3(2,-3,0)); const C1=new THREE.Vector3(-1,82,78), L1=new THREE.Vector3(-1,-2,-2);
-    cam.position.copy(C0).lerp(C1,u).add(new THREE.Vector3(0.6*Math.sin(lt*0.4),0,0)); cam.lookAt(L0.clone().lerp(L1,u));
+      FG.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),80,0.12,6,false),fm)); } });
+  const water=new THREE.Mesh(new THREE.PlaneGeometry(600,600),new THREE.MeshStandardMaterial({color:0x081424,roughness:0.85,metalness:0.15})); water.rotation.x=-Math.PI/2; sc.add(water);
+  const pl=new THREE.PointLight(0x8fb0ff,2.2,0,1.0); pl.position.copy(MC); sc.add(pl); sc.add(new THREE.AmbientLight(0x3a4560,0.9));
+  const hl=new THREE.DirectionalLight(0xbfd0ff,0.6); hl.position.set(-0.3,1,0.6); sc.add(hl);
+  // island along x: 21.6 km long, ~3.7 km at its widest, blunt north end, tapered south tip (generic outline)
+  const IL=21.6, X0=2.0; const half=(x)=>{ const t=(x-X0)/IL; const w=t<0.08?0.25+t/0.08*0.9:t<0.75?1.15+0.7*Math.sin((t-0.08)/0.67*Math.PI):1.15+0.5*(1-Math.pow((t-0.75)/0.25,2.2)); return Math.max(0.15,w)*0.95; };
+  const sh=new THREE.Shape(); const N=120; for(let i=0;i<=N;i++){ const x=X0+IL*i/N; i?sh.lineTo(x,half(x)):sh.moveTo(x,half(x)); } for(let i=N;i>=0;i--){ const x=X0+IL*i/N; sh.lineTo(x,-half(x)*0.9); }
+  const ig=new THREE.ShapeGeometry(sh,1); ig.rotateX(-Math.PI/2); ig.translate(0,0.05,0);
+  // UVs from xz bounds for the street-grid texture
+  { const p=ig.attributes.position, uv=[]; for(let i=0;i<p.count;i++){ uv.push((p.getX(i)-X0)/IL,(p.getZ(i)+2.2)/4.4); } ig.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2)); }
+  const gridT=canvasTex(2160,440,(c,w,h)=>{ c.fillStyle='#2a3242'; c.fillRect(0,0,w,h); const r=rnd(5);
+    for(let x=0;x<w;x+=9){ for(let y=0;y<h;y+=26){ const v=40+r()*40|0; c.fillStyle=`rgb(${v+20},${v+28},${v+44})`; c.fillRect(x+1,y+2,7,22); } }
+    c.fillStyle='rgba(255,214,150,.55)'; for(let y=0;y<h;y+=52) c.fillRect(0,y,w,3); for(let x=0;x<w;x+=36) c.fillRect(x,0,2,h);
+    c.fillStyle='#2f5a3a'; c.fillRect(w*0.40,h*0.36,w*0.19,h*0.28); });
+  const isl=new THREE.Mesh(ig,new THREE.MeshStandardMaterial({map:gridT,roughness:0.9,emissive:0xffffff,emissiveMap:gridT,emissiveIntensity:0.25})); sc.add(isl);
+  const shore=new THREE.Line(new THREE.BufferGeometry().setFromPoints(sh.getPoints(240).map(p=>new THREE.Vector3(p.x,0.08,-p.y))),new THREE.LineBasicMaterial({color:0x9fb4d8,transparent:true,opacity:0.6})); sc.add(shore);
+  // a few low towers so it reads as a city (kept low, true scale: ~0.1-0.4 km)
+  const R=rnd(77), B=[]; for(let i=0;i<900;i++){ const x=X0+0.4+R()*(IL-0.8); const hw=half(x)*0.8; const z=(R()*2-1)*hw; const cl0=Math.exp(-Math.pow((x-X0-1.5)/1.2,2))+Math.exp(-Math.pow((x-X0-8)/1.5,2))*0.7; if(R()>0.25+cl0) continue; B.push([x,z,0.08+R()*0.32*(0.5+cl0)]); }
+  const bm=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshStandardMaterial({color:0x9fb0cc,roughness:0.6,emissive:0xffc070,emissiveIntensity:0.12}),B.length);
+  const M=new THREE.Matrix4(); B.forEach(([x,z,h],i)=>{ M.compose(new THREE.Vector3(x,0.05+h/2,z),new THREE.Quaternion(),new THREE.Vector3(0.14,h,0.14)); bm.setMatrixAt(i,M); }); sc.add(bm);
+  // scale bars (both along x, same depth, in front)
+  const ZB=6.2; const barMat=()=>new THREE.MeshBasicMaterial({color:0xff6a3d,toneMapped:false,transparent:true,opacity:0});
+  const bar1=new THREE.Mesh(new THREE.BoxGeometry(1,0.08,0.35),barMat()); sc.add(bar1); const bar2=new THREE.Mesh(new THREE.BoxGeometry(1,0.08,0.35),barMat()); sc.add(bar2);
+  const tick=(x)=>{ const m=new THREE.Mesh(new THREE.BoxGeometry(0.25,0.08,1.4),barMat()); m.position.set(x,0.1,ZB); sc.add(m); return m; };
+  const ticks=[tick(MC.x-MR),tick(MC.x+MR),tick(X0),tick(X0+IL)];
+  const txt=(s)=>{ const t=canvasTex(512,128,(c,w,h)=>{ c.font='700 84px Inter, Arial, sans-serif'; c.textAlign='center'; c.textBaseline='middle'; c.fillStyle='#ff6a3d'; c.fillText(s,w/2,h/2+4); });
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthWrite:false,toneMapped:false,opacity:0})); sp.scale.set(10,2.5,1); sc.add(sp); return sp; };
+  const t1=txt('20 km'), t2=txt('21.6 km'); t1.position.set(MC.x,0.2,ZB+3.4); t2.position.set(X0+IL/2,0.2,ZB+3.4);
+  const pIsl=new THREE.Object3D(); pIsl.position.set(X0+IL*0.62,0.1,-3.4); sc.add(pIsl);
+  SCN[2]=function(lt){ MU.uT.value=lt; const u=easeIO(cl((lt-0.05)/4.6));
+    const dir=new THREE.Vector3(0,1.35,1).normalize(); const look=MC.clone().add(new THREE.Vector3(0,0,0)).lerp(new THREE.Vector3(1.6,4.5,-1.0),u);
+    cam.position.copy(look).addScaledVector(dir,420).add(new THREE.Vector3(3*Math.sin(lt*0.35),0,0)); cam.fov=5.0+(13.8-5.0)*u; cam.updateProjectionMatrix(); cam.lookAt(look);
     mag.rotation.y=lt*0.25; FG.rotation.y=lt*0.25; fm.opacity=0.5*smooth(0.3,1.0,lt)*(0.85+0.15*Math.sin(lt*6));
-    const b=smooth(1.4,2.4,lt); bar1.scale.z=Math.max(0.001,IL*b); bar1.material.opacity=b; bar2.scale.x=Math.max(0.001,2*MR*smooth(1.0,2.0,lt)); bar2.material.opacity=smooth(1.0,1.3,lt);
+    const b1=smooth(1.3,2.1,lt), b2=smooth(1.9,2.8,lt);
+    bar1.scale.x=Math.max(0.001,2*MR*b1); bar1.position.set(MC.x,0.1,ZB); bar1.material.opacity=Math.min(1,b1*4);
+    bar2.scale.x=Math.max(0.001,IL*b2); bar2.position.set(X0+IL*b2/2,0.1,ZB); bar2.material.opacity=Math.min(1,b2*4);
+    ticks[0].material.opacity=ticks[1].material.opacity=Math.min(1,b1*4); ticks[2].material.opacity=ticks[3].material.opacity=Math.min(1,b2*4); ticks[3].position.x=X0+IL*b2;
+    t1.material.opacity=smooth(1.9,2.3,lt); t2.material.opacity=smooth(2.6,3.0,lt);
     P.c.render();
-    fixLab('l2_0',90,560,win(lt,0.3,9)); fixLab('l2_1',640,1040,win(lt,1.5,9)); fixLab('l2_2',560,620,win(lt,2.2,9));
+    fixLab('l2_0',90,560,win(lt,0.3,9)); labAt('l2_1',pIsl.position,cam,40,-70,win(lt,1.6,9),1); fixLab('l2_2',600,600,win(lt,3.0,9));
     caption(2,lt); };
 })();

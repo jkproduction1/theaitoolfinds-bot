@@ -22,7 +22,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {11: 2.7, 25: 2.7, 37: 3.0}
+GAPS = {11: 3.9, 25: 3.9, 37: 4.1}
 TEMPO = 1.18  # voice ~12 % faster (reviewer: aim for ~20 s)
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
@@ -65,7 +65,7 @@ S, E = F.S, F.E
 
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
     (0, (2, 2), (3, 7), 8, "simulate", "the Moon twice as close", "the Moon, twice as close", "Half the distance: / 8× the tidal pull.", 3, "Simulate any what-if"),
-    (12, (14, 15), (16, 21), 22, "what-if", "a mega tsunami hit New York", "a mega tsunami hits the city", "Real record: a 525&nbsp;m / tsunami, Alaska 1958.", 3, "Play out any what-if"),
+    (12, (14, 15), (16, 21), 22, "what-if", "a mega tsunami hit New York", "a mega tsunami hits the city", "Real record: 525&nbsp;m tsunami / run-up, Alaska 1958.", 2, "Play out any what-if"),
     (26, (28, 28), (29, 33), 34, "scale", "the biggest typhoon versus Europe", "the biggest typhoon vs. Europe", "Typhoon Tip, 1979: / ≈2,200&nbsp;km across.", 3, "Compare anything to scale"),
 ]
 CMD = DEMOS[0][4]
@@ -196,6 +196,7 @@ html,body,#root{background:#121212!important}
 
 CSS += r"""
 #serl > *{background:rgba(17,17,17,.85)!important}
+#st1 .cap{background:rgba(4,6,14,.6);border-radius:28px;left:70px;right:70px}
 """
 CSS += r"""
 .cap{padding:26px 40px;margin:0 auto;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,.35) 60%,rgba(0,0,0,0))}
