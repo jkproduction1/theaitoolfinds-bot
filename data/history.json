@@ -628,5 +628,11 @@
     "domain": "code.claude.com/docs/en/slash-commands#earth41",
     "date": "2026-11-15_0649",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Fable 5.2 explainer styles 5",
+    "domain": "code.claude.com/docs/en/slash-commands#styles42",
+    "date": "2026-11-15_1722",
+    "source": "hyperframes"
   }
 ]
