@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles42 concept: /flat-science why astronauts grow taller in space (flat glowing vector look of styles28/33/37).
+// Facts (NASA "Twins Study", NASA Human Research Program): in microgravity the discs between the vertebrae are no longer squeezed by
+// gravity, so they expand and the spine lengthens; astronauts can be up to ~3% taller in orbit, and shrink back after landing.
+const g=document.getElementById('c').getContext('2d');
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.55,60,w*.5,h*.5,1300);gr.addColorStop(0,'#2c1d6a');gr.addColorStop(.5,'#170f4a');gr.addColorStop(1,'#05041a');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[180,700,300,'rgba(120,90,255,.22)'],[900,1100,280,'rgba(90,200,255,.16)'],[540,1850,420,'rgba(80,170,255,.30)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(8);for(let i=0;i<260;i++){p.fillStyle='rgba(255,255,255,'+(R()*.7)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.4,0,7);p.fill();}
+  // Earth limb
+  const eg=p.createLinearGradient(0,1640,0,1920);eg.addColorStop(0,'#5fd0ff');eg.addColorStop(.25,'#2b7fd6');eg.addColorStop(1,'#123a8a');p.shadowColor='#6fd8ff';p.shadowBlur=60;p.fillStyle=eg;p.beginPath();p.ellipse(540,2550,1500,880,0,0,7);p.fill();p.shadowBlur=0;
+  p.fillStyle='rgba(120,230,160,.55)';[[300,1720,160,30],[760,1760,200,36],[520,1840,240,40]].forEach(([x,y,a,b])=>{p.beginPath();p.ellipse(x,y,a,b,0,0,7);p.fill();});});
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:x+w/2,y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(12,8,44,.9)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+// astronaut: rounded suit; s = stretch of the torso (1 = on Earth); the spine shows through as glowing vertebrae
+function astro(x,feet,s,lt,float){g.save();g.translate(x,feet+(float?Math.sin(lt*1.2)*10:0));if(float)g.rotate(Math.sin(lt*.7)*.03);
+  const T=300*s; // torso height
+  g.shadowColor='rgba(170,150,255,.6)';g.shadowBlur=40;g.fillStyle='#e9e6ff';
+  g.beginPath();g.roundRect(-78,-200,62,200,28);g.fill();g.beginPath();g.roundRect(16,-200,62,200,28);g.fill(); // legs
+  g.beginPath();g.roundRect(-110,-200-T,220,T+30,70);g.fill(); // torso
+  g.beginPath();g.roundRect(-160,-170-T,56,T-40,28);g.fill();g.beginPath();g.roundRect(104,-170-T,56,T-40,28);g.fill(); // arms
+  g.beginPath();g.arc(0,-200-T-90,105,0,7);g.fill();g.shadowBlur=0; // helmet
+  g.fillStyle='#2a1a6a';g.beginPath();g.ellipse(0,-200-T-86,76,62,0,0,7);g.fill();g.fillStyle='rgba(140,220,255,.55)';g.beginPath();g.ellipse(-26,-200-T-108,22,14,-.5,0,7);g.fill();
+  g.fillStyle='#bdb6ff';g.fillRect(-78,-40,62,26);g.fillRect(16,-40,62,26); // boots band
+  g.fillStyle='#ff7ab0';g.beginPath();g.roundRect(-46,-150-T*.55,92,56,14);g.fill(); // chest panel
+  // spine: 12 vertebrae spaced by the stretch, discs glow between them
+  const top=-200-T+20,bot=-210,n=12;for(let i=0;i<n;i++){const y=top+(bot-top)*i/(n-1);g.fillStyle='#6b4fd8';g.beginPath();g.roundRect(-26,y-9,52,18,8);g.fill();
+    if(i<n-1){const y2=top+(bot-top)*(i+.5)/(n-1);g.fillStyle=float?'#7fe3ff':'#ffb36a';g.shadowColor=g.fillStyle;g.shadowBlur=float?22:10;g.beginPath();g.ellipse(0,y2,20,float?7:3.5,0,0,7);g.fill();g.shadowBlur=0;}}
+  g.restore();}
+function bar(x,y0,y1,col,txt){g.save();g.strokeStyle=col;g.lineWidth=5;g.setLineDash([14,10]);g.beginPath();g.moveTo(x-120,y1);g.lineTo(x+120,y1);g.stroke();g.setLineDash([]);
+  g.fillStyle=col;g.font='800 34px '+SANS;g.textAlign='center';g.fillText(txt,x,y1-20);g.restore();}
+function draw(lt){g.drawImage(bg,0,0);
+  const F=1560;astro(300,F,1,lt,false);astro(780,F-40,1.16,lt,true);
+  bar(300,F,F-200-300-195,'#ffb36a','ON EARTH');bar(780,F,F-40-200-348-195,'#7fe3ff','IN ORBIT');
+  // up arrow between the two height lines
+  g.save();g.strokeStyle='#7fe3ff';g.lineWidth=8;g.lineCap='round';g.shadowColor='#7fe3ff';g.shadowBlur=20;const ya=F-200-300-195,yb=F-40-200-348-195;g.beginPath();g.moveTo(540,ya);g.lineTo(540,yb+6);g.stroke();g.beginPath();g.moveTo(520,yb+26);g.lineTo(540,yb+4);g.lineTo(560,yb+26);g.stroke();g.restore();
+  label('No gravity squeezing the spine',150,1720,780,1300,'#7fe3ff');
+  label('Discs between bones expand',70,560,760,1040,'#7fe3ff');
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('In space you grow',540,200);
+  const a='up to ',b='3% taller';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,300);g.fillStyle='#7fe3ff';g.shadowColor='rgba(111,216,255,.9)';g.shadowBlur=30;g.fillText(b,x0+wa,300);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>

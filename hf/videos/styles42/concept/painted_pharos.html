@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles42 concept: /painted-story the lighthouse of Alexandria (hand-painted look of styles28/33/37).
+// Facts (Britannica, World History Encyclopedia): the Pharos was finished around 280 BC under Ptolemy II, on the island of Pharos
+// at Alexandria; estimates put it at about 100 m (3 tiers: square, octagonal, round); a fire burned at the top; it guided ships for
+// well over a thousand years and was wrecked by earthquakes (ruined by the 14th century). Own drawing after the classic 3-tier reconstructions.
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const HZ=1240, LX=640, TOP=560;
+const sky=off(1080,1920,(p,w,h)=>{const R=R0(16);const s=p.createLinearGradient(0,0,0,HZ);s.addColorStop(0,'#0e1630');s.addColorStop(.6,'#22305a');s.addColorStop(1,'#3d4a78');p.fillStyle=s;p.fillRect(0,0,w,HZ+10);
+  strokes(p,1800,R,0,0,w,HZ,['#1a2444','#2a3866','#11192f','#36457a'],170,34,0);
+  for(let i=0;i<160;i++){p.fillStyle='rgba(255,250,230,'+(R()*.8)+')';p.beginPath();p.arc(R()*w,R()*HZ*.8,R()*2.6,0,7);p.fill();}
+  // sea
+  const sea=p.createLinearGradient(0,HZ,0,h);sea.addColorStop(0,'#1d2a52');sea.addColorStop(1,'#0a1028');p.fillStyle=sea;p.fillRect(0,HZ,w,h-HZ);
+  strokes(p,1500,R,-40,HZ,w+80,h-HZ,['#2a3a70','#13204a','#3a4c86','#0e1838'],140,20,0,0.15,0.3);});
+// the tower: square base, octagonal middle, round top; warm stone lit from the fire
+const TOWER=off(1080,1920,(p)=>{const R=R0(9);
+  // island rock
+  p.fillStyle='#2a2a3a';p.beginPath();p.moveTo(380,HZ+40);p.quadraticCurveTo(450,HZ-60,LX,HZ-70);p.quadraticCurveTo(830,HZ-60,900,HZ+40);p.closePath();p.fill();
+  strokes(p,200,R,400,HZ-70,480,110,['#3a3a4c','#1e1e2c','#4a4458'],50,12,0,0.15,0.25);
+  const tier=(x0,x1,y0,y1,c1,c2)=>{const gr=p.createLinearGradient(x0,0,x1,0);gr.addColorStop(0,c2);gr.addColorStop(.35,c1);gr.addColorStop(1,c2);p.fillStyle=gr;p.fillRect(x0,y0,x1-x0,y1-y0);};
+  tier(LX-130,LX+130,880,HZ-60,'#d9b98a','#6a5a5a');tier(LX-90,LX+90,690,880,'#e2c49a','#6e5e5c');tier(LX-55,LX+55,600,690,'#ecd2a6','#76645e');
+  // cornices
+  p.fillStyle='#f1dcb4';[[LX-150,870,300,16],[LX-104,682,208,12],[LX-68,592,136,10]].forEach(([x,y,w2,h2])=>p.fillRect(x,y,w2,h2));
+  // windows
+  p.fillStyle='#2a2030';for(let r=0;r<5;r++)for(let c=0;c<3;c++)p.fillRect(LX-80+c*70,930+r*56,16,28);for(let r=0;r<3;r++)p.fillRect(LX-8,720+r*52,16,26);
+  strokes(p,700,R,LX-130,600,260,HZ-660,['#c9a878','#8a7466','#f0d8ae','#5a4a50'],40,8,1.57,0.08,0.18);
+  // lantern columns at the top
+  p.fillStyle='#4a3a3a';for(let i=0;i<4;i++)p.fillRect(LX-48+i*30,TOP-20,8,40);p.fillStyle='#e9cfa2';p.beginPath();p.moveTo(LX-60,TOP-20);p.lineTo(LX,TOP-70);p.lineTo(LX+60,TOP-20);p.closePath();p.fill();});
+const BOIL=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#9fb6d6','#020812','#f4d79c'],120,22,0.1,0.02,0.05);});
+function ship(x,y,s,lt){g.save();g.translate(x,y+Math.sin(lt*1.3+x)*5);g.scale(s,s);g.rotate(Math.sin(lt+x)*.03);g.fillStyle='#0b0e1c';
+  g.beginPath();g.moveTo(-120,0);g.quadraticCurveTo(0,40,130,0);g.lineTo(100,30);g.lineTo(-90,30);g.closePath();g.fill();
+  g.fillRect(-4,-170,8,170);g.fillStyle='#d9c9a6';g.beginPath();g.moveTo(-90,-160);g.quadraticCurveTo(0,-130,90,-160);g.lineTo(80,-30);g.quadraticCurveTo(0,-50,-80,-30);g.closePath();g.fill();
+  g.fillStyle='rgba(255,190,110,.35)';g.beginPath();g.moveTo(10,-160);g.quadraticCurveTo(50,-145,90,-160);g.lineTo(80,-30);g.quadraticCurveTo(45,-40,10,-35);g.closePath();g.fill();g.restore();}
+function draw(lt){g.drawImage(sky,0,0);
+  // light beam sweeping toward the ships
+  const ang=-0.25+Math.sin(lt*.5)*0.08;g.save();g.translate(LX,TOP);g.rotate(Math.PI+ang);const bm=g.createLinearGradient(0,0,900,0);bm.addColorStop(0,'rgba(255,214,140,.65)');bm.addColorStop(1,'rgba(255,214,140,0)');
+  g.fillStyle=bm;g.beginPath();g.moveTo(0,-10);g.lineTo(950,-170);g.lineTo(950,170);g.lineTo(0,10);g.closePath();g.fill();g.restore();
+  const gl=g.createRadialGradient(LX,TOP,10,LX,TOP,420);gl.addColorStop(0,'rgba(255,200,120,.75)');gl.addColorStop(.3,'rgba(255,160,80,.25)');gl.addColorStop(1,'rgba(255,160,80,0)');g.fillStyle=gl;g.fillRect(0,0,1080,1300);
+  g.drawImage(TOWER,0,0);
+  // fire
+  g.save();g.shadowColor='#ffb347';g.shadowBlur=60;for(let i=0;i<6;i++){const f=Math.sin(lt*6+i)*6;g.fillStyle=['#fff1b8','#ffcf5a','#ff8a2a'][i%3];g.beginPath();g.ellipse(LX+(i-2.5)*8,TOP-6+f,16-i,30-i*2,0,0,7);g.fill();}g.restore();
+  // reflection of the fire on the sea
+  const R=R0(5);for(let i=0;i<40;i++){const y=HZ+20+i*14,w=70+R()*90-i*1.2;g.fillStyle='rgba(255,190,110,'+(0.45-i*.01)+')';g.fillRect(LX-w/2+(R()-.5)*30+Math.sin(lt*2+i)*6,y,w,5);}
+  ship(220,1460,1,lt);ship(900,1360,.6,lt);ship(130,1270,.4,lt);
+  // date scrap
+  g.save();g.translate(880,1660);g.rotate(0.06);tornPath(g,-100,-90,200,180,7,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.5)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#8a1c10';g.fillRect(-100,-90,200,46);g.fillStyle='#f3e6c8';g.font='italic 500 34px '+SERIF;g.textAlign='center';g.fillText('Alexandria',0,-56);g.fillStyle='#2c1c0e';g.font='italic 500 62px '+SERIF;g.fillText('280 BC',0,36);g.restore();
+  [['280 BC: a fire 100 m above the sea.',-0.02],['Ships follow it home.',0.015],['It shone for over 1,000 years.',-0.01]].forEach(([t,r],i)=>{g.save();g.font='italic 500 60px '+SERIF;const w=g.measureText(t).width+60,y=130+i*104;
+    g.translate(40,y);g.rotate(r);tornPath(g,0,0,w,90,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=i===2?'#8a1c10':'#2c1c0e';g.fillText(t,30,64);g.restore();});
+  g.drawImage(BOIL,0,0);g.drawImage(GRAIN,0,0);
+  const vg=g.createRadialGradient(540,1000,380,540,1000,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(4,6,16,.6)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

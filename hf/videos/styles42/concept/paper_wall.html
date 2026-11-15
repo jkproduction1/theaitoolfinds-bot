@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Permanent Marker';src:url(permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles42 concept: /paper-collage how the Great Wall was built.
+// Facts (China State Administration of Cultural Heritage 2012 survey; Britannica; Yang et al., Acc. Chem. Res. 2010):
+// all sections built by many dynasties add up to about 21,196 km; building ran from roughly the 7th century BC to the Ming (ended 1644);
+// Ming-era builders mixed sticky rice soup into lime mortar (amylopectin makes it stronger). Own drawing, no specific section copied.
+const g=document.getElementById('c').getContext('2d'), MK="'Permanent Marker',cursive";
+const paper=off(1080,1920,(p,w,h)=>{p.fillStyle='#efe6d2';p.fillRect(0,0,w,h);const R=R0(4);
+  for(let i=0;i<9000;i++){p.strokeStyle='rgba(120,95,60,'+(R()*.08)+')';p.lineWidth=1;const x=R()*w,y=R()*h,a=R()*6.28,l=4+R()*14;p.beginPath();p.moveTo(x,y);p.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}
+  p.save();p.translate(540,760);p.rotate(0.006);tornPath(p,-580,-330,1160,660,5,12);const sk=p.createLinearGradient(0,-330,0,330);sk.addColorStop(0,'#f2c9a0');sk.addColorStop(1,'#f6e2b8');p.fillStyle=sk;p.fill();p.restore();
+  p.fillStyle='#e8553a';p.shadowColor='rgba(60,40,20,.3)';p.shadowBlur=10;p.shadowOffsetY=6;p.beginPath();p.arc(800,600,70,0,7);p.fill();p.shadowColor='transparent';});
+// mountain ridge layers (torn paper, halftone); returns ridge y(x) for the wall
+function ridgeY(x,k){return [760,880,1040][k]-Math.sin(x*.006+k*1.7)*90-Math.sin(x*.017+k)*36;}
+const RIDGES=[0,1,2].map(k=>off(1080,1920,(p)=>{const R=R0(30+k);p.beginPath();p.moveTo(-20,1940);for(let x=-20;x<=1100;x+=24)p.lineTo(x,ridgeY(x,k)+(R()-.5)*8);p.lineTo(1100,1940);p.closePath();
+  p.fillStyle=['#a9b58a','#7f9a68','#5d7a4c'][k];p.shadowColor='rgba(60,40,20,.4)';p.shadowBlur=16;p.shadowOffsetY=-6;p.fill();p.shadowColor='transparent';
+  p.save();p.clip();for(let y=600;y<1920;y+=12)for(let x=(y/12%2)*6;x<1080;x+=12){p.fillStyle='rgba(30,50,25,.18)';p.beginPath();p.arc(x,y,0.6+2.6*CL((y-600)/1100),0,7);p.fill();}p.restore();}));
+// the wall riding the middle and front ridges: crenellated band + towers
+function wall(k,w,tw,towers){const pts=[];for(let x=-20;x<=1100;x+=10)pts.push([x,ridgeY(x,k)+6]);
+  g.save();g.lineJoin='round';g.lineCap='round';g.strokeStyle='#5a4636';g.lineWidth=w+8;g.beginPath();pts.forEach(([x,y],i)=>i?g.lineTo(x,y-w/2):g.moveTo(x,y-w/2));g.stroke();
+  g.strokeStyle='#c9ad86';g.lineWidth=w;g.stroke();
+  g.fillStyle='#c9ad86';for(let i=0;i<pts.length;i+=2){const [x,y]=pts[i];g.fillRect(x-tw/2,y-w-tw*.9,tw*.7,tw*.9);}
+  g.strokeStyle='rgba(90,70,54,.5)';g.lineWidth=2;for(let i=0;i<pts.length;i+=1){const [x,y]=pts[i];g.beginPath();g.moveTo(x,y-w+4);g.lineTo(x,y-4);g.stroke();}
+  towers.forEach(x=>{const y=ridgeY(x,k)+6;g.fillStyle='#b89c76';g.shadowColor='rgba(40,30,20,.4)';g.shadowBlur=10;g.shadowOffsetY=6;g.fillRect(x-tw*1.6,y-w-tw*3.2,tw*3.2,tw*3.2+w);g.shadowColor='transparent';
+    g.fillStyle='#5a4636';g.fillRect(x-tw*.5,y-w-tw*2.2,tw,tw*1.1);for(let j=0;j<4;j++)g.fillRect(x-tw*1.6+j*tw*.95,y-w-tw*3.6,tw*.6,tw*.45);});
+  g.restore();}
+const BOWL=sticker(off(260,220,(p)=>{p.fillStyle='#fbfaf5';p.beginPath();p.ellipse(130,96,112,70,0,Math.PI,0);p.fill();
+  for(let i=0;i<90;i++){const R=R0(i+5),a=Math.PI+R()*Math.PI,rr=R()*1,x=130+Math.cos(a)*104*rr,y=96+Math.sin(a)*64*rr;p.fillStyle='#fffdf6';p.beginPath();p.ellipse(x,y,11,6,R()*3,0,7);p.fill();p.strokeStyle='#b8ae98';p.lineWidth=1.6;p.stroke();}
+  p.fillStyle='#2f6fb3';p.beginPath();p.moveTo(6,96);p.quadraticCurveTo(130,280,254,96);p.closePath();p.fill();p.strokeStyle='#fbfaf5';p.lineWidth=6;p.beginPath();p.moveTo(40,136);p.quadraticCurveTo(130,186,220,136);p.stroke();}),7);
+const BRICKS=sticker(off(300,200,(p)=>{p.fillStyle='#ece7da';p.fillRect(0,0,300,200);for(let r=0;r<4;r++)for(let c=-1;c<4;c++){p.fillStyle=['#a7896a','#9a7d60','#b29474'][(r+c+3)%3];p.fillRect(c*90+(r%2)*45+6,r*50+6,82,40);}}),7);
+function hand(t,x,y,col,size,rot){g.save();g.translate(x,y);g.rotate(rot||0);g.font=(size||52)+'px '+MK;g.fillStyle=col;g.fillText(t,0,0);g.restore();}
+function title(){g.save();g.translate(50,110);g.rotate(-0.012);const W=980,H=270;tornPath(g,0,0,W,H,21,8);g.fillStyle='#fbf8f0';g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=20;g.shadowOffsetY=10;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#17222b';g.font='400 92px '+DISP;g.fillText('The Great Wall is',40,106);const a='21,196 km';const wa=g.measureText(a).width;
+  g.fillStyle='rgba(255,214,0,.92)';g.beginPath();g.moveTo(32,148);g.lineTo(56+wa,142);g.lineTo(58+wa,226);g.lineTo(32,222);g.closePath();g.fill();g.fillStyle='#17222b';g.fillText(a+' long',40,210);
+  g.fillStyle='rgba(240,232,200,.85)';g.save();g.translate(W-60,-6);g.rotate(0.5);g.fillRect(-56,-16,112,34);g.restore();g.restore();}
+function draw(lt){g.drawImage(paper,0,0);g.drawImage(RIDGES[0],0,0);g.drawImage(RIDGES[1],0,0);wall(1,22,12,[180,620,980]);g.drawImage(RIDGES[2],0,0);wall(2,40,20,[340,860]);
+  hand('watchtower',730,ridgeY(860,2)-150,'#17222b',46,-0.04);
+  {const [x,y,a]=marker(g,[[820,ridgeY(860,2)-140],[840,ridgeY(860,2)-120],[852,ridgeY(860,2)-110]],1,7,'#17222b');}
+  // stickers: rice + bricks with a marker plus
+  g.drawImage(BOWL,90-BOWL.ox,1150-BOWL.oy);hand('+',400,1300,'#d7262e',110,0);g.drawImage(BRICKS,480-BRICKS.ox,1150-BRICKS.oy);
+  hand('sticky rice',96,1170,'#17222b',48,-0.04);hand('lime',540,1140,'#17222b',48,-0.03);
+  {const [x,y,a]=marker(g,[[620,1380],[700,1300],[780,1220],[860,ridgeY(860,2)-10]],1,10,'#d7262e');arrowHead(g,x,y,a,28,10,'#d7262e');}
+  paperTag(g,10,0,40,1500,0.02,'Glued with rice','sticky rice soup in the mortar',32,1);
+  paperTag(g,10,0,260,1710,-0.02,'Built for 2,000 years','by many dynasties, wall by wall',33,0);
+  title();g.drawImage(GRAIN,0,0);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>Promise.all([document.fonts.load("400 40px 'DM Serif Display'"),document.fonts.load("italic 500 30px 'EB Garamond'"),document.fonts.load("40px 'Permanent Marker'")]).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
