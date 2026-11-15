@@ -616,5 +616,17 @@
     "domain": "code.claude.com/docs/en/slash-commands#styles37",
     "date": "2026-11-14_1641",
     "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D scary space commands 5",
+    "domain": "code.claude.com/docs/en/slash-commands#space38",
+    "date": "2026-11-15_0613",
+    "source": "hyperframes"
+  },
+  {
+    "name": "Claude Code 3D what-if Earth commands 5",
+    "domain": "code.claude.com/docs/en/slash-commands#earth41",
+    "date": "2026-11-15_0649",
+    "source": "hyperframes"
   }
 ]

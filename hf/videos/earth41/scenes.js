@@ -111,7 +111,7 @@ const EARTH_VS='varying vec2 vU; varying vec3 vN; varying vec3 vW; void main(){ 
 function llVec(lat,lon,r){ const u=(lon+180)/360, v=(lat+90)/180, ph=u*Math.PI*2, th=(1-v)*Math.PI; return new THREE.Vector3(-r*Math.cos(ph)*Math.sin(th),r*Math.cos(th),r*Math.sin(ph)*Math.sin(th)); }
 const nf39=new Intl.NumberFormat('en-US');
 
-// ================= earth39 scenes (Claude Opus 5.5, drawn in code) =================
+// ================= earth41 scenes (Claude Opus 5.5, drawn in code) =================
 // ---------- S0 /simulate the Moon twice as close: real Earth, a procedural Moon that drifts in from today's distance to half of it
 // (not to scale: distances shortened, sizes true ratio). Tide-generating force ~ 1/d^3 (NOAA), so half the distance = 8x the pull: the
 // ocean tidal bulge (exaggerated ellipsoid shell) swells toward the Moon and on the far side; odometers run 384,400 -> 192,200 km and x1 -> x8.
@@ -119,7 +119,7 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
   for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const u=x/w*10, v=y/h*5; let e=fbm(n,u,v,6); const mare=fbm(n2,u*0.5+3,v*0.5,4)>0.56?0.55:1; let g=(95+120*e)*mare; const i=(y*w+x)*4; im.data[i]=g; im.data[i+1]=g*0.98; im.data[i+2]=g*0.95; im.data[i+3]=255; }
   c.putImageData(im,0,0); const r=rnd(12); for(let i=0;i<520;i++){ const x=r()*w,y=r()*h,rr=1.5+Math.pow(r(),3)*22; let g=c.createRadialGradient(x+rr*0.2,y+rr*0.2,0,x,y,rr); g.addColorStop(0,'rgba(20,20,20,.22)'); g.addColorStop(0.75,'rgba(20,20,20,.08)'); g.addColorStop(0.92,'rgba(255,255,255,.10)'); g.addColorStop(1,'rgba(255,255,255,0)'); c.fillStyle=g; c.beginPath(); c.arc(x,y,rr,0,7); c.fill(); } }); }
 (function(){ const ren=mkRenderer2('cv0'), sc=new THREE.Scene(); sc.background=new THREE.Color(0x020306); ren.toneMappingExposure=1.0;
-  const cam=new THREE.PerspectiveCamera(42,1080/1920,0.05,500); const P=mkComposer(ren,sc,cam,{bloom:0.55,radius:0.5,th:0.8});
+  const cam=new THREE.PerspectiveCamera(46,1080/1920,0.05,500); const P=mkComposer(ren,sc,cam,{bloom:0.45,radius:0.5,th:0.85});
   starField(sc,1800,31,300);
   const SUN=new THREE.Vector3(1,0.35,0.6).normalize();
   const E=earthReal(); const U={uDay:{value:E.day},uCl:{value:E.clouds},uNi:{value:E.night},uT:{value:0},uSun:{value:SUN}};
@@ -139,99 +139,68 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
         float n=fbm(vL.xz*9.+vec2(uT*0.3,0.))*0.5+fbm(vL.yx*14.-uT*0.2)*0.5;
         vec3 col=mix(vec3(0.05,0.32,0.62),vec3(0.35,0.75,1.0),lift)*(0.25+0.9*k)+vec3(0.8,0.95,1.)*pow(max(dot(reflect(-uSun,N),V),0.),40.)*k*0.8;
         col+=vec3(0.6,0.9,1.)*smoothstep(0.62,0.7,n)*lift*0.25;
-        float a=(0.03+0.95*lift*lift)*uK*(0.6+0.4*fr)*smoothstep(0.0,0.18,dot(N,V)); col+=vec3(0.4,0.8,1.)*lift*lift*0.6; gl_FragColor=vec4(col,a); }`}));
+        float a=clamp((0.02+1.6*pow(lift,1.5))*uK*smoothstep(0.0,0.12,dot(N,V)),0.,0.93); col=vec3(0.03,0.20,0.52)*(0.45+0.8*k)+vec3(0.9,0.97,1.)*pow(max(dot(reflect(-uSun,N),V),0.),30.)*k*0.5+vec3(0.15,0.45,0.9)*fr*0.35; gl_FragColor=vec4(col,a); }`}));
   sc.add(bulge);
   const moon=new THREE.Mesh(new THREE.SphereGeometry(0.273,96,64),new THREE.MeshStandardMaterial({map:moonTex(),roughness:0.95,metalness:0}));
   sc.add(moon); const dl=new THREE.DirectionalLight(0xffffff,2.6); dl.position.copy(SUN).multiplyScalar(10); sc.add(dl); sc.add(new THREE.AmbientLight(0x223040,0.25));
-  const MD=new THREE.Vector3(-0.5,0.8,-0.35).normalize();
+  const MD=new THREE.Vector3(-0.62,0.66,-0.35).normalize();
   // pull line Earth -> Moon
   const pull=new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1,8),glowMat(0xff6a3d,0.9)); sc.add(pull);
   const W0=new THREE.Vector3();
   SCN[0]=function(lt){ U.uT.value=lt; BU.uT.value=lt;
     const a=easeIO(cl((lt-0.35)/3.4)); const d=lerp(5.6,2.8,a); moon.position.copy(MD).multiplyScalar(d); moon.rotation.y=0.6+lt*0.05;
     const pullK=Math.pow(5.6/d,3); // 1 -> 8
-    const b=0.03*pullK; bulge.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),MD); bulge.scale.set(1,1+b,1); BU.uK.value=cl(lt/0.5);
+    const b=0.045*pullK; bulge.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),MD); bulge.scale.set(1,1+b,1); BU.uK.value=cl(lt/0.5);
     pull.position.copy(MD).multiplyScalar((1.08+d-0.3)/2); pull.scale.y=d-0.3-1.08; pull.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),MD); pull.material.opacity=0.25+0.1*pullK*win(lt,0.3,9);
     earth.rotation.y=-2.2+lt*0.06;
-    const u=easeIO(cl(lt/5.6)); cam.position.set(lerp(1.0,0.7,u),lerp(0.5,0.7,u),lerp(6.2,7.0,u)); cam.lookAt(lerp(-0.6,-0.7,u),lerp(1.5,1.35,u),-0.3);
+    const u=easeIO(cl(lt/5.6)); cam.position.set(lerp(0.2,-0.1,u),lerp(1.0,0.95,u),lerp(4.5,4.9,u)); cam.lookAt(lerp(-0.55,-0.6,u),lerp(0.9,0.95,u),-0.3);
     P.c.render();
     let [x,y]=proj(moon.position,cam); setLab('l0_0',x+110,y-40,win(lt,0.3,9),'Moon',nf39.format(Math.round(384400/(5.6/d)/100)*100)+' km away');
-    W0.copy(MD).multiplyScalar(1.0+b+0.02); [x,y]=proj(W0,cam); setLab('l0_1',x+60,y+30,win(lt,0.9,9),'Tidal pull','×'+pullK.toFixed(1));
-    setLab('l0_2',90,1060,win(lt,1.6,9));
+    W0.copy(MD).multiplyScalar(1.0+b+0.02); [x,y]=proj(W0,cam); setLab('l0_3',x+50,y-10,win(lt,0.9,9));
+    setLab('l0_1',650,1110,win(lt,0.9,9),'Tidal pull','×'+pullK.toFixed(1));
+    setLab('l0_2',90,1110,win(lt,1.6,9));
     caption(0,lt); };
 })();
 
-// ---------- S1 /what-if a mega tsunami hit New York (v2): low camera on the waterfront at dusk, our own generic towers (setbacks, soft
-// window lights) on the left, a huge wave rolling in from the bay with a curling lip, foam and spray. Hypothetical: no height claimed.
-// Caption = the real record (Lituya Bay 1958, 525 m run-up, NOAA JetStream).
-(function(){ const ren=mkRenderer2('cv1'), sc=new THREE.Scene(); ren.toneMappingExposure=1.0;
-  sc.background=canvasTex(16,512,(c,w,h)=>{ const g=c.createLinearGradient(0,0,0,h); g.addColorStop(0,'#070b1c'); g.addColorStop(0.35,'#262a4c'); g.addColorStop(0.55,'#7a4a52'); g.addColorStop(0.63,'#e08a5a'); g.addColorStop(0.68,'#3a2c38'); g.addColorStop(1,'#0c1018'); c.fillStyle=g; c.fillRect(0,0,w,h); });
-  const cam=new THREE.PerspectiveCamera(46,1080/1920,0.1,400); const P=mkComposer(ren,sc,cam,{bloom:0.45,radius:0.5,th:0.88});
-  const WU={uT:{value:0},uF:{value:40},uH:{value:0}};
-  const WH=`uniform float uT,uF,uH; float wh(vec2 p){ float dz=p.y-uF; float s=0.07*sin(p.x*1.3+uT*1.6)+0.06*sin(p.x*0.7-p.y*1.1+uT*1.2)+0.05*sin(p.y*2.1+uT*2.0);
-    float hx=uH*(1.+0.12*sin(p.x*0.21+1.3)); float crest=hx*(dz<0.?exp(-dz*dz/2.2):exp(-dz*dz/40.)); float trough=-0.35*uH*exp(-pow((dz+5.5)/2.5,2.));
-    return s+crest+trough; }`;
-  const wg=new THREE.PlaneGeometry(120,90,360,300); wg.rotateX(-Math.PI/2); wg.translate(0,0,30);
-  const WFS=`varying vec3 vW; varying vec3 vNn; varying float vFo; varying float vSl; uniform float uT;
-    void main(){ vec3 N=normalize(vNn+vec3(fbm(vW.xz*1.5+vW.y*0.8+uT)-.5,0.,fbm(vW.zx*1.5-vW.y*0.8-uT)-.5)*0.07); vec3 V=normalize(cameraPosition-vW); float fr=0.03+0.97*pow(1.-max(dot(N,V),0.),5.);
-      vec3 R=reflect(-V,N); float sky=clamp(R.y,0.,1.); vec3 skyC=mix(vec3(0.9,0.52,0.36),vec3(0.16,0.17,0.32),smoothstep(0.,0.45,sky));
-      vec3 deep=vec3(0.012,0.04,0.055); vec3 col=mix(deep,skyC*0.6,fr);
-      col+=vec3(0.015,0.10,0.09)*vSl*max(dot(N,V),0.); // light through the thin wave face
-      vec3 S=normalize(vec3(0.,0.10,1.)); col+=vec3(1.,0.68,0.42)*pow(max(dot(R,S),0.),160.)*1.4;
-      float n=fbm(vec2(vW.x*1.4,vW.y*1.6+vW.z*1.2)+vec2(0.,-uT*1.5)); float foam=vFo*smoothstep(0.35,0.7,n+vFo*0.3); col=mix(col,vec3(0.72,0.72,0.74),clamp(foam,0.,0.92));
-      gl_FragColor=vec4(col,1.); }`;
-  const water=new THREE.Mesh(wg,new THREE.ShaderMaterial({uniforms:WU,toneMapped:false,
-    vertexShader:GLN+WH+`varying vec3 vW; varying vec3 vNn; varying float vFo; varying float vSl; void main(){ vec3 p=position; float h=wh(p.xz); float e=0.08; float dz=p.z-uF;
-      vec3 N=normalize(vec3(-(wh(p.xz+vec2(e,0.))-h)/e,1.,-(wh(p.xz+vec2(0.,e))-h)/e)); vNn=N; vSl=clamp(-N.z*1.5,0.,1.)*step(0.5,uH)*smoothstep(0.,0.6*uH,h);
-      vFo=smoothstep(0.75*uH,0.98*uH,h)*step(1.,uH)+0.3*smoothstep(1.,4.,dz)*smoothstep(12.,5.,dz)*step(1.,uH);
-      p.y=h; vec4 w=modelMatrix*vec4(p,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,fragmentShader:GLN+WFS}));
-  sc.add(water);
-  // curling lip: a sheet that leaves the crest top and curls forward/down toward the camera
-  const NX=220, NA=26; const lg=new THREE.PlaneGeometry(1,1,NX-1,NA-1); const LP=lg.attributes.position;
-  const LU={uT:{value:0},uF:{value:40},uH:{value:0},uC:{value:0}};
-  const lip=new THREE.Mesh(lg,new THREE.ShaderMaterial({uniforms:LU,side:THREE.DoubleSide,toneMapped:false,transparent:true,
-    vertexShader:'varying vec3 vW; varying vec3 vNn; varying float vFo; varying float vSl; varying float vA; attribute float aa; void main(){ vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; vNn=normalize(mat3(modelMatrix)*normal); vFo=smoothstep(0.55,1.,aa)*0.9+0.15; vSl=1.-aa; vA=aa; gl_Position=projectionMatrix*viewMatrix*w; }',
-    fragmentShader:GLN+WFS.replace('gl_FragColor=vec4(col,1.);','gl_FragColor=vec4(col,1.-smoothstep(0.93,1.,vA)*0.6);').replace('varying float vSl;','varying float vSl; varying float vA;')}));
-  const AA=new Float32Array(NX*NA); lg.setAttribute('aa',new THREE.BufferAttribute(AA,1)); lip.frustumCulled=false; sc.add(lip);
-  function updLip(lt){ const H=WU.uH.value, F=WU.uF.value, curl=LU.uC.value;
-    for(let j=0;j<NA;j++) for(let i=0;i<NX;i++){ const k=j*NX+i; const x=-60+120*i/(NX-1); const a=j/(NA-1); AA[k]=a;
-      const hx=H*(1+0.12*Math.sin(x*0.21+1.3)); const r=0.22*hx*(0.75+0.25*Math.sin(x*0.13+lt*0.8)); const ang=a*(0.3+2.3*curl);
-      const z=F-r*Math.sin(ang)*1.35, y=hx-r+r*Math.cos(ang)-0.05; LP.setXYZ(k,x,y,z); }
-    LP.needsUpdate=true; lg.computeVertexNormals(); }
-  // spray: soft particles thrown off the lip
-  const NS=1600, spr=cloudPoints(NS,softDot(),650,THREE.NormalBlending); sc.add(spr); const SR=rnd(9); const SD=[]; for(let i=0;i<NS;i++) SD.push([SR()*120-60,SR(),SR(),SR()]);
-  function updSpray(lt){ const H=WU.uH.value, F=WU.uF.value, g=spr.geometry; const pa=g.attributes.position, ca=g.attributes.color, sa=g.attributes.sz, al=g.attributes.al;
-    for(let i=0;i<NS;i++){ const [x,ph,v,s]=SD[i]; const life=((lt*0.55+ph)%1); const hx=H*(1+0.12*Math.sin(x*0.21+1.3));
-      pa.setXYZ(i,x+Math.sin(ph*40)*0.6,hx*0.98+life*(0.8+1.6*v)-life*life*1.4,F-0.6-life*(1.5+2.5*s)); ca.setXYZ(i,0.78,0.78,0.8); sa.setX(i,0.6+2.4*s*life+0.4); al.setX(i,0.13*Math.sin(Math.PI*life)*cl((H-1)/3)); }
-    pa.needsUpdate=ca.needsUpdate=sa.needsUpdate=al.needsUpdate=true; }
-  // towers with setbacks, soft window lights
-  const bg=new THREE.BoxGeometry(1,1,1); bg.translate(0,0.5,0);
-  const bm=new THREE.ShaderMaterial({toneMapped:false,
-    vertexShader:'varying vec3 vW; varying vec3 vN; varying float vS; void main(){ vec4 w=modelMatrix*instanceMatrix*vec4(position,1.); vW=w.xyz; vN=normalize(mat3(modelMatrix*instanceMatrix)*normal); vS=instanceMatrix[3].x*13.1+instanceMatrix[3].z*7.7; gl_Position=projectionMatrix*viewMatrix*w; }',
-    fragmentShader:GLN+`varying vec3 vW; varying vec3 vN; varying float vS; void main(){ vec3 N=normalize(vN); float fx=abs(N.x)>0.5?vW.z:vW.x;
-      vec2 g=vec2(fx*2.2,vW.y*1.9); vec2 id=floor(g), f=fract(g); float win=smoothstep(0.1,0.25,f.x)*smoothstep(0.9,0.75,f.x)*smoothstep(0.12,0.3,f.y)*smoothstep(0.85,0.68,f.y);
-      float side=step(0.5,1.-abs(N.y)); float r=h21(id+vec2(vS,vS*1.7)); float on=smoothstep(0.62,0.75,r)*win*side;
-      float band=smoothstep(0.02,0.0,abs(f.y-0.06))*0.25*side; float mull=step(0.5,fract(fx*0.5))*0.0;
-      vec3 base=vec3(0.010,0.012,0.018)+vec3(0.05,0.03,0.03)*max(N.z,0.)*0.5+vec3(0.012,0.014,0.025)*max(N.x,0.); base+=band*vec3(0.06,0.06,0.08);
-      vec3 wc=mix(vec3(1.,0.72,0.42),vec3(0.8,0.86,1.),h21(id+3.1))*(0.45+0.4*h21(id+7.))*1.0; vec3 col=base+wc*on*0.6+win*side*vec3(0.006,0.008,0.012);
-      col+=vec3(0.9,0.5,0.3)*pow(max(N.z,0.),2.)*0.06*smoothstep(0.,14.,vW.y); gl_FragColor=vec4(col,1.); }`});
-  const R=rnd(61); const PARTS=[]; let tallest=null;
-  for(let i=0;i<52;i++){ const x=0.5-Math.pow(R(),0.8)*16, z=3+R()*10; const w=1.4+R()*1.8, d=1.4+R()*1.8; let h=2+R()*5+Math.exp(-Math.pow((x+5)/4,2))*(6+R()*8);
-    let y=-0.3, ww=w, dd=d; const tiers=1+(h>7?2:h>4?1:0); for(let t=0;t<tiers;t++){ const th=t===tiers-1?h*(t?0.3:1):h*(t?0.25:0.6); PARTS.push([x,y,z,ww,th,dd]); y+=th; ww*=0.78; dd*=0.78; }
-    if(!tallest||y>tallest[1]) tallest=[x,y,z]; }
-  const city=new THREE.InstancedMesh(bg,bm,PARTS.length); const M=new THREE.Matrix4(); PARTS.forEach((p,i)=>{ M.compose(new THREE.Vector3(p[0],p[1],p[2]),new THREE.Quaternion(),new THREE.Vector3(p[3],p[4],p[5])); city.setMatrixAt(i,M); }); sc.add(city);
-  const ant=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.07,2.4,8),new THREE.MeshBasicMaterial({color:0x6a7080})); ant.position.set(tallest[0],tallest[1]+1.2,tallest[2]); sc.add(ant);
-  const red=new THREE.Mesh(new THREE.SphereGeometry(0.1,8,8),glowMat(0xff3020,1)); red.position.set(tallest[0],tallest[1]+2.45,tallest[2]); sc.add(red);
-  const quay=new THREE.Mesh(new THREE.BoxGeometry(44,0.5,13),new THREE.MeshBasicMaterial({color:0x0b0d13})); quay.position.set(-20.5,-0.05,8.5); sc.add(quay);
-  const pW=new THREE.Vector3();
-  SCN[1]=function(lt){ WU.uT.value=lt; LU.uT.value=lt; red.material.opacity=Math.sin(lt*5)>0?1:0.35;
-    const a=easeIO(cl(lt/5.6)); WU.uF.value=lerp(48,19,a); WU.uH.value=lerp(3,13,easeIO(cl(lt/3.4))); LU.uC.value=easeIO(cl((lt-0.6)/3.4)); LU.uF.value=WU.uF.value;
-    updLip(lt); updSpray(lt);
-    const u=easeIO(cl(lt/5.6)); cam.position.set(lerp(7,6,u),lerp(2.2,1.8,u),lerp(-17,-13,u)); cam.lookAt(lerp(0.5,1.5,u),lerp(6.5,7.5,u),25);
-    P.c.render();
-    pW.set(6,WU.uH.value*1.05,WU.uF.value); let [x,y]=proj(pW,cam); setLab('l1_0',x+30,y-30,win(lt,0.5,99));
-    [x,y]=proj(new THREE.Vector3(tallest[0],tallest[1],tallest[2]),cam); setLab('l1_1',Math.max(70,x-40),y+170,win(lt,1.2,99));
-    setLab('l1_2',90,1050,win(lt,2.0,99));
+// ---------- S1 /x-ray Earth down to its core: studio cutaway. Real Earth texture with one octant removed; the three cut faces show the
+// layers by radius (NASA "Facts About Earth"): crust ~30 km on land (drawn thicker to be visible), mantle ~2,900 km, liquid outer core
+// ~2,300 km (iron + nickel), solid inner core 1,221 km radius, up to ~5,400 °C. A scan ring sweeps from the surface to the centre.
+(function(){ const ren=mkRenderer2('cv1'), sc=new THREE.Scene(); ren.toneMappingExposure=1.0; bgGrad(sc,'#2a2f38','#07080b');
+  const cam=new THREE.PerspectiveCamera(34,1080/1920,0.05,200); const P=mkComposer(ren,sc,cam,{bloom:0.3,radius:0.5,th:0.92});
+  starField(sc,600,17,120);
+  const SUN=new THREE.Vector3(0.9,0.6,0.5).normalize();
+  const E=earthReal(); const U={uDay:{value:E.day},uCl:{value:E.clouds},uSun:{value:SUN},uO:{value:0}};
+  const earth=new THREE.Mesh(new THREE.SphereGeometry(1,200,150),new THREE.ShaderMaterial({uniforms:U,toneMapped:false,
+    vertexShader:'varying vec2 vU; varying vec3 vN; varying vec3 vW; varying vec3 vP; void main(){ vU=uv; vP=position; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }',
+    fragmentShader:`uniform sampler2D uDay,uCl; uniform vec3 uSun; uniform float uO; varying vec2 vU; varying vec3 vN; varying vec3 vW; varying vec3 vP;
+      void main(){ if(vP.x>0.&&vP.y>0.&&vP.z>0.&&uO>0.5) discard; vec3 d=texture2D(uDay,vU).rgb; float c=texture2D(uCl,vU).r; vec3 N=normalize(vN);
+        float k=smoothstep(-0.25,0.6,dot(N,uSun)); vec3 col=mix(d,vec3(1.),c*0.6)*(0.10+1.0*k); col=1.-exp(-col*1.2);
+        vec3 V=normalize(cameraPosition-vW); col+=vec3(0.35,0.6,1.)*pow(1.-max(dot(N,V),0.),3.)*0.6; gl_FragColor=vec4(col,1.); }`}));
+  sc.add(earth);
+  const FU={uT:{value:0},uS:{value:1.2}};
+  const faceMat=new THREE.ShaderMaterial({uniforms:FU,side:THREE.DoubleSide,toneMapped:false,
+    vertexShader:'varying vec3 vP; void main(){ vP=(modelMatrix*vec4(position,1.)).xyz; gl_Position=projectionMatrix*viewMatrix*vec4(vP,1.); }',
+    fragmentShader:GLN+`uniform float uT,uS; varying vec3 vP;
+      void main(){ float r=length(vP); if(r>1.0) discard; vec2 q=vec2(atan(vP.y+vP.z*0.7,vP.x+vP.z*0.3)*3.,r*14.);
+        float n=fbm(q*1.5+vec2(0.,-uT*0.15)), n2=fbm(vec2(r*40.,atan(vP.y,vP.x+vP.z)*12.)+uT*0.05);
+        vec3 col;
+        if(r>0.975){ col=mix(vec3(0.30,0.26,0.22),vec3(0.46,0.40,0.33),n2); col=mix(col,vec3(0.16,0.32,0.18),smoothstep(0.994,1.0,r)*0.6); }
+        else if(r>0.55){ float t=(r-0.55)/0.425; col=mix(vec3(0.92,0.36,0.08),vec3(0.45,0.11,0.05),pow(t,0.8)); col*=0.72+0.5*n; // convecting mantle
+          col+=vec3(0.25,0.06,0.0)*smoothstep(0.6,0.75,fbm(q*0.8+uT*0.1)); }
+        else if(r>0.192){ float t=(r-0.192)/0.358; col=mix(vec3(1.0,0.74,0.22),vec3(0.98,0.55,0.12),t); col*=0.8+0.3*fbm(vec2(atan(vP.y,vP.x)*6.+uT*0.6,r*30.)); }
+        else { float t=r/0.192; col=mix(vec3(1.0,0.96,0.82),vec3(1.0,0.88,0.55),t)*(0.95+0.05*sin(uT*3.)); }
+        float b=min(min(abs(r-0.975),abs(r-0.55)),abs(r-0.192)); col*=0.55+0.45*smoothstep(0.0,0.007,b); // thin dark boundaries
+        float scan=exp(-pow((r-uS)/0.012,2.)); col+=vec3(0.55,0.85,1.)*scan*1.4;
+        gl_FragColor=vec4(col,1.); }`});
+  [[0,0,0],[0,-Math.PI/2,0],[Math.PI/2,0,0]].forEach((rot,i)=>{ const g=new THREE.PlaneGeometry(1,1,1,1); g.translate(0.5,0.5,0); const m=new THREE.Mesh(g,faceMat); m.rotation.set(...rot); m.visible=false; sc.add(m); FU['m'+i]=m; });
+  const pts=[[0.986,'l1_0'],[0.76,'l1_1'],[0.37,'l1_2'],[0.10,'l1_3']]; const A=Math.PI/4;
+  SCN[1]=function(lt){ FU.uT.value=lt; const open=lt>0.05; U.uO.value=open?1:0; FU.m0.visible=FU.m1.visible=FU.m2.visible=open;
+    const sp=easeIO(cl((lt-0.2)/3.4)); FU.uS.value=lerp(1.02,0.0,sp);
+    const u=easeIO(cl(lt/5.6)); const az=lerp(0.55,0.95,u), el=lerp(0.5,0.42,u), d=lerp(7.6,6.3,u);
+    cam.position.set(Math.sin(az)*Math.cos(el)*d,Math.sin(el)*d,Math.cos(az)*Math.cos(el)*d); cam.lookAt(0.08,lerp(0.05,0.15,u),0.08);
+    earth.rotation.y=0; P.c.render();
+    pts.forEach(([r,id],i)=>{ const v=new THREE.Vector3(Math.cos(A)*r*0.0+r*Math.cos(1.1)*0.0, r*Math.sin(A), r*Math.cos(A)); // on the x=0 face
+      const [x,y]=proj(v,cam); const shown=cl((1.02-FU.uS.value-(1-r)+0.04)/0.08); setLab(id,x+(i===3?90:18),y+(i===0?-75:i===1?10:i===2?70:150),shown*cl((lt-0.3)/0.3)); });
     caption(1,lt); };
 })();
 
@@ -275,6 +244,6 @@ function moonTex(){ return canvasTex(1024,512,(c,w,h)=>{ const n=vnoise(5), n2=v
     P.c.render();
     let [x,y]=proj(C,cam); setLab('l2_0',x+50,y-40,win(lt,0.3,9));
     W.copy(C).multiplyScalar(Math.cos(0.1727)).add(T1.clone().multiplyScalar(Math.sin(0.1727))).multiplyScalar(1.01); [x,y]=proj(W,cam); setLab('l2_1',x-20,y+70,win(lt,1.5,9));
-    W.copy(llVec(40,-4,1.0)); [x,y]=proj(W,cam); setLab('l2_2',x+14,y,win(lt,2.0,99));
+    W.copy(llVec(40,-4,1.0)); [x,y]=proj(W,cam); setLab('l2_2',Math.max(110,x+14),y,win(lt,2.0,99));
     caption(2,lt); };
 })();

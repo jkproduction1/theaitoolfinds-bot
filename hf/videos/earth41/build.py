@@ -1,16 +1,17 @@
-"""earth39 - App demo "Type it, get it #35" (2026-11-15 morning run, picklist trio "What if... Earth 5"; Jan tapped nothing; /zack-d-films
-replaced by /simulate, Jan: give it a break). /simulate the Moon twice as close, /what-if a mega tsunami hit New York (generic dusk skyline
-of our own design), /scale the biggest typhoon versus Europe. All drawn in code (three.js + GLSL), made with Claude Opus 5.5.
+"""earth41 - App demo "Type it, get it #35" (2026-11-15 morning run, picklist trio "What if... Earth 5"; Jan tapped nothing). Replaces
+earth39 (its tsunami scene failed director review twice). /simulate the Moon twice as close, /x-ray Earth down to its core, /scale the
+biggest typhoon versus Europe. All drawn in code (three.js + GLSL), made with Claude Opus 5.5.
 Facts: tide-generating forces vary inversely as the cube of the distance (NOAA NOS tides tutorial) -> half the distance = 8x the pull;
-Lituya Bay 1958 run-up 1,720 ft / 525 m, highest tsunami ever recorded (NOAA JetStream); Typhoon Tip (Oct 1979) gale-force winds out to
-1,100 km radius (NOAA AOML TC FAQ E5) = ~2,200 km across. Prompt first, then the result. Music t1."""
+Earth's layers (NASA science.nasa.gov/earth/facts): crust ~30 km on land, mantle ~2,900 km, liquid iron-nickel outer core ~2,300 km,
+solid inner core 1,221 km radius, up to 5,400 C; Typhoon Tip (Oct 1979) gale-force winds out to 1,100 km radius (NOAA AOML TC FAQ E5).
+Prompt first, then the result. Music t1."""
 import json, shutil, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parent.parent))
 from house import Film, series, FOLLOW_LINE
 
-W = HERE.parent.parent / "work" / "earth39"
+W = HERE.parent.parent / "work" / "earth41"
 A = W / "assets"
 for f in (HERE.parent / "impact22" / "media").iterdir():   # shared libs + Earth textures live in impact22/media
     if f.suffix == ".js": shutil.copy(f, A / f.name)
@@ -22,7 +23,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {11: 3.9, 25: 3.9, 37: 4.1}
+GAPS = {11: 3.9, 23: 3.9, 35: 4.4}
 TEMPO = 1.18  # voice ~12 % faster (reviewer: aim for ~20 s)
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
@@ -59,20 +60,20 @@ for j, w in enumerate(vw):
     if j in GAPS: shift += GAPS[j]
 (A / "voice.json").write_text(json.dumps(vw))
 
-F = Film(W, (HERE / "script.txt").read_text(), A / "voice.json", tail=0.8)
+F = Film(W, (HERE / "script.txt").read_text(), A / "voice.json", tail=0.3)
 F.scenes([0])
 S, E = F.S, F.E
 
 DEMOS = [  # Type idx, (cmd i0,i1), (prompt i0,i1), 'and' idx, cmd, prompt, title, caption, hi, chip description
     (0, (2, 2), (3, 7), 8, "simulate", "the Moon twice as close", "the Moon, twice as close", "Half the distance: / 8× the tidal pull.", 3, "Simulate any what-if"),
-    (12, (14, 15), (16, 21), 22, "what-if", "a mega tsunami hit New York", "a mega tsunami hits the city", "Real record: 525&nbsp;m tsunami / run-up, Alaska 1958.", 2, "Play out any what-if"),
-    (26, (28, 28), (29, 33), 34, "scale", "the biggest typhoon versus Europe", "the biggest typhoon vs. Europe", "Typhoon Tip, 1979: / ≈2,200&nbsp;km across.", 3, "Compare anything to scale"),
+    (12, (14, 14), (15, 19), 20, "x-ray", "Earth down to its core", "Earth, x-rayed to its core", "Inner core: up to / 5,400&nbsp;°C.", 4, "See inside anything"),
+    (24, (26, 26), (27, 31), 32, "scale", "the biggest typhoon versus Europe", "the biggest typhoon vs. Europe", "Typhoon Tip, 1979: / ≈2,200&nbsp;km across.", 3, "Compare anything to scale"),
 ]
 CMD = DEMOS[0][4]
 TY = []
 for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
     T = 0.0 if k == 0 else round(S[a] - 0.15, 3)
-    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[38] - 0.15, 3)
+    nxt = round(S[DEMOS[k + 1][0]] - 0.15, 3) if k < 2 else round(S[36] - 0.15, 3)
     t_slash = 0.0 if k == 0 else T + 0.05          # no empty "Reply…" pause: the command is typed right away
     c0 = 0.0 if k == 0 else T + 0.12
     c1 = max(c0 + 0.35, S[pi0] - 0.1)                # command typing flows straight into the prompt (no stall)
@@ -108,8 +109,8 @@ keys_html += [f'<div class="k f" style="left:30px;top:{KY0 + 232}px;width:120px"
 KEYPOS[" "] = (460, y3)
 
 LABELS = [
-    [("Moon", "384,400 km away"), ("Tidal pull", "×1.0"), ("Not to scale", "distances shortened")],
-    [("The wave", "rising out of the bay"), ("Downtown", "our own generic skyline"), ("What if", "no real forecast")],
+    [("Moon", "384,400 km away"), ("Tidal pull", "×1.0"), ("Not to scale", "distances shortened"), ("Ocean bulge", "pulled toward the Moon")],
+    [("Crust", "≈30 km on land"), ("Mantle", "≈2,900 km of hot rock"), ("Outer core", "liquid iron + nickel"), ("Inner core", "solid, 1,221 km radius")],
     [("Typhoon Tip, 1979", "largest storm on record"), ("Gale-force winds", "1,100 km from the eye"), ("Europe", "same scale")],
 ]
 ui = ['<script src="assets/three.min.js"></script><script src="assets/three-extras.js"></script><script src="assets/studio_exr.js"></script><script src="assets/earth_tex.js"></script><div class="ui" id="ui">',
@@ -131,7 +132,7 @@ for k, (a, _c, _p, _a, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
                f'<div class="cap">{capw}</div>{labs}'
                f'<div class="ttl"><b>{title}</b><i>with Claude Opus 5.5</i></div></div>')
 thumbs = "".join(f'<div class="th" id="th{k}" style="left:{x}px"><img src="assets/th{k}.jpg" alt=""></div>' for k, x in enumerate([90, 400, 710]))
-end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“WAVE”</div>'
+end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“TIDE”</div>'
        '<div class="g" id="e3">and I\'ll send you the prompts</div>' + thumbs + '<div class="series" id="eser" style="left:0;right:0;margin:0 auto;width:fit-content;top:1400px">Type it, get it <b>#35</b></div>' + FOLLOW_LINE.replace('class="follow"', 'class="follow" id="efol" style="top:1490px;color:#fff"') + '</div>')
 F.body.append('<div class="layer" id="serl">' + series("Type it, get it", 35, x=70, y=116, dark=True) + '</div>')
 F.clip(0, "".join(ui) + stages + end)
@@ -196,7 +197,6 @@ html,body,#root{background:#121212!important}
 
 CSS += r"""
 #serl > *{background:rgba(17,17,17,.85)!important}
-#st1 .cap{background:rgba(4,6,14,.6);border-radius:28px;left:70px;right:70px}
 """
 CSS += r"""
 .cap{padding:26px 40px;margin:0 auto;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,.35) 60%,rgba(0,0,0,0))}
@@ -280,7 +280,7 @@ F2('#st2',{opacity:1},{opacity:0,duration:.18,ease:'none'},END-0.12); tl.set('#u
 F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
 F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.02);
-F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[39]-0.1,END+0.1));
+F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[37]-0.1,END+0.1));
 F2('#e3',{opacity:0,y:30},{opacity:1,y:0,duration:.35,ease:A},END+0.22);
 [0,1,2].forEach(k=>F2('#th'+k,{opacity:0,y:200,rotation:(k-1)*8},{opacity:1,y:0,rotation:(k-1)*3,duration:.55,ease:'back.out(1.4)'},END+0.15+k*0.08));
 F2('#handle',{opacity:0},{opacity:1,duration:.3},END+0.5);
