@@ -1,1 +1,9 @@
-{"angle":"app-demo"}
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "tool_name": "Claude Code 3D scary space commands 5",
+ "keyword": "STAR",
+ "angle": "app-demo",
+ "cover_at": 6.6,
+ "summary_cs": "„Type it, get it #34“ z picklistu „The scariest things in space 5“ (nic jsi netapnul): černá díra trhá hvězdu na „špagety“ (tidal disruption event, NASA), Venuše v rentgenu pod kyselými mraky (povrch ~475 °C, tlak ~90× vyšší než na Zemi, NASA) a magnetar (~20 km, NASA) vedle ostrova dlouhého jako Manhattan (21,6 km), vše v kódu s Opus 5.5, hudba t2, 22 s. Než schválíš, nastav automatickou DM na slovo STAR.",
+ "caption": "A magnetar is a dead star only about 20 km across, roughly the length of Manhattan. I asked Claude Code to show it.\n\nPart #34 of a daily series.\n\nComment STAR and I'll DM you the prompts.\n\n#claudecode #space #aitools"
+}

@@ -1,1 +1,9 @@
-{"angle":"new-ability"}
+{
+ "angle": "new-ability",
+ "url": "https://claude.ai",
+ "tool_name": "Claude Opus 5.5 80s neon intro tutorial",
+ "keyword": "NEON",
+ "cover_at": 1.6,
+ "summary_cs": "🧪 doporučuju Trial. Tutoriál (12 s): „How to make this 80s neon intro using Claude“ – synthwave intro se jménem ALEX (pruhované slunce, neonová mřížka, palmy, chromová písmena se světelným odleskem) nakreslené v kódu s Opus 5.5, vlastní design bez loga/fontu jakékoli hry, hudba t4; 80s neon edity jedou před vydáním GTA 6 (19. 11.). Než schválíš, nastav automatickou DM na slovo NEON.",
+ "caption": "How to make an 80s neon intro with Claude.\n\nComment NEON and I'll DM you the prompt.\n\n#synthwave #80s #claude"
+}

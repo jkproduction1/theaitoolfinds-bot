@@ -1,24 +1,24 @@
 {
  "weights": {
   "topic": 30,
-  "hook": 14,
-  "payoff": 10,
+  "hook": 12,
+  "payoff": 9,
   "pace": 8,
-  "length": 12,
+  "length": 13,
   "filler": 8,
-  "visuals": 16,
+  "visuals": 18,
   "ending": 2
  },
  "angle_prior": {
   "app-demo": 1.0,
-  "relatable-pain": 0.98,
-  "new-ability": 0.72,
+  "relatable-pain": 0.96,
+  "new-ability": 0.78,
   "news": 0.75,
-  "styles-list": 0.71,
+  "styles-list": 0.83,
   "fear": 0.48,
   "pain-command": 0.5,
-  "listicle": 0.22,
+  "listicle": 0.2,
   "alternative": 0.25
  },
- "note": "2026-11-11 (Wed): angle_prior. Avg TikTok views since 11-01: app-demo 11,718 (19 posts, but median 879: avg is carried by space7 165k + space14 40k) = 1.0 (best by the BRAIN rule); relatable-pain avg 801 / med 852 (5); new-ability 668 / 558 (3); styles-list 625 (1); fear 413 (1); listicle 162 (1). Because the app-demo average is two outliers, the others were set as 0.5*old + 0.5*(their median / app-demo median 879), not avg/11,718 (that would zero everything else): relatable-pain 0.98, new-ability 0.72, fear 0.48, listicle 0.22, styles-list new 0.71; news/alternative/pain-command no new posts, kept. Weights: hook 17->14, payoff 12->10, visuals 11->16. Total score runs AGAINST views (Spearman TT -0.37 n=24, IG -0.70 n=21) because App demos get low hook/payoff scores and win; inside App demos only, visuals is the one feature that tracks TT views (+0.42, n=14), hook ~0. Length/filler = 1.0 on every post, untestable. Small moves, small sample. | 2026-11-08 (Sun): app-demo 0.95->0.65, hook 20->17, visuals 8->11. 2026-11-04: first calibration, 26 posts."
+ "note": "2026-11-15 (Sun): angle_prior from TikTok views since 11-01 (stats pulled 11-14, 37 TT posts mapped): app-demo avg 13,297 / median 922 (26 posts incl. Fable styles + sketch; avg carried by space7 255,601 + space14 60,587) = 1.0 (best avg); relatable-pain avg 849 / med 870 (5); new-ability 792 / 776 (4, incl. tutorial trip24 970); styles-list 876 (1); fear 449 (1); listicle 164 (1). Strict avg/13,297 would put every other angle at <=0.07 because of two outliers, so the same method as 11-11 was kept: 0.5*old + 0.5*(median / app-demo median 922): relatable-pain 0.98->0.96, new-ability 0.72->0.78, styles-list 0.71->0.83, fear 0.48 (=), listicle 0.22->0.20; news/alternative/pain-command no new posts, kept. Weights: hook 14->12, payoff 10->9, visuals 16->18, length 12->13 (sum still 100). Spearman (predictions.json vs views, n=28 TT / 23 IG): total score TT -0.32, IG -0.62 (still against views, because the format decides); inside App demos only (TT n=17): visuals +0.43, length +0.26, hook -0.05, payoff constant; IG App demos n=12: hook -0.37. dur_s vs views ~0 on both (TT -0.04, IG +0.07). filler = 1.0 everywhere, untestable. space7/styles33/styles37 have no prediction row; styles19 v1 and space14 v1 skipped (script.txt overwritten). Small moves, small sample. | 2026-11-11 (Wed): angle_prior. Avg TikTok views since 11-01: app-demo 11,718 (19 posts, but median 879: avg is carried by space7 165k + space14 40k) = 1.0 (best by the BRAIN rule); relatable-pain avg 801 / med 852 (5); new-ability 668 / 558 (3); styles-list 625 (1); fear 413 (1); listicle 162 (1). Because the app-demo average is two outliers, the others were set as 0.5*old + 0.5*(their median / app-demo median 879), not avg/11,718 (that would zero everything else): relatable-pain 0.98, new-ability 0.72, fear 0.48, listicle 0.22, styles-list new 0.71; news/alternative/pain-command no new posts, kept. Weights: hook 17->14, payoff 12->10, visuals 11->16. Total score runs AGAINST views (Spearman TT -0.37 n=24, IG -0.70 n=21) because App demos get low hook/payoff scores and win; inside App demos only, visuals is the one feature that tracks TT views (+0.42, n=14), hook ~0. Length/filler = 1.0 on every post, untestable. Small moves, small sample. | 2026-11-08 (Sun): app-demo 0.95->0.65, hook 20->17, visuals 8->11. 2026-11-04: first calibration, 26 posts."
 }
