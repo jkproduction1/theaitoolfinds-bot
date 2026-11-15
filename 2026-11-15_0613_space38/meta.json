@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Code 3D scary space commands 5",
+ "tool_name": "Claude Code 3D scary space commands 5",
+ "keyword": "STAR",
+ "summary_cs": "„Type it, get it #34“ z picklistu „The scariest things in space 5“ (nic jsi netapnul): černá díra trhá hvězdu na „špagety“ (tidal disruption event, NASA), Venuše v rentgenu pod kyselými mraky (povrch ~475 °C, tlak ~90× vyšší než na Zemi, NASA) a magnetar (~20 km, NASA) vedle ostrova dlouhého jako Manhattan (21,6 km), vše v kódu s Opus 5.5, hudba t2, 25,5 s. Než schválíš, nastav automatickou DM na slovo STAR.",
+ "style": "hyperframes-paper",
+ "duration": 25.5,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-15_0613",
+ "run_id": null,
+ "artifact": null
+}
