@@ -1,0 +1,13 @@
+{
+ "url": "https://code.claude.com/docs/en/slash-commands",
+ "name": "Claude Fable 5.2 explainer styles 5",
+ "tool_name": "Claude Fable 5.2 explainer styles 5",
+ "keyword": "FABLE",
+ "summary_cs": "App demo „Type it, get it #36“ (nejdřív prompt, pak výsledek), tři styly v Janově pořadí: /flat-science jak oko vidí barvy (3 druhy čípků, červená + zelená = žlutá, NEI/NIH), /paper-collage jak se stavěla Velká čínská zeď (21 196 km, malta s lepkavou rýží, přes 2 000 let), /painted-story maják v Alexandrii (280 př. n. l., asi 100 m, svítil přes 1 000 let). Vše kreslené v kódu s Claude Fable 5.2. Auto-DM na FABLE už máš.",
+ "style": "hyperframes-paper",
+ "duration": 29.7,
+ "domain": "code.claude.com/docs/en/slash-commands",
+ "created": "2026-11-15_1722",
+ "run_id": null,
+ "artifact": null
+}
