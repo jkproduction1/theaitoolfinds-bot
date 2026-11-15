@@ -4099,5 +4099,46 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "styles42",
+  "date": "2026-11-15",
+  "score": 77,
+  "mode": "full",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 4.37,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.64,
+   "dur_s": 30.3,
+   "words": 47,
+   "pace": 0.0,
+   "length": 0.97,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 48,
+   "visuals": 1.0,
+   "ending": 0.91,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.4 s (cíl ≤2,5 s)",
+   "video má 30 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]
