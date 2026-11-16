@@ -1,3 +1,21 @@
-SETDM APPLY: 63 automations, 2 ids
-set 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES): buttons now [{"url": "https://drive.google.com/file/d/1UKzGIDNzxW9Lt8G-EVKnGy2k6EfXwDzf/view?usp=sharing", "type": "url", "title": "Get the prompts"}, {"url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH", "type": "url", "title": "Get the system"}] | dm='Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.' | variations=3
-set 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS): buttons now [{"url": "https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing", "type": "url", "title": "Get the prompts"}, {"url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH", "type": "url", "title": "Get the system"}] | dm='Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.' | variations=3
+SETDM DRY: 63 automations, 2 ids
+would set 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES): [{"url": "https://drive.google.com/file/d/1UKzGIDNzxW9Lt8G-EVKnGy2k6EfXwDzf/view?usp=sharing", "type": "url", "title": "Get the prompts"}, {"type": "url", "title": "Get the system", "url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH"}]
+would set 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS): [{"url": "https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing", "type": "url", "title": "Get the prompts"}, {"type": "url", "title": "Get the system", "url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH"}]
+STATE 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES) active=True updated=2026-11-16T04:37:44.831Z stats={"read": 3, "dmsSent": 3, "delivered": 3, "dmsFailed": 4, "triggered": 11, "linkClicks": 4, "trackedSends": 3, "uniqueClicks": 3, "followGateSent": 6, "uniqueContacts": 3, "audienceSkipped": 1, "followGateFailed": 3, "followGatePassed": 3}
+  LOG {"createdAt": "2026-11-16T04:33:52.900Z", "status": "sent", "commentText": "Styles"}
+  LOG {"createdAt": "2026-11-16T04:32:24.245Z", "status": "skipped", "error": "Audience rule: not_follower", "commentText": "Styles"}
+  LOG {"createdAt": "2026-11-16T04:32:07.463Z", "status": "gated", "commentText": "Styles"}
+  LOG {"createdAt": "2026-11-16T04:30:53.111Z", "status": "failed", "error": "Instagram could not find this commenter for a private reply (Meta error 2534014). Meta does not say why, and it also happens on commenters whose accounts are active. It is not a token or permission problem, so reconnecting the account will not help.", "commentText": "Styles"}
+  LOG {"createdAt": "2026-11-16T04:21:56.112Z", "status": "sent", "error": "Follow gate: not following", "commentText": "Styles"}
+  LOG {"createdAt": "2026-11-16T04:18:41.784Z", "status": "sent", "error": "Follow gate: not following", "commentText": "Styles"}
+  LOG {"createdAt": "2026-11-16T03:59:51.482Z", "status": "gated", "commentText": "Styles"}
+  LOG {"createdAt": "2026-11-16T03:42:25.332Z", "status": "gated", "commentText": "Styles"}
+STATE 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS) active=True updated=2026-11-16T04:31:38.599Z stats={"read": 3, "dmsSent": 6, "delivered": 3, "dmsFailed": 0, "triggered": 9, "linkClicks": 10, "trackedSends": 6, "uniqueClicks": 5, "followGateSent": 1, "uniqueContacts": 6, "audienceSkipped": 4, "followGateFailed": 1, "followGatePassed": 2}
+  LOG {"createdAt": "2026-11-15T18:57:35.419Z", "status": "sent", "commentText": "comos"}
+  LOG {"createdAt": "2026-11-15T13:34:07.406Z", "status": "gated", "commentText": "cosmos"}
+  LOG {"createdAt": "2026-11-14T23:42:14.917Z", "status": "sent", "error": "Follow gate: not following", "commentText": "Cosmos"}
+  LOG {"createdAt": "2026-11-11T11:44:37.849Z", "status": "skipped", "error": "Audience rule: not_follower", "commentText": "Cosmos"}
+  LOG {"createdAt": "2026-11-10T20:55:10.668Z", "status": "sent", "commentText": "Cosmos"}
+  LOG {"createdAt": "2026-11-10T18:50:28.191Z", "status": "sent", "commentText": "I ve sent cosmos in the comments and i haven t gotten anything"}
+  LOG {"createdAt": "2026-11-10T16:44:20.659Z", "status": "sent", "error": "Audience rule: not_follower", "commentText": "Cosmos"}
+  LOG {"createdAt": "2026-11-10T15:38:05.822Z", "status": "sent", "commentText": "Cosmos"}
