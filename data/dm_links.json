@@ -1,8 +1,7 @@
 {
- "Claude Code Earth commands (EARTH)": "https://drive.google.com/file/d/165NDX1gxIiE9Zcd5KTgpg7xFuz5QCP--/view?usp=sharing",
- "Claude Code space commands (SPACE)": "https://drive.google.com/file/d/1MTN_JOzg9ZSIaRQw7cov5bhBehz2FO5i/view?usp=sharing",
- "Claude Fable 5.2 explainer styles 3 (FABLE)": "https://drive.google.com/file/d/1D2w4AHLrBzRwXYYqC5OAWGgjLmK2oerH/view?usp=sharing",
- "Claude Code 3D commands (INSIDE)": "https://drive.google.com/file/d/1OKTeucRjMBgkGYI1LrLYo87ebbehQ0ed/view?usp=sharing",
- "Claude Code 3D space commands (COSMOS)": "https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing",
- "Claude explainer styles 4 (STYLES)": "https://drive.google.com/file/d/1UKzGIDNzxW9Lt8G-EVKnGy2k6EfXwDzf/view?usp=sharing"
+ "Claude Code Earth commands (EARTH)": "https://code.claude.com/docs/en/slash-commands",
+ "Claude Code space commands (SPACE)": "https://code.claude.com/docs/en/slash-commands",
+ "Claude Fable 5.2 explainer styles 3 (FABLE)": "https://code.claude.com/docs/en/slash-commands",
+ "Claude Code 3D commands (INSIDE)": "https://code.claude.com/docs/en/slash-commands",
+ "Claude Code 3D space commands (COSMOS)": "https://code.claude.com/docs/en/slash-commands"
 }
