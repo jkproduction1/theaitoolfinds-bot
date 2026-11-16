@@ -4140,5 +4140,84 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "styles37",
+  "date": "2026-11-16",
+  "score": 73,
+  "mode": "script",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 5.0,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 19.3,
+   "words": 46,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 5.0 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "styles44",
+  "date": "2026-11-16",
+  "score": 71,
+  "mode": "full",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 4.38,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.6,
+   "dur_s": 30.4,
+   "words": 46,
+   "pace": 0.0,
+   "length": 0.96,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 69,
+   "visuals": 0.7,
+   "ending": 0.97,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.4 s (cíl ≤2,5 s)",
+   "video má 30 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]
