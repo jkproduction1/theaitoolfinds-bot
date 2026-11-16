@@ -18,7 +18,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {12: 4.6, 25: 4.6, 37: 4.6}
+GAPS = {12: 4.6, 24: 4.6, 37: 4.6}
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())
@@ -55,9 +55,9 @@ F.scenes([0])
 S, E = F.S, F.E
 
 DEMOS = [
-    (0, (2, 3), (4, 8), 9, "paper-collage", "why world maps are wrong", "paper-collage explainer", "x", 0, "Explain anything as a paper collage"),
-    (13, (15, 16), (17, 21), 22, "flat-science", "why coffee wakes you up", "flat glowing explainer", "x", 0, "Explain science in flat, glowing vector"),
-    (26, (28, 29), (30, 33), 34, "painted-story", "why Venice is sinking", "hand-painted story", "x", 0, "Tell any story as a painting"),
+    (0, (2, 3), (4, 8), 9, "flat-science", "why coffee wakes you up", "flat glowing explainer", "x", 0, "Explain science in flat, glowing vector"),
+    (13, (15, 16), (17, 20), 21, "painted-story", "why Venice is sinking", "hand-painted story", "x", 0, "Tell any story as a painting"),
+    (25, (27, 28), (29, 33), 34, "paper-collage", "why world maps are wrong", "paper-collage explainer", "x", 0, "Explain anything as a paper collage"),
 ]
 CMD = DEMOS[0][4]
 TY = []
