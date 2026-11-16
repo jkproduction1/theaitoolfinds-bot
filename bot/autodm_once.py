@@ -2,7 +2,7 @@
 python -m bot.autodm_once <zernio_post_id> <videos-branch folder> [<vb dir>]
 
 Change the link button of existing automations (Jan, 2026-11-16: prompt PDFs on Drive for the top videos):
-python -m bot.autodm_once seturl dry|apply     reads data/dm_links.json = {"<tool_name of the post>": "<new url>"}
+python -m bot.autodm_once seturl dry|apply     reads data/dm_links.json = {"<automation name: tool (KEYWORD)>": "<new url>"}
 Only the url of url-buttons changes; texts, keywords, post binding and audience stay as they are. Log: logs/autodm.log"""
 import json
 import sys
@@ -18,7 +18,7 @@ def seturl(apply: bool) -> None:
     out, done, seen = [f"SETURL {'APPLY' if apply else 'DRY'}: {len(items)} automations, {len(links)} links"], 0, set()
     for a in items:
         aid = a.get("id") or a.get("_id")
-        title = (a.get("postTitle") or (a.get("name") or "").split(" (")[0]).strip()
+        title = (a.get("name") or "").strip()  # exact automation name "<tool> (<KEYWORD>)": tool names are shared by many posts
         url = links.get(title)
         if not url:
             continue
@@ -46,7 +46,7 @@ def seturl(apply: bool) -> None:
             out.append(f"FAILED {tag}: {e}")
     for t in links:
         if t not in seen:
-            out.append(f"NOT FOUND: no automation titled '{t}'")
+            out.append(f"NOT FOUND: no automation named '{t}'")
     Path("logs").mkdir(exist_ok=True)
     Path("logs/autodm.log").write_text("\n".join(out))
     print("\n".join(out))
