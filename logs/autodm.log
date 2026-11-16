@@ -1,8 +1,1023 @@
-SETURL DRY: 63 automations, 6 links
-would change 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES) keywords=['STYLES', 'styles']: ['https://drive.google.com/file/d/17X4v72GyzR3z9CnBUcb3w-wOB2uoh5BE/view?usp=sharing'] -> https://drive.google.com/file/d/1UKzGIDNzxW9Lt8G-EVKnGy2k6EfXwDzf/view?usp=sharing
-already set 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE) keywords=['FABLE', 'fable']
-already set 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']
-already set 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']
-already set 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH) keywords=['EARTH', 'earth']
-already set 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE) keywords=['SPACE', 'space']
-already set 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE) keywords=['INSIDE', 'inside']
+AUTOMATIONS: [
+ {
+  "id": "6afa72b2f94c853b7a7ddc60",
+  "name": "Claude explainer styles 4 (STYLES)",
+  "platform": "instagram",
+  "trigger": "comment",
+  "accountId": "6ad69dcdecad4ce8494e92b1",
+  "platformPostId": "18130291583478656",
+  "postId": "6afa72adb05f1065cfad3498",
+  "postTitle": "Claude explainer styles 4",
+  "keywords": [
+   "STYLES",
+   "styles"
+  ],
+  "matchMode": "word",
+  "typoTolerance": true,
+  "commentReply": "just messaged you",
+  "commentReplyVariations": [
+   "DM'd you \ud83d\ude4c",
+   "there you go, check DMs",
+   "you've got mail \ud83d\udcec",
+   "sent you a message!",
+   "just sent it \ud83d\udce9"
+  ],
+  "repeatPolicy": {
+   "mode": "once"
+  },
+  "linkTracking": true,
+  "commentReplyDelaySeconds": 5,
+  "dmMessage": "Hey \ud83d\udc4b here's the link. Enjoy!",
+  "dmMessageVariations": [
+   "Here it is \ud83d\udc47 tag me if you try it!",
+   "Got it \ud83d\udc47 enjoy and thanks for watching!",
+   "As promised \ud83d\udc47 Have fun with it!",
+   "Here you go \ud83d\ude4c everything for STYLES is below \ud83d\udc47",
+   "Hey, thanks for the comment! Here it is \ud83d\udc47"
+  ],
+  "buttons": [
+   {
+    "url": "https://drive.google.com/file/d/17X4v72GyzR3z9CnBUcb3w-wOB2uoh5BE/view?usp=sharing",
+    "type": "url",
+    "title": "Open the link"
+   }
+  ],
+  "publicReplyPolicy": "after_dm",
+  "actions": {
+   "likeComment": true
+  },
+  "audience": {
+   "whenUnknown": "verify",
+   "followerStatus": "follower"
+  },
+  "followGate": {
+   "message": "Thanks for the comment! Tap below and I'll send it \ud83d\udc47",
+   "buttonLabel": "Yes please",
+   "notFollowingMessage": "Oops, I can only send it to followers \ud83d\ude05 follow, then tap the button again"
+  },
+  "dmDelaySeconds": 4,
+  "alsoMatchInDms": true,
+  "isActive": true,
+  "stats": {
+   "read": 0,
+   "dmsSent": 0,
+   "delivered": 0,
+   "dmsFailed": 1,
+   "triggered": 1,
+   "linkClicks": 0,
+   "trackedSends": 0,
+   "uniqueClicks": 0,
+   "followGateSent": 0,
+   "uniqueContacts": 0,
+   "audienceSkipped": 0,
+   "followGateFailed": 0,
+   "followGatePassed": 0
+  },
+  "createdAt": "2026-11-16T03:04:18.193Z",
+  "updatedAt": "2026-11-16T03:21:09.670Z"
+ },
+ {
+  "id": "6af9e1a516043fc4f1e98dbb",
+  "name": "Claude Fable 5.2 explainer styles 5 (FABLE)",
+  "platform": "instagram",
+  "trigger": "comment",
+  "accountId": "6ad69dcdecad4ce8494e92b1",
+  "platformPostId": "17919848295265637",
+  "postId": "6af9e1a1b995c35625c1828e",
+  "postTitle": "Claude Fable 5.2 explainer styles 5",
+  "keywords": [
+   "FABLE",
+   "fable"
+  ],
+  "matchMode": "word",
+  "typoTolerance": true,
+  "commentReply": "sending now \ud83d\udce9",
+  "commentReplyVariations": [
+   "sent you a message!",
+   "messaged you!",
+   "check your DMs!",
+   "sent it over!",
+   "you've got mail \ud83d\udcec"
+  ],
+  "repeatPolicy": {
+   "mode": "once"
+  },
+  "linkTracking": true,
+  "commentReplyDelaySeconds": 5,
+  "dmMessage": "Sent \ud83d\ude4c here's everything for FABLE",
+  "dmMessageVariations": [
+   "Hey! Here's the FABLE stuff you asked for \ud83d\udc47",
+   "Here it is! Let me know what you make with it \ud83d\ude4c",
+   "Here you go! New one drops every day btw \ud83e\udd9d",
+   "Here you go \ud83d\ude4c everything for FABLE is below \ud83d\udc47",
+   "Hey \ud83d\udc4b here's the link. Enjoy!"
+  ],
+  "buttons": [
+   {
+    "url": "https://code.claude.com/docs/en/slash-commands",
+    "type": "url",
+    "title": "Show me"
+   }
+  ],
+  "publicReplyPolicy": "after_dm",
+  "actions": {
+   "likeComment": true
+  },
+  "audience": {
+   "whenUnknown": "verify",
+   "followerStatus": "follower"
+  },
+  "followGate": {
+   "message": "Thanks for the comment! Tap below and I'll send it \ud83d\udc47",
+   "buttonLabel": "Yes please",
+   "notFollowingMessage": "Oops, I can only send it to followers \ud83d\ude05 follow, then tap the button again"
+  },
+  "dmDelaySeconds": 5,
+  "alsoMatchInDms": true,
+  "isActive": true,
+  "stats": {
+   "read": 9,
+   "dmsSent": 10,
+   "delivered": 9,
+   "dmsFailed": 1,
+   "triggered": 20,
+   "linkClicks": 10,
+   "trackedSends": 10,
+   "uniqueClicks": 9,
+   "followGateSent": 13,
+   "uniqueContacts": 10,
+   "audienceSkipped": 0,
+   "followGateFailed": 2,
+   "followGatePassed": 4
+  },
+  "createdAt": "2026-11-15T16:45:25.219Z",
+  "updatedAt": "2026-11-16T03:09:37.827Z"
+ },
+ {
+  "id": "6af8846a009cff5e49a65426",
+  "name": "Claude Fable 5.2 explainer styles 4 (FABLE)",
+  "platform": "instagram",
+  "trigger": "comment",
+  "accountId": "6ad69dcdecad4ce8494e92b1",
+  "platformPostId": "18036580769864594",
+  "postId": "6af88466bc0e1e956661fc78",
+  "postTitle": "Claude Fable 5.2 explainer styles 4",
+  "keywords": [
+   "FABLE",
+   "fable"
+  ],
+  "matchMode": "word",
+  "typoTolerance": true,
+  "commentReply": "just messaged you",
+  "commentReplyVariations": [
+   "sent you a message!",
+   "messaged you!",
+   "check your requests if you don't see it",
+   "you've got mail \ud83d\udcec",
+   "DM'd you \ud83d\ude4c"
+  ],
+  "repeatPolicy": {
+   "mode": "once"
+  },
+  "linkTracking": true,
+  "commentReplyDelaySeconds": 5,
+  "dmMessage": "Here's the link! Any questions, just reply here",
+  "dmMessageVariations": [
+   "Hey, thanks for the comment! Here it is \ud83d\udc47",
+   "Here it is! Let me know what you make with it \ud83d\ude4c",
+   "Hey \ud83d\udc4b here's the link. Enjoy!",
+   "Here it is \ud83d\udc47 tag me if you try it!",
+   "Here you go \ud83d\ude4c everything for FABLE is below \ud83d\udc47"
+  ],
+  "buttons": [
+   {
+    "url": "https://code.claude.com/docs/en/slash-commands",
+    "type": "url",
+    "title": "Open it"
+   }
+  ],
+  "publicReplyPolicy": "after_dm",
+  "actions": {
+   "likeComment": true
+  },
+  "audience": {
+   "whenUnknown": "verify",
+   "followerStatus": "follower"
+  },
+  "followGate": {
+   "message": "Hey \ud83d\ude4c quick tap below and the link is yours",
+   "buttonLabel": "Send me the link",
+   "notFollowingMessage": "Almost! Follow the account first, then tap again and I'll send it \ud83d\ude4c"
+  },
+  "dmDelaySeconds": 5,
+  "alsoMatchInDms": true,
+  "isActive": tr
+
+LOGS 6afa72b2f94c853b7a7ddc60: {
+ "success": true,
+ "logs": [
+  {
+   "id": "6afa768de1d5888763324387",
+   "commentId": "17956922787320838",
+   "commenterId": "1796448264942813",
+   "commenterName": "jjdonethat",
+   "commenterUsername": "jjdonethat",
+   "commentText": "STYLES",
+   "source": "comment",
+   "status": "failed",
+   "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction on the account. It is not a token or permission problem: reconnecting will not help, and retrying the same comment returns the same error.",
+   "platformError": {
+    "code": 100,
+    "subcode": 2534025
+   },
+   "privateReplyConsumed": false,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": "rejected",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-16T03:20:45.561Z"
+  }
+ ],
+ "pagination": {
+  "total": 1,
+  "limit": 50,
+  "skip": 0,
+  "hasMore": false
+ },
+ "misses": {
+  "total": 1,
+  "retentionDays": 14,
+  "samples": [
+   {
+    "commentText": "Earth",
+    "commenterName": "jjdonethat",
+    "at": "2026-11-16T03:20:23.272Z"
+   }
+  ]
+ }
+}
+
+LOGS 6af9e1a516043fc4f1e98dbb: {
+ "success": true,
+ "logs": [
+  {
+   "id": "6afa6ef434ebfcdd62380ec5",
+   "commentId": "17950972998067103",
+   "commenterId": "29927790773489630",
+   "commenterName": "we_sam32",
+   "commenterUsername": "we_sam32",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "failed",
+   "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction on the account. It is not a token or permission problem: reconnecting will not help, and retrying the same comment returns the same error.",
+   "platformError": {
+    "code": 100,
+    "subcode": 2534025
+   },
+   "privateReplyConsumed": false,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": "rejected",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-16T02:48:20.119Z"
+  },
+  {
+   "id": "6afa4eba45516dacedc52b50",
+   "commentId": "17880671634565292",
+   "commenterId": "1429242922251804",
+   "commenterName": "koala.gugo",
+   "commenterUsername": "koala.gugo",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "sent",
+   "error": "Follow gate: not following",
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-16T00:33:14.931Z",
+   "audienceOutcome": "gate_passed",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 0,
+   "gateResolvedAt": "2026-11-16T00:33:11.573Z",
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": "2026-11-16T00:33:15.097Z",
+   "clickCount": 1,
+   "createdAt": "2026-11-16T00:30:50.661Z"
+  },
+  {
+   "id": "6afa3ce34ac29425cb3d2adf",
+   "commentId": "18121688233969954",
+   "commenterId": "1463788912369461",
+   "commenterName": "aj_2way",
+   "commenterUsername": "aj_2way",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "gated",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": "gate_sent",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-15T23:14:43.283Z"
+  },
+  {
+   "id": "6afa3cb76814a3561db35dab",
+   "commentId": "18219444940359026",
+   "commenterId": "1479860585208523",
+   "commenterName": "france271919",
+   "commenterUsername": "france271919",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "gated",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": "gate_sent",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-15T23:13:59.564Z"
+  },
+  {
+   "id": "6afa2b591876144f515ffd1e",
+   "commentId": "18103538249077432",
+   "commenterId": "1124990003564776",
+   "commenterName": "howenwewen",
+   "commenterUsername": "howenwewen",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "gated",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": "gate_sent",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-15T21:59:53.085Z"
+  },
+  {
+   "id": "6afa2ae4408116087f1922a5",
+   "commentId": "17978566224154916",
+   "commenterId": "1145671038055435",
+   "commenterName": "prst.aw",
+   "commenterUsername": "prst.aw",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "sent",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "202
+
+LOGS 6af8846a009cff5e49a65426: {
+ "success": true,
+ "logs": [
+  {
+   "id": "6afa7202b6373fe35763795c",
+   "commentId": "18116536835137395",
+   "commenterId": "1464796188321515",
+   "commenterName": "yabbuyy",
+   "commenterUsername": "yabbuyy",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "sent",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-16T03:06:50.520Z",
+   "audienceOutcome": "gate_passed",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 10,
+   "gateResolvedAt": "2026-11-16T03:06:47.600Z",
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": "2026-11-16T03:07:00.700Z",
+   "clickCount": 1,
+   "createdAt": "2026-11-16T03:01:22.105Z"
+  },
+  {
+   "id": "6afa71c3e1d588876331b02d",
+   "commentId": "18103605587537489",
+   "commenterId": "1194127996273689",
+   "commenterName": "suryans.hhh",
+   "commenterUsername": "suryans.hhh",
+   "commentText": "Fable\ud83d\udc4f",
+   "source": "comment",
+   "status": "gated",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": "gate_sent",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-16T03:00:19.275Z"
+  },
+  {
+   "id": "6afa64eeb7b4ba2ec8952b9f",
+   "commentId": "18101350820453149",
+   "commenterId": "2204834347137628",
+   "commenterName": "kulnoordeep__sandhu",
+   "commenterUsername": "kulnoordeep__sandhu",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "failed",
+   "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction on the account. It is not a token or permission problem: reconnecting will not help, and retrying the same comment returns the same error.",
+   "platformError": {
+    "code": 100,
+    "subcode": 2534025
+   },
+   "privateReplyConsumed": false,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": "rejected",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-16T02:05:34.469Z"
+  },
+  {
+   "id": "6afa4eccb11a5ee1cef46065",
+   "commentId": "18105416456645290",
+   "commenterId": "1429242922251804",
+   "commenterName": "koala.gugo",
+   "commenterUsername": "koala.gugo",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "failed",
+   "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction on the account. It is not a token or permission problem: reconnecting will not help, and retrying the same comment returns the same error.",
+   "platformError": {
+    "code": 100,
+    "subcode": 2534025
+   },
+   "privateReplyConsumed": false,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": "rejected",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-16T00:31:08.228Z"
+  },
+  {
+   "id": "6afa283c49d6b5a7d4678d6a",
+   "commentId": "17997999263840052",
+   "commenterId": "2704833206615891",
+   "commenterName": "adamekq._",
+   "commenterUsername": "adamekq._",
+   "commentText": "fable",
+   "source": "comment",
+   "status": "sent",
+   "error": "Follow gate: not following",
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-15T21:48:08.240Z",
+   "audienceOutcome": "gate_passed",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 187,
+   "gateResolvedAt": "2026-11-15T21:48:04.512Z",
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hid
+
+LOGS 6af72d1a35015a8781861d67: {
+ "success": true,
+ "logs": [
+  {
+   "id": "6afa5f928f8dd3439fc1ccf2",
+   "commentId": "18138768952653133",
+   "commenterId": "1142905911771402",
+   "commenterName": "chaneilluis",
+   "commenterUsername": "chaneilluis",
+   "commentText": "FABLE",
+   "source": "comment",
+   "status": "sent",
+   "error": "Follow gate: not following",
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-16T02:10:05.002Z",
+   "audienceOutcome": "gate_passed",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 26,
+   "gateResolvedAt": "2026-11-16T02:10:01.021Z",
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": "2026-11-16T02:10:14.123Z",
+   "clickCount": 1,
+   "createdAt": "2026-11-16T01:42:42.702Z"
+  },
+  {
+   "id": "6afa54a3e189bf7b379286cb",
+   "commentId": "18082090334746322",
+   "commenterId": "2703893663398711",
+   "commenterName": "andrei.jur_24",
+   "commenterUsername": "andrei.jur_24",
+   "commentText": "FABLE",
+   "source": "comment",
+   "status": "sent",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-16T00:59:10.435Z",
+   "audienceOutcome": "gate_passed",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 276,
+   "gateResolvedAt": "2026-11-16T00:59:07.040Z",
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": "2026-11-16T00:59:13.628Z",
+   "clickCount": 1,
+   "createdAt": "2026-11-16T00:56:03.546Z"
+  },
+  {
+   "id": "6afa4ed756b060fa6b7eb176",
+   "commentId": "17976321441173829",
+   "commenterId": "1429242922251804",
+   "commenterName": "koala.gugo",
+   "commenterUsername": "koala.gugo",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "failed",
+   "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction on the account. It is not a token or permission problem: reconnecting will not help, and retrying the same comment returns the same error.",
+   "platformError": {
+    "code": 100,
+    "subcode": 2534025
+   },
+   "privateReplyConsumed": false,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": "rejected",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-16T00:31:19.477Z"
+  },
+  {
+   "id": "6afa162220191258c29faab8",
+   "commentId": "18118431242582345",
+   "commenterId": "1082098024803285",
+   "commenterName": "urssanooshaa",
+   "commenterUsername": "urssanooshaa",
+   "commentText": "FABLE",
+   "source": "comment",
+   "status": "gated",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": "gate_sent",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-15T20:29:22.192Z"
+  },
+  {
+   "id": "6af9ff60390f86278a3d1aca",
+   "commentId": "18004741281008672",
+   "commenterId": "1823917365606071",
+   "commenterName": "dont.fall.get.up",
+   "commenterUsername": "dont.fall.get.up",
+   "commentText": "Fable",
+   "source": "comment",
+   "status": "failed",
+   "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction on the account. It is not a token or permission problem: reconnecting will not help, and retrying the same comment returns the same error.",
+   "platformError": {
+    "code": 100,
+    "subcode": 2534025
+   },
+   "privateReplyConsumed": false,
+   "commentReplyStatus": null,
+   "commentReplyError": null,
+   "publicReplyPostedAt": null,
+   "audienceOutcome": null,
+   "gateButtonStatus": "rejected",
+   "commenterIsFollower": null,
+   "commenterFollowerCount": null,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Revie
+
+LOGS 6af6e498fe3f0e3f33259528: {
+ "success": true,
+ "logs": [
+  {
+   "id": "6af9cdecf87adbeb8c36fa7c",
+   "commentId": "17949241551358142",
+   "commenterId": "1192813423167587",
+   "commenterName": "noelkruja",
+   "commenterUsername": "noelkruja",
+   "commentText": "HEIST",
+   "source": "comment",
+   "status": "sent",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-15T15:21:56.934Z",
+   "audienceOutcome": "gate_passed",
+   "gateButtonStatus": "delivered",
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 18,
+   "gateResolvedAt": "2026-11-15T15:21:54.365Z",
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": "2026-11-15T15:21:57.841Z",
+   "clickCount": 1,
+   "createdAt": "2026-11-15T15:21:16.979Z"
+  },
+  {
+   "id": "6af9cc085d5628650608515e",
+   "commentId": "18045552371832061",
+   "commenterId": "2097502617570681",
+   "commenterName": "haste_xd",
+   "commenterUsername": "haste_xd",
+   "commentText": "HEIST",
+   "source": "comment",
+   "status": "sent",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-15T15:13:51.532Z",
+   "audienceOutcome": "passed",
+   "gateButtonStatus": null,
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 21,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-15T15:13:12.080Z"
+  },
+  {
+   "id": "6af9c6079d3c144121bd61d7",
+   "commentId": "17977038360160926",
+   "commenterId": "1454709709436342",
+   "commenterName": "andu.x1",
+   "commenterUsername": "andu.x1",
+   "commentText": "HEIST",
+   "source": "comment",
+   "status": "sent",
+   "error": null,
+   "platformError": null,
+   "privateReplyConsumed": null,
+   "commentReplyStatus": "sent",
+   "commentReplyError": null,
+   "publicReplyPostedAt": "2026-11-15T14:48:36.229Z",
+   "audienceOutcome": "passed",
+   "gateButtonStatus": null,
+   "commenterIsFollower": true,
+   "commenterFollowerCount": 801,
+   "gateResolvedAt": null,
+   "likeSkipped": "Liking Instagram media and comments is in limited release: Meta has granted this app only Standard Access to instagram_manage_engagement, so the call is restricted to allowlisted accounts until App Review completes.",
+   "hideSkipped": null,
+   "mediaError": null,
+   "nextDueAt": null,
+   "clickedAt": null,
+   "clickCount": 0,
+   "createdAt": "2026-11-15T14:47:35.780Z"
+  }
+ ],
+ "pagination": {
+  "total": 3,
+  "limit": 50,
+  "skip": 0,
+  "hasMore": false
+ },
+ "misses": {
+  "total": 0,
+  "retentionDays": 14,
+  "samples": []
+ }
+}
+
+IG ACCOUNT: {
+ "_id": "6ad69dcdecad4ce8494e92b1",
+ "userId": "6ad69db4c279e94afa01fb65",
+ "profileId": {
+  "_id": "6ad69db4c279e94afa01fb6d",
+  "name": "Default",
+  "externalId": null
+ },
+ "platform": "instagram",
+ "platformUserId": "28170760065935048",
+ "username": "theaitoolfinds",
+ "displayName": "The AI Tool Finds",
+ "profilePicture": "https://scontent-ber1-1.cdninstagram.com/v/t51.82787-19/859082274_17955334455032548_5183997929216793947_n.jpg?stp=dst-jpg_s240x240_tt6&_nc_cat=100&_nc_map=urlgen_bucketless&ig_cache_key=GCKONDPk_gMUSMo-AFvdU4_mQvFHbmNDAQAB2402400j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=w84zgs5f3-kQ7kNvwFgd3Ql&_nc_oc=AdqQAZkGDlR-O8qPYzYDatuZXIWToGLy2nyEfZl1EAoFpCRrN74TcT3pdVF3F_EbsbU&_nc_zt=24&_nc_ht=scontent-ber1-1.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=RFQ4ZcBgE92JrNfXK4774w&_nc_tpa=Q5bMBQK5Z4LSOMDXyMsiWtQjzh1yIBNpXTwcqF41iOFOMBVKGVRlhQAZKjEsUBFruQTKRX8m9R6s1mc4wA&_nc_ct=RQosPBUCFQIAAAA&oh=00_AQTPU1CDX9Kf05Ig8awHsSrDfSqAkXOzZYl5UC36uvo8PQ&oe=6AFDE454",
+ "profileUrl": "https://instagram.com/theaitoolfinds",
+ "isActive": true,
+ "permissions": [
+  "instagram_business_basic",
+  "instagram_business_manage_messages",
+  "instagram_business_content_publish",
+  "instagram_business_manage_insights",
+  "instagram_business_manage_comments"
+ ],
+ "metadata": {
+  "scope": [
+   "instagram_business_basic",
+   "instagram_business_manage_messages",
+   "instagram_business_content_publish",
+   "instagram_business_manage_insights",
+   "instagram_business_manage_comments"
+  ],
+  "expires_in": 5184000,
+  "connectedAt": "2026-11-06T20:29:43.619Z",
+  "profileData": {
+   "id": "28170760065935048",
+   "bio": "\ud83e\udd16 Discover the best AI tools\n\u26a1 Tools, tips & tutorials\n\ud83d\ude80 Work smarter with AI\n\ud83d\udce9 theaitoolfinds@gmail.com",
+   "website": null,
+   "username": "theaitoolfinds",
+   "extraData": {
+    "mediaCount": 45,
+    "accountType": "MEDIA_CREATOR",
+    "followsCount": 0,
+    "instagramScopedId": "17841460976410168"
+   },
+   "followersCount": 7543,
+   "displayName": "The AI Tool Finds",
+   "profilePicture": "https://scontent-ber1-1.cdninstagram.com/v/t51.82787-19/859082274_17955334455032548_5183997929216793947_n.jpg?stp=dst-jpg_s240x240_tt6&_nc_cat=100&_nc_map=urlgen_bucketless&ig_cache_key=GCKONDPk_gMUSMo-AFvdU4_mQvFHbmNDAQAB2402400j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=w84zgs5f3-kQ7kNvwFgd3Ql&_nc_oc=AdqQAZkGDlR-O8qPYzYDatuZXIWToGLy2nyEfZl1EAoFpCRrN74TcT3pdVF3F_EbsbU&_nc_zt=24&_nc_ht=scontent-ber1-1.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=RFQ4ZcBgE92JrNfXK4774w&_nc_tpa=Q5bMBQK5Z4LSOMDXyMsiWtQjzh1yIBNpXTwcqF41iOFOMBVKGVRlhQAZKjEsUBFruQTKRX8m9R6s1mc4wA&_nc_ct=RQosPBUCFQIAAAA&oh=00_AQTPU1CDX9Kf05Ig8awHsSrDfSqAkXOzZYl5UC36uvo8PQ&oe=6AFDE454",
+   "profileUrl": "https://instagram.com/theaitoolfinds"
+  },
+  "instagramScopedId": "17841460976410168"
+ },
+ "platformStatus": "active",
+ "platformStatusReason": null,
+ 
+
+POST: {
+ "post": {
+  "_id": "6ad776bdf5e93b04321197ea",
+  "userId": {
+   "id": "6ad69db4c279e94afa01fb65",
+   "name": "theaitoolfinds",
+   "image": "https://lh3.googleusercontent.com/a/ACg8ocIB5HZkyRJi1iCQ6zQewnK-_DftXflFtLPwcO48vXScP5ynCg=s96-c"
+  },
+  "title": "",
+  "content": "Someone used AI to rebuild 7 Adobe apps, and they're all free \ud83d\udc40\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ARTCRAFT and I'll DM you the links.\n\n#ai #adobe #photoshop #aftereffects #opensource #aitools #editing\n\n#ai #adobe",
+  "mediaItems": [
+   {
+    "_id": "6ad776bdf5e93b04321197ed",
+    "url": "https://media.zernio.com/media/1792505524296_4sgxwuol_video.mp4",
+    "type": "video"
+   }
+  ],
+  "scheduledFor": "2026-10-20T14:15:03.951Z",
+  "timezone": "UTC",
+  "status": "published",
+  "tags": [],
+  "hashtags": [],
+  "mentions": [],
+  "visibility": "public",
+  "crosspostingEnabled": true,
+  "metadata": {
+   "usageCounted": true
+  },
+  "publishingClaimedAt": "2026-10-20T14:15:21.223Z",
+  "recycling": {
+   "enabled": false,
+   "gapFreq": "month",
+   "recycleCount": 0,
+   "contentVariations": [],
+   "contentVariationIndex": 0
+  },
+  "lastEnqueuedAt": "2026-10-20T14:16:14.964Z",
+  "createdAt": "2026-10-20T14:12:13.421Z",
+  "updatedAt": "2026-10-20T14:25:48.835Z",
+  "platforms": [
+   {
+    "_id": "6ad776bdf5e93b04321197e8",
+    "platform": "instagram",
+    "accountId": {
+     "_id": "6ad69dcdecad4ce8494e92b1",
+     "platform": "instagram",
+     "username": "theaitoolfinds",
+     "displayName": "The AI Tool Finds",
+     "profilePicture": "https://scontent-ber1-1.cdninstagram.com/v/t51.82787-19/859082274_17955334455032548_5183997929216793947_n.jpg?stp=dst-jpg_s240x240_tt6&_nc_cat=100&_nc_map=urlgen_bucketless&ig_cache_key=GCKONDPk_gMUSMo-AFvdU4_mQvFHbmNDAQAB2402400j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=w84zgs5f3-kQ7kNvwFgd3Ql&_nc_oc=AdqQAZkGDlR-O8qPYzYDatuZXIWToGLy2nyEfZl1EAoFpCRrN74TcT3pdVF3F_EbsbU&_nc_zt=24&_nc_ht=scontent-ber1-1.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=RFQ4ZcBgE92JrNfXK4774w&_nc_tpa=Q5bMBQK5Z4LSOMDXyMsiWtQjzh1yIBNpXTwcqF41iOFOMBVKGVRlhQAZKjEsUBFruQTKRX8m9R6s1mc4wA&_nc_ct=RQosPBUCFQIAAAA&oh=00_AQTPU1CDX9Kf05Ig8awHsSrDfSqAkXOzZYl5UC36uvo8PQ&oe=6AFDE454",
+     "isActive": true,
+     "profileId": "6ad69db4c279e94afa01fb6d"
+    },
+    "profileId": "6ad69db4c279e94afa01fb6d",
+    "customMedia": [],
+    "scheduledFor": "2026-10-20T14:15:03.951Z",
+    "platformSpecificData": {
+     "shareToFeed": true,
+     "instagramThumbnail": "https://media.zernio.com/media/1792505526566_b2we64d9_cover.jpg"
+    },
+    "status": "published",
+    "publishedAt": "2026-10-20T14:17:14.507Z",
+    "platformPostId": "18086880842695673",
+    "platformPostUrl": "https://www.instagram.com/reel/DeuBssIDopI/",
+    "publishAttempts": 1,
+    "contentHash": "4e2336dcb9885ecf6cf28ef0263bdaee"
+   },
+   {
+    "_id": "6ad776bdf5e93b04321197e9",
+    "platform": "tiktok",
+    "accountId": {
+     "_id": "6ad6a61e4115c03f8b41d247",
+     "platform": "tiktok",
+     "username": "theaitoolfinds",
+     "displayName": "The Ai Tool Finds",
+     "profilePicture": "https://p16-common-sign.tiktokcdn-eu.com/tos-no1a-avt-0068c001-no/32d7df8353d251c7ab4138f730bb9b36~tplv-tiktokx-cropcenter:168:168.jpeg?dr=10397&refresh_token=481c1158&x-expires=1794812400&x-signature=3VTSAblah5i07qm7jYOBLGF%2B5KA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=8aecc5ac&idc=useast2b",
+     "isActive": true,
+     "profileId": "6ad69db4c279e94afa01fb6d"
+    },
+    "profileId": "6ad69db4c279e94afa01fb6d",
+    "customMedia": [],
+    "scheduledFor": "2026-10-20T14:15:03.951Z",
+    "platformSpecificData": {
+     "tiktokSettings": {
+      "allow_duet": true,
+      "allow_stitch": true,
+      "allow_comment": true,
+      "privacy_level": "PUBLIC_TO_EVERYONE",
+      "video_made_with_ai": true,
+      "commercialContentType": "none",
+    
+
+/inbox/comments: {
+ "data": [
+  {
+   "id": "18130291583478656",
+   "accountId": "6ad69dcdecad4ce8494e92b1",
+   "accountUsername": "theaitoolfinds",
+   "platform": "instagram",
+   "content": "Type one command and Claude explains anything in a famous video style.\n\nPart #37 of a daily series.\n\nComment STYLES and I'll DM you the prompts.\n\n#claude #motiondesign #aitools",
+   "createdTime": "2026-11-16T03:06:20.000Z",
+   "permalink": "https://www.instagram.com/reel/DfyWZG_Pafp/",
+   "picture": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/907384667_17962484124032548_6443386461458697649_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=qY-xeEnHJEgQ7kNvwGhSlRC&_nc_oc=AdpCQ5AwhQmzgVsAj_jdz_4DlRjS-1Xf1C5dtooOmVXvpB3DRXbpZgbbHyQwczWOeSs&_nc_zt=23&_nc_ht=scontent-lhr6-1.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=CXXIWmEF0Gux7sQisJCGjg&_nc_tpa=Q5bMBQL3n76AWqlHP60Qw4Kr1bsKOeN5O2X7oC8aIFg9cORAgbxiFZ_LmdBx2_q9QBp5dFknAhJhrpZweg&_nc_ct=RQosPBUKFQQAAAA&oh=00_AQRooApcBklCo5sFmSjetEQDpVbhfvZEJhUILoIgCMSDsA&oe=6B004A8A",
+   "commentCount": 1,
+   "likeCount": 1
+  },
+  {
+   "id": "7708600005782818081",
+   "accountId": "6ad6a61e4115c03f8b41d247",
+   "accountUsername": "theaitoolfinds",
+   "platform": "tiktok",
+   "content": "Type one command and Claude explains anything in a famous video style. Part #37 of a daily series. Comment STYLES and I'll DM you the prompts. #claude #motiondesign #aitools",
+   "createdTime": "2026-11-16T03:05:34.000Z",
+   "permalink": "https://www.tiktok.com/@theaitoolfinds/video/7708600005782818081?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+   "picture": "https://p19-common-sign.tiktokcdn-eu.com/tos-useast2a-i-4864-euttp/o8B6AmDfICHfQEiyvvBcw43DulQSTQp2A2EAiq~tplv-tiktokx-cropcenter-q:300:400:q70.jpeg?dr=9232&refresh_token=37d12ca2&x-expires=1794884400&x-signature=O2yA6UMoT04jrbKyMMHSkx83QNQ%3D&t=bacd0480&ps=933b5bde&shp=d05b14bd&shcp=8aecc5ac&idc=useast2b&s=TIKTOK_FOR_DEVELOPER&sc=cover&biz_tag=tt_video",
+   "commentCount": 1,
+   "likeCount": 3
+  },
+  {
+   "id": "17919848295265637",
+   "accountId": "6ad69dcdecad4ce8494e92b1",
+   "accountUsername": "theaitoolfinds",
+   "platform": "instagram",
+   "content": "Comment FABLE and I'll DM you the prompts.\n\n#claudetips #motiondesigner #aitools",
+   "createdTime": "2026-11-15T16:46:56.000Z",
+   "permalink": "https://www.instagram.com/reel/DfxPgWRBl3x/",
+   "picture": "https://scontent-lhr6-2.cdninstagram.com/v/t51.82787-15/911905958_17962351440032548_6085659218013620488_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&_nc_map=urlgen_bucketless&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=ftx9O1VBxLEQ7kNvwEdvj-O&_nc_oc=AdpUOpYEXJuSzw28hoNf2SlbxYnupK9n5Dab3ZBwLdh3JzgaAKVp4FTPPfF4eAOSJq8&_nc_zt=23&_nc_ht=scontent-lhr6-2.cdninstagram.com&edm=ANo9K5cEAAAA&_nc_gid=CXXIWmEF0Gux7sQisJCGjg&_nc_tpa=Q5bMBQJ7fbdWYMhj1jfe3ru68c0d-Tof1GGc7xeyU22Mkccse
+
+/inbox/comments/18086880842695673?accountId=6ad69dcdecad4ce8494e92b1: {
+ "status": "success",
+ "comments": [],
+ "pagination": {
+  "hasMore": false
+ },
+ "post": {
+  "id": "18086880842695673",
+  "permalink": "https://www.instagram.com/reel/DeuBssIDopI/",
+  "text": "Someone used AI to rebuild 7 Adobe apps, and they're all free \ud83d\udc40\n\nPhotoCraft, FilmCraft, LightCraft, EffectCraft and more. Open source, runs on Mac, Windows, Linux and in the browser. Still early alpha, so expect bugs.\n\nComment ARTCRAFT and I'll DM you the links.\n\n#adobe #photoshop #aftereffects #opensource #aitools #editing",
+  "thumbnailUrl": "https://scontent-lhr11-1.cdninstagram.com/v/t51.82787-15/859504777_17955427482032548_1953063365397892227_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&_nc_map=urlgen_bucketless&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%3D&_nc_ohc=ekgMSo6Om0oQ7kNvwGiTaj8&_nc_oc=AdpOhwtjlk34fLn7VfykkP5k8UQNUhlWvKKjLw-jBV5pBr7UyOeownAbx1fjO3_LZlQ&_nc_zt=23&_nc_ht=scontent-lhr11-1.cdninstagram.com&edm=ANQ71j8EAAAA&_nc_gid=55z3hVnH8XdNr04uTpTIXA&_nc_tpa=Q5bMBQKivY7XpqlATougB8Hp_-A0pc9ziyL0mB2hGkkWSUt-ycZ23dRCOBig-gdg0GyocSG7IDL0FT5Ijg&_nc_ct=RQosPBUKFQQAAAA&oh=00_AQTxUQOTBUnsSdXdfAfvhPHqKKkPM-ktG5CvFCDH26514w&oe=6B005656",
+  "mediaUrl": "https://scontent-lhr11-1.cdninstagram.com/o1/v/t2/f2/m86/AQMmWrlqXc7z3Vql-yPFotnRwK-2HdYOPHvrvUVkZzo0ycLLfUX1yBaqeI7dx7NpCbGONUTeN0FUHNBornG3IteXTI6vJ7UifBJd720.mp4?_nc_cat=106&_nc_sid=5e9851&_nc_ht=scontent-lhr11-1.cdninstagram.com&_nc_ohc=R5CbT75G2OEQ7kNvwH6MvzA&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6MTc5NTU0MjczMTQwMzI1NDgsImFzc2V0X2FnZV9kYXlzIjoyNiwidmlfdXNlY2FzZV9pZCI6MTAwOTksImR1cmF0aW9uX3MiOjIyLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&vs=8bf8d26f1936cfcc&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC9CNjIyRUZCMzU1NDg0QjZDOTBDODVBOUFENTcyRkY3Ql92aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyLzI0RTVDQzI5RDZBNDQxRjE4RkE5OUMyNjRGQkQ3QzZEX2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwOIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRJjb3B5X3NhbXBsZV9ncm91cHMBMRUAACbI_r6ttpflPxUCKAJDMywXQDbu2RaHKwIYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZeadAQA&_nc_gid=55z3hVnH8XdNr04uTpTIXA&edm=ANQ71j8EAAAA&_nc_map=urlgen_bucketless&_nc_zt=28&_nc_tpa=Q5bMBQKH0YuDEzAc5nOhpezD_QZ9ZAH4LRPJtR2388fMtkeKz2Nugyxf1XhMe-Rx22lkAiOZM08Z1W1uCg&oh=00_AQQ5rXoKnyDVaADAG5Zz16b9BejimMA5xMxmLD3bZW_djA&oe=6AFC5EEB",
+  "mediaType": "VIDEO",
+  "productType": "REELS",
+  "createdAt": "2026-10-20T14:17:09+0000"
+ },
+ "meta": {
+  "platform": "instagram",
+  "postId": "18086880842695673",
+  "accountId": "6ad69dcdecad4ce8494e92b1",
+  "lastUpdated": "2026-11-16T03:24:21.009Z"
+ }
+}
