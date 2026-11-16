@@ -24,7 +24,8 @@ def seturl(apply: bool) -> None:
             continue
         seen.add(title)
         btns = a.get("buttons") or []
-        old = [b.get("url") for b in btns if b.get("type") == "url"]
+        mine = [b for b in btns if b.get("type") == "url" and "viral-styles-launchpad" not in (b.get("url") or "")]  # never the system button
+        old = [b.get("url") for b in mine]
         tag = f"{aid} {a.get('name')} keywords={a.get('keywords')}"
         if not old:
             out.append(f"SKIP (no url button) {tag}")
@@ -32,9 +33,8 @@ def seturl(apply: bool) -> None:
         if all(u == url for u in old):
             out.append(f"already set {tag}")
             continue
-        for b in btns:
-            if b.get("type") == "url":
-                b["url"] = url
+        for b in mine:
+            b["url"] = url
         if not apply:
             out.append(f"would change {tag}: {old} -> {url}")
             continue
