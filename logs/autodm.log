@@ -1,7 +1,7 @@
-SETURL DRY: 63 automations, 5 links
-would change 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE) keywords=['FABLE', 'fable']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1D2w4AHLrBzRwXYYqC5OAWGgjLmK2oerH/view?usp=sharing
-would change 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing
-would change 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing
-would change 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH) keywords=['EARTH', 'earth']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/165NDX1gxIiE9Zcd5KTgpg7xFuz5QCP--/view?usp=sharing
-would change 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE) keywords=['SPACE', 'space']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1MTN_JOzg9ZSIaRQw7cov5bhBehz2FO5i/view?usp=sharing
-would change 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE) keywords=['INSIDE', 'inside']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1OKTeucRjMBgkGYI1LrLYo87ebbehQ0ed/view?usp=sharing
+SETURL APPLY: 63 automations, 5 links
+changed 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE) keywords=['FABLE', 'fable']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1D2w4AHLrBzRwXYYqC5OAWGgjLmK2oerH/view?usp=sharing
+changed 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing
+changed 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing
+changed 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH) keywords=['EARTH', 'earth']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/165NDX1gxIiE9Zcd5KTgpg7xFuz5QCP--/view?usp=sharing
+changed 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE) keywords=['SPACE', 'space']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1MTN_JOzg9ZSIaRQw7cov5bhBehz2FO5i/view?usp=sharing
+changed 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE) keywords=['INSIDE', 'inside']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1OKTeucRjMBgkGYI1LrLYo87ebbehQ0ed/view?usp=sharing
