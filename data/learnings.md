@@ -80,3 +80,11 @@ Instagram bottom: hallmark 673 · unslop 700 · claudemem 710 (all old Paper pai
   - Higgsfield "Vibe Motion" (whyops.com review) is a competing prompt→motion-graphics product: possible comparison video (paid credits:
     only if Jan taps).
 - data/viral_inbox.md: empty this week.
+
+## 2026-11-16 Viral Styles Launchpad (Gumroad) — state and next steps
+- Product live: https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad ($29, code LAUNCH auto-applied = $19 for the first 50). Files: Installation-Guide.html, viral-styles.zip, bonus.zip.
+- DM funnel: comment keyword → DM with a prompts PDF on Google Drive (medium-length prompts + offer block for the system). Done for EARTH, SPACE, FABLE (styles 3), INSIDE, COSMOS and STYLES (styles44, "Type it, get it #37"). Links live in data/dm_links.json.
+- To change the link of existing auto-DMs: edit data/dm_links.json (key = exact automation name "<tool> (<KEYWORD>)"), then dispatch post-approved.yml with autodm="seturl dry", read logs/autodm.log, then "seturl apply". Many posts share one tool name, so always dry-run first. Already-sent DMs keep their old link.
+- Problem: Drive PDFs do not load in Instagram's in-app browser (also not with /preview). Jan's plan for the next session: a free "prompts" product page on Gumroad (custom HTML page, copy buttons, offer block) that also collects emails, then email marketing. Draft product exists: /l/free-prompts (unpublished).
+- Keyword clash: STYLES is used by three automations and STYLE by two; comments are bound to their post, but story replies / DMs can match any of them. Pick unused keywords for new videos.
+- Buyer pack sources are NOT in this repo (they were built in a session workspace). Ask Jan before rebuilding.
