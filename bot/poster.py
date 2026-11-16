@@ -127,7 +127,9 @@ def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> st
         cfg = json.loads((Path(__file__).resolve().parent.parent / "data" / "dm_system.json").read_text())
         host = url.split("/")[2] if "//" in url else ""
         full = host in cfg["hosts_full"]
-        if full or host in cfg["hosts_neutral"]:
+        if "viral-styles-launchpad" in url:  # video that sells the system itself: one "Get the system" button
+            body["buttons"] = [{"type": "url", "title": cfg["system_title"][:20], "url": url}]
+        elif full or host in cfg["hosts_neutral"]:
             first = {"type": "url", "title": (cfg["prompts_title"] if full else c["btn"])[:20], "url": url}
             body["buttons"] = [first, {"type": "url", "title": cfg["system_title"][:20],
                                        "url": cfg["system_url"] + kw.lower()}]
