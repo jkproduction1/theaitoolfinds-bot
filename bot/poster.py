@@ -121,6 +121,20 @@ def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> st
         "buttons": [{"type": "url", "title": c["btn"], "url": url}],
         "audience": {"followerStatus": "follower", "whenUnknown": "verify"},
     }
+    # Jan 2026-11-16: our own prompt/Claude-docs links get the same two buttons as `autodm_once setdm`
+    # ("Get the prompts" + "Get the system"); third-party tool links stay with one button.
+    try:
+        cfg = json.loads((Path(__file__).resolve().parent.parent / "data" / "dm_system.json").read_text())
+        host = url.split("/")[2] if "//" in url else ""
+        full = host in cfg["hosts_full"]
+        if full or host in cfg["hosts_neutral"]:
+            first = {"type": "url", "title": (cfg["prompts_title"] if full else c["btn"])[:20], "url": url}
+            body["buttons"] = [first, {"type": "url", "title": cfg["system_title"][:20],
+                                       "url": cfg["system_url"] + kw.lower()}]
+            dm = cfg["dm_full"] if full else cfg["dm_neutral"]
+            body["dmMessage"], body["dmMessageVariations"] = dm[0], dm[1:]
+    except Exception as e:  # never block posting over the extra button
+        print("auto_dm: system button skipped:", e)
     res = _z("POST", "/comment-automations", json=body)
     return (res.get("automation") or res).get("_id") or (res.get("automation") or res).get("id") or "ok"
 

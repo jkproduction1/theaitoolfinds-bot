@@ -244,7 +244,12 @@ Never `pkill -f chrome`/`pkill -f hyperframes` in the same shell command: it mat
 7. **Director review (separate subagent that didn't write it):** give it the mp4 + script + this §3/§5
    checklist; it extracts frames with ffmpeg and returns PASS or concrete fixes. Max 2 fix rounds.
 8. Write `hf/videos/<name>/post.json` {url, tool_name, keyword (= tool name, CAPS), cover_at, summary_cs
-   (2 Czech sentences), caption}. **Caption is short, never spammy: max 1–2 sentences (usually the hook), then
+   (2 Czech sentences), caption}. **DM link for our own style videos ("Type it, get it", STYLES…; Jan 2026-11-16, always):**
+   `url` = the free prompts page with that video's exact prompts, built from its commands and topics (works without
+   republishing the page): `https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?c=<style>|<style>|<style>&t=<topic>|<topic>|<topic>`
+   (style keys as in the 3D/2D styles: paper-collage, flat-science, painted-story, what-if, deep-dive, scale, explain-3d,
+   x-ray, zoom-in, explode…; topics URL-encoded, short, as typed in the video). bot/poster.py then gives the auto-DM the
+   buttons "Get the prompts" + "Get the system" by itself. Third-party tool videos keep the tool's official url. **Caption is short, never spammy: max 1–2 sentences (usually the hook), then
    "Comment X and I'll DM you the link.", then exactly 3 hashtags.** No feature lists or caveats in it. Then `python3 hf/publish.py <name>` → prints the folder; dispatch `make-video.yml`
    with inputs `{"mode":"release","storyboard":"<folder>"}` → Telegram. Commit hf/videos/* and data/history.json
 (publish.py records the tool there so the picklist/discovery never suggests it again) to main.
