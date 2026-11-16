@@ -4187,18 +4187,18 @@
   "features": {
    "hook": 0.14,
    "hook_words": 13,
-   "hook_end_s": 4.38,
+   "hook_end_s": 4.31,
    "tool_named_s": null,
    "payoff": 0.5,
-   "wps": 1.6,
-   "dur_s": 30.4,
+   "wps": 1.59,
+   "dur_s": 30.5,
    "words": 46,
    "pace": 0.0,
    "length": 0.96,
    "filler_hits": 0,
    "filler": 1.0,
    "longest_static_s": 3.25,
-   "visual_changes": 69,
+   "visual_changes": 66,
    "visuals": 0.7,
    "ending": 0.97,
    "angle": "app-demo",
@@ -4206,8 +4206,8 @@
   },
   "flags": [
    "hook má 13 slov (cíl ≤10)",
-   "hook končí v 4.4 s (cíl ≤2,5 s)",
-   "video má 30 s (cíl 18–30 s)"
+   "hook končí v 4.3 s (cíl ≤2,5 s)",
+   "video má 31 s (cíl 18–30 s)"
   ],
   "weights": {
    "topic": 30,
