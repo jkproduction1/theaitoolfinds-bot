@@ -58,39 +58,50 @@ def seturl(apply: bool) -> None:
 
 
 def setdm(apply: bool) -> None:
-    """Two buttons (prompts + system) and the DM texts from data/dm_system.json on the automations listed there by id.
+    """Add the "system" button (and our DM texts) to our own Claude prompt/command automations, chosen by where their link goes
+    (data/dm_system.json: hosts_full = prompt PDFs, hosts_neutral = Claude docs/app links). Third-party tool automations are skipped.
     Keywords, post binding, audience, follow gate, comment replies and delays stay as they are."""
     cfg = json.loads(Path("data/dm_system.json").read_text())
     data = poster._z("GET", "/comment-automations")
     items = data.get("automations") or data.get("data") or (data if isinstance(data, list) else [])
-    out, done = [f"SETDM {'APPLY' if apply else 'DRY'}: {len(items)} automations, {len(cfg['ids'])} ids"], 0
+    out, done, skipped = [f"SETDM {'APPLY' if apply else 'DRY'}: {len(items)} automations"], 0, 0
+    cfg["ids"] = []
     for a in items:
         aid = a.get("id") or a.get("_id")
-        if aid not in cfg["ids"]:
+        urls = [b for b in (a.get("buttons") or []) if b.get("type") == "url" and "viral-styles-launchpad" not in (b.get("url") or "")]
+        host = (urls[0].get("url") or "").split("/")[2] if urls and "//" in (urls[0].get("url") or "") else ""
+        full = host in cfg["hosts_full"]
+        if not (full or host in cfg["hosts_neutral"]):
+            skipped += 1
             continue
-        urls = [b for b in (a.get("buttons") or []) if b.get("type") == "url" and b.get("url") != cfg["system_url"]]
-        if not urls:
-            out.append(f"SKIP (no url button) {aid} {a.get('name')}")
-            continue
-        first = dict(urls[0]); first["title"] = cfg["prompts_title"][:20]
-        btns = [first, {"type": "url", "title": cfg["system_title"][:20], "url": cfg["system_url"]}]
-        patch = {"buttons": btns, "dmMessage": cfg["dm"][0], "dmMessageVariations": cfg["dm"][1:]}
+        cfg["ids"].append(aid)
+        kw = ((a.get("keywords") or ["dm"])[0] or "dm").lower()
+        first = dict(urls[0])
+        if full:
+            first["title"] = cfg["prompts_title"][:20]
+        btns = [first, {"type": "url", "title": cfg["system_title"][:20], "url": cfg["system_url"] + kw}]
+        dm = cfg["dm_full"] if full else cfg["dm_neutral"]
+        patch = {"buttons": btns, "dmMessage": dm[0], "dmMessageVariations": dm[1:]}
         if not apply:
-            out.append(f"would set {aid} {a.get('name')}: {json.dumps(btns)}")
+            out.append(f"would set {'FULL' if full else 'NEUTRAL'} {aid} {a.get('name')}: {first.get('title')!r} + system?utm={kw}")
             continue
         try:
             res = poster._z("PATCH", f"/comment-automations/{aid}", json=patch)
             got = (res.get("automation") or res)
             done += 1
-            out.append(f"set {aid} {a.get('name')}: buttons now {json.dumps(got.get('buttons'))} | dm={got.get('dmMessage')!r} | variations={len(got.get('dmMessageVariations') or [])}")
+            out.append(f"set {'FULL' if full else 'NEUTRAL'} {aid} {a.get('name')}: {[b.get('title') for b in (got.get('buttons') or [])]} variations={len(got.get('dmMessageVariations') or [])}")
         except Exception as e:
             out.append(f"FAILED {aid} {a.get('name')}: {e}")
-    for i in cfg["ids"]:
-        if not any((a.get("id") or a.get("_id")) == i for a in items):
-            out.append(f"NOT FOUND: {i}")
+    out.append(f"selected {len(cfg['ids'])}, skipped {skipped} (third-party tool links)")
+    if apply:
+        Path("logs").mkdir(exist_ok=True)
+        Path("logs/autodm.log").write_text("\n".join(out))
+        print("\n".join(out))
+        telegram.notify(f"🤖 Auto-DM: tlačítko „Get the system“ u {done} automatizací")
+        return
     for a in items:  # state + latest log entries of the listed automations (read-only)
         aid = a.get("id") or a.get("_id")
-        if aid not in cfg["ids"]:
+        if aid not in cfg["ids"][:3]:
             continue
         out.append(f"STATE {aid} {a.get('name')} active={a.get('isActive')} updated={a.get('updatedAt')} stats={json.dumps(a.get('stats'))}")
         try:

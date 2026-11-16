@@ -1,15 +1,25 @@
 {
- "ids": [
-  "6afa72b2f94c853b7a7ddc60",
-  "6af1cdc7d467d0d79dac5412"
+ "hosts_full": [
+  "drive.google.com"
  ],
- "system_url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH",
+ "hosts_neutral": [
+  "code.claude.com",
+  "claude.ai",
+  "www.anthropic.com",
+  "support.claude.com"
+ ],
+ "system_url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=",
  "prompts_title": "Get the prompts",
  "system_title": "Get the system",
- "dm": [
+ "dm_full": [
   "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
   "Your prompts are here 👇\nWant the whole video done for you? One line in, finished video out.",
   "Here you go 👇\nPrompts make one scene. My new system builds the entire video: script, captions, MP4.",
+  "As promised 👇\nP.S. I built a system that makes the full video from one typed line. No editing."
+ ],
+ "dm_neutral": [
+  "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
+  "Here you go 👇\nWant the whole video built for you? One line in, finished video out.",
   "As promised 👇\nP.S. I built a system that makes the full video from one typed line. No editing."
  ]
 }
