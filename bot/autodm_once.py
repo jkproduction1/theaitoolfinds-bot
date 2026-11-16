@@ -49,7 +49,7 @@ def seturl(apply: bool) -> None:
             out.append(f"NOT FOUND: no automation named '{t}'")
     out.append("ALL:")
     for a in items:
-        out.append(" | ".join(str(x) for x in (a.get("name"), a.get("keywords"), [b.get("url") for b in (a.get("buttons") or [])], a.get("isActive"), a.get("updatedAt"), (a.get("stats") or {}).get("dmsSent"))))
+        out.append(" | ".join(str(x) for x in (a.get("name"), a.get("keywords"), [b.get("url") for b in (a.get("buttons") or [])], a.get("isActive"), a.get("updatedAt"), (a.get("stats") or {}).get("dmsSent"), "aud=" + str(a.get("audience")), "gate=" + str(bool(a.get("followGate"))), "gateSent/passed/failed/skipped=" + "/".join(str((a.get("stats") or {}).get(k)) for k in ("followGateSent", "followGatePassed", "followGateFailed", "audienceSkipped")))))
     Path("logs").mkdir(exist_ok=True)
     Path("logs/autodm.log").write_text("\n".join(out))
     print("\n".join(out))
