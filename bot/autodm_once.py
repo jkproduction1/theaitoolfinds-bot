@@ -57,7 +57,47 @@ def seturl(apply: bool) -> None:
         telegram.notify(f"🤖 Auto-DM: odkaz změněn u {done} automatizací (prompt PDF na Drive)")
 
 
-if sys.argv[1] == "seturl":
+def setdm(apply: bool) -> None:
+    """Two buttons (prompts + system) and the DM texts from data/dm_system.json on the automations listed there by id.
+    Keywords, post binding, audience, follow gate, comment replies and delays stay as they are."""
+    cfg = json.loads(Path("data/dm_system.json").read_text())
+    data = poster._z("GET", "/comment-automations")
+    items = data.get("automations") or data.get("data") or (data if isinstance(data, list) else [])
+    out, done = [f"SETDM {'APPLY' if apply else 'DRY'}: {len(items)} automations, {len(cfg['ids'])} ids"], 0
+    for a in items:
+        aid = a.get("id") or a.get("_id")
+        if aid not in cfg["ids"]:
+            continue
+        urls = [b for b in (a.get("buttons") or []) if b.get("type") == "url" and b.get("url") != cfg["system_url"]]
+        if not urls:
+            out.append(f"SKIP (no url button) {aid} {a.get('name')}")
+            continue
+        first = dict(urls[0]); first["title"] = cfg["prompts_title"][:20]
+        btns = [first, {"type": "url", "title": cfg["system_title"][:20], "url": cfg["system_url"]}]
+        patch = {"buttons": btns, "dmMessage": cfg["dm"][0], "dmMessageVariations": cfg["dm"][1:]}
+        if not apply:
+            out.append(f"would set {aid} {a.get('name')}: {json.dumps(btns)}")
+            continue
+        try:
+            res = poster._z("PATCH", f"/comment-automations/{aid}", json=patch)
+            got = (res.get("automation") or res)
+            done += 1
+            out.append(f"set {aid} {a.get('name')}: buttons now {json.dumps(got.get('buttons'))} | dm={got.get('dmMessage')!r} | variations={len(got.get('dmMessageVariations') or [])}")
+        except Exception as e:
+            out.append(f"FAILED {aid} {a.get('name')}: {e}")
+    for i in cfg["ids"]:
+        if not any((a.get("id") or a.get("_id")) == i for a in items):
+            out.append(f"NOT FOUND: {i}")
+    Path("logs").mkdir(exist_ok=True)
+    Path("logs/autodm.log").write_text("\n".join(out))
+    print("\n".join(out))
+    if apply:
+        telegram.notify(f"🤖 Auto-DM: dvě tlačítka (prompty + systém) u {done} automatizací")
+
+
+if sys.argv[1] == "setdm":
+    setdm(len(sys.argv) > 2 and sys.argv[2] == "apply")
+elif sys.argv[1] == "seturl":
     seturl(len(sys.argv) > 2 and sys.argv[2] == "apply")
 else:
     pid, name = sys.argv[1], sys.argv[2]
