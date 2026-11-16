@@ -1,64 +1,37 @@
-SETDM DRY: 63 automations
-would set FULL 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES): 'Get the prompts' + system?utm=styles
-would set NEUTRAL 6af9e1a516043fc4f1e98dbb Claude Fable 5.2 explainer styles 5 (FABLE): 'Show me' + system?utm=fable
-would set NEUTRAL 6af8846a009cff5e49a65426 Claude Fable 5.2 explainer styles 4 (FABLE): 'Open it' + system?utm=fable
-would set FULL 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE): 'Get the prompts' + system?utm=fable
-would set NEUTRAL 6af6e498fe3f0e3f33259528 Claude Opus 5.5 heist blueprint tutorial (HEIST): 'Take me there' + system?utm=heist
-would set NEUTRAL 6af5eb9ce2430acd2de32b2d Claude Fable 5.2 explainer styles 2 (FABLE): 'Show me' + system?utm=fable
-would set NEUTRAL 6af51ea53d3db9039d9a8833 Claude Code 3D what-if Earth commands (ASTEROID): 'Open the link' + system?utm=asteroid
-would set NEUTRAL 6af45659477da3401c18098f Claude Opus 5.5 travel map animation tutorial (TRIP): "Let's go" + system?utm=trip
-would set NEUTRAL 6af37fed787b3e9d42bd8661 Claude Code explainer style commands (STYLE): 'Open the link' + system?utm=style
-would set NEUTRAL 6af34930ea8b2d42a10abb48 Claude Code explainer style commands (STYLE): 'Open the link' + system?utm=style
-would set NEUTRAL 6af2fbede5b355d8ed5133b0 Claude Code 3D everyday commands (MYSTERY): 'Open the link' + system?utm=mystery
-would set NEUTRAL 6af2fbe5fd840aed5f93f1f1 Claude Code 3D nature commands (NATURE): 'Open the link' + system?utm=nature
-would set NEUTRAL 6af299f83152dbae444b2024 Claude Fable 5.2 (Sketch → Motion: food-delivery app) (SKETCH): 'Open the link' + system?utm=sketch
-would set NEUTRAL 6af28c2ba56a0500a4a701a2 Claude Code (Sketch → Motion: music app UI) (SKETCH): 'Open the link' + system?utm=sketch
-would set NEUTRAL 6af25e0de8754860d96f4c6f Claude Code 3D what-if commands (WHATIF): 'Open the link' + system?utm=whatif
-would set FULL 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS): 'Get the prompts' + system?utm=cosmos
-would set NEUTRAL 6af1a2e26d01dd0f39ef4589 Claude Code motion design commands (MOTION): 'Open it' + system?utm=motion
-would set FULL 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS): 'Get the prompts' + system?utm=cosmos
-would set NEUTRAL 6af18a992ce001c412329325 Claude Code 3D commands (KITCHEN): 'Open it' + system?utm=kitchen
-would set FULL 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH): 'Get the prompts' + system?utm=earth
-would set FULL 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE): 'Get the prompts' + system?utm=space
-would set NEUTRAL 6aef7603000650b4a80dc3b3 10 Claude animation styles (PENGUIN): 'Take me there' + system?utm=penguin
-would set NEUTRAL 6aef74df70d73fdd5906f1b0 10 Claude animation styles (PENGUIN): 'Open the link' + system?utm=penguin
-would set NEUTRAL 6aef07c48d3457da520c1351 Claude Code animation commands (ANIMATE): 'Open it' + system?utm=animate
-would set NEUTRAL 6aedbaa6121772f4f886e4bf Claude Code 3D commands (BUILD): 'Open it' + system?utm=build
-would set FULL 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE): 'Get the prompts' + system?utm=inside
-would set NEUTRAL 6aece3e99225e46fbd1924d6 Claude Code 3D commands (ZOOM): 'Open it' + system?utm=zoom
-would set NEUTRAL 6aece3e24911175637e11f68 Claude Code 3D commands (SCALE): 'Open it' + system?utm=scale
-would set NEUTRAL 6aece39d7e16ad9b49a0e5fc Claude Code 3D commands (MEGA): 'Open the link' + system?utm=mega
-would set NEUTRAL 6aebae4aabeadde97b7907dd Claude Code 3D commands (MOTION): 'Open the link' + system?utm=motion
-would set NEUTRAL 6aeba65b3ca98eeeb8e8a77d Claude Code 3D commands (MOTION): 'Open Claude Code 3D ' + system?utm=motion
-would set NEUTRAL 6aeba655b8578b140d21ea84 Claude Code 3D commands (VISUAL): 'Open Claude Code 3D ' + system?utm=visual
-would set NEUTRAL 6aea648af5dcd4220fed09ba Claude Code 3D explainers (EXPLAIN): 'Open Claude Code 3D ' + system?utm=explain
-would set NEUTRAL 6ae9c687f081e3c6e0c1b7da Claude Code animation styles (STYLES): 'Open Claude Code ani' + system?utm=styles
-would set NEUTRAL 6adcb8b4a649841d92be0470 Claude Code cheat sheet (CLAUDE): 'Open Claude Code che' + system?utm=claude
+SETDM APPLY: 63 automations
+set FULL 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6af9e1a516043fc4f1e98dbb Claude Fable 5.2 explainer styles 5 (FABLE): ['Show me', 'Get the system'] variations=2
+set NEUTRAL 6af8846a009cff5e49a65426 Claude Fable 5.2 explainer styles 4 (FABLE): ['Open it', 'Get the system'] variations=2
+set FULL 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6af6e498fe3f0e3f33259528 Claude Opus 5.5 heist blueprint tutorial (HEIST): ['Take me there', 'Get the system'] variations=2
+set NEUTRAL 6af5eb9ce2430acd2de32b2d Claude Fable 5.2 explainer styles 2 (FABLE): ['Show me', 'Get the system'] variations=2
+set NEUTRAL 6af51ea53d3db9039d9a8833 Claude Code 3D what-if Earth commands (ASTEROID): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af45659477da3401c18098f Claude Opus 5.5 travel map animation tutorial (TRIP): ["Let's go", 'Get the system'] variations=2
+set NEUTRAL 6af37fed787b3e9d42bd8661 Claude Code explainer style commands (STYLE): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af34930ea8b2d42a10abb48 Claude Code explainer style commands (STYLE): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af2fbede5b355d8ed5133b0 Claude Code 3D everyday commands (MYSTERY): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af2fbe5fd840aed5f93f1f1 Claude Code 3D nature commands (NATURE): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af299f83152dbae444b2024 Claude Fable 5.2 (Sketch → Motion: food-delivery app) (SKETCH): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af28c2ba56a0500a4a701a2 Claude Code (Sketch → Motion: music app UI) (SKETCH): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af25e0de8754860d96f4c6f Claude Code 3D what-if commands (WHATIF): ['Open the link', 'Get the system'] variations=2
+set FULL 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6af1a2e26d01dd0f39ef4589 Claude Code motion design commands (MOTION): ['Open it', 'Get the system'] variations=2
+set FULL 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6af18a992ce001c412329325 Claude Code 3D commands (KITCHEN): ['Open it', 'Get the system'] variations=2
+set FULL 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6aef7603000650b4a80dc3b3 10 Claude animation styles (PENGUIN): ['Take me there', 'Get the system'] variations=2
+set NEUTRAL 6aef74df70d73fdd5906f1b0 10 Claude animation styles (PENGUIN): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6aef07c48d3457da520c1351 Claude Code animation commands (ANIMATE): ['Open it', 'Get the system'] variations=2
+set NEUTRAL 6aedbaa6121772f4f886e4bf Claude Code 3D commands (BUILD): ['Open it', 'Get the system'] variations=2
+set FULL 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6aece3e99225e46fbd1924d6 Claude Code 3D commands (ZOOM): ['Open it', 'Get the system'] variations=2
+set NEUTRAL 6aece3e24911175637e11f68 Claude Code 3D commands (SCALE): ['Open it', 'Get the system'] variations=2
+set NEUTRAL 6aece39d7e16ad9b49a0e5fc Claude Code 3D commands (MEGA): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6aebae4aabeadde97b7907dd Claude Code 3D commands (MOTION): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6aeba65b3ca98eeeb8e8a77d Claude Code 3D commands (MOTION): ['Open Claude Code 3D ', 'Get the system'] variations=2
+set NEUTRAL 6aeba655b8578b140d21ea84 Claude Code 3D commands (VISUAL): ['Open Claude Code 3D ', 'Get the system'] variations=2
+set NEUTRAL 6aea648af5dcd4220fed09ba Claude Code 3D explainers (EXPLAIN): ['Open Claude Code 3D ', 'Get the system'] variations=2
+set NEUTRAL 6ae9c687f081e3c6e0c1b7da Claude Code animation styles (STYLES): ['Open Claude Code ani', 'Get the system'] variations=2
+set NEUTRAL 6adcb8b4a649841d92be0470 Claude Code cheat sheet (CLAUDE): ['Open Claude Code che', 'Get the system'] variations=2
 selected 35, skipped 28 (third-party tool links)
-STATE 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES) active=True updated=2026-11-16T13:25:08.769Z stats={"read": 131, "dmsSent": 139, "delivered": 131, "dmsFailed": 18, "triggered": 272, "linkClicks": 227, "trackedSends": 139, "uniqueClicks": 132, "followGateSent": 238, "uniqueContacts": 139, "audienceSkipped": 4, "followGateFailed": 117, "followGatePassed": 127}
-  LOG {"createdAt": "2026-11-16T13:24:59.394Z", "status": "skipped", "error": "Already sent DM to this commenter", "commentText": "Styles"}
-  LOG {"createdAt": "2026-11-16T13:24:53.658Z", "status": "failed", "error": "Instagram could not find this commenter for a private reply (Meta error 2534014). Meta does not say why, and it also happens on commenters whose accounts are active. It is not a token or permission problem, so reconnecting the account will not help.", "commentText": "Style"}
-  LOG {"createdAt": "2026-11-16T13:24:18.976Z", "status": "gated", "commentText": "Styles"}
-  LOG {"createdAt": "2026-11-16T13:22:13.276Z", "status": "gated", "commentText": "styles"}
-  LOG {"createdAt": "2026-11-16T13:20:49.530Z", "status": "failed", "error": "Instagram could not find this commenter for a private reply (Meta error 2534014). Meta does not say why, and it also happens on commenters whose accounts are active. It is not a token or permission problem, so reconnecting the account will not help.", "commentText": "Styles"}
-  LOG {"createdAt": "2026-11-16T13:20:30.578Z", "status": "gated", "commentText": "Styles"}
-  LOG {"createdAt": "2026-11-16T13:19:57.976Z", "status": "sent", "commentText": "Style"}
-  LOG {"createdAt": "2026-11-16T13:07:53.011Z", "status": "sent", "error": "Follow gate: not following", "commentText": "styles"}
-STATE 6af9e1a516043fc4f1e98dbb Claude Fable 5.2 explainer styles 5 (FABLE) active=True updated=2026-11-16T13:20:08.615Z stats={"read": 11, "dmsSent": 12, "delivered": 11, "dmsFailed": 2, "triggered": 24, "linkClicks": 13, "trackedSends": 12, "uniqueClicks": 11, "followGateSent": 15, "uniqueContacts": 12, "audienceSkipped": 1, "followGateFailed": 3, "followGatePassed": 6}
-  LOG {"createdAt": "2026-11-16T12:30:57.014Z", "status": "skipped", "error": "Audience rule: not_follower", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-16T12:01:47.401Z", "status": "sent", "error": "Follow gate: not following", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-16T11:17:55.700Z", "status": "failed", "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction 
-  LOG {"createdAt": "2026-11-16T05:49:22.555Z", "status": "sent", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-16T02:48:20.119Z", "status": "failed", "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction 
-  LOG {"createdAt": "2026-11-16T00:30:50.661Z", "status": "sent", "error": "Follow gate: not following", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-15T23:14:43.283Z", "status": "gated", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-15T23:13:59.564Z", "status": "gated", "commentText": "Fable"}
-STATE 6af8846a009cff5e49a65426 Claude Fable 5.2 explainer styles 4 (FABLE) active=True updated=2026-11-16T13:13:38.286Z stats={"read": 190, "dmsSent": 198, "delivered": 190, "dmsFailed": 39, "triggered": 464, "linkClicks": 254, "trackedSends": 198, "uniqueClicks": 179, "followGateSent": 381, "uniqueContacts": 198, "audienceSkipped": 14, "followGateFailed": 100, "followGatePassed": 168}
-  LOG {"createdAt": "2026-11-16T13:26:10.941Z", "status": "pending", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-16T12:47:58.576Z", "status": "failed", "error": "Instagram could not find this commenter for a private reply (Meta error 2534014). Meta does not say why, and it also happens on commenters whose accounts are active. It is not a token or permission problem, so reconnecting the account will not help.", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-16T12:30:57.074Z", "status": "skipped", "error": "Audience rule: not_follower", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-16T12:20:31.177Z", "status": "gated", "commentText": "Fable"}
-  LOG {"createdAt": "2026-11-16T10:56:59.652Z", "status": "gated", "commentText": "fable"}
-  LOG {"createdAt": "2026-11-16T10:17:23.939Z", "status": "gated", "commentText": "fable"}
-  LOG {"createdAt": "2026-11-16T08:21:03.702Z", "status": "sent", "commentText": "fable"}
-  LOG {"createdAt": "2026-11-16T07:14:12.729Z", "status": "gated", "commentText": "Fable"}
