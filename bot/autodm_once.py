@@ -88,6 +88,20 @@ def setdm(apply: bool) -> None:
     for i in cfg["ids"]:
         if not any((a.get("id") or a.get("_id")) == i for a in items):
             out.append(f"NOT FOUND: {i}")
+    for a in items:  # state + latest log entries of the listed automations (read-only)
+        aid = a.get("id") or a.get("_id")
+        if aid not in cfg["ids"]:
+            continue
+        out.append(f"STATE {aid} {a.get('name')} active={a.get('isActive')} updated={a.get('updatedAt')} stats={json.dumps(a.get('stats'))}")
+        try:
+            lg = poster._z("GET", f"/comment-automations/{aid}/logs")
+            rows = lg.get("logs") or lg.get("data") or (lg if isinstance(lg, list) else [])
+            for r in rows[:8]:
+                out.append("  LOG " + json.dumps({k: r.get(k) for k in ("createdAt", "status", "error", "type", "trigger", "commentText", "text", "step") if r.get(k) is not None}, ensure_ascii=False)[:400])
+            if not rows:
+                out.append("  LOG raw " + json.dumps(lg, ensure_ascii=False)[:600])
+        except Exception as e:
+            out.append(f"  LOGS failed: {e}")
     Path("logs").mkdir(exist_ok=True)
     Path("logs/autodm.log").write_text("\n".join(out))
     print("\n".join(out))
