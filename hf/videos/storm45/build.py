@@ -237,5 +237,5 @@ F2('#end',{scale:1},{scale:1.045,duration:Math.max(1,DUR-END-0.3),ease:'none'},E
 [0,1,2].forEach(k=>F2('#th'+k,{y:0},{y:-14+k*7,duration:Math.max(1,DUR-END-1.0),ease:'sine.inOut'},END+0.95));
 """
 JS = JS.replace("__SCENES__", "").replace("__TY__", json.dumps(TY)).replace("__KP__", json.dumps(KEYPOS)).replace("__CMD__", CMD).replace("__END__", str(END))
-F.write(CSS, JS, music_vol=0.10)
+F.write(CSS, JS, music_vol=0.07)
 _ix = W / "index.html"; _ix.write_text(_ix.read_text().replace('data-motion-blur="on"', 'data-motion-blur="off"'))
