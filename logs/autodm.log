@@ -1,15 +1,16 @@
-SETURL APPLY: 63 automations, 5 links
-changed 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE) keywords=['FABLE', 'fable']: ['https://drive.google.com/file/d/1D2w4AHLrBzRwXYYqC5OAWGgjLmK2oerH/view?usp=sharing'] -> https://code.claude.com/docs/en/slash-commands
-changed 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing'] -> https://code.claude.com/docs/en/slash-commands
-changed 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing'] -> https://code.claude.com/docs/en/slash-commands
-changed 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH) keywords=['EARTH', 'earth']: ['https://drive.google.com/file/d/165NDX1gxIiE9Zcd5KTgpg7xFuz5QCP--/view?usp=sharing'] -> https://code.claude.com/docs/en/slash-commands
-changed 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE) keywords=['SPACE', 'space']: ['https://drive.google.com/file/d/1MTN_JOzg9ZSIaRQw7cov5bhBehz2FO5i/view?usp=sharing'] -> https://code.claude.com/docs/en/slash-commands
-changed 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE) keywords=['INSIDE', 'inside']: ['https://drive.google.com/file/d/1OKTeucRjMBgkGYI1LrLYo87ebbehQ0ed/view?usp=sharing'] -> https://code.claude.com/docs/en/slash-commands
+SETURL APPLY: 63 automations, 6 links
+changed 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES) keywords=['STYLES', 'styles']: ['https://drive.google.com/file/d/17X4v72GyzR3z9CnBUcb3w-wOB2uoh5BE/view?usp=sharing'] -> https://drive.google.com/file/d/1UKzGIDNzxW9Lt8G-EVKnGy2k6EfXwDzf/view?usp=sharing
+changed 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE) keywords=['FABLE', 'fable']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1D2w4AHLrBzRwXYYqC5OAWGgjLmK2oerH/view?usp=sharing
+changed 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing
+changed 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing
+changed 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH) keywords=['EARTH', 'earth']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/165NDX1gxIiE9Zcd5KTgpg7xFuz5QCP--/view?usp=sharing
+changed 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE) keywords=['SPACE', 'space']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1MTN_JOzg9ZSIaRQw7cov5bhBehz2FO5i/view?usp=sharing
+changed 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE) keywords=['INSIDE', 'inside']: ['https://code.claude.com/docs/en/slash-commands'] -> https://drive.google.com/file/d/1OKTeucRjMBgkGYI1LrLYo87ebbehQ0ed/view?usp=sharing
 ALL:
-Claude explainer styles 4 (STYLES) | ['STYLES', 'styles'] | ['https://drive.google.com/file/d/17X4v72GyzR3z9CnBUcb3w-wOB2uoh5BE/view?usp=sharing'] | True | 2026-11-16T03:27:41.048Z | 0
+Claude explainer styles 4 (STYLES) | ['STYLES', 'styles'] | ['https://drive.google.com/file/d/1UKzGIDNzxW9Lt8G-EVKnGy2k6EfXwDzf/view?usp=sharing'] | True | 2026-11-16T03:30:41.148Z | 0
 Claude Fable 5.2 explainer styles 5 (FABLE) | ['FABLE', 'fable'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:09:37.827Z | 10
 Claude Fable 5.2 explainer styles 4 (FABLE) | ['FABLE', 'fable'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:26:47.958Z | 191
-Claude Fable 5.2 explainer styles 3 (FABLE) | ['FABLE', 'fable'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:28:09.885Z | 484
+Claude Fable 5.2 explainer styles 3 (FABLE) | ['FABLE', 'fable'] | ['https://drive.google.com/file/d/1D2w4AHLrBzRwXYYqC5OAWGgjLmK2oerH/view?usp=sharing'] | True | 2026-11-16T03:29:41.738Z | 484
 Claude Opus 5.5 heist blueprint tutorial (HEIST) | ['HEIST', 'heist'] | ['https://claude.ai'] | True | 2026-11-16T02:54:50.221Z | 3
 Claude Fable 5.2 explainer styles 2 (FABLE) | ['FABLE', 'fable'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:09:37.827Z | 199
 Claude Code 3D what-if Earth commands (ASTEROID) | ['ASTEROID', 'asteroid'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:09:37.827Z | 8
@@ -22,17 +23,17 @@ Claude Fable 5.2 (Sketch → Motion: food-delivery app) (SKETCH) | ['SKETCH', 's
 Claude Code (Sketch → Motion: music app UI) (SKETCH) | ['SKETCH', 'sketch'] | ['https://claude.ai/code'] | True | 2026-11-16T02:54:50.221Z | 8
 Higgsfield (Nano Banana) (STYLES) | ['STYLES', 'styles'] | ['https://higgsfield.ai'] | True | 2026-11-14T16:02:06.355Z | 9
 Claude Code 3D what-if commands (WHATIF) | ['WHATIF', 'whatif'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-09T23:58:05.094Z | 0
-Claude Code 3D space commands (COSMOS) | ['COSMOS', 'cosmos'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:18:02.375Z | 6
+Claude Code 3D space commands (COSMOS) | ['COSMOS', 'cosmos'] | ['https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing'] | True | 2026-11-16T03:29:03.005Z | 6
 Claude Code motion design commands (MOTION) | ['MOTION', 'motion'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T02:25:02.502Z | 1
-Claude Code 3D space commands (COSMOS) | ['COSMOS', 'cosmos'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:18:02.606Z | 270
+Claude Code 3D space commands (COSMOS) | ['COSMOS', 'cosmos'] | ['https://drive.google.com/file/d/1zHw-xysXtimhBqYAiJBpZnQGxlbJN_dU/view?usp=sharing'] | True | 2026-11-16T03:29:03.491Z | 270
 Claude Code 3D commands (KITCHEN) | ['KITCHEN', 'kitchen'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T02:54:50.221Z | 63
-Claude Code Earth commands (EARTH) | ['EARTH', 'earth'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:26:37.186Z | 4094
-Claude Code space commands (SPACE) | ['SPACE', 'space'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:18:03.243Z | 1144
+Claude Code Earth commands (EARTH) | ['EARTH', 'earth'] | ['https://drive.google.com/file/d/165NDX1gxIiE9Zcd5KTgpg7xFuz5QCP--/view?usp=sharing'] | True | 2026-11-16T03:29:03.756Z | 4094
+Claude Code space commands (SPACE) | ['SPACE', 'space'] | ['https://drive.google.com/file/d/1MTN_JOzg9ZSIaRQw7cov5bhBehz2FO5i/view?usp=sharing'] | True | 2026-11-16T03:30:09.935Z | 1144
 10 Claude animation styles (PENGUIN) | ['PENGUIN', 'penguin'] | ['https://claude.ai'] | True | 2026-11-16T02:25:02.502Z | 55
 10 Claude animation styles (PENGUIN) | ['PENGUIN', 'penguin'] | ['https://claude.ai'] | True | 2026-11-08T20:26:13.717Z | 0
 Claude Code animation commands (ANIMATE) | ['ANIMATE', 'animate'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T02:25:02.502Z | 89
 Claude Code 3D commands (BUILD) | ['BUILD', 'build'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T02:25:02.502Z | 4
-Claude Code 3D commands (INSIDE) | ['INSIDE', 'inside'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:18:03.497Z | 492
+Claude Code 3D commands (INSIDE) | ['INSIDE', 'inside'] | ['https://drive.google.com/file/d/1OKTeucRjMBgkGYI1LrLYo87ebbehQ0ed/view?usp=sharing'] | True | 2026-11-16T03:29:04.445Z | 492
 Claude Code 3D commands (ZOOM) | ['ZOOM', 'zoom'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:09:37.827Z | 0
 Claude Code 3D commands (SCALE) | ['SCALE', 'scale'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T02:25:02.502Z | 16
 Claude Code 3D commands (MEGA) | ['MEGA', 'mega'] | ['https://code.claude.com/docs/en/slash-commands'] | True | 2026-11-16T03:09:37.827Z | 64
