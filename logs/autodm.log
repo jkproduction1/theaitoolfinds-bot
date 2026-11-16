@@ -1,122 +1,38 @@
-SETURL APPLY: 64 automations, 52 links
-already set 6afb0901a565d08d0491ad4d Claude 3D nature commands (STORM) keywords=['STORM', 'storm']
-already set 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES) keywords=['STYLES', 'styles']
-already set 6af9e1a516043fc4f1e98dbb Claude Fable 5.2 explainer styles 5 (FABLE) keywords=['FABLE', 'fable']
-already set 6af8846a009cff5e49a65426 Claude Fable 5.2 explainer styles 4 (FABLE) keywords=['FABLE', 'fable']
-already set 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE) keywords=['FABLE', 'fable']
-changed 6af6e498fe3f0e3f33259528 Claude Opus 5.5 heist blueprint tutorial (HEIST) keywords=['HEIST', 'heist']: ['https://claude.ai'] -> https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=heist32
-already set 6af5eb9ce2430acd2de32b2d Claude Fable 5.2 explainer styles 2 (FABLE) keywords=['FABLE', 'fable']
-already set 6af51ea53d3db9039d9a8833 Claude Code 3D what-if Earth commands (ASTEROID) keywords=['ASTEROID', 'asteroid']
-changed 6af45659477da3401c18098f Claude Opus 5.5 travel map animation tutorial (TRIP) keywords=['TRIP', 'trip']: ['https://claude.ai'] -> https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=trip24
-changed 6af37fed787b3e9d42bd8661 Claude Code explainer style commands (STYLE) keywords=['STYLE', 'style']: ['https://code.claude.com/docs/en/slash-commands'] -> https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles19
-changed 6af34930ea8b2d42a10abb48 Claude Code explainer style commands (STYLE) keywords=['STYLE', 'style']: ['https://code.claude.com/docs/en/slash-commands'] -> https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles19
-already set 6af2fbede5b355d8ed5133b0 Claude Code 3D everyday commands (MYSTERY) keywords=['MYSTERY', 'mystery']
-already set 6af2fbe5fd840aed5f93f1f1 Claude Code 3D nature commands (NATURE) keywords=['NATURE', 'nature']
-already set 6af25e0de8754860d96f4c6f Claude Code 3D what-if commands (WHATIF) keywords=['WHATIF', 'whatif']
-already set 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']
-already set 6af1a2e26d01dd0f39ef4589 Claude Code motion design commands (MOTION) keywords=['MOTION', 'motion']
-already set 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS) keywords=['COSMOS', 'cosmos']
-already set 6af18a992ce001c412329325 Claude Code 3D commands (KITCHEN) keywords=['KITCHEN', 'kitchen']
-already set 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH) keywords=['EARTH', 'earth']
-already set 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE) keywords=['SPACE', 'space']
-changed 6aef7603000650b4a80dc3b3 10 Claude animation styles (PENGUIN) keywords=['PENGUIN', 'penguin']: ['https://claude.ai'] -> https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=penguin10
-changed 6aef74df70d73fdd5906f1b0 10 Claude animation styles (PENGUIN) keywords=['PENGUIN', 'penguin']: ['https://claude.ai'] -> https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=penguin10
-already set 6aef07c48d3457da520c1351 Claude Code animation commands (ANIMATE) keywords=['ANIMATE', 'animate']
-already set 6aedbaa6121772f4f886e4bf Claude Code 3D commands (BUILD) keywords=['BUILD', 'build']
-already set 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE) keywords=['INSIDE', 'inside']
-already set 6aece3e99225e46fbd1924d6 Claude Code 3D commands (ZOOM) keywords=['ZOOM', 'zoom']
-already set 6aece3e24911175637e11f68 Claude Code 3D commands (SCALE) keywords=['SCALE', 'scale']
-already set 6aece39d7e16ad9b49a0e5fc Claude Code 3D commands (MEGA) keywords=['MEGA', 'mega']
-already set 6aebae4aabeadde97b7907dd Claude Code 3D commands (MOTION) keywords=['MOTION', 'motion']
-already set 6aeba65b3ca98eeeb8e8a77d Claude Code 3D commands (MOTION) keywords=['MOTION', 'motion']
-already set 6aeba655b8578b140d21ea84 Claude Code 3D commands (VISUAL) keywords=['VISUAL', 'visual']
-already set 6aea648af5dcd4220fed09ba Claude Code 3D explainers (EXPLAIN) keywords=['EXPLAIN', 'explain']
-changed 6ae9c687f081e3c6e0c1b7da Claude Code animation styles (STYLES) keywords=['STYLES', 'styles']: ['https://code.claude.com/docs/en/skills'] -> https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles5
-NOT FOUND: no automation named 'Claude Code 3D body commands (BODY)'
-NOT FOUND: no automation named 'Claude Code 3D scary body commands (BODY)'
-NOT FOUND: no automation named 'Claude Code 3D deadliest disasters commands (DISASTER)'
-NOT FOUND: no automation named 'Claude Code 3D what-if Earth commands 5 (WAVE)'
-NOT FOUND: no automation named 'Claude Code 3D what-if Earth commands 5 (TIDE)'
-NOT FOUND: no automation named 'None (ENGINE)'
-NOT FOUND: no automation named 'Claude Code film commands (FILMS)'
-NOT FOUND: no automation named 'Claude Code 3D commands (FLY)'
-NOT FOUND: no automation named 'None (HOME)'
-NOT FOUND: no automation named 'Claude Code 3D impact commands (IMPACT)'
-NOT FOUND: no automation named 'Claude Code 3D commands (MACHINE)'
-NOT FOUND: no automation named 'Claude Code 3D commands (MADE)'
-NOT FOUND: no automation named 'Claude Code 3D scary deep ocean commands (OCEAN)'
-NOT FOUND: no automation named 'Claude Code 3D scary space commands 4 (ORBIT)'
-NOT FOUND: no automation named 'Claude Code 3D organ commands (ORGANS)'
-NOT FOUND: no automation named 'Claude Code planet commands (PLANET)'
-NOT FOUND: no automation named 'None (SOUND)'
-NOT FOUND: no automation named 'Claude Code 3D scary space commands 2 (SPACE)'
-NOT FOUND: no automation named 'Claude Code 3D scary space commands 5 (STAR)'
-NOT FOUND: no automation named 'Claude Fable 5.2 explainer styles (FABLE)'
-NOT FOUND: no automation named 'teardown (TEARDOWN)'
-NOT FOUND: no automation named 'None (TECH)'
-NOT FOUND: no automation named 'Claude Code 3D what-if Earth commands 4 (WORLD)'
-ALL:
-Claude 3D nature commands (STORM) | ['STORM', 'storm'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=storm45', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=storm'] | True | 2026-11-16T17:48:41.339Z | 17 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=26/11/3/0
-Claude explainer styles 4 (STYLES) | ['STYLES', 'styles'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles44', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=styles'] | True | 2026-11-16T17:50:56.001Z | 180 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=314/165/147/4
-Claude Fable 5.2 explainer styles 5 (FABLE) | ['FABLE', 'fable'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles42', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=fable'] | True | 2026-11-16T17:40:51.009Z | 14 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=16/6/3/1
-Claude Fable 5.2 explainer styles 4 (FABLE) | ['FABLE', 'fable'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles37', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=fable'] | True | 2026-11-16T17:12:43.978Z | 202 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=384/170/100/14
-Claude Fable 5.2 explainer styles 3 (FABLE) | ['FABLE', 'fable'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles33', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=fable'] | True | 2026-11-16T17:52:31.207Z | 499 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=929/442/263/32
-Claude Opus 5.5 heist blueprint tutorial (HEIST) | ['HEIST', 'heist'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=heist32', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=heist'] | True | 2026-11-16T16:46:33.386Z | 3 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/1/0/0
-Claude Fable 5.2 explainer styles 2 (FABLE) | ['FABLE', 'fable'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles28', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=fable'] | True | 2026-11-16T17:40:51.009Z | 209 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=290/163/110/20
-Claude Code 3D what-if Earth commands (ASTEROID) | ['ASTEROID', 'asteroid'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=asteroid24', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=asteroid'] | True | 2026-11-16T17:40:51.009Z | 8 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=7/2/1/0
-Claude Opus 5.5 travel map animation tutorial (TRIP) | ['TRIP', 'trip'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=trip24', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=trip'] | True | 2026-11-16T15:55:56.166Z | 26 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=26/18/11/1
-Claude Code explainer style commands (STYLE) | ['STYLE', 'style'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles19', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=style'] | True | 2026-11-16T15:55:56.166Z | 10 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=7/5/3/4
-Claude Code explainer style commands (STYLE) | ['STYLE', 'style'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles19', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=style'] | True | 2026-11-16T17:48:34.850Z | 479 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=651/366/223/19
-Claude Code 3D everyday commands (MYSTERY) | ['MYSTERY', 'mystery'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=mystery17', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=mystery'] | True | 2026-11-16T17:40:51.009Z | 28 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=39/18/6/3
-Claude Code 3D nature commands (NATURE) | ['NATURE', 'nature'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=nature18', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=nature'] | True | 2026-11-16T16:46:33.386Z | 58 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=54/29/6/4
-Claude Fable 5.2 (Sketch → Motion: food-delivery app) (SKETCH) | ['SKETCH', 'sketch'] | ['https://www.anthropic.com/claude/fable', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=sketch'] | True | 2026-11-16T14:23:24.007Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Claude Code (Sketch → Motion: music app UI) (SKETCH) | ['SKETCH', 'sketch'] | ['https://claude.ai/code', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=sketch'] | True | 2026-11-16T16:46:33.386Z | 8 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=5/3/0/0
-Higgsfield (Nano Banana) (STYLES) | ['STYLES', 'styles'] | ['https://higgsfield.ai'] | True | 2026-11-14T16:02:06.355Z | 9 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/1
-Claude Code 3D what-if commands (WHATIF) | ['WHATIF', 'whatif'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=whatif15', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=whatif'] | True | 2026-11-16T14:23:24.570Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Claude Code 3D space commands (COSMOS) | ['COSMOS', 'cosmos'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=space14', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=cosmos'] | True | 2026-11-16T16:46:33.386Z | 6 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/2/1/4
-Claude Code motion design commands (MOTION) | ['MOTION', 'motion'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=motion13', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=motion'] | True | 2026-11-16T15:55:56.166Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=2/1/1/0
-Claude Code 3D space commands (COSMOS) | ['COSMOS', 'cosmos'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=space14', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=cosmos'] | True | 2026-11-16T17:40:51.009Z | 276 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=451/220/107/18
-Claude Code 3D commands (KITCHEN) | ['KITCHEN', 'kitchen'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=kitchen11', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=kitchen'] | True | 2026-11-16T16:46:33.386Z | 64 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=46/23/7/2
-Claude Code Earth commands (EARTH) | ['EARTH', 'earth'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=earth8', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=earth'] | True | 2026-11-16T17:48:08.908Z | 4235 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=10612/4104/1866/284
-Claude Code space commands (SPACE) | ['SPACE', 'space'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=space7', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=space'] | True | 2026-11-16T17:42:24.397Z | 1160 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=2548/1074/363/114
-10 Claude animation styles (PENGUIN) | ['PENGUIN', 'penguin'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=penguin10', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=penguin'] | True | 2026-11-16T15:55:56.166Z | 60 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=54/28/26/2
-10 Claude animation styles (PENGUIN) | ['PENGUIN', 'penguin'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=penguin10', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=penguin'] | True | 2026-11-16T14:23:28.346Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Claude Code animation commands (ANIMATE) | ['ANIMATE', 'animate'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=route3', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=animate'] | True | 2026-11-16T15:55:56.166Z | 89 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=138/74/56/5
-Claude Code 3D commands (BUILD) | ['BUILD', 'build'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=build3', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=build'] | True | 2026-11-16T15:55:56.166Z | 4 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/0/0/1
-Claude Code 3D commands (INSIDE) | ['INSIDE', 'inside'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=inside3', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=inside'] | True | 2026-11-16T17:47:56.777Z | 506 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=880/475/386/30
-Claude Code 3D commands (ZOOM) | ['ZOOM', 'zoom'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=zoom3', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=zoom'] | True | 2026-11-16T17:40:51.009Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Claude Code 3D commands (SCALE) | ['SCALE', 'scale'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=scale3', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=scale'] | True | 2026-11-16T15:55:56.166Z | 16 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=17/7/4/0
-Claude Code 3D commands (MEGA) | ['MEGA', 'mega'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=mega3', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=mega'] | True | 2026-11-16T17:40:51.009Z | 64 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=90/48/39/6
-Agent Desktop (DESKTOP) | ['DESKTOP', 'desktop'] | ['https://github.com/vercel-labs/agent-desktop'] | True | 2026-11-08T20:26:15.408Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Claude Code 3D commands (MOTION) | ['MOTION', 'motion'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=motion3dv', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=motion'] | True | 2026-11-16T16:46:33.386Z | 42 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=71/38/46/1
-Claude Code 3D commands (MOTION) | ['MOTION', 'motion'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=motion3dv', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=motion'] | True | 2026-11-16T15:55:56.166Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=3/1/0/0
-Claude Code 3D commands (VISUAL) | ['VISUAL', 'visual'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=visual3', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=visual'] | True | 2026-11-16T17:40:51.009Z | 31 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=40/25/20/2
-Craft Anything (CRAFT) | ['CRAFT', 'craft'] | ['https://github.com/storytold/craft-anything'] | True | 2026-11-16T15:55:56.166Z | 3 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=3/3/2/0
-Zero Breach Toolkit (ZEROBREACH) | ['ZEROBREACH', 'zerobreach'] | ['https://github.com/interplains/Zero-Breach-Toolkit'] | True | 2026-11-16T16:46:33.386Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/0/0/0
-Claude Code 3D explainers (EXPLAIN) | ['EXPLAIN', 'explain'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=explain3d', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=explain'] | True | 2026-11-16T17:40:51.009Z | 16 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=12/7/4/0
-Claude Code animation styles (STYLES) | ['STYLES', 'styles'] | ['https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?v=styles5', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=styles'] | True | 2026-11-16T15:55:56.166Z | 32 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=13/10/5/3
-Dimensional Drawing (DRAWING) | ['DRAWING', 'drawing'] | ['https://github.com/enesozturk/dimensional-drawing'] | True | 2026-11-03T07:26:31.624Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-tstack (TSTACK) | ['TSTACK', 'tstack'] | ['https://github.com/t3dotgg/tstack'] | True | 2026-11-16T16:46:33.386Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-pixelfx (PIXELFX) | ['PIXELFX', 'pixelfx'] | ['https://github.com/patch-gg/pixelfx'] | True | 2026-11-16T16:46:33.386Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/0/0/0
-Mika (MIKA) | ['MIKA', 'mika'] | ['https://github.com/wangzan101/Mika'] | True | 2026-11-16T15:55:56.166Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Floorplan (FLOORPLAN) | ['FLOORPLAN', 'floorplan'] | ['https://github.com/haydenschmitty/floorplan'] | True | 2026-11-16T17:40:51.009Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=3/1/0/0
-Unslop (UNSLOP) | ['UNSLOP', 'unslop'] | ['https://github.com/heydamir/unslop'] | True | 2026-11-16T16:46:33.386Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Claude-Mem (MEM) | ['MEM', 'mem'] | ['https://github.com/thedotmack/claude-mem'] | True | 2026-11-16T16:46:33.386Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Hallmark (HALLMARK) | ['HALLMARK', 'hallmark'] | ['https://github.com/Nutlope/hallmark'] | True | 2026-11-16T16:46:33.386Z | 2 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Lemo Opuscar (OPUSCAR) | ['OPUSCAR', 'opuscar'] | ['https://github.com/lemomo-ai/lemo-opuscar'] | True | 2026-11-16T16:46:33.386Z | 8 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=4/2/0/0
-Claude SEO (SEO) | ['SEO', 'seo'] | ['https://github.com/AgriciDaniel/claude-seo'] | True | 2026-11-16T17:40:51.009Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Impeccable (IMPECCABLE) | ['IMPECCABLE', 'impeccable'] | ['https://github.com/pbakaus/impeccable'] | True | 2026-11-16T17:40:51.009Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Graphify (GRAPHIFY) | ['GRAPHIFY', 'graphify'] | ['https://github.com/Graphify-Labs/graphify'] | True | 2026-11-16T15:55:56.166Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/1/0/0
-Concat (CONCAT) | ['CONCAT', 'concat'] | ['https://github.com/jub0t/Concat'] | True | 2026-11-16T16:46:33.386Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Codex CLI (CODEX) | ['CODEX', 'codex'] | ['https://github.com/openai/codex'] | True | 2026-11-16T15:55:56.166Z | 43 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/1/2/3
-Microduck (MICRODUCK) | ['MICRODUCK', 'microduck'] | ['https://pollen-robotics.com/microduck/'] | True | 2026-11-16T15:55:56.166Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-ComfyUI (COMFY) | ['COMFY', 'comfy'] | ['https://github.com/Comfy-Org/ComfyUI'] | True | 2026-11-16T17:40:51.009Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Orca (ORCA) | ['ORCA', 'orca'] | ['https://github.com/stablyai/orca'] | True | 2026-11-16T17:40:51.009Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/0/0/0
-Cloudflare security-audit skill (AUDIT) | ['AUDIT', 'audit'] | ['https://github.com/cloudflare/security-audit-skill'] | True | 2026-10-24T18:44:57.527Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Claude Code cheat sheet (CLAUDE) | ['CLAUDE', 'claude'] | ['https://support.claude.com/en/articles/14553413-claude-code-cheatsheet', 'https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=claude'] | True | 2026-11-16T16:46:33.386Z | 63 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=2/4/2/7
-OpenCode (OPENCODE) | ['OPENCODE', 'opencode'] | ['https://github.com/anomalyco/opencode'] | True | 2026-11-16T16:46:33.386Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-REA (REA) | ['REA', 'rea'] | ['https://github.com/morluto/rea'] | True | 2026-11-16T15:55:56.166Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-OpenFilm (OPENFILM) | ['OPENFILM', 'openfilm'] | ['https://github.com/openfilm/openfilm'] | True | 2026-11-16T17:40:51.009Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/1/1/0
-Ponytail (PONYTAIL) | ['PONYTAIL', 'ponytail'] | ['https://github.com/DietrichGebert/ponytail'] | True | 2026-11-16T16:46:33.386Z | 0 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-Plugins (PLUGINS) | ['PLUGINS', 'plugins'] | ['https://github.com/anthropics/claude-plugins-official'] | True | 2026-11-16T16:46:33.386Z | 2 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=0/0/0/0
-ArtCraft (ARTCRAFT) | ['ARTCRAFT', 'artcraft'] | ['https://getartcraft.com/apps'] | True | 2026-11-16T17:40:51.009Z | 1 | aud={'whenUnknown': 'verify', 'followerStatus': 'follower'} | gate=True | gateSent/passed/failed/skipped=1/1/0/0
+SETDM APPLY: 64 automations
+set FULL 6afb0901a565d08d0491ad4d Claude 3D nature commands (STORM): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6afa72b2f94c853b7a7ddc60 Claude explainer styles 4 (STYLES): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af9e1a516043fc4f1e98dbb Claude Fable 5.2 explainer styles 5 (FABLE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af8846a009cff5e49a65426 Claude Fable 5.2 explainer styles 4 (FABLE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af72d1a35015a8781861d67 Claude Fable 5.2 explainer styles 3 (FABLE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af6e498fe3f0e3f33259528 Claude Opus 5.5 heist blueprint tutorial (HEIST): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af5eb9ce2430acd2de32b2d Claude Fable 5.2 explainer styles 2 (FABLE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af51ea53d3db9039d9a8833 Claude Code 3D what-if Earth commands (ASTEROID): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af45659477da3401c18098f Claude Opus 5.5 travel map animation tutorial (TRIP): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af37fed787b3e9d42bd8661 Claude Code explainer style commands (STYLE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af34930ea8b2d42a10abb48 Claude Code explainer style commands (STYLE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af2fbede5b355d8ed5133b0 Claude Code 3D everyday commands (MYSTERY): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af2fbe5fd840aed5f93f1f1 Claude Code 3D nature commands (NATURE): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6af299f83152dbae444b2024 Claude Fable 5.2 (Sketch → Motion: food-delivery app) (SKETCH): ['Open the link', 'Get the system'] variations=2
+set NEUTRAL 6af28c2ba56a0500a4a701a2 Claude Code (Sketch → Motion: music app UI) (SKETCH): ['Open the link', 'Get the system'] variations=2
+set FULL 6af25e0de8754860d96f4c6f Claude Code 3D what-if commands (WHATIF): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af1cdc7d467d0d79dac5412 Claude Code 3D space commands (COSMOS): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af1a2e26d01dd0f39ef4589 Claude Code motion design commands (MOTION): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af1972787d51e79252a90ed Claude Code 3D space commands (COSMOS): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af18a992ce001c412329325 Claude Code 3D commands (KITCHEN): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6af0b2f1daa8d4544d6ff3b7 Claude Code Earth commands (EARTH): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aefbcaa6864d32eef381060 Claude Code space commands (SPACE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aef7603000650b4a80dc3b3 10 Claude animation styles (PENGUIN): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aef74df70d73fdd5906f1b0 10 Claude animation styles (PENGUIN): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aef07c48d3457da520c1351 Claude Code animation commands (ANIMATE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aedbaa6121772f4f886e4bf Claude Code 3D commands (BUILD): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aedba5d7fdb5a3c7a7a6b5c Claude Code 3D commands (INSIDE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aece3e99225e46fbd1924d6 Claude Code 3D commands (ZOOM): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aece3e24911175637e11f68 Claude Code 3D commands (SCALE): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aece39d7e16ad9b49a0e5fc Claude Code 3D commands (MEGA): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aebae4aabeadde97b7907dd Claude Code 3D commands (MOTION): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aeba65b3ca98eeeb8e8a77d Claude Code 3D commands (MOTION): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aeba655b8578b140d21ea84 Claude Code 3D commands (VISUAL): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6aea648af5dcd4220fed09ba Claude Code 3D explainers (EXPLAIN): ['Get the prompts', 'Get the system'] variations=3
+set FULL 6ae9c687f081e3c6e0c1b7da Claude Code animation styles (STYLES): ['Get the prompts', 'Get the system'] variations=3
+set NEUTRAL 6adcb8b4a649841d92be0470 Claude Code cheat sheet (CLAUDE): ['Open Claude Code che', 'Get the system'] variations=2
+selected 36, skipped 28 (third-party tool links)
