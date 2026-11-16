@@ -1,128 +1,128 @@
 {
-  "date": "2026-11-15",
+  "date": "2026-11-16",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What's inside everyday things 2",
+      "title": "The scariest things in space 7",
       "commands": [
-        "/x-ray a smoke detector",
-        "/explain-3d how a zipper locks",
-        "/explode an electric toothbrush"
+        "/what-if a neutron star passed by Earth",
+        "/zoom-in the surface of the Sun",
+        "/scale the Oort cloud versus the Solar System"
       ],
-      "why": "TikTok test from learnings: 'what's inside' (mystery17 4.5k TT, build3 3.1k TT) is our most consistent non-outlier on TT; all three objects new"
+      "why": "space is our only topic that breaks TikTok (space7 268k+175k, space14 62k+56k); neutron star flyby, Sun surface and Oort cloud not used yet"
     },
     {
-      "title": "The scariest things in space 6",
+      "title": "What if… Earth 7",
       "commands": [
-        "/what-if a rogue planet flew through the Solar System",
-        "/x-ray Europa's ocean under the ice",
-        "/zoom-in Mars' Valles Marineris canyon"
+        "/zack-d-films what if Earth's core stopped spinning",
+        "/simulate a mega-tsunami hitting a coastline from space",
+        "/x-ray the inside of a volcano before it erupts"
       ],
-      "why": "space is the only topic that breaks TikTok (space7 165k TT); rogue planet, Europa, Valles Marineris not used (black hole, Venus, magnetar, Jupiter, Saturn avoided)"
+      "why": "earth8 = 728k, our biggest hit; 'what would happen to Earth' stays the strongest IG hook; core, mega-tsunami from orbit and volcano interior are new"
     },
     {
-      "title": "What if… Earth 6",
+      "title": "What's inside everyday things 3",
       "commands": [
-        "/zack-d-films what if all the ice on Earth melted",
-        "/simulate a supervolcano erupting under Yellowstone",
-        "/scale the Amazon river versus Europe"
+        "/x-ray a smart lock",
+        "/explain-3d how a self-checkout scale knows the weight",
+        "/explode a game controller"
       ],
-      "why": "earth8 514k IG: 'what would happen to Earth' is still our biggest IG hook; Moon, tsunami, typhoon, two suns, drained oceans avoided"
+      "why": "inside3 127k IG and 'what's inside' is our steadiest TikTok non-outlier; controller fits the GTA 6 launch week (19. 11.); all three objects new"
     },
     {
-      "title": "Everyday objects explain themselves",
+      "title": "Famous video styles 6",
       "commands": [
-        "/talking-object a credit card explains a tap payment",
-        "/x-ray a hotel key card",
-        "/explain-3d how an airbag inflates in 30 ms"
+        "/flat-science why we yawn when others yawn",
+        "/paper-collage why Big Ben is leaning",
+        "/painted-story how the Titanic was found"
       ],
-      "why": "test from learnings: talking-object explainers are pushed as a 2026 viral niche and fit our 'what's inside the stuff you use' line"
+      "why": "explainer-styles series = best IG median (styles33 131k, styles37 57k, styles19 57k); same 3 styles, new topics; Kurzgesagt look first like styles42"
     },
     {
-      "title": "Famous video styles 5",
+      "title": "Liquid chrome & glass UI",
       "commands": [
-        "/paper-collage why Venice is sinking",
-        "/flat-science why we get goosebumps",
-        "/painted-story how the Great Wall was built"
+        "/liquid-chrome a game launch countdown",
+        "/glassmorphism a weather widget in a storm",
+        "/kinetic-type a movie trailer title"
       ],
-      "why": "explainer-styles series = best IG median of any format (51k avg, 44k med); same 3 styles, new topics"
+      "why": "test: motion13 (glassmorphism/ui-motion) look; countdown + trailer title ride the GTA 6 launch week; liquid chrome is a new look for us (guess, no numbers yet)"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this crime-game map of your hometown using Claude",
+      "title": "How to make this game character-select screen of your friends using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "GTA 6 vychází 19. 11. a mapy/edity v jeho stylu jedou všude (Tom's Guide, gaming weby); jen žánr, vlastní mapa tvého města, žádný herní prvek.",
+      "trend": "GTA 6 vychází 19. 11. (Tom's Guide, gaming weby) a herní edity přátel jedou na TikToku; vlastní neutrální styl, žádné herní logo ani postavy.",
       "steps": [
-        "Type your town and 5 places you know",
-        "Ask for a sunset open-world map that zooms in",
+        "Type your friends' names and one funny skill each",
+        "Ask for a sunset open-world character-select screen",
         "Claude builds it, you tweak it"
       ],
       "seconds": 13,
-      "keyword": "MAP",
+      "keyword": "SQUAD",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this talking-object explainer using Claude",
+      "title": "How to make this animated game launch countdown using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "„Věci samy vysvětlují, jak fungují“ se tlačí jako virální niche 2026 (opus.pro, nim.video); sedí na náš nejlepší TT formát „co je uvnitř“.",
+      "trend": "Odpočty do vydání GTA 6 (19. 11.) se teď sdílí všude na X a TikToku; neutrální neonový odpočet, jméno hry jen jako text.",
       "steps": [
-        "Pick an object, like your coffee cup",
-        "Ask for a cute 3D version that explains itself in 3 lines",
-        "Claude builds it, you tweak it"
-      ],
-      "seconds": 13,
-      "keyword": "TALK",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this animated Christmas countdown using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "Do Vánoc zbývá ~40 dní a advent/countdown widgety a stories se každý rok vrací od poloviny listopadu.",
-      "steps": [
-        "Type the date and your city",
-        "Ask for falling snow, a glowing tree and flipping numbers",
+        "Type the launch date and the game's name",
+        "Ask for a neon city countdown that ticks live",
         "Claude builds it, you tweak it"
       ],
       "seconds": 12,
-      "keyword": "XMAS",
+      "keyword": "COUNTDOWN",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to turn your selfie into a dystopian arena tribute poster using Higgsfield",
+      "title": "How to make this animated Black Friday sale ad using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Black Friday je 27. 11. a malé firmy teď hledají rychlé reklamy na stories (socialpilot, trendové přehledy listopadu); vymyšlený produkt a značka.",
+      "steps": [
+        "Type your product, price and discount",
+        "Ask for a bold kinetic sale ad for stories",
+        "Claude builds it, you tweak it"
+      ],
+      "seconds": 12,
+      "keyword": "SALE",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make your own year-in-review story using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Sezóna ročních shrnutí (Wrapped) začíná koncem listopadu a lidi si dělají vlastní verze; vlastní vzhled, žádné logo Spotify.",
+      "steps": [
+        "Type your 5 best moments of the year",
+        "Ask for colorful animated story slides with big numbers",
+        "Claude builds it, you tweak it"
+      ],
+      "seconds": 13,
+      "keyword": "RECAP",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to turn your photo into an open-world game cover using Higgsfield",
       "tool": "Higgsfield",
       "url": "https://higgsfield.ai",
-      "trend": "20. 11. jde do kin nový Hunger Games film (Sunrise on the Reaping); poster/„tribute“ edity typicky jedou týden před premiérou. Jen styl, žádné logo ani postavy.",
+      "trend": "Před vydáním GTA 6 (19. 11.) se šíří fotky lidí jako 'herní obal'; jen žánr a vlastní styl, žádné logo ani herní postavy.",
       "steps": [
-        "Upload one clear selfie",
-        "Pick Nano Banana and type: dystopian arena tribute poster, golden light",
+        "Upload one photo of yourself",
+        "Ask for a sunset open-world game cover with your name",
         "Higgsfield builds it, you tweak it"
       ],
-      "seconds": 12,
-      "keyword": "TRIBUTE",
+      "seconds": 13,
+      "keyword": "COVER",
       "cost": "kredity Higgsfield, cca 2–6 (obrázky)",
-      "handle": ""
-    },
-    {
-      "title": "How to make the first snow fall on your street using Higgsfield",
-      "tool": "Higgsfield",
-      "url": "https://higgsfield.ai",
-      "trend": "První sníh v Evropě + start vánoční sezóny: „before/after snow“ edity vlastní ulice jedou na IG/TikToku každý listopad.",
-      "steps": [
-        "Upload a photo of your street",
-        "Pick a video model and type: first snow falls at dusk, lights turn on",
-        "Higgsfield builds it, you tweak it"
-      ],
-      "seconds": 12,
-      "keyword": "SNOW",
-      "cost": "kredity Higgsfield, cca 10–20 (video)",
       "handle": ""
     }
   ],
