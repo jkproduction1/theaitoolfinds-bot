@@ -82,7 +82,15 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - **Prompt first, then the result (Jan, 2026-11-12, hard rule):** in the classic App demo nothing of the result may be visible before
   the prompt is sent: no dimmed/blurred "ghost" preview behind the chat while typing (impact22, asteroid24, space25, body26 had one
   = wrong, don't copy it). Order is always: chat + typing → send → result. Template without it: hf/videos/styles28/build.py.
-- **Daily mix v4 (Jan, 2026-11-11, CURRENT):** 2 App demos (unchanged, "Type this… and you get this") + 1 **Tutorial**
+- **Daily mix v5 (Jan, 2026-11-17, CURRENT, replaces v4):** **2 "Type it, get it" videos EVERY day** = the series made with OUR
+  system's styles (like styles28/33/37/44, storm45: "Type /<style> <topic>… and you get this", real renders from our skill pack,
+  series counter "Type it, get it #N" from data/series.json) + **1 other** video (Tutorial §3e, a sales/proof video like versus46
+  "free prompt vs our system" with keyword SYSTEM, or a test). Slots: Type it 08:00 and 15:00, the other 21:00. Why (Jan + stats
+  2026-11-17): Type it IG median ~39k views vs ~10k for other App demos; ~1 sale per 15–20k IG views, goal 5 sales/day ≈ 80–100k
+  IG views/day. Targets per Type it video: ≥30k IG views = OK, <10k = flop (note why in learnings). Pick the strongest curiosity
+  topics (danger, "what's inside", famous mysteries) and the most visual styles; never the same three styles two posts in a row.
+  DM link = prompts page with c/t (step 8), so DMs get "Get the prompts" + "Get the system".
+- **Daily mix v4 (INACTIVE since 2026-11-17; Jan, 2026-11-11):** 2 App demos (unchanged, "Type this… and you get this") + 1 **Tutorial**
   "How to make this <viral thing> using <tool>" (§3e). The tutorial REPLACES the trendy-AI-tool video of v3: Jan: "nobody cares
   about generic AI-tool videos; always one specific tool and a tutorial for ONE viral thing made with it". v3 below is INACTIVE
   (kept for reference, not deleted). **Picklist v3:** the 07:52 check writes `data/picklist_ideas.json` with "app_demo" (5 trios)
@@ -220,7 +228,7 @@ Never `pkill -f chrome`/`pkill -f hyperframes` in the same shell command: it mat
    `data/history.json` and the `videos` branch), then `items`, else research (WebSearch: trending repos,
    launches this week). **Mix (Jan, 2026-11-08): 2 App demo 1/3 videos (§3b)
    + 1 normal Paper AI-tool video (§3).** Picks/items/research choose the Paper video's tool; the 2 App demos use
-   commands/skills that make a strong visual result. **Current mix: §3b "Daily mix v4"** = 2 App demos + 1 Tutorial (§3e);
+   commands/skills that make a strong visual result. **Current mix: §3b "Daily mix v5"** = 2 "Type it, get it" (our styles) + 1 other;
    picks: `data/picks.json` "picked_demo" and "picked_tut", else the best ideas in `data/picklist_ideas.json`.
 2. **Verify every fact** in the tool's README/docs (clone with `git clone --depth 1`). No invented numbers.
    Alpha/beta → say "still early". Save media you'll show into `hf/videos/<name>/media/`.
@@ -288,7 +296,8 @@ videos in our own formats. Don't make Opuscar videos unless Jan asks again. (Cur
 - When he's chatting live, he approves scripts before they're voiced.
 - He hates "PowerPoint" looks: flat cards, slides, big templated captions. Quality bar: top motion design.
 - Max 3 posts a day (5 in one day split the reach). Don't guess what works: check the stats.
-- Every day 2 "App demo 1/3" videos (§3b) + 1 Tutorial "How to make this X using <tool>" (§3e) (Jan, 2026-11-11; before: 1 trendy
+- Since 2026-11-17 (mix v5, §3b): every day 2 "Type it, get it" videos with OUR styles + 1 other (tutorial / sales proof / test).
+- (Old, v4:) Every day 2 "App demo 1/3" videos (§3b) + 1 Tutorial "How to make this X using <tool>" (§3e) (Jan, 2026-11-11; before: 1 trendy
   AI-tool video, before that 1 Paper video).
 
 ## Sketch → Motion format (Jan, 2026-11-10)
