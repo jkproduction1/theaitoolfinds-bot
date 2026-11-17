@@ -46,7 +46,7 @@ const stage = document.getElementById('stage');
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 stage.prepend(renderer.domElement);
 
@@ -210,11 +210,17 @@ for (let i = 0; i < 16; i++) { const s = new THREE.Sprite(mistM); s.position.set
 
 // ---------- lights: warm sun + cool sky fill + sunset rim ----------
 scene.add(new THREE.HemisphereLight('#a9b8e6', '#3b3020', 0.75));
-const key = new THREE.DirectionalLight('#ffcf9e', 2.6);
-key.position.set(-80, 70, 110); key.castShadow = true;
-Object.assign(key.shadow.camera, { left: -34, right: 34, top: 30, bottom: -30, near: 20, far: 320 });
-key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.05;
-scene.add(key);
+const key = new THREE.DirectionalLight('#ffc58a', 3.4);
+key.position.set(-70, 52, -95); key.castShadow = true; // low sunset sun from back-left: long shadows fall toward the camera
+Object.assign(key.shadow.camera, { left: -70, right: 70, top: 60, bottom: -60, near: 10, far: 420 });
+key.shadow.mapSize.set(4096, 4096); key.shadow.bias = -0.0003; key.shadow.normalBias = 0.08; key.shadow.radius = 5;
+scene.add(key); scene.add(key.target);
+const fill = new THREE.DirectionalLight('#ffd9c2', 1.25); fill.position.set(50, 34, 130); scene.add(fill); // soft front fill, no shadow
+// soft contact shadows (fake ambient occlusion) under everything that touches the ground
+const aoTex = canvasTex(256, 256, (g) => { const r = g.createRadialGradient(128, 128, 0, 128, 128, 128); r.addColorStop(0, 'rgba(10,8,4,.8)'); r.addColorStop(.55, 'rgba(10,8,4,.28)'); r.addColorStop(1, 'rgba(10,8,4,0)'); g.fillStyle = r; g.fillRect(0, 0, 256, 256); });
+function contact(x, z, sx, sz) { const m = new THREE.Mesh(new THREE.PlaneGeometry(sx, sz), new THREE.MeshBasicMaterial({ map: aoTex, transparent: true, depthWrite: false, fog: false })); m.rotation.x = -Math.PI / 2; m.position.set(x, 0.06, z); m.renderOrder = 2; scene.add(m); }
+[[-4.4, 1.25], [-4.0, -1.25], [4.0, 1.35], [4.4, -1.35]].forEach(([x, z]) => contact(x, z, 5.2, 5.2));
+contact(0, 0, 22, 9); contact(busX, busZ, 15, 5.5); contact(-10.2, 5.2, 1.6, 1.6);
 const rim = new THREE.DirectionalLight('#ff9a5a', 3.2); rim.position.copy(SUN).multiplyScalar(200); scene.add(rim);
 
 // ---------- Argentinosaurus: ONE continuous spine tube (head tip x=-17.5 .. tail tip x=+17.5) ----------
@@ -348,7 +354,7 @@ function ptero(x, y, z, span, yaw, ph) { const g = new THREE.Group();
     geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); geo.computeVertexNormals();
     const w = new THREE.Mesh(geo, pteroM); g.add(w); wings.push([w, s]); }
   g.position.set(x, y, z); g.rotation.y = yaw; scene.add(g); PTERO.push({ g, wings, ph, y }); }
-[[-13, 37, -20, 7, .5, 0], [-4, 41, -50, 6, .4, 1.3], [-17, 31, -10, 5, .6, 2.2], [13, 39, -60, 7, 2.6, .7], [19, 33, -30, 5, 2.8, 3.1], [5, 44, -90, 6, .3, 4]]
+[[-13, 34, -20, 7, .5, 0], [-4, 37, -50, 6, .4, 1.3], [-17, 30, -10, 5, .6, 2.2], [13, 36, -60, 7, 2.6, .7], [19, 32, -30, 5, 2.8, 3.1], [5, 39, -90, 6, .3, 4]]
   .forEach(a => ptero(...a));
 function flap(t) { for (const p of PTERO) { const a = Math.sin(t * 3.2 + p.ph) * .45 + .15; for (const [w, s] of p.wings) w.rotation.x = -s * a; p.g.position.y = p.y + Math.sin(t * 1.1 + p.ph) * .8; p.g.position.x += 0; } }
 // distant herd (same species, far away in the haze)
@@ -363,7 +369,7 @@ const ease = t => t < .5 ? 16 * t ** 5 : 1 - Math.pow(-2 * t + 2, 5) / 2;
 function render(t) {
   const k = ease(Math.min(1, t / 7));
   const camX = 2.2 - 1.2 * k, dist = 177 - 2 * k;
-  camera.position.set(camX, 9, dist); camera.lookAt(camX, 12.6, 0); camera.updateMatrixWorld();
+  camera.position.set(camX, 14.5, dist); camera.lookAt(camX, 12.3, 0); camera.updateMatrixWorld();
   flap(t); renderer.render(scene, camera);
   const [dx, dy] = proj(0, DINO_BAR_Y, 0), [bx, by] = proj(busX, 0.35, busZ + 2.4), [hx, hy] = proj(-10.2, 1.9, 5.2);
   place(pD, dx, dy - 92); place(pB, bx + 40, by + 100); place(pY, 230, by + 100);
