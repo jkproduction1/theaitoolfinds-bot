@@ -1,0 +1,13 @@
+{
+ "url": "https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?c=painted-story|paper-collage|flat-science&t=how%20the%20Titanic%20was%20found|why%20Big%20Ben%20is%20leaning|why%20we%20get%20goosebumps",
+ "name": "Claude explainer styles",
+ "tool_name": "Claude explainer styles",
+ "keyword": "TITANIC",
+ "summary_cs": "„Type it, get it #40“ (31 s): /painted-story jak našli Titanic (1. 9. 1985, sáně Argo, stopa trosek, kotel; WHOI), /paper-collage proč se Big Ben naklání (~50 cm nahoře, k severozápadu, měkký jíl; Wikipedie), /flat-science proč máme husí kůži (sval arrector pili, pozůstatek po srstnatých předcích). Výsledky nakreslil Claude v kódu, DM pošle prompty + systém.",
+ "style": "hyperframes-paper",
+ "duration": 31.1,
+ "domain": "theaitoolfinds.gumroad.com/l/luszgi/landing/embed?c=painted-story|paper-collage|flat-science&t=how%20the%20Titanic%20was%20found|why%20Big%20Ben%20is%20leaning|why%20we%20get%20goosebumps",
+ "created": "2026-11-17_0609",
+ "run_id": null,
+ "artifact": null
+}
