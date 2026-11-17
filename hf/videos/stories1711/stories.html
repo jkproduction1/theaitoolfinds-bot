@@ -1,0 +1,78 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Inter;font-weight:500;src:url(../../../assets/fonts/Inter-Medium.otf)}
+@font-face{font-family:Inter;font-weight:600;src:url(../../../assets/fonts/Inter-SemiBold.otf)}
+@font-face{font-family:Inter;font-weight:700;src:url(../../../assets/fonts/Inter-Bold.otf)}
+@font-face{font-family:Inter;font-weight:800;src:url(../../../assets/fonts/Inter-ExtraBold.otf)}
+@font-face{font-family:Inter;font-weight:900;src:url(../../../assets/fonts/Inter-Black.otf)}
+@font-face{font-family:'EB Garamond';font-style:italic;font-weight:500;src:url(../../work/around51/assets/eb-garamond-latin-500-italic.woff2)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;font-family:Inter,sans-serif;color:#fff}
+.s{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(90% 60% at 50% 38%,#23252b 0%,#121212 60%,#0a0a0b 100%)}
+.s::after{content:'';position:absolute;inset:0;background:url(../../assets/noise.png);opacity:.08;pointer-events:none}
+.acc{color:#ff4b1f}
+.serif{font-family:'EB Garamond',serif;font-style:italic;font-weight:500}
+.pill{display:inline-block;font-weight:700;font-size:30px;letter-spacing:.02em;background:#232323;border:2px solid #333;border-radius:999px;padding:12px 28px;color:#d8d8d8}
+.pill b{color:#ff6a3d}
+.h{font-weight:900;letter-spacing:-.035em;line-height:1.02}
+.card{position:absolute;border-radius:36px;overflow:hidden;box-shadow:0 50px 110px rgba(0,0,0,.75),0 0 0 2px rgba(255,255,255,.09)}
+.card img{width:100%;height:100%;object-fit:cover;display:block}
+.bubble{position:absolute;background:#2a2a2a;border:2px solid #3a3a3a;border-radius:34px 34px 10px 34px;padding:22px 32px;font-size:40px;font-weight:600;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.bubble i{font-style:normal;color:#ff6a3d}
+.spark{position:absolute;width:84px;height:84px}
+.hand{position:absolute;left:0;right:0;text-align:center;font-weight:700;font-size:28px;color:#8d8d8d}
+.row{display:flex;align-items:center;gap:28px;background:#1c1c1e;border:2px solid #2c2c2e;border-radius:30px;padding:26px 32px;margin-bottom:20px}
+.row .n{flex:none;width:76px;height:76px;border-radius:22px;background:#2a1d18;border:2px solid #4a2c22;display:flex;align-items:center;justify-content:center}
+.row .n svg{width:44px;height:44px;stroke:#ff6a3d;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.row b{display:block;font-weight:800;font-size:40px;letter-spacing:-.02em}
+.row span{display:block;font-size:29px;color:#a6a6a6;margin-top:4px;font-weight:500}
+</style></head><body>
+
+<!-- 1: hook -->
+<div class="s" id="s1">
+  <div style="position:absolute;left:80px;top:270px"><span class="pill">Made with <b>one line of text</b></span></div>
+  <div class="h" style="position:absolute;left:80px;right:80px;top:360px;font-size:118px">I typed this.<br><span class="acc">Claude made<br>the video.</span></div>
+  <div class="card" style="left:250px;top:800px;width:580px;height:800px;transform:rotate(2.5deg)"><img src="img/popcorn.jpg"></div>
+  <div class="bubble" style="left:80px;top:760px;transform:rotate(-2deg)"><i>/paper-collage</i> why popcorn pops</div>
+  <div class="hand" style="top:1650px">no editing · no camera · no face</div>
+</div>
+
+<!-- 2: styles -->
+<div class="s" id="s2">
+  <div class="h" style="position:absolute;left:80px;right:80px;top:270px;font-size:104px"><span class="acc">12 styles.</span><br>Any topic.</div>
+  <div style="position:absolute;left:80px;top:505px;font-size:36px;font-weight:600;color:#a6a6a6">Six of them, each from one command:</div>
+  <div class="card" style="left:80px;top:600px;width:290px;height:480px"><img src="img/ice.jpg"></div>
+  <div class="card" style="left:395px;top:600px;width:290px;height:480px"><img src="img/popcorn.jpg"></div>
+  <div class="card" style="left:710px;top:600px;width:290px;height:480px"><img src="img/sea.jpg"></div>
+  <div class="card" style="left:80px;top:1110px;width:290px;height:480px"><img src="img/volcano.jpg"></div>
+  <div class="card" style="left:395px;top:1110px;width:290px;height:480px"><img src="img/dino.jpg"></div>
+  <div class="card" style="left:710px;top:1110px;width:290px;height:480px"><img src="img/tornado.jpg"></div>
+  <div class="hand" style="top:1640px;font-size:30px;color:#c9c9c9">flat science · paper collage · painted story<br>x-ray · true scale · 3D explainer</div>
+</div>
+
+<!-- 3: what's inside -->
+<div class="s" id="s3">
+  <div style="position:absolute;left:80px;top:270px"><span class="pill">Viral Styles <b>Launchpad</b></span></div>
+  <div class="h" style="position:absolute;left:80px;right:80px;top:355px;font-size:100px">What's <span class="acc">inside</span></div>
+  <div style="position:absolute;left:80px;right:80px;top:520px">
+    <div class="row"><div class="n"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg></div><div><b>Story Builder</b><span>one line in, a first version out</span></div></div>
+    <div class="row"><div class="n"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></div><div><b>12 visual styles</b><span>paper collage, flat science, x-ray and more</span></div></div>
+    <div class="row"><div class="n"><svg viewBox="0 0 24 24"><path d="M4 9v6M8 5v14M12 8v8M16 4v16M20 10v4"/></svg></div><div><b>Captions + voice</b><span>word-synced captions, drop in an MP3</span></div></div>
+    <div class="row"><div class="n"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 9.5l4 2.5-4 2.5z"/></svg></div><div><b>MP4 export</b><span>1080×1920, ready for Reels and TikTok</span></div></div>
+    <div class="row"><div class="n"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div><div><b>Daily auto-build</b><span>Claude drafts your next video every day</span></div></div>
+    <div class="row"><div class="n"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><div><b>2-step setup</b><span>plus a playbook and 100 ready topics</span></div></div>
+  </div>
+  <div class="hand" style="top:1600px;font-size:29px">You need Claude Pro ($20/month, paid to Anthropic).<br>A finished video takes about 30 minutes.</div>
+</div>
+
+<!-- 4: offer -->
+<div class="s" id="s4">
+  <div class="card" style="left:-40px;top:300px;width:360px;height:600px;transform:rotate(-7deg);opacity:.9"><img src="img/dino.jpg"></div>
+  <div class="card" style="left:360px;top:250px;width:360px;height:600px"><img src="img/ice.jpg"></div>
+  <div class="card" style="left:760px;top:300px;width:360px;height:600px;transform:rotate(7deg);opacity:.9"><img src="img/sea.jpg"></div>
+  <div style="position:absolute;left:0;right:0;top:940px;text-align:center"><span class="pill">Launch price · <b>first 50 buyers</b></span></div>
+  <div class="h" style="position:absolute;left:0;right:0;top:1030px;text-align:center;font-size:210px"><span style="font-size:90px;color:#777;text-decoration:line-through;font-weight:800;vertical-align:60px;margin-right:24px">$29</span><span class="acc">$19</span></div>
+  <div style="position:absolute;left:0;right:0;top:1275px;text-align:center;font-size:44px;font-weight:700">code <span class="acc">LAUNCH</span> is applied for you</div>
+  <div style="position:absolute;left:0;right:0;top:1350px;text-align:center;font-size:36px;font-weight:600;color:#a6a6a6">7-day money-back guarantee</div>
+  <svg style="position:absolute;left:500px;top:1440px;width:80px;height:80px" viewBox="0 0 24 24" fill="none" stroke="#ff4b1f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M5.5 12.5L12 19l6.5-6.5"/></svg>
+</div>
+</body></html>
