@@ -1,14 +1,6 @@
 [
  {
-  "name": "countdown50",
-  "text": "How to make this GTA six launch countdown using Claude. First, type the release date. Then ask for a neon city countdown. Claude builds it, you tweak it, and you're done. Comment COUNTDOWN and I'll send you the prompt."
- },
- {
-  "name": "styles48",
-  "text": "Type slash painted story, how the Titanic was found… and you get this. Type slash paper collage, why Big Ben is leaning… and you get this. Type slash flat science, why we get goosebumps… and you get this. Comment TITANIC and I'll send you the prompts."
- },
- {
-  "name": "inside49",
-  "text": "Type slash explode, a game controller… and you get this. Type slash x-ray, a smart lock… and you get this. Type slash explain 3D, how self-checkout weighs things… and you get this. Comment PARTS and I'll send you the prompts."
+  "name": "around51",
+  "text": "Type slash flat science, why ice is slippery… and you get this. Type slash paper collage, why popcorn pops… and you get this. Type slash painted story, why the sea is salty… and you get this. Comment POPCORN and I'll send you the prompts."
  }
 ]
