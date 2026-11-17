@@ -1,21 +1,20 @@
-"""Free prompts page (Gumroad product `luszgi`, custom landing page). Source of truth: free-prompts.html in this folder.
+"""Free prompts page (Gumroad product `luszgi`, custom landing page).
 
-python3 hf/page/build_page.py   -> updates free-prompts.html in place (idempotent) and writes all-prompts.md
+free-prompts.src.html = the page exactly as Jan last published it (never edited by hand here).
+python3 hf/page/build_page.py  -> free-prompts.html (what Jan publishes with the Gumroad CLI) + all-prompts.md (text of the PDF)
 
-What it does (Jan, 2026-11-17):
-- adds new videos to the VID table (so ?v=<name> works and they count as "all prompts");
-- the email block (#pack) now offers EVERY prompt from all videos (count is computed from VID) and is shown in video mode too,
-  below the system box that follows the prompts; the top system box and its A/B/C text test are untouched;
-- the two system buttons get a position marker (utm_campaign=pos_top / pos_below) so sales show which one was used;
-- all-prompts.md = the same prompts as the page builds them (style template + topic), grouped by style: the file for the free product.
-Jan publishes the html with the Gumroad CLI, as before.
+Jan, 2026-11-18: same design, nothing restyled. Only these changes, all done as small text replacements (the big VID/IMG data is
+not re-written, new videos are inserted as text):
+- new videos are added to the VID table, so ?v=<name> works for them;
+- the email block (#pack) offers EVERY prompt from all videos; when someone arrives from a DM (video mode) it sits in a compact
+  frame at the TOP, then come the 3 prompts of that video, and the system box stays at the very BOTTOM;
+- the old top system box is no longer shown in video mode.
 """
 import json
 from pathlib import Path
 
 H = Path(__file__).parent
-P = H / "free-prompts.html"
-s = P.read_text()
+s = (H / "free-prompts.src.html").read_text(encoding="utf-8")
 dec = json.JSONDecoder()
 
 NEW = {  # videos made after the page was built
@@ -26,71 +25,66 @@ NEW = {  # videos made after the page was built
     "mystery52": [["painted-story", "the mystery of the Mary Celeste"], ["explain-3d", "how the Northern Lights form"], ["zoom-in", "a mosquito bite"]],
 }
 
-i = s.index("var VID=") + 8
-VID, e = dec.raw_decode(s[i:])
-for k, v in NEW.items():
-    VID.setdefault(k, v)
-s = s[:i] + json.dumps(VID, ensure_ascii=False, separators=(",", ":")) + s[i + e:]
-j = s.index("STY=", i) + 4
-STY, _ = dec.raw_decode(s[j:])
-NV = len(VID)
+i = s.index("var VID={") + 8
+VID, _ = dec.raw_decode(s[i:])
+STY, _ = dec.raw_decode(s[s.index("STY=", i) + 4:])
+add = {k: v for k, v in NEW.items() if k not in VID}
+VID = {**add, **VID}
 
 
-# --- all-prompts.md: the prompts exactly as the page builds them
-def prompt(it):
+def prompt(it):  # the prompt text exactly as the page builds it
     if it[0] == "@":
-        return it[1], it[2], "Other styles", it[3]
+        return it[1], "Other styles", it[3]
     st = STY[it[0]]
     base = "Make a %s-second vertical %sanimation (1080x1920) as one HTML file%s. " % (st[2], "3D " if st[1] == "3D" else "", " with three.js" if st[1] == "3D" else " I can play")
-    return it[1][0].upper() + it[1][1:], st[1], st[0], base + "Topic: " + it[1] + ". " + st[3]
+    return it[1][0].upper() + it[1][1:], st[0], base + "Topic: " + it[1] + ". " + st[3]
 
 
 groups, seen = {}, set()
-for vid, items in VID.items():
+for items in VID.values():
     for it in items:
-        title, kind, style, text = prompt(it)
-        if (style, text) in seen:
-            continue
-        seen.add((style, text))
-        groups.setdefault(style, []).append((title, kind, text))
-NP = sum(len(g) for g in groups.values())  # unique prompts = what the file holds
+        title, style, text = prompt(it)
+        if (style, text) not in seen:
+            seen.add((style, text)); groups.setdefault(style, []).append((title, text))
+NP, NV = sum(len(g) for g in groups.values()), len(VID)
 
 
-def rep(old, new, must=True):
+def rep(old, new):
     global s
-    if old in s:
-        s = s.replace(old, new)
-    elif must and new not in s:
-        raise SystemExit("pattern not found: " + old[:70])
+    assert s.count(old) == 1, "expected exactly one: " + old[:80]
+    s = s.replace(old, new)
 
 
-# --- email block: every prompt from all videos
-rep('<h2>Want <em>all 12 styles?</em></h2>', '<h2>Want <em>every prompt</em><br>from our videos?</h2>')
+if add:  # insert the new videos as text right after `var VID={`
+    rep("var VID={", "var VID={" + json.dumps(add, ensure_ascii=True, separators=(",", ":"))[1:-1] + ",")
+# email block: every prompt from all videos (same box, same classes)
+rep('<h2>Want <em>all 12 styles?</em></h2>', '<h2>Get <em>every prompt</em><br>from our videos. Free.</h2>')
 rep('<p>Get the full prompt pack as a PDF you can keep. It has these 8 plus 4 more:</p>',
-    '<p id="packp">All <b id="packn">%d</b> prompts from <b id="packv">%d</b> videos in one file you can keep, plus the 12 style prompts as a PDF.</p>' % (NP, NV))
+    '<p>All %d prompts from %d videos in one PDF you can keep.</p>' % (NP, NV))
 rep('<ul class="ex"><li><b>Zoom In</b><span>One continuous zoom into the tiny world.</span></li><li><b>Exploded View</b><span>A product flies apart and snaps back.</span></li><li><b>Neon Intro</b><span>An 80s synthwave intro of your name.</span></li><li><b>Kinetic Type</b><span>A punchy text promo.</span></li></ul>',
-    '<ul class="ex"><li><b>Every video</b><span>One prompt per video topic, sorted by style.</span></li><li><b>Copy and paste</b><span>Change the topic line to your own.</span></li><li><b>12 style prompts</b><span>One for each of our video styles.</span></li><li><b>New ones by email</b><span>We send new styles when we share them.</span></li></ul>')
+    '<ul class="ex"><li><b>Every video</b><span>One prompt per video topic.</span></li><li><b>Sorted by style</b><span>Paper Collage, X-Ray, True Scale and more.</span></li><li><b>Copy and paste</b><span>Change the topic line to your own.</span></li><li><b>12 style prompts</b><span>The style pack PDF is included too.</span></li></ul>')
 rep('data-gumroad-action="buy">Get all 12 prompts · Free</a>', 'data-gumroad-action="buy">Get every prompt · Free</a>')
-rep("We'll also email you when we share new styles. Unsubscribe anytime.", "We'll also email you when we share new styles. Unsubscribe anytime.")
-# --- video mode: show the email block (it was hidden), keep its own text
-rep(".fp.vm #pack,.fp.vm .nav .btn,", ".fp.vm .nav .btn,")
-rep("var pp=pack.querySelector('p');if(pp)pp.textContent='Get all 12 style prompts as a PDF you can keep. It includes:';", "")
-# --- position markers on the two system buttons (top box / box below the prompts)
-rep("function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag});",
-    "function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag+'&utm_campaign='+(x.closest&&x.closest('#selltop')?'pos_top':'pos_below')});")
-P.write_text(s)
+# video mode: the email block is visible (compact, without the list) ...
+rep(".fp.vm #pack,.fp.vm .nav .btn,", ".fp.vm #pack .btn{margin-top:16px}.fp.vm #pack .ex,.fp.vm .nav .btn,")
+rep('data-gumroad-action="buy">Get all 12 free</a>', 'data-gumroad-action="buy">Get every prompt</a>')
+# ... and goes to the top, above the 3 prompts; the system box stays last; the old top system box is not shown
+rep("pack.parentNode.insertBefore(sell,pack);var pp=pack.querySelector('p');if(pp)pp.textContent='Get all 12 style prompts as a PDF you can keep. It includes:';",
+    "var vb=document.getElementById('vidbox');vb.parentNode.insertBefore(pack,vb);pack.className+=' topo';")
+rep("var st=document.getElementById('selltop');if(st)st.hidden=false;", "")
+(H / "free-prompts.html").write_text(s, encoding="utf-8")
 
-
-order = [v[0] for v in STY.values() if v[0] in groups] + [g for g in groups if g not in [v[0] for v in STY.values()]]
+SYS = "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile&utm_content="
+order = [v[0] for v in STY.values() if v[0] in groups]
+order += [g for g in groups if g not in order]
 out = ["# Every prompt from our videos", "",
-       "By @theaitoolfinds. %d prompts from %d videos, sorted by style." % (sum(len(g) for g in groups.values()), NV), "",
+       "By @theaitoolfinds. %d prompts from %d videos, sorted by style." % (NP, NV), "",
+       "CTA: These prompts make one scene. Our system makes the whole video: script, every scene, captions timed to each word, MP4. | See the system | " + SYS + "top", "",
        "How to use one: open Claude (claude.ai), paste the prompt, and change the Topic line to your own. Each prompt draws one short "
-       "vertical animation in code. It can take a round or two of feedback to get the look you want. That's normal.", "",
-       "These prompts make one scene. Want the whole video (script, every scene, captions timed to each word, MP4)? "
-       "See Viral Styles Launchpad: https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile", ""]
+       "vertical animation in code. It can take a round or two of feedback to get the look you want. That's normal.", ""]
 for g in order:
     out += ["", "## %s (%d)" % (g, len(groups[g])), ""]
-    for title, kind, text in groups[g]:
+    for title, text in groups[g]:
         out += ["### " + title, "", text.strip(), ""]
-(H / "all-prompts.md").write_text("\n".join(out))
-print("videos", NV, "unique prompts", NP, "styles", len(groups))
+out += ["", "CTA: You've got the scenes. Want the whole video? Type one line and Claude writes the script, builds every scene, times the captions and exports the MP4. 7-day money-back guarantee. | See the system | " + SYS + "bottom", ""]
+(H / "all-prompts.md").write_text("\n".join(out), encoding="utf-8")
+print("videos", NV, "unique prompts", NP, "added", list(add))

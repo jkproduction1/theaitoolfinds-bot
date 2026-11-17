@@ -9,6 +9,9 @@ for line in (H / "all-prompts.md").read_text().split("\n"):
     elif line.startswith("## "):
         t = line[3:]; i = len(toc); toc.append(t); out.append(f'<h2 id="s{i}">{html.escape(t)}</h2>')
     elif line.startswith("### "): out.append(f"<h3>{html.escape(line[4:])}</h3>")
+    elif line.startswith("CTA: "):
+        txt, btn, url = [x.strip() for x in line[5:].split("|")]
+        out.append(f'<div class="cta"><p>{html.escape(txt)}</p><a href="{html.escape(url)}">{html.escape(btn)} &rarr;</a></div>')
     elif line.strip():
         t = html.escape(line); t = re.sub(r"(https://\S+)", r'<a href="\1">Viral Styles Launchpad</a>', t) if "https://" in t and "See Viral" in t else t
         cls = ' class="pr"' if line.startswith("Make a") else ""
@@ -24,6 +27,7 @@ h2{{font-size:16pt;margin:18pt 0 6pt;padding:6pt 10pt;background:#6f35e8;color:#
 h3{{font-size:11.5pt;margin:12pt 0 3pt;break-after:avoid}}
 p{{margin:0 0 6pt}} a{{color:#6f35e8}}
 p.pr{{background:#f4f0fb;border:1px solid #d9cdf3;border-radius:8pt;padding:8pt 10pt;break-inside:avoid;white-space:pre-line}}
+.cta{{background:#17131f;color:#fff;border-radius:10pt;padding:10pt 12pt;margin:8pt 0 10pt;break-inside:avoid}} .cta p{{margin:0 0 8pt;font-weight:600}} .cta a{{display:inline-block;background:#ff4b1f;color:#fff;font-weight:700;text-decoration:none;border-radius:99pt;padding:5pt 14pt}}
 .toc{{display:flex;flex-wrap:wrap;gap:4pt;margin:10pt 0}} .toc a{{font-size:8.5pt;text-decoration:none;border:1px solid #c9b8f0;border-radius:99pt;padding:2pt 8pt}}
 </style>{body}"""
 (H / "_all.html").write_text(page)

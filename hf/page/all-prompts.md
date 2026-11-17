@@ -2,12 +2,20 @@
 
 By @theaitoolfinds. 166 prompts from 58 videos, sorted by style.
 
-How to use one: open Claude (claude.ai), paste the prompt, and change the Topic line to your own. Each prompt draws one short vertical animation in code. It can take a round or two of feedback to get the look you want. That's normal.
+CTA: These prompts make one scene. Our system makes the whole video: script, every scene, captions timed to each word, MP4. | See the system | https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile&utm_content=top
 
-These prompts make one scene. Want the whole video (script, every scene, captions timed to each word, MP4)? See Viral Styles Launchpad: https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile
+How to use one: open Claude (claude.ai), paste the prompt, and change the Topic line to your own. Each prompt draws one short vertical animation in code. It can take a round or two of feedback to get the look you want. That's normal.
 
 
 ## Paper Collage (9)
+
+### Why Big Ben is leaning
+
+Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why Big Ben is leaning. Style: a paper photo-collage. Everything looks cut from printed paper, with halftone dots, a white sticker edge and a soft shadow. Put a big serif headline behind one large cut-out subject and add 3 torn paper tags with short facts. Animate the one thing the fact is about, with a stop-motion wobble. Real facts only.
+
+### Why popcorn pops
+
+Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why popcorn pops. Style: a paper photo-collage. Everything looks cut from printed paper, with halftone dots, a white sticker edge and a soft shadow. Put a big serif headline behind one large cut-out subject and add 3 torn paper tags with short facts. Animate the one thing the fact is about, with a stop-motion wobble. Real facts only.
 
 ### Why the Eiffel Tower grows
 
@@ -37,16 +45,20 @@ Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topi
 
 Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why flights cost so much. Style: a paper photo-collage. Everything looks cut from printed paper, with halftone dots, a white sticker edge and a soft shadow. Put a big serif headline behind one large cut-out subject and add 3 torn paper tags with short facts. Animate the one thing the fact is about, with a stop-motion wobble. Real facts only.
 
-### Why Big Ben is leaning
-
-Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why Big Ben is leaning. Style: a paper photo-collage. Everything looks cut from printed paper, with halftone dots, a white sticker edge and a soft shadow. Put a big serif headline behind one large cut-out subject and add 3 torn paper tags with short facts. Animate the one thing the fact is about, with a stop-motion wobble. Real facts only.
-
-### Why popcorn pops
-
-Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why popcorn pops. Style: a paper photo-collage. Everything looks cut from printed paper, with halftone dots, a white sticker edge and a soft shadow. Put a big serif headline behind one large cut-out subject and add 3 torn paper tags with short facts. Animate the one thing the fact is about, with a stop-motion wobble. Real facts only.
-
 
 ## Flat Science (10)
+
+### Why chilli burns
+
+Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why chilli burns. Style: flat, glowing vector shapes on a deep purple background. Use simple rounded shapes with a soft glow, mint, pink and yellow accents, and small pill labels. Show cause and effect in 3 steps, with light travelling from one step to the next and a label popping up at each. Real facts only.
+
+### Why we get goosebumps
+
+Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why we get goosebumps. Style: flat, glowing vector shapes on a deep purple background. Use simple rounded shapes with a soft glow, mint, pink and yellow accents, and small pill labels. Show cause and effect in 3 steps, with light travelling from one step to the next and a label popping up at each. Real facts only.
+
+### Why ice is slippery
+
+Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why ice is slippery. Style: flat, glowing vector shapes on a deep purple background. Use simple rounded shapes with a soft glow, mint, pink and yellow accents, and small pill labels. Show cause and effect in 3 steps, with light travelling from one step to the next and a label popping up at each. Real facts only.
 
 ### How caffeine wakes you up
 
@@ -76,20 +88,24 @@ Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topi
 
 Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: how your body fights a virus. Style: flat, glowing vector shapes on a deep purple background. Use simple rounded shapes with a soft glow, mint, pink and yellow accents, and small pill labels. Show cause and effect in 3 steps, with light travelling from one step to the next and a label popping up at each. Real facts only.
 
-### Why chilli burns
-
-Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why chilli burns. Style: flat, glowing vector shapes on a deep purple background. Use simple rounded shapes with a soft glow, mint, pink and yellow accents, and small pill labels. Show cause and effect in 3 steps, with light travelling from one step to the next and a label popping up at each. Real facts only.
-
-### Why we get goosebumps
-
-Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why we get goosebumps. Style: flat, glowing vector shapes on a deep purple background. Use simple rounded shapes with a soft glow, mint, pink and yellow accents, and small pill labels. Show cause and effect in 3 steps, with light travelling from one step to the next and a label popping up at each. Real facts only.
-
-### Why ice is slippery
-
-Make a 6-second vertical animation (1080x1920) as one HTML file I can play. Topic: why ice is slippery. Style: flat, glowing vector shapes on a deep purple background. Use simple rounded shapes with a soft glow, mint, pink and yellow accents, and small pill labels. Show cause and effect in 3 steps, with light travelling from one step to the next and a label popping up at each. Real facts only.
-
 
 ## Painted Story (11)
+
+### Why Easter Island lost its trees
+
+Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: why Easter Island lost its trees. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
+
+### How the Titanic was found
+
+Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: how the Titanic was found. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
+
+### Why the sea is salty
+
+Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: why the sea is salty. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
+
+### The mystery of the Mary Celeste
+
+Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: the mystery of the Mary Celeste. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
 
 ### How Vikings reached America
 
@@ -118,22 +134,6 @@ Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topi
 ### How the pyramids were built
 
 Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: how the pyramids were built. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
-
-### Why Easter Island lost its trees
-
-Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: why Easter Island lost its trees. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
-
-### How the Titanic was found
-
-Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: how the Titanic was found. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
-
-### Why the sea is salty
-
-Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: why the sea is salty. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
-
-### The mystery of the Mary Celeste
-
-Make a 7-second vertical animation (1080x1920) as one HTML file I can play. Topic: the mystery of the Mary Celeste. Style: a hand-painted storybook scene. Use 5 or 6 colours, visible brush strokes and canvas grain. Start close on a detail, show the key moment, then slowly pull back to the whole scene. Add short captions on torn paper strips. Historical facts only.
 
 
 ## What If (14)
@@ -216,6 +216,10 @@ Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js
 
 ## True Scale (9)
 
+### The biggest dinosaur versus you
+
+Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: the biggest dinosaur versus you. Style: a true-to-scale 3D size comparison. Both things pop in side by side at real proportions with name and size labels, then the camera pulls back to show the real difference. Real numbers only, and say when a number is an estimate.
+
 ### The tallest volcano on Mars versus Everest
 
 Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: the tallest volcano on Mars versus Everest. Style: a true-to-scale 3D size comparison. Both things pop in side by side at real proportions with name and size labels, then the camera pulls back to show the real difference. Real numbers only, and say when a number is an estimate.
@@ -248,12 +252,16 @@ Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js
 
 Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: Mauna Kea versus Everest. Style: a true-to-scale 3D size comparison. Both things pop in side by side at real proportions with name and size labels, then the camera pulls back to show the real difference. Real numbers only, and say when a number is an estimate.
 
-### The biggest dinosaur versus you
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: the biggest dinosaur versus you. Style: a true-to-scale 3D size comparison. Both things pop in side by side at real proportions with name and size labels, then the camera pulls back to show the real difference. Real numbers only, and say when a number is an estimate.
-
 
 ## 3D Explainer (34)
+
+### How self-checkout weighs things
+
+Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: how self-checkout weighs things. Style: a 3D explainer. Start with a wide shot, fly the camera in and show the inside working, as a cutaway where needed. Label the key parts with thin lines and add a short caption with one key word in a box. Real facts only, no invented numbers.
+
+### How the Northern Lights form
+
+Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: how the Northern Lights form. Style: a 3D explainer. Start with a wide shot, fly the camera in and show the inside working, as a cutaway where needed. Label the key parts with thin lines and add a short caption with one key word in a box. Real facts only, no invented numbers.
 
 ### How lungs breathe
 
@@ -383,16 +391,12 @@ Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js
 
 Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: how a watch ticks. Style: a 3D explainer. Start with a wide shot, fly the camera in and show the inside working, as a cutaway where needed. Label the key parts with thin lines and add a short caption with one key word in a box. Real facts only, no invented numbers.
 
-### How self-checkout weighs things
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: how self-checkout weighs things. Style: a 3D explainer. Start with a wide shot, fly the camera in and show the inside working, as a cutaway where needed. Label the key parts with thin lines and add a short caption with one key word in a box. Real facts only, no invented numbers.
-
-### How the Northern Lights form
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: how the Northern Lights form. Style: a 3D explainer. Start with a wide shot, fly the camera in and show the inside working, as a cutaway where needed. Label the key parts with thin lines and add a short caption with one key word in a box. Real facts only, no invented numbers.
-
 
 ## X-Ray (17)
+
+### A smart lock
+
+Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a smart lock. Style: a 3D x-ray. Start with the real-looking object, then sweep a glowing scan line across it and turn it into a see-through shell that reveals the parts inside. Animate what flows between the parts and label them.
 
 ### The human heart
 
@@ -458,20 +462,16 @@ Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js
 
 Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a game controller. Style: a 3D x-ray. Start with the real-looking object, then sweep a glowing scan line across it and turn it into a see-through shell that reveals the parts inside. Animate what flows between the parts and label them.
 
-### A smart lock
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a smart lock. Style: a 3D x-ray. Start with the real-looking object, then sweep a glowing scan line across it and turn it into a see-through shell that reveals the parts inside. Animate what flows between the parts and label them.
-
 
 ## Zoom In (7)
-
-### A drop of blood
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a drop of blood. Style: one continuous zoom with no cuts, through 3 or 4 levels down to the smallest structure. Fade each level in as the camera arrives. Show a small scale bar that changes with each level, and one label per level. Real orders of magnitude only.
 
 ### A mosquito bite
 
 Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a mosquito bite. Style: one continuous zoom with no cuts, through 3 or 4 levels down to the smallest structure. Fade each level in as the camera arrives. Show a small scale bar that changes with each level, and one label per level. Real orders of magnitude only.
+
+### A drop of blood
+
+Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a drop of blood. Style: one continuous zoom with no cuts, through 3 or 4 levels down to the smallest structure. Fade each level in as the camera arrives. Show a small scale bar that changes with each level, and one label per level. Real orders of magnitude only.
 
 ### A snowflake
 
@@ -503,6 +503,10 @@ Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js
 
 ## Exploded View (6)
 
+### A game controller
+
+Make a 7-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a game controller. Style: an exploded product view. Soft product-shot lighting on a dark background. The assembled object turns slowly, then 6 to 10 parts fly apart along one axis, labels pop up for the most interesting parts, the camera orbits, and the parts snap back together. No brand logos.
+
 ### A mechanical keyboard
 
 Make a 7-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a mechanical keyboard. Style: an exploded product view. Soft product-shot lighting on a dark background. The assembled object turns slowly, then 6 to 10 parts fly apart along one axis, labels pop up for the most interesting parts, the camera orbits, and the parts snap back together. No brand logos.
@@ -522,10 +526,6 @@ Make a 7-second vertical 3D animation (1080x1920) as one HTML file with three.js
 ### My sneaker
 
 Make a 7-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: my sneaker. Style: an exploded product view. Soft product-shot lighting on a dark background. The assembled object turns slowly, then 6 to 10 parts fly apart along one axis, labels pop up for the most interesting parts, the camera orbits, and the parts snap back together. No brand logos.
-
-### A game controller
-
-Make a 7-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: a game controller. Style: an exploded product view. Soft product-shot lighting on a dark background. The assembled object turns slowly, then 6 to 10 parts fly apart along one axis, labels pop up for the most interesting parts, the camera orbits, and the parts snap back together. No brand logos.
 
 
 ## Teardown (3)
@@ -779,3 +779,6 @@ Make a 6-second 9:16 (1080x1920, 30 fps) heist blueprint animation of <YOUR BUIL
 - The vault door (round, with spokes) swings open on its hinge, warm gold light and stacked gold bars with sparkles appear inside.
 - A countdown chip at the bottom ticks down from 00:04:59.99 with a blinking red dot. Keep it generic: your own building and design, no film logos, posters, characters or real bank brands. Show me 3 stills first, then iterate with me before the final render.
  Note: it took a few rounds of feedback to get to the result in the video (camera framing, timing of the route, the vault door). Expect to iterate.
+
+
+CTA: You've got the scenes. Want the whole video? Type one line and Claude writes the script, builds every scene, times the captions and exports the MP4. 7-day money-back guarantee. | See the system | https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile&utm_content=bottom
