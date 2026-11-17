@@ -62,7 +62,7 @@ rep('<h2>Want <em>all 12 styles?</em></h2>', '<h2>Get <em>every prompt</em><br>f
 rep('<p>Get the full prompt pack as a PDF you can keep. It has these 8 plus 4 more:</p>',
     '<p>All %d prompts from %d videos in one PDF you can keep.</p>' % (NP, NV))
 rep('<ul class="ex"><li><b>Zoom In</b><span>One continuous zoom into the tiny world.</span></li><li><b>Exploded View</b><span>A product flies apart and snaps back.</span></li><li><b>Neon Intro</b><span>An 80s synthwave intro of your name.</span></li><li><b>Kinetic Type</b><span>A punchy text promo.</span></li></ul>',
-    '<ul class="ex"><li><b>Every video</b><span>One prompt per video topic.</span></li><li><b>Sorted by style</b><span>Paper Collage, X-Ray, True Scale and more.</span></li><li><b>Copy and paste</b><span>Change the topic line to your own.</span></li><li><b>12 style prompts</b><span>The style pack PDF is included too.</span></li></ul>')
+    '<ul class="ex"><li><b>Every video</b><span>One prompt per video topic.</span></li><li><b>Sorted by style</b><span>Paper Collage, X-Ray, True Scale and more.</span></li><li><b>Copy and paste</b><span>Change the topic line to your own.</span></li><li><b>Works in Claude</b><span>Paste it into the Claude app.</span></li></ul>')
 rep('data-gumroad-action="buy">Get all 12 prompts · Free</a>', 'data-gumroad-action="buy">Get every prompt · Free</a>')
 # video mode: the email block is visible (compact, without the list) ...
 rep(".fp.vm #pack,.fp.vm .nav .btn,", ".fp.vm #pack .btn{margin-top:16px}.fp.vm #pack .ex,.fp.vm .nav .btn,")
