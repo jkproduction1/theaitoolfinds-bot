@@ -4528,5 +4528,46 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "mystery52",
+  "date": "2026-11-17",
+  "score": 75,
+  "mode": "full",
+  "features": {
+   "hook": 0.1,
+   "hook_words": 14,
+   "hook_end_s": 4.98,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.53,
+   "dur_s": 31.7,
+   "words": 46,
+   "pace": 0.0,
+   "length": 0.86,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 71,
+   "visuals": 1.0,
+   "ending": 0.83,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 5.0 s (cíl ≤2,5 s)",
+   "video má 32 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]

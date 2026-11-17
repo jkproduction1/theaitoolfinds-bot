@@ -199,8 +199,8 @@ function draw(lt){g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;g.globalCompositeO
   const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
   const vg=g.createRadialGradient(540,930,440,540,930,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(4,8,14,.72)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
   // ---- captions (one strip group at a time) ----
-  cap(['December 1872.','400 miles off the Azores.'],0,1.4,lt,0);cap(['The ship was adrift.','Nobody was aboard.'],1.55,2.7,lt,1,1);
-  cap(['The lifeboat was gone.','The cargo was still there.'],2.85,4.7,lt,2);cap(['The ten people','were never found.'],4.9,9,lt,3,1);
+  cap(['December 1872.','400 miles off the Azores.'],0,1.25,lt,0);cap(['The ship was adrift.','Nobody was aboard.'],1.4,2.9,lt,1,1);
+  cap(['The lifeboat was gone.','The cargo was still there.'],3.05,4.75,lt,2);cap(['The ten people','were never found.'],4.9,9,lt,3,1);
 }
 window.DUR=6.3;window.draw=draw;draw(5.6);document.title='ok';
 </script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
