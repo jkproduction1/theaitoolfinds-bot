@@ -5,5 +5,5 @@
  "tool_name": "Claude 3D what's-inside commands",
  "cover_at": 3.5,
  "summary_cs": "„Type it, get it #41“ (29 s), co je uvnitř věcí: /explode herní ovladač (gumové kontakty, vibrační motorky, senzory páček), /x-ray chytrý zámek (baterie, motor + převody, vysune se závora), /explain-3d jak samoobslužná pokladna váží (tenzometrický snímač). Obecné designy bez značek, 3D v three.js od Clauda.",
- "caption": "Type one command and Claude shows you what's inside anything.\n\nPart #41 of a daily series.\n\nComment PARTS and I'll DM you the prompts.\n\n#claude #3danimation #aitools"
+ "caption": "Ever wondered what's inside a game controller or a smart lock? Claude takes them apart in 3D from one line of text.\n\nType it, get it, part 41.\n\nI'll DM you all three prompts, just comment PARTS.\n\n#howitworks #3danimation #claude"
 }

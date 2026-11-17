@@ -258,7 +258,12 @@ Never `pkill -f chrome`/`pkill -f hyperframes` in the same shell command: it mat
    (style keys as in the 3D/2D styles: paper-collage, flat-science, painted-story, what-if, deep-dive, scale, explain-3d,
    x-ray, zoom-in, explode…; topics URL-encoded, short, as typed in the video). bot/poster.py then gives the auto-DM the
    buttons "Get the prompts" + "Get the system" by itself. Third-party tool videos keep the tool's official url. **Caption is short, never spammy: max 1–2 sentences (usually the hook), then
-   "Comment X and I'll DM you the link.", then exactly 3 hashtags.** No feature lists or caveats in it. Then `python3 hf/publish.py <name>` → prints the folder; dispatch `make-video.yml`
+   "Comment X and I'll DM you the link.", then exactly 3 hashtags.** No feature lists or caveats in it.
+   **Never the same caption twice (Jan, 2026-11-17, hard rule: identical captions + hashtags make us look like a spam account).**
+   Every video gets its own first sentence about ITS topics (not the generic "Type one command and Claude turns any question into a
+   video"), a differently worded series line and CTA (rotate: "Comment X and I'll DM you the prompts" / "Want the exact prompts? Comment X" /
+   "I'll DM you all three prompts, just comment X" …), and 3 hashtags chosen for that video's topic (1 topic tag + 1 format tag + 1 AI tag;
+   never the same trio as any of the last 5 posts; check the last captions in hf/videos/*/post.json first). Then `python3 hf/publish.py <name>` → prints the folder; dispatch `make-video.yml`
    with inputs `{"mode":"release","storyboard":"<folder>"}` → Telegram. Commit hf/videos/* and data/history.json
 (publish.py records the tool there so the picklist/discovery never suggests it again) to main.
 9. Finish with a short Czech summary to Jan (which 3 tools, why, anything that failed).
