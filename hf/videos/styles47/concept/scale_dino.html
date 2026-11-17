@@ -14,7 +14,7 @@
             mask-image:radial-gradient(circle at 0% 44%, #000 0, rgba(0,0,0,.6) 300px, transparent 820px)}
   #ov{position:absolute;inset:0;pointer-events:none}
   #ov svg{position:absolute;inset:0}
-  .hl{position:absolute;left:70px;right:70px;top:170px;text-align:center;color:var(--ink);font-weight:900;font-size:76px;line-height:1.12;letter-spacing:-1.5px;text-shadow:0 4px 24px rgba(20,10,30,.5)}
+  .hl{position:absolute;left:70px;right:70px;top:170px;text-align:center;color:var(--ink);font-weight:900;font-size:76px;line-height:1.12;letter-spacing:-1.5px;text-shadow:0 4px 24px rgba(8,16,30,.75),0 2px 4px rgba(8,16,30,.5)}
   .hl .key{display:inline-block;background:var(--accent);color:#1a0e08;padding:0 22px 6px;border-radius:14px;transform:rotate(-2deg);margin-left:6px}
   .pill{position:absolute;transform:translate(-50%,-50%);background:rgba(16,14,24,.78);border:2px solid rgba(255,255,255,.16);border-radius:18px;padding:12px 24px 14px;color:#fff;text-align:center;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.35)}
   .pill b{display:block;font-weight:800;font-size:40px;letter-spacing:-.5px}
@@ -46,7 +46,7 @@ const stage = document.getElementById('stage');
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1); renderer.setSize(W, H);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.92;
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 stage.prepend(renderer.domElement);
 
@@ -58,8 +58,8 @@ const sstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a)
 const busX = 12.6, busZ = 8.5;
 const hash = (x, y, z) => { const s = Math.sin(x * 127.1 + y * 311.7 + z * 74.7) * 43758.5453; return s - Math.floor(s); };
 const scene = new THREE.Scene();
-const FOG = new THREE.Color('#e3a27e');
-scene.fog = new THREE.Fog(FOG, 200, 820);
+const FOG = new THREE.Color('#b9c48a');
+scene.fog = new THREE.Fog(FOG, 190, 900);
 const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 const camera = new THREE.PerspectiveCamera(26, W / H, 1, 5000);
@@ -71,10 +71,10 @@ scene.add(new THREE.Mesh(new THREE.SphereGeometry(2400, 48, 24), new THREE.Shade
   vertexShader: `varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
   fragmentShader: `varying vec3 vDir; uniform vec3 uSun;
     void main(){ vec3 d = normalize(vDir); float h = clamp(d.y,0.0,1.0);
-      vec3 top = vec3(0.17,0.14,0.32), mid = vec3(0.70,0.40,0.50), hor = vec3(1.0,0.70,0.46);
+      vec3 top = vec3(0.10,0.24,0.44), mid = vec3(0.30,0.46,0.58), hor = vec3(0.98,0.74,0.40);
       vec3 c = mix(hor, mid, smoothstep(0.0,0.12,h)); c = mix(c, top, smoothstep(0.10,0.45,h));
       float s = max(dot(d, uSun), 0.0);
-      c += vec3(1.0,0.66,0.38)*pow(s,24.0)*0.35 + vec3(1.0,0.85,0.6)*pow(s,400.0)*0.7 + vec3(1.0,0.92,0.75)*smoothstep(0.9994,0.9997,s);
+      c += vec3(1.0,0.80,0.42)*pow(s,10.0)*0.30 + vec3(1.0,0.85,0.6)*pow(s,400.0)*0.7 + vec3(1.0,0.92,0.75)*smoothstep(0.9994,0.9997,s);
       gl_FragColor = vec4(c,1.0); }`
 })));
 
@@ -86,7 +86,7 @@ function canvasTex(w, h, draw, repeat) {
   return t;
 }
 const groundMap = canvasTex(512, 512, (g) => {
-  g.fillStyle = '#3f5628'; g.fillRect(0, 0, 512, 512);
+  g.fillStyle = '#3c5f2a'; g.fillRect(0, 0, 512, 512);
   for (let i = 0; i < 14000; i++) { const l = rnd();
     g.fillStyle = l < .35 ? `rgba(40,46,22,${R(.2,.45)})` : l < .7 ? `rgba(110,120,60,${R(.15,.35)})` : `rgba(95,72,44,${R(.15,.35)})`;
     g.fillRect(rnd() * 512, rnd() * 512, R(1, 4), R(1, 3)); }
@@ -124,14 +124,14 @@ function ridge(z, color, amp, base, seed) {
 // volcano
 {
   const pts = []; for (let i = 0; i <= 20; i++) { const t = i / 20; pts.push(new THREE.Vector2(10 + 300 * Math.pow(t, 1.9), 135 * (1 - t))); }
-  const v = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), new THREE.MeshBasicMaterial({ color: '#b97a86', fog: false }));
+  const v = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), new THREE.MeshBasicMaterial({ color: '#8fae9e', fog: false }));
   v.position.set(95, 0, -1500); scene.add(v);
-  const smokeM = new THREE.SpriteMaterial({ map: softTex, color: '#9d7383', transparent: true, opacity: .5, depthWrite: false, fog: false });
+  const smokeM = new THREE.SpriteMaterial({ map: softTex, color: '#e9e2c8', transparent: true, opacity: .55, depthWrite: false, fog: false });
   for (let i = 0; i < 14; i++) { const s = new THREE.Sprite(smokeM); const k = i / 13; s.position.set(95 + 130 * k * k + R(-8, 8), 140 + k * 260, -1500); const sz = 50 + k * 170; s.scale.set(sz, sz * .8, 1); scene.add(s); }
 }
-ridge(-1300, '#c8808a', 70, 0, 3);
-ridge(-1000, '#d58e86', 55, 0, 7);
-ridge(-750, '#dc9a84', 40, 0, 13);
+ridge(-1300, '#7f9f8c', 70, 0, 3);
+ridge(-1000, '#6c9474', 55, 0, 7);
+ridge(-750, '#587f58', 40, 0, 13);
 
 // ---------- vegetation ----------
 const dm = new THREE.Object3D(); const col = new THREE.Color();
@@ -151,9 +151,9 @@ function addFern(x, z, trunkH, n, lenA, lenB, pitchA, pitchB, hue) {
   for (let i = 0; i < n; i++) fronds.push({ x, y, z, yaw: off + i / n * Math.PI * 2 + R(-.2, .2), pitch: R(pitchA, pitchB), roll: R(-.3, .3), len: R(lenA, lenB), hue });
 }
 // tree ferns behind (realistic: 3-8 m trunks, 2.5-3.5 m fronds)
-for (let i = 0; i < 70; i++) { const x = R(-60, 62), z = R(-22, -140); addFern(x, z, R(3, 8), 13, 2.4, 3.6, .15, .55, 0); }
+for (let i = 0; i < 190; i++) { const x = R(-75, 78), z = R(-22, -190); addFern(x, z, R(3, 9), 13, 2.4, 3.8, .15, .55, 0); }
 // cycads (1-2.5 m) mid/back
-for (let i = 0; i < 50; i++) { const x = R(-55, 55), z = R(-8, -90); addFern(x, z, R(.6, 1.8), 14, 1.2, 1.8, .35, .75, 1); }
+for (let i = 0; i < 110; i++) { const x = R(-60, 60), z = R(-8, -110); addFern(x, z, R(.6, 1.8), 14, 1.2, 1.8, .35, .75, 1); }
 // foreground ground ferns + cycads (low, kept below the labels)
 for (let i = 0; i < 150; i++) { const z = R(106, 158), half = (175 - z) * 0.15; const x = 1.2 + R(-half, half); const L = R(.7, 2.1); addFern(x, z, 0, 9 + Math.floor(rnd() * 6), L * .7, L, .3, 1.0, rnd() < .5 ? 2 : 3); }
 // small mid-ground fern clumps (low, under the labels' level)
@@ -161,8 +161,11 @@ for (let i = 0; i < 90; i++) { const z = R(14, 100), half = (175 - z) * 0.15; co
 // side ferns just outside the subject zone
 for (let i = 0; i < 26; i++) { const z = R(-6, 30); const x = (rnd() < .5 ? -1 : 1) * R(21, 34); addFern(x, z, rnd() < .4 ? R(2, 4) : 0, 11, 1.4, 2.6, .3, .8, 2); }
 
+// big foreground palms framing the shot (close to the camera, backlit and dark like a photo foreground)
+for (const [x, y, z, n, L] of [[-8.6, 25.5, 120, 18, 6.6], [10.2, 26.5, 124, 18, 6.8], [-9.2, 18.5, 132, 12, 3.8], [10.6, 19.5, 136, 12, 4.0]]) {
+  const off = rnd() * 6; for (let i = 0; i < n; i++) fronds.push({ x, y, z, yaw: off + i / n * Math.PI * 2, pitch: R(-.25, .35), roll: R(-.3, .3), len: R(L * .8, L), hue: 4 }); }
 const frondIM = new THREE.InstancedMesh(frondGeometry(), frondMat, fronds.length);
-const hues = [['#4f7a3a', '#6d8f3e'], ['#3d5f33', '#56703a'], ['#4d7533', '#7a9a40'], ['#2f4d26', '#4c6a2e']];
+const hues = [['#4f8a35', '#86b03e'], ['#3d6a2e', '#5f8a38'], ['#4d8530', '#9bbf45'], ['#2f5a24', '#57802c'], ['#16280f', '#2c4a1c']];
 fronds.forEach((f, i) => {
   dm.position.set(f.x, f.y, f.z); dm.rotation.set(f.roll, f.yaw, f.pitch, 'YZX'); dm.scale.setScalar(f.len); dm.updateMatrix(); frondIM.setMatrixAt(i, dm.matrix);
   const [a, b] = hues[f.hue]; col.set(a).lerp(new THREE.Color(b), rnd()); frondIM.setColorAt(i, col);
@@ -175,10 +178,10 @@ trunkList.forEach((t, i) => { dm.position.set(t.x, 0, t.z); dm.rotation.set(R(-.
 scene.add(trunkIM);
 
 // araucaria (30-45 m) and tall conifers far behind
-const darkTree = new THREE.MeshStandardMaterial({ color: '#1b2619', roughness: 1, flatShading: true });
+const darkTree = new THREE.MeshStandardMaterial({ color: '#2f5028', roughness: 1, flatShading: true });
 const ara = []; for (let i = 0; i < 26; i++) { const x = R(-25, 380); ara.push({ x, z: R(-330, -680), h: R(30, 45) }); }
 const araTrunk = new THREE.InstancedMesh(new THREE.CylinderGeometry(.5, .9, 1, 8).translate(0, .5, 0), darkTree, ara.length);
-const puffGeo = new THREE.IcosahedronGeometry(1, 2); { const p = puffGeo.attributes.position; for (let i = 0; i < p.count; i++) { const k = 0.8 + 0.4 * hash(p.getX(i) * 3, p.getY(i) * 3, p.getZ(i) * 3); p.setXYZ(i, p.getX(i) * k, p.getY(i) * k * .45, p.getZ(i) * k); } puffGeo.computeVertexNormals(); }
+const puffGeo = new THREE.IcosahedronGeometry(1, 3); { const p = puffGeo.attributes.position; for (let i = 0; i < p.count; i++) { const k = 0.8 + 0.4 * hash(p.getX(i) * 3, p.getY(i) * 3, p.getZ(i) * 3); p.setXYZ(i, p.getX(i) * k, p.getY(i) * k * .45, p.getZ(i) * k); } puffGeo.computeVertexNormals(); }
 const araCrown = new THREE.InstancedMesh(puffGeo, darkTree, ara.length * 6);
 ara.forEach((a, i) => {
   dm.rotation.set(0, 0, 0); dm.position.set(a.x, 0, a.z); dm.scale.set(a.h * .025, a.h * .92, a.h * .025); dm.updateMatrix(); araTrunk.setMatrixAt(i, dm.matrix);
@@ -188,7 +191,7 @@ ara.forEach((a, i) => {
 scene.add(araTrunk, araCrown);
 const con = []; for (let i = 0; i < 40; i++) con.push({ x: R(-260, 260), z: R(-110, -420), h: R(18, 32) });
 const coneGeo = new THREE.ConeGeometry(1, 1, 10); coneGeo.translate(0, .5, 0);
-const conIM = new THREE.InstancedMesh(coneGeo, new THREE.MeshStandardMaterial({ color: '#223020', roughness: 1, flatShading: true }), con.length * 5);
+const conIM = new THREE.InstancedMesh(coneGeo, new THREE.MeshStandardMaterial({ color: '#2c4d28', roughness: 1, flatShading: true }), con.length * 5);
 con.forEach((c, i) => { for (let k = 0; k < 5; k++) { dm.position.set(c.x + R(-.4, .4), c.h * (.2 + k * .15), c.z); dm.rotation.set(R(-.06, .06), R(0, 6), R(-.06, .06)); const w = c.h * (.15 - k * .024) * R(.85, 1.15); dm.scale.set(w, c.h * .26, w); dm.updateMatrix(); conIM.setMatrixAt(i * 5 + k, dm.matrix); } });
 scene.add(conIM);
 
@@ -201,16 +204,36 @@ for (let c = 0; c < 1700; c++) { const z = R(-15, 160), half = Math.max(20, (175
   const nb = 9; for (let b = 0; b < nb; b++) grass.push({ x: cx + R(-.35, .35), z: z + R(-.35, .35), h: z > 100 ? R(.35, .8) : R(.25, .55) }); }
 const grassIM = new THREE.InstancedMesh(bladeGeo, new THREE.MeshStandardMaterial({ color: '#ffffff', side: THREE.DoubleSide, roughness: .9 }), grass.length);
 grass.forEach((g, i) => { dm.position.set(g.x, 0, g.z); dm.rotation.set(R(-.35, .35), R(0, 6.28), R(-.35, .35)); dm.scale.set(1, g.h, 1); dm.updateMatrix(); grassIM.setMatrixAt(i, dm.matrix);
-  col.set('#6f8a3a').lerp(new THREE.Color('#a7a64e'), rnd()); grassIM.setColorAt(i, col); });
+  col.set('#5f8f34').lerp(new THREE.Color('#a9c24e'), rnd()); grassIM.setColorAt(i, col); });
 grassIM.receiveShadow = true; scene.add(grassIM);
 
 // low mist banks between the layers
-const mistM = new THREE.SpriteMaterial({ map: softTex, color: '#f3c19a', transparent: true, opacity: .38, depthWrite: false, fog: false });
+const mistM = new THREE.SpriteMaterial({ map: softTex, color: '#fff0c4', transparent: true, opacity: .34, depthWrite: false, fog: false });
 for (let i = 0; i < 16; i++) { const s = new THREE.Sprite(mistM); s.position.set(R(-160, 160), R(4, 12), R(-60, -260)); s.scale.set(R(90, 160), R(18, 30), 1); scene.add(s); }
 
+// ---------- jungle-covered hills, shrub field, clouds ----------
+{ const leafM = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 1 });
+  const hills = [[-210, -430, 150, 62], [190, -470, 170, 70], [-40, -640, 240, 58], [330, -700, 220, 84], [-380, -720, 230, 90]];
+  const hillM = new THREE.MeshStandardMaterial({ color: '#2c5626', roughness: 1 });
+  const pts = [];
+  for (const [hx, hz, hr, hh] of hills) { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 20, 0, 6.3, 0, 1.6), hillM); m.scale.set(hr, hh, hr * .8); m.position.set(hx, -2, hz); scene.add(m);
+    for (let i = 0; i < 520; i++) { const a = R(0, 6.28), t = Math.sqrt(rnd()); const ex = Math.cos(a) * t, ez = Math.sin(a) * t; pts.push([hx + ex * hr, -2 + hh * Math.sqrt(Math.max(0, 1 - t * t)), hz + ez * hr * .8, R(7, 13)]); } }
+  // shrubs: tall at the sides and behind, low in front so the human and the bus stay readable
+  for (let i = 0; i < 2600; i++) { const z = R(-200, 150), half = Math.max(30, (175 - z) * 0.17) + 20; const x = 1.2 + R(-half, half);
+    if (Math.abs(x) < 26 && z > -9 && z < 16) continue; const front = z > 16; if (front && Math.abs(x - 1) < 24 && rnd() < .55) continue;
+    pts.push([x, 0, z, front ? R(.35, .7) : (Math.abs(x) > 26 ? R(1.2, 3.2) : R(.8, 2.2))]); }
+  const im = new THREE.InstancedMesh(puffGeo, leafM, pts.length);
+  pts.forEach(([x, y, z, s], i) => { dm.position.set(x, y + s * .25, z); dm.rotation.set(0, R(0, 6), 0); dm.scale.set(s * R(.9, 1.3), s * 1.5, s * R(.9, 1.3)); dm.updateMatrix(); im.setMatrixAt(i, dm.matrix);
+    col.set('#1f4f1c').lerp(new THREE.Color('#6fa52e'), Math.pow(rnd(), 1.8)); im.setColorAt(i, col); });
+  im.receiveShadow = true; scene.add(im);
+  const cloudM = new THREE.SpriteMaterial({ map: softTex, color: '#ffd9a0', transparent: true, opacity: .32, depthWrite: false, fog: false });
+  const cloudD = new THREE.SpriteMaterial({ map: softTex, color: '#56688a', transparent: true, opacity: .38, depthWrite: false, fog: false });
+  for (let i = 0; i < 46; i++) { const s = new THREE.Sprite(rnd() < .55 ? cloudM : cloudD); const band = rnd(); s.position.set(R(-700, 700), 190 + band * 520, -1900); const w = R(160, 420); s.scale.set(w, w * R(.16, .3), 1); scene.add(s); }
+}
+
 // ---------- lights: warm sun + cool sky fill + sunset rim ----------
-scene.add(new THREE.HemisphereLight('#a9b8e6', '#3b3020', 0.75));
-const key = new THREE.DirectionalLight('#ffc58a', 3.4);
+scene.add(new THREE.HemisphereLight('#a8c4e2', '#34481f', 0.62));
+const key = new THREE.DirectionalLight('#ffe0a0', 3.6);
 key.position.set(-70, 52, -95); key.castShadow = true; // low sunset sun from back-left: long shadows fall toward the camera
 Object.assign(key.shadow.camera, { left: -70, right: 70, top: 60, bottom: -60, near: 10, far: 420 });
 key.shadow.mapSize.set(4096, 4096); key.shadow.bias = -0.0003; key.shadow.normalBias = 0.08; key.shadow.radius = 5;
@@ -221,7 +244,7 @@ const aoTex = canvasTex(256, 256, (g) => { const r = g.createRadialGradient(128,
 function contact(x, z, sx, sz) { const m = new THREE.Mesh(new THREE.PlaneGeometry(sx, sz), new THREE.MeshBasicMaterial({ map: aoTex, transparent: true, depthWrite: false, fog: false })); m.rotation.x = -Math.PI / 2; m.position.set(x, 0.06, z); m.renderOrder = 2; scene.add(m); }
 [[-4.4, 1.25], [-4.0, -1.25], [4.0, 1.35], [4.4, -1.35]].forEach(([x, z]) => contact(x, z, 5.2, 5.2));
 contact(0, 0, 22, 9); contact(busX, busZ, 15, 5.5); contact(-10.2, 5.2, 1.6, 1.6);
-const rim = new THREE.DirectionalLight('#ff9a5a', 3.2); rim.position.copy(SUN).multiplyScalar(200); scene.add(rim);
+const rim = new THREE.DirectionalLight('#ffd27a', 2.6); rim.position.copy(SUN).multiplyScalar(200); scene.add(rim);
 
 // ---------- Argentinosaurus: ONE continuous spine tube (head tip x=-17.5 .. tail tip x=+17.5) ----------
 const spine = new THREE.CatmullRomCurve3([
