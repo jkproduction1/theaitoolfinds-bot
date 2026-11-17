@@ -1,0 +1,79 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles47 concept: /flat-science why chilli burns when it isn't hot (flat glowing vector look of styles42 flat_astro / flat_freeze).
+// Facts: capsaicin activates the TRPV1 receptor, which also responds to harmful heat and "becomes activated at temperatures above 43°C"
+// (Frontiers for Young Minds, kids.frontiersin.org/articles/10.3389/frym.2023.1191734). Milk's casein breaks down capsaicin; capsaicin doesn't
+// dissolve in water (Cleveland Clinic, health.clevelandclinic.org/does-milk-help-with-spicy-food/).
+const g=document.getElementById('c').getContext('2d');
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.55,60,w*.5,h*.5,1300);gr.addColorStop(0,'#2c1d6a');gr.addColorStop(.5,'#170f4a');gr.addColorStop(1,'#05041a');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[260,620,300,'rgba(255,70,70,.22)'],[820,1000,280,'rgba(255,170,60,.16)'],[300,1250,260,'rgba(120,90,255,.24)'],[540,1850,420,'rgba(255,90,140,.18)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(8);for(let i=0;i<200;i++){p.fillStyle='rgba(255,225,235,'+(R()*.6)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.4,0,7);p.fill();}});
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:x+w/2,y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(12,8,44,.9)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+// capsaicin "key": round head + shaft + teeth
+function key(x,y,s,a,glow){g.save();g.translate(x,y);g.rotate(a);g.scale(s,s);g.fillStyle='#ffb347';g.strokeStyle='#ffb347';g.shadowColor='#ff8a3a';g.shadowBlur=glow||18;
+  g.beginPath();g.arc(0,0,16,0,7);g.arc(0,0,7,0,7,true);g.fill('evenodd');g.beginPath();g.roundRect(13,-5,44,10,5);g.fill();g.beginPath();g.roundRect(40,3,7,12,3);g.fill();g.beginPath();g.roundRect(50,3,7,9,3);g.fill();g.restore();}
+function flame(x,y,s,lt,ph){g.save();g.translate(x,y);const f=1+.08*Math.sin(lt*9+ph);g.scale(s,s*f);g.shadowColor='#ff5a2a';g.shadowBlur=36;
+  const fg=g.createLinearGradient(0,-60,0,20);fg.addColorStop(0,'#ffe066');fg.addColorStop(.5,'#ff8a3a');fg.addColorStop(1,'#ff3d4f');g.fillStyle=fg;
+  g.beginPath();g.moveTo(0,-64);g.bezierCurveTo(22,-34,38,-18,34,4);g.bezierCurveTo(30,26,-30,26,-34,4);g.bezierCurveTo(-36,-14,-14,-22,-8,-40);g.bezierCurveTo(-2,-30,4,-28,0,-64);g.closePath();g.fill();
+  g.shadowBlur=0;g.fillStyle='#fff3b0';g.beginPath();g.moveTo(0,-20);g.bezierCurveTo(14,-4,16,8,10,14);g.bezierCurveTo(4,20,-12,18,-12,8);g.bezierCurveTo(-12,-2,-4,-6,0,-20);g.fill();g.restore();}
+function chilli(lt){g.save();g.translate(250,420);g.rotate(-.62);
+  g.shadowColor='rgba(255,60,60,.8)';g.shadowBlur=70;
+  const cg=g.createLinearGradient(-80,0,90,0);cg.addColorStop(0,'#ff6a5a');cg.addColorStop(.55,'#f0283c');cg.addColorStop(1,'#b5123a');g.fillStyle=cg;
+  g.beginPath();g.moveTo(-72,30);g.bezierCurveTo(-92,190,-40,370,90,500);g.bezierCurveTo(100,505,108,498,104,486);g.bezierCurveTo(60,360,82,200,74,30);g.quadraticCurveTo(0,-8,-72,30);g.closePath();g.fill();g.shadowBlur=0;
+  g.fillStyle='rgba(255,255,255,.55)';g.beginPath();g.moveTo(-46,70);g.bezierCurveTo(-58,170,-36,270,0,350);g.bezierCurveTo(-24,260,-36,170,-30,74);g.closePath();g.fill();
+  // calyx + stem
+  g.shadowColor='rgba(120,255,140,.6)';g.shadowBlur=24;g.fillStyle='#3fcf6a';
+  g.beginPath();g.moveTo(-80,38);g.quadraticCurveTo(-40,-6,0,6);g.quadraticCurveTo(40,-6,82,38);g.quadraticCurveTo(50,22,30,34);g.quadraticCurveTo(0,20,-30,34);g.quadraticCurveTo(-50,22,-80,38);g.closePath();g.fill();
+  g.strokeStyle='#3fcf6a';g.lineWidth=18;g.lineCap='round';g.beginPath();g.moveTo(0,10);g.quadraticCurveTo(0,-50,-40,-80);g.stroke();g.restore();}
+function draw(lt){g.drawImage(bg,0,0);
+  const pulse=.5+.5*Math.sin(lt*6);
+  chilli(lt);
+  // flight path chilli -> zoom circle
+  g.save();g.shadowColor='#ff8a3a';g.shadowBlur=14;marker(g,[[470,700],[470,800],[430,880],[395,950]],1,5,'rgba(255,180,90,.7)',[4,16]);g.restore();
+  [[455,690,1,.6],[505,760,.85,1.4],[440,830,.95,2.1]].forEach(([x,y,s,a],i)=>key(x,y+Math.sin(lt*3+i)*6,s,a+Math.sin(lt*2+i)*.1));
+  // zoom circle (tongue close-up)
+  const cx=470,cy=1110,cr=280;
+  g.save();g.shadowColor='rgba(255,120,160,.7)';g.shadowBlur=60;g.fillStyle='#1d1050';g.beginPath();g.arc(cx,cy,cr,0,7);g.fill();g.restore();
+  g.save();g.beginPath();g.arc(cx,cy,cr,0,7);g.clip();
+  const ig=g.createRadialGradient(cx,cy-80,20,cx,cy,cr);ig.addColorStop(0,'#3a2378');ig.addColorStop(1,'#1a0d48');g.fillStyle=ig;g.fillRect(cx-cr,cy-cr,cr*2,cr*2);
+  // tongue surface with papillae
+  const ty=1180;const tg=g.createLinearGradient(0,ty-40,0,cy+cr);tg.addColorStop(0,'#ff86b4');tg.addColorStop(1,'#c2477e');g.fillStyle=tg;
+  g.beginPath();g.moveTo(cx-cr,ty+10);for(let i=0;i<=12;i++){const x=cx-cr+i*(cr*2/12);g.quadraticCurveTo(x-cr/12,ty-22,x,ty+6);}g.lineTo(cx+cr,cy+cr);g.lineTo(cx-cr,cy+cr);g.closePath();g.fill();
+  // nerve fibre rising to the receptor
+  g.save();g.shadowColor='#ffd06a';g.shadowBlur=26;g.strokeStyle='#ffcf6a';g.lineWidth=14;g.lineCap='round';
+  g.beginPath();g.moveTo(cx-60,cy+cr);g.bezierCurveTo(cx-40,1320,cx+10,1260,cx,1172);g.stroke();
+  g.lineWidth=8;g.beginPath();g.moveTo(cx-40,1300);g.quadraticCurveTo(cx-120,1300,cx-170,1360);g.stroke();g.beginPath();g.moveTo(cx-12,1240);g.quadraticCurveTo(cx+90,1250,cx+150,1330);g.stroke();
+  [[cx-38,1310],[cx-8,1225]].forEach(([x,y],i)=>{g.fillStyle='#fff';g.beginPath();g.arc(x,y,8+3*Math.sin(lt*5+i),0,7);g.fill();});g.restore();
+  // receptor "lock" (TRPV1) on nerve ending
+  g.save();g.shadowColor='#ff5a3a';g.shadowBlur=40+20*pulse;g.fillStyle='#ff5a5a';
+  g.beginPath();g.roundRect(cx-80,1080,52,104,22);g.fill();g.beginPath();g.roundRect(cx+28,1080,52,104,22);g.fill();g.beginPath();g.roundRect(cx-80,1146,160,40,18);g.fill();
+  g.shadowBlur=0;g.fillStyle='rgba(255,255,255,.35)';g.beginPath();g.roundRect(cx-70,1092,12,60,6);g.fill();g.beginPath();g.roundRect(cx+38,1092,12,60,6);g.fill();g.restore();
+  // capsaicin key docked into the lock
+  key(cx,1112,1.25,Math.PI/2,30);
+  // more keys drifting in from the top-left
+  key(cx-170,940+Math.sin(lt*3)*6,1,.9);key(cx-60,900+Math.sin(lt*3+1)*6,.9,1.3);
+  // flames bursting from the activated receptor
+  flame(cx-110,1030,1,lt,0);flame(cx+110,1030,1,lt,1.5);flame(cx+40,960,1.35,lt,3);
+  g.restore();
+  g.save();g.strokeStyle='rgba(255,170,200,.9)';g.lineWidth=6;g.shadowColor='#ff7ab0';g.shadowBlur=24;g.beginPath();g.arc(cx,cy,cr,0,7);g.stroke();g.restore();
+  // thermometer: normal temperature
+  const tx=870,t0=860,t1=1240;
+  g.save();g.shadowColor='rgba(140,220,255,.6)';g.shadowBlur=30;g.fillStyle='rgba(30,22,80,.95)';g.beginPath();g.roundRect(tx-30,t0,60,t1-t0,30);g.fill();g.beginPath();g.arc(tx,t1+20,52,0,7);g.fill();g.restore();
+  g.save();g.strokeStyle='rgba(200,230,255,.6)';g.lineWidth=3;g.beginPath();g.roundRect(tx-30,t0,60,t1-t0,30);g.stroke();
+  for(let i=0;i<7;i++){const y=t0+50+i*48;g.beginPath();g.moveTo(tx+30,y);g.lineTo(tx+48,y);g.stroke();}
+  // hot zone marker near the top
+  g.fillStyle='rgba(255,90,80,.35)';g.beginPath();g.roundRect(tx-18,t0+14,36,120,18);g.fill();
+  g.fillStyle='#6fd8ff';g.shadowColor='#6fd8ff';g.shadowBlur=26;g.beginPath();g.roundRect(tx-14,t1-150,28,180,14);g.fill();g.beginPath();g.arc(tx,t1+20,38,0,7);g.fill();g.restore();
+  g.save();g.textAlign='center';g.font='800 34px '+SANS;g.fillStyle='#ff8a7a';g.fillText('HOT',tx,t0-24);
+  g.fillStyle='rgba(12,8,44,.9)';g.beginPath();g.roundRect(tx-92,t1+92,184,60,30);g.fill();g.strokeStyle='#6fd8ff';g.lineWidth=2;g.stroke();g.fillStyle='#bdf0ff';g.font='800 32px '+SANS;g.fillText('NORMAL',tx,t1+133);g.restore();
+  label('Brain thinks: fire!',565,610,cx+112,990,'#ffb36a');
+  label('Capsaicin fits the heat sensor',90,1405,cx-80,1130,'#ff7a7a');
+  // tip line
+  g.save();g.textAlign='center';g.font='700 38px '+SANS;g.fillStyle='rgba(255,236,245,.9)';g.fillText('Tip: milk washes it off. Water can’t.',540,1495);g.restore();
+  g.drawImage(GRAIN,0,0);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;
+  const a='Why chilli ',b='burns';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,220);g.fillStyle='#ff6a4a';g.shadowColor='rgba(255,90,60,.95)';g.shadowBlur=30;g.fillText(b,x0+wa,220);
+  g.textAlign='center';g.fillStyle='#fff';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillText('when it isn’t hot',540,320);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>
