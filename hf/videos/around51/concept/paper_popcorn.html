@@ -55,7 +55,7 @@ const POP=sticker(off(800,760,(p)=>{p.translate(400,380);p.fillStyle='#fbf5e1';f
   const ord=[4,5,2,3,9,8,1,6,7,0];for(const i of ord){const l=LOBES[i];const gr=p.createRadialGradient(l[0]-l[2]*.3,l[1]-l[2]*.35,l[2]*.25,l[0],l[1],l[2]);gr.addColorStop(0,'rgba(253,249,234,1)');gr.addColorStop(.7,'rgba(250,241,214,1)');gr.addColorStop(1,'rgba(226,196,130,1)');p.fillStyle=gr;p.beginPath();p.arc(l[0],l[1],l[2],0,7);p.fill();
     p.strokeStyle='rgba(176,132,60,.45)';p.lineWidth=4;p.beginPath();p.arc(l[0],l[1],l[2]-2,0.3,2.5);p.stroke();}
   p.translate(-400,-380);dots(p,800,760,'rgba(196,150,70,.30)',12,3.2,(x,y)=>CL((y-380+ (x-400)*0.3)/330));
-  p.translate(400,380);p.fillStyle='rgba(236,186,70,.45)';p.beginPath();p.ellipse(10,60,120,74,0.2,0,7);p.fill();}),8);
+  }),8);
 function shard(seed,w,h){return sticker(off(w,h,(p)=>{const R=R0(seed);p.beginPath();p.moveTo(4,h*.3);p.lineTo(w*.35,2+R()*6);p.lineTo(w-4,h*.2+R()*h*.2);p.lineTo(w*.8,h-4);p.lineTo(w*.45,h*.72);p.lineTo(w*.12,h-8);p.closePath();const gr=p.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#f0b02c');gr.addColorStop(1,'#b96c0e');p.fillStyle=gr;p.fill();
   p.globalCompositeOperation='source-atop';dots(p,w,h,'rgba(130,60,5,.4)',10,2.4,(x,y)=>CL((x+y)/(w+h)));}),4);}
 const SH=[shard(1,150,110),shard(2,120,96),shard(3,170,120),shard(4,110,90)];
@@ -79,7 +79,7 @@ function smallPop(lt,x,t0,seed){const j=jit(lt,seed,0.8);
 // ---------- main ----------
 function draw(lt){
   const pu=lt-TP;
-  const cs=lt<TP?1.1+0.06*EIO(lt/TP):1.16-0.13*SPR(pu/0.9)+0.03*CL(pu/2.5);
+  const cs=lt<TP?1.04+0.05*EIO(lt/TP):1.09-0.06*SPR(pu/0.9)+0.03*CL(pu/2.5);
   g.setTransform(1,0,0,1,0,0); g.globalAlpha=1; g.drawImage(BG,0,0);
   g.save(); g.translate(540,930); g.scale(cs,cs); g.translate(-540,-930);
   {const j=jit(lt,31,0.7);g.drawImage(SHEET,0+j[0],175+j[1]);}
@@ -122,13 +122,12 @@ function draw(lt){
     // POP: shards + popcorn
     const s=0.96*(0.18+0.82*SPR(pu/0.85)), hop=Math.exp(-pu*3.2)*Math.sin(Math.min(pu,1.2)*Math.PI/1.2*1)*120, j=jit(lt,7,1.0), br=1+Math.sin(lt*2.4)*0.008;
     // flying shards
-    const fly=[[-430,-900,0,-5.5,196],[470,-820,1,6,884]];
-    for(const f of fly){let x=540+f[0]*pu,y=1000+f[1]*pu+1500*pu*pu,r=f[3]*pu;const tl=(-f[1]+Math.sqrt(f[1]*f[1]+4*1500*222))/3000;if(pu>tl){x=540+f[0]*tl;y=1222;r=f[3]*tl;}
-      const jj=jit(lt,50+f[2],0.6);g.save();g.globalAlpha=1-CL((pu-0.45)/0.35);g.translate(x+jj[0],y+jj[1]);g.rotate(r);const S=SH[f[2]];g.scale(.8,.8);g.drawImage(S,-S.width/2,-S.height/2);g.restore();}
+    const fly=[[-1250,-700,0,-5.5,196],[1300,-620,1,6,884],[-760,-1500,2,4,0],[820,-1420,3,-5,0]];
     g.save();g.translate(540+j[0],928-hop+j[1]);g.rotate(-0.06+0.1*Math.exp(-pu*4)*Math.cos(pu*13)+j[2]);g.scale(s*br,s/br);
     g.drawImage(POP,-400-POP.ox,-380-POP.oy);
-    {const S=SH[2];g.save();g.translate(-70,96);g.rotate(-0.5);g.drawImage(S,-S.width/2,-S.height/2);g.restore();const S2=SH[3];g.save();g.translate(92,78);g.rotate(0.7);g.drawImage(S2,-S2.width/2,-S2.height/2);g.restore();}
     g.restore();
+    for(const f of fly){let x=540+f[0]*pu,y=1000+f[1]*pu+1500*pu*pu,r=f[3]*pu;const tl=(-f[1]+Math.sqrt(f[1]*f[1]+4*1500*222))/3000;if(pu>tl){x=540+f[0]*tl;y=1222;r=f[3]*tl;}
+      const jj=jit(lt,50+f[2],0.6);g.save();g.globalAlpha=1-CL((pu-0.5)/0.3);g.translate(x+jj[0],y+jj[1]);g.rotate(r);const S=SH[f[2]];g.scale(.8,.8);g.drawImage(S,-S.width/2,-S.height/2);g.restore();}
     // steam puffs let out by the burst
     for(let i=0;i<3;i++){const u=pu-0.05-i*0.12;if(u<=0||u>1.6)continue;const a=-1.57+(i-1)*0.75,d=250+330*E3(u/1.2),r=34+40*E3(u/1.2);g.save();g.globalAlpha=0.9*(1-CL((u-.5)/1.1));g.fillStyle='#eef5f8';const cx=540+Math.cos(a)*d,cy=820+Math.sin(a)*d;for(let k=0;k<4;k++){g.beginPath();g.arc(cx+Math.cos(k*1.57+STEP(lt)*2)*r*.5,cy+Math.sin(k*1.57+STEP(lt)*2)*r*.5,r*.62,0,7);g.fill();}g.restore();}
   }
