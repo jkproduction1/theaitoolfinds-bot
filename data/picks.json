@@ -1,128 +1,128 @@
 {
-  "date": "2026-11-16",
+  "date": "2026-11-17",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "The scariest things in space 7",
+      "title": "What's inside everyday things 4",
       "commands": [
-        "/what-if a neutron star passed by Earth",
-        "/zoom-in the surface of the Sun",
-        "/scale the Oort cloud versus the Solar System"
+        "/x-ray a robot vacuum",
+        "/explain-3d how a card chip pays at the till",
+        "/explode an electric toothbrush"
       ],
-      "why": "space is our only topic that breaks TikTok (space7 268k+175k, space14 62k+56k); neutron star flyby, Sun surface and Oort cloud not used yet"
+      "why": "'what's inside the stuff you use' is our steadiest TikTok line (mystery17 4.5k, build3 3.1k) and inside3 125k IG; learnings say test 2–3 more on TT; all three objects new"
     },
     {
-      "title": "What if… Earth 7",
+      "title": "Famous video styles 7",
       "commands": [
-        "/zack-d-films what if Earth's core stopped spinning",
-        "/simulate a mega-tsunami hitting a coastline from space",
-        "/x-ray the inside of a volcano before it erupts"
+        "/flat-science why we hiccup",
+        "/paper-collage why the Panama Canal needs lakes",
+        "/painted-story how the Statue of Liberty crossed the ocean"
       ],
-      "why": "earth8 = 728k, our biggest hit; 'what would happen to Earth' stays the strongest IG hook; core, mega-tsunami from orbit and volcano interior are new"
+      "why": "explainer-styles series = best IG median (styles33 114k, styles19 54k, styles28 34k) and highest save rate 5.6–6.3 %; same three looks, fresh topics"
     },
     {
-      "title": "What's inside everyday things 3",
+      "title": "What if… Earth 8",
       "commands": [
-        "/x-ray a smart lock",
-        "/explain-3d how a self-checkout scale knows the weight",
-        "/explode a game controller"
+        "/what-if all the ice on Earth melted",
+        "/simulate Earth's oceans draining away",
+        "/deep-dive the deepest cave on Earth"
       ],
-      "why": "inside3 127k IG and 'what's inside' is our steadiest TikTok non-outlier; controller fits the GTA 6 launch week (19. 11.); all three objects new"
+      "why": "earth8 = 684k IG, our biggest hit; 'what would happen to Earth' + Zack D. Films 3D is the strongest IG hook; none of the three used yet"
     },
     {
-      "title": "Famous video styles 6",
+      "title": "The scariest things in space 8",
       "commands": [
-        "/flat-science why we yawn when others yawn",
-        "/paper-collage why Big Ben is leaning",
-        "/painted-story how the Titanic was found"
+        "/what-if a rogue planet entered the Solar System",
+        "/scale the biggest black hole versus the Solar System",
+        "/zoom-in the surface of a dying star"
       ],
-      "why": "explainer-styles series = best IG median (styles33 131k, styles37 57k, styles19 57k); same 3 styles, new topics; Kurzgesagt look first like styles42"
+      "why": "space7 (256k TT) and space14 (61k TT) are our only TikTok breakouts; repeats were weaker, so new angles: rogue planet, black-hole scale, dying star close-up"
     },
     {
-      "title": "Liquid chrome & glass UI",
+      "title": "Liquid chrome & glass motion 2",
       "commands": [
-        "/liquid-chrome a game launch countdown",
-        "/glassmorphism a weather widget in a storm",
-        "/kinetic-type a movie trailer title"
+        "/liquid-chrome a sports car reveal",
+        "/glassmorphism a smart-home control panel",
+        "/kinetic-type a podcast intro"
       ],
-      "why": "test: motion13 (glassmorphism/ui-motion) look; countdown + trailer title ride the GTA 6 launch week; liquid chrome is a new look for us (guess, no numbers yet)"
+      "why": "motion-design looks give the 'custom animated mockup' feel trending in tech posts this week (tryvolume, 43x median); a test for designers on IG"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this game character-select screen of your friends using Claude",
+      "title": "How to make this open-world loading screen of your city using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "GTA 6 vychází 19. 11. (Tom's Guide, gaming weby) a herní edity přátel jedou na TikToku; vlastní neutrální styl, žádné herní logo ani postavy.",
+      "trend": "GTA 6 vychází 19. 11. a na TikToku jede trend „Goodbye Los Santos“ (Bubbleblabber); loading screen tvého města je osobní verze téhle vlny – jen žánr, žádná grafika ze hry.",
       "steps": [
-        "Type your friends' names and one funny skill each",
-        "Ask for a sunset open-world character-select screen",
+        "Open Claude and pick Fable 5.2",
+        "Ask for an open-world loading screen of your city: real street map, sunset palette, tips text",
         "Claude builds it, you tweak it"
       ],
       "seconds": 13,
-      "keyword": "SQUAD",
+      "keyword": "LOADING",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this animated game launch countdown using Claude",
+      "title": "How to make these animated flashcards using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Odpočty do vydání GTA 6 (19. 11.) se teď sdílí všude na X a TikToku; neutrální neonový odpočet, jméno hry jen jako text.",
+      "trend": "„Saveable flashcards“ a celé taháky viditelné od první vteřiny patří tento týden mezi nejsilnější tech formáty (tryvolume.app, 16. 11.).",
       "steps": [
-        "Type the launch date and the game's name",
-        "Ask for a neon city countdown that ticks live",
+        "Open Claude and pick Fable 5.2",
+        "Paste your topic and ask for 6 flip-card flashcards with smooth animation",
         "Claude builds it, you tweak it"
       ],
       "seconds": 12,
-      "keyword": "COUNTDOWN",
+      "keyword": "FLASH",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this animated Black Friday sale ad using Claude",
+      "title": "How to make this animated advent calendar using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Black Friday je 27. 11. a malé firmy teď hledají rychlé reklamy na stories (socialpilot, trendové přehledy listopadu); vymyšlený produkt a značka.",
+      "trend": "Startuje vánoční sezóna (trend „It's Time“ s Mariah Carey na IG, newengen) a advent začíná 1. 12. – kalendář, kde se každý den otevře jedno okénko.",
       "steps": [
-        "Type your product, price and discount",
-        "Ask for a bold kinetic sale ad for stories",
-        "Claude builds it, you tweak it"
-      ],
-      "seconds": 12,
-      "keyword": "SALE",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make your own year-in-review story using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "Sezóna ročních shrnutí (Wrapped) začíná koncem listopadu a lidi si dělají vlastní verze; vlastní vzhled, žádné logo Spotify.",
-      "steps": [
-        "Type your 5 best moments of the year",
-        "Ask for colorful animated story slides with big numbers",
+        "Open Claude and pick Fable 5.2",
+        "Ask for a 24-door advent calendar where today's door opens with a surprise",
         "Claude builds it, you tweak it"
       ],
       "seconds": 13,
-      "keyword": "RECAP",
+      "keyword": "ADVENT",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to turn your photo into an open-world game cover using Higgsfield",
+      "title": "How to make this new-phone setup checklist using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "„Settings to change on a brand-new device“ má tento týden 45× medián (tryvolume.app) a před Black Friday si lidi kupují nové telefony.",
+      "steps": [
+        "Open Claude and pick Fable 5.2",
+        "Ask for an animated checklist of 5 settings to change on a new phone, each with a mini UI mockup",
+        "Claude builds it, you tweak it"
+      ],
+      "seconds": 14,
+      "keyword": "SETUP",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this turkey charcuterie board video using Higgsfield",
       "tool": "Higgsfield",
       "url": "https://higgsfield.ai",
-      "trend": "Před vydáním GTA 6 (19. 11.) se šíří fotky lidí jako 'herní obal'; jen žánr a vlastní styl, žádné logo ani herní postavy.",
+      "trend": "Díkůvzdání 26. 11.: „Turkey Charcuterie Boards“ (sýrové prkénko ve tvaru krocana, top-down build) je teď v top trendech Instagramu (newengen).",
       "steps": [
-        "Upload one photo of yourself",
-        "Ask for a sunset open-world game cover with your name",
+        "Generate a top-down photo of a cheese board shaped like a turkey",
+        "Turn it into a video with a slow build-up camera move",
         "Higgsfield builds it, you tweak it"
       ],
-      "seconds": 13,
-      "keyword": "COVER",
-      "cost": "kredity Higgsfield, cca 2–6 (obrázky)",
+      "seconds": 12,
+      "keyword": "TURKEY",
+      "cost": "kredity Higgsfield, cca 2 za obrázek + cca 10–20 za video",
       "handle": ""
     }
   ],
