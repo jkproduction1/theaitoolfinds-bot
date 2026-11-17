@@ -1,0 +1,145 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// around51 r0: /flat-science why ice is slippery (flat glowing vector look of styles47 flat_chilli / styles48 flat_goosebumps).
+// Facts / sources:
+//  - Weber, Nagata, Ketzetzi, Tang, Smit, Bakker, Backus, Bonn & Bonn, "Molecular Insight into the Slipperiness of Ice",
+//    J. Phys. Chem. Lett. 2018, DOI 10.1021/acs.jpclett.8b01188 (Max Planck Institute for Polymer Research, Mainz + AMOLF / Univ. of Amsterdam).
+//  - Press release (ScienceDaily 9 May 2018, sciencedaily.com/releases/2018/05/180509121544.htm; same text at idw-online.de/en/news694127):
+//    at the ice surface some water molecules are "stuck to the underlying ice (bound by three hydrogen bonds)" and others are
+//    "mobile water molecules that are bound by only two hydrogen bonds"; "These mobile water molecules continuously roll over the ice
+//    -- like tiny spheres -- powered by thermal vibrations."  -> labels "the top layer of molecules is loose", "they roll like tiny marbles".
+//  - Same release: the slipperiness comes from these mobile surface molecules "rather than a thin layer of liquid water on the ice";
+//    the old pressure-melting idea (Joly 1886) is no longer the accepted explanation.  -> small label "not just pressure or melting".
+//  The honeycomb lattice is a schematic 2D view of hexagonal ice; sizes are not to scale.
+const g=document.getElementById('c').getContext('2d');
+const LERP=(a,b,t)=>a+(b-a)*t;
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.48,60,w*.5,h*.5,1300);gr.addColorStop(0,'#1d3a8c');gr.addColorStop(.5,'#111c5c');gr.addColorStop(1,'#04051c');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[200,620,300,'rgba(90,210,255,.22)'],[880,900,300,'rgba(130,100,255,.24)'],[300,1500,300,'rgba(80,230,255,.14)'],[800,1750,420,'rgba(80,120,255,.18)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(11);for(let i=0;i<200;i++){p.fillStyle='rgba(225,240,255,'+(R()*.6)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.4,0,7);p.fill();}});
+function label(txt,x,y,tx,ty,col,fs){g.save();fs=fs||40;g.font='800 '+fs+'px '+SANS;const w=g.measureText(txt).width+52,hh=fs*.9+36;if(x==null)x=540-w/2;
+  if(tx!=null){g.strokeStyle='rgba(255,255,255,.8)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x+30?x+30:tx>x+w-30?x+w-30:tx,ty<y?y-hh/2:y+hh/2);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();}
+  g.fillStyle='rgba(8,12,48,.93)';g.beginPath();g.roundRect(x,y-hh/2,w,hh,hh/2);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2.5;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+fs*.35);g.restore();}
+function pop(t,x,y,fn,d){if(t<=0)return;g.save();const s=EBK(t/(d||.45));g.globalAlpha*=CL(t/.15);g.translate(x,y);g.scale(s,s);g.translate(-x,-y);fn();g.restore();}
+// ---------- drifting snow sparkles (every frame) ----------
+const SR=R0(21),SNOW=[...Array(60)].map(()=>({x:SR()*1300,y:SR()*1920,sp:60+SR()*120,r:2+SR()*4,ph:SR()*6}));
+function snow(lt,a){g.save();g.shadowColor='#9be6ff';g.shadowBlur=10;SNOW.forEach(f=>{const x=1190-((f.x+lt*f.sp*2.2)%1300),y=(f.y+lt*f.sp*.5+Math.sin(lt*2+f.ph)*12)%1920;g.fillStyle='rgba(215,240,255,'+(.75*a)+')';g.beginPath();g.arc(x,y,f.r,0,7);g.fill();});g.restore();}
+// ---------- scene A: skate on ice ----------
+const ICEY=1190;
+const IR=R0(9),FAC=[...Array(16)].map(()=>({x:IR()*2400,y:60+IR()*620,w:120+IR()*260,h:30+IR()*90,a:.05+IR()*.1,sk:(IR()-.5)*120})),
+  MARK=[...Array(9)].map(()=>({x:IR()*2400,l:120+IR()*320,y:10+IR()*26}));
+function ice(lt){const sc=lt*520;g.save();
+  const ig=g.createLinearGradient(0,ICEY,0,1920);ig.addColorStop(0,'#bff1ff');ig.addColorStop(.06,'#6fd0ff');ig.addColorStop(.4,'#2f74e0');ig.addColorStop(1,'#141e80');
+  g.save();g.shadowColor='rgba(120,220,255,.8)';g.shadowBlur=60;g.fillStyle=ig;g.fillRect(-200,ICEY,1500,900);g.restore();
+  g.beginPath();g.rect(-200,ICEY,1500,900);g.clip();
+  FAC.forEach(f=>{const x=((f.x-sc*(.55+f.y/1400))%2400+2400)%2400-600;g.fillStyle='rgba(255,255,255,'+f.a+')';g.beginPath();g.moveTo(x,ICEY+f.y);g.lineTo(x+f.w,ICEY+f.y-f.h*.2);g.lineTo(x+f.w+f.sk,ICEY+f.y+f.h);g.lineTo(x+f.sk*.6,ICEY+f.y+f.h*.8);g.closePath();g.fill();});
+  g.lineCap='round';MARK.forEach(m=>{const x=((m.x-sc)%2400+2400)%2400-700;g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=3;g.beginPath();g.moveTo(x,ICEY+m.y);g.lineTo(x+m.l,ICEY+m.y+3);g.stroke();});
+  g.fillStyle='rgba(255,255,255,.85)';g.fillRect(-200,ICEY,1500,5);g.restore();}
+function skate(){ // origin = blade contact (0,0), y up = negative
+  g.lineJoin='round';g.lineCap='round';
+  // leg
+  const lg=g.createLinearGradient(0,-1000,0,-540);lg.addColorStop(0,'rgba(70,60,190,0)');lg.addColorStop(.45,'#4a3fc4');lg.addColorStop(1,'#3a2fa0');g.fillStyle=lg;
+  g.beginPath();g.moveTo(-262,-540);g.lineTo(-300,-1000);g.lineTo(-90,-1000);g.lineTo(-52,-545);g.closePath();g.fill();
+  // blade
+  g.save();g.shadowColor='rgba(190,235,255,.9)';g.shadowBlur=26;const bl=g.createLinearGradient(0,-40,0,0);bl.addColorStop(0,'#8ea4d8');bl.addColorStop(.5,'#eef6ff');bl.addColorStop(1,'#b9cdf2');g.fillStyle=bl;
+  g.beginPath();g.moveTo(-322,-36);g.lineTo(-306,-6);g.quadraticCurveTo(-302,0,-292,0);g.lineTo(236,0);g.quadraticCurveTo(318,0,344,-70);g.lineTo(322,-74);g.quadraticCurveTo(302,-36,240,-36);g.closePath();g.fill();g.restore();
+  // holder
+  g.fillStyle='#4a5bd0';[[-256,-168],[136,224]].forEach(([a,b])=>{g.beginPath();g.moveTo(a+6,-34);g.lineTo(b-6,-34);g.lineTo(b+10,-118);g.lineTo(a-10,-118);g.closePath();g.fill();});
+  g.fillStyle='#3442a8';g.beginPath();g.roundRect(-296,-176,170,54,[4,4,0,0]);g.fill();g.fillStyle='#e9f0ff';g.beginPath();g.roundRect(-300,-130,608,24,10);g.fill();
+  // boot
+  const bg2=g.createLinearGradient(-200,-600,200,-120);bg2.addColorStop(0,'#ff8a70');bg2.addColorStop(.55,'#ff5f7a');bg2.addColorStop(1,'#d93b78');
+  g.save();g.shadowColor='rgba(255,110,130,.55)';g.shadowBlur=50;g.fillStyle=bg2;g.beginPath();g.moveTo(-292,-176);g.bezierCurveTo(-310,-300,-270,-420,-282,-560);g.quadraticCurveTo(-284,-590,-250,-592);g.lineTo(-60,-598);g.quadraticCurveTo(-30,-598,-30,-566);
+  g.bezierCurveTo(-34,-470,-10,-410,60,-370);g.bezierCurveTo(150,-318,250,-300,292,-236);g.quadraticCurveTo(318,-190,304,-128);g.lineTo(-126,-128);g.lineTo(-126,-176);g.closePath();g.fill();g.restore();
+  // toe cap + heel counter + cuff
+  g.fillStyle='rgba(255,255,255,.22)';g.beginPath();g.moveTo(196,-316);g.bezierCurveTo(250,-296,280,-270,292,-236);g.quadraticCurveTo(318,-190,304,-128);g.lineTo(170,-128);g.quadraticCurveTo(150,-240,196,-316);g.closePath();g.fill();
+  g.fillStyle='rgba(120,20,80,.25)';g.beginPath();g.moveTo(-292,-176);g.bezierCurveTo(-306,-270,-284,-340,-282,-400);g.quadraticCurveTo(-190,-330,-170,-176);g.closePath();g.fill();
+  g.fillStyle='#fff3ea';g.beginPath();g.roundRect(-290,-606,266,44,20);g.fill();
+  // tongue + laces
+  g.strokeStyle='rgba(255,255,255,.3)';g.lineWidth=20;g.beginPath();g.moveTo(-40,-540);g.bezierCurveTo(-36,-450,0,-400,70,-360);g.quadraticCurveTo(120,-336,170,-320);g.stroke();
+  g.strokeStyle='#fff';g.lineWidth=9;const lp=(u)=>{const v=1-u,a=[-40,-540],b=[-36,-450],c=[0,-400],d=[70,-360];if(u<=1)return [v*v*v*a[0]+3*v*v*u*b[0]+3*v*u*u*c[0]+u*u*u*d[0],v*v*v*a[1]+3*v*v*u*b[1]+3*v*u*u*c[1]+u*u*u*d[1]];return [70+(u-1)*110,-360+(u-1)*44];};
+  for(let i=0;i<7;i++){const u=.08+i*.25,[x,y]=lp(u),[x2,y2]=lp(u+.02),an=Math.atan2(y2-y,x2-x)+Math.PI/2;g.beginPath();g.moveTo(x+Math.cos(an)*4,y+Math.sin(an)*4);g.lineTo(x-Math.cos(an)*46,y-Math.sin(an)*46);g.stroke();}
+  // highlight
+  g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=8;g.beginPath();g.moveTo(-262,-540);g.bezierCurveTo(-254,-430,-276,-320,-270,-210);g.stroke();}
+const SPR=R0(4),SPRAY=[...Array(46)].map(()=>({ph:SPR(),vx:-(160+SPR()*420),vy:-(120+SPR()*380),r:2.5+SPR()*5,life:.45+SPR()*.5}));
+function sceneA(lt){const sx=500+70*lt,bob=Math.sin(lt*3.1)*3;
+  ice(lt);
+  // reflection
+  g.save();g.beginPath();g.rect(-200,ICEY+5,1500,800);g.clip();g.globalAlpha=.2;g.translate(sx,ICEY+8);g.scale(1,-.8);skate();g.restore();
+  // cut line trailing behind the blade
+  g.save();const cg=g.createLinearGradient(sx-900,0,sx-280,0);cg.addColorStop(0,'rgba(255,255,255,0)');cg.addColorStop(1,'rgba(255,255,255,.95)');g.strokeStyle=cg;g.shadowColor='#fff';g.shadowBlur=14;g.lineWidth=6;g.lineCap='round';g.beginPath();g.moveTo(sx-900,ICEY+3);g.lineTo(sx-290,ICEY+3);g.stroke();g.restore();
+  g.save();g.translate(sx,ICEY+bob*.3);g.rotate(Math.sin(lt*3.1)*.004);skate();g.restore();
+  // ice spray
+  g.save();g.shadowColor='#bff1ff';g.shadowBlur=12;SPRAY.forEach(p=>{const u=((lt/p.life+p.ph)%1),tt=u*p.life;const x=sx-300+p.vx*tt*.8,y=ICEY-2+p.vy*tt+900*tt*tt;if(y>ICEY)return;g.fillStyle='rgba(235,250,255,'+(.95*(1-u))+')';g.beginPath();g.arc(x,y,p.r*(1-.5*u),0,7);g.fill();});g.restore();
+  // speed lines
+  g.save();g.lineCap='round';for(let i=0;i<7;i++){const y=640+i*74,x0=1250-((lt*(900+i*130)+i*377)%1700);const gr=g.createLinearGradient(x0,0,x0+260,0);gr.addColorStop(0,'rgba(190,240,255,.5)');gr.addColorStop(1,'rgba(190,240,255,0)');g.strokeStyle=gr;g.lineWidth=5;g.beginPath();g.moveTo(x0,y);g.lineTo(x0+260,y);g.stroke();}g.restore();
+  return sx;}
+// ---------- scene B: molecules (local coords, centre 0,0, radius 400) ----------
+const S0=62,WX=S0*Math.sqrt(3),NPER=10,PER=WX*NPER,SURF=56;           // honeycomb bond length / column pitch / wrap period / y of top locked row
+const ROWY=[0,S0/2,S0*1.5,S0*2,S0*3,S0*3.5,S0*4.5,S0*5,S0*6],ROWB=[0,1,1,0,0,1,1,0,0];   // B rows are shifted half a column
+const hsh=(i,j)=>{const v=Math.sin(i*127.1+j*311.7)*43758.5453;return v-Math.floor(v);};
+function mol(x,y,rot,R,oc,hc,glow,ang){g.save();g.translate(x,y);g.rotate(rot);g.shadowColor=oc;g.shadowBlur=glow;
+  const a=(ang||104.5)*Math.PI/360;g.fillStyle=hc;[[-1],[1]].forEach(([s])=>{g.beginPath();g.arc(Math.sin(a*s)*R*1.02,-Math.cos(a)*R*1.02,R*.56,0,7);g.fill();});
+  g.fillStyle=oc;g.beginPath();g.arc(0,0,R,0,7);g.fill();g.shadowBlur=0;g.fillStyle='rgba(255,255,255,.45)';g.beginPath();g.arc(-R*.3,-R*.34,R*.3,0,7);g.fill();g.restore();}
+const LR=R0(17),LOOSE=[...Array(8)].map((_,i)=>({x:i*PER/8+(LR()-.5)*34,ph:LR()*6.28,ph2:LR()*6.28,r0:LR()*6.28}));
+const glideB=(lt)=>{const u=Math.max(0,lt-3.3);return 26*lt+430*u*u/(u+.55);};
+function bladeBig(lt,go){ // blade under-side seen at molecule scale: flat bottom then the toe curving up
+  const yb=-38;g.save();const bl=g.createLinearGradient(0,-420,0,yb);bl.addColorStop(0,'#5d6fc0');bl.addColorStop(.55,'#9fb4e6');bl.addColorStop(.93,'#eaf3ff');bl.addColorStop(1,'#ffffff');
+  g.shadowColor='rgba(200,240,255,.9)';g.shadowBlur=30;g.fillStyle=bl;g.beginPath();g.moveTo(-460,-460);g.lineTo(-460,yb);g.lineTo(20,yb);g.bezierCurveTo(110,yb,150,-150,196,-460);g.closePath();g.fill();g.shadowBlur=0;g.clip();
+  // brushed steel streaks
+  const R=R0(41);for(let i=0;i<26;i++){const y=-420+R()*370,x=-460+R()*560,l=60+R()*220;g.fillStyle='rgba(255,255,255,'+(.05+R()*.12)+')';g.fillRect(x,y,l,3+R()*3);}
+  g.fillStyle='rgba(30,40,120,.18)';g.fillRect(-460,-460,700,150);
+  // glide arrow
+  if(go>0){g.globalAlpha=go;g.translate(-105+12*Math.sin(lt*5),-215);g.shadowColor='#fff';g.shadowBlur=24;g.strokeStyle='#fff';g.lineWidth=20;g.lineCap='round';g.lineJoin='round';g.beginPath();g.moveTo(-90,0);g.lineTo(96,0);g.moveTo(40,-58);g.lineTo(104,0);g.lineTo(40,58);g.stroke();}
+  g.restore();}
+function xsec(lt){const B=glideB(lt),go=CL((lt-3.5)/.5);
+  const ag=g.createLinearGradient(0,-400,0,400);ag.addColorStop(0,'#16246e');ag.addColorStop(.5,'#101a58');ag.addColorStop(1,'#0a1040');g.fillStyle=ag;g.fillRect(-440,-440,880,880);
+  // ice body tint
+  const ig=g.createLinearGradient(0,SURF-40,0,420);ig.addColorStop(0,'rgba(90,200,255,.34)');ig.addColorStop(1,'rgba(40,90,220,.16)');g.fillStyle=ig;g.fillRect(-440,SURF-34,880,480);
+  // air streaks ahead of the blade
+  g.save();g.lineCap='round';for(let i=0;i<4;i++){const x0=470-((B*1.3+lt*120+i*260)%520),y=-330+i*72;if(x0<150+(-y)*.12)continue;g.strokeStyle='rgba(180,235,255,'+(.25+.3*go)+')';g.lineWidth=4;g.beginPath();g.moveTo(x0,y);g.lineTo(x0+70+60*go,y);g.stroke();}g.restore();
+  // locked lattice, scrolling left as the blade glides
+  const off0=-(((B)%WX)+WX)%WX,i0=Math.floor(B/WX);
+  const pos=(i,j)=>{const jx=1.6*Math.sin(lt*17+i*2.1+j*3.3),jy=1.6*Math.cos(lt*15+i*1.3+j*2.7);return [off0+(i+(ROWB[j]?.5:0))*WX+jx,SURF+ROWY[j]+jy];};
+  g.save();g.lineCap='round';g.strokeStyle='rgba(150,225,255,.42)';g.lineWidth=4;g.setLineDash([2,9]);
+  for(let j=0;j<ROWY.length-1;j++)for(let i=-6;i<=6;i++){const [x,y]=pos(i,j);if(ROWB[j]===ROWB[j+1]){const [x2,y2]=pos(i,j+1);g.beginPath();g.moveTo(x,y);g.lineTo(x2,y2);g.stroke();}
+    else{const d=ROWB[j]?[0,1]:[-1,0];d.forEach(di=>{const [x2,y2]=pos(i+di,j+1);g.beginPath();g.moveTo(x,y);g.lineTo(x2,y2);g.stroke();});}}
+  g.restore();
+  for(let j=ROWY.length-1;j>=0;j--)for(let i=-6;i<=6;i++){const [x,y]=pos(i,j);const up=(j%4===0||j%4===3);const h=hsh(i+i0,j);
+    const rot=(up?(h<.5?Math.PI-.95:Math.PI+.95):(h<.5?.95:-.95))+(h>.8?Math.PI:0)*0;const dep=1-.5*CL((y-SURF)/420);
+    g.globalAlpha=dep*.85;mol(x,y,rot,15,'#3fa8f0','#bfe6ff',6,109.5);}g.globalAlpha=1;
+  // loose top layer: rolling like marbles (relative to the ice they roll forward at half the blade speed)
+  const hot=.5+.5*Math.sin(lt*6);
+  g.save();const wb=g.createLinearGradient(0,-40,0,SURF-6);wb.addColorStop(0,'rgba(255,190,90,0)');wb.addColorStop(.55,'rgba(255,190,90,'+(.2+.08*hot)+')');wb.addColorStop(1,'rgba(255,190,90,0)');g.fillStyle=wb;g.fillRect(-440,-40,880,SURF+34);g.restore();
+  LOOSE.forEach(m=>{const jig=(16*Math.sin(lt*4.6+m.ph)+9*Math.sin(lt*7.9+m.ph2))*(1-.6*go);const R=25;
+    let x=m.x-B/2+jig;x=((x+PER/2)%PER+PER)%PER-PER/2;const y=SURF-R-19-Math.abs(Math.sin(lt*6.3+m.ph))*4*(1-go);
+    const rot=m.r0+(B/2+jig)/R;
+    if(go>0){g.save();g.globalAlpha=.5*go;const tg=g.createLinearGradient(x,0,x+70,0);tg.addColorStop(0,'rgba(255,209,102,.7)');tg.addColorStop(1,'rgba(255,209,102,0)');g.fillStyle=tg;g.beginPath();g.roundRect(x,y-R*.8,70,R*1.6,R*.8);g.fill();g.restore();}
+    mol(x,y,rot,R,'#ffc94d','#fff1c4',26+14*hot);});
+  bladeBig(lt,go);}
+// ---------- main ----------
+const CC={x:540,y:960};
+function draw(lt){g.drawImage(bg,0,0);const pulse=.5+.5*Math.sin(lt*6);
+  const S=1+.7*EIO(lt/2.6)+.25*EIO((lt-2.6)/3.7);            // camera push into the contact point
+  const zo=EIO((lt-1.25)/1.05);                              // zoom circle opening
+  const aA=1-.8*E3((lt-1.4)/1);
+  snow(lt,1);
+  const sx0=500+70*lt,F={x:sx0+40,y:ICEY};
+  g.save();g.globalAlpha=aA;g.translate(F.x,F.y);g.scale(S,S);g.translate(-F.x,-F.y);g.translate((540-F.x)*EIO(lt/2.2)*.6,(1010-F.y)*EIO(lt/2.2)*.25);if(lt>1.6){g.filter='blur('+(9*E3((lt-1.6)/.8)).toFixed(1)+'px)';}sceneA(lt);g.restore();
+  const Fs={x:F.x+(540-F.x)*EIO(lt/2.2)*.6*S,y:F.y+(1010-F.y)*EIO(lt/2.2)*.25*S};
+  // focus ring on the blade/ice contact before the zoom
+  if(lt<1.6){const a=E3(lt/.4)*(1-CL((lt-1.3)/.3));g.save();g.globalAlpha=a;g.strokeStyle='rgba(255,255,255,.95)';g.lineWidth=6;g.shadowColor='#9be6ff';g.shadowBlur=22;g.setLineDash([18,14]);g.lineDashOffset=-lt*40;
+    g.beginPath();g.arc(Fs.x,Fs.y,78+8*pulse,0,7);g.stroke();g.restore();}
+  let k=1,C=null;
+  if(zo>0){const r=400*zo;C={x:LERP(Fs.x,CC.x,zo),y:LERP(Fs.y,CC.y,zo)};k=(r/400)*(1+.07*EIO((lt-2.3)/4));
+    g.save();g.shadowColor='rgba(140,225,255,.8)';g.shadowBlur=60;g.fillStyle='#101a58';g.beginPath();g.arc(C.x,C.y,r,0,7);g.fill();g.restore();
+    g.save();g.beginPath();g.arc(C.x,C.y,r,0,7);g.clip();g.translate(C.x,C.y);g.scale(k,k);g.translate(0,-40);xsec(lt);g.restore();
+    g.save();g.strokeStyle='rgba(190,240,255,.95)';g.lineWidth=6;g.shadowColor='#7fd8ff';g.shadowBlur=24;g.beginPath();g.arc(C.x,C.y,r,0,7);g.stroke();g.restore();
+    const sp=(x,y)=>({x:C.x+x*k,y:C.y+(y-40)*k});
+    const p1=sp(-292,SURF-44),p2=sp(262,SURF-44);
+    pop(lt-2.35,540,1462,()=>label('the top layer of molecules is loose',null,1462,p1.x,p1.y,'#ffd166',40));
+    pop(lt-3.75,600,520,()=>label('they roll like tiny marbles',300,520,p2.x,p2.y,'#ffd166',40));
+    pop(lt-4.9,540,1366,()=>label('not just pressure or melting',null,1366,null,null,'#8fe3ff',34));}
+  g.drawImage(GRAIN,0,0);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 86px '+SANS;g.fillText('Why ice is',540,300);
+  g.fillStyle='#9be6ff';g.shadowColor='rgba(110,210,255,.95)';g.shadowBlur=26+16*pulse*CL((lt-3)/1);g.fillText('slippery',540,392);g.restore();}
+window.DUR=6.3;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(5.6);document.title='ok';});
+</script></body></html>
