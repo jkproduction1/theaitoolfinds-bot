@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles47 concept: /flat-science why ice cream gives you brain freeze (flat glowing vector look of styles42 flat_astro).
+// Facts (Johns Hopkins Medicine "How to Ease Brain Freeze"; Houston Methodist "What causes brain freeze"): cold food chills the roof of the
+// mouth (palate); its blood vessels constrict, then rebound-dilate; the trigeminal nerve sends a pain signal that is felt in the forehead
+// (referred pain). Pressing the tongue or thumb to the roof of the mouth warms it and helps.
+const g=document.getElementById('c').getContext('2d');
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.55,60,w*.5,h*.5,1300);gr.addColorStop(0,'#2c1d6a');gr.addColorStop(.5,'#170f4a');gr.addColorStop(1,'#05041a');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[200,760,300,'rgba(120,90,255,.24)'],[820,1080,280,'rgba(90,200,255,.22)'],[760,640,220,'rgba(255,110,80,.16)'],[540,1850,420,'rgba(80,170,255,.22)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(8);for(let i=0;i<200;i++){p.fillStyle='rgba(200,235,255,'+(R()*.6)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.4,0,7);p.fill();}});
+function label(txt,x,y,tx,ty,col){g.save();g.font='800 40px '+SANS;const w=g.measureText(txt).width+52;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:x+w/2,y);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(12,8,44,.9)';g.beginPath();g.roundRect(x,y-36,w,72,36);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+14);g.restore();}
+// smooth closed path through points (Catmull-Rom -> bezier)
+function smooth(pts){g.beginPath();const n=pts.length;g.moveTo(pts[0][0],pts[0][1]);for(let i=0;i<n;i++){const p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+  g.bezierCurveTo(p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6,p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6,p2[0],p2[1]);}g.closePath();}
+const HEAD=[[380,1460],[360,1250],[300,1120],[245,960],[250,790],[320,640],[450,560],[590,575],[690,650],[728,760],[738,820],[800,900],[790,925],[750,940],[758,995],[700,1030],[760,1080],[752,1150],[700,1195],[640,1215],[625,1300],[640,1460]];
+function snowflake(x,y,s,a){g.save();g.translate(x,y);g.rotate(a);g.strokeStyle='#d9f6ff';g.lineWidth=s*.14;g.lineCap='round';g.shadowColor='#7fe3ff';g.shadowBlur=14;
+  for(let i=0;i<6;i++){g.rotate(Math.PI/3);g.beginPath();g.moveTo(0,0);g.lineTo(0,-s);g.moveTo(0,-s*.55);g.lineTo(-s*.25,-s*.78);g.moveTo(0,-s*.55);g.lineTo(s*.25,-s*.78);g.stroke();}g.restore();}
+function draw(lt){g.drawImage(bg,0,0);
+  const pulse=.5+.5*Math.sin(lt*6);
+  // head silhouette
+  g.save();g.shadowColor='rgba(170,150,255,.6)';g.shadowBlur=50;const hg=g.createLinearGradient(0,560,0,1460);hg.addColorStop(0,'#5b47c9');hg.addColorStop(.75,'#3a2b96');hg.addColorStop(1,'rgba(58,43,150,0)');g.fillStyle=hg;smooth(HEAD);g.fill();g.shadowBlur=0;
+  const sg=g.createLinearGradient(0,560,0,1460);sg.addColorStop(0,'rgba(200,190,255,.5)');sg.addColorStop(.75,'rgba(200,190,255,.5)');sg.addColorStop(1,'rgba(200,190,255,0)');g.strokeStyle=sg;g.lineWidth=4;g.stroke();
+  // brain (soft glowing blob)
+  smooth(HEAD);g.clip();g.fillStyle='rgba(190,170,255,.28)';blobPath(g,470,790,175,5,.05,90,0);g.fill();
+  g.strokeStyle='rgba(225,215,255,.35)';g.lineWidth=6;g.lineCap='round';[[[360,720],[420,680],[470,730]],[[500,690],[560,720],[580,790]],[[380,820],[450,850],[520,820]],[[420,920],[490,900],[560,930]]].forEach(c=>{g.beginPath();g.moveTo(...c[0]);g.quadraticCurveTo(...c[1],...c[2]);g.stroke();});
+  // ear
+  g.fillStyle='#4a39b0';g.beginPath();g.ellipse(395,960,40,62,.15,0,7);g.fill();
+  // eye
+  g.fillStyle='#1a1050';g.beginPath();g.ellipse(668,800,16,10,0,0,7);g.fill();
+  // mouth cavity
+  g.fillStyle='#160c40';g.beginPath();g.moveTo(706,1026);g.quadraticCurveTo(640,1030,560,1060);g.quadraticCurveTo(560,1100,600,1105);g.quadraticCurveTo(690,1100,752,1074);g.closePath();g.fill();
+  // roof of mouth: icy glow
+  g.save();g.strokeStyle='#9fefff';g.lineWidth=16;g.lineCap='round';g.shadowColor='#5fd8ff';g.shadowBlur=40+20*pulse;g.beginPath();g.moveTo(706,1028);g.quadraticCurveTo(640,1032,566,1060);g.stroke();g.shadowBlur=20;g.stroke();g.restore();
+  // tongue
+  g.fillStyle='#ff7ab0';g.beginPath();g.moveTo(590,1098);g.quadraticCurveTo(650,1072,725,1080);g.quadraticCurveTo(700,1100,600,1104);g.closePath();g.fill();
+  // nerve path: palate -> back -> up to forehead (orange->red glow)
+  const ng=g.createLinearGradient(0,1060,0,660);ng.addColorStop(0,'#7fe3ff');ng.addColorStop(.35,'#ffb36a');ng.addColorStop(1,'#ff4d5e');
+  g.save();g.shadowColor='#ff8a50';g.shadowBlur=30;marker(g,[[600,1050],[540,1000],[525,920],[565,820],[640,735],[690,680]],1,16,ng);g.restore();
+  // signal pulses along the nerve
+  [[540,1000],[530,905],[600,775]].forEach(([x,y],i)=>{g.fillStyle='#fff';g.shadowColor='#ffb36a';g.shadowBlur=24;g.beginPath();g.arc(x,y,9+4*Math.sin(lt*5+i),0,7);g.fill();g.shadowBlur=0;});
+  g.restore();
+  // pain burst at forehead
+  g.save();const bx=690,by=672;const rg=g.createRadialGradient(bx,by,0,bx,by,130);rg.addColorStop(0,'rgba(255,90,80,.95)');rg.addColorStop(.35,'rgba(255,120,70,.5)');rg.addColorStop(1,'rgba(255,80,80,0)');g.fillStyle=rg;g.beginPath();g.arc(bx,by,130,0,7);g.fill();
+  g.strokeStyle='#ffb36a';g.lineWidth=9;g.lineCap='round';g.lineJoin='round';g.shadowColor='#ff5a4a';g.shadowBlur=24;
+  [[-.95],[-.45],[.05]].forEach(([a])=>{const r0=105,r1=175;g.beginPath();for(let k=0;k<=4;k++){const r=r0+(r1-r0)*k/4,o=(k%2?1:-1)*.07;g.lineTo(bx+Math.cos(a+o)*r,by+Math.sin(a+o)*r);}g.stroke();});
+  g.restore();
+  // ice cream cone entering the mouth
+  g.save();g.translate(850,1080);g.rotate(-.5);
+  g.shadowColor='rgba(255,200,120,.5)';g.shadowBlur=30;g.fillStyle='#f0a85a';g.beginPath();g.moveTo(-70,10);g.lineTo(70,10);g.lineTo(0,250);g.closePath();g.fill();g.shadowBlur=0;
+  g.save();g.clip();g.strokeStyle='rgba(150,80,30,.6)';g.lineWidth=5;for(let i=-6;i<6;i++){g.beginPath();g.moveTo(-90+i*30,0);g.lineTo(90+i*30,260);g.stroke();g.beginPath();g.moveTo(90-i*30,0);g.lineTo(-90-i*30,260);g.stroke();}g.restore();
+  g.shadowColor='rgba(150,240,255,.8)';g.shadowBlur=40;g.fillStyle='#bff3ff';blobPath(g,0,-40,82,11,.06,80,0);g.fill();g.shadowBlur=0;
+  g.fillStyle='#bff3ff';[[-50,8,18,34],[10,8,14,46],[52,6,16,28]].forEach(([x,y,rw,rh])=>{g.beginPath();g.ellipse(x,y+rh*.5,rw,rh,0,0,7);g.fill();});
+  g.fillStyle='rgba(255,255,255,.75)';g.beginPath();g.ellipse(-28,-78,22,12,-.5,0,7);g.fill();
+  g.fillStyle='#ff7ab0';[[20,-90],[-40,-40],[40,-30],[-5,-10]].forEach(([x,y],i)=>{g.save();g.translate(x,y);g.rotate(i);g.beginPath();g.roundRect(-10,-4,20,8,4);g.fill();g.restore();});
+  g.restore();
+  // frost flakes near mouth
+  snowflake(905,920,26,lt*.4);snowflake(640,1170,18,-lt*.5);snowflake(960,1170,16,lt*.3);
+  label('Cold hits the roof of your mouth',100,1390,630,1040,'#7fe3ff');
+  label('Nerve fires pain to forehead',300,460,690,672,'#ffb36a');
+  // tip line
+  g.save();g.textAlign='center';g.font='700 38px '+SANS;g.fillStyle='rgba(220,240,255,.9)';g.fillText('Fix: press your tongue to the roof of your mouth',540,1490);g.restore();
+  g.drawImage(GRAIN,0,0);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 84px '+SANS;g.fillText('Why ice cream gives',540,220);
+  const a='you ',b='brain freeze';const wa=g.measureText(a).width,wb=g.measureText(b).width,x0=540-(wa+wb)/2;g.textAlign='left';g.fillText(a,x0,320);g.fillStyle='#7fe3ff';g.shadowColor='rgba(111,216,255,.9)';g.shadowBlur=30;g.fillText(b,x0+wa,320);g.restore();}
+window.DUR=6;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(2);document.title='ok';});
+</script></body></html>

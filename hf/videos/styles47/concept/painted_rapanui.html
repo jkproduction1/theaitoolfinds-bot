@@ -1,0 +1,95 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles47 concept: /painted-story why Easter Island (Rapa Nui) lost its trees (hand-painted look of styles42 painted_pharos).
+// Facts (Binghamton Univ. 2025 / Lipo & Hunt; Smithsonian "The Mystery of Easter Island"): the island was dominated by giant palms related to
+// the Chilean wine palm; Polynesians arrived c. 1200 CE with the Polynesian rat; forest was cleared for farming (slash-and-burn, sweet potato);
+// rats ate the palm nuts so trees could not regrow. The old "ecocide -> collapse" story is debated. Own drawing.
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const HZ=1010, SX=170, SY=990;
+// hill profile: rises from the left to a ridge where the moai stand
+const hillY=x=>1130-Math.sin(Math.min(1,Math.max(0,(x+60)/1200))*Math.PI)*170+Math.sin(x*.012)*10;
+const sky=off(1080,1920,(p,w,h)=>{const R=R0(21);const s=p.createLinearGradient(0,0,0,HZ);s.addColorStop(0,'#1b1838');s.addColorStop(.35,'#4a2b5a');s.addColorStop(.7,'#b4505a');s.addColorStop(.92,'#f09a5c');s.addColorStop(1,'#ffcf86');p.fillStyle=s;p.fillRect(0,0,w,HZ+10);
+  strokes(p,1700,R,-40,0,w+80,HZ*.55,['#2a2148','#3d2a5a','#1a1634','#5a3462'],170,34,0);
+  strokes(p,1400,R,-40,HZ*.5,w+80,HZ*.5,['#c45a5e','#e8835a','#8a3e5c','#f6b06e'],170,30,0);
+  // painted cloud bands lit from below
+  for(let k=0;k<5;k++){const cy=520+k*80+R()*30;strokes(p,160,R,-60+R()*200,cy,700+R()*400,30,['#f4a070','#ffc890','#9a4a62'],120,18,-0.03,0.12,0.25);}
+  for(let i=0;i<90;i++){p.fillStyle='rgba(255,245,230,'+(R()*.7)+')';p.beginPath();p.arc(R()*w,R()*380,R()*2.4,0,7);p.fill();}
+  // sea strip
+  const sea=p.createLinearGradient(0,HZ,0,HZ+200);sea.addColorStop(0,'#c96a5e');sea.addColorStop(1,'#3a2440');p.fillStyle=sea;p.fillRect(0,HZ,w,220);
+  strokes(p,600,R,-40,HZ,w+80,200,['#e48a64','#5a3050','#a24e5c'],120,10,0,0.15,0.3);});
+// the ghost forest: pale palms painted where the forest used to be
+function palm(p,R,x,y,s,col){p.save();p.translate(x,y);p.scale(s,s);p.strokeStyle=col;p.fillStyle=col;p.lineCap='round';
+  const lean=(R()-.5)*60;p.lineWidth=26;p.beginPath();p.moveTo(0,0);p.quadraticCurveTo(lean*.3,-200,lean,-420);p.stroke();
+  p.lineWidth=34;p.beginPath();p.moveTo(-4,0);p.lineTo(4,-60);p.stroke();
+  for(let i=0;i<11;i++){const a=-Math.PI/2+(i-5)*0.32+(R()-.5)*.15,L=170+R()*70;p.lineWidth=10;p.beginPath();p.moveTo(lean,-420);
+    const mx=lean+Math.cos(a)*L*.55,my=-420+Math.sin(a)*L*.55-40,ex=lean+Math.cos(a)*L,ey=-420+Math.sin(a)*L*.4+40;p.quadraticCurveTo(mx,my,ex,ey);p.stroke();
+    for(let j=1;j<9;j++){const t=j/9,px=(1-t)*(1-t)*lean+2*(1-t)*t*mx+t*t*ex,py=(1-t)*(1-t)*-420+2*(1-t)*t*my+t*t*ey;p.lineWidth=4;p.beginPath();p.moveTo(px,py);p.lineTo(px+Math.cos(a+1.3)*30*(1-t*.5),py+38*(1-t*.4));p.stroke();}}
+  p.beginPath();p.arc(lean,-410,22,0,7);p.fill();p.restore();}
+const GHOST=off(1080,1920,(p)=>{const R=R0(33);
+  [[80,1060,.95],[230,990,1.15],[400,960,1.0],[560,950,1.2],[720,960,1.05],[880,980,1.15],[1020,1030,.95],[320,1010,.8],[640,990,.85],[960,1010,.8]].forEach(([x,y,s])=>palm(p,R,x,y,s,'#ffe6c4'));
+  // brushed texture through the ghosts so they read as painted mist
+  p.globalCompositeOperation='source-atop';strokes(p,500,R,0,300,1080,800,['#ffd8b0','#f6b890','#fff0d8'],50,6,1.57,0.15,0.3);p.globalCompositeOperation='source-over';});
+const LAND=off(1080,1920,(p,w,h)=>{const R=R0(44);
+  p.beginPath();p.moveTo(-10,h);for(let x=-10;x<=1090;x+=10)p.lineTo(x,hillY(x));p.lineTo(1090,h);p.closePath();
+  const gr=p.createLinearGradient(0,960,0,h);gr.addColorStop(0,'#7a6a3a');gr.addColorStop(.25,'#4f5230');gr.addColorStop(.7,'#2a2c22');gr.addColorStop(1,'#141418');p.fillStyle=gr;p.fill();
+  p.save();p.clip();strokes(p,2600,R,-40,940,w+80,h-940,['#8a7a40','#5e6236','#3a3e28','#a08848','#26281e'],28,7,-1.3,0.12,0.3);
+  // warm rim light along the ridge
+  strokes(p,500,R,-20,950,w+40,120,['#e0a060','#f0c078'],40,6,0,0.08,0.18);p.restore();
+  // ridge highlight line
+  p.strokeStyle='rgba(255,190,120,.55)';p.lineWidth=4;p.beginPath();for(let x=-10;x<=1090;x+=10)p.lineTo(x,hillY(x)+1);p.stroke();
+  // ahu (stone platform) under the moai
+  p.fillStyle='#3a2e30';p.beginPath();p.moveTo(255,hillY(255)+16);p.lineTo(825,hillY(825)+16);p.lineTo(815,hillY(540)-34);p.lineTo(265,hillY(540)-34);p.closePath();p.fill();
+  strokes(p,140,R,265,hillY(540)-34,550,40,['#5a4a48','#2a2024','#7a5a50'],30,6,0,0.2,0.3);
+  // stumps in the foreground grass
+  const stump=(x,y,s)=>{p.save();p.translate(x,y);p.scale(s,s);p.fillStyle='#2a1e1a';p.beginPath();p.moveTo(-50,0);p.lineTo(-40,-44);p.lineTo(-18,-38);p.lineTo(-6,-58);p.lineTo(12,-40);p.lineTo(40,-48);p.lineTo(50,0);p.closePath();p.fill();
+    p.fillStyle='#c8955a';p.beginPath();p.ellipse(0,-44,38,9,0,0,7);p.globalAlpha=.55;p.fill();p.globalAlpha=1;
+    p.strokeStyle='#4a362a';p.lineWidth=5;p.beginPath();p.moveTo(-46,0);p.quadraticCurveTo(-70,8,-90,4);p.moveTo(46,0);p.quadraticCurveTo(70,10,92,6);p.stroke();
+    strokes(p,40,R,-44,-50,88,50,['#5a4030','#1a120e'],30,5,1.57,0.2,0.3);p.restore();};
+  stump(160,1290,1.0);stump(860,1270,.9);stump(560,1400,1.4);stump(330,1220,.6);stump(980,1420,1.1);});
+// moai: long heads, heavy brows, long ears, seen in silhouette against the sunset
+function moai(p,x,y,s,R){p.save();p.translate(x,y);p.scale(s,s);
+  // front view: torso, long head, heavy brow, long nose, long ears, pukao-less
+  const body=new Path2D();body.moveTo(-62,0);body.lineTo(-58,-120);body.quadraticCurveTo(-60,-150,-46,-160);body.lineTo(-44,-300);body.quadraticCurveTo(-44,-322,-24,-326);body.lineTo(24,-326);body.quadraticCurveTo(44,-322,44,-300);
+  body.lineTo(46,-160);body.quadraticCurveTo(60,-150,58,-120);body.lineTo(62,0);body.closePath();
+  const gr=p.createLinearGradient(-62,0,62,0);gr.addColorStop(0,'#a8604a');gr.addColorStop(.35,'#4a3030');gr.addColorStop(1,'#1a1216');p.fillStyle=gr;p.fill(body);
+  p.save();p.clip(body);strokes(p,110,R,-62,-330,124,330,['#5a3a34','#140e12','#8a5040'],34,6,1.57,0.2,0.3);p.restore();
+  // ears
+  p.fillStyle='#2a1c1e';p.fillRect(-56,-280,14,100);p.fillRect(42,-280,14,100);
+  // brow ridge and eye sockets
+  p.fillStyle='#d88a5e';p.fillRect(-40,-276,80,8);p.fillStyle='rgba(8,4,6,.85)';p.fillRect(-36,-266,26,16);p.fillRect(10,-266,26,16);
+  // nose
+  p.fillStyle='rgba(8,4,6,.6)';p.beginPath();p.moveTo(2,-262);p.lineTo(16,-200);p.lineTo(2,-196);p.closePath();p.fill();p.fillStyle='rgba(230,150,100,.6)';p.beginPath();p.moveTo(0,-262);p.lineTo(-14,-200);p.lineTo(0,-196);p.closePath();p.fill();
+  // pursed mouth and chin
+  p.fillStyle='rgba(8,4,6,.8)';p.fillRect(-20,-184,40,5);p.fillStyle='rgba(8,4,6,.5)';p.fillRect(-30,-164,60,6);
+  // hands on the belly
+  p.strokeStyle='rgba(8,4,6,.55)';p.lineWidth=5;p.beginPath();p.moveTo(-50,-120);p.quadraticCurveTo(-30,-60,0,-58);p.moveTo(50,-120);p.quadraticCurveTo(30,-60,0,-58);p.stroke();
+  p.restore();}
+const BOIL=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#f2c6a0','#0e0812','#c86a5a'],120,22,0.1,0.02,0.05);});
+function draw(lt){g.drawImage(sky,0,0);
+  // sun sinking into the sea
+  const sg=g.createRadialGradient(SX,SY,10,SX,SY,480);sg.addColorStop(0,'rgba(255,230,170,.9)');sg.addColorStop(.18,'rgba(255,170,100,.45)');sg.addColorStop(1,'rgba(255,140,90,0)');g.fillStyle=sg;g.fillRect(0,300,1080,900);
+  g.fillStyle='#fff0c0';g.beginPath();g.arc(SX,SY,70,Math.PI,0);g.fill();
+  const R=R0(5);for(let i=0;i<14;i++){const y=HZ+8+i*12,w=150-i*8+R()*40;g.fillStyle='rgba(255,220,150,'+(0.6-i*.035)+')';g.fillRect(SX-w/2+Math.sin(lt*2+i)*5,y,w,4);}
+  // the forest that was: ghosts breathing in and out
+  g.globalAlpha=0.34+Math.sin(lt*1.2)*0.05;g.drawImage(GHOST,0,0);g.globalAlpha=1;
+  g.drawImage(LAND,0,0);
+  const MR=R0(12);[[330,.7],[435,.78],[540,.84],[645,.78],[750,.7]].forEach(([x,s])=>moai(g,x,hillY(540)-28,s,MR));
+  // rat and palm nut in the foreground
+  g.save();g.translate(230,1450);g.fillStyle='#0c0a0c';
+  g.beginPath();g.ellipse(0,0,70,38,0,0,7);g.fill();g.beginPath();g.moveTo(52,-18);g.quadraticCurveTo(110,-20,128,8);g.quadraticCurveTo(100,22,56,22);g.closePath();g.fill();
+  g.beginPath();g.ellipse(66,-30,14,18,-.3,0,7);g.fill();g.strokeStyle='#0c0a0c';g.lineWidth=7;g.lineCap='round';g.beginPath();g.moveTo(-66,10);g.quadraticCurveTo(-150,40,-190,-10);g.stroke();
+  g.fillStyle='rgba(255,190,120,.8)';g.beginPath();g.arc(98,-4,4,0,7);g.fill();
+  g.fillStyle='#8a5a2a';g.beginPath();g.ellipse(150,24,22,18,0,0,7);g.fill();g.fillStyle='#d8a060';g.beginPath();g.ellipse(144,18,8,6,0,0,7);g.fill();
+  g.fillStyle='#5a3a1a';g.beginPath();g.ellipse(190,30,16,13,.4,0,7);g.fill();g.restore();
+  // date scrap
+  g.save();g.translate(830,1400);g.rotate(0.06);tornPath(g,-100,-90,200,180,7,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.5)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#8a1c10';g.fillRect(-100,-90,200,46);g.fillStyle='#f3e6c8';g.font='italic 500 34px '+SERIF;g.textAlign='center';g.fillText('Rapa Nui',0,-56);g.fillStyle='#2c1c0e';g.font='italic 500 62px '+SERIF;g.fillText('c. 1200',0,36);g.restore();
+  [['Once, a forest of giant palms.',-0.02],['People cleared it for farms.',0.015],['Rats ate the nuts. None regrew.',-0.01]].forEach(([t,r],i)=>{g.save();g.font='italic 500 60px '+SERIF;const w=g.measureText(t).width+60,y=160+i*104;
+    g.translate(60,y);g.rotate(r);tornPath(g,0,0,w,90,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=i===2?'#8a1c10':'#2c1c0e';g.fillText(t,30,64);g.restore();});
+  g.drawImage(BOIL,0,0);g.drawImage(GRAIN,0,0);
+  const vg=g.createRadialGradient(540,1000,380,540,1000,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,4,16,.6)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

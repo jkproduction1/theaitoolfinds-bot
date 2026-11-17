@@ -1,0 +1,74 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Permanent Marker';src:url(permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles47 concept: /paper-collage why the Bermuda Triangle "swallows" ships. Twist: it doesn't.
+// Facts (NOAA National Ocean Service, oceanservice.noaa.gov/facts/bermudatri.html): no evidence that mysterious disappearances occur
+// more often there than in any other large, well-traveled area of ocean; Navy + Coast Guard: no supernatural explanations;
+// Gulf Stream can cause rapid, sometimes violent weather changes; most Atlantic tropical storms/hurricanes pass through.
+// Flight 19: five Navy TBM Avenger torpedo bombers lost on 5 Dec 1945 (NHHC H-Gram 057-4). Simplified own map drawing.
+const g=document.getElementById('c').getContext('2d'), MK="'Permanent Marker',cursive";
+const PX=(lon)=>100+(lon+82)*40, PY=(lat)=>470+(34-lat)*40; // simple stretched map projection
+const MIA=[PX(-80.2),PY(25.8)], BDA=[PX(-64.8),PY(32.3)], SJU=[PX(-66.1),PY(18.5)];
+function land(p,pts,seed){const R=R0(seed);p.beginPath();pts.forEach(([lo,la],i)=>{const x=PX(lo)+(R()-.5)*5,y=PY(la)+(R()-.5)*5;i?p.lineTo(x,y):p.moveTo(x,y);});p.closePath();}
+const paper=off(1080,1920,(p,w,h)=>{p.fillStyle='#efe6d2';p.fillRect(0,0,w,h);const R=R0(4);
+  for(let i=0;i<9000;i++){p.strokeStyle='rgba(120,95,60,'+(R()*.08)+')';p.lineWidth=1;const x=R()*w,y=R()*h,a=R()*6.28,l=4+R()*14;p.beginPath();p.moveTo(x,y);p.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}
+  // the sea: a torn sheet of printed map paper
+  p.save();p.translate(540,840);p.rotate(0.008);tornPath(p,-560,-420,1120,830,5,12);const sk=p.createLinearGradient(0,-420,0,420);sk.addColorStop(0,'#9cc8d6');sk.addColorStop(1,'#6fa9c0');
+  p.shadowColor='rgba(60,40,20,.35)';p.shadowBlur=16;p.shadowOffsetY=8;p.fillStyle=sk;p.fill();p.shadowColor='transparent';p.clip();
+  // printed grid + halftone
+  p.strokeStyle='rgba(255,255,255,.35)';p.lineWidth=2;p.setLineDash([6,8]);for(let lo=-80;lo<=-60;lo+=5){p.beginPath();p.moveTo(PX(lo)-540,-500);p.lineTo(PX(lo)-540,500);p.stroke();}
+  for(let la=20;la<=35;la+=5){p.beginPath();p.moveTo(-600,PY(la)-840);p.lineTo(600,PY(la)-840);p.stroke();}p.setLineDash([]);
+  for(let y=-420;y<420;y+=12)for(let x=-560+(y/12%2)*6;x<560;x+=12){p.fillStyle='rgba(20,60,90,.16)';p.beginPath();p.arc(x,y,0.6+2.4*CL((y+420)/840),0,7);p.fill();}
+  p.restore();
+  p.save();p.translate(540,840);p.rotate(0.008);tornPath(p,-560,-420,1120,830,5,12);p.translate(-540,-840);p.clip();
+  // land (kraft paper)
+  const LANDS=[
+   [[-84,35],[-76.5,35],[-75.5,35.3],[-76,34.6],[-77.8,33.9],[-79,33.2],[-80.5,32.2],[-81.4,31],[-81.4,30.1],[-80.6,28.5],[-80.1,26.8],[-80.2,25.6],[-80.6,25.2],[-81.1,25.1],[-81.7,25.9],[-82.6,27.5],[-82.7,28.6],[-83.6,29.8],[-84,30]],
+   [[-84.9,21.9],[-82.6,23.1],[-80.5,23.1],[-77.5,22],[-75.6,21],[-74.2,20.2],[-75.6,19.9],[-77.7,19.9],[-78.5,21.5],[-80,21.8],[-82,22.2],[-84.4,21.5]],
+   [[-74.4,18.4],[-72.8,19.9],[-71.3,19.9],[-69.9,19.6],[-68.4,18.6],[-69.8,18.3],[-71.4,17.6],[-72.7,18.2],[-74.4,18.1]],
+   [[-67.2,18.5],[-65.6,18.4],[-65.6,18],[-67.2,17.95]],
+   [[-78.4,18.4],[-76.2,18.0],[-76.8,17.7],[-78.3,18.2]]];
+  LANDS.forEach((L,i)=>{land(p,L,40+i);p.fillStyle='#d9b877';p.shadowColor='rgba(60,40,20,.35)';p.shadowBlur=10;p.shadowOffsetY=5;p.fill();p.shadowColor='transparent';
+    p.save();p.clip();for(let y=400;y<1300;y+=10)for(let x=(y/10%2)*5;x<1080;x+=10){p.fillStyle='rgba(110,70,35,.22)';p.beginPath();p.arc(x,y,1.6,0,7);p.fill();}p.restore();});
+  // Bahamas: little paper bits
+  const RB=R0(9);[[-77.8,26.6],[-77.4,25.2],[-76.2,24.6],[-75.6,23.6],[-74.4,22.6],[-73.4,21.2],[-77.9,24.3],[-76.6,25.6],[-71.8,21.7],[-73.7,22.3]].forEach(([lo,la],i)=>{p.save();p.translate(PX(lo),PY(la));p.rotate(RB()*3);p.fillStyle='#d9b877';p.beginPath();p.ellipse(0,0,12+RB()*12,5+RB()*4,0,0,7);p.fill();p.restore();});
+  p.restore();});
+// stickers
+const SHIP=sticker(off(200,90,(p)=>{p.fillStyle='#b5482f';p.beginPath();p.moveTo(0,48);p.lineTo(200,48);p.lineTo(176,86);p.lineTo(18,86);p.closePath();p.fill();
+  const C=['#2f6fb3','#e8a33a','#3f8a5a','#d7262e','#2f6fb3'];for(let i=0;i<5;i++){p.fillStyle=C[i];p.fillRect(30+i*26,22,23,26);p.fillStyle=C[(i+2)%5];p.fillRect(30+i*26,0,23,22);}
+  p.fillStyle='#fbf8f0';p.fillRect(162,10,26,38);p.fillStyle='#17222b';p.fillRect(166,16,18,7);p.fillStyle='#fbf8f0';p.fillRect(4,52,192,5);}),6);
+const PLANE=sticker(off(170,150,(p)=>{p.fillStyle='#4f6273';p.beginPath();p.ellipse(85,75,16,72,0,0,7);p.fill();
+  p.beginPath();p.moveTo(85,46);p.lineTo(168,62);p.lineTo(168,76);p.lineTo(85,84);p.lineTo(2,76);p.lineTo(2,62);p.closePath();p.fill();
+  p.beginPath();p.moveTo(85,128);p.lineTo(130,138);p.lineTo(130,146);p.lineTo(40,146);p.lineTo(40,138);p.closePath();p.fill();
+  p.fillStyle='#a9c8da';p.beginPath();p.ellipse(85,58,7,16,0,0,7);p.fill();p.fillStyle='#fbf8f0';p.beginPath();p.arc(130,68,9,0,7);p.fill();p.beginPath();p.arc(40,68,9,0,7);p.fill();
+  p.fillStyle='#2f6fb3';p.beginPath();p.arc(130,68,5,0,7);p.fill();p.beginPath();p.arc(40,68,5,0,7);p.fill();}),6);
+const STORM=sticker(off(230,190,(p)=>{p.fillStyle='#5d6672';[[60,70,48],[110,52,60],[165,72,46],[95,92,44],[150,96,40]].forEach(([x,y,r])=>{p.beginPath();p.arc(x,y,r,0,7);p.fill();});
+  p.fillStyle='#ffd600';p.beginPath();p.moveTo(110,96);p.lineTo(84,150);p.lineTo(108,148);p.lineTo(92,190);p.lineTo(144,128);p.lineTo(118,130);p.lineTo(136,96);p.closePath();p.fill();}),6);
+function hand(t,x,y,col,size,rot){g.save();g.translate(x,y);g.rotate(rot||0);g.font=(size||52)+'px '+MK;g.fillStyle=col;g.fillText(t,0,0);g.restore();}
+function stk(S,x,y,rot,sc){g.save();g.translate(x,y);g.rotate(rot);g.scale(sc,sc);g.drawImage(S,-S.ox-(S.width-2*S.ox)/2,-S.oy-(S.height-2*S.oy-20)/2);g.restore();}
+function pin(x,y){g.save();g.fillStyle='#d7262e';g.shadowColor='rgba(30,20,10,.45)';g.shadowBlur=8;g.shadowOffsetY=5;g.beginPath();g.arc(x,y,13,0,7);g.fill();g.shadowColor='transparent';g.fillStyle='rgba(255,255,255,.6)';g.beginPath();g.arc(x-4,y-4,4,0,7);g.fill();g.restore();}
+function title(){g.save();g.translate(50,150);g.rotate(-0.012);const W=980,H=270;tornPath(g,0,0,W,H,21,8);g.fillStyle='#fbf8f0';g.shadowColor='rgba(30,20,10,.4)';g.shadowBlur=20;g.shadowOffsetY=10;g.fill();g.shadowColor='transparent';
+  g.fillStyle='#17222b';g.font='400 92px '+DISP;g.fillText('The Bermuda Triangle',40,106);const a="doesn't";const wa=g.measureText(a).width;
+  g.fillStyle='rgba(255,214,0,.92)';g.beginPath();g.moveTo(32,148);g.lineTo(56+wa,142);g.lineTo(58+wa,226);g.lineTo(32,222);g.closePath();g.fill();g.fillStyle='#17222b';g.fillText(a+' eat ships',40,210);
+  g.fillStyle='rgba(240,232,200,.85)';g.save();g.translate(W-60,-6);g.rotate(0.5);g.fillRect(-56,-16,112,34);g.restore();g.restore();}
+function draw(lt){g.drawImage(paper,0,0);
+  // shipping lanes (thin dashed pencil) + ships
+  [[[MIA[0]+20,MIA[1]-40],[520,640],[1000,560]],[[MIA[0]+30,MIA[1]+10],[560,880],[1000,960]],[[300,520],[700,800],[SJU[0]+10,SJU[1]-60]]].forEach(L=>marker(g,L,1,4,'rgba(23,34,43,.5)',[10,12]));
+  // Gulf Stream: blue dashed marker hugging Florida, heading north-east
+  {const [x,y,a]=marker(g,[[205,1000],[220,830],[250,690],[330,560],[440,500]],1,11,'#1f4f8a',[20,14]);arrowHead(g,x,y,a,26,11,'#1f4f8a');}
+  hand('Gulf Stream',455,526,'#1f4f8a',34,-0.12);
+  // the triangle, hand-drawn red marker
+  marker(g,[MIA,[(MIA[0]+BDA[0])/2,(MIA[1]+BDA[1])/2-8],BDA],1,10,'#d7262e');marker(g,[BDA,[(BDA[0]+SJU[0])/2+8,(BDA[1]+SJU[1])/2],SJU],1,10,'#d7262e');marker(g,[SJU,[(SJU[0]+MIA[0])/2,(SJU[1]+MIA[1])/2+8],MIA],1,10,'#d7262e');
+  pin(...MIA);pin(...BDA);pin(...SJU);
+  hand('Miami',MIA[0]-120,MIA[1]+60,'#17222b',42,-0.04);hand('Bermuda',BDA[0]-70,BDA[1]-34,'#17222b',46,-0.03);hand('Puerto Rico',SJU[0]-170,SJU[1]+58,'#17222b',42,-0.03);
+  // stickers
+  stk(SHIP,640,900,-0.08+Math.sin(lt*2)*.02,0.9);stk(SHIP,880,1010,0.06,0.8);stk(SHIP,500,980,-0.05,0.7);
+  stk(STORM,880,710,0.06,0.72);hand('sudden',812,850,'#17222b',40,-0.04);hand('storms',822,894,'#17222b',40,-0.04);
+  stk(PLANE,330,680,0.7,0.85);hand('Flight 19, 1945',420,780,'#17222b',42,-0.06);hand('5 Navy bombers',432,822,'#4c4338',34,-0.06);
+  paperTag(g,10,0,60,1190,0.02,'Not more often','than any busy patch of ocean · NOAA',32,1);
+  paperTag(g,10,0,220,1352,-0.02,'Just a busy, rough sea','heavy traffic, Gulf Stream, storms',33,0);
+  title();g.drawImage(GRAIN,0,0);}
+window.DUR=6;window.draw=draw;draw(2);document.title='ok';
+</script><script>Promise.all([document.fonts.load("400 40px 'DM Serif Display'"),document.fonts.load("italic 500 30px 'EB Garamond'"),document.fonts.load("40px 'Permanent Marker'")]).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
