@@ -3,7 +3,12 @@ python -m bot.autodm_once <zernio_post_id> <videos-branch folder> [<vb dir>]
 
 Change the link button of existing automations (Jan, 2026-11-16: prompt PDFs on Drive for the top videos):
 python -m bot.autodm_once seturl dry|apply     reads data/dm_links.json = {"<automation name: tool (KEYWORD)>": "<new url>"}
-Only the url of url-buttons changes; texts, keywords, post binding and audience stay as they are. Log: logs/autodm.log"""
+Only the url of url-buttons changes; texts, keywords, post binding and audience stay as they are. Log: logs/autodm.log
+
+Story replies (Jan, 2026-11-17): python -m bot.autodm_once story dry|apply <KEYWORD>
+Creates ONE Zernio automation with trigger "story_reply" (any story, no post binding) that answers the keyword with a DM and a
+"Get the system" button. Existing automations are only read, never changed; if a story_reply automation with that keyword exists,
+nothing is created."""
 import json
 import sys
 from pathlib import Path
@@ -120,10 +125,49 @@ def setdm(apply: bool) -> None:
         telegram.notify(f"🤖 Auto-DM: dvě tlačítka (prompty + systém) u {done} automatizací")
 
 
+def story(apply: bool, kw: str) -> None:
+    cfg = json.loads(Path("data/dm_system.json").read_text())
+    data = poster._z("GET", "/comment-automations")
+    items = data.get("automations") or data.get("data") or (data if isinstance(data, list) else [])
+    out = [f"STORY {'APPLY' if apply else 'DRY'} keyword={kw}: {len(items)} automations exist"]
+    same = [a for a in items if kw.lower() in [str(k).lower() for k in (a.get("keywords") or [])]]
+    for a in same:
+        out.append(f"has keyword: {a.get('id') or a.get('_id')} {a.get('name')} trigger={a.get('trigger')} active={a.get('isActive')} dms={a.get('alsoMatchInDms')}")
+    acc = poster.instagram_account()
+    prof = acc.get("profileId")
+    prof = prof.get("_id") if isinstance(prof, dict) else prof
+    body = {
+        "profileId": prof, "accountId": acc.get("_id") or acc.get("id"), "name": f"Story reply ({kw})",
+        "trigger": "story_reply", "keywords": [kw, kw.lower()], "matchMode": "word", "typoTolerance": True,
+        "dmMessage": "Here's the system 👇\nType a topic and Claude builds the whole video: script, animation, captions.",
+        "dmMessageVariations": ["Here you go 👇\nOne line in, finished video out. No editing, no camera, no face.",
+                                "As promised 👇\nThe same styles as my videos, on any topic you type."],
+        "buttons": [{"type": "url", "title": cfg["system_title"][:20],
+                     "url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=story&utm_content=reply_" + kw.lower()}],
+    }
+    shown = {k: v for k, v in body.items() if k not in ("profileId", "accountId")}
+    if any(a.get("trigger") == "story_reply" for a in same):
+        out.append("story_reply automation with this keyword already exists: nothing created")
+    elif not apply:
+        out.append("would create: " + json.dumps(shown, ensure_ascii=False))
+    else:
+        try:
+            res = poster._z("POST", "/comment-automations", json=body)
+            got = res.get("automation") or res
+            out.append(f"created {got.get('_id') or got.get('id')} trigger={got.get('trigger')} keywords={got.get('keywords')} active={got.get('isActive')} buttons={[b.get('url') for b in (got.get('buttons') or [])]}")
+        except Exception as e:
+            out.append(f"FAILED: {e}")
+    Path("logs").mkdir(exist_ok=True)
+    Path("logs/autodm.log").write_text("\n".join(out))
+    print("\n".join(out))
+
+
 if sys.argv[1] == "setdm":
     setdm(len(sys.argv) > 2 and sys.argv[2] == "apply")
 elif sys.argv[1] == "seturl":
     seturl(len(sys.argv) > 2 and sys.argv[2] == "apply")
+elif sys.argv[1] == "story":
+    story(len(sys.argv) > 2 and sys.argv[2] == "apply", sys.argv[3] if len(sys.argv) > 3 and not sys.argv[3].startswith(".") else "SYSTEM")
 else:
     pid, name = sys.argv[1], sys.argv[2]
     vb = Path(sys.argv[3] if len(sys.argv) > 3 else "../vb")
