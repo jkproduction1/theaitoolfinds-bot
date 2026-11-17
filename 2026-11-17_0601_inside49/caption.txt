@@ -1,7 +1,7 @@
-Type one command and Claude shows you what's inside anything.
+Ever wondered what's inside a game controller or a smart lock? Claude takes them apart in 3D from one line of text.
 
-Part #41 of a daily series.
+Type it, get it, part 41.
 
-Comment PARTS and I'll DM you the prompts.
+I'll DM you all three prompts, just comment PARTS.
 
-#claude #3danimation #aitools
+#howitworks #3danimation #claude

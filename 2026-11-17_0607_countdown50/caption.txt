@@ -1,5 +1,5 @@
-How to make this GTA 6 launch countdown with Claude.
+GTA 6 lands on November 19, so I had Claude build a neon countdown for it. Three steps, no editing app.
 
-Comment COUNTDOWN and I'll DM you the prompt.
+Comment COUNTDOWN for the prompt.
 
-#gta6 #claude #motiondesign
+#gta6 #countdown #motiondesign
