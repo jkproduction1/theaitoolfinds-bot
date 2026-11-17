@@ -352,16 +352,17 @@ human.position.set(-10.2, 0, 5.2);
 const barM = new THREE.MeshBasicMaterial({ color: '#ff6a3d', toneMapped: false, fog: false });
 function hBar(x0, x1, y, z, tick, th = 0.22) { const g = new THREE.Group();
   const b = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, th, th), barM); b.position.set((x0 + x1) / 2, y, z); g.add(b);
-  for (const x of [x0, x1]) { const t = new THREE.Mesh(new THREE.BoxGeometry(th, tick, th), barM); t.position.set(x, y, z); g.add(t); } scene.add(g); }
+  for (const x of [x0, x1]) { const t = new THREE.Mesh(new THREE.BoxGeometry(th, tick, th), barM); t.position.set(x, y, z); g.add(t); } scene.add(g); return g; }
 function vBar(x, y0, y1, z, tick) { const g = new THREE.Group(), th = 0.09;
   const b = new THREE.Mesh(new THREE.BoxGeometry(th, y1 - y0, th), barM); b.position.set(x, (y0 + y1) / 2, z); g.add(b);
-  for (const y of [y0, y1]) { const t = new THREE.Mesh(new THREE.BoxGeometry(tick, th, th), barM); t.position.set(x, y, z); g.add(t); } scene.add(g); }
+  for (const y of [y0, y1]) { const t = new THREE.Mesh(new THREE.BoxGeometry(tick, th, th), barM); t.position.set(x, y, z); g.add(t); } scene.add(g); return g; }
 const DINO_BAR_Y = 20.2;
-hBar(-17.5, 17.5, DINO_BAR_Y, 0, 1.6);
+const barDino = hBar(-17.5, 17.5, DINO_BAR_Y, 0, 1.6);
+const GUIDES = [];
 const guideM = new THREE.LineDashedMaterial({ color: '#ff6a3d', dashSize: 0.5, gapSize: 0.4, transparent: true, opacity: .8, toneMapped: false, fog: false });
-for (const [x, y] of [[-17.5, 15.9], [17.5, 3.5]]) { const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x, DINO_BAR_Y, 0), new THREE.Vector3(x, y, 0)]), guideM); l.computeLineDistances(); scene.add(l); }
-hBar(busX - 6, busX + 6, 0.35, busZ + 2.4, 0.9);
-vBar(-11.0, 0, 1.8, 5.2, 0.4);
+for (const [x, y] of [[-17.5, 15.9], [17.5, 3.5]]) { const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x, DINO_BAR_Y, 0), new THREE.Vector3(x, y, 0)]), guideM); l.computeLineDistances(); scene.add(l); GUIDES.push(l); }
+const barBus = hBar(busX - 6, busX + 6, 0.35, busZ + 2.4, 0.9);
+const barYou = vBar(-11.0, 0, 1.8, 5.2, 0.4);
 
 
 // ---------- prehistoric life: pterosaurs in the sky + a distant herd ----------
@@ -389,22 +390,74 @@ const tmp = new THREE.Vector3();
 function proj(x, y, z) { tmp.set(x, y, z).project(camera); return [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H]; }
 function place(el, x, y) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
 const ease = t => t < .5 ? 16 * t ** 5 : 1 - Math.pow(-2 * t + 2, 5) / 2;
+// ---------- 6.3 s shot timing ----------
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ramp = (t, a, b) => cl((t - a) / (b - a));
+const sm = x => x * x * (3 - 2 * x);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const popS = x => { const c1 = 1.70158, c3 = c1 + 1, y = x - 1; return 1 + c3 * y * y * y + c1 * y * y; }; // back-out overshoot
+for (const g of [barDino, barBus, barYou]) { const m = barM.clone(); g.userData.m = m; g.traverse(o => { if (o.isMesh) o.material = m; }); }
+function barVis(g, a) { g.visible = a > 0.001; g.userData.m.transparent = a < 1; g.userData.m.opacity = a; g.userData.m.needsUpdate = true; }
+const HL = document.querySelector('.hl'), NOTE = document.querySelector('.note');
+const T_IN = 1.5, T_OUT = 4.5, T_END = 6.3, D0 = 16; let T_BUS = 2.6, T_DINO = 3.8;
+const HUM = [-10.2, 5.2];
+// close framing: same 26 deg lens, camera ~16 m from the human; final framing: the original still
+const CLOSE = { px: HUM[0] + 0.5, py: 2.3, tx: HUM[0] + 0.5, ty: 2.25, tz: HUM[1] };
+const FINAL = { px: 1.0, py: 14.5, tx: 1.0, ty: 12.3, tz: 0, dist: 175 };
+function setCam(t) {
+  let px, py, pz, tx, ty, tz;
+  if (t >= T_OUT) { // hold: very slow drift that lands exactly on the original still
+    const v = 1 - ramp(t, T_OUT, T_END);
+    px = tx = FINAL.px + 0.3 * v; py = FINAL.py; ty = FINAL.ty; tz = 0; pz = FINAL.dist + 0.6 * v;
+  } else {
+    const endX = FINAL.px + 0.3, endD = FINAL.dist + 0.6;
+    const s = eio(ramp(t, T_IN, T_OUT));
+    const d0 = D0 - 0.9 * (1 - ramp(t, 0, T_IN)); // slow creep out during the close-up
+    const d = 0.5 * d0 * Math.pow(endD / d0, s) + 0.5 * (d0 + (endD - d0) * s); // half exponential, half linear dolly
+    const f = cl((d - d0) / (endD - d0));
+    const pf = Math.pow(f, 0.8);
+    px = CLOSE.px + (endX - CLOSE.px) * pf; tx = CLOSE.tx + (endX - CLOSE.tx) * pf;
+    py = CLOSE.py + (FINAL.py - CLOSE.py) * f; ty = CLOSE.ty + (FINAL.ty - CLOSE.ty) * pf;
+    tz = CLOSE.tz * (1 - pf); pz = tz + d;
+  }
+  camera.position.set(px, py, pz); camera.lookAt(tx, ty, tz); camera.updateMatrixWorld();
+}
+const onScr = (x, y, m = 40) => x > m && x < W - m && y > m && y < H - m ? 1 : 0;
+function pill(el, x, y, a, sc = 1) { place(el, x, y); el.style.opacity = a; el.style.transform = `translate(-50%,-50%) scale(${sc})`; }
+// final "You" label offset relative to the projected head point (so the move ends on the current still)
+setCam(T_END);
+const YOU_F = (() => { const [, by] = proj(busX, 0.35, busZ + 2.4), [hx, hy] = proj(HUM[0], 1.9, HUM[1]); return [230 - hx, by + 100 - hy]; })();
+const YOU_C = [250, 130];
+// labels only start once their target is really in frame (never before the scripted time)
+for (let tt = 1.5; tt < T_OUT; tt += 1 / 30) { setCam(tt); const [x, y] = proj(busX, 0.35, busZ + 2.4); if (onScr(x, y, 60)) { T_BUS = Math.max(T_BUS, tt); break; } }
+for (let tt = 1.5; tt < T_OUT; tt += 1 / 30) { setCam(tt); const [x0, y0] = proj(-17.5, DINO_BAR_Y + 3, 0), [x1] = proj(17.5, DINO_BAR_Y, 0); if (onScr(x0, y0, 30) && x1 < W - 30) { T_DINO = Math.max(T_DINO, tt); break; } }
 function render(t) {
-  const k = ease(Math.min(1, t / 7));
-  const camX = 2.2 - 1.2 * k, dist = 177 - 2 * k;
-  camera.position.set(camX, 14.5, dist); camera.lookAt(camX, 12.3, 0); camera.updateMatrixWorld();
-  flap(t); renderer.render(scene, camera);
-  const [dx, dy] = proj(0, DINO_BAR_Y, 0), [bx, by] = proj(busX, 0.35, busZ + 2.4), [hx, hy] = proj(-10.2, 1.9, 5.2);
-  place(pD, dx, dy - 92); place(pB, bx + 40, by + 100); place(pY, 230, by + 100);
+  t = cl(t, 0, T_END);
+  setCam(t);
+  flap(t);
+  const kz = sm(ramp(t, T_IN + 0.5, T_OUT));
+  const aBus0 = sm(ramp(t, T_BUS, T_BUS + 0.35)), pd = ramp(t, T_DINO, T_DINO + 0.45), aDino0 = sm(ramp(t, T_DINO, T_DINO + 0.25));
+  const [dx, dy] = proj(0, DINO_BAR_Y, 0), [bx, by] = proj(busX, 0.35, busZ + 2.4), [hx, hy] = proj(HUM[0], 1.9, HUM[1]);
+  const aBus = aBus0 * onScr(bx, by), aDino = aDino0 * onScr(dx, dy), aYou = onScr(hx, hy, 10);
+  barVis(barBus, aBus0); barVis(barDino, aDino0); barVis(barYou, 1);
+  barDino.scale.set(0.2 + 0.8 * sm(ramp(t, T_DINO, T_DINO + 0.4)), 1, 1);
+  guideM.opacity = .8 * sm(ramp(t, T_DINO + 0.25, T_DINO + 0.6)); for (const l of GUIDES) l.visible = guideM.opacity > 0.001;
+  renderer.render(scene, camera);
+  HL.style.opacity = sm(ramp(t, 0.3, 0.9)); HL.style.transform = `translateY(${(1 - sm(ramp(t, 0.3, 0.9))) * 24}px)`;
+  NOTE.style.opacity = sm(ramp(t, T_DINO + 0.3, T_DINO + 0.8));
+  const ox = YOU_C[0] + (YOU_F[0] - YOU_C[0]) * kz, oy = YOU_C[1] + (YOU_F[1] - YOU_C[1]) * kz;
+  const yx = cl(hx + ox, 110, W - 110), yy = hy + oy, yTop = yy - 54;
+  const sD = 0.6 + 0.4 * popS(pd), sB = 0.85 + 0.15 * popS(ramp(t, T_BUS, T_BUS + 0.4));
+  pill(pD, dx, dy - 92, aDino, sD); pill(pB, bx + 40, by + 100, aBus, sB); pill(pY, yx, yy, aYou);
   svg.innerHTML =
-    `<line x1="${dx}" y1="${dy - 40}" x2="${dx}" y2="${dy - 6}" stroke="#ff6a3d" stroke-width="2"/><circle cx="${dx}" cy="${dy}" r="6" fill="#ff6a3d"/>` +
-    `<line x1="${bx + 40}" y1="${by + 46}" x2="${bx}" y2="${by + 8}" stroke="#ff6a3d" stroke-width="2"/><circle cx="${bx}" cy="${by + 2}" r="6" fill="#ff6a3d"/>` +
-    `<line x1="230" y1="${by + 46}" x2="${hx - 4}" y2="${hy + 4}" stroke="#ff6a3d" stroke-width="2"/><circle cx="${hx}" cy="${hy}" r="6" fill="#ff6a3d"/>`;
+    `<g opacity="${aDino}"><line x1="${dx}" y1="${dy - 40}" x2="${dx}" y2="${dy - 6}" stroke="#ff6a3d" stroke-width="2"/><circle cx="${dx}" cy="${dy}" r="6" fill="#ff6a3d"/></g>` +
+    `<g opacity="${aBus}"><line x1="${bx + 40}" y1="${by + 46}" x2="${bx}" y2="${by + 8}" stroke="#ff6a3d" stroke-width="2"/><circle cx="${bx}" cy="${by + 2}" r="6" fill="#ff6a3d"/></g>` +
+    `<g opacity="${aYou}"><line x1="${yx}" y1="${yTop}" x2="${hx - 4}" y2="${hy + 4}" stroke="#ff6a3d" stroke-width="2"/><circle cx="${hx}" cy="${hy}" r="6" fill="#ff6a3d"/></g>`;
 }
 window.renderAt = t => render(t);
 const q = new URLSearchParams(location.search);
 await Promise.race([Promise.all(['900 76px "Inter"', '800 40px "Inter"'].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 3000))]);
-render(q.has('t') ? parseFloat(q.get('t')) : 7);
+render(q.has('t') ? parseFloat(q.get('t')) : 6.3);
 window.READY = true;
 requestAnimationFrame(() => { document.title = 'ok'; });
 </script>
