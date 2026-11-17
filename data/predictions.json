@@ -4410,5 +4410,83 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "countdown50",
+  "date": "2026-11-17",
+  "score": 68,
+  "mode": "full",
+  "features": {
+   "hook": 0.36,
+   "hook_words": 10,
+   "hook_end_s": 2.95,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 3.6,
+   "dur_s": 12.4,
+   "words": 39,
+   "pace": 0.42,
+   "length": 0.31,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 0.0,
+   "visual_changes": 47,
+   "visuals": 1.0,
+   "ending": 0.96,
+   "angle": "new-ability",
+   "topic": 0.78
+  },
+  "flags": [],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "styles48",
+  "date": "2026-11-17",
+  "score": 75,
+  "mode": "full",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 4.68,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.53,
+   "dur_s": 31.6,
+   "words": 46,
+   "pace": 0.0,
+   "length": 0.86,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.5,
+   "visual_changes": 70,
+   "visuals": 1.0,
+   "ending": 0.82,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.7 s (cíl ≤2,5 s)",
+   "video má 32 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]
