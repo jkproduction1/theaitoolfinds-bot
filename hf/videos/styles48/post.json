@@ -1,5 +1,9 @@
 {
- "angle": "app-demo",
+ "url": "https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?c=painted-story|paper-collage|flat-science&t=how%20the%20Titanic%20was%20found|why%20Big%20Ben%20is%20leaning|why%20we%20get%20goosebumps",
  "keyword": "TITANIC",
- "tool_name": "Claude explainer styles"
+ "angle": "app-demo",
+ "tool_name": "Claude explainer styles",
+ "cover_at": 8.0,
+ "summary_cs": "„Type it, get it #40“ (31 s): /painted-story jak našli Titanic (1. 9. 1985, sáně Argo, stopa trosek, kotel; WHOI), /paper-collage proč se Big Ben naklání (~50 cm nahoře, k severozápadu, měkký jíl; Wikipedie), /flat-science proč máme husí kůži (sval arrector pili, pozůstatek po srstnatých předcích). Výsledky nakreslil Claude v kódu, DM pošle prompty + systém.",
+ "caption": "Type one command and Claude turns any question into a video.\n\nPart #40 of a daily series.\n\nComment TITANIC and I'll DM you the prompts.\n\n#claude #motiondesign #aitools"
 }

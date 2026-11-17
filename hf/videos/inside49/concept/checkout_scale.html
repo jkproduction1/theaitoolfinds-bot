@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Self-checkout scale</title>
+<!--
+  Facts used (verified 2026-11-17):
+  - Strain-gauge load cell: "When force is exerted on the load cell, the spring element is slightly deformed ... As the spring element
+    deforms, the strain gauges also change shape" and their resistance changes; "The change in voltage is proportional to the amount
+    of force applied to the cell."  https://en.wikipedia.org/wiki/Load_cell
+  - "A strain gauge is a device that measures electrical resistance changes in response to, and proportional of, strain."
+    SparkFun, Getting Started with Load Cells: https://learn.sparkfun.com/tutorials/getting-started-with-load-cells/strain-gauge-basics
+  - Self-checkout bagging-area security scale compares the measured weight change with the item's expected weight
+    (from a database / the scanner scale): US6779722B1 https://patents.google.com/patent/US6779722
+  Design: generic plate + single-point (binocular) aluminium load cell, our own design, no branding. Bend is exaggerated.
+-->
+<style>
+  :root{--accent:#ffb23d;--ink:#f6f8fb;--ok:#3ddc84}
+  body{margin:0;background:#000;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#151b26;font-family:"Inter",system-ui,Arial,sans-serif}
+  canvas{position:absolute;inset:0;display:block}
+  #ov{position:absolute;inset:0;pointer-events:none}
+  #ov svg{position:absolute;inset:0}
+  .pill{position:absolute;transform:translate(-50%,-50%);background:rgba(12,16,24,.82);border:2px solid rgba(255,255,255,.18);border-radius:20px;padding:12px 26px 14px;color:#fff;text-align:center;white-space:nowrap;box-shadow:0 10px 34px rgba(0,0,0,.4)}
+  .pill b{display:block;font-weight:800;font-size:44px;letter-spacing:-.5px}
+  .pill i{display:block;font-style:normal;font-weight:600;font-size:34px;color:var(--accent);margin-top:2px}
+  #read{position:absolute;left:540px;top:330px;transform:translate(-50%,-50%);width:780px;background:linear-gradient(#0d121b,#0a0e15);border:2px solid rgba(255,255,255,.16);border-radius:28px;
+        box-shadow:0 18px 50px rgba(0,0,0,.5), inset 0 0 0 6px rgba(255,255,255,.03);padding:18px 30px 22px;color:#fff;text-align:center}
+  #read .w{font:700 112px/1.05 "DejaVu Sans Mono",monospace;color:#9ef0ff;text-shadow:0 0 22px rgba(80,210,255,.55);letter-spacing:-2px}
+  #read .row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:8px;font-weight:700;font-size:35px;color:#dfe7ef;white-space:nowrap}
+  #tick{width:52px;height:52px;border-radius:50%;background:var(--ok);display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(61,220,132,.7)}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.js","three/addons/":"./"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div id="read"><div class="w" id="wt">0.00 kg</div>
+      <div class="row" id="chk"><span id="tick"><svg width="34" height="34" viewBox="0 0 34 34"><path id="tp" d="M7 18 L14 25 L28 9" fill="none" stroke="#06210f" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></span><span>checked against the expected weight</span></div></div>
+    <div class="pill" id="pCell"><b>load cell</b></div>
+    <div class="pill" id="pGauge"><b>strain gauge</b><i>bends → resistance changes</i></div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
+
+const W = 1080, H = 1920;
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+stage.prepend(renderer.domElement);
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd = mulberry32(7); const R = (a, b) => a + rnd() * (b - a);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ramp = (t, a, b) => cl((t - a) / (b - a));
+const sm = x => x * x * (3 - 2 * x);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eout = x => 1 - Math.pow(1 - x, 3);
+const expo = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const popS = x => { const c1 = 1.70158, c3 = c1 + 1, y = x - 1; return 1 + c3 * y * y * y + c1 * y * y; };
+
+function canvasTex(w, h, draw) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+
+const scene = new THREE.Scene();
+scene.background = canvasTex(64, 512, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h);
+  gr.addColorStop(0, '#0e1420'); gr.addColorStop(.45, '#1f2a3b'); gr.addColorStop(.75, '#2a3647'); gr.addColorStop(1, '#1a2230'); g.fillStyle = gr; g.fillRect(0, 0, w, h); });
+scene.fog = new THREE.Fog('#26313f', 160, 420);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(30, W / H, 1, 2000);
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight('#cfe0ff', '#2a2420', 0.5));
+const key = new THREE.DirectionalLight('#fff1dc', 2.6); key.position.set(-40, 90, 60); key.castShadow = true;
+Object.assign(key.shadow.camera, { left: -45, right: 45, top: 45, bottom: -45, near: 10, far: 250 });
+key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0005; key.shadow.normalBias = 0.05; key.shadow.radius = 4;
+scene.add(key);
+const rim = new THREE.DirectionalLight('#8fc8ff', 1.6); rim.position.set(60, 40, -80); scene.add(rim);
+
+// ---------- counter (units: cm, plate top at y = 0) ----------
+const counter = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshStandardMaterial({ color: '#3a4250', roughness: .55, metalness: 0 }));
+counter.rotation.x = -Math.PI / 2; counter.position.y = -10; counter.receiveShadow = true; scene.add(counter);
+const aoTex = canvasTex(128, 128, (g) => { const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(0,0,0,.75)'); r.addColorStop(.6, 'rgba(0,0,0,.3)'); r.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128); });
+{ const m = new THREE.Mesh(new THREE.PlaneGeometry(70, 52), new THREE.MeshBasicMaterial({ map: aoTex, transparent: true, depthWrite: false })); m.rotation.x = -Math.PI / 2; m.position.y = -9.95; scene.add(m); }
+
+// ---------- housing (open tray), front cut away with a clipping plane ----------
+const cut = new THREE.Plane(new THREE.Vector3(0, 0, -1), 60);
+const housM = new THREE.MeshStandardMaterial({ color: '#4a515c', roughness: .45, metalness: .3, clippingPlanes: [cut], side: THREE.DoubleSide });
+const housIn = new THREE.MeshStandardMaterial({ color: '#4a505a', roughness: .7, metalness: .2 });
+const box = (w, h, d, mat, x, y, z, r = 0.4) => { const m = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 3, r), mat); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; scene.add(m); return m; };
+box(48, 1.4, 36, housIn, 0, -9.3, 0, .3);                        // floor
+box(48, 8.4, 1.6, housM, 0, -5.6, 17.2); box(48, 8.4, 1.6, housM, 0, -5.6, -17.2);
+box(1.6, 8.4, 36, housM, -23.2, -5.6, 0); box(1.6, 8.4, 36, housM, 23.2, -5.6, 0);
+// glowing cut edge strip (shows where the cutaway is)
+const edgeM = new THREE.MeshBasicMaterial({ color: '#ffb23d', transparent: true, opacity: 0, toneMapped: false });
+const edgeL = new THREE.Mesh(new THREE.BoxGeometry(1.7, 8.5, .25), edgeM), edgeR = edgeL.clone(); // (not added: read as a stray bar)
+
+// ---------- load cell: single-point aluminium beam with the binocular hole ----------
+const BL = 26, BH = 4.4, BD = 3.6, BY = -4.6; // centre y
+const shape = new THREE.Shape(); const NP = 80;
+shape.moveTo(-BL / 2, -BH / 2);
+for (let i = 1; i <= NP; i++) shape.lineTo(-BL / 2 + BL * i / NP, -BH / 2);
+for (let i = NP - 1; i >= 0; i--) shape.lineTo(-BL / 2 + BL * i / NP, BH / 2);
+shape.lineTo(-BL / 2, -BH / 2);
+{ const r = 1.45, hc = 0.45, a0 = Math.asin(hc / r), cx = 4.0, hole = new THREE.Path(); const N = 26;
+  for (let i = 0; i <= N; i++) { const a = a0 + (2 * Math.PI - 2 * a0) * i / N; const p = [-cx + r * Math.cos(a), r * Math.sin(a)]; i ? hole.lineTo(...p) : hole.moveTo(...p); }
+  for (let k = 1; k < 10; k++) hole.lineTo(-cx + r * Math.cos(a0) + (2 * cx - 2 * r * Math.cos(a0)) * k / 10, -hc);
+  for (let i = 0; i <= N; i++) { const a = Math.PI + a0 + (2 * Math.PI - 2 * a0) * i / N; hole.lineTo(cx + r * Math.cos(a), r * Math.sin(a)); }
+  for (let k = 1; k < 10; k++) hole.lineTo(cx - r * Math.cos(a0) - (2 * cx - 2 * r * Math.cos(a0)) * k / 10, hc);
+  shape.holes.push(hole); }
+const beamGeo = new THREE.ExtrudeGeometry(shape, { depth: BD, bevelEnabled: true, bevelThickness: .15, bevelSize: .15, bevelSegments: 2, curveSegments: 4 });
+beamGeo.translate(0, 0, -BD / 2);
+const rest = beamGeo.attributes.position.array.slice();
+const beamM = new THREE.MeshPhysicalMaterial({ color: '#c9cfd6', roughness: .42, metalness: .5, envMapIntensity: 1.2, clearcoat: .2 });
+const beam = new THREE.Mesh(beamGeo, beamM); beam.position.y = BY; beam.castShadow = beam.receiveShadow = true; scene.add(beam);
+const glowGeo = beamGeo.clone(); glowGeo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(glowGeo.attributes.position.count * 3), 3));
+const glow = new THREE.Mesh(glowGeo, new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -2 }));
+glow.position.y = BY; glow.renderOrder = 3; scene.add(glow);
+// per-pixel stress map on the front face (masked by the binocular hole), bends with the beam
+const stressU = { uD: { value: 0 }, uA: { value: 0 }, uT: { value: 0 } };
+const stress = new THREE.Mesh(new THREE.PlaneGeometry(BL, BH, 104, 12), new THREE.ShaderMaterial({ uniforms: stressU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false,
+  vertexShader: `uniform float uD; varying vec2 vP; void main(){ vP = position.xy; vec3 p = position; p.y -= uD * smoothstep(-5.6, 5.6, p.x);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }`,
+  fragmentShader: `uniform float uA; uniform float uT; varying vec2 vP;
+    void main(){ float r = 1.45, hc = 0.45; vec2 p = vP;
+      float inHole = max(max(step(length(p - vec2(-4.0, 0.0)), r), step(length(p - vec2(4.0, 0.0)), r)), step(abs(p.y), hc) * step(abs(p.x), 4.0));
+      if (inHole > 0.5) discard;
+      float s = (exp(-pow(p.x + 4.0, 2.0) / 2.0) + exp(-pow(p.x - 4.0, 2.0) / 2.0)) * (0.2 + 0.8 * clamp((abs(p.y) - 1.2) / 0.9, 0.0, 1.0));
+      s = clamp(s, 0.0, 1.0);
+      vec3 c = s < 0.5 ? mix(vec3(0.10, 0.35, 1.0), vec3(1.0, 0.68, 0.18), s / 0.5) : mix(vec3(1.0, 0.68, 0.18), vec3(1.0, 0.18, 0.12), (s - 0.5) / 0.5);
+      float a = uA * (0.18 + 0.95 * s) * (0.9 + 0.1 * sin(uT * 7.0 - p.x * 0.8));
+      gl_FragColor = vec4(c * a, 1.0); }` }));
+stress.position.set(0, BY, BD / 2 + .17); stress.renderOrder = 4; scene.add(stress);
+// bending: fixed left end, free right end drops while staying parallel (parallelogram flexure)
+const bendS = x => sm(cl((x + 5.6) / 11.2));
+const flex = x => Math.exp(-((x + 4) ** 2) / 2.2) + Math.exp(-((x - 4) ** 2) / 2.2);
+const C_LO = new THREE.Color('#1f6bff'), C_MID = new THREE.Color('#ffb23d'), C_HI = new THREE.Color('#ff3b2f'), cc = new THREE.Color();
+function bend(D, glowA) {
+  const p = beamGeo.attributes.position, gp = glowGeo.attributes.position, gc = glowGeo.attributes.color;
+  for (let i = 0; i < p.count; i++) { const x = rest[i * 3], y = rest[i * 3 + 1], z = rest[i * 3 + 2];
+    const yy = y - D * bendS(x); p.setXYZ(i, x, yy, z); gp.setXYZ(i, x, yy, z);
+    const web = cl((Math.abs(y) - 1.0) / 1.0); const s = flex(x) * (0.35 + 0.65 * web);
+    if (s < .5) cc.copy(C_LO).lerp(C_MID, s / .5); else cc.copy(C_MID).lerp(C_HI, (s - .5) / .5);
+    const a = glowA * (0.15 + 0.85 * s); gc.setXYZ(i, cc.r * a, cc.g * a, cc.b * a); }
+  p.needsUpdate = gp.needsUpdate = gc.needsUpdate = true; beamGeo.computeVertexNormals();
+}
+// mounting blocks + bolts
+const blockM = new THREE.MeshStandardMaterial({ color: '#59606b', roughness: .5, metalness: .6 });
+box(6, 2.2, 5, blockM, -9.5, BY - BH / 2 - 1.1, 0, .2); // fixed to the floor
+const topBlock = box(6, 1.9, 5, blockM, 9.5, BY + BH / 2 + 0.95, 0, .2); // carries the plate
+const boltM = new THREE.MeshStandardMaterial({ color: '#d9dde2', roughness: .25, metalness: 1 });
+const bolts = [];
+for (const bx of [-11, -8]) { const b = new THREE.Mesh(new THREE.CylinderGeometry(.5, .5, .4, 16), boltM); b.position.set(bx, BY + BH / 2 + .2, 0); scene.add(b); }
+for (const bx of [8, 11]) { const b = new THREE.Mesh(new THREE.CylinderGeometry(.5, .5, .4, 16), boltM); b.rotation.x = Math.PI; scene.add(b); bolts.push([b, bx]); }
+// cable (4 wires bundled) leaving the fixed end
+{ const cv = new THREE.CatmullRomCurve3([[-13, BY, 0], [-16, BY - .5, 2], [-18, -8.2, 6], [-21, -8.4, 12]].map(a => new THREE.Vector3(...a)));
+  const m = new THREE.Mesh(new THREE.TubeGeometry(cv, 30, .45, 8), new THREE.MeshStandardMaterial({ color: '#1b1d22', roughness: .5 })); m.castShadow = true; scene.add(m); }
+
+// ---------- strain gauge (foil grid) on the thin top web over the hole ----------
+const gaugeTex = canvasTex(256, 160, (g, w, h) => { g.fillStyle = '#c9822a'; g.fillRect(0, 0, w, h);
+  g.fillStyle = '#f5d083'; const n = 11, x0 = 46, x1 = 210; for (let i = 0; i < n; i++) g.fillRect(x0 + i * (x1 - x0) / (n - 1) - 3, 26, 7, 108);
+  g.fillRect(x0 - 3, 128, x1 - x0 + 7, 7); g.fillRect(x0 - 3, 25, x1 - x0 + 7, 7);
+  g.fillStyle = '#e8b45a'; g.fillRect(8, 56, 30, 48); g.fillRect(218, 56, 30, 48); });
+const gaugeM = new THREE.MeshStandardMaterial({ map: gaugeTex, roughness: .35, metalness: .4, emissive: '#ffb23d', emissiveIntensity: 0, emissiveMap: gaugeTex });
+const GX = -4;
+const gauge = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 2.1), gaugeM); gauge.rotation.x = -Math.PI / 2; scene.add(gauge);
+const gaugeHalo = new THREE.Mesh(new THREE.PlaneGeometry(9, 7), new THREE.MeshBasicMaterial({ map: aoTex, color: '#ffb23d', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+gaugeHalo.rotation.x = -Math.PI / 2; scene.add(gaugeHalo);
+{ // fine sensor wires from the gauge pads
+  const wm = new THREE.MeshStandardMaterial({ color: '#c0392b', roughness: .4 });
+  for (const dz of [-.5, .5]) { const cv = new THREE.CatmullRomCurve3([[GX - 1.8, BY + BH / 2 + .1, dz], [GX - 4, BY + BH / 2 + .5, dz], [-12.6, BY + .6, dz * .6]].map(a => new THREE.Vector3(...a)));
+    scene.add(new THREE.Mesh(new THREE.TubeGeometry(cv, 16, .09, 5), wm)); } }
+
+// ---------- plate (brushed steel), ghosts during the cutaway ----------
+const brushed = canvasTex(512, 512, (g, w, h) => { g.fillStyle = '#9aa1a9'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 2600; i++) { g.fillStyle = `rgba(${rnd() < .5 ? '255,255,255' : '40,45,55'},${R(.04, .12)})`; g.fillRect(0, rnd() * h, w, R(.5, 1.6)); } });
+const plateM = new THREE.MeshPhysicalMaterial({ color: '#d6dbe0', map: brushed, roughness: .38, metalness: .55, envMapIntensity: 1.5, transparent: true, opacity: 1 });
+const plate = new THREE.Group(); scene.add(plate);
+const plateMesh = new THREE.Mesh(new RoundedBoxGeometry(46, 1.2, 34, 3, .45), plateM); plateMesh.position.y = -.6; plateMesh.castShadow = plateMesh.receiveShadow = true; plate.add(plateMesh);
+const plateEdgeM = new THREE.LineBasicMaterial({ color: '#8fd8ff', transparent: true, opacity: 0, toneMapped: false });
+const plateEdge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(46, 1.2, 34)), plateEdgeM); plateEdge.position.y = -.6; plate.add(plateEdge);
+// rubber feet strip around (generic, no branding)
+{ const m = new THREE.Mesh(new RoundedBoxGeometry(46.6, .5, 34.6, 2, .2), new THREE.MeshStandardMaterial({ color: '#1a1c20', roughness: .8, transparent: true })); m.position.y = -1.35; plate.add(m); plate.userData.rim = m; }
+
+// ---------- bag of apples ----------
+const bag = new THREE.Group(); scene.add(bag);
+function appleGeo() { const g = new THREE.SphereGeometry(3.9, 28, 18); const p = g.attributes.position, v = new THREE.Vector3();
+  const cols = new Float32Array(p.count * 3), c = new THREE.Color(), red = new THREE.Color('#b3121c'), dark = new THREE.Color('#6d0a12'), yel = new THREE.Color('#e9a43a');
+  const seed = rnd() * 10;
+  for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); const n = v.clone().normalize();
+    const dimple = Math.exp(-((1 - n.y) ** 2) / .02) * .9 + Math.exp(-((1 + n.y) ** 2) / .03) * .5; v.multiplyScalar(1 - dimple * .18); v.y *= .92; p.setXYZ(i, v.x, v.y, v.z);
+    const ang = Math.atan2(n.z, n.x); const streak = .5 + .5 * Math.sin(ang * 14 + seed + n.y * 3);
+    c.copy(red).lerp(dark, streak * .45).lerp(yel, cl(-n.x * .5 - n.y * .4 + .1 + Math.sin(ang * 3 + seed) * .25) * .6); cols.set([c.r, c.g, c.b], i * 3); }
+  g.setAttribute('color', new THREE.BufferAttribute(cols, 3)); g.computeVertexNormals(); return g; }
+const appleM = new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: .35, clearcoat: .6, clearcoatRoughness: .3 });
+const stemM = new THREE.MeshStandardMaterial({ color: '#4a3020', roughness: .8 });
+const APPLES = [[-3.9, 3.6, -3.4], [3.9, 3.6, -3.6], [-4.0, 3.6, 3.7], [4.0, 3.6, 3.4], [0, 10.4, -2.6], [-2.6, 10.6, 2.2], [3.0, 10.5, 2.0]];
+for (const [x, y, z] of APPLES) { const a = new THREE.Mesh(appleGeo(), appleM); a.position.set(x, y, z); a.rotation.set(R(-.4, .4), R(0, 6), R(-.4, .4)); a.castShadow = true;
+  const st = new THREE.Mesh(new THREE.CylinderGeometry(.13, .18, 1.4, 6), stemM); st.position.y = 3.6; st.rotation.z = R(-.4, .4); a.add(st); bag.add(a); }
+{ // clear produce bag: lathe with wrinkles, gathered at the top + twist
+  const pts = []; const prof = [[0, 0], [7.5, .05], [9.4, .8], [9.9, 3], [10, 8], [9.4, 12], [7.6, 14.6], [4.2, 16.6], [1.2, 18.4], [.7, 19.4]];
+  for (const [r, y] of prof) pts.push(new THREE.Vector2(r, y));
+  const g = new THREE.LatheGeometry(new THREE.SplineCurve(pts).getPoints(40), 48); const p = g.attributes.position, v = new THREE.Vector3();
+  for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); const a = Math.atan2(v.z, v.x), rr = Math.hypot(v.x, v.z); if (rr < .01) continue;
+    const k = 1 + .045 * Math.sin(a * 9 + v.y * .7) * cl(v.y / 6) + .03 * Math.sin(a * 23 - v.y * 1.3); p.setXYZ(i, v.x * k, v.y, v.z * k); }
+  g.computeVertexNormals();
+  const bagM = new THREE.MeshPhysicalMaterial({ color: '#eef6ff', roughness: .12, metalness: 0, transparent: true, opacity: .26, side: THREE.DoubleSide, depthWrite: false, clearcoat: 1, envMapIntensity: 1.6 });
+  const m = new THREE.Mesh(g, bagM); m.renderOrder = 2; bag.add(m);
+  const tw = new THREE.Mesh(new THREE.CylinderGeometry(.9, .5, 3.4, 10), new THREE.MeshPhysicalMaterial({ color: '#f4f8ff', roughness: .3, transparent: true, opacity: .55 })); tw.position.y = 20.6; tw.rotation.z = .25; bag.add(tw);
+  const tie = new THREE.Mesh(new THREE.TorusGeometry(.75, .22, 8, 18), new THREE.MeshStandardMaterial({ color: '#2e9e5b', roughness: .5 })); tie.position.y = 19.6; tie.rotation.x = Math.PI / 2; bag.add(tie);
+}
+const bagShadow = new THREE.Mesh(new THREE.PlaneGeometry(28, 28), new THREE.MeshBasicMaterial({ map: aoTex, transparent: true, depthWrite: false, opacity: 0 })); bagShadow.rotation.x = -Math.PI / 2; bagShadow.position.y = .03; plate.add(bagShadow);
+
+// floating dust specks so every frame moves
+const dust = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(Array.from({ length: 240 }, (_, i) => i % 3 === 1 ? R(-12, 60) : R(-70, 70)), 3)),
+  new THREE.PointsMaterial({ color: '#cfe6ff', size: .35, transparent: true, opacity: .45, depthWrite: false }));
+scene.add(dust);
+
+// ---------- timing ----------
+const T_DROP0 = 0.25, T_LAND = 1.15, T_CUT0 = 1.55, T_CUT1 = 2.45, T_BEND0 = 2.35, T_BEND1 = 3.15, T_G = 3.0, T_RD0 = 3.75, T_RD1 = 4.85, T_OK = 4.95, T_END = 6.33;
+function dropY(t) { // eased fall + small bounce
+  if (t < T_DROP0) return 34 + 1.2 * Math.sin(t * 3);
+  if (t < T_LAND) { const u = ramp(t, T_DROP0, T_LAND); return 34 * (1 - u * u * (1.6 - .6 * u)); }
+  const u = t - T_LAND; return Math.abs(Math.sin(u * 7.5)) * 2.4 * Math.exp(-u * 6.5);
+}
+function camAt(t) {
+  const u = eio(ramp(t, 0.9, 3.0)), v = ramp(t, 3.0, T_END);
+  const az = 0.62 + (0.30 - 0.62) * u - 0.1 * v + 0.06 * (1 - ramp(t, 0, 0.9)) ;
+  const el = 0.36 + (0.17 - 0.36) * u - 0.015 * v;
+  const dist = 205 + (124 - 205) * u - 7 * eout(v);
+  const ty = 17 + (3.5 - 17) * u, tx = 1.5 * (1 - u) + 2.5 * u;
+  camera.position.set(tx + dist * Math.cos(el) * Math.sin(az), ty + dist * Math.sin(el), dist * Math.cos(el) * Math.cos(az));
+  camera.lookAt(tx, ty, 0); camera.updateMatrixWorld();
+}
+
+// ---------- overlay ----------
+const svg = document.getElementById('lines');
+const pCell = document.getElementById('pCell'), pGauge = document.getElementById('pGauge'), READ = document.getElementById('read'), WT = document.getElementById('wt'), CHK = document.getElementById('chk'), TP = document.getElementById('tp'), TICK = document.getElementById('tick');
+const tv = new THREE.Vector3();
+function proj(x, y, z) { tv.set(x, y, z).project(camera); return [(tv.x + 1) / 2 * W, (1 - tv.y) / 2 * H]; }
+function pill(el, x, y, a, sc = 1) { el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.opacity = a; el.style.transform = `translate(-50%,-50%) scale(${sc})`; }
+
+function render(t) {
+  t = cl(t, 0, T_END);
+  camAt(t);
+  const by = dropY(t); bag.position.set(0, by, 0); bag.rotation.y = 0.3 - 0.25 * ramp(t, 0, T_LAND);
+  const landed = t >= T_LAND ? 1 : 0;
+  // load on the cell: real deflection is tiny; shown exaggerated once the cutaway is open
+  const dip = landed * (0.35 * Math.exp(-(t - T_LAND) * 5) * Math.cos((t - T_LAND) * 18) + .0);
+  const D = 1.15 * eout(ramp(t, T_BEND0, T_BEND1)) + 0.03 * Math.sin(t * 9) * ramp(t, T_BEND1, T_BEND1 + .3);
+  const plateY = -D - dip * .3;
+  plate.position.y = plateY; bag.position.y += plateY;
+  topBlock.position.y = BY + BH / 2 + 0.95 - D; for (const [b, bx] of bolts) b.position.set(bx, BY - BH / 2 - .2 - D, 0);
+  bagShadow.material.opacity = .8 * cl(1 - by / 30);
+  const glowA = sm(ramp(t, T_BEND0 + .2, T_BEND1 + .2)) * (0.85 + 0.15 * Math.sin(t * 6));
+  bend(D, 0); glow.visible = false; stressU.uD.value = D; stressU.uA.value = glowA * 1.05; stressU.uT.value = t;
+  // gauge sits on the top web, follows the bend
+  const gy = BY + BH / 2 - D * bendS(GX) + .17; gauge.position.set(GX, gy, 0); gaugeHalo.position.set(GX, gy + .05, 0);
+  const gA = sm(ramp(t, T_G, T_G + .5)); gaugeM.emissiveIntensity = 1.6 * gA * (0.8 + 0.2 * Math.sin(t * 10)); gaugeHalo.material.opacity = 1.0 * gA; gaugeHalo.scale.setScalar(1 + .15 * Math.sin(t * 8));
+  // cutaway
+  const c = eio(ramp(t, T_CUT0, T_CUT1));
+  cut.constant = 60 + (2.9 - 60) * c; housM.needsUpdate = false;
+  edgeM.opacity = c > .02 ? .9 * sm(ramp(t, T_CUT1 - .25, T_CUT1)) : 0; edgeL.position.set(-23.2, -5.6, cut.constant - .1); edgeR.position.set(23.2, -5.6, cut.constant - .1);
+  plateM.opacity = 1 - 0.8 * c; plateM.depthWrite = c < .3; plateEdgeM.opacity = .85 * c; plate.userData.rim.material.opacity = 1 - .85 * c; plate.userData.rim.material.depthWrite = c < .3; plate.userData.rim.visible = c < .98;
+  // dust drift
+  dust.rotation.y = t * .05; dust.position.y = Math.sin(t * .7) * 1.5;
+  renderer.render(scene, camera);
+
+  // ----- labels -----
+  const aCell = sm(ramp(t, 2.45, 2.85)), aG = sm(ramp(t, 3.25, 3.65)), aR = sm(ramp(t, 3.55, 3.9));
+  const [cx, cy] = proj(8.5, BY - BH / 2 - D, BD / 2), [gx, gy2] = proj(GX, gy, 0);
+  const pcx = cl(cx + 110, 250, W - 200), pcy = cy + 120;
+  pill(pCell, pcx, pcy, aCell, .85 + .15 * popS(ramp(t, 2.45, 2.95)));
+  const pgx = cl(gx - 140, 360, W - 360), pgy = gy2 + 300;
+  pill(pGauge, pgx, pgy, aG, .85 + .15 * popS(ramp(t, 3.25, 3.75)));
+  // readout card
+  const ry = 348; READ.style.top = ry + 'px'; READ.style.opacity = aR; READ.style.transform = `translate(-50%,-50%) scale(${.9 + .1 * popS(ramp(t, 3.55, 4.05))})`;
+  const u = expo(ramp(t, T_RD0, T_RD1)); let w = 1.25 * u; if (u < 1 && u > 0) w += (Math.sin(t * 61) * .5 + .5) * .02 * (1 - u);
+  WT.textContent = w.toFixed(2) + ' kg';
+  const aOk = sm(ramp(t, T_OK, T_OK + .3)); CHK.style.opacity = aOk; TP.setAttribute('stroke-dashoffset', 40 * (1 - sm(ramp(t, T_OK + .05, T_OK + .4))));
+  TICK.style.transform = `scale(${.6 + .4 * popS(ramp(t, T_OK, T_OK + .4))})`;
+  WT.style.color = aOk > .5 ? '#7ff2b0' : '#9ef0ff';
+  // signal path gauge -> readout (flowing dashes)
+  const sx = gx, sy = gy2, ex = 540, ey = ry + 120;
+  const aS = sm(ramp(t, 3.45, 3.8));
+  const mx = Math.min(sx, ex) - 330, my = (sy + ey) / 2;
+  svg.innerHTML =
+    `<g opacity="${aCell}"><line x1="${pcx}" y1="${pcy - 46}" x2="${cx}" y2="${cy + 6}" stroke="#fff" stroke-width="3"/><circle cx="${cx}" cy="${cy}" r="8" fill="#fff"/></g>` +
+    `<g opacity="${aG}"><line x1="${pgx}" y1="${pgy - 70}" x2="${gx}" y2="${gy2 - 8}" stroke="#ffb23d" stroke-width="3"/><circle cx="${gx}" cy="${gy2}" r="8" fill="#ffb23d"/></g>` +
+    `<path opacity="${aS * .9}" d="M${sx - 10} ${sy} Q ${mx} ${my} ${ex - 250} ${ey}" fill="none" stroke="#8fd8ff" stroke-width="4" stroke-dasharray="10 14" stroke-dashoffset="${-t * 120}"/>`;
+}
+window.renderAt = t => render(t); window.__dbg = { stress, beam, glow, plate, bag, scene };
+window.DUR = 6.3;
+const q = new URLSearchParams(location.search);
+render(q.has('t') ? parseFloat(q.get('t')) : 5.5);
+requestAnimationFrame(() => { document.title = 'ok'; });
+</script>
+</body>
+</html>

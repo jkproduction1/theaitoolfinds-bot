@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gamepad exploded</title>
+<!--
+Facts used (labels):
+ - Face/d-pad buttons press conductive rubber domes onto contact pads on the PCB (dome-switch / membrane principle).
+   Source: https://en.wikipedia.org/wiki/Keyboard_technology#Dome-switch_keyboard ; controller teardowns (iFixit gamepad teardowns).
+ - Rumble = small DC motors spinning an off-centre (eccentric) weight (ERM).
+   Source: https://en.wikipedia.org/wiki/Vibration_motor ; https://en.wikipedia.org/wiki/Rumble_Pak
+ - Each analog stick sits in a module whose two sensors (potentiometers, or Hall sensors) read the X and Y tilt.
+   Source: https://en.wikipedia.org/wiki/Analog_stick
+Generic gamepad of our own design: no brand shapes, colours, symbols or logos.
+-->
+<style>
+  body{margin:0;background:#000;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:radial-gradient(ellipse 900px 1100px at 50% 46%, #3a3e46 0%, #24272d 45%, #121317 100%);
+    font-family:"Inter",system-ui,Arial,sans-serif}
+  canvas{position:absolute;inset:0;display:block}
+  #ov{position:absolute;inset:0;pointer-events:none}
+  #ov svg{position:absolute;inset:0}
+  .pill{position:absolute;transform:translate(-50%,-50%);background:rgba(14,15,19,.82);border:2px solid rgba(255,255,255,.16);border-radius:18px;
+    padding:10px 24px 12px;color:#fff;text-align:center;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.4);opacity:0}
+  .pill b{display:block;font-weight:800;font-size:40px;letter-spacing:-.5px;line-height:1.1}
+  .pill i{display:block;font-style:normal;font-weight:700;font-size:34px;color:#ff8a3d;margin-top:2px;line-height:1.1}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.js","three/addons/":"./"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="lDome"><b>rubber domes</b></div>
+    <div class="pill" id="lMot"><b>rumble motor</b><i>(off-centre weight)</i></div>
+    <div class="pill" id="lStick"><b>thumbstick sensors</b></div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
+
+const W = 1080, H = 1920;
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+stage.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(30, W / H, 1, 400);
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight('#c9d3e6', '#20232a', 0.5));
+const key = new THREE.DirectionalLight('#fff1e0', 2.2);
+key.position.set(-18, 60, 22); key.castShadow = true;
+Object.assign(key.shadow.camera, { left: -20, right: 20, top: 20, bottom: -20, near: 10, far: 120 });
+key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.04; key.shadow.radius = 4;
+scene.add(key, key.target);
+const rimL = new THREE.DirectionalLight('#ffb27a', 1.1); rimL.position.set(30, 10, -30); scene.add(rimL);
+const rimB = new THREE.DirectionalLight('#9fc0ff', 0.7); rimB.position.set(-30, 6, -25); scene.add(rimB);
+
+// floor shadow catcher far below
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.ShadowMaterial({ opacity: 0.35 }));
+floor.rotation.x = -Math.PI / 2; floor.position.y = -1.2; floor.receiveShadow = true; scene.add(floor);
+
+// ---------- helpers ----------
+function canvasTex(w, h, draw) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+const shadowy = m => { m.castShadow = true; m.receiveShadow = true; return m; };
+
+// gamepad outline (shape space: x right, y = toward the back of the pad)
+const OUT_PTS = [[0, 3.3], [3.4, 3.45], [6.2, 3.2], [7.9, 2.0], [8.6, -0.6], [8.6, -3.4], [7.9, -5.5], [6.4, -6.1], [5.2, -5.4], [4.4, -3.6], [2.9, -2.7], [0, -2.55]];
+function outline(scale = 1, n = 140) {
+  const pts = [...OUT_PTS, ...OUT_PTS.slice(1, -1).reverse().map(([x, y]) => [-x, y])].map(([x, y]) => new THREE.Vector3(x * scale, y * scale, 0));
+  const c = new THREE.CatmullRomCurve3(pts, true, 'centripetal');
+  return c.getSpacedPoints(n).slice(0, n).map(p => new THREE.Vector2(p.x, p.y));
+}
+const circ = (x, y, r, n = 28) => { const p = new THREE.Path(); p.absarc(x, y, r, 0, Math.PI * 2, true); return p; };
+function extrude(shape, depth, bevel, seg = 3) {
+  const g = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: bevel > 0, bevelThickness: bevel, bevelSize: bevel, bevelSegments: seg, curveSegments: 20 });
+  g.rotateX(-Math.PI / 2); // shape y -> world -z, extrusion -> world +y
+  g.computeVertexNormals(); return g;
+}
+// layout (shape space)
+const STICK = [[-3.0, -0.9], [3.0, -0.9]];
+const DPAD = [-5.7, 0.9], FACE = [5.7, 0.9];
+const FACE_BTN = [[0, 1.0], [1.0, 0], [0, -1.0], [-1.0, 0]].map(([dx, dy]) => [FACE[0] + dx, FACE[1] + dy]);
+const DPAD_DOM = [[0, 0.85], [0.85, 0], [0, -0.85], [-0.85, 0]].map(([dx, dy]) => [DPAD[0] + dx, DPAD[1] + dy]);
+const MOTOR = [[-6.9, -3.9], [6.9, -3.9]];
+const w = (x, y) => [x, -y]; // shape -> world x,z
+
+// ---------- materials ----------
+const graphite = new THREE.MeshPhysicalMaterial({ color: '#3b3f46', roughness: 0.42, clearcoat: 0.5, clearcoatRoughness: 0.35, envMapIntensity: 0.9 });
+const graphiteDark = new THREE.MeshPhysicalMaterial({ color: '#25282d', roughness: 0.55, clearcoat: 0.2, envMapIntensity: 0.8 });
+const btnM = new THREE.MeshPhysicalMaterial({ color: '#565b64', roughness: 0.3, clearcoat: 0.8, clearcoatRoughness: 0.2 });
+const orange = new THREE.MeshStandardMaterial({ color: '#ff7a2e', roughness: 0.35, emissive: '#ff5a10', emissiveIntensity: 0.55 });
+const rubber = new THREE.MeshPhysicalMaterial({ color: '#5f656e', roughness: 0.55, transparent: true, opacity: 0.94 });
+const blackPl = new THREE.MeshStandardMaterial({ color: '#141518', roughness: 0.5 });
+const steel = new THREE.MeshStandardMaterial({ color: '#c9ccd2', roughness: 0.22, metalness: 1 });
+const brass = new THREE.MeshStandardMaterial({ color: '#d8a54a', roughness: 0.28, metalness: 1 });
+const copper = new THREE.MeshStandardMaterial({ color: '#c47a3c', roughness: 0.35, metalness: 1 });
+const sensorM = new THREE.MeshStandardMaterial({ color: '#2f6fb3', roughness: 0.4 });
+
+const layers = []; // {g, y0, i}
+function layer(i, y0) { const g = new THREE.Group(); g.position.y = y0; scene.add(g); layers.push({ g, y0, i }); return g; }
+
+// 0 bottom shell: tray (wall ring + floor)
+{ const g = layer(0, 0);
+  const outer = new THREE.Shape(outline(1)); const ring = new THREE.Shape(outline(1)); ring.holes.push(new THREE.Path(outline(0.9)));
+  const fl = shadowy(new THREE.Mesh(extrude(outer, 0.25, 0.3), graphiteDark)); g.add(fl);
+  const wall = shadowy(new THREE.Mesh(extrude(ring, 1.1, 0.12, 2), graphiteDark)); wall.position.y = 0.3; g.add(wall);
+  // screw posts
+  for (const [x, y] of [[-4.2, 1.8], [4.2, 1.8], [-6.4, -3.6], [6.4, -3.6], [0, -1.6]]) {
+    const p = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.36, 1.0, 16), graphite)); p.position.set(...[w(x, y)[0], 0.8, w(x, y)[1]]); g.add(p); }
+}
+// 1 battery
+{ const g = layer(1, 0.55);
+  const b = shadowy(new THREE.Mesh(new RoundedBoxGeometry(5.6, 0.9, 2.3, 4, 0.35), new THREE.MeshPhysicalMaterial({ color: '#2e3a48', roughness: 0.35, clearcoat: 0.6 }))); g.add(b);
+  b.position.z = 0.6;
+  const band = new THREE.Mesh(new RoundedBoxGeometry(1.6, 0.94, 2.34, 3, 0.36), new THREE.MeshStandardMaterial({ color: '#d7dbe0', roughness: 0.5 })); band.position.set(-1.4, 0, 0.6); g.add(band);
+  for (const [x, c] of [[-0.9, '#c33'], [0.9, '#111']]) { const wv = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 1.6, 8), new THREE.MeshStandardMaterial({ color: c, roughness: .5 })); wv.rotation.x = Math.PI / 2; wv.position.set(x * 0.4 + 2.2, 0.35, -0.9); g.add(wv); }
+}
+// 2 rumble motors (eccentric rotating mass)
+const WEIGHTS = [];
+{ const g = layer(2, 0.9);
+  for (const [sx, sy] of MOTOR) { const [x, z] = w(sx, sy);
+    const cradle = shadowy(new THREE.Mesh(new RoundedBoxGeometry(1.5, 0.5, 2.0, 3, 0.18), graphite)); cradle.position.set(x, -0.45, z - 0.1); g.add(cradle);
+    const body = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 1.7, 32), steel)); body.rotation.x = Math.PI / 2; body.position.set(x, 0.25, z - 0.3); g.add(body);
+    const cap = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.77, 0.77, 0.25, 32), blackPl)); cap.rotation.x = Math.PI / 2; cap.position.set(x, 0.25, z - 1.2); g.add(cap);
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.7, 10), steel); shaft.rotation.x = Math.PI / 2; shaft.position.set(x, 0.25, z + 0.75); g.add(shaft);
+    const wg = new THREE.Group(); wg.position.set(x, 0.25, z + 0.95); g.add(wg);
+    const half = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.78, 0.78, 0.5, 28, 1, false, 0, Math.PI), brass));
+    half.rotation.x = Math.PI / 2; wg.add(half); WEIGHTS.push(wg);
+    for (const c of ['#c33', '#111']) { const wv = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.2, 6), new THREE.MeshStandardMaterial({ color: c })); wv.rotation.z = Math.PI / 2; wv.position.set(x + (sx < 0 ? 0.9 : -0.9), 0.1 + (c === '#111' ? 0.14 : 0), z - 1.1); g.add(wv); }
+  }
+}
+// 3 PCB
+{ const g = layer(3, 1.35);
+  const sh = new THREE.Shape(outline(0.86));
+  for (const [x, y] of MOTOR) sh.holes.push(circ(x * 0.98, y * 0.96, 0.9));
+  const geo = extrude(sh, 0.14, 0);
+  const B = new THREE.Box3().setFromBufferAttribute(geo.attributes.position);
+  const tex = canvasTex(1024, 640, (c, cw, ch) => {
+    c.fillStyle = '#145a32'; c.fillRect(0, 0, cw, ch);
+    const rr = (() => { let a = 7; return () => (a = (a * 16807) % 2147483647) / 2147483647; })();
+    c.strokeStyle = 'rgba(214,176,92,.85)'; c.lineWidth = 3; c.lineCap = 'round'; c.lineJoin = 'round';
+    for (let i = 0; i < 70; i++) { let x = rr() * cw, y = rr() * ch; c.beginPath(); c.moveTo(x, y);
+      for (let k = 0; k < 4; k++) { if (rr() < .5) x += (rr() - .5) * 260; else y += (rr() - .5) * 200; c.lineTo(x, y); } c.stroke();
+      c.fillStyle = '#e2c27a'; c.beginPath(); c.arc(x, y, 5, 0, 7); c.fill(); }
+    c.strokeStyle = 'rgba(0,0,0,.25)'; c.lineWidth = 1; for (let i = 0; i < 40; i++) { c.strokeRect(rr() * cw, rr() * ch, 18, 10); }
+  });
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  // cap UVs are world-ish shape coords; normalise to the board box
+  const uv = geo.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, (uv.getX(i) - (-7.6)) / 15.2, (uv.getY(i) - (-5.4)) / 8.4);
+  const board = shadowy(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.45, metalness: 0.1 }))); g.add(board);
+  const chipM = new THREE.MeshStandardMaterial({ color: '#111214', roughness: 0.35 });
+  for (const [x, y, sx, sz] of [[0, 0.8, 2.0, 2.0], [-1.6, 2.2, 1.0, 0.7], [1.7, 2.2, 1.2, 0.8], [0, -1.2, 1.3, 0.6], [-0.2, 2.3, 0.6, 0.6]]) {
+    const ch = shadowy(new THREE.Mesh(new RoundedBoxGeometry(sx, 0.22, sz, 2, 0.05), chipM)); const [wx, wz] = w(x, y); ch.position.set(wx, 0.24, wz); g.add(ch);
+    const n = Math.round(sx / 0.25); for (let k = 0; k < n; k++) for (const s of [-1, 1]) { const pin = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.18), steel); pin.position.set(wx - sx / 2 + (k + 0.5) * sx / n, 0.17, wz + s * (sz / 2 + 0.06)); g.add(pin); } }
+  // gold contact pads under every dome
+  for (const [x, y] of [...FACE_BTN, ...DPAD_DOM]) { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.04, 20), brass); const [wx, wz] = w(x, y); p.position.set(wx, 0.16, wz); g.add(p); }
+  // capacitors
+  for (const [x, y] of [[2.0, 0.2], [-2.0, 0.3], [1.2, -1.9]]) { const cp = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.5, 14), new THREE.MeshStandardMaterial({ color: '#2a2d33', roughness: .3, metalness: .4 }))); const [wx, wz] = w(x, y); cp.position.set(wx, 0.38, wz); g.add(cp); }
+}
+// 4 thumbstick modules
+const SENS = [];
+{ const g = layer(4, 1.55);
+  for (const [sx, sy] of STICK) { const [x, z] = w(sx, sy);
+    const box = shadowy(new THREE.Mesh(new RoundedBoxGeometry(1.9, 0.9, 1.9, 3, 0.12), blackPl)); box.position.set(x, 0.3, z); g.add(box);
+    const frame = shadowy(new THREE.Mesh(new RoundedBoxGeometry(2.05, 0.12, 2.05, 2, 0.05), steel)); frame.position.set(x, 0.78, z); g.add(frame);
+    const dome = shadowy(new THREE.Mesh(new THREE.SphereGeometry(0.62, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), blackPl)); dome.position.set(x, 0.8, z); g.add(dome);
+    const shaft = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.24, 1.0, 14), blackPl)); shaft.position.set(x, 1.3, z); g.add(shaft);
+    const cap = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.78, 0.36, 32), graphite)); cap.position.set(x, 1.86, z); g.add(cap);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.8, 0.06, 8, 40), orange); ring.rotation.x = Math.PI / 2; ring.position.set(x, 2.04, z); g.add(ring);
+    // two sensors (X and Y) on adjacent sides
+    const s1 = shadowy(new THREE.Mesh(new RoundedBoxGeometry(0.45, 0.7, 1.1, 2, 0.08), sensorM)); s1.position.set(x + (sx < 0 ? -1.15 : 1.15), 0.3, z); g.add(s1);
+    const s2 = shadowy(new THREE.Mesh(new RoundedBoxGeometry(1.1, 0.7, 0.45, 2, 0.08), sensorM)); s2.position.set(x, 0.3, z + 1.15); g.add(s2);
+    SENS.push(s1, s2);
+  }
+}
+// 5 rubber dome membrane
+{ const g = layer(5, 1.8);
+  const domeGeo = new THREE.SphereGeometry(0.42, 22, 10, 0, Math.PI * 2, 0, Math.PI / 2); domeGeo.scale(1, 0.75, 1);
+  for (const [cx, cy, pts] of [[FACE[0], FACE[1], FACE_BTN], [DPAD[0], DPAD[1], DPAD_DOM]]) {
+    const pad = shadowy(new THREE.Mesh(new RoundedBoxGeometry(3.4, 0.1, 3.4, 2, 0.05), rubber)); const [px, pz] = w(cx, cy); pad.position.set(px, 0, pz); g.add(pad);
+    for (const [x, y] of pts) { const d = shadowy(new THREE.Mesh(domeGeo, rubber)); const [wx, wz] = w(x, y); d.position.set(wx, 0.04, wz); g.add(d);
+      const c = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.33, 12), blackPl); c.position.set(wx, 0.16, wz); g.add(c); }
+  }
+  for (const [x, y] of [[-1.3, 1.6], [1.3, 1.6]]) { const d = shadowy(new THREE.Mesh(domeGeo, rubber)); const [wx, wz] = w(x, y); d.position.set(wx, 0.04, wz); d.scale.set(.7, .7, .7); g.add(d); }
+}
+// 6 buttons
+{ const g = layer(6, 2.25);
+  const [dx, dz] = w(...DPAD);
+  for (const r of [0, Math.PI / 2]) { const arm = shadowy(new THREE.Mesh(new RoundedBoxGeometry(2.5, 0.42, 0.82, 3, 0.16), btnM)); arm.position.set(dx, 0, dz); arm.rotation.y = r; g.add(arm); }
+  const capGeo = new THREE.CylinderGeometry(0.4, 0.42, 0.45, 28);
+  for (const [x, y] of FACE_BTN) { const b = shadowy(new THREE.Mesh(capGeo, btnM)); const [wx, wz] = w(x, y); b.position.set(wx, 0, wz); g.add(b);
+    const top = new THREE.Mesh(new THREE.SphereGeometry(0.4, 24, 8, 0, Math.PI * 2, 0, 0.5), btnM); top.position.set(wx, -0.17, wz); g.add(top); }
+  for (const [x, y] of [[-1.3, 1.6], [1.3, 1.6]]) { const p = shadowy(new THREE.Mesh(new RoundedBoxGeometry(0.9, 0.3, 0.42, 2, 0.14), btnM)); const [wx, wz] = w(x, y); p.position.set(wx, -0.05, wz); g.add(p); }
+}
+// 7 top shell
+{ const g = layer(7, 1.55);
+  const sh = new THREE.Shape(outline(1));
+  for (const [x, y] of STICK) sh.holes.push(circ(x, y, 1.12));
+  for (const [x, y] of FACE_BTN) sh.holes.push(circ(x, y, 0.5));
+  sh.holes.push(circ(DPAD[0], DPAD[1], 1.35));
+  for (const [x, y] of [[-1.3, 1.6], [1.3, 1.6]]) { const p = new THREE.Path(); p.absellipse(x, y, 0.55, 0.3, 0, Math.PI * 2, true); sh.holes.push(p); }
+  const top = shadowy(new THREE.Mesh(extrude(sh, 0.55, 0.32, 4), graphite)); g.add(top);
+  // orange accent: light strip along the top edge
+  const strip = new THREE.Mesh(new RoundedBoxGeometry(3.2, 0.14, 0.32, 2, 0.06), orange); strip.position.set(0, 0.93, -2.75); g.add(strip);
+  // shoulder bumpers
+  for (const s of [-1, 1]) { const b = shadowy(new THREE.Mesh(new RoundedBoxGeometry(3.4, 0.55, 0.9, 3, 0.25), graphiteDark)); b.position.set(s * 5.3, 0.25, -3.35); b.rotation.y = s * 0.12; g.add(b); }
+}
+
+// ---------- animation ----------
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ramp = (t, a, b) => cl((t - a) / (b - a));
+const expoOut = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const sm = x => x * x * (3 - 2 * x);
+const popS = x => { const c1 = 1.70158, c3 = c1 + 1, y = x - 1; return 1 + c3 * y * y * y + c1 * y * y; };
+const SPACE = [0, 2.6, 5.0, 8.0, 10.6, 13.2, 16.1, 20.0]; // exploded offsets per layer
+const T_EX = 0.75, T_EXD = 1.9;
+function explodeK(i, t) { const d = (7 - i) * 0.07; return expoOut(ramp(t, T_EX + d, T_EX + d + T_EXD)); }
+const T_END = 190 / 30;
+function setCam(t) {
+  let e = 0; for (let i = 0; i < 8; i++) e += explodeK(i, t) / 8; // camera rides with the explosion
+  const k = 0.45 * explodeK(7, t) + 0.4 * e + 0.15 * eio(ramp(t, 0.5, 2.8));
+  const yaw = -0.2 + 0.5 * eio(ramp(t, 0, T_END));
+  const elev = 0.6 - 0.17 * k;
+  const dist = 67 + 14 * k;
+  const ty = 1.0 + 7.8 * k;
+  camera.position.set(Math.sin(yaw) * Math.cos(elev) * dist, ty + Math.sin(elev) * dist, Math.cos(yaw) * Math.cos(elev) * dist);
+  camera.lookAt(0, ty, -0.5); camera.updateMatrixWorld();
+}
+const svg = document.getElementById('lines');
+const LBL = [
+  { el: document.getElementById('lDome'), t: 2.75, anchor: () => worldOf(5, ...w(FACE_BTN[3][0], FACE_BTN[3][1]), 0.35), off: [-60, -150] },
+  { el: document.getElementById('lMot'), t: 3.25, anchor: () => worldOf(2, ...w(MOTOR[1][0], MOTOR[1][1]), 0.25, 0.95), off: [-80, 150] },
+  { el: document.getElementById('lStick'), t: 3.75, anchor: () => worldOf(4, ...w(STICK[0][0] - 1.15, STICK[0][1]), 0.65), off: [70, -120] },
+];
+function worldOf(li, x, z, y, dz = 0) { const L = layers.find(l => l.i === li); return new THREE.Vector3(x, L.g.position.y + y, z + dz); }
+const tmp = new THREE.Vector3();
+function proj(v) { tmp.copy(v).project(camera); return [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H]; }
+function render(t) {
+  for (const L of layers) L.g.position.y = L.y0 + SPACE[L.i] * explodeK(L.i, t) + (L.i ? 0.12 * Math.sin(t * 1.6 + L.i * 0.8) * ramp(t, 2.4, 3.4) : 0);
+  for (const wg of WEIGHTS) wg.rotation.z = t * 19;
+  setCam(t);
+  renderer.render(scene, camera);
+  let s = '';
+  for (const l of LBL) { const a = ramp(t, l.t, l.t + 0.3), p = popS(ramp(t, l.t, l.t + 0.45));
+    const [ax, ay] = proj(l.anchor()); let px = ax + l.off[0], py = ay + l.off[1];
+    const r = l.el.getBoundingClientRect(); const hw = (r.width / (p > 0.05 ? (0.7 + 0.3 * p) : 1)) / 2;
+    px = cl(px, 70 + hw, W - 70 - hw);
+    l.el.style.left = px + 'px'; l.el.style.top = py + 'px'; l.el.style.opacity = sm(a);
+    l.el.style.transform = `translate(-50%,-50%) scale(${0.7 + 0.3 * p})`;
+    const la = sm(ramp(t, l.t + 0.05, l.t + 0.35));
+    const ex = ax + (px - ax) * la, ey = ay + (py - ay) * la;
+    s += `<g opacity="${sm(a)}"><line x1="${ax}" y1="${ay}" x2="${ex}" y2="${ey}" stroke="#ff8a3d" stroke-width="3"/><circle cx="${ax}" cy="${ay}" r="9" fill="#ff8a3d" stroke="#1a1b1f" stroke-width="3"/></g>`;
+  }
+  svg.innerHTML = s;
+}
+window.renderAt = t => render(t);
+window.DUR = T_END;
+const q = new URLSearchParams(location.search);
+await Promise.race([document.fonts.load('800 40px "Inter"'), new Promise(r => setTimeout(r, 2000))]);
+render(q.has('t') ? parseFloat(q.get('t')) : 5.5);
+requestAnimationFrame(() => { document.title = 'ok'; });
+</script>
+</body>
+</html>

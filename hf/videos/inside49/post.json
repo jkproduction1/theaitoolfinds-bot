@@ -1,5 +1,9 @@
 {
- "angle": "app-demo",
+ "url": "https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?c=explode|x-ray|explain-3d&t=a%20game%20controller|a%20smart%20lock|how%20self-checkout%20weighs%20things",
  "keyword": "PARTS",
- "tool_name": "Claude 3D what's-inside commands"
+ "angle": "app-demo",
+ "tool_name": "Claude 3D what's-inside commands",
+ "cover_at": 3.5,
+ "summary_cs": "„Type it, get it #41“ (29 s), co je uvnitř věcí: /explode herní ovladač (gumové kontakty, vibrační motorky, senzory páček), /x-ray chytrý zámek (baterie, motor + převody, vysune se závora), /explain-3d jak samoobslužná pokladna váží (tenzometrický snímač). Obecné designy bez značek, 3D v three.js od Clauda.",
+ "caption": "Type one command and Claude shows you what's inside anything.\n\nPart #41 of a daily series.\n\nComment PARTS and I'll DM you the prompts.\n\n#claude #3danimation #aitools"
 }

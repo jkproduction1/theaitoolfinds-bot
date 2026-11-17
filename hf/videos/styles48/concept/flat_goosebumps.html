@@ -1,0 +1,131 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles48 r2: /flat-science why we get goosebumps (flat glowing vector look of styles47 flat_chilli).
+// Facts / sources:
+//  - Cold makes tiny muscles at the base of each hair follicle contract, hairs stand on end -> tiny bumps; animals' hair also stands on end in the cold
+//    (Cleveland Clinic, health.clevelandclinic.org/why-do-you-get-goosebumps).
+//  - "These bumps are caused by a contraction of miniature muscles that are attached to each hair"; "Goosebumps are a physiological phenomenon inherited
+//    from our animal ancestors"; "In animals with a thick hair coat this rising of hair expands the layer of air that serves as insulation"
+//    (Scientific American, scientificamerican.com/article/why-do-humans-get-goosebu/).
+//  - Cold triggers sympathetic nerves -> the muscle contracts and the hair stands on end; helps furry animals, little use to humans
+//    (Harvard Gazette 2020, news.harvard.edu/gazette/story/2020/07/the-hair-raising-reason-for-goosebumps-is-revealed/).
+//  - The muscle's name is arrector pili (Britannica, britannica.com/science/arrector-pili; StatPearls "Anatomy, Hair Follicle", NCBI NBK470321).
+const g=document.getElementById('c').getContext('2d');
+const D2R=Math.PI/180, LERP=(a,b,t)=>a+(b-a)*t;
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.5,60,w*.5,h*.5,1300);gr.addColorStop(0,'#2a1d6c');gr.addColorStop(.5,'#160f4a');gr.addColorStop(1,'#05041a');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[220,560,300,'rgba(90,190,255,.20)'],[860,980,300,'rgba(150,90,255,.24)'],[260,1320,280,'rgba(255,110,170,.16)'],[760,1700,420,'rgba(80,140,255,.16)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(11);for(let i=0;i<200;i++){p.fillStyle='rgba(225,235,255,'+(R()*.6)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.4,0,7);p.fill();}});
+function label(txt,x,y,tx,ty,col,fs){g.save();fs=fs||40;g.font='800 '+fs+'px '+SANS;const w=g.measureText(txt).width+52,hh=fs*.9+36;g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(tx<x?x:tx>x+w?x+w:x+w/2,ty<y?y-hh/2:y+hh/2);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();
+  g.fillStyle='rgba(12,8,44,.92)';g.beginPath();g.roundRect(x,y-hh/2,w,hh,hh/2);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=2.5;g.stroke();g.fillStyle='#fff';g.fillText(txt,x+26,y+fs*.35);g.restore();}
+function pop(t,x,y,fn,d){if(t<=0)return;g.save();const s=EBK(t/(d||.45));g.globalAlpha*=CL(t/.15);g.translate(x,y);g.scale(s,s);g.translate(-x,-y);fn();g.restore();}
+// ---------- cold gust streaks + snow (global, every frame) ----------
+const SR=R0(21),STREAKS=[...Array(11)].map((_,i)=>({y:430+SR()*1050,ph:SR()*1600,sp:700+SR()*500,len:180+SR()*220,amp:10+SR()*18,w:3+SR()*4}));
+const SNOW=[...Array(70)].map(()=>({x:SR()*1300,y:SR()*1920,sp:120+SR()*200,r:2+SR()*4,ph:SR()*6}));
+function gust(lt,a){if(a<=0)return;g.save();g.lineCap='round';g.shadowColor='#7fd8ff';g.shadowBlur=16;
+  STREAKS.forEach((s,i)=>{const x0=((lt*s.sp+s.ph)%1700)-350;const grd=g.createLinearGradient(x0,0,x0+s.len,0);grd.addColorStop(0,'rgba(150,225,255,0)');grd.addColorStop(1,'rgba(190,240,255,'+(.75*a)+')');
+    g.strokeStyle=grd;g.lineWidth=s.w*(.6+.9*a);g.beginPath();for(let k=0;k<=12;k++){const x=x0+s.len*k/12,y=s.y+Math.sin(x/90+i)*s.amp;k?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();});
+  g.shadowBlur=10;SNOW.forEach(f=>{const x=((f.x+lt*f.sp*1.6)%1300)-110,y=(f.y+lt*f.sp*.35+Math.sin(lt*2+f.ph)*12)%1920;g.fillStyle='rgba(215,240,255,'+(.8*a)+')';g.beginPath();g.arc(x,y,f.r,0,7);g.fill();});g.restore();}
+// ---------- the arm (phase A) ----------
+const ARM={x:540,y:860,r:-.06};
+const armTop=(x)=>-150-22*Math.cos(x/480);
+function armPt(x,y){const c=Math.cos(ARM.r),s=Math.sin(ARM.r);return {x:ARM.x+x*c-y*s,y:ARM.y+x*s+y*c};}
+const F=armPt(20,armTop(20));
+const AR=R0(5),AH=[...Array(170)].map(()=>{const x=-700+AR()*1400;return {x,y:armTop(x)+26+AR()*640,l:20+AR()*18,a:-.18+AR()*.2,ph:AR()*6};}),EH=[...Array(80)].map((_,i)=>{const x=-720+i*18+AR()*8;return {x,y:armTop(x)+4,l:24+AR()*20,a:-.32+AR()*.18,ph:AR()*6};});
+function arm(lt){g.save();g.translate(ARM.x,ARM.y);g.rotate(ARM.r);
+  g.save();g.shadowColor='rgba(255,150,120,.55)';g.shadowBlur=70;const ag=g.createLinearGradient(0,-200,0,700);ag.addColorStop(0,'#ffc3a0');ag.addColorStop(.45,'#f59c80');ag.addColorStop(1,'#b8606e');g.fillStyle=ag;
+  g.beginPath();g.moveTo(-1300,armTop(-1300));for(let x=-1300;x<=1300;x+=20)g.lineTo(x,armTop(x));g.lineTo(1300,700);g.lineTo(-1300,700);g.closePath();g.fill();g.restore();
+  g.fillStyle='rgba(255,255,255,.28)';g.beginPath();g.moveTo(-700,armTop(-700)+40);for(let x=-800;x<=800;x+=20)g.lineTo(x,armTop(x)+38);for(let x=800;x>=-800;x-=20)g.lineTo(x,armTop(x)+62+10*Math.sin(x/200));g.closePath();g.fill();
+  g.fillStyle='rgba(120,40,80,.18)';g.beginPath();g.moveTo(-1300,520);g.bezierCurveTo(-600,560,300,540,1300,520);g.lineTo(1300,700);g.lineTo(-1300,700);g.closePath();g.fill();
+  const shiv=CL((lt-.3)/.5);g.lineCap='round';
+  AH.forEach(h=>{const a=h.a+Math.sin(lt*24+h.ph)*.06*shiv;g.strokeStyle='rgba(110,50,55,.6)';g.lineWidth=3.2;g.beginPath();g.moveTo(h.x,h.y);g.lineTo(h.x+Math.cos(a)*h.l,h.y+Math.sin(a)*h.l);g.stroke();});
+  EH.forEach(h=>{const a=h.a+Math.sin(lt*22+h.ph)*.08*shiv;g.strokeStyle='#8a4a48';g.lineWidth=3.6;g.beginPath();g.moveTo(h.x,h.y);g.quadraticCurveTo(h.x+Math.cos(a)*h.l*.6,h.y+Math.sin(a)*h.l*.6-2,h.x+Math.cos(a+.12)*h.l,h.y+Math.sin(a+.12)*h.l);g.stroke();});
+  g.restore();}
+// ---------- skin cross-section (local coords, centre 0,0, radius 400) ----------
+const HAIRS=[{ex:-20,s:1},{ex:-285,s:.62},{ex:268,s:.62}];
+function surf(x,c){let y=-140+4*Math.sin(x/37);HAIRS.forEach(h=>{y-=34*h.s*c*Math.exp(-((x-h.ex)**2)/(2*(80*h.s)**2));});return y;}
+function hairGeo(h,c){const psi=(40-34*c)*D2R;const dn={x:-Math.sin(psi),y:Math.cos(psi)},pr={x:Math.cos(psi),y:Math.sin(psi)};const E={x:h.ex,y:surf(h.ex,c)};
+  const P={x:dn.x*200+pr.x*26,y:dn.y*200+pr.y*26},Q={x:190,y:94};return {psi,dn,pr,E,P,Q};}
+function xsec(lt,c,nerve){
+  const ag=g.createLinearGradient(0,-400,0,-100);ag.addColorStop(0,'#2b1d72');ag.addColorStop(1,'#1c1356');g.fillStyle=ag;g.fillRect(-420,-420,840,840);
+  // air: cold streaks above skin
+  g.save();g.lineCap='round';g.shadowColor='#7fd8ff';g.shadowBlur=14;for(let i=0;i<5;i++){const x0=((lt*620+i*330)%1100)-550,y=-360+i*44;g.strokeStyle='rgba(170,230,255,.55)';g.lineWidth=4;g.beginPath();g.moveTo(x0,y);g.quadraticCurveTo(x0+90,y-12,x0+190,y);g.stroke();}g.restore();
+  // dermis
+  const dg=g.createLinearGradient(0,-80,0,400);dg.addColorStop(0,'#c9548c');dg.addColorStop(1,'#561c62');g.fillStyle=dg;g.beginPath();g.moveTo(-420,surf(-420,c)+80);for(let x=-420;x<=420;x+=10)g.lineTo(x,surf(x,c)+80);g.lineTo(420,420);g.lineTo(-420,420);g.closePath();g.fill();
+  g.save();g.strokeStyle='rgba(255,200,230,.12)';g.lineWidth=3;for(let i=0;i<7;i++){const y=-10+i*52;g.beginPath();for(let x=-420;x<=420;x+=20)g.lineTo(x,y+Math.sin(x/50+i*1.7)*10);g.stroke();}g.restore();
+  g.save();g.fillStyle='rgba(255,215,130,.22)';[[-330,360,46],[-230,385,40],[150,370,50],[260,350,44],[350,390,40],[40,395,36]].forEach(([x,y,r])=>{g.beginPath();g.arc(x,y,r,0,7);g.fill();});g.restore();
+  g.save();g.lineCap='round';g.shadowBlur=18;[[ '#ff5a6e',300,0],['#6f8dff',330,1.3]].forEach(([col,y,ph])=>{g.strokeStyle=col;g.shadowColor=col;g.lineWidth=14;g.beginPath();for(let x=-420;x<=420;x+=20)g.lineTo(x,y+Math.sin(x/90+ph)*18);g.stroke();});g.restore();
+  // epidermis
+  const eg=g.createLinearGradient(0,-180,0,-50);eg.addColorStop(0,'#ffc2d2');eg.addColorStop(1,'#f07aa6');g.fillStyle=eg;g.save();g.shadowColor='rgba(255,170,210,.6)';g.shadowBlur=30;
+  g.beginPath();g.moveTo(-420,surf(-420,c));for(let x=-420;x<=420;x+=6)g.lineTo(x,surf(x,c));for(let x=420;x>=-420;x-=6)g.lineTo(x,surf(x,c)+80);g.closePath();g.fill();g.restore();
+  g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=3;g.beginPath();for(let x=-420;x<=420;x+=6)x>-420?g.lineTo(x,surf(x,c)+3):g.moveTo(x,surf(x,c)+3);g.stroke();
+  // nerve signal to main muscle
+  const m=hairGeo(HAIRS[0],c),mm={x:m.E.x+(m.P.x+m.Q.x)/2,y:m.E.y+(m.P.y+m.Q.y)/2};
+  g.save();g.lineCap='round';g.strokeStyle='rgba(255,208,106,'+(.35+.45*nerve)+')';g.shadowColor='#ffd06a';g.shadowBlur=20*nerve;g.lineWidth=7;g.beginPath();g.moveTo(420,250);g.bezierCurveTo(260,240,150,140,mm.x+10,mm.y+18);g.stroke();
+  if(lt>2.45&&lt<3.1){const u=E3((lt-2.45)/.55);for(let k=0;k<2;k++){const v=CL(u-k*.18);const b=(t,a,b2,c2,d)=>(1-t)**3*a+3*(1-t)**2*t*b2+3*(1-t)*t*t*c2+t**3*d;const x=b(v,420,260,150,mm.x+10),y=b(v,250,240,140,mm.y+18);g.fillStyle='#fff6c8';g.shadowBlur=30;g.beginPath();g.arc(x,y,10-k*3,0,7);g.fill();}}g.restore();
+  HAIRS.forEach((h,i)=>{const H=hairGeo(h,c);g.save();g.translate(H.E.x,H.E.y);g.scale(h.s,h.s);const {dn,pr,P,Q}=H;g.lineCap='round';
+    // follicle sheath
+    g.strokeStyle='#c8578a';g.lineWidth=70;g.beginPath();g.moveTo(0,0);g.lineTo(dn.x*320,dn.y*320);g.stroke();g.strokeStyle='#ffa3c4';g.lineWidth=56;g.beginPath();g.moveTo(0,4);g.lineTo(dn.x*320,dn.y*320);g.stroke();
+    g.fillStyle='#ffe07a';g.shadowColor='#ffd060';g.shadowBlur=16;g.beginPath();g.ellipse(dn.x*120-pr.x*44,dn.y*120-pr.y*44,30,22,Math.atan2(dn.y,dn.x),0,7);g.fill();g.shadowBlur=0;
+    g.strokeStyle='#d98a52';g.lineWidth=13;g.beginPath();g.moveTo(0,0);g.lineTo(dn.x*318,dn.y*318);g.stroke();
+    g.fillStyle='#ffc89a';g.shadowColor='#ffb070';g.shadowBlur=20;g.beginPath();g.arc(dn.x*335,dn.y*335,48,0,7);g.fill();g.shadowBlur=0;g.fillStyle='#b63f78';g.beginPath();g.arc(dn.x*348,dn.y*348,20,0,7);g.fill();
+    // arrector pili muscle (spindle)
+    const L=Math.hypot(Q.x-P.x,Q.y-P.y),an=Math.atan2(Q.y-P.y,Q.x-P.x),w=15+13*c,pl=i?0:c*(1-c)*4;
+    g.save();g.translate(P.x,P.y);g.rotate(an);const mg=g.createLinearGradient(0,0,L,0);mg.addColorStop(0,'#ff3d63');mg.addColorStop(.5,'#ff6a5a');mg.addColorStop(1,'#ff3d63');g.fillStyle=mg;
+    g.shadowColor='#ff4d6d';g.shadowBlur=16+(i?10*c:40*c+30*pl);g.beginPath();g.moveTo(0,0);g.quadraticCurveTo(L/2,-w*1.6,L,0);g.quadraticCurveTo(L/2,w*1.6,0,0);g.fill();g.shadowBlur=0;
+    g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=2.5;for(let k=-1;k<=1;k++){g.beginPath();g.moveTo(L*.12,k*w*.45);g.quadraticCurveTo(L/2,k*w*.95,L*.88,k*w*.45);g.stroke();}
+    if(!i&&pl>.02){g.strokeStyle='rgba(255,255,255,'+pl+')';g.lineWidth=5;[.3,.62].forEach(f=>{const x=L*f;g.beginPath();g.moveTo(x+12,-14);g.lineTo(x+24,0);g.lineTo(x+12,14);g.stroke();});}
+    g.restore();
+    // hair shaft outside the skin
+    const bend=70*(1-c),up={x:-dn.x,y:-dn.y};g.strokeStyle='#ffe3b0';g.shadowColor='#ffc070';g.shadowBlur=18;g.lineWidth=13;g.beginPath();g.moveTo(0,0);
+    g.quadraticCurveTo(up.x*170+pr.x*bend*.6,up.y*170+pr.y*bend*.6,up.x*330+pr.x*bend*1.9,up.y*330+pr.y*bend*1.9);g.stroke();g.restore();});
+  return m;}
+// ---------- furry animal (cat-like silhouette), fur puff p ----------
+function furPath(cx,cy,rx,ry,p,lt,seed){const n=40,R=R0(seed*97+3),L=[...Array(n)].map(()=>.55+.9*R());const pt=(a,f)=>[cx+Math.cos(a)*(rx+f),cy+Math.sin(a)*(ry+f)];g.beginPath();let b=pt(0,2);g.moveTo(b[0],b[1]);for(let i=0;i<n;i++){const a0=i/n*Math.PI*2,a1=(i+1)/n*Math.PI*2,am=(a0+a1)/2+.05;const f=(8+44*p)*L[i]+Math.sin(lt*7+i*1.3+seed)*2*p;const c=pt(am,f),e=pt(a1,2+6*p);g.quadraticCurveTo(c[0],c[1],e[0],e[1]);}g.closePath();}
+const CAT={parts:[[300,1210,160,140],[420,975,92,86],[340,1080,95,110]],tail:[[175,1300],[120,1250],[95,1180],[105,1110],[140,1060]]};
+function cat(lt,p){
+  const all=(pp,grow)=>{CAT.parts.forEach(([x,y,rx,ry],i)=>{furPath(x,y,rx*grow,ry*grow,pp,lt,i);g.fill();});g.save();g.strokeStyle=g.fillStyle;g.lineCap='round';g.lineWidth=(48+44*pp)*grow;g.beginPath();g.moveTo(200,1320);g.bezierCurveTo(60,1310,40,1150,120,1060+Math.sin(lt*2)*8);g.stroke();g.restore();
+    [[-1],[1]].forEach(([s])=>{g.beginPath();g.moveTo(420+s*72-s*0,915);g.lineTo(420+s*60+s*14*grow,846-14*pp);g.lineTo(420+s*16,895);g.closePath();g.fill();});};
+  g.save();g.shadowColor='rgba(127,216,255,.75)';g.shadowBlur=40;g.fillStyle='#4a3aa4';all(p,1);g.restore();
+  // warm air layer trapped in the fur
+  if(p>0){g.save();g.globalCompositeOperation='lighter';g.globalAlpha=p*.85;g.fillStyle='rgba(255,150,70,.6)';all(p*.8,1);g.restore();
+    g.save();g.globalCompositeOperation='lighter';const R=R0(31);for(let i=0;i<34;i++){const k=i%3,pp=CAT.parts[k];const a=R()*6.28,rr=1+(.06+.1*R())*p;const x=pp[0]+Math.cos(a)*pp[2]*rr,y=pp[1]+Math.sin(a)*pp[3]*rr-((lt*30+R()*40)%40)*p;
+      g.fillStyle='rgba(255,190,110,'+(.7*p)+')';g.shadowColor='#ff9a4a';g.shadowBlur=14;g.beginPath();g.arc(x,y,3+R()*4,0,7);g.fill();}g.restore();}
+  g.save();g.fillStyle='#22185c';all(0,.93);g.restore();
+  // face
+  g.save();g.fillStyle='#ffe07a';g.shadowColor='#ffd060';g.shadowBlur=18;[[392,965],[452,965]].forEach(([x,y])=>{g.beginPath();g.ellipse(x,y,13,9-6*Math.max(0,Math.sin(lt*2.2-11)*(lt>5.7?1:0)),0,0,7);g.fill();});
+  g.fillStyle='#ff9ab8';g.shadowBlur=0;g.beginPath();g.moveTo(414,995);g.lineTo(430,995);g.lineTo(422,1006);g.closePath();g.fill();
+  g.strokeStyle='rgba(220,230,255,.6)';g.lineWidth=2.5;[[-1,-8],[-1,6],[1,-8],[1,6]].forEach(([s,dy])=>{g.beginPath();g.moveTo(422+s*26,1004+dy*.3);g.lineTo(422+s*92,996+dy*1.6);g.stroke();});g.restore();}
+// ---------- main ----------
+function draw(lt){g.drawImage(bg,0,0);const pulse=.5+.5*Math.sin(lt*6);
+  const S=1+.75*EIO(lt/2.6)+.2*EIO((lt-2.6)/2);              // camera push into the arm
+  const zo=EIO((lt-1.25)/1.05);                              // zoom circle opening
+  const back=EIO((lt-4.25)/.7);                              // circle steps back to make room for the animal
+  const armA=1-.7*E3((lt-1.4)/1)-.3*E3((lt-4.2)/.5);
+  gust(lt,lt<2.4?1:.45+.25*back);
+  if(armA>0){g.save();g.globalAlpha=armA;g.translate(F.x,F.y);g.scale(S,S);g.translate(-F.x,-F.y);if(lt>1.6){g.filter='blur('+(8*E3((lt-1.6)/.8)).toFixed(1)+'px)';}arm(lt);g.restore();}
+  // focus ring on the arm before the zoom
+  if(lt<1.6){const a=E3(lt/.4)*(1-CL((lt-1.3)/.3));g.save();g.globalAlpha=a;g.strokeStyle='rgba(190,240,255,.9)';g.lineWidth=5;g.shadowColor='#7fd8ff';g.shadowBlur=20;g.setLineDash([18,14]);g.lineDashOffset=-lt*40;
+    g.beginPath();g.arc(F.x,F.y,70+8*pulse,0,7);g.stroke();g.restore();}
+  let m=null,C=null,k=1;
+  if(zo>0){const r=LERP(400,190,back)*zo;C={x:LERP(LERP(F.x,540,zo),770,back),y:LERP(LERP(F.y,980,zo),640,back)};k=(r/400)*(.6+.4*zo)/(zo>0?zo:1)*1;k=(r/400)*(1+.06*EIO((lt-2.3)/2));
+    const c=E3((lt-2.95)/.6),nerve=CL((lt-2.4)/.3)*(1-.6*CL((lt-3.4)/.6));
+    g.save();g.shadowColor='rgba(140,220,255,.75)';g.shadowBlur=60;g.fillStyle='#1d1050';g.beginPath();g.arc(C.x,C.y,r,0,7);g.fill();g.restore();
+    g.save();g.beginPath();g.arc(C.x,C.y,r,0,7);g.clip();g.translate(C.x,C.y);g.scale(k,k);m=xsec(lt,c,nerve);g.restore();
+    g.save();g.strokeStyle='rgba(180,235,255,.95)';g.lineWidth=6;g.shadowColor='#7fd8ff';g.shadowBlur=24;g.beginPath();g.arc(C.x,C.y,r,0,7);g.stroke();g.restore();}
+  // animal beat
+  const ca=E3((lt-4.5)/.5);if(ca>0){const p=EIO((lt-4.95)/.75);g.save();g.globalAlpha=ca;const sc=.9+.1*EBK((lt-4.5)/.6)+.03*EIO((lt-5)/1.3);g.translate(330,1150);g.scale(sc,sc);g.translate(-330,-1150);cat(lt,p);g.restore();}
+  // labels (max 2 on screen)
+  const outB=1-CL((lt-4.15)/.25);
+  if(m&&outB>0){const sp=(x,y)=>({x:C.x+x*k,y:C.y+y*k});const H=HAIRS[0];const geo=hairGeo(H,E3((lt-2.95)/.6));
+    const mp=sp(geo.E.x+LERP(geo.P.x,geo.Q.x,.62),geo.E.y+LERP(geo.P.y,geo.Q.y,.62));const hp=sp(geo.E.x-geo.dn.x*150,geo.E.y-geo.dn.y*150);
+    g.save();g.globalAlpha=outB;
+    pop(lt-2.3,360,1470,()=>label('arrector pili muscle',150,1470,mp.x,mp.y,'#ff6a7a',42));
+    pop(lt-3.3,700,500,()=>label('it pulls the hair up',500,500,hp.x,hp.y,'#ffd08a',40));g.restore();}
+  pop(lt-5.0,540,1470,()=>label('a leftover from our furry ancestors',110,1470,330,1330,'#8fe3ff',40));
+  pop(lt-5.3,700,1160,()=>{const p=EIO((lt-4.95)/.75);label('fur trapped warm air',560,1160,478+16*p,1160,'#ffa45a',36);});
+  if(lt>5.4){const ga=CL((lt-5.4)/.4)*.05*(.5+.5*Math.sin((lt-5.4)*5));g.save();g.globalCompositeOperation='lighter';g.fillStyle='rgba(255,150,80,'+ga+')';g.fillRect(0,0,1080,1920);g.restore();}
+  g.drawImage(GRAIN,0,0);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 86px '+SANS;g.fillText('Why we get',540,300);
+  g.fillStyle='#9be6ff';g.shadowColor='rgba(110,210,255,.95)';g.shadowBlur=26+16*pulse*CL((lt-3)/1);g.fillText('goosebumps',540,392);g.restore();}
+window.DUR=6.3;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(5.5);document.title='ok';});
+</script></body></html>

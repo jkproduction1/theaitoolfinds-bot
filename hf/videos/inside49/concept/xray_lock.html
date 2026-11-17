@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>X-ray smart lock</title>
+<!-- Facts used (generic deadbolt smart lock, our own design):
+  - Retrofit/deadbolt smart locks are typically powered by AA batteries (commonly 4x AA) in the interior unit.
+    e.g. product manuals of common deadbolt smart locks list "4 AA batteries"; see https://en.wikipedia.org/wiki/Smart_lock (battery powered, motorised).
+  - A small DC motor drives a reduction gear train that turns the deadbolt cam/tailpiece about 90 deg, which throws the bolt
+    (standard US deadbolt throw = 1 in / 25 mm, ANSI/BHMA A156.40 & common hardware spec sheets).
+  - Wireless chip (Bluetooth/Wi-Fi/Z-Wave radio) on the circuit board: https://en.wikipedia.org/wiki/Smart_lock
+  Dimensions here: AA cell 50.5 x 14.5 mm (IEC LR6), bolt dia ~25 mm, throw 25 mm, backset 60 mm. Units in scene = cm. -->
+<style>
+  body{margin:0;background:#000;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0b0f18;font-family:"Inter",system-ui,Arial,sans-serif}
+  canvas{position:absolute;inset:0;display:block}
+  #ov{position:absolute;inset:0;pointer-events:none}
+  #ov svg{position:absolute;inset:0}
+  .pill{position:absolute;transform:translate(-50%,-50%);background:rgba(6,14,26,.82);border:2px solid rgba(110,210,255,.75);border-radius:16px;padding:10px 26px 14px;color:#fff;white-space:nowrap;box-shadow:0 0 26px rgba(70,180,255,.35),0 8px 30px rgba(0,0,0,.4);font-weight:800;font-size:44px;letter-spacing:-.5px}
+  .pill.hot{border-color:#ffb547;box-shadow:0 0 30px rgba(255,170,60,.45),0 8px 30px rgba(0,0,0,.4)}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.js","three/addons/":"./"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pBat">batteries</div>
+    <div class="pill" id="pMot">motor + gears</div>
+    <div class="pill hot" id="pBolt">bolt slides out</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
+
+window.DUR = 6.33;
+const W = 1080, H = 1920;
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+stage.prepend(renderer.domElement);
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd = mulberry32(7);
+const R = (a, b) => a + rnd() * (b - a);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ramp = (t, a, b) => cl((t - a) / (b - a));
+const sm = x => x * x * (3 - 2 * x);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eoExpo = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const popS = x => { const c1 = 1.70158, c3 = c1 + 1, y = x - 1; return 1 + c3 * y * y * y + c1 * y * y; };
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(28, W / H, 1, 3000);
+
+// ---------- studio backdrop (screen-space gradient + vignette, shifts cooler under x-ray) ----------
+const bgU = { uX: { value: 0 }, uRes: { value: new THREE.Vector2(W, H) } };
+const bg = new THREE.Mesh(new THREE.SphereGeometry(1500, 32, 16), new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, uniforms: bgU,
+  vertexShader: `void main(){ gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader: `uniform float uX; uniform vec2 uRes;
+    void main(){ vec2 p = gl_FragCoord.xy/uRes; vec2 q = (p-vec2(.62,.55))*vec2(1.0,1.7);
+      float v = 1.0-smoothstep(0.0,0.95,length(q));
+      vec3 a = mix(vec3(.030,.034,.045), vec3(.008,.022,.050), uX);
+      vec3 b = mix(vec3(.150,.150,.165), vec3(.030,.110,.210), uX);
+      gl_FragColor = vec4(mix(a,b,v*v),1.0); }`
+}));
+bg.renderOrder = -10; scene.add(bg);
+
+// ---------- clip planes for the scan ----------
+let SCAN = 30;
+const planeS = new THREE.Plane(new THREE.Vector3(0, -1, 0), SCAN);  // solid: keep y < scan
+const planeX = new THREE.Plane(new THREE.Vector3(0, 1, 0), -SCAN);  // x-ray: keep y > scan
+
+const XV = `#include <clipping_planes_pars_vertex>
+varying vec3 vN; varying vec3 vV; varying float vY;
+void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vY = wp.y; vec4 mvPosition = viewMatrix*wp;
+  vN = normalize(normalMatrix*normal); vV = normalize(-mvPosition.xyz); gl_Position = projectionMatrix*mvPosition;
+  #include <clipping_planes_vertex>
+}`;
+const XF = `#include <clipping_planes_pars_fragment>
+uniform vec3 uC; uniform float uB, uG, uA, uScan;
+varying vec3 vN; varying vec3 vV; varying float vY;
+void main(){
+  #include <clipping_planes_fragment>
+  float f = pow(1.0-abs(dot(normalize(vN),normalize(vV))), 2.2);
+  float s = 0.82+0.18*sin(vY*24.0);
+  float band = exp(-abs(vY-uScan)*2.2)*1.6;
+  gl_FragColor = vec4(uC*((uB+uG*f)*s + band*(0.35+f))*uA, 1.0); }`;
+const XMATS = [];
+function xrayMat(color, base, gain) {
+  const m = new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(color) }, uB: { value: base }, uG: { value: gain }, uA: { value: 0 }, uScan: { value: SCAN } },
+    vertexShader: XV, fragmentShader: XF, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, clipping: true });
+  m.clippingPlanes = [planeX]; XMATS.push(m); return m;
+}
+const EDGEM = [];
+function edgeMat(color, op) { const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+  m.clippingPlanes = [planeX]; m.userData.op = op; EDGEM.push(m); return m; }
+
+// a "shell" part: solid version below the scan line, x-ray glass + glowing edges above it
+const shellGroup = new THREE.Group(); scene.add(shellGroup);
+function shell(geo, solidMat, pos, xr = [0.06, 0.9], edgeAngle = 20, edgeOp = 0.55, parent = shellGroup) {
+  const g = new THREE.Group(); g.position.copy(pos);
+  const sm_ = solidMat.clone(); sm_.clippingPlanes = [planeS]; sm_.clipShadows = true; sm_.side = THREE.DoubleSide;
+  const ms = new THREE.Mesh(geo, sm_); ms.receiveShadow = true; g.add(ms);
+  g.add(new THREE.Mesh(geo, xrayMat('#3aa8ff', xr[0], xr[1])));
+  if (edgeAngle) g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, edgeAngle), edgeMat('#8fe0ff', edgeOp)));
+  parent.add(g); return g;
+}
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+// ---------- door section (painted, 44 mm thick); lock edge at x = 0, interior face at z = 0 ----------
+const doorM = new THREE.MeshStandardMaterial({ color: '#e7e1d6', roughness: 0.55 });
+shell(new THREE.BoxGeometry(60, 90, 4.4), doorM, V(-30, -5, -2.2), [0.07, 0.5], 20, 0.55);
+// door edge faceplate + screws (stays solid metal)
+const steel = new THREE.MeshStandardMaterial({ color: '#c9ccd1', metalness: 1, roughness: 0.28 });
+const brushed = new THREE.MeshStandardMaterial({ color: '#b8bcc2', metalness: 1, roughness: 0.38 });
+{ const fp = new THREE.Mesh(new RoundedBoxGeometry(0.16, 6.6, 2.6, 2, 0.06), steel); fp.position.set(0.06, -2.5, -2.2); fp.receiveShadow = true; scene.add(fp);
+  for (const y of [-5.2, 0.2]) { const s = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.1, 16), brushed); s.rotation.z = Math.PI / 2; s.position.set(0.16, y, -2.2); scene.add(s); } }
+
+// ---------- interior unit housing (graphite) ----------
+const HX = -6, HY = -0.5, HW = 7.2, HH = 15.4, HD = 4.2;
+const graphite = new THREE.MeshPhysicalMaterial({ color: '#2b2e35', roughness: 0.42, metalness: 0.2, clearcoat: 0.6, clearcoatRoughness: 0.35 });
+shell(new RoundedBoxGeometry(HW, HH, HD, 5, 1.1), graphite, V(HX, HY, HD / 2), [0.05, 1.2], 15, 0.35);
+// front metal ring + thumbturn (rotates with the bolt)
+const ringGeo = new THREE.CylinderGeometry(2.05, 2.15, 0.35, 40); ringGeo.rotateX(Math.PI / 2);
+shell(ringGeo, brushed, V(HX, -2.5, HD + 0.12), [0.05, 1.0], 30, 0.5);
+const turn = new THREE.Group(); turn.position.set(HX, -2.5, HD + 0.3); shellGroup.add(turn);
+shell(new RoundedBoxGeometry(0.95, 3.4, 1.0, 3, 0.4), brushed, V(0, 0, 0.5), [0.05, 1.0], 25, 0.5, turn);
+// soft contact shadow under the housing on the door
+const aoTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+  const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(0,0,0,.65)'); r.addColorStop(.6, 'rgba(0,0,0,.25)'); r.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c); })();
+{ const m = new THREE.MeshBasicMaterial({ map: aoTex, transparent: true, depthWrite: false }); m.clippingPlanes = [planeS];
+  const ao = new THREE.Mesh(new THREE.PlaneGeometry(11.5, 20), m); ao.position.set(HX + 0.6, HY - 0.8, 0.02); scene.add(ao); }
+
+// ---------- INSIDE: solid lit parts ----------
+const inner = new THREE.Group(); scene.add(inner);
+const cast = m => { m.castShadow = true; m.receiveShadow = true; return m; };
+const addIn = (geo, mat, x, y, z) => { const m = cast(new THREE.Mesh(geo, mat)); m.position.set(x, y, z); inner.add(m); return m; };
+// inner back plate
+addIn(new RoundedBoxGeometry(HW - 0.5, HH - 0.5, 0.3, 2, 0.12), new THREE.MeshStandardMaterial({ color: '#1a1c21', roughness: 0.8 }), HX, HY, 0.2);
+// circuit board (green) with a wireless chip under a metal shield can
+const pcbM = new THREE.MeshStandardMaterial({ color: '#14603a', roughness: 0.5, metalness: 0.1 });
+addIn(new RoundedBoxGeometry(6.2, 7.6, 0.16, 2, 0.05), pcbM, HX, -4.0, 0.5);
+addIn(new RoundedBoxGeometry(1.5, 1.5, 0.35, 2, 0.05), new THREE.MeshStandardMaterial({ color: '#d7dadf', metalness: 1, roughness: 0.22 }), -3.85, -1.15, 0.75);
+addIn(new THREE.BoxGeometry(0.9, 0.9, 0.18), new THREE.MeshStandardMaterial({ color: '#15161a', roughness: 0.35 }), -3.75, -7.0, 0.65);
+const goldM = new THREE.MeshStandardMaterial({ color: '#e0b04a', metalness: 1, roughness: 0.3 });
+{ // meander antenna trace + small parts
+  for (let i = 0; i < 5; i++) addIn(new THREE.BoxGeometry(0.08, 0.7, 0.03), goldM, -3.4 + i * 0.18 - 0.36, 0.0 - (i % 2) * 0.0, 0.6);
+  for (let i = 0; i < 9; i++) addIn(new THREE.BoxGeometry(R(.18, .32), R(.12, .2), 0.12), rnd() < .5 ? new THREE.MeshStandardMaterial({ color: '#2a241d', roughness: .5 }) : brushed, R(-8.7, -7.6), R(-7.3, -1.3), 0.64);
+}
+const led = addIn(new THREE.SphereGeometry(0.16, 12, 8), new THREE.MeshBasicMaterial({ color: '#2bff9a', toneMapped: false }), -3.2, -7.4, 0.68);
+// AA battery pack: 4 cells, holder + contacts
+const holderM = new THREE.MeshStandardMaterial({ color: '#202227', roughness: 0.7 });
+addIn(new RoundedBoxGeometry(6.4, 5.9, 0.5, 2, 0.15), holderM, HX, 3.25, 1.05);
+for (const y of [0.35, 6.15]) addIn(new RoundedBoxGeometry(6.4, 0.45, 2.4, 2, 0.12), holderM, HX, y, 1.9);
+const batM = new THREE.MeshPhysicalMaterial({ color: '#d4552a', roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.15 });
+const batM2 = new THREE.MeshPhysicalMaterial({ color: '#1d1f24', roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.15 });
+for (let i = 0; i < 4; i++) {
+  const x = HX - 2.25 + i * 1.5, up = i % 2 ? 1 : -1, bg_ = new THREE.Group(); bg_.position.set(x, 3.25, 2.25); inner.add(bg_);
+  const body = cast(new THREE.Mesh(new THREE.CylinderGeometry(0.72, 0.72, 4.4, 28), batM)); bg_.add(body);
+  const band = cast(new THREE.Mesh(new THREE.CylinderGeometry(0.725, 0.725, 1.6, 28), batM2)); band.position.y = -up * 1.4; bg_.add(band);
+  for (const s of [1, -1]) { const cap = cast(new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.16, 28), steel)); cap.position.y = s * 2.28; bg_.add(cap); }
+  const nub = cast(new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.16, 16), steel)); nub.position.y = up * 2.42; bg_.add(nub);
+}
+// motor + gearbox
+const motorG = new THREE.Group(); motorG.position.set(-5.7, -5.95, 1.95); inner.add(motorG);
+{ const can = cast(new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.68, 2.6, 32), steel)); can.rotation.z = Math.PI / 2; motorG.add(can);
+  const capB = cast(new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.25, 32), new THREE.MeshStandardMaterial({ color: '#141518', roughness: .6 }))); capB.rotation.z = Math.PI / 2; capB.position.x = 1.42; motorG.add(capB);
+  for (const z of [0.3, -0.3]) { const tab = cast(new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.12, 0.12), goldM)); tab.position.set(1.62, 0.35, z); motorG.add(tab); } }
+const encoder = new THREE.Group(); encoder.position.set(1.72, 0, 0); motorG.add(encoder);
+{ const d = cast(new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.08, 24), new THREE.MeshStandardMaterial({ color: '#f2f2ee', roughness: .4 }))); d.rotation.z = Math.PI / 2; encoder.add(d);
+  for (let k = 0; k < 3; k++) { const v = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.5, 0.16), new THREE.MeshStandardMaterial({ color: '#d43a2a', roughness: .5 })); v.rotation.x = k / 3 * Math.PI * 2; v.position.set(0.04, Math.sin(-v.rotation.x) * 0, 0); v.translateY(0.27); encoder.add(v); } }
+addIn(new RoundedBoxGeometry(2.0, 2.4, 1.9, 2, 0.15), new THREE.MeshStandardMaterial({ color: '#2a2c31', roughness: .55 }), -8.2, -5.55, 1.55);
+// gear train (face plane): pinion -> idler -> drive gear on the spindle
+function gearGeo(z, r, th, holes = 0) {
+  const s = new THREE.Shape(), ro = r + 0.11, ri = r - 0.13;
+  for (let i = 0; i < z; i++) { const a = i / z * Math.PI * 2, d = Math.PI * 2 / z;
+    const P = [[ri, a], [ro, a + d * .22], [ro, a + d * .48], [ri, a + d * .7]];
+    P.forEach(([rr, aa], k) => { const x = Math.cos(aa) * rr, y = Math.sin(aa) * rr; i === 0 && k === 0 ? s.moveTo(x, y) : s.lineTo(x, y); }); }
+  s.closePath();
+  const hole = new THREE.Path(); hole.absarc(0, 0, Math.min(0.18, r * .3), 0, Math.PI * 2, true); s.holes.push(hole);
+  for (let k = 0; k < holes; k++) { const a = k / holes * Math.PI * 2, h = new THREE.Path(); h.absarc(Math.cos(a) * r * .55, Math.sin(a) * r * .55, r * .2, 0, Math.PI * 2, true); s.holes.push(h); }
+  const g = new THREE.ExtrudeGeometry(s, { depth: th, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.02, bevelSegments: 1, curveSegments: 10 }); return g;
+}
+const nylon = new THREE.MeshStandardMaterial({ color: '#efe7d2', roughness: 0.45 });
+const brass = new THREE.MeshStandardMaterial({ color: '#d9a640', metalness: 1, roughness: 0.3 });
+const GZ = 2.6;
+const GBIG = { x: HX, y: -2.5, z: 30, r: 1.6 }, GMID = { z: 14, r: 0.75 }, GPIN = { z: 8, r: 0.43 };
+{ const a = -2.45; GMID.x = GBIG.x + Math.cos(a) * (GBIG.r + GMID.r); GMID.y = GBIG.y + Math.sin(a) * (GBIG.r + GMID.r); }
+{ const a = -1.75; GPIN.x = GMID.x + Math.cos(a) * (GMID.r + GPIN.r); GPIN.y = GMID.y + Math.sin(a) * (GMID.r + GPIN.r); }
+const gBig = addIn(gearGeo(30, 1.6, 0.3, 5), nylon, GBIG.x, GBIG.y, GZ);
+const gMid = addIn(gearGeo(14, 0.75, 0.3), nylon, GMID.x, GMID.y, GZ);
+const gMid2 = addIn(gearGeo(8, 0.43, 0.3), brass, GMID.x, GMID.y, GZ + 0.33);
+const gPin = addIn(gearGeo(8, 0.43, 0.3), brass, GPIN.x, GPIN.y, GZ);
+for (const g of [GBIG, GMID, GPIN]) addIn(new THREE.CylinderGeometry(0.12, 0.12, 0.9, 10).rotateX(Math.PI / 2), steel, g.x, g.y, GZ + 0.2);
+// spindle / tailpiece through the door + cam
+const spin = new THREE.Group(); spin.position.set(HX, -2.5, 0); inner.add(spin);
+{ const tp = cast(new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.22, 4.8), brushed)); tp.position.z = 0.2; spin.add(tp);
+  const cam = cast(new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.5, 0.5), steel)); cam.position.set(0, 0, -2.2); spin.add(cam); }
+// bolt mechanism: case tube (x-ray shell) + steel bolt
+const tubeGeo = new THREE.CylinderGeometry(1.45, 1.45, 7.2, 32, 1, true); tubeGeo.rotateZ(Math.PI / 2);
+shell(tubeGeo, steel, V(-3.6, -2.5, -2.2), [0.05, 1.0], 0, 0);
+const bolt = new THREE.Group(); inner.add(bolt);
+{ const b = cast(new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 3.3, 40), new THREE.MeshStandardMaterial({ color: '#e3e6ea', metalness: 1, roughness: 0.18 })));
+  b.rotation.z = Math.PI / 2; b.position.set(-1.45, -2.5, -2.2); bolt.add(b);
+  const face = cast(new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.2, 0.1, 40), steel)); face.rotation.z = Math.PI / 2; face.position.set(0.25, -2.5, -2.2); bolt.add(face); }
+const link = cast(new THREE.Mesh(new THREE.BoxGeometry(1, 0.3, 0.3), brushed)); inner.add(link);
+
+// ---------- scan sheet ----------
+const sheetTex = (() => { const c = document.createElement('canvas'); c.width = 256; c.height = 64; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 64); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 256, 64); const gx = g.createLinearGradient(0, 0, 256, 0);
+  gx.addColorStop(0, 'rgba(0,0,0,1)'); gx.addColorStop(.2, 'rgba(0,0,0,0)'); gx.addColorStop(.8, 'rgba(0,0,0,0)'); gx.addColorStop(1, 'rgba(0,0,0,1)');
+  g.globalCompositeOperation = 'destination-out'; g.fillStyle = gx; g.fillRect(0, 0, 256, 64); return new THREE.CanvasTexture(c); })();
+const sheetM = new THREE.MeshBasicMaterial({ map: sheetTex, color: '#59c8ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+const sheet = new THREE.Mesh(new THREE.PlaneGeometry(18, 0.9), sheetM); scene.add(sheet);
+const sheet2 = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshBasicMaterial({ map: sheetTex, color: '#2a7fd0', transparent: true, opacity: .25, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
+sheet2.rotation.x = -Math.PI / 2; scene.add(sheet2);
+
+// ---------- dust motes ----------
+const softTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'); const r = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = r; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+const NP = 90, dust = [], dpos = new Float32Array(NP * 3);
+for (let i = 0; i < NP; i++) dust.push([R(-16, 10), R(-14, 12), R(-2, 18), R(0, 6.28), R(.15, .4)]);
+const dGeo = new THREE.BufferGeometry(); dGeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+const dMat = new THREE.PointsMaterial({ map: softTex, size: 0.22, color: '#9fd6ff', transparent: true, opacity: .5, depthWrite: false, blending: THREE.AdditiveBlending });
+scene.add(new THREE.Points(dGeo, dMat));
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight('#c9d6ea', '#2a2622', 0.5));
+const key = new THREE.DirectionalLight('#fff1e0', 2.6); key.position.set(-30, 45, 60); key.castShadow = true;
+Object.assign(key.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 20, far: 160 });
+key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03; key.shadow.radius = 4;
+key.target.position.set(-4, -1, 0); scene.add(key, key.target);
+const rimL = new THREE.DirectionalLight('#9cc8ff', 1.6); rimL.position.set(50, 20, -20); scene.add(rimL);
+const coolIn = new THREE.PointLight('#5fb4ff', 0, 30, 1.5); coolIn.position.set(-4, 0, 9); scene.add(coolIn);
+const boltGlow = new THREE.PointLight('#ffb35a', 0, 10, 2); boltGlow.position.set(2.5, -2.5, -0.5); scene.add(boltGlow);
+
+// ---------- camera ----------
+const PIV = V(-3.7, -0.6, 0.5);
+function setCam(t) {
+  const u = cl(t / 6.33), s = 0.3 * u + 0.7 * eio(u);
+  const az = -0.16 + 0.68 * s, el = 0.2 - 0.08 * s, d = 66 - 7 * s;
+  camera.position.set(PIV.x + Math.sin(az) * Math.cos(el) * d, PIV.y + Math.sin(el) * d, PIV.z + Math.cos(az) * Math.cos(el) * d);
+  camera.lookAt(PIV.x + 0.9 * s, PIV.y, PIV.z); camera.setViewOffset(W, H, 0, 80, W, H); camera.updateMatrixWorld();
+}
+
+// ---------- labels ----------
+const svg = document.getElementById('lines');
+const pBat = document.getElementById('pBat'), pMot = document.getElementById('pMot'), pBolt = document.getElementById('pBolt');
+const tv = new THREE.Vector3();
+function proj(x, y, z) { tv.set(x, y, z).project(camera); return [(tv.x + 1) / 2 * W, (1 - tv.y) / 2 * H]; }
+function pill(el, x, y, a, sc) { el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.opacity = a; el.style.transform = `translate(-50%,-50%) scale(${sc})`; }
+function leader(ax, ay, bx, by, a, col) { return a <= 0.001 ? '' : `<g opacity="${a}"><line x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}" stroke="${col}" stroke-width="3"/><circle cx="${bx}" cy="${by}" r="9" fill="${col}"/><circle cx="${bx}" cy="${by}" r="18" fill="none" stroke="${col}" stroke-width="2" opacity=".6"/></g>`; }
+
+// ---------- timing ----------
+const T_S0 = 0.3, T_S1 = 2.2;                 // scan sweep
+const T_B0 = 3.25, T_B1 = 4.65;                // motor runs, bolt throws (25 mm)
+function render(t) {
+  t = cl(t, 0, 6.33);
+  setCam(t);
+  // scan: from above the housing to below it
+  const rr = ramp(t, T_S0, T_S1), sp = 0.45 * rr + 0.55 * sm(rr); SCAN = 15 - 36 * sp;
+  planeS.constant = SCAN; planeX.constant = -SCAN;
+  const xa = ramp(t, T_S0 - 0.1, T_S0 + 0.2);
+  XMATS.forEach(m => { m.uniforms.uA.value = xa; m.uniforms.uScan.value = SCAN; });
+  EDGEM.forEach(m => m.opacity = m.userData.op * xa);
+  const sheetA = sm(ramp(t, T_S0 - 0.15, T_S0 + 0.15)) * (1 - sm(ramp(t, T_S1 - 0.25, T_S1 + 0.1)));
+  sheet.visible = sheet2.visible = sheetA > 0.001; sheetM.opacity = sheetA; sheet2.material.opacity = 0.28 * sheetA;
+  sheet.position.set(-4.5, SCAN, 6.5); sheet.lookAt(camera.position.x, SCAN, camera.position.z); sheet2.position.set(-4.5, SCAN, 1);
+  const xr = sm(ramp(t, T_S0, T_S1 + 0.3)); bgU.uX.value = xr; coolIn.intensity = 0 * xr; renderer.toneMappingExposure = 1.0 + 0.08 * xr;
+  // mechanism
+  const p = eio(ramp(t, T_B0, T_B1));           // bolt progress
+  const ang = p * Math.PI / 2;                   // 90 deg cam turn
+  gBig.rotation.z = -ang; gMid.rotation.z = gMid2.rotation.z = ang * 30 / 14; gPin.rotation.z = -ang * 30 / 14 * 14 / 8 - 0.2;
+  spin.rotation.z = -ang; turn.rotation.z = -ang;
+  encoder.rotation.x = ang * 30 / 8 * 3.2;
+  const motorOn = ramp(t, T_B0, T_B0 + 0.1) * (1 - ramp(t, T_B1 - 0.05, T_B1 + 0.05));
+  motorG.position.y = -5.95 + motorOn * 0.02 * Math.sin(t * 190);
+  bolt.position.x = 2.5 * p;
+  { const camEnd = new THREE.Vector3(1.2, 0, 0).applyAxisAngle(new THREE.Vector3(0, 0, 1), -ang + 0.6); const ax = HX + camEnd.x, ay = -2.5 + camEnd.y, bx = -3.1 + 2.5 * p, by = -2.5;
+    link.position.set((ax + bx) / 2, (ay + by) / 2, -2.2); link.scale.x = Math.hypot(bx - ax, by - ay); link.rotation.z = Math.atan2(by - ay, bx - ax); }
+  boltGlow.intensity = 6 * sm(ramp(t, T_B1 - 0.3, T_B1 + 0.2)) * (0.85 + 0.15 * Math.sin(t * 6));
+  led.material.color.set(t > T_B1 + 0.1 && Math.floor((t - T_B1) * 3) % 2 === 0 ? '#2bff9a' : '#0c4a2c');
+  // dust
+  for (let i = 0; i < NP; i++) { const d = dust[i]; dpos[i * 3] = d[0] + Math.sin(t * d[4] + d[3]) * 0.6 + t * 0.15; dpos[i * 3 + 1] = d[1] + t * d[4] * 0.6; dpos[i * 3 + 2] = d[2]; }
+  dGeo.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera);
+  // labels
+  const aB = sm(ramp(t, 1.75, 2.15)), aM = sm(ramp(t, 2.25, 2.65)), aO = sm(ramp(t, T_B1 - 0.35, T_B1 + 0.05));
+  const [bx, by] = proj(HX - 1.5, 3.6, 3.0), [mx, my] = proj(-6.6, -5.9, 2.7), [ox, oy] = proj(2.75, -2.5 - 1.2, -2.2);
+  const LB = [cl(bx - 40, 230, W - 230), cl(by - 330, 270, 1500)], LM = [cl(mx - 30, 270, W - 270), cl(my + 240, 270, 1490)], LO = [cl(ox - 60, 260, W - 260), cl(oy + 260, 270, 1490)];
+  pill(pBat, LB[0], LB[1], aB, 0.85 + 0.15 * popS(ramp(t, 1.75, 2.2)));
+  pill(pMot, LM[0], LM[1], aM, 0.85 + 0.15 * popS(ramp(t, 2.25, 2.7)));
+  pill(pBolt, LO[0], LO[1], aO, 0.85 + 0.15 * popS(ramp(t, T_B1 - 0.35, T_B1 + 0.1)));
+  svg.innerHTML = leader(LB[0], LB[1] + 34, bx, by, aB, '#7fd4ff') + leader(LM[0], LM[1] - 34, mx, my, aM, '#7fd4ff') + leader(LO[0], LO[1] - 34, ox, oy, aO, '#ffb547');
+}
+window.renderAt = t => render(t);
+window.draw = render;
+const q = new URLSearchParams(location.search);
+await Promise.race([document.fonts.load('800 44px "Inter"'), new Promise(r => setTimeout(r, 1500))]);
+render(q.has('t') ? parseFloat(q.get('t')) : 5.5);
+requestAnimationFrame(() => { document.title = 'ok'; });
+</script>
+</body>
+</html>

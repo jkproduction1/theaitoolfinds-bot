@@ -1,0 +1,161 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles48: /painted-story how the Titanic was found (painterly look of styles47 painted_rapanui). Own drawing, no photo reference.
+// Facts (WHOI Ocean Learning Hub, "1985 Discovery of RMS Titanic",
+//  https://www.whoi.edu/ocean-learning-hub/ocean-topics/ocean-human-lives/underwater-archaeology/rms-titanic/1985-discovery-of-rms-titanic/):
+//  found "just after 1:00 a.m. on September 1, 1985"; Argo = deep-towed sonar and video camera system (towed sled) from the research ship;
+//  "the debris trail led to the wreck"; "one of the Titanic's boilers was identified"; wreck lies "under more than 12,400 feet of water" (~3,800 m).
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const WW=2600, WH=4200, SURF=640, BED=3930, BX=2190, BY=3700, BR=235;
+// ---------- world: night sky, sea surface, water column (always visible) ----------
+const WORLD=off(WW,WH,(p,w,h)=>{const R=R0(21);
+  const s=p.createLinearGradient(0,0,0,SURF);s.addColorStop(0,'#070b1c');s.addColorStop(.6,'#16203e');s.addColorStop(1,'#2c3658');p.fillStyle=s;p.fillRect(0,0,w,SURF);
+  strokes(p,2600,R,-40,0,w+80,SURF,['#0e1630','#1c2848','#26325a','#0a0f22'],170,30,0);
+  for(let k=0;k<6;k++){const cy=150+k*70+R()*30;strokes(p,140,R,-60+R()*1600,cy,900+R()*500,24,['#3a4a72','#55658e','#1a2440'],120,14,-0.02,0.1,0.22);}
+  for(let i=0;i<260;i++){p.fillStyle='rgba(235,240,255,'+(R()*.75)+')';p.beginPath();p.arc(R()*w,R()*SURF*.8,R()*2.4,0,7);p.fill();}
+  // moonlight band on clouds
+  const mg=p.createRadialGradient(980,250,10,980,250,520);mg.addColorStop(0,'rgba(220,230,255,.35)');mg.addColorStop(1,'rgba(200,210,255,0)');p.fillStyle=mg;p.fillRect(400,0,1200,SURF);
+  p.fillStyle='#f4f0dc';p.beginPath();p.arc(980,250,46,0,7);p.fill();p.fillStyle='rgba(200,195,170,.5)';p.beginPath();p.arc(966,240,10,0,7);p.arc(994,266,7,0,7);p.fill();
+  // water column: moonlit blue near the surface, black-blue in the deep
+  const wg=p.createLinearGradient(0,SURF,0,h);wg.addColorStop(0,'#1d4566');wg.addColorStop(.05,'#123250');wg.addColorStop(.2,'#0a1e36');wg.addColorStop(.5,'#06111f');wg.addColorStop(1,'#03070e');p.fillStyle=wg;p.fillRect(0,SURF,w,h-SURF);
+  strokes(p,2200,R,-40,SURF,w+80,900,['#1e4a6a','#0c2440','#2a5a7a','#081a30'],180,26,0.05,0.06,0.16);
+  strokes(p,3500,R,-40,SURF+800,w+80,h-SURF-800,['#0a1a2e','#04101c','#0e2238','#020810'],200,30,0.05,0.06,0.16);
+  // god rays from the moon in the top water
+  for(let i=0;i<9;i++){const x=600+i*130+R()*60;const rg=p.createLinearGradient(0,SURF,0,SURF+700);rg.addColorStop(0,'rgba(140,190,230,.16)');rg.addColorStop(1,'rgba(140,190,230,0)');p.fillStyle=rg;p.beginPath();p.moveTo(x,SURF);p.lineTo(x+30+R()*30,SURF);p.lineTo(x-120+R()*40,SURF+700);p.lineTo(x-220,SURF+700);p.closePath();p.fill();}
+  // sea surface: moon glitter and painted swell
+  strokes(p,900,R,-40,SURF-14,w+80,30,['#4a6a92','#1a3050','#7a92b8'],90,8,0,0.2,0.3);
+  for(let i=0;i<26;i++){const y=SURF-6+i*7,ww=180-i*5+R()*60;p.fillStyle='rgba(230,235,255,'+(0.55-i*.02)+')';p.fillRect(980-ww/2+(R()-.5)*60,y,ww,3);}
+  // the research ship (generic), stern to the right with a towing A-frame
+  p.save();p.translate(0,SURF);
+  p.fillStyle='#0a0d18';p.beginPath();p.moveTo(70,-40);p.lineTo(640,-40);p.lineTo(660,-8);p.lineTo(640,14);p.lineTo(120,14);p.quadraticCurveTo(70,-10,40,-56);p.closePath();p.fill(); // hull
+  p.fillStyle='#d8dbe0';p.globalAlpha=.85;p.beginPath();p.moveTo(46,-52);p.lineTo(640,-42);p.lineTo(640,-36);p.lineTo(70,-38);p.closePath();p.fill();p.globalAlpha=1; // white sheer line
+  p.fillStyle='#141a2a';p.fillRect(130,-110,260,72);p.fillRect(160,-160,190,52);p.fillRect(200,-205,120,46); // superstructure
+  p.fillRect(255,-290,8,90);p.fillRect(225,-262,68,5);p.fillRect(380,-120,30,82); // mast
+  p.strokeStyle='#141a2a';p.lineWidth=9;p.lineCap='round';p.beginPath();p.moveTo(560,-40);p.lineTo(640,-150);p.lineTo(700,-110);p.moveTo(600,-40);p.lineTo(660,-135);p.stroke(); // A-frame
+  p.lineWidth=4;p.beginPath();p.moveTo(440,-40);p.lineTo(440,-90);p.lineTo(520,-90);p.stroke();
+  // warm windows and deck lights
+  for(let i=0;i<9;i++){p.fillStyle='rgba(255,210,130,.9)';p.fillRect(146+i*26,-92,12,10);}for(let i=0;i<6;i++){p.fillStyle='rgba(255,220,150,.85)';p.fillRect(176+i*28,-142,12,9);}
+  p.fillStyle='rgba(160,220,255,.8)';p.fillRect(212,-192,96,12);
+  [[640,-150],[259,-292],[470,-96],[560,-48]].forEach(([x,y])=>{const lg=p.createRadialGradient(x,y,1,x,y,60);lg.addColorStop(0,'rgba(255,230,170,.95)');lg.addColorStop(.15,'rgba(255,200,120,.4)');lg.addColorStop(1,'rgba(255,200,120,0)');p.fillStyle=lg;p.fillRect(x-60,y-60,120,120);});
+  strokes(p,260,R0(8),40,-300,640,320,['#1e2640','#05070e','#2c3450'],40,5,1.57,0.12,0.2);
+  // deck-light reflections on the swell
+  for(let i=0;i<12;i++){p.fillStyle='rgba(255,200,120,'+(0.4-i*.03)+')';p.fillRect(150+R()*420,20+i*9,40+R()*60,3);}
+  p.restore();
+});
+// ---------- seabed + debris trail + boiler: only seen where the sled's lights reach ----------
+function plate(p,R,x,y,s,col){p.save();p.translate(x,y);p.rotate((R()-.5)*0.8);p.scale(s,s*0.55);p.fillStyle=col;p.beginPath();const n=7;for(let i=0;i<n;i++){const a=i/n*6.283,r=30*(0.6+R()*0.6);i?p.lineTo(Math.cos(a)*r*1.6,Math.sin(a)*r):p.moveTo(Math.cos(a)*r*1.6,Math.sin(a)*r);}p.closePath();p.fill();
+  p.fillStyle='rgba(250,200,140,.35)';p.fillRect(-36,-14,50,5);p.fillStyle='rgba(20,10,6,.7)';for(let i=0;i<4;i++){p.beginPath();p.arc(-30+i*16,4,2.4,0,7);p.fill();}p.restore();}
+const BEDL=off(WW,WH,(p,w,h)=>{const R=R0(44);
+  p.beginPath();p.moveTo(-10,h);for(let x=-10;x<=w+10;x+=20)p.lineTo(x,BED+Math.sin(x*.004)*30+Math.sin(x*.013)*8);p.lineTo(w+10,h);p.closePath();
+  const gr=p.createLinearGradient(0,BED-40,0,BED+300);gr.addColorStop(0,'#8a8466');gr.addColorStop(.4,'#5e5a48');gr.addColorStop(1,'#2a2a26');p.fillStyle=gr;p.fill();
+  p.save();p.clip();strokes(p,2600,R,-40,BED-50,w+80,330,['#9a9070','#6a6450','#4a4638','#b0a480'],60,10,0,0.08,0.2);
+  for(let i=0;i<500;i++){p.fillStyle='rgba(30,26,20,'+(R()*.4)+')';p.beginPath();p.ellipse(R()*w,BED+R()*260,2+R()*8,1+R()*3,0,0,7);p.fill();}p.restore();
+  // the debris trail: rusty plates, beams, a pipe, scattered toward the boiler
+  const rust=['#7a3a1e','#5a2a18','#94502a','#3a2016','#6a4428'];
+  for(let i=0;i<70;i++){const t=Math.pow(R(),0.7),x=900+t*1250+(R()-.5)*120,y=BED-10+Math.sin(x*.004)*30+R()*120*(0.6+t*0.4);plate(p,R,x,y,0.4+R()*0.9*(0.5+t),rust[Math.floor(R()*rust.length)]);}
+  for(let i=0;i<14;i++){const x=1000+R()*1100,y=BED+10+R()*90+Math.sin(x*.004)*30;p.save();p.translate(x,y);p.rotate((R()-.5)*0.6);p.fillStyle=rust[Math.floor(R()*5)];p.fillRect(-60,-6,120+R()*60,12);p.fillStyle='rgba(240,190,130,.35)';p.fillRect(-60,-6,120,3);p.restore();}
+  // a bent pipe and a deck-bench-like frame (generic)
+  p.strokeStyle='#5a3220';p.lineWidth=16;p.lineCap='round';p.beginPath();p.moveTo(1500,BED+40);p.quadraticCurveTo(1580,BED-20,1660,BED+30);p.stroke();
+  p.strokeStyle='rgba(230,170,110,.4)';p.lineWidth=4;p.beginPath();p.moveTo(1500,BED+34);p.quadraticCurveTo(1580,BED-26,1660,BED+24);p.stroke();
+  strokes(p,900,R,880,BED-40,1400,180,['#3a2014','#a05a30','#2a1810'],22,5,0,0.08,0.18);
+});
+// the boiler: a huge riveted drum lying on the seabed, front face with three furnace mouths (generic shape)
+const BOIL_C=off(WW,WH,(p)=>{const R=R0(9);p.save();p.translate(BX,BY);
+  // shadow + sediment piled at its foot
+  p.fillStyle='rgba(10,8,6,.6)';p.beginPath();p.ellipse(60,BR-10,BR*1.25,40,0,0,7);p.fill();
+  // drum side (seen slightly from the side)
+  p.fillStyle='#3a1e12';p.beginPath();p.moveTo(0,-BR);p.lineTo(170,-BR+14);p.lineTo(170,BR-14);p.lineTo(0,BR);p.closePath();p.fill();
+  for(let i=1;i<4;i++){p.strokeStyle='rgba(15,6,2,.6)';p.lineWidth=5;p.beginPath();p.moveTo(i*42,-BR+i*3.5);p.lineTo(i*42,BR-i*3.5);p.stroke();}
+  // front face
+  const fg=p.createRadialGradient(-70,-80,20,0,0,BR);fg.addColorStop(0,'#b0602e');fg.addColorStop(.6,'#7a3a1c');fg.addColorStop(1,'#3a1a0e');p.fillStyle=fg;p.beginPath();p.ellipse(0,0,BR*0.9,BR,0,0,7);p.fill();
+  p.save();p.beginPath();p.ellipse(0,0,BR*0.9,BR,0,0,7);p.clip();strokes(p,500,R,-BR,-BR,2*BR,2*BR,['#c8743a','#5a2a14','#2a120a','#d89050','#8a4a24'],30,6,1.2,0.15,0.3);
+  // rust streaks dripping down
+  strokes(p,120,R,-BR,-BR,2*BR,2*BR,['#e09858','#3a180c'],70,4,1.57,0.15,0.25);p.restore();
+  p.strokeStyle='#2a1208';p.lineWidth=10;p.beginPath();p.ellipse(0,0,BR*0.9,BR,0,0,7);p.stroke();
+  // two rings of rivets
+  [[BR*0.84,BR*0.94,44],[BR*0.62,BR*0.7,34]].forEach(([rx,ry,n])=>{for(let i=0;i<n;i++){const a=i/n*6.283,x=Math.cos(a)*rx,y=Math.sin(a)*ry;p.fillStyle='#2a1208';p.beginPath();p.arc(x+1.5,y+1.5,6,0,7);p.fill();p.fillStyle='#e8a062';p.beginPath();p.arc(x-1,y-1,4.4,0,7);p.fill();}});
+  // three furnace mouths
+  [[-78,60],[78,60],[0,-58]].forEach(([x,y])=>{p.fillStyle='#120804';p.beginPath();p.ellipse(x,y,46,50,0,0,7);p.fill();p.strokeStyle='#c87a40';p.lineWidth=6;p.beginPath();p.ellipse(x,y,50,54,0,Math.PI*1.05,Math.PI*1.9);p.stroke();
+    p.strokeStyle='#3a1a0c';p.lineWidth=8;p.beginPath();p.ellipse(x,y,54,58,0,0,7);p.stroke();});
+  // sediment drifted against the base
+  p.fillStyle='#6a6450';p.beginPath();p.moveTo(-BR*1.1,BR+10);p.quadraticCurveTo(-60,BR-40,40,BR-30);p.quadraticCurveTo(160,BR-30,260,BR+20);p.lineTo(-BR*1.1,BR+30);p.closePath();p.fill();
+  strokes(p,140,R,-BR*1.1,BR-40,BR*2.2+100,60,['#9a9070','#4a4638'],40,7,0,0.15,0.25);
+  p.restore();});
+// ---------- the camera sled ----------
+function sled(c,x,y,a,lt){c.save();c.translate(x,y);c.rotate(a);
+  c.fillStyle='#d6a020';c.fillRect(-110,-34,220,16); // top float (yellow)
+  c.strokeStyle='#b8b8b0';c.lineWidth=7;c.lineCap='round';c.beginPath();c.moveTo(-104,-18);c.lineTo(-104,40);c.moveTo(104,-18);c.lineTo(104,40);c.moveTo(-104,40);c.lineTo(104,40);c.moveTo(-104,10);c.lineTo(104,10);c.moveTo(-104,40);c.lineTo(-40,-18);c.moveTo(40,-18);c.lineTo(104,40);c.stroke();
+  c.fillStyle='#e8e4d8';c.fillRect(-60,0,70,22);c.fillStyle='#b0aca0';c.beginPath();c.arc(30,30,16,0,7);c.fill();c.fillStyle='#101418';c.beginPath();c.arc(30,30,9,0,7);c.fill();
+  c.fillStyle='#ffe9b0';c.beginPath();c.arc(84,44,9,0,7);c.arc(-20,44,7,0,7);c.fill();
+  c.strokeStyle='rgba(230,230,220,.7)';c.lineWidth=3;c.beginPath();c.moveTo(-104,-34);c.lineTo(0,-70);c.lineTo(104,-34);c.stroke();
+  c.restore();}
+// path of the sled (world) -- one continuous move: down the cable, then along the trail
+const PATH=[[520,1080],[600,1600],[760,2380],[930,2960],[1150,3300],[1500,3420],[1790,3430],[1900,3420]];
+function cr(pts,t){t=CL(t)*(pts.length-1);const k=Math.min(pts.length-2,Math.floor(t)),u=t-k;const a=pts[Math.max(0,k-1)],b=pts[k],c=pts[k+1],d=pts[Math.min(pts.length-1,k+2)];
+  const f=(p0,p1,p2,p3)=>0.5*((2*p1)+(-p0+p2)*u+(2*p0-5*p1+4*p2-p3)*u*u+(-p0+3*p1-3*p2+p3)*u*u*u);return [f(a[0],b[0],c[0],d[0]),f(a[1],b[1],c[1],d[1])];}
+const SNOW=(()=>{const R=R0(3);const a=[];for(let i=0;i<420;i++)a.push([R()*1400-160,R()*2300-190,0.3+R()*0.9,R()*6.28]);return a;})();
+const L=off(1080,1920,()=>{}),LG=L.getContext('2d'),M=off(1080,1920,()=>{}),MG=M.getContext('2d');
+const BOILN=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#a8c8e0','#02060c','#3a6a8a'],120,22,0.1,0.02,0.05);});
+function sOf(lt){const x=CL(lt/6.3);return 0.12*x+0.88*EIO(x);}
+function cap(t,t0,t1,lt,i){if(lt<t0||lt>t1+0.5)return;const e=t0<=0?1:E3((lt-t0)/0.5),o=E3((lt-t1)/0.45);g.save();g.textAlign='left';g.font='italic 500 64px '+SERIF;const w=g.measureText(t).width+64,y=250;
+  g.translate(72-(1-e)*(w+160)-o*(w+160),y);g.rotate(-0.012+(1-e)*0.03);tornPath(g,0,0,w,96,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=i===2?'#8a1c10':'#2c1c0e';g.fillText(t,32,68);g.restore();}
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;
+  const s=sOf(lt),[sx,sy0]=cr(PATH,s),bob=Math.sin(lt*1.9)*5,sy=sy0+bob;
+  const [px,py]=cr(PATH,Math.min(1,s+0.01)),ang=Math.atan2(py-sy0,px-sx)*0.18;
+  // camera: follows the sled; early it keeps the ship in frame, late it frames sled + boiler
+  const k=EIO(CL((s-0.45)/0.55)),z=1+0.16*k;
+  const cx=sx+20+130*k+Math.sin(lt*0.7)*6, cy=sy-175+(315)*k+Math.cos(lt*0.6)*5;
+  const W2S=(x,y)=>[540+(x-cx)*z,900+(y-cy)*z];
+  g.save();g.translate(540,900);g.scale(z,z);g.translate(-cx,-cy);
+  g.fillStyle='#10182f';g.fillRect(-400,-800,WW+800,800);g.drawImage(WORLD,0,0);
+  // the long tow cable from the A-frame down to the sled
+  g.strokeStyle='rgba(20,24,30,.9)';g.lineWidth=4/z+1;g.beginPath();g.moveTo(640,SURF-150);g.bezierCurveTo(700,SURF+500,sx-260,(SURF+sy)/2+400,sx,sy-70);g.stroke();
+  g.strokeStyle='rgba(150,180,210,.25)';g.lineWidth=1.5;g.stroke();
+  g.restore();
+  // light mask from the sled lamps (screen space)
+  const [ssx,ssy]=W2S(sx,sy),la=0.85+ang;MG.setTransform(1,0,0,1,0,0);MG.clearRect(0,0,1080,1920);
+  const fx=ssx+Math.cos(la)*360*z,fy=ssy+Math.sin(la)*360*z,flick=1+Math.sin(lt*13)*0.02;
+  let rg=MG.createRadialGradient(fx,fy,20,fx,fy,560*z*flick);rg.addColorStop(0,'rgba(0,0,0,1)');rg.addColorStop(.5,'rgba(0,0,0,.75)');rg.addColorStop(1,'rgba(0,0,0,0)');MG.fillStyle=rg;MG.fillRect(0,0,1080,1920);
+  rg=MG.createRadialGradient(ssx,ssy,10,ssx,ssy,900*z);rg.addColorStop(0,'rgba(0,0,0,.22)');rg.addColorStop(1,'rgba(0,0,0,0.02)');MG.fillStyle=rg;MG.fillRect(0,0,1080,1920);
+  {const by=W2S(0,BED)[1],pool=MG.createRadialGradient(ssx+60,by,20,ssx+60,by,520*z);pool.addColorStop(0,'rgba(0,0,0,.8)');pool.addColorStop(1,'rgba(0,0,0,0)');MG.fillStyle=pool;MG.fillRect(0,0,1080,1920);}
+  LG.setTransform(1,0,0,1,0,0);LG.globalCompositeOperation='source-over';LG.clearRect(0,0,1080,1920);
+  LG.save();LG.translate(540,900);LG.scale(z,z);LG.translate(-cx,-cy);LG.drawImage(BEDL,0,0);LG.globalAlpha=0.12+0.88*E3((lt-4.1)/1.1);LG.drawImage(BOIL_C,0,0);LG.globalAlpha=1;LG.restore();
+  LG.globalCompositeOperation='destination-in';LG.drawImage(M,0,0);LG.globalCompositeOperation='source-over';
+  g.drawImage(L,0,0);
+  // volumetric beam (additive)
+  g.save();g.globalCompositeOperation='lighter';
+  const bw=0.42,BL=760*z;const bg=g.createRadialGradient(ssx,ssy+30*z,10,ssx,ssy+30*z,BL);bg.addColorStop(0,'rgba(200,230,255,.32)');bg.addColorStop(.6,'rgba(120,170,220,.08)');bg.addColorStop(1,'rgba(100,150,200,0)');
+  g.fillStyle=bg;g.beginPath();g.moveTo(ssx+60*z,ssy+40*z);g.lineTo(ssx+Math.cos(la-bw)*BL,ssy+Math.sin(la-bw)*BL);g.lineTo(ssx+Math.cos(la+bw)*BL,ssy+Math.sin(la+bw)*BL);g.closePath();g.fill();
+  // marine snow: streams up while descending, lit near the lamps
+  const vy=(sy0-1080), vx=(sx-520)*0.4;
+  SNOW.forEach(([x0,y0,d,ph])=>{let x=((x0-vx*d*0.25+Math.sin(lt*.8+ph)*12)%1400+1400)%1400-160,y=((y0-vy*d*0.35-lt*14*d)%2300+2300)%2300-190;
+    const dd=Math.hypot(x-fx,y-fy),lit=Math.max(0,1-dd/(600*z)),deep=CL((sy0-1400)/800);const a=(0.05+0.6*lit)*d*(0.4+0.6*deep)+0.05*(1-deep);if(a<0.02)return;
+    g.fillStyle='rgba(220,235,255,'+a.toFixed(3)+')';g.fillRect(x,y,2.2*d+1,2.2*d+1+Math.min(14,Math.abs(vy)*0.0)*0);});
+  g.restore();
+  // the sled itself, lit by its own lamps
+  g.save();g.translate(540,900);g.scale(z,z);g.translate(-cx,-cy);sled(g,sx,sy,ang,lt);g.restore();
+  g.save();g.globalCompositeOperation='lighter';[[84,44],[-20,44]].forEach(([lx,ly])=>{const c=Math.cos(ang),sn=Math.sin(ang);const [qx,qy]=W2S(sx+lx*c-ly*sn,sy+lx*sn+ly*c);const lg=g.createRadialGradient(qx,qy,1,qx,qy,70*z);lg.addColorStop(0,'rgba(255,240,200,.9)');lg.addColorStop(1,'rgba(255,230,180,0)');g.fillStyle=lg;g.fillRect(qx-80,qy-80,160,160);});g.restore();
+  // painterly boil + grain + vignette
+  const bk=Math.floor(lt*8+0.001),BRr=R0(1000+bk*7);BRr();g.save();g.translate(540+(BRr()-.5)*50,960+(BRr()-.5)*50);g.scale(bk%2?-1:1,(bk>>1)%2?-1:1);g.rotate((BRr()-.5)*0.04);g.drawImage(BOILN,-540,-960);g.restore();
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
+  const vg=g.createRadialGradient(540,950,420,540,950,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(2,4,10,.65)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  // ---- labels (max 3 at once): caption strip + sled tag + depth gauge ----
+  cap('1 Sept 1985, ~1 a.m.',0,2.1,lt,0);cap('They followed the debris trail.',2.3,4.2,lt,1);cap('Then: one of its boilers.',4.4,9,lt,2);
+  // "camera sled Argo" tag pinned to the sled
+  if(lt<2.9){const a=E3((lt-0.25)/0.45)*(1-E3((lt-2.4)/0.45));if(a>0){const tx=ssx-40,ty=ssy+150;g.save();g.globalAlpha=a;
+    g.strokeStyle='#f3e6c8';g.lineWidth=4;g.lineCap='round';g.beginPath();g.moveTo(ssx-10,ssy+40*z);g.lineTo(tx+60,ty-4);g.stroke();
+    g.font='italic 500 52px '+SERIF;const w=g.measureText('camera sled Argo').width+50;g.translate(tx-w/2+60,ty);g.rotate(0.02);tornPath(g,0,0,w,78,55,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+    g.fillStyle='#2c1c0e';g.textAlign='left';g.fillText('camera sled ',25,56);const w1=g.measureText('camera sled ').width;g.fillStyle='#8a1c10';g.fillText('Argo',25+w1,56);g.restore();}}
+  // depth gauge (left edge)
+  {const d=CL((sy0-SURF)/(3420-SURF)),dm=Math.min(3800,Math.round(d*3800/10)*10),done=d>=0.995;const gx=86,gy0=790,gy1=1400;g.save();
+   g.strokeStyle='rgba(243,230,200,.55)';g.lineWidth=3;g.beginPath();g.moveTo(gx,gy0);g.lineTo(gx,gy1);g.stroke();for(let i=0;i<=10;i++){g.beginPath();g.moveTo(gx,gy0+(gy1-gy0)*i/10);g.lineTo(gx+(i%5?12:22),gy0+(gy1-gy0)*i/10);g.stroke();}
+   const my=gy0+(gy1-gy0)*d;g.fillStyle='#f3e6c8';g.beginPath();g.moveTo(gx-4,my);g.lineTo(gx-22,my-12);g.lineTo(gx-22,my+12);g.closePath();g.fill();
+   const pop=done?EBK(CL((lt-3.0)/0.4)):0;g.font='italic 500 '+(44+10*pop)+'px '+SERIF;g.textAlign='left';const t=(done?'~':'')+dm.toLocaleString('en-US')+' m';const tw=g.measureText(t).width+40;
+   g.translate(gx+30,my-36);tornPath(g,0,0,tw,70,91,5);g.fillStyle=done?'#f3e6c8':'rgba(243,230,200,.9)';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=12;g.shadowOffsetY=6;g.fill();g.shadowColor='transparent';g.fillStyle=done?'#8a1c10':'#2c1c0e';g.fillText(t,20,50);g.restore();}
+}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
