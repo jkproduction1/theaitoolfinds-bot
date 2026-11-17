@@ -74,7 +74,7 @@ rep("var st=document.getElementById('selltop');if(st)st.hidden=false;", "")
 (H / "free-prompts.html").write_text(s, encoding="utf-8")
 
 SYS = "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile&utm_content="
-order = [v[0] for v in STY.values() if v[0] in groups]
+order = list(dict.fromkeys(v[0] for v in STY.values() if v[0] in groups))
 order += [g for g in groups if g not in order]
 out = ["# Every prompt from our videos", "",
        "By @theaitoolfinds. %d prompts from %d videos, sorted by style." % (NP, NV), "",
@@ -87,4 +87,5 @@ for g in order:
         out += ["### " + title, "", text.strip(), ""]
 out += ["", "CTA: You've got the scenes. Want the whole video? Type one line and Claude writes the script, builds every scene, times the captions and exports the MP4. 7-day money-back guarantee. | See the system | " + SYS + "bottom", ""]
 (H / "all-prompts.md").write_text("\n".join(out), encoding="utf-8")
+(H / "all-prompts.json").write_text(json.dumps({"videos": NV, "sections": [{"name": g, "items": groups[g]} for g in order]}, ensure_ascii=False, indent=0), encoding="utf-8")
 print("videos", NV, "unique prompts", NP, "added", list(add))

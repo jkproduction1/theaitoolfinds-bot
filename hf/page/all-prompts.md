@@ -681,21 +681,6 @@ Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js
 Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: make it move. Style: a flat line drawing that lifts off the page and becomes a moving 3D object, with the camera tilting to show the depth.
 
 
-## Dimensional Drawing (3)
-
-### Draw our card component
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: draw our card component. Style: a flat line drawing that lifts off the page and becomes a 3D object, with the camera tilting to show the depth.
-
-### Draw our dialog
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: draw our dialog. Style: a flat line drawing that lifts off the page and becomes a 3D object, with the camera tilting to show the depth.
-
-### Make it move
-
-Make a 6-second vertical 3D animation (1080x1920) as one HTML file with three.js. Topic: make it move. Style: a flat line drawing that lifts off the page and becomes a moving 3D object, with the camera tilting to show the depth.
-
-
 ## Other styles (17)
 
 ### Ink Wash
