@@ -1,0 +1,206 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// mystery52: /painted-story the mystery of the Mary Celeste (painterly look of styles48 painted_titanic / around51 painted_sea). Own drawing, 100 % canvas code, generic ship.
+// Facts:
+//  Encyclopaedia Britannica, "Mary Celeste", https://www.britannica.com/topic/Mary-Celeste
+//   "American brigantine that was found abandoned on December 5, 1872 ... some 400 nautical miles (740 km) from the Azores, Portugal."
+//   "On board were 10 people, including Captain Briggs, his wife, and their two-year-old daughter."  "more than 1,700 barrels of alcohol"
+//   "a longboat was missing" ; "the cargo and personal belongings were largely undisturbed" ; spotted by "the British brig Dei Gratia";
+//   "The fate of the 10 people aboard remains a mystery."
+//  Smithsonian Magazine, "An Abandoned Merchant Ship Was Discovered Floating in the Atlantic in 1872 ..." (smart-news 180985547)
+//   "about 400 miles east of the Azores"; "appeared to be drifting aimlessly"; "its lifeboat was missing and not a single person was aboard";
+//   "1,701 barrels of industrial alcohol"; "The Mary Celeste's crew was never heard from again."
+//  Smithsonian Magazine, "Abandoned Ship: The Mary Celeste", https://www.smithsonianmag.com/history/abandoned-ship-the-mary-celeste-174488104/
+//   "The ship's only lifeboat was missing"; "the cargo of 1,701 barrels of industrial alcohol was largely intact"; "the ten people who had sailed aboard".
+//  Illustration notes: torn sails, the turning wheel, the hull cut-away and the trailing rope are illustration, not captioned as fact.
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+function cr(pts,t){const n=pts[0].length;t=Math.max(0,Math.min(pts.length-1,t));const k=Math.min(pts.length-2,Math.floor(t)),u=t-k;const a=pts[Math.max(0,k-1)],b=pts[k],c=pts[k+1],d=pts[Math.min(pts.length-1,k+2)],o=[];
+  for(let j=0;j<n;j++)o.push(0.5*((2*b[j])+(-a[j]+c[j])*u+(2*a[j]-5*b[j]+4*c[j]-d[j])*u*u+(-a[j]+3*b[j]-3*c[j]+d[j])*u*u*u));return o;}
+const WW=3800, WH=4800, HOR=2500, SX=600, SY=1260, WL=1500, SUN=[2480,2290], SS=1.6, SW=2600, SH=1700;
+// ---------- ship geometry (ship-local coords; bow to the right) ----------
+const deckY=(x)=>1300-60*Math.pow((x-1150)/1050,2)*(x>1150?1.5:1)-45*(1-CL((x-748)/24));
+const railY=(x)=>deckY(x)-40;
+function hullPath(p){p.beginPath();p.moveTo(170,railY(170));for(let x=170;x<=2170;x+=10)p.lineTo(x,railY(x));p.quadraticCurveTo(2135,1420,2010,1590);p.lineTo(300,1590);p.quadraticCurveTo(205,1480,170,railY(170));p.closePath();}
+// a torn sail: polygon pts, the edge starting at index je is ragged; holes are slits
+function sail(p,pts,je,seed,deep){const R=R0(seed),n=pts.length;let cx=0,cy=0;pts.forEach(q=>{cx+=q[0]/n;cy+=q[1]/n;});
+  p.save();p.beginPath();for(let i=0;i<n;i++){const a=pts[i],b=pts[(i+1)%n];if(i===0)p.moveTo(a[0],a[1]);
+    if(i===je){const m=22;let tear=0;for(let k=1;k<=m;k++){const u=k/m,x=a[0]+(b[0]-a[0])*u,y=a[1]+(b[1]-a[1])*u;if(R()<.24)tear=deep*(0.5+R());else tear*=0.6;const d=(k<m?(8+R()*26+tear):0)/Math.hypot(cx-x,cy-y);
+      p.lineTo(x+(cx-x)*d+(R()-.5)*8,y+(cy-y)*d+(R()-.5)*8);if(k<m&&R()<.5){const u2=u+0.4/m,x2=a[0]+(b[0]-a[0])*u2,y2=a[1]+(b[1]-a[1])*u2;p.lineTo(x2+(R()-.5)*10,y2+12+R()*20);}}}
+    else{const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,k=i===0?0:0.05;p.quadraticCurveTo(mx+(mx-cx)*k,my+(my-cy)*k+ (i===0?0:8),b[0],b[1]);}}
+  p.closePath();const x0=Math.min(...pts.map(q=>q[0])),x1=Math.max(...pts.map(q=>q[0])),y0=Math.min(...pts.map(q=>q[1])),y1=Math.max(...pts.map(q=>q[1]));
+  const gr=p.createLinearGradient(x0,y0,x1,y1);gr.addColorStop(0,'#5d5f5c');gr.addColorStop(.55,'#8f8a78');gr.addColorStop(1,'#c3b894');p.fillStyle=gr;p.fill();p.clip();
+  // cloth panels, stains, brush work
+  for(let x=x0+30;x<x1;x+=46){p.strokeStyle='rgba(40,40,40,.22)';p.lineWidth=2.5;p.beginPath();p.moveTo(x+(R()-.5)*6,y0);p.quadraticCurveTo(x+14,(y0+y1)/2,x+(R()-.5)*8,y1);p.stroke();}
+  strokes(p,Math.round((x1-x0)*(y1-y0)/420),R,x0-20,y0-20,x1-x0+40,y1-y0+40,['#e2d7b2','#4a4c4c','#a69f88','#2e3236','#d0c39a'],60,13,1.3,0.06,0.16);
+  strokes(p,Math.round((x1-x0)*(y1-y0)/2500),R,x0,y0,x1-x0,y1-y0,['#2a2c2e','#3a3a34'],110,5,1.5,0.1,0.2);
+  const sg=p.createRadialGradient(SUN[0]-SX,SUN[1]-SY,20,SUN[0]-SX,SUN[1]-SY,620);sg.addColorStop(0,'rgba(255,238,180,.95)');sg.addColorStop(.3,'rgba(240,214,150,.45)');sg.addColorStop(1,'rgba(240,214,150,0)');p.fillStyle=sg;p.fillRect(x0,y0,x1-x0,y1-y0);
+  const sh=p.createLinearGradient(0,y0,0,y1);sh.addColorStop(0,'rgba(14,18,24,.5)');sh.addColorStop(.35,'rgba(14,18,24,0)');p.fillStyle=sh;p.fillRect(x0,y0,x1-x0,y1-y0);
+  // slits torn through the cloth
+  p.globalCompositeOperation='destination-out';for(let i=0;i<6;i++){const x=x0+(.12+R()*.76)*(x1-x0),y=y0+(.2+R()*.5)*(y1-y0),l=80+R()*190,w=12+R()*30;p.beginPath();p.moveTo(x,y);p.lineTo(x+w,y+l*.4);p.lineTo(x+w*.3,y+l*.6);p.lineTo(x+w*1.2,y+l);p.lineTo(x-w*.4,y+l*.7);p.lineTo(x-w*.2,y+l*.3);p.closePath();p.fill();}
+  p.restore();}
+const spar=(p,x0,y0,x1,y1,w,c)=>{p.strokeStyle=c||'#1b1714';p.lineWidth=w;p.lineCap='round';p.beginPath();p.moveTo(x0,y0);p.lineTo(x1,y1);p.stroke();p.strokeStyle='rgba(226,204,150,.5)';p.lineWidth=Math.max(1,w*.22);p.beginPath();p.moveTo(x0+w*.2,y0-w*.2);p.lineTo(x1+w*.2,y1-w*.2);p.stroke();};
+const line=(p,x0,y0,x1,y1,w,sag)=>{p.strokeStyle='rgba(18,16,16,.85)';p.lineWidth=w||2.4;p.beginPath();p.moveTo(x0,y0);p.quadraticCurveTo((x0+x1)/2,(y0+y1)/2+(sag||0),x1,y1);p.stroke();};
+const BAR=[];(()=>{for(let r=0;r<3;r++)for(let i=0;i<9;i++){const x=1012+i*47+(r%2)*23.5,y=1468-r*40;if(x>1410)continue;BAR.push([x,y]);}})();
+const SHIP=off(SW*SS,SH*SS,(p)=>{p.scale(SS,SS);const R=R0(31);
+  // sails (behind the masts)
+  sail(p,[[1462,968],[2042,968],[2085,1212],[1436,1196]],2,11,190);          // fore course
+  sail(p,[[1512,648],[1992,648],[2030,940],[1470,940]],2,12,200);            // fore topsail
+  sail(p,[[905,476],[905,1104],[372,1082],[512,330]],2,13,170);             // gaff mainsail (ragged leech)
+  sail(p,[[1764,440],[2478,1150],[1880,1128]],2,14,80);                     // jib
+  sail(p,[[1764,260],[2330,1000],[2150,1010]],2,15,120);                    // outer jib, mostly gone
+  // furled topgallant on its yard
+  for(let i=0;i<9;i++){p.fillStyle=i%2?'#a39c84':'#8b8674';p.beginPath();p.ellipse(1580+i*42,418+Math.sin(i)*3,30,15+R()*5,0,0,7);p.fill();}
+  // masts, yards, gaff, boom, bowsprit
+  spar(p,905,1300,905,250,24);spar(p,905,560,905,220,13);spar(p,1750,1300,1750,300,26);spar(p,1750,620,1750,190,14);
+  spar(p,1440,962,2060,962,15);spar(p,1492,644,2008,644,13);spar(p,1560,404,1940,404,11);spar(p,905,474,500,318,13);spar(p,905,1110,352,1086,15);
+  spar(p,2110,1196,2500,1128,20);spar(p,2300,1166,2330,1250,7);
+  // standing rigging
+  [[905,300,640,1250],[905,300,700,1250],[905,300,1000,1252],[905,300,1060,1254],[1750,330,1560,1244],[1750,330,1620,1242],[1750,330,1860,1232],[1750,330,1920,1226],
+   [1750,200,2490,1130],[1750,430,2400,1146],[1750,700,2200,1180],[905,230,1750,330],[905,470,1750,640],[2500,1128,2320,1250],[2320,1250,2140,1330],[905,230,360,1086]].forEach(q=>line(p,q[0],q[1],q[2],q[3],2.6));
+  for(let k=0;k<11;k++){const u=0.2+k*0.07;line(p,905+(640-905)*u,300+950*u,905+(700-905)*u,300+950*u,1.6);line(p,905+(1000-905)*u,300+952*u,905+(1060-905)*u,300+954*u,1.6);
+    line(p,1750+(1560-1750)*u,330+914*u,1750+(1620-1750)*u,330+912*u,1.6);line(p,1750+(1860-1750)*u,330+902*u,1750+(1920-1750)*u,330+896*u,1.6);}
+  // loose lines hanging from the yards
+  [[1470,968,1445,1150],[2050,968,2075,1100],[1500,650,1484,800],[400,1090,380,1200]].forEach(q=>line(p,q[0],q[1],q[2],q[3],2.2,20));
+  // deck houses and gear standing above the rail
+  const box=(x0,x1,hh,c)=>{p.fillStyle=c;p.beginPath();p.moveTo(x0,deckY(x0)+4);p.lineTo(x0,deckY(x0)-hh);p.lineTo(x1,deckY(x1)-hh);p.lineTo(x1,deckY(x1)+4);p.closePath();p.fill();
+    p.fillStyle='rgba(214,196,150,.55)';p.fillRect(x0-4,deckY(x0)-hh-7,x1-x0+8,8);};
+  box(520,742,104,'#3b342c');for(let i=0;i<3;i++){p.fillStyle='#0c0d10';p.fillRect(548+i*62,deckY(600)-88,34,26);p.fillStyle='rgba(180,190,190,.25)';p.fillRect(548+i*62,deckY(600)-88,34,5);}
+  box(1800,1960,96,'#39322a');p.fillStyle='#0c0d10';p.fillRect(1826,deckY(1880)-80,30,40);p.fillRect(1890,deckY(1880)-78,30,22);spar(p,1930,deckY(1930)-96,1930,deckY(1930)-150,8);
+  box(346,392,80,'#463a2c');p.fillStyle='#b08a4a';p.beginPath();p.arc(369,deckY(369)-84,17,Math.PI,0);p.fill();                 // binnacle
+  // open hatch: coaming + cover thrown back
+  p.fillStyle='#4a3f31';p.fillRect(1080,railY(1180)-16,230,20);p.fillStyle='#07080a';p.fillRect(1090,railY(1180)-10,210,10);
+  p.save();p.translate(1078,railY(1078)-6);p.rotate(-2.2);p.fillStyle='#55473a';p.fillRect(0,-12,210,24);p.fillStyle='rgba(226,206,160,.6)';p.fillRect(0,-12,210,5);for(let i=1;i<6;i++){p.fillStyle='rgba(10,10,10,.5)';p.fillRect(i*35,-12,3,24);}p.restore();
+  // hull
+  p.save();hullPath(p);const hg=p.createLinearGradient(0,1200,0,1590);hg.addColorStop(0,'#3d3832');hg.addColorStop(.5,'#25221f');hg.addColorStop(1,'#0e0f10');p.fillStyle=hg;p.fill();p.clip();
+  for(let k=0;k<9;k++){p.strokeStyle='rgba(6,6,8,.5)';p.lineWidth=2.5;p.beginPath();for(let x=160;x<=2180;x+=20){const y=railY(x)+40+k*27+k*k*0.9;x===160?p.moveTo(x,y):p.lineTo(x,y);}p.stroke();}
+  strokes(p,2600,R,150,1160,2050,440,['#5a5044','#15161a','#2e2a26','#6a5c48','#0a0b0c'],80,11,0.0,0.07,0.18);
+  strokes(p,500,R,150,1420,2050,160,['#3d5a4e','#2a4038','#5a6a50'],60,9,0.0,0.08,0.2);                                          // weed near the waterline
+  strokes(p,260,R,150,1220,2050,260,['#7a5a3c','#141414'],70,4,1.57,0.1,0.2);                                                    // rust runs
+  const lg=p.createLinearGradient(700,0,2200,0);lg.addColorStop(0,'rgba(240,214,150,0)');lg.addColorStop(1,'rgba(240,214,150,.3)');p.fillStyle=lg;p.fillRect(150,1100,2100,500);
+  const dg=p.createLinearGradient(150,0,900,0);dg.addColorStop(0,'rgba(6,8,12,.55)');dg.addColorStop(1,'rgba(6,8,12,0)');p.fillStyle=dg;p.fillRect(150,1100,800,500);
+  p.restore();
+  // pale strake + rail cap catching the low light
+  [[26,'rgba(190,180,150,.42)',9],[0,'#cdbb8c',5]].forEach(([dy,c,w])=>{p.strokeStyle=c;p.lineWidth=w;p.beginPath();for(let x=172;x<=2166;x+=10){const y=railY(x)+dy;x===172?p.moveTo(x,y):p.lineTo(x,y);}p.stroke();});
+  // hull cut-away: the hold, barrels still stacked
+  p.save();tornPath(p,985,1338,452,152,5,9);p.fillStyle='#120d0a';p.fill();p.clip();
+  strokes(p,200,R,985,1338,452,152,['#2a1c12','#0a0706','#3a2616'],60,10,1.57,0.1,0.2);
+  for(let i=0;i<6;i++){p.fillStyle='#2c2018';p.fillRect(1000+i*84,1338,12,152);}                                                 // frames
+  BAR.forEach(([x,y],i)=>{const r=22,bg=p.createRadialGradient(x+6,y-8,2,x,y,r);bg.addColorStop(0,'#c98f52');bg.addColorStop(.6,'#8a5a30');bg.addColorStop(1,'#3e2714');p.fillStyle=bg;p.beginPath();p.arc(x,y,r,0,7);p.fill();
+    p.strokeStyle='#1c1410';p.lineWidth=3;p.beginPath();p.arc(x,y,r,0,7);p.stroke();p.strokeStyle='rgba(28,20,14,.8)';p.lineWidth=2;p.beginPath();p.arc(x,y,r*.68,0,7);p.stroke();
+    for(let k=-2;k<=2;k++){p.strokeStyle='rgba(40,24,12,.55)';p.lineWidth=1.3;p.beginPath();p.moveTo(x+k*6,y-Math.sqrt(r*r*.44-k*k*36)||y);p.lineTo(x+k*6,y+Math.sqrt(r*r*.44-k*k*36)||y);p.stroke();}
+    p.fillStyle='#16100c';p.beginPath();p.arc(x+2,y+3,3,0,7);p.fill();});
+  const lsh=p.createLinearGradient(0,1338,0,1490);lsh.addColorStop(0,'rgba(226,222,190,.42)');lsh.addColorStop(1,'rgba(226,222,190,.05)');p.fillStyle=lsh;p.beginPath();p.moveTo(1100,1338);p.lineTo(1290,1338);p.lineTo(1250,1490);p.lineTo(1020,1490);p.closePath();p.fill();
+  const dk=p.createLinearGradient(985,0,1437,0);dk.addColorStop(0,'rgba(0,0,0,.25)');dk.addColorStop(.3,'rgba(0,0,0,0)');dk.addColorStop(.7,'rgba(0,0,0,.1)');dk.addColorStop(1,'rgba(0,0,0,.65)');p.fillStyle=dk;p.fillRect(985,1338,452,152);
+  p.restore();tornPath(p,985,1338,452,152,5,9);p.strokeStyle='#e9dcba';p.lineWidth=5;p.stroke();
+  // boat chocks on the rail (empty) + davit posts
+  [1452,1608].forEach(x=>{p.fillStyle='#4a3d30';p.beginPath();p.moveTo(x-22,railY(x)-2);p.lineTo(x-12,railY(x)-22);p.lineTo(x+12,railY(x)-22);p.lineTo(x+22,railY(x)-2);p.closePath();p.fill();});
+  [[1392,1],[1668,-1]].forEach(([x,s])=>{const y=railY(x);p.lineCap='round';[['#16130f',15,0],['rgba(214,196,150,.6)',3.5,-3]].forEach(([c,w,o])=>{p.strokeStyle=c;p.lineWidth=w;p.beginPath();p.moveTo(x+o*s,y+34);p.lineTo(x+o*s,y-150);p.quadraticCurveTo(x+o*s,y-232,x+s*82,y-226+o);p.stroke();});
+    p.fillStyle='#16130f';p.beginPath();p.arc(x+s*82,y-226,10,0,7);p.fill();p.fillRect(x-13,y+10,26,34);});
+});
+const DAV=[[1474,railY(1392)-226],[1586,railY(1668)-226]];
+// ---------- painted world: sky, far sea ----------
+const WORLD=off(WW,WH,(p,w,h)=>{const R=R0(21);
+  let s=p.createLinearGradient(0,300,0,HOR);s.addColorStop(0,'#141c26');s.addColorStop(.45,'#2c3a44');s.addColorStop(.74,'#5d6c68');s.addColorStop(.92,'#a8a680');s.addColorStop(1,'#d2c594');p.fillStyle=s;p.fillRect(0,0,w,HOR+4);
+  s=p.createRadialGradient(SUN[0],SUN[1],30,SUN[0],SUN[1],1500);s.addColorStop(0,'rgba(255,240,190,.95)');s.addColorStop(.1,'rgba(246,220,150,.62)');s.addColorStop(.4,'rgba(200,180,130,.24)');s.addColorStop(1,'rgba(200,180,130,0)');p.fillStyle=s;p.fillRect(0,0,w,HOR+4);
+  strokes(p,3200,R,-60,200,w+120,HOR-200,['#0e141c','#3a4a52','#7d8478','#c9bd94','#1c2630','#55605e'],240,36,-0.05,0.04,0.1);
+  // torn cloud bands
+  for(let k=0;k<9;k++){const cy=900+k*165+R()*60;strokes(p,170,R,-60+R()*1500,cy,1300+R()*900,60,['#0c1118','#1a222c','#2a343c'],230,34,-0.03,0.1,0.2);
+    const hx=900+R()*1200;for(let i=0;i<46;i++){const x=hx+R()*1500,y=cy+50+R()*26,l=160+R()*380;p.strokeStyle=i%2?'#d9cb9c':'#a9a488';p.globalAlpha=0.05+R()*0.1;p.lineWidth=6+R()*14;p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+l/2,y-6+R()*8,x+l,y+(R()-.5)*8);p.stroke();}p.globalAlpha=1;}
+  p.fillStyle='#fff3cc';p.beginPath();p.arc(SUN[0],SUN[1],58,0,7);p.fill();
+  strokes(p,120,R,SUN[0]-420,SUN[1]-30,840,70,['#2a343c','#4a5458'],260,20,0,0.25,0.3);
+  // far sea
+  s=p.createLinearGradient(0,HOR,0,HOR+900);s.addColorStop(0,'#a59c7a');s.addColorStop(.05,'#5d6a66');s.addColorStop(.3,'#2c3d42');s.addColorStop(1,'#101c22');p.fillStyle=s;p.fillRect(0,HOR,w,h-HOR);
+  for(let i=0;i<2400;i++){const d=Math.pow(R(),1.4),y=HOR+3+d*700,x=R()*(w+200)-100,l=40+d*220;p.strokeStyle=['#0c171c','#3c5054','#718078','#cdbf92','#18282e','#0a1216'][Math.floor(R()*6)];p.globalAlpha=0.1+R()*0.22;p.lineWidth=2+d*12;p.lineCap='round';
+    p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+l*.5,y-3-d*8,x+l,y+(R()-.5)*6);p.stroke();}p.globalAlpha=1;
+  for(let j=0;j<8;j++){const f=1-j/8;s=p.createLinearGradient(0,HOR,0,HOR+700);s.addColorStop(0,'rgba(250,230,160,.2)');s.addColorStop(1,'rgba(250,230,160,0)');p.fillStyle=s;p.beginPath();p.moveTo(SUN[0]-50-80*f,HOR);p.lineTo(SUN[0]+50+80*f,HOR);p.lineTo(SUN[0]+90+420*f,HOR+700);p.lineTo(SUN[0]-90-420*f,HOR+700);p.closePath();p.fill();}
+  // the second ship, small on the horizon (generic two-masted silhouette)
+  p.save();p.translate(3120,HOR+4);p.fillStyle='#10161c';p.beginPath();p.moveTo(-120,-22);p.lineTo(96,-22);p.lineTo(130,-34);p.lineTo(100,2);p.lineTo(-104,2);p.closePath();p.fill();
+  p.fillRect(-52,-250,6,230);p.fillRect(38,-270,6,250);p.strokeStyle='#10161c';p.lineWidth=4;p.beginPath();p.moveTo(130,-34);p.lineTo(190,-60);p.moveTo(41,-262);p.lineTo(188,-60);p.stroke();
+  p.fillStyle='#232c33';[[-49,-238,74,60],[-49,-170,84,70],[-49,-92,92,62],[41,-256,66,56],[41,-192,78,70],[41,-114,88,84]].forEach(([x,y,ww,hh])=>{p.beginPath();p.moveTo(x-ww/2,y);p.lineTo(x+ww/2,y);p.quadraticCurveTo(x+ww/2+12,y+hh/2,x+ww/2+4,y+hh);p.lineTo(x-ww/2-4,y+hh);p.closePath();p.fill();});
+  p.fillStyle='rgba(236,220,170,.5)';[[-49,-238,74,60],[41,-256,66,56],[41,-192,78,70],[41,-114,88,84]].forEach(([x,y,ww,hh])=>{p.fillRect(x+ww/2-4,y,6,hh);});
+  p.fillStyle='rgba(8,12,16,.5)';p.fillRect(-110,4,230,10);p.restore();
+});
+// ---------- fog sprites ----------
+function fogSprite(seed,col){return off(1700,620,(p)=>{const R=R0(seed);for(let i=0;i<90;i++){const x=200+R()*1300,y=310+(R()-.5)*260*(1-Math.abs(x-850)/900),r=90+R()*190;const gr=p.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,'rgba('+col+',.085)');gr.addColorStop(1,'rgba('+col+',0)');p.fillStyle=gr;p.beginPath();p.ellipse(x,y,r*1.8,r*.6,0,0,7);p.fill();}});}
+const FOGA=fogSprite(3,'196,196,176'),FOGB=fogSprite(4,'150,160,158'),FOGC=fogSprite(5,'214,206,176');
+const FOGS=[[FOGB,-500,2140,22,1.5],[FOGA,700,2230,-16,1.3],[FOGC,1900,2200,12,1.6],[FOGB,2500,2060,-10,1.8],[FOGA,-200,2330,15,1.2]];
+const FOGF=[[FOGA,-300,2520,26,1.9,.55],[FOGB,1500,2640,-20,2.0,.5],[FOGC,2500,2480,14,1.7,.7]];
+const GLIT=(()=>{const R=R0(7),a=[];for(let i=0;i<230;i++){const d=Math.pow(R(),1.3);a.push([SUN[0]+(R()-.5)*(150+d*1100),HOR+8+d*1500,d,R()*6.28,2+R()*3]);}return a;})();
+const FOAM=(()=>{const R=R0(9),a=[];for(let i=0;i<70;i++)a.push([R(),R()*6.28,6+R()*22,R()]);return a;})();
+const BANDS=[];for(let i=0;i<11;i++)BANDS.push({y:WL+SY-6+Math.pow(i,1.55)*26,A:7+i*3.2,L:150+i*42,sp:1.5-i*0.07,ph:i*1.9});
+const SEAD=(()=>{const R=R0(12),a=[];for(let i=0;i<11;i++)for(let k=0;k<70;k++)a.push([i,R()*3900-50,8+R()*(30+i*22),30+R()*(70+i*14),R(),R()*6.28]);return a;})();
+const mixc=(A,B,t)=>'rgb('+A.map((a,j)=>Math.round(a+(B[j]-a)*t))+')';
+const wave=(b,x,lt)=>b.y+b.A*Math.sin(x/b.L+b.ph+lt*b.sp)+b.A*.45*Math.sin(x/(b.L*.37)+b.ph*2.3-lt*b.sp*1.4);
+const BOILN=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#e8dcb4','#0c1218','#8a9488'],120,22,0.3,0.02,0.05);});
+// ---------- camera: one continuous glide (ship-local targets + zoom) ----------
+const KT=[0,1.95,3.2,4.45,6.3], KEY=[[1250,1010,Math.log(.47)],[455,1140,Math.log(1.6)],[1185,1255,Math.log(1.5)],[1525,1215,Math.log(1.3)],[1540,1000,Math.log(.39)]];
+function camAt(lt){lt=Math.max(0,Math.min(6.3,lt));let k=0;while(k<3&&lt>KT[k+1])k++;let u=(lt-KT[k])/(KT[k+1]-KT[k]);if(k===3)u=1-Math.pow(1-u,1.9);else if(k===0)u=0.25*u+0.75*u*u*(3-2*u);const q=cr(KEY,k+u);return [q[0]+SX,q[1]+SY,Math.exp(q[2])];}
+function cap(lines,t0,t1,lt,i,red){if(lt<t0||lt>t1+0.5)return;const e=t0<=0?1:E3((lt-t0)/0.45),o=E3((lt-t1)/0.4);g.save();g.textAlign='left';const fs=60;g.font='italic 500 '+fs+'px '+SERIF;
+  let y=250;lines.forEach((t,j)=>{const tw=g.measureText(t).width,w=tw+60,dl=j*0.09,ee=t0<=0?1:E3((lt-t0-dl)/0.45);g.save();
+    g.translate(72+j*26-(1-ee)*(w+200)-o*(w+200),y+j*98);g.rotate((j?0.008:-0.012)+(1-ee)*0.03);tornPath(g,0,0,w,90,80+i*7+j,6);g.fillStyle='#f0e6cc';g.shadowColor='rgba(4,8,12,.6)';g.shadowBlur=16;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+    g.strokeStyle='rgba(120,100,60,.35)';g.lineWidth=3;g.stroke();g.fillStyle=(red===j)?'#8a1c10':'#1c1a16';g.fillText(t,30,45+fs*0.32);g.restore();});g.restore();}
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;g.globalCompositeOperation='source-over';
+  let [cx,cy,z]=camAt(lt);cx+=Math.sin(lt*0.7)*7/z+3*lt;cy+=Math.cos(lt*0.6)*6/z;
+  g.fillStyle='#0c1218';g.fillRect(0,0,1080,1920);
+  g.save();g.translate(540,900);g.scale(z,z);g.translate(-cx,-cy);
+  g.drawImage(WORLD,0,0);
+  // far glitter
+  g.globalCompositeOperation='lighter';g.lineCap='round';GLIT.forEach(([x,y,d,ph,sp])=>{if(y>WL+SY-10)return;const a=(0.15+0.85*Math.pow(Math.sin(lt*sp+ph),2))*(0.7-d*.3),w=14+d*90;g.strokeStyle='#f6e2a6';g.globalAlpha=a;g.lineWidth=2.5+d*5;g.beginPath();g.moveTo(x-w/2,y);g.lineTo(x+w/2,y);g.stroke();});
+  g.globalAlpha=1;g.globalCompositeOperation='source-over';
+  for(let k=0;k<9;k++){const a=-2.75+k*0.3+0.03*Math.sin(lt*0.5+k),w=0.05+0.03*Math.sin(k*2.1),L=1900,rg=g.createRadialGradient(SUN[0],SUN[1],60,SUN[0],SUN[1],L);rg.addColorStop(0,'rgba(250,232,170,'+(0.2+0.06*Math.sin(lt*1.1+k))+')');rg.addColorStop(1,'rgba(250,232,170,0)');g.fillStyle=rg;
+    g.beginPath();g.moveTo(SUN[0],SUN[1]);g.lineTo(SUN[0]+Math.cos(a-w)*L,SUN[1]+Math.sin(a-w)*L);g.lineTo(SUN[0]+Math.cos(a+w)*L,SUN[1]+Math.sin(a+w)*L);g.closePath();g.fill();}
+  FOGS.forEach(([c,x,y,v,sc])=>{g.drawImage(c,x+lt*v,y,1700*sc,620*sc*.8);});
+  // ---- the ship (rocks slowly on the swell) ----
+  const rock=0.012*Math.sin(lt*0.95+0.4),heave=7*Math.sin(lt*1.2);
+  g.save();g.translate(SX+1150,SY+WL+heave);g.rotate(rock);g.translate(-1150,-WL);
+  g.drawImage(SHIP,0,0,SW,SH);
+  // tatters fluttering at the torn edges
+  [[2085,1212,150,13,0],[1900,1205,120,10,1],[1470,940,110,9,2],[2030,940,90,8,3],[372,1082,130,11,4],[512,330,150,10,5],[2330,1000,170,9,6],[1640,1200,100,10,7],[440,700,90,9,8]].forEach(([x,y,L,w,i])=>{
+    const ang=1.2+0.5*Math.sin(lt*2.6+i*1.7)+0.2*Math.sin(lt*5.3+i);g.beginPath();g.moveTo(x-w,y);for(let k=1;k<=8;k++){const u=k/8,a=ang+u*0.8*Math.sin(lt*3.4+i*2+u*3);g.lineTo(x+Math.cos(a)*L*u+w*(1-u),y+Math.sin(a)*L*u);}
+    for(let k=8;k>=0;k--){const u=k/8,a=ang+u*0.8*Math.sin(lt*3.4+i*2+u*3);g.lineTo(x+Math.cos(a)*L*u-w*(1-u),y+Math.sin(a)*L*u+4);}g.closePath();g.fillStyle=i%2?'#a59e86':'#c4b994';g.fill();});
+  // the wheel: nobody at it, it turns by itself
+  {const wx=440,wy=deckY(440)-104,r=84,a=0.9*Math.sin(lt*1.25+0.3)+0.25*lt;g.save();g.translate(wx,wy);
+    g.fillStyle='#2a221b';g.beginPath();g.moveTo(-16,104);g.lineTo(-9,0);g.lineTo(9,0);g.lineTo(16,104);g.closePath();g.fill();
+    g.rotate(a);g.lineCap='round';for(let k=0;k<8;k++){const q=k*Math.PI/4;g.strokeStyle='#3a2a1c';g.lineWidth=9;g.beginPath();g.moveTo(0,0);g.lineTo(Math.cos(q)*(r+24),Math.sin(q)*(r+24));g.stroke();
+      g.strokeStyle='rgba(232,204,140,.75)';g.lineWidth=2.6;g.beginPath();g.moveTo(Math.cos(q)*14-2,Math.sin(q)*14-3);g.lineTo(Math.cos(q)*(r+24)-2,Math.sin(q)*(r+24)-3);g.stroke();
+      g.fillStyle='#4a3522';g.beginPath();g.arc(Math.cos(q)*(r+24),Math.sin(q)*(r+24),7.5,0,7);g.fill();}
+    g.strokeStyle='#33251a';g.lineWidth=17;g.beginPath();g.arc(0,0,r,0,7);g.stroke();g.strokeStyle='#6d5234';g.lineWidth=7;g.beginPath();g.arc(0,0,r,0,7);g.stroke();
+    g.rotate(-a);g.strokeStyle='rgba(240,214,150,.8)';g.lineWidth=3.5;g.beginPath();g.arc(0,0,r+7,-1.2,0.5);g.stroke();
+    g.fillStyle='#b08a4a';g.beginPath();g.arc(0,0,13,0,7);g.fill();g.fillStyle='#f0d898';g.beginPath();g.arc(3,-3,5,0,7);g.fill();g.restore();}
+  // empty davit falls swinging
+  DAV.forEach(([x,y],i)=>{const sw=0.16*Math.sin(lt*1.7+i*1.3)+rock*3,L=96;g.save();g.translate(x,y);g.rotate(sw);g.strokeStyle='#cfc09a';g.lineWidth=3;g.beginPath();g.moveTo(-4,0);g.lineTo(-4,L);g.moveTo(4,0);g.lineTo(4,L);g.stroke();
+    g.fillStyle='#2a221a';g.beginPath();g.ellipse(0,L+12,11,16,0,0,7);g.fill();g.fillStyle='rgba(230,206,150,.7)';g.beginPath();g.ellipse(3,L+8,3.5,8,0,0,7);g.fill();
+    g.strokeStyle='#15120f';g.lineWidth=5;g.lineCap='round';g.beginPath();g.moveTo(0,L+28);g.lineTo(0,L+40);g.arc(-9,L+42,9,0,2.6);g.stroke();g.restore();});
+  // the rope over the side
+  g.strokeStyle='#b9a878';g.lineWidth=5;g.lineCap='round';g.beginPath();g.moveTo(1530,railY(1530)-2);g.bezierCurveTo(1548,1330,1500+6*Math.sin(lt*1.5),1420,1516+3*Math.sin(lt*1.5),WL+4);g.stroke();
+  g.restore();
+  // ---- near sea: painted swell bands in front of the hull ----
+  BANDS.forEach((b,i)=>{const t=i/10;g.beginPath();g.moveTo(-100,WH);for(let x=-100;x<=WW+100;x+=30)g.lineTo(x,wave(b,x,lt));g.lineTo(WW+100,WH);g.closePath();
+    const gr=g.createLinearGradient(0,b.y-b.A,0,b.y+140+i*30);gr.addColorStop(0,mixc([62,82,82],[30,46,52],t));gr.addColorStop(1,mixc([22,36,42],[8,16,22],t));g.fillStyle=gr;g.fill();
+    g.strokeStyle=mixc([150,160,140],[96,112,108],t);g.globalAlpha=0.5-t*0.2;g.lineWidth=2.5+i*0.9;g.beginPath();for(let x=-100;x<=WW+100;x+=30){const y=wave(b,x,lt)+1;x===-100?g.moveTo(x,y):g.lineTo(x,y);}g.stroke();g.globalAlpha=1;
+    SEAD.forEach(([bi,x,dy,l,c,ph])=>{if(bi!==i)return;const xx=x+18*Math.sin(lt*0.8+ph),y=wave(b,xx,lt)+dy;g.strokeStyle=c<.35?'#0a1418':c<.7?'#4c6462':'#a9b29c';g.globalAlpha=0.16+0.2*Math.pow(Math.sin(lt*1.3+ph),2);g.lineWidth=3+i*1.1;g.lineCap='round';g.beginPath();g.moveTo(xx,y);g.quadraticCurveTo(xx+l/2,y-4,xx+l,y+1);g.stroke();});g.globalAlpha=1;
+    if(i===0){// hull shadow on the water, foam along the waterline, the rope trailing aft
+      const sg=g.createLinearGradient(0,b.y,0,b.y+230);sg.addColorStop(0,'rgba(4,8,10,.75)');sg.addColorStop(1,'rgba(4,8,10,0)');g.fillStyle=sg;g.beginPath();g.moveTo(SX+230,b.y-8);g.lineTo(SX+2060,b.y-8);g.lineTo(SX+1900,b.y+230);g.lineTo(SX+330,b.y+230);g.closePath();g.fill();
+      FOAM.forEach(([u0,ph,l,o])=>{const u=(u0+1-lt*0.03)%1,x=SX+260+u*1800,y=wave(b,x,lt)+2+o*12;g.strokeStyle='#e8e6d4';g.globalAlpha=(0.25+0.5*Math.pow(Math.sin(lt*2+ph),2))*Math.sin(Math.PI*u);g.lineWidth=2.5+o*2;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+Math.sin(ph)*2);g.stroke();});g.globalAlpha=1;
+      const rx=SX+1516,P=[];for(let k=0;k<=26;k++){const x=rx-k*13;P.push([x,wave(b,x,lt)+6+k*0.5+5*Math.sin(k*0.6-lt*3)*(k/26)]);}
+      [['rgba(6,10,12,.5)',9,4],['#bfae7e',5.5,0],['#efe2b8',1.8,-1.5]].forEach(([c,w,dy])=>{g.strokeStyle=c;g.lineWidth=w;g.lineCap='round';g.lineJoin='round';g.beginPath();P.forEach((q,k)=>k?g.lineTo(q[0],q[1]+dy):g.moveTo(q[0],q[1]+dy));g.stroke();});
+      const e=P[26];for(let k=-2;k<=2;k++){g.strokeStyle='#cdbd8c';g.lineWidth=1.8;g.beginPath();g.moveTo(e[0],e[1]);g.quadraticCurveTo(e[0]-14,e[1]+k*4,e[0]-24-3*Math.sin(lt*4+k),e[1]+k*7+3*Math.sin(lt*3+k*2));g.stroke();}
+      for(let k=0;k<5;k++){g.strokeStyle='#e8e6d4';g.globalAlpha=.4;g.lineWidth=2;const x=rx-40-k*70-((lt*40)%70);g.beginPath();g.moveTo(x,wave(b,x,lt)+18+k*2);g.lineTo(x-26,wave(b,x-26,lt)+19+k*2);g.stroke();}g.globalAlpha=1;}
+  });
+  g.globalCompositeOperation='lighter';GLIT.forEach(([x,y,d,ph,sp])=>{if(y<=WL+SY+20)return;const a=(0.1+0.9*Math.pow(Math.sin(lt*sp+ph),2))*(0.5-d*.2),w=20+d*110;g.strokeStyle='#e9d59c';g.globalAlpha=a;g.lineWidth=3+d*6;g.beginPath();g.moveTo(x-w/2,y);g.lineTo(x+w/2,y);g.stroke();});
+  g.globalAlpha=1;g.globalCompositeOperation='source-over';
+  FOGF.forEach(([c,x,y,v,sc,al])=>{g.globalAlpha=al;g.drawImage(c,x+lt*v,y,1700*sc,620*sc*.7);});g.globalAlpha=1;
+  g.restore();
+  // painterly boil + grain + cold vignette
+  const bk=Math.floor(lt*8+0.001),BRr=R0(1000+bk*7);BRr();g.save();g.translate(540+(BRr()-.5)*50,960+(BRr()-.5)*50);g.scale(bk%2?-1:1,(bk>>1)%2?-1:1);g.rotate((BRr()-.5)*0.04);g.drawImage(BOILN,-540,-960);g.restore();
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
+  const vg=g.createRadialGradient(540,930,440,540,930,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(4,8,14,.72)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  // ---- captions (one strip group at a time) ----
+  cap(['December 1872.','400 miles off the Azores.'],0,1.4,lt,0);cap(['The ship was adrift.','Nobody was aboard.'],1.55,2.7,lt,1,1);
+  cap(['The lifeboat was gone.','The cargo was still there.'],2.85,4.7,lt,2);cap(['The ten people','were never found.'],4.9,9,lt,3,1);
+}
+window.DUR=6.3;window.draw=draw;draw(5.6);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

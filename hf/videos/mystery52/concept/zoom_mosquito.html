@@ -1,0 +1,198 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// mystery52 r2: /zoom-in a mosquito bite  (one continuous zoom: mosquito on skin -> proboscis tip -> skin cross-section -> bump)
+// Facts / sources:
+//  - CDC, "About Mosquito Bites" (cdc.gov/mosquitoes/about/about-mosquito-bites.html) and "Mosquito Bite Symptoms and Treatment"
+//    (cdc.gov/mosquitoes/mosquito-bites/symptoms.html):
+//      "Female mosquitoes bite people and animals to get a blood meal." / "Male mosquitoes do not bite people and animals."
+//        -> label "Only females bite / males do not bite"
+//      "When a mosquito bites you, it pierces the skin using a special mouthpart (proboscis) to suck up blood."
+//      "As the mosquito is feeding, it injects saliva into your skin."  -> mono line "injected while she feeds"
+//      "Your body reacts to the saliva resulting in a bump and itching." -> label "Your body reacts: the itchy bump"
+//  - Shrivastava et al. (NIH/NIAID), "Alboserpin, the Main Salivary Anticoagulant from the Disease Vector Aedes albopictus ...",
+//    ImmunoHorizons 2022 (pmc.ncbi.nlm.nih.gov/articles/PMC10753553): mosquito salivary proteins "facilitate blood intake by
+//    preventing host hemostasis"; the mosquito "penetrates its proboscis into the epidermis and dermis of the skin to locate" blood.
+//        -> label "Her saliva keeps the blood flowing"; the needle bending in the dermis towards a small vessel.
+//  Drawing is our own stylised mosquito / skin section. Simplified, not to scale (vessel, needle and bump sizes are schematic).
+const g=document.getElementById('c').getContext('2d');
+const LERP=(a,b,t)=>a+(b-a)*t, MONO="'DejaVu Sans Mono','Liberation Mono',monospace";
+const CORAL='#ff6b6b', AQUA='#7fe3f5';
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(540,900,80,540,960,1250);gr.addColorStop(0,'#1b3157');gr.addColorStop(.5,'#0e1a33');gr.addColorStop(1,'#060a16');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(110px)';[[250,760,260,'rgba(80,170,255,.16)'],[860,1000,300,'rgba(255,120,110,.10)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';});
+// ---------- camera ----------
+const F={x:180,y:1150}, SMAX=16;
+function cam(t){const z=EIO((t-.1)/2.6), pb=EIO((t-4.45)/1.4);
+  const S=Math.exp(Math.log(SMAX)*z)*(1+.012*Math.max(0,t-2.7))*(1-.30*pb);
+  const cz=EIO((t-.1)/2.5);
+  return {z,pb,S,k:S/SMAX,x:LERP(F.x+6*Math.sin(t*1.3),665,cz)+70*pb,y:LERP(F.y,700,cz)+105*pb};}
+// ---------- dust (screen space, moves every frame) ----------
+const DR=R0(5),DUST=[...Array(46)].map(()=>({x:DR()*1080,y:DR()*1920,r:1.5+DR()*4,sp:10+DR()*30,ph:DR()*6.3,a:.08+DR()*.22}));
+function dust(t){g.save();DUST.forEach(d=>{const x=(d.x+t*d.sp+18*Math.sin(t*.9+d.ph))%1080,y=(d.y-t*d.sp*.6+1920)%1920;g.fillStyle='rgba(190,225,255,'+d.a+')';g.beginPath();g.arc(x,y,d.r,0,7);g.fill();});g.restore();}
+// ---------- cards ----------
+function card(a,x,y,bold,mono,col,tx,ty,right){if(a<=0)return;g.save();g.globalAlpha=a;const dy=(1-a)*16;
+  g.font='800 40px '+SANS;const bw=g.measureText(bold).width;g.font='500 27px '+MONO;const mw=g.measureText(mono).width;const w=Math.max(bw,mw)+48,h=112;if(right)x=x-w;y+=dy;
+  if(tx!=null){const ax=CL((tx-x)/w)*w*.7+x+w*.15,ay=ty<y?y:y+h;g.strokeStyle=col;g.lineWidth=2.5;g.beginPath();g.moveTo(ax,ay);g.lineTo(tx,ty);g.stroke();
+    g.fillStyle='rgba(255,255,255,.16)';g.beginPath();g.arc(tx,ty,17,0,7);g.fill();g.fillStyle=col;g.shadowColor=col;g.shadowBlur=14;g.beginPath();g.arc(tx,ty,7.5,0,7);g.fill();g.shadowBlur=0;}
+  g.fillStyle='rgba(8,14,30,.86)';g.beginPath();g.roundRect(x,y,w,h,14);g.fill();g.strokeStyle=col;g.lineWidth=2.5;g.stroke();
+  const hl=g.createLinearGradient(0,y,0,y+h);hl.addColorStop(0,'rgba(255,255,255,.09)');hl.addColorStop(.5,'rgba(255,255,255,0)');g.fillStyle=hl;g.fill();
+  g.fillStyle='#fff';g.font='800 40px '+SANS;g.fillText(bold,x+24,y+51);g.fillStyle=col;g.font='500 27px '+MONO;g.fillText(mono,x+24,y+91);g.restore();}
+const fade=(t,a,b,d)=>E3((t-a)/(d||.4))*(b==null?1:1-CL((t-b)/.3));
+// ---------- scene A: mosquito on skin (design coords: tip at 0,0, body towards -x, y up = negative; mirrored when drawn) ----------
+function leg(pts,w,col,a){g.save();g.globalAlpha*=a;g.lineCap='round';g.lineJoin='round';
+  for(let i=0;i<pts.length-1;i++){g.strokeStyle=col;g.lineWidth=w*(1-.18*i);g.beginPath();g.moveTo(pts[i][0],pts[i][1]);
+    if(pts[i][2]!=null){g.quadraticCurveTo(pts[i][2],pts[i][3],pts[i+1][0],pts[i+1][1]);}else g.lineTo(pts[i+1][0],pts[i+1][1]);g.stroke();}
+  // pale bands on the last segments (generic banded legs)
+  g.strokeStyle='rgba(255,244,226,.9)';for(let i=1;i<pts.length-1;i++){const a0=pts[i],b0=pts[i+1];[.02,.5].forEach(u=>{g.lineWidth=w*(1-.18*i)+.6;g.beginPath();g.moveTo(LERP(a0[0],b0[0],u),LERP(a0[1],b0[1],u));g.lineTo(LERP(a0[0],b0[0],u+.09),LERP(a0[1],b0[1],u+.09));g.stroke();});}
+  g.fillStyle=col;for(let i=1;i<pts.length-1;i++){g.beginPath();g.arc(pts[i][0],pts[i][1],w*.7,0,7);g.fill();}g.restore();}
+function wing(sh,al){g.save();g.translate(-196,-338);g.rotate(-.075+sh);const wg=g.createLinearGradient(0,-30,-420,30);wg.addColorStop(0,'rgba(200,232,255,'+(.42*al)+')');wg.addColorStop(1,'rgba(150,200,255,'+(.2*al)+')');
+  g.beginPath();g.moveTo(0,0);g.bezierCurveTo(-90,-46,-330,-52,-418,-10);g.bezierCurveTo(-436,6,-410,26,-360,28);g.bezierCurveTo(-240,32,-80,24,0,0);g.closePath();g.fillStyle=wg;g.fill();
+  g.strokeStyle='rgba(225,242,255,'+(.85*al)+')';g.lineWidth=2.2;g.stroke();g.lineWidth=1.3;g.strokeStyle='rgba(225,242,255,'+(.5*al)+')';
+  [[-30,-12,-400,-12],[-20,2,-410,6],[-60,10,-340,22],[-150,-26,-380,-30]].forEach(v=>{g.beginPath();g.moveTo(0,0);g.quadraticCurveTo(v[0]*4,v[1],v[2],v[3]);g.stroke();});g.restore();}
+function mosquito(t){const bob=Math.sin(t*2.6),br=1+.02*Math.sin(t*3.4);const LG='#d9b292',LD='#a9805f';
+  g.lineCap='round';g.lineJoin='round';
+  // far legs
+  leg([[-140,-240],[-10,-205],[52,-34],[82,0]],5,LD,.6);
+  leg([[-172,-236],[-218,-140],[-258,-30],[-236,0]],5,LD,.6);
+  leg([[-200,-240],[-292,-378],[-430,-292-6*bob,-500,-290],[-566,-330-10*bob,-610,-350],[-636,-392-14*bob]],5,LD,.6);
+  wing(.03+.012*Math.sin(t*5),.55);
+  // abdomen (segmented, tapered)
+  g.save();g.translate(-245,-287);g.rotate(-.125);g.scale(1,br);
+  const ab=g.createLinearGradient(0,-26,0,26);ab.addColorStop(0,'#c98f63');ab.addColorStop(.45,'#8d5a3d');ab.addColorStop(1,'#4c2f25');g.fillStyle=ab;
+  g.beginPath();g.moveTo(10,-24);g.bezierCurveTo(-110,-30,-250,-22,-322,-6);g.quadraticCurveTo(-336,2,-322,8);g.bezierCurveTo(-250,24,-110,30,10,24);g.closePath();g.fill();
+  g.save();g.clip();for(let i=1;i<8;i++){const x=-i*41;g.fillStyle='rgba(255,236,210,.8)';g.fillRect(x,-30,7,60);g.fillStyle='rgba(40,20,16,.3)';g.fillRect(x-5,-30,5,60);}
+  g.fillStyle='rgba(255,255,255,.16)';g.fillRect(-330,-30,350,13);g.restore();g.restore();
+  // thorax
+  g.save();g.translate(-180,-296);g.rotate(-.16);const th=g.createRadialGradient(-10,-34,6,0,0,96);th.addColorStop(0,'#d9a273');th.addColorStop(.5,'#8a563a');th.addColorStop(1,'#432a22');g.fillStyle=th;
+  g.beginPath();g.ellipse(0,0,90,66,0,0,7);g.fill();g.strokeStyle='rgba(255,232,204,.75)';g.lineWidth=5;g.beginPath();g.ellipse(0,0,66,46,0,Math.PI*1.08,Math.PI*1.8);g.stroke();
+  g.lineWidth=3;g.strokeStyle='rgba(255,232,204,.45)';g.beginPath();g.ellipse(0,6,40,30,0,Math.PI*1.1,Math.PI*1.75);g.stroke();g.restore();
+  // neck + head
+  g.fillStyle='#5a3a2c';g.beginPath();g.moveTo(-118,-270);g.lineTo(-96,-262);g.lineTo(-98,-232);g.lineTo(-122,-238);g.closePath();g.fill();
+  const hd=g.createRadialGradient(-88,-256,4,-80,-246,34);hd.addColorStop(0,'#c08a62');hd.addColorStop(1,'#4a2e25');g.fillStyle=hd;g.beginPath();g.arc(-80,-246,30,0,7);g.fill();
+  const ey=g.createRadialGradient(-76,-256,2,-70,-250,22);ey.addColorStop(0,'#9ff3e0');ey.addColorStop(.45,'#1f8f86');ey.addColorStop(1,'#0c3b44');g.fillStyle=ey;g.beginPath();g.ellipse(-70,-250,19,22,-.3,0,7);g.fill();
+  g.fillStyle='rgba(255,255,255,.85)';g.beginPath();g.arc(-76,-259,4.5,0,7);g.fill();
+  // antennae (thin, sparse hairs = female) + short palps
+  g.strokeStyle='#c9a283';[[-60,-268,-8,-318,34,-322+4*bob],[-64,-272,-30,-342,2,-356+5*bob]].forEach(a=>{g.lineWidth=3;g.beginPath();g.moveTo(a[0],a[1]);g.quadraticCurveTo(a[2],a[3],a[4],a[5]);g.stroke();
+    g.lineWidth=1.3;for(let i=1;i<8;i++){const u=i/8,v=1-u,x=v*v*a[0]+2*v*u*a[2]+u*u*a[4],y=v*v*a[1]+2*v*u*a[3]+u*u*a[5];g.beginPath();g.moveTo(x-7,y-9);g.lineTo(x,y);g.lineTo(x+8,y+7);g.stroke();}});
+  g.lineWidth=4.5;g.strokeStyle='#a9805f';g.beginPath();g.moveTo(-60,-232);g.lineTo(-40,-196);g.stroke();
+  // proboscis: sheath + pale core, straight down to the skin
+  g.strokeStyle='#4a342c';g.lineWidth=6.2;g.beginPath();g.moveTo(-70,-226);g.lineTo(-1.2,-4);g.stroke();
+  g.strokeStyle='#b88a66';g.lineWidth=2.2;g.beginPath();g.moveTo(-70,-226);g.lineTo(-1.2,-4);g.stroke();
+  // near legs
+  leg([[-140,-240],[22,-190],[84,-34],[118,0]],5.5,LG,1);
+  leg([[-172,-236],[-116,-128],[-152,-30],[-120,0]],5.5,LG,1);
+  leg([[-200,-240],[-312,-394],[-452,-330-8*bob,-520,-322],[-592,-388-13*bob,-632,-414],[-652,-452-18*bob]],5.5,LG,1);
+  wing(-.02+.012*Math.sin(t*5+1),1);}
+const HR=R0(31),HAIR=[...Array(9)].map((_,i)=>({x:-170+i*150+(HR()-.5)*60+(i>1?90:0),h:70+HR()*60,l:(HR()-.5)*90,ph:HR()*6}));
+const CR=R0(8),CREASE=[...Array(34)].map(()=>({x:-300+CR()*1500,y:30+CR()*520,l:40+CR()*90,c:(CR()-.5)*30}));
+function sceneA(t,c,aA){ // world px, camera applied by caller
+  // skin body
+  const sk=g.createLinearGradient(0,F.y,0,F.y+900);sk.addColorStop(0,'#f1bd9f');sk.addColorStop(.03,'#eba98b');sk.addColorStop(.35,'#c77e6b');sk.addColorStop(.8,'#5b2f44');sk.addColorStop(1,'#1c1430');
+  g.fillStyle=sk;g.beginPath();g.moveTo(-650,F.y+36.5);g.quadraticCurveTo(F.x+300,F.y-45.5,1650,F.y+46.5);g.lineTo(1650,F.y+1400);g.lineTo(-650,F.y+1400);g.closePath();g.fill();
+  const surf=(x)=>{const u=(x+650)/2300,v=1-u;return v*v*(F.y+36.5)+2*v*u*(F.y-45.5)+u*u*(F.y+46.5);}; // same curve
+  g.save();g.globalAlpha=aA;
+  g.strokeStyle='rgba(120,50,50,.2)';g.lineWidth=3;g.lineCap='round';CREASE.forEach(q=>{const y=surf(q.x)+q.y;g.beginPath();g.moveTo(q.x,y);g.quadraticCurveTo(q.x+q.l/2,y+q.c,q.x+q.l,y);g.stroke();});
+  // soft shadow under the mosquito
+  g.save();g.filter='blur(14px)';g.fillStyle='rgba(70,20,30,.35)';g.beginPath();g.ellipse(F.x+330,F.y+22,330,20,.01,0,7);g.fill();g.restore();
+  g.strokeStyle='rgba(255,238,220,.55)';HAIR.forEach(h=>{const x=h.x,y=surf(x)+2,sw=8*Math.sin(t*1.7+h.ph);g.lineWidth=2.6;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+h.l*.2,y-h.h*.7,x+h.l+sw,y-h.h);g.stroke();});
+  g.restore();
+  g.strokeStyle='rgba(255,236,220,.8)';g.lineWidth=3/Math.sqrt(c.S);g.beginPath();g.moveTo(-650,F.y+36.5);g.quadraticCurveTo(F.x+300,F.y-45.5,1650,F.y+46.5);g.stroke();
+  if(aA>0){g.save();g.globalAlpha=aA;g.translate(F.x,surf(F.x));g.scale(-1.25,1.25);mosquito(t);g.restore();}}
+// ---------- scene B: skin cross-section (micro units = px at 16x; origin = puncture point; y down) ----------
+const UD={x:.310,y:-.951}, DD={x:-.310,y:.951}, PP={x:.951,y:.310};   // up along proboscis, down, perpendicular (back side)
+const SIG=300, LTOT=520;
+let BUMP=0;
+const G0=(x)=>Math.exp(-x*x/(2*SIG*SIG));
+const DY=(x,y)=>-BUMP*G0(x)*(y<=0?1:CL(1-y/700));
+const surf0=(x)=>6*Math.sin(x*.013)+4*Math.sin(x*.031+1);
+const pap0=(x)=>150+28*Math.sin(x*.021)+10*Math.sin(x*.05+.6);
+const yv=(x)=>455+70*Math.sin((x+205)*.0035)+.00004*(x+205)*(x+205);
+const yv2=(x)=>900+55*Math.sin(x*.004+2.2);
+function band(f0,f1,fill){g.beginPath();for(let x=-2600;x<=2600;x+=20){const y=f0(x);g.lineTo(x,y+DY(x,y));}for(let x=2600;x>=-2600;x-=20){const y=f1(x);g.lineTo(x,y+DY(x,y));}g.closePath();g.fillStyle=fill;g.fill();}
+function tube(f,w0,w1,c0,c1,glow){[[w0,c0,glow],[w1,c1,0]].forEach(([w,c,gl])=>{g.save();g.lineCap='round';g.lineJoin='round';g.strokeStyle=c;g.lineWidth=w;if(gl){g.shadowColor='rgba(255,70,90,.55)';g.shadowBlur=gl;}
+  g.beginPath();for(let x=-2600;x<=2600;x+=25){const y=f(x);g.lineTo(x,y+DY(x,y));}g.stroke();g.restore();});}
+const CELLR=R0(3),CELLS=[];for(let r=0;r<3;r++)for(let i=0;i<110;i++)CELLS.push({x:-2360+i*43+(r%2)*21+(CELLR()-.5)*10,y:52+r*36+(CELLR()-.5)*8,rx:17+CELLR()*4,ry:11+CELLR()*3});
+const FIBR=R0(12),FIB=[...Array(70)].map(()=>({x:-2400+FIBR()*4800,y:230+FIBR()*1300,l:120+FIBR()*240,c:(FIBR()-.5)*70,a:.05+FIBR()*.09}));
+const RBR=R0(6),RBC=[...Array(50)].map((_,i)=>({x:i*96+RBR()*40,o:(RBR()-.5)*44,sp:RBR()*6}));
+const RBC2=[...Array(36)].map((_,i)=>({x:i*135+RBR()*50,o:(RBR()-.5)*22,sp:RBR()*6}));
+const SLR=R0(19),SAL=[...Array(11)].map((_,i)=>({t0:3.25+i*.14,a:SLR()*6.283,r:80+SLR()*150,s:9+SLR()*8,ph:SLR()*6}));
+function needlePts(t,q,beta){ // from tip up to far above the skin
+  const P=[],n=60,wig=9*Math.sin(t*7)*CL((t-2.4)/.4)*(1-CL((t-3.5)/.5));
+  for(let i=Math.round(n*q);i>=0;i--){const s=i/n*LTOT;let bx,by;const sx=DD.x*s,sy=DD.y*s;
+    if(s<130){bx=sx;by=sy;}else{const u=(s-130)/(LTOT-130),v=1-u,a=[DD.x*130,DD.y*130],b=[DD.x*290,DD.y*290],c2=[-140,400],d=[-212,466];
+      bx=v*v*v*a[0]+3*v*v*u*b[0]+3*v*u*u*c2[0]+u*u*u*d[0];by=v*v*v*a[1]+3*v*v*u*b[1]+3*v*u*u*c2[1]+u*u*u*d[1];}
+    let x=LERP(sx,bx,beta),y=LERP(sy,by,beta);x+=wig*CL(s/300)*PP.x;y+=wig*CL(s/300)*PP.y;P.push([x,y+DY(x,y)]);}
+  const oy=DY(0,0);for(let s=60;s<=1500;s+=60)P.push([UD.x*s,UD.y*s+oy]);return P;}
+function strokePts(P,len,w,col,dash,doff){g.save();g.lineCap='round';g.lineJoin='round';g.strokeStyle=col;g.lineWidth=w;if(dash){g.setLineDash(dash);g.lineDashOffset=doff;g.lineCap='butt';}
+  g.beginPath();g.moveTo(P[0][0],P[0][1]);let acc=0;for(let i=1;i<P.length;i++){const dx=P[i][0]-P[i-1][0],dy=P[i][1]-P[i-1][1],d=Math.hypot(dx,dy);if(len!=null&&acc+d>len){const u=(len-acc)/d;g.lineTo(P[i-1][0]+dx*u,P[i-1][1]+dy*u);break;}g.lineTo(P[i][0],P[i][1]);acc+=d;}g.stroke();g.restore();}
+function sceneB(t){const q=.03+.97*EIO((t-2.3)/1.4), beta=EIO((t-2.7)/.85), bl=EIO((t-3.7)/.9), bp=EIO((t-4.5)/1.4);BUMP=215*bp;
+  // layers
+  const dg=g.createLinearGradient(0,120,0,1700);dg.addColorStop(0,'#d77f86');dg.addColorStop(.35,'#b05a78');dg.addColorStop(.75,'#5e2f5c');dg.addColorStop(1,'#24173a');
+  band(pap0,()=>2300,dg);
+  // dermis fibres
+  g.save();g.lineCap='round';FIB.forEach(f=>{const y=f.y+DY(f.x,f.y);g.strokeStyle='rgba(255,220,220,'+f.a+')';g.lineWidth=7;g.beginPath();g.moveTo(f.x,y);g.quadraticCurveTo(f.x+f.l/2,y+f.c,f.x+f.l,y+6*Math.sin(t*1.2+f.x));g.stroke();});g.restore();
+  // vessels + flowing cells
+  tube(yv2,58,44,'#7d2c55','#b04468',0);
+  RBC2.forEach(c=>{const x=((c.x+t*120)%4860)-2430,y0=yv2(x)+c.o,y=y0+DY(x,y0);g.fillStyle='rgba(255,150,160,.75)';g.beginPath();g.ellipse(x,y,11,7,Math.sin(t*2+c.sp)*.8,0,7);g.fill();});
+  tube(yv,98,78,'#a3243f','#e2475b',40);
+  g.save();g.globalAlpha=.3;tube((x)=>yv(x)-22,12,12,'#fff','#ffd0d0',0);g.restore();
+  RBC.forEach(c=>{const x=((c.x+t*190)%4800)-2400,y0=yv(x)+c.o*.62,y=y0+DY(x,y0),rot=Math.atan(.245*Math.cos((x+205)*.0035))+Math.sin(t*2.3+c.sp)*.7;
+    g.save();g.translate(x,y);g.rotate(rot);g.fillStyle='#ff9a9e';g.beginPath();g.ellipse(0,0,16,10,0,0,7);g.fill();g.fillStyle='rgba(200,40,60,.5)';g.beginPath();g.ellipse(0,0,7,4,0,0,7);g.fill();g.restore();});
+  // epidermis
+  const eg=g.createLinearGradient(0,-BUMP,0,190);eg.addColorStop(0,'#f2b497');eg.addColorStop(1,'#e58f80');band(surf0,pap0,eg);
+  CELLS.forEach(c=>{if(c.y>pap0(c.x)-16)return;const y=c.y+DY(c.x,c.y);g.strokeStyle='rgba(255,246,236,.34)';g.lineWidth=2.5;g.beginPath();g.ellipse(c.x,y,c.rx,c.ry,0,0,7);g.stroke();g.fillStyle='rgba(170,70,80,.3)';g.beginPath();g.arc(c.x,y,3.6,0,7);g.fill();});
+  for(let x=-2600;x<=2600;x+=30){const y0=pap0(x)-12,y=y0+DY(x,y0),an=Math.atan(.021*28*Math.cos(x*.021));g.save();g.translate(x,y);g.rotate(an);g.fillStyle='rgba(196,84,96,.42)';g.beginPath();g.ellipse(0,0,11,17,0,0,7);g.fill();g.restore();}
+  band(surf0,(x)=>surf0(x)+26,'#f8d2b8');
+  g.save();g.strokeStyle='rgba(255,246,236,.9)';g.lineWidth=5;g.beginPath();for(let x=-2600;x<=2600;x+=20){const y=surf0(x);g.lineTo(x,y+DY(x,y));}g.stroke();g.restore();
+  // reaction: pink flush in the bump
+  if(bp>0){g.save();g.beginPath();for(let x=-2600;x<=2600;x+=20){const y=surf0(x);g.lineTo(x,y+DY(x,y));}g.lineTo(2600,2300);g.lineTo(-2600,2300);g.closePath();g.clip();
+    const cy=-BUMP+170,rg=g.createRadialGradient(0,cy,20,0,cy,520);rg.addColorStop(0,'rgba(255,70,110,'+(.62*bp)+')');rg.addColorStop(.5,'rgba(255,90,120,'+(.3*bp)+')');rg.addColorStop(1,'rgba(255,90,120,0)');g.fillStyle=rg;g.fillRect(-700,-400,1400,1100);
+    g.strokeStyle='rgba(255,255,255,'+(.5*bp)+')';g.lineWidth=9;g.lineCap='round';g.beginPath();for(let x=-250;x<=-40;x+=15){const y=surf0(x)+16;g.lineTo(x,y+DY(x,0));}g.stroke();g.restore();}
+  // needle
+  const P=needlePts(t,q,beta),tip=P[0],oy=DY(0,0);
+  // saliva: aqua haze + droplets spreading from the tip
+  const sa=CL((t-3.2)/.8);
+  if(sa>0){g.save();const hz=g.createRadialGradient(tip[0],tip[1],6,tip[0],tip[1],90+150*E3((t-3.2)/2.2));hz.addColorStop(0,'rgba(150,240,255,'+(.42*sa)+')');hz.addColorStop(1,'rgba(150,240,255,0)');g.fillStyle=hz;g.fillRect(tip[0]-300,tip[1]-300,600,600);
+    SAL.forEach(d=>{const u=t-d.t0;if(u<=0)return;const r=d.r*E3(u/1.3)+5*Math.sin(t*2+d.ph),x=tip[0]+Math.cos(d.a)*r,y=tip[1]+Math.sin(d.a)*r*.8,s=d.s*(.5+.5*E3(u/.3));
+      g.globalAlpha=CL(u/.15);g.shadowColor='#9defff';g.shadowBlur=16;g.fillStyle='#c9f7ff';g.beginPath();g.arc(x,y,s,0,7);g.fill();g.shadowBlur=0;g.fillStyle='rgba(255,255,255,.9)';g.beginPath();g.arc(x-s*.3,y-s*.3,s*.3,0,7);g.fill();});g.restore();}
+  strokePts(P,null,34,'#70452a');strokePts(P,null,23,'#e9b973');strokePts(P,null,9,'rgba(255,244,214,.75)');
+  // sliding marks (show the needle moving in)
+  const ins=LTOT*q;strokePts(P,null,23,'rgba(112,69,42,.5)',[4,46],ins);
+  // sharp tip
+  {const a=P[0],b=P[1],an=Math.atan2(a[1]-b[1],a[0]-b[0]);g.save();g.translate(a[0],a[1]);g.rotate(an);g.fillStyle='#70452a';g.beginPath();g.moveTo(-6,-17);g.lineTo(30,0);g.lineTo(-6,17);g.closePath();g.fill();g.fillStyle='#e9b973';g.beginPath();g.moveTo(-6,-10);g.lineTo(17,0);g.lineTo(-6,10);g.closePath();g.fill();g.restore();}
+  // blood rising
+  if(bl>0){const L=bl*2100;g.save();g.shadowColor='rgba(255,60,80,.8)';g.shadowBlur=14;strokePts(P,L,13,'#e5283f');g.restore();strokePts(P,L,6,'rgba(255,170,170,.9)',[16,30],-t*210);}
+  // sheath (labium): stays outside and bows back as the needle slides in
+  const bow=210*q,sx=6*UD.x,sy=6*UD.y+oy,ex=UD.x*820,ey=UD.y*820+oy,cx=UD.x*400+PP.x*bow,cy=UD.y*400+PP.y*bow+oy;
+  [[96,'#3f2b25'],[78,'#7a5745'],[30,'rgba(214,170,134,.5)']].forEach(([w,c],i)=>{g.save();g.lineCap=i?'butt':'round';g.strokeStyle=c;g.lineWidth=w;g.globalAlpha=.96;g.beginPath();g.moveTo(sx+PP.x*20,sy+PP.y*20-(i?0:0));g.quadraticCurveTo(cx,cy,ex,ey);g.lineTo(UD.x*1500,UD.y*1500+oy);
+    if(i===2){g.translate(-PP.x*14,-PP.y*14);}g.stroke();g.restore();});
+  return {tip,q,bp};}
+// ---------- main ----------
+function title(t){g.save();const sc=g.createLinearGradient(0,0,0,600);sc.addColorStop(0,'rgba(6,10,22,.97)');sc.addColorStop(.7,'rgba(6,10,22,.9)');sc.addColorStop(1,'rgba(6,10,22,0)');g.fillStyle=sc;g.fillRect(0,0,1080,600);
+  g.font='800 88px '+SANS;g.fillStyle='#fff';g.shadowColor='rgba(0,0,0,.6)';g.shadowBlur=18;g.fillText('Inside a',76,288);g.fillText('mosquito',76,386);const w=g.measureText('mosquito ').width;
+  g.shadowColor='rgba(255,100,100,.7)';g.shadowBlur=26+8*Math.sin(t*4);g.fillStyle=CORAL;g.beginPath();g.roundRect(76+w,306,g.measureText('bite').width+50,100,16);g.fill();g.shadowBlur=0;g.fillStyle='#1a0d12';g.fillText('bite',76+w+24,386);g.restore();}
+function scaleRow(c,t){g.save();const y=1497,st=['1 cm','1 mm','0.1 mm'],act=c.z<.42?0:c.z<.84?1:2;let x=72;
+  g.font='700 24px '+MONO;g.fillStyle='rgba(200,220,245,.75)';g.fillText('ZOOM',x,y);x+=92;
+  st.forEach((s,i)=>{g.font='700 28px '+MONO;const w=g.measureText(s).width;const on=i===act;
+    if(on){g.fillStyle=AQUA;g.shadowColor=AQUA;g.shadowBlur=14;g.beginPath();g.roundRect(x-12,y-33,w+24,46,10);g.fill();g.shadowBlur=0;}
+    g.fillStyle=on?'#06202a':i<act?'rgba(200,220,245,.9)':'rgba(200,220,245,.45)';g.fillText(s,x,y);x+=w+26;
+    if(i<2){g.fillStyle='rgba(200,220,245,.55)';g.fillText('→',x,y);x+=g.measureText('→').width+26;}});
+  g.font='500 21px '+MONO;g.textAlign='right';g.fillStyle='rgba(200,220,245,.6)';g.fillText('SIMPLIFIED · NOT TO SCALE',1008,y-3);g.restore();}
+function draw(t){const c=cam(t);g.drawImage(bg,0,0);dust(t);
+  const aB=CL((c.z-.62)/.26), aA=1-CL((c.z-.62)/.28);
+  g.save();g.translate(c.x,c.y);g.scale(c.S,c.S);g.translate(-F.x,-F.y);sceneA(t,c,aA);g.restore();
+  let B=null;const m2s=(x,y)=>[c.x+x*c.k,c.y+y*c.k];
+  if(aB>0){g.save();g.globalAlpha=aB;g.translate(c.x,c.y);g.scale(c.k,c.k);B=sceneB(t);g.restore();}
+  // focus ring on the contact point
+  {const a=fade(t,-.2,1.6,.3);if(a>0){g.save();g.globalAlpha=a;g.strokeStyle='#fff';g.lineWidth=4;g.shadowColor=AQUA;g.shadowBlur=18;g.setLineDash([16,12]);g.lineDashOffset=-t*46;g.beginPath();g.arc(c.x,c.y,(50+5*Math.sin(t*5))*Math.sqrt(c.S),0,7);g.stroke();g.restore();}}
+  // bottom scrim (app title band sits there)
+  g.save();const bs=g.createLinearGradient(0,1380,0,1920);bs.addColorStop(0,'rgba(6,10,22,0)');bs.addColorStop(.2,'rgba(6,10,22,.78)');bs.addColorStop(.36,'rgba(6,10,22,.9)');bs.addColorStop(1,'rgba(6,10,22,.97)');g.fillStyle=bs;g.fillRect(0,1380,1080,540);g.restore();
+  title(t);
+  // labels
+  {const a=fade(t,-.4,1.05);if(a>0){const p=[c.x+(190*1.25)*c.S,c.y-(356*1.25)*c.S];card(a,72,476,'Only females bite','males do not bite',AQUA,p[0],p[1]);}}
+  if(B){const v=m2s(330,yv(330)-50+DY(330,yv(330)));card(fade(t,2.75,4.25),1008,960,'Tiny blood vessel','just under the skin',CORAL,v[0],v[1],true);
+    const sd=m2s(B.tip[0]+70,B.tip[1]+78);card(fade(t,3.85),72,1318-70*c.pb,'Her saliva keeps the blood flowing','injected while she feeds',AQUA,sd[0],sd[1]);
+    const bx=-185,bm=m2s(bx,surf0(bx)+DY(bx,0)+4);card(fade(t,4.95),72,520,'Your body reacts:','the itchy bump',CORAL,bm[0],bm[1]);}
+  scaleRow(c,t);
+  g.globalAlpha=.6;g.drawImage(GRAIN,0,0);g.globalAlpha=1;}
+window.DUR=6.3;window.draw=draw;document.fonts.load('800 40px Inter').then(()=>{draw(5.6);document.title='ok';});
+</script></body></html>

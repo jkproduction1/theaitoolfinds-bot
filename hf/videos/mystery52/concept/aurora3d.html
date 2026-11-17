@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How the Northern Lights form</title>
+<!--
+  /explain-3d how the Northern Lights form  (6.3 s, 1080x1920, three.js, everything procedural, no images)
+  FACTS + SOURCES
+  - NOAA Space Weather Prediction Center, "Aurora" (swpc.noaa.gov/phenomena/aurora): the aurora is "the result of electrons
+    colliding with the upper reaches of Earth's atmosphere"; the electrons "follow the magnetic field of Earth down to the Polar
+    Regions where they collide with oxygen and nitrogen atoms and molecules in Earth's upper atmosphere" and release the energy as light.
+    "The aurora typically forms 80 to 500 km above Earth's surface."
+  - UCAR Center for Science Education, "Aurora" (scied.ucar.edu/learning-zone/sun-space-weather/aurora): the solar wind carries hot plasma
+    (electrons, protons, other particles) away from the Sun; charged particles move down magnetic field lines at the North and South Poles
+    and interact with gases, "mostly nitrogen and oxygen". "Oxygen gives off green and red light"; green = oxygen at lower altitudes,
+    red = oxygen at higher altitude (above ~300 km).
+  Simplified, not to scale: Sun distance/size, field-line shapes, curtain height and the direct "funnel" path are schematic.
+-->
+<style>
+  :root{--accent:#3dffa2;--ink:#f4f8ff;--mono:"DejaVu Sans Mono",monospace}
+  body{margin:0;background:#000;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#070b16;font-family:"Inter",system-ui,Arial,sans-serif}
+  canvas{position:absolute;inset:0;display:block}
+  #ov{position:absolute;inset:0;pointer-events:none}
+  #ov svg{position:absolute;inset:0}
+  .hl{position:absolute;left:76px;top:206px;color:var(--ink);font-weight:900;font-size:86px;line-height:1.1;letter-spacing:-2px;text-shadow:0 4px 26px rgba(2,6,16,.85),0 2px 4px rgba(2,6,16,.6)}
+  .hl .key{display:inline-block;background:var(--accent);color:#04160d;padding:0 20px 6px;border-radius:16px;margin-left:-6px;margin-right:6px;text-shadow:none;box-shadow:0 0 44px rgba(61,255,162,.45)}
+  .sub{position:absolute;left:80px;top:420px;font:700 23px var(--mono);letter-spacing:3.5px;color:rgba(170,205,235,.72)}
+  .card{position:absolute;background:rgba(8,15,28,.80);border:2px solid rgba(120,215,235,.55);border-radius:16px;padding:12px 22px 15px;color:#fff;white-space:nowrap;box-shadow:0 10px 34px rgba(0,0,0,.45);transform-origin:0 50%}
+  .card b{display:block;font-weight:800;font-size:42px;letter-spacing:-.6px;line-height:1.15}
+  .card i{display:block;font-style:normal;font:600 28px var(--mono);color:#93e9d8;margin-top:5px}
+  .card.gold{border-color:rgba(255,196,110,.7)} .card.gold i{color:#ffcf8a}
+  .card.green{border-color:rgba(61,255,162,.7)} .card.green i{color:#7dffc0}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="hl">How the Northern<br><span class="key">Lights</span>form</div>
+    <div class="sub">SIMPLIFIED · NOT TO SCALE</div>
+    <div class="card gold" id="c1"><b>Solar wind</b><i>charged particles</i></div>
+    <div class="card" id="c2"><b>Earth's magnetic field</b><i>guides them to the poles</i></div>
+    <div class="card green" id="c3"><b>They hit oxygen + nitrogen</b><i>the air glows</i></div>
+    <div class="card green" id="c4"><b>Green</b><i>= oxygen</i></div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+const W = 1080, H = 1920, DUR = 6.3; window.DUR = DUR;
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.setClearColor('#070b16');
+stage.prepend(renderer.domElement);
+const scene = new THREE.Scene();
+const FOV = 30, PXU = (H / 2) / Math.tan(FOV * Math.PI / 360); // px per world unit at distance 1
+const camera = new THREE.PerspectiveCamera(FOV, W / H, 0.05, 1200);
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd = mulberry32(52); const R = (a, b) => a + rnd() * (b - a);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ramp = (t, a, b) => cl((t - a) / (b - a));
+const sm = x => x * x * (3 - 2 * x);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eout = x => 1 - Math.pow(1 - x, 4);
+const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+
+// ---------- frames of reference ----------
+const LDIR = V3(-1, -0.33, 0.16).normalize();          // Earth -> Sun (northern winter: the pole is in the dark)
+const SUNPOS = LDIR.clone().multiplyScalar(3.95);
+const SUNR = 0.78;
+const QM = new THREE.Quaternion().setFromAxisAngle(V3(1, 0, 0), 0.16); // magnetic axis, tilted ~9 deg off the spin axis
+const MAGAXIS = V3(0, 1, 0).applyQuaternion(QM);
+const LM = LDIR.clone().applyQuaternion(QM.clone().invert());
+const PHIS = Math.atan2(LM.z, LM.x);                    // sun-facing magnetic longitude
+const OVAL = 0.41;                                      // auroral oval colatitude (rad) ~ 66.5 deg magnetic latitude
+
+const NOISE = `
+float hash(vec3 p){ p = fract(p*0.3183099+.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float noise(vec3 x){ vec3 i=floor(x), f=fract(x); f=f*f*(3.-2.*f);
+  return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z); }
+float fbm(vec3 p){ float a=.5,s=0.; for(int i=0;i<6;i++){ s+=a*noise(p); p=p*2.03+vec3(1.7,9.2,3.1); a*=.5; } return s; }
+float fbm3(vec3 p){ float a=.5,s=0.; for(int i=0;i<4;i++){ s+=a*noise(p); p=p*2.1+vec3(4.1,2.2,7.3); a*=.5; } return s; }`;
+
+// ---------- background: deep-space gradient + stars ----------
+scene.add(Object.assign(new THREE.Mesh(new THREE.SphereGeometry(900, 16, 8), new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, depthTest: false,
+  vertexShader: `void main(){ gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader: `void main(){ vec2 u = gl_FragCoord.xy/vec2(1080.,1920.); float d = length((u-vec2(.5,.52))*vec2(.8,1.25));
+    vec3 c = mix(vec3(0.060,0.105,0.190), vec3(0.020,0.032,0.066), smoothstep(0.0,0.62,d)); gl_FragColor = vec4(c,1.0); }`
+})), { renderOrder: -10, frustumCulled: false }));
+const U = { uT: { value: 0 } };
+{ const n = 1100, pos = new Float32Array(n * 3), a = new Float32Array(n * 2);
+  for (let i = 0; i < n; i++) { const v = V3(R(-1, 1), R(-1, 1), R(-1, 1)).normalize().multiplyScalar(600); pos.set([v.x, v.y, v.z], i * 3); a[i * 2] = Math.pow(rnd(), 3) * 2.6 + 1.3; a[i * 2 + 1] = R(0, 6.28); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aS', new THREE.BufferAttribute(a, 2));
+  scene.add(Object.assign(new THREE.Points(g, new THREE.ShaderMaterial({ uniforms: U, transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending,
+    vertexShader: `attribute vec2 aS; uniform float uT; varying float vA; void main(){ vA = 0.35+0.65*(0.5+0.5*sin(uT*2.2+aS.y)); gl_PointSize = aS.x; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+    fragmentShader: `varying float vA; void main(){ float d = length(gl_PointCoord-.5)*2.; gl_FragColor = vec4(vec3(0.78,0.86,1.0)*vA*smoothstep(1.,0.1,d)*0.8,1.0); }` })), { renderOrder: -9, frustumCulled: false })); }
+
+// ---------- Earth (procedural: continents, sea ice, clouds, city lights, aurora ground glow) ----------
+const UE = { uT: U.uT, uL: { value: LDIR }, uMag: { value: MAGAXIS }, uAur: { value: 0 } };
+const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 128, 80), new THREE.ShaderMaterial({ uniforms: UE,
+  vertexShader: `varying vec3 vP; varying vec3 vN; varying vec3 vW;
+    void main(){ vP = position; vN = normalize(mat3(modelMatrix)*position); vec4 w = modelMatrix*vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: `precision highp float; varying vec3 vP; varying vec3 vN; varying vec3 vW; uniform vec3 uL; uniform vec3 uMag; uniform float uT; uniform float uAur; ${NOISE}
+    void main(){ vec3 p = normalize(vP), n = normalize(vN), v = normalize(cameraPosition - vW);
+      float h = fbm(p*1.75+vec3(3.1,1.7,5.2)); float land = smoothstep(0.515,0.535,h);
+      float lat = abs(p.y);
+      float ice = smoothstep(0.80,0.87, lat + 0.10*(noise(p*7.)-.5) + 0.05*(noise(p*23.)-.5));
+      float dry = smoothstep(0.35,0.65, noise(p*3.2+7.));
+      vec3 landc = mix(vec3(0.10,0.25,0.09), vec3(0.42,0.35,0.20), dry) * (0.75+0.5*noise(p*18.));
+      landc = mix(landc, vec3(0.80,0.86,0.92), smoothstep(0.62,0.82,lat));
+      vec3 ocean = mix(vec3(0.015,0.085,0.24), vec3(0.03,0.17,0.36), smoothstep(0.46,0.515,h));
+      vec3 base = mix(ocean, landc, land); base = mix(base, vec3(0.86,0.92,0.98)*(0.85+0.3*noise(p*30.)), ice);
+      float cld = smoothstep(0.54,0.74, fbm(p*2.7+vec3(uT*0.012,0.,uT*0.006)+2.*vec3(noise(p*1.3),0.,noise(p*1.3+5.))));
+      base = mix(base, vec3(0.86,0.88,0.90), cld*0.88);
+      float ndl = dot(n,uL); float day = smoothstep(-0.08,0.30,ndl);
+      vec3 col = base*(0.02+1.08*day);
+      col += vec3(1.0,0.92,0.75)*pow(max(dot(reflect(-uL,n),v),0.),50.)*0.55*(1.-land)*(1.-cld)*day;
+      col += vec3(1.0,0.45,0.18)*0.10*smoothstep(-0.12,0.05,ndl)*(1.-smoothstep(0.05,0.3,ndl));   // warm terminator
+      col += base*vec3(0.060,0.090,0.160)*(1.-day);                                             // moonlit night side
+      float city = smoothstep(0.58,0.84,noise(p*120.))*smoothstep(0.46,0.70,noise(p*9.+11.))*(0.5+0.5*smoothstep(0.45,0.75,noise(p*31.)))*(0.35+0.65*smoothstep(0.35,0.75,noise(p*420.)));
+      city *= land*(1.-ice)*(1.-smoothstep(0.72,0.86,lat));
+      col += vec3(1.0,0.70,0.36)*city*2.2*(1.-day)*(1.-0.75*cld);
+      float cm = acos(clamp(dot(n,uMag),-1.,1.)); float g = exp(-pow((cm-${OVAL.toFixed(3)})/0.085,2.));
+      col += vec3(0.10,0.95,0.42)*g*uAur*0.22*(1.-0.7*day)*(0.6+0.4*base.g*2.);
+      float fr = pow(1.-max(dot(n,v),0.),2.6);
+      col += vec3(0.28,0.56,1.0)*fr*(0.26+0.9*day);
+      gl_FragColor = vec4(col,1.0); }` }));
+scene.add(earth);
+// thin atmosphere rim
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.22, 64, 40), new THREE.ShaderMaterial({ uniforms: UE, side: THREE.BackSide, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  vertexShader: `varying vec3 vW; void main(){ vec4 w = modelMatrix*vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: `precision highp float; varying vec3 vW; uniform vec3 uL;
+    void main(){ vec3 o = cameraPosition, d = normalize(vW-o); float tca = dot(-o,d); vec3 pc = o+d*tca; float b = length(pc);
+      float day = smoothstep(-0.45,0.35,dot(normalize(pc),uL));
+      float I = exp(-max(b-1.0,0.)/0.022)*step(1.0,b);
+      gl_FragColor = vec4(vec3(0.26,0.55,1.0)*I*(0.24+0.85*day),1.0); }` })));
+
+// ---------- Sun at the edge ----------
+const sun = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial({ uniforms: U, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  vertexShader: `varying vec2 vU; void main(){ vU = uv-.5; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader: `precision highp float; varying vec2 vU; uniform float uT; ${NOISE}
+    void main(){ float r = length(vU)*10.; float a = atan(vU.y,vU.x);   // r=1 at the limb
+      float gran = fbm3(vec3(vU*90., uT*0.25));
+      vec3 disc = mix(vec3(1.0,0.62,0.16), vec3(1.0,0.93,0.70), smoothstep(1.0,0.2,r)) * (0.82+0.36*gran) * smoothstep(1.0,0.97,r);
+      float st = 0.6+0.8*noise(vec3(a*5., r*0.8-uT*0.5, 3.))*noise(vec3(a*13., r*0.5-uT*0.8, 9.));
+      float cor = (exp(-max(r-1.,0.)*2.4)*0.95*st + 0.22*exp(-max(r-1.,0.)*0.75)) * smoothstep(0.95,1.0,r)*smoothstep(5.,3.2,r);
+      gl_FragColor = vec4(disc*1.25 + vec3(1.0,0.56,0.20)*cor, 1.0); }` }));
+sun.scale.setScalar(SUNR * 10); sun.position.copy(SUNPOS); scene.add(sun);
+
+// ---------- magnetic field lines (schematic dipole: squeezed on the day side, stretched into a tail on the night side) ----------
+function fline(phi, base, lam, out) {
+  const c = Math.cos(phi - PHIS); const k = c > 0 ? 1 - 0.28 * c : 1 + 0.75 * (-c);
+  const Req = base * k, lf = footLat(base), p = Math.log(1 / Req) / Math.log(Math.cos(lf));
+  const r = Req * Math.pow(Math.cos(lam), p), cs = Math.cos(lam);
+  return (out || V3()).set(r * cs * Math.cos(phi), r * Math.sin(lam), r * cs * Math.sin(phi)).applyQuaternion(QM);
+}
+const footLat = base => base < 2.3 ? 1.10 : 1.19;
+const UF = { uT: U.uT, uR: { value: 0.02 }, uOp: { value: 0.3 }, uFlow: { value: 0 } };
+const fieldMat = new THREE.ShaderMaterial({ uniforms: UF, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  vertexShader: `uniform float uR; varying float vU; varying float vE; void main(){ vU = uv.x; vec3 p = position + normal*(uR-0.01);
+    vec4 mv = modelViewMatrix*vec4(p,1.0); vec3 n = normalize(normalMatrix*normal); vE = abs(dot(n, normalize(-mv.xyz))); gl_Position = projectionMatrix*mv; }`,
+  fragmentShader: `precision highp float; uniform float uT; uniform float uOp; uniform float uFlow; varying float vU; varying float vE;
+    void main(){ float s = abs(vU-.5)*2.; float pulse = pow(0.5+0.5*sin(s*26.-uT*7.),6.);
+      float ends = smoothstep(1.0,0.90,s)*0.4 + 0.6;
+      float I = pow(vE,2.2)*uOp*(0.42+1.1*pulse*uFlow)*ends;
+      gl_FragColor = vec4(mix(vec3(0.30,0.66,1.0), vec3(0.62,0.95,1.0), pulse*uFlow)*I,1.0); }` });
+const NPHI = 8;
+for (let i = 0; i < NPHI; i++) for (const base of [1.9, 2.7]) {
+  if (base < 2.3 && i % 2) continue;
+  const phi = PHIS + (i + 0.5) / NPHI * Math.PI * 2, lf = footLat(base), pts = [];
+  for (let j = 0; j <= 70; j++) pts.push(fline(phi, base, -lf + 2 * lf * j / 70));
+  const m = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 110, 0.01, 6, false), fieldMat); m.frustumCulled = false; scene.add(m);
+}
+
+// ---------- solar wind particles ----------
+const rmag = p => { const c = p.dot(LDIR) / Math.max(1e-6, p.length()); return Math.min(9, 2.2 * Math.pow(2 / (1 + c + 1e-3), 0.6)); }; // magnetopause
+const M = 48, TR = 7;
+const paths = []; // {pts:Float32Array(M*3), T, off, entry, size}
+const perpA = V3().crossVectors(LDIR, V3(0, 1, 0)).normalize(), perpB = V3().crossVectors(LDIR, perpA).normalize();
+function sunStart() { const a = R(0, 6.28), q = Math.sqrt(rnd()) * 0.9; return SUNPOS.clone().addScaledVector(perpA, Math.cos(a) * q * SUNR).addScaledVector(perpB, Math.sin(a) * q * SUNR).addScaledVector(LDIR, -Math.sqrt(1 - q * q) * SUNR * 0.9); }
+// (a) deflected: flows around the magnetic bubble
+for (let i = 0; i < 900; i++) {
+  const s0 = sunStart(), a = R(0, 6.28), q = 0.4 + 2.5 * Math.pow(rnd(), 0.75);
+  const aim = V3().addScaledVector(perpA, Math.cos(a) * q).addScaledVector(perpB, Math.sin(a) * q * 0.85);
+  const dir = aim.clone().sub(s0).normalize(), len = 10.5, pts = new Float32Array(M * 3), p = V3();
+  for (let j = 0; j < M; j++) { p.copy(s0).addScaledVector(dir, len * j / (M - 1)); const rm = rmag(p), l = p.length(); if (l < rm) p.multiplyScalar(rm / l); pts.set([p.x, p.y, p.z], j * 3); }
+  paths.push({ pts, T: R(3.0, 3.9), off: rnd(), entry: 2, size: R(0.045, 0.080) });
+}
+// (b) funnelled: caught by a field line and guided down to the polar oval
+for (let i = 0; i < 300; i++) {
+  const phi = R(0, 6.28), base = R(2.2, 3.0), south = rnd() < 0.16 ? -1 : 1, lf = footLat(2.7), c = Math.cos(phi - PHIS);
+  const fl = lam => { const v = fline(phi, 2.7, lam); const k = base / 2.7; const m = v.length(); return v.multiplyScalar((1 + (m - 1) * k) / m); };
+  const wp = [sunStart()]; let first;
+  if (c > 0.1) { const q = fl(south * 0.5); wp.push(q.clone().multiplyScalar(1.5).addScaledVector(LDIR, 0.9)); first = fl(south * 0.62); wp.push(first); for (let j = 1; j <= 7; j++) wp.push(fl(south * (0.62 + (lf - 0.62) * j / 7))); }
+  else { const side = fl(0).clone().addScaledVector(LDIR, -fl(0).dot(LDIR)).normalize(); const th = 1.75;
+    const d = LDIR.clone().multiplyScalar(Math.cos(th)).addScaledVector(side, Math.sin(th)); wp.push(d.clone().multiplyScalar(rmag(d) * 1.04));
+    first = fl(0).multiplyScalar(1.06); wp.push(first); for (let j = 1; j <= 9; j++) wp.push(fl(south * lf * j / 9)); }
+  const sp = new THREE.CatmullRomCurve3(wp, false, 'centripetal').getSpacedPoints(M - 1), pts = new Float32Array(M * 3); let bi = 0, bd = 1e9;
+  sp.forEach((v, j) => { pts.set([v.x, v.y, v.z], j * 3); const dd = v.distanceTo(first); if (dd < bd) { bd = dd; bi = j; } });
+  paths.push({ pts, T: R(2.6, 3.3), off: rnd(), entry: bi / (M - 1), size: R(0.050, 0.085) });
+}
+const NP = paths.length * TR;
+const pPos = new Float32Array(NP * 3), pCol = new Float32Array(NP * 4), pSize = new Float32Array(NP);
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3)); pGeo.setAttribute('aC', new THREE.BufferAttribute(pCol, 4)); pGeo.setAttribute('aS', new THREE.BufferAttribute(pSize, 1));
+const wind = new THREE.Points(pGeo, new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  vertexShader: `attribute vec4 aC; attribute float aS; varying vec4 vC; void main(){ vC = aC; vec4 mv = modelViewMatrix*vec4(position,1.0);
+    gl_PointSize = clamp(aS*${PXU.toFixed(1)}/-mv.z, 2.0, 20.0); gl_Position = projectionMatrix*mv; }`,
+  fragmentShader: `varying vec4 vC; void main(){ float d = length(gl_PointCoord-.5)*2.; float a = pow(max(0.,1.-d),1.8); gl_FragColor = vec4(vC.rgb*vC.a*a,1.0); }` }));
+wind.frustumCulled = false; scene.add(wind);
+const GOLD = [1.0, 0.74, 0.34], CYAN = [0.55, 0.92, 1.0], GREEN = [0.35, 1.0, 0.55];
+function updateWind(t, flow, d) {
+  let k = 0; const SP = 0.0055 * cl(d / 10, 0.15, 1);
+  for (const P of paths) for (let j = 0; j < TR; j++, k++) {
+    let u = (t / P.T + P.off) % 1 - j * SP; if (u < 0) u += 1;
+    const f = u * (M - 1), i0 = Math.min(M - 2, Math.floor(f)), w = f - i0, a = i0 * 3, b = a + 3, pt = P.pts;
+    pPos[k * 3] = pt[a] + (pt[b] - pt[a]) * w; pPos[k * 3 + 1] = pt[a + 1] + (pt[b + 1] - pt[a + 1]) * w; pPos[k * 3 + 2] = pt[a + 2] + (pt[b + 2] - pt[a + 2]) * w;
+    let al = (1 - j / TR) * sm(cl(u / 0.05)) * (1 - sm(cl((u - 0.94) / 0.06))), c = GOLD;
+    if (P.entry <= 1) { const g = sm(cl((u - P.entry + 0.04) / 0.12)), e = sm(cl((u - 0.86) / 0.12));
+      c = [GOLD[0] + (CYAN[0] - GOLD[0]) * g + (GREEN[0] - CYAN[0]) * e, GOLD[1] + (CYAN[1] - GOLD[1]) * g + (GREEN[1] - CYAN[1]) * e, GOLD[2] + (CYAN[2] - GOLD[2]) * g + (GREEN[2] - CYAN[2]) * e];
+      al *= (1 - g) + g * flow * 1.25; }
+    else al *= 0.8;
+    pCol[k * 4] = c[0]; pCol[k * 4 + 1] = c[1]; pCol[k * 4 + 2] = c[2]; pCol[k * 4 + 3] = al; pSize[k] = P.size * (1 - 0.11 * j);
+  }
+  pGeo.attributes.position.needsUpdate = pGeo.attributes.aC.needsUpdate = pGeo.attributes.aS.needsUpdate = true;
+}
+
+// ---------- aurora: additive curtains around the magnetic pole (green below, red on top) + soft oval glow ----------
+const mag = new THREE.Group(); mag.quaternion.copy(QM); scene.add(mag);
+const NIGHT = PHIS + Math.PI;
+function ribbon(seg, rows) { const th = [], vv = [], idx = [], pos = [];
+  for (let i = 0; i <= seg; i++) for (let j = 0; j <= rows; j++) { th.push(i / seg * Math.PI * 2); vv.push(j / rows); pos.push(0, 0, 0); }
+  for (let i = 0; i < seg; i++) for (let j = 0; j < rows; j++) { const a = i * (rows + 1) + j, b = a + rows + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('aTh', new THREE.Float32BufferAttribute(th, 1)); g.setAttribute('aV', new THREE.Float32BufferAttribute(vv, 1)); g.setIndex(idx); return g; }
+const curtGeo = ribbon(720, 1), AUR = [];
+const WOB = `float wob(float th, float sd, float t){ return 0.030*sin(th*3.+sd+t*0.22) + 0.017*sin(th*7.-t*0.45+sd*2.) + 0.010*sin(th*17.+t*0.8+sd*3.) + 0.0045*sin(th*43.-t*1.3+sd) + 0.045*(0.5-0.5*cos(th-${NIGHT.toFixed(4)})); }`;
+for (const [c0, hgt, seed, gain] of [[OVAL - 0.035, 0.17, 0.0, 0.8], [OVAL, 0.21, 2.3, 1.0], [OVAL + 0.04, 0.15, 4.9, 0.7]]) {
+  const u = { uT: U.uT, uAur: { value: 0 }, uC: { value: c0 }, uH: { value: hgt }, uSeed: { value: seed }, uGain: { value: gain } };
+  const m = new THREE.Mesh(curtGeo, new THREE.ShaderMaterial({ uniforms: u, side: THREE.DoubleSide, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: `attribute float aTh; attribute float aV; uniform float uT, uC, uH, uSeed; varying float vTh; varying float vV; ${WOB}
+      void main(){ vTh = aTh; vV = aV; float c = uC + wob(aTh,uSeed,uT); vec3 d = vec3(sin(c)*cos(aTh), cos(c), sin(c)*sin(aTh));
+        gl_Position = projectionMatrix*modelViewMatrix*vec4(d*(1.010+aV*uH),1.0); }`,
+    fragmentShader: `precision highp float; uniform float uT, uAur, uSeed, uGain; varying float vTh; varying float vV;
+      void main(){ float th = vTh, v = vV;
+        float n1 = 0.5+0.5*sin(th*83.+2.5*sin(th*9.+uT*0.7)+uSeed*3.);
+        float n2 = 0.5+0.5*sin(th*211.-uT*1.9+3.*sin(th*23.+uSeed));
+        float n3 = 0.5+0.5*sin(th*467.+uT*2.6+uSeed*5.);
+        float rays = pow(0.50*n1+0.32*n2+0.18*n3,1.4);
+        float broad = 0.16+0.84*pow(0.5+0.5*sin(th*2.+uSeed*1.7+uT*0.35),1.3);
+        broad *= 0.55+0.45*(0.5-0.5*cos(th-${NIGHT.toFixed(4)}));
+        float len = 0.30+0.70*rays; float x = v/len;
+        float I = smoothstep(0.,0.04,v)*pow(max(0.,1.-x),0.9)*(0.25+0.75*rays)*broad;
+        vec3 col = mix(vec3(0.14,1.0,0.40), vec3(1.5,0.10,0.42), smoothstep(0.26,0.66,x));
+        col += vec3(0.55,0.60,0.35)*exp(-v*22.);
+        gl_FragColor = vec4(col*I*uAur*uGain*1.5,1.0); }` }));
+  m.frustumCulled = false; m.renderOrder = 5; mag.add(m); AUR.push(u);
+}
+const haloU = { uT: U.uT, uAur: { value: 0 } };
+{ const m = new THREE.Mesh(ribbon(180, 8), new THREE.ShaderMaterial({ uniforms: haloU, side: THREE.DoubleSide, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: `attribute float aTh; attribute float aV; uniform float uT; varying float vTh; varying float vV; ${WOB}
+      void main(){ vTh = aTh; vV = aV; float c = ${OVAL.toFixed(3)} + (aV-.5)*0.30 + wob(aTh,2.3,uT); vec3 d = vec3(sin(c)*cos(aTh), cos(c), sin(c)*sin(aTh));
+        gl_Position = projectionMatrix*modelViewMatrix*vec4(d*1.016,1.0); }`,
+    fragmentShader: `precision highp float; uniform float uT, uAur; varying float vTh; varying float vV;
+      void main(){ float w = (vV-.5)/0.5; float I = exp(-w*w*5.5)*(1.-w*w)*(0.45+0.55*(0.5+0.5*sin(vTh*2.+3.9+uT*0.35)))*(0.6+0.4*(0.5-0.5*cos(vTh-${NIGHT.toFixed(4)})));
+        gl_FragColor = vec4(vec3(0.10,0.95,0.45)*I*uAur*0.30,1.0); }` }));
+  m.frustumCulled = false; m.renderOrder = 4; mag.add(m); }
+
+// ---------- camera ----------
+const CAM0 = { az: 0.36, el: 0.47, d: 16.5, ox: -0.86, oy: 0.26 };   // wide: Sun at the left edge, Earth right of centre
+const CAM1 = { az: 0.30, el: 0.56, d: 3.6, tgt: V3(0.08, 0.955, 0.345) }; // close on the glowing oval
+const UP = V3(0, 1, 0), dirv = V3(), right = V3(), upv = V3(), tgt = V3();
+function setCam(t) {
+  const s = 0.035 * ramp(t, 0, 2.2) + 0.93 * eio(ramp(t, 2.2, 5.7)) + 0.035 * ramp(t, 5.7, DUR + 0.04);
+  const az = CAM0.az + (CAM1.az - CAM0.az) * s, el = CAM0.el + (CAM1.el - CAM0.el) * s, d = CAM0.d * Math.pow(CAM1.d / CAM0.d, s);
+  dirv.set(Math.cos(el) * Math.sin(az), Math.sin(el), Math.cos(el) * Math.cos(az));
+  right.crossVectors(UP, dirv).normalize(); upv.crossVectors(dirv, right).normalize();
+  const k = Math.pow(1 - s, 1.0) * (d / CAM0.d); // screen offset shrinks with the dolly
+  tgt.set(0, 0, 0).addScaledVector(right, CAM0.ox * k * CAM0.d / d * (d / CAM0.d)).addScaledVector(upv, CAM0.oy * k * CAM0.d / d * (d / CAM0.d));
+  const w = sm(ramp(s, 0.25, 1)); tgt.lerp(CAM1.tgt, w);
+  camera.position.copy(tgt).addScaledVector(dirv, d); camera.lookAt(tgt); camera.updateMatrixWorld();
+  return d;
+}
+
+// ---------- labels ----------
+const svg = document.getElementById('lines'), tmp = V3();
+function proj(v) { tmp.copy(v).project(camera); return [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H, tmp.z < 1]; }
+const ovalPt = (th, alt, seedC = OVAL) => V3(Math.sin(seedC) * Math.cos(th), Math.cos(seedC), Math.sin(seedC) * Math.sin(th)).multiplyScalar(alt).applyQuaternion(QM);
+const q = new URLSearchParams(location.search);
+const LAB = [
+  { el: 'c1', x: 76, y: 520, a: 0.30, b: 2.75, col: '#ffc46e', anchor: () => LDIR.clone().multiplyScalar(2.95).addScaledVector(V3(0, 1, 0), 0.12) },
+  { el: 'c2', x: 76, y: 1330, a: 1.35, b: 4.15, col: '#78d7eb', anchor: () => fline(PHIS + (6.5) / NPHI * Math.PI * 2, 2.7, 0.52) },
+  { el: 'c3', x: 76, y: 1345, a: 4.05, b: 9, col: '#3dffa2', anchor: () => ovalPt(1.75, 1.035) },
+  { el: 'c4', x: 806, y: 1345, a: 4.75, b: 9, col: '#3dffa2', anchor: () => ovalPt(0.75, 1.03, OVAL + 0.02) },
+].map(L => { const el = document.getElementById(L.el); el.style.left = L.x + 'px'; el.style.top = L.y + 'px'; return { ...L, el }; });
+
+function render(t) {
+  t = cl(t, 0, DUR + 0.05); U.uT.value = t;
+  const d = setCam(t);
+  const flow = sm(ramp(t, 0.7, 1.9));
+  const aur = sm(ramp(t, 1.9, 3.5)) * (0.94 + 0.06 * Math.sin(t * 9));
+  earth.rotation.y = 0.9 + t * 0.012;
+  sun.quaternion.copy(camera.quaternion);
+  UF.uR.value = 0.00105 * d * (1 + 0.25 * sm(ramp(t, 2.2, 5.7))); UF.uFlow.value = flow;
+  UF.uOp.value = (0.30 + 0.70 * flow) * (1 - 0.50 * sm(ramp(t, 3.4, 5.4)));
+  UE.uAur.value = aur; haloU.uAur.value = aur; for (const u of AUR) u.uAur.value = aur;
+  updateWind(t, flow, d);
+  renderer.render(scene, camera);
+  let s = '';
+  for (const L of LAB) {
+    const ain = eout(ramp(t, L.a, L.a + 0.45)), aout = 1 - sm(ramp(t, L.b, L.b + 0.3)), a = cl(ain * 1.4) * aout;
+    L.el.style.opacity = a; L.el.style.transform = `translateY(${(1 - ain) * 18}px) scale(${0.94 + 0.06 * ain})`;
+    if (a < 0.01) continue;
+    const [ax, ay] = proj(L.anchor()); const w = L.el.offsetWidth, h = L.el.offsetHeight;
+    const sx = cl(ax, L.x + 26, L.x + w - 26), sy = ay < L.y ? L.y : ay > L.y + h ? L.y + h : ay;
+    const g = ramp(t, L.a + 0.1, L.a + 0.55), k = eout(g), ex = sx + (ax - sx) * k, ey = sy + (ay - sy) * k;
+    s += `<g opacity="${a}"><line x1="${sx}" y1="${sy}" x2="${ex}" y2="${ey}" stroke="${L.col}" stroke-width="2.5" stroke-linecap="round"/>` +
+      `<circle cx="${ex}" cy="${ey}" r="7" fill="${L.col}"/><circle cx="${ex}" cy="${ey}" r="${10 + 9 * k}" fill="none" stroke="${L.col}" stroke-opacity="${0.55 * k}" stroke-width="2"/></g>`;
+  }
+  svg.innerHTML = s;
+}
+window.renderAt = t => render(t); window.draw = window.renderAt;
+await Promise.race([Promise.all(['900 86px "Inter"', '800 42px "Inter"'].map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 3000))]);
+render(q.has('t') ? parseFloat(q.get('t')) : 5.6);
+if (!q.has('export') && !q.has('t')) { const t0 = performance.now(); const loop = () => { render(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(loop); }; loop(); }
+requestAnimationFrame(() => { document.title = 'ok'; });
+</script>
+</body>
+</html>
