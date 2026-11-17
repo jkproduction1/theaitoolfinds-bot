@@ -1,2 +1,2 @@
-STORY DRY keyword=SYSTEM: 68 automations exist
-would create: {"name": "Story reply (SYSTEM)", "trigger": "story_reply", "keywords": ["SYSTEM", "system"], "matchMode": "word", "typoTolerance": true, "dmMessage": "Here's the system 👇\nType a topic and Claude builds the whole video: script, animation, captions.", "dmMessageVariations": ["Here you go 👇\nOne line in, finished video out. No editing, no camera, no face.", "As promised 👇\nThe same styles as my videos, on any topic you type."], "buttons": [{"type": "url", "title": "Get the system", "url": "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=story&utm_content=reply_system"}]}
+STORY APPLY keyword=SYSTEM: 68 automations exist
+created 6afc9039e7804142a5019051 trigger=story_reply keywords=['SYSTEM', 'system'] active=True buttons=['https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=story&utm_content=reply_system']
