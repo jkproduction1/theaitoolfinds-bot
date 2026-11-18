@@ -13,9 +13,9 @@
  "prompts_title": "Get the prompts",
  "system_title": "Get the system",
  "dm_full": [
-  "Here are your prompts 👇\nBtw, Claude made the video below for me. By itself.\nNo editing, no camera. Just my automated system: any topic, 12 styles, a new video every day.\nWant it? Tap “Get the system”.",
-  "Sent 🙌\nSee the video below? Claude made it for me. By itself.\nNo editing, no camera. Just my automated system: any topic, 12 styles, a new video every day.\nWant it? Tap “Get the system”.",
-  "As promised 👇\nThe video below wasn't made with a prompt. Claude built it by itself with my automated system: any topic, 12 styles, a new video every day.\nWant it? Tap “Get the system”."
+  "Here are your prompts 👇\nEach one makes a great single scene.\nThe video below came from my automated system: script, scenes, voice and captions, on any topic.\nWant that? Tap “Get the system”.",
+  "Sent 🙌\nA prompt makes one scene. My automated system makes the whole video, like the one below, on any topic, a new one every day.\nTap “Get the system” to see it.",
+  "As promised 👇\nThese prompts make one scene each. The full video below came from my automated system: script, voice, captions, any topic.\nWant it? Tap “Get the system”."
  ],
  "dm_neutral": [
   "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
