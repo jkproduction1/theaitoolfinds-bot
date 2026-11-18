@@ -206,8 +206,10 @@ def media(apply: bool, which: str) -> None:
         try:
             lg = poster._z("GET", f"/comment-automations/{which}/logs")
             rows = lg.get("logs") or lg.get("data") or (lg if isinstance(lg, list) else [])
-            for r in rows[:10]:
-                out.append("  LOG " + json.dumps(r, ensure_ascii=False)[:500])
+            keys = ("createdAt", "commenterUsername", "status", "error", "audienceOutcome", "mediaError", "mediaStatus", "platformError")
+            for r in rows[:15]:
+                out.append("  LOG " + json.dumps({k: r.get(k) for k in keys if r.get(k) is not None}, ensure_ascii=False)
+                           + " | media: " + json.dumps({k: v for k, v in r.items() if "media" in k.lower()}, ensure_ascii=False)[:200])
         except Exception as e:
             out.append(f"  LOGS failed: {e}")
     out.append(f"changed {done}")
