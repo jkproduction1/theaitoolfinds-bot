@@ -31,6 +31,15 @@ rep('<b class="g">1.5M</b><span>views in our first month</span>', '<b class="g">
 rep("the same styles behind our 1.5M views in our first month", "the same styles behind our %s views in our first month" % VIEWS)
 rep("all 42 reels, Oct 20 – Nov 15, 2026", "all %d reels, %s" % (REELS, RANGE))
 assert "1.5M" not in s
+
+# comparison video: if it is slow or fails to load, show a still frame on a solid card instead of the spinning rainbow ring behind it
+# (the ring is only meant to be a 3 px border). The poster is the one the hero already uses for the same video file.
+import re
+m = re.search(r'<video src="https://public-files.gumroad.com/h04j5pb694lso8w7f09i1b85mm54" (poster="data:image/jpeg;base64,[^"]+")', s)
+assert m
+rep('<video src="https://public-files.gumroad.com/h04j5pb694lso8w7f09i1b85mm54" autoplay muted loop playsinline preload="metadata" aria-label="Video made by Viral Styles Launchpad">',
+    '<video src="https://public-files.gumroad.com/h04j5pb694lso8w7f09i1b85mm54" ' + m.group(1) + ' autoplay muted loop playsinline preload="metadata" aria-label="Video made by Viral Styles Launchpad">')
+rep(".vring .vsp{border:0;border-radius:26px;box-shadow:none!important}", ".vring .vsp{border:0;border-radius:26px;box-shadow:none!important;background:#150d24}")
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
