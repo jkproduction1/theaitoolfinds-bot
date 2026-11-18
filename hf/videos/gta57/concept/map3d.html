@@ -16,7 +16,8 @@ html,body{margin:0;background:#000}
 canvas{position:absolute;inset:0;width:1080px;height:1920px;display:block}
 #grade{position:absolute;inset:0;pointer-events:none;
  background:radial-gradient(120% 85% at 50% 46%,rgba(0,0,0,0) 55%,rgba(30,8,20,.42) 100%),
-            linear-gradient(180deg,rgba(255,150,90,.10) 0%,rgba(255,170,120,0) 34%,rgba(20,30,70,.10) 100%)}
+            linear-gradient(200deg,rgba(255,170,120,.34) 0%,rgba(255,150,110,.16) 38%,rgba(120,60,110,.14) 100%);mix-blend-mode:soft-light}
+#warm{position:absolute;inset:0;pointer-events:none;background:linear-gradient(205deg,rgba(255,176,120,.30) 0%,rgba(255,160,130,.12) 45%,rgba(90,50,110,.10) 100%)}
 .lb{position:absolute;left:0;top:0;opacity:0;will-change:transform;color:#fff;text-align:center;white-space:nowrap;transform-origin:50% 100%}
 .lb .cd{display:inline-block;background:rgba(22,14,26,.80);border:2px solid rgba(255,255,255,.55);border-radius:20px;padding:14px 28px 16px;box-shadow:0 14px 38px rgba(40,10,20,.4)}
 .lb b{display:block;font-weight:800;font-size:58px;letter-spacing:-.02em;line-height:1.05}
@@ -28,6 +29,7 @@ canvas{position:absolute;inset:0;width:1080px;height:1920px;display:block}
 <body>
 <div id="stage">
   <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="warm"></div>
   <div id="grade"></div>
   <div class="lb" id="l0"><div class="cd"><b>Vice City</b><i>Miami, Florida</i></div><u></u><s></s></div>
   <div class="lb" id="l1"><div class="cd"><b>Grassrivers</b><i>The Everglades, Florida</i></div><u></u><s></s></div>
@@ -62,7 +64,7 @@ renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.A
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 const scene = new THREE.Scene();
 const HAZE = new THREE.Color('#f3a57c');
-scene.fog = new THREE.FogExp2(HAZE, 0.0034);
+scene.fog = new THREE.FogExp2(HAZE, 0.00055);
 const cam = new THREE.PerspectiveCamera(34, W / H, 0.5, 2400);
 
 // sky dome: warm haze at the horizon, soft blue above, a glow where the sun sits
@@ -110,21 +112,17 @@ const landTex = (function () {
   // sloughs: long darker water streaks flowing south-south-west through the sawgrass
   g.lineCap = 'round';
   for (let i = 0; i < 900; i++) { const lo = lerp(-81.05, -80.42, r()), la = lerp(25.22, 26.42, r()), L = 60 + 220 * r(), an = 1.75 + (lo + 80.7) * 0.9 + (r() - .5) * .25;
-    g.strokeStyle = r() < .55 ? 'rgba(74,120,92,.55)' : 'rgba(214,206,120,.5)'; g.lineWidth = 3 + 7 * r(); g.beginPath(); const x = tx(lo), y = ty(la); g.moveTo(x, y); g.quadraticCurveTo(x + Math.cos(an) * L * .5 + 14 * (r() - .5), y + Math.sin(an) * L * .5, x + Math.cos(an) * L, y + Math.sin(an) * L); g.stroke(); }
+    g.strokeStyle = r() < .55 ? 'rgba(74,120,92,.2)' : 'rgba(214,206,120,.2)'; g.lineWidth = 5 + 9 * r(); g.beginPath(); const x = tx(lo), y = ty(la); g.moveTo(x, y); g.quadraticCurveTo(x + Math.cos(an) * L * .5 + 14 * (r() - .5), y + Math.sin(an) * L * .5, x + Math.cos(an) * L, y + Math.sin(an) * L); g.stroke(); }
   // tree islands: dark teardrops aligned with the flow
-  for (let i = 0; i < 1500; i++) { const lo = lerp(-81.0, -80.45, r()), la = lerp(25.25, 26.4, r()), an = 1.75 + (lo + 80.7) * 0.9; g.save(); g.translate(tx(lo), ty(la)); g.rotate(an); g.fillStyle = r() < .5 ? 'rgba(38,84,46,.85)' : 'rgba(52,100,52,.8)'; g.beginPath(); g.ellipse(0, 0, 7 + 16 * r(), 3 + 5 * r(), 0, 0, 7); g.fill(); g.restore(); }
+  for (let i = 0; i < 1500; i++) { const lo = lerp(-81.0, -80.45, r()), la = lerp(25.25, 26.4, r()), an = 1.75 + (lo + 80.7) * 0.9; g.save(); g.translate(tx(lo), ty(la)); g.rotate(an); g.fillStyle = r() < .5 ? 'rgba(38,84,46,.3)' : 'rgba(52,100,52,.28)'; g.beginPath(); g.ellipse(0, 0, 7 + 16 * r(), 3 + 5 * r(), 0, 0, 7); g.fill(); g.restore(); }
   // Everglades Agricultural Area south of Lake Okeechobee: patchwork fields
-  for (let i = 0; i < 900; i++) { const lo = lerp(-81.0, -80.38, r()), la = lerp(26.36, 26.92, r()), w = 26 + 34 * r(), h = 20 + 30 * r(); g.fillStyle = ['rgba(120,92,58,.85)', 'rgba(150,170,84,.85)', 'rgba(98,140,66,.85)', 'rgba(170,150,96,.8)', 'rgba(84,120,60,.85)'][Math.floor(r() * 5)]; g.fillRect(Math.round(tx(lo) / 30) * 30, Math.round(ty(la) / 26) * 26, w, h); }
+  for (let i = 0; i < 900; i++) { const lo = lerp(-81.0, -80.38, r()), la = lerp(26.36, 26.92, r()), w = 26 + 34 * r(), h = 20 + 30 * r(); g.fillStyle = ['rgba(120,92,58,.28)', 'rgba(150,170,84,.3)', 'rgba(98,140,66,.3)', 'rgba(170,150,96,.28)', 'rgba(84,120,60,.3)'][Math.floor(r() * 5)]; g.fillRect(Math.round(tx(lo) / 30) * 30, Math.round(ty(la) / 26) * 26, w, h); }
   // citrus / farms inland further north
   for (let i = 0; i < 700; i++) { const lo = lerp(-82.2, -80.6, r()), la = lerp(26.95, 27.45, r()); g.fillStyle = ['rgba(128,150,70,.6)', 'rgba(150,128,84,.55)', 'rgba(96,132,62,.6)'][Math.floor(r() * 3)]; g.fillRect(Math.round(tx(lo) / 34) * 34, Math.round(ty(la) / 30) * 30, 24 + 30 * r(), 20 + 26 * r()); }
-  // urban areas (real footprints): warm concrete with a fine street grid
-  g.save(); g.beginPath(); D.urban.forEach(u => { u.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.closePath(); }); g.clip();
-  g.fillStyle = '#cdb99c'; g.fillRect(0, 0, TW, TH);
-  for (let i = 0; i < 5000; i++) { g.fillStyle = ['rgba(226,208,180,.7)', 'rgba(176,160,138,.6)', 'rgba(120,150,96,.55)', 'rgba(236,224,204,.6)'][Math.floor(r() * 4)]; g.fillRect(r() * TW, r() * TH, 8 + 22 * r(), 8 + 22 * r()); }
-  g.strokeStyle = 'rgba(96,84,74,.42)'; g.lineWidth = 1.6; g.beginPath(); for (let x = 0; x < TW; x += 14) { g.moveTo(x, 0); g.lineTo(x, TH); } for (let y = 0; y < TH; y += 14) { g.moveTo(0, y); g.lineTo(TW, y); } g.stroke();
-  g.restore();
-  // real roads
-  g.lineJoin = 'round'; D.roads.forEach(rd => { g.strokeStyle = rd.t === 'Major Highway' || rd.t === 'Beltway' ? 'rgba(244,228,196,.95)' : 'rgba(236,216,180,.8)'; g.lineWidth = rd.t === 'Major Highway' ? 5 : 3.4; g.beginPath(); rd.c.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.stroke(); });
+  // urban areas (real Natural Earth footprints): a soft, slightly lighter flat patch, nothing drawn inside
+  g.save(); g.filter = 'blur(7px)'; g.fillStyle = 'rgba(232,214,184,.72)'; g.beginPath(); D.urban.forEach(u => { u.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.closePath(); }); g.fill(); g.restore();
+  // real roads: thin and subtle
+  g.lineJoin = 'round'; D.roads.forEach(rd => { g.strokeStyle = rd.t === 'Major Highway' || rd.t === 'Beltway' ? 'rgba(250,236,208,.5)' : 'rgba(244,226,194,.3)'; g.lineWidth = rd.t === 'Major Highway' ? 2.6 : 1.8; g.beginPath(); rd.c.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.stroke(); });
   // lakes
   g.fillStyle = '#3f86a8'; D.lakes.forEach(l => { g.beginPath(); l.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.closePath(); g.fill(); g.strokeStyle = 'rgba(210,196,150,.8)'; g.lineWidth = 5; g.stroke(); });
   // mangrove fringe on the south-west and Florida Bay coast, sand on the Atlantic side
@@ -149,7 +147,7 @@ const waterTex = (function () {
   sh([[-80.22, 25.6], [-80.16, 25.72], [-80.14, 25.92], [-80.2, 25.9], [-80.3, 25.6], [-80.36, 25.36], [-80.3, 25.3]], 'rgba(96,226,210,.9)', 20);
   sh([[-80.2, 25.36], [-80.36, 25.02], [-80.75, 24.74], [-81.4, 24.52], [-82.0, 24.46], [-82.0, 24.52], [-81.4, 24.6], [-80.72, 24.84], [-80.32, 25.1], [-80.14, 25.4]], 'rgba(60,196,200,.7)', 30);
   // faint banks / channels
-  g.globalAlpha = .35; for (let i = 0; i < 260; i++) { const lo = lerp(-81.9, -80.4, r()), la = lerp(24.62, 25.15, r()); g.strokeStyle = r() < .5 ? '#2a8fa6' : '#b9f3e0'; g.lineWidth = 2 + 4 * r(); g.beginPath(); const x = tx(lo) * k, y = ty(la) * k, a = r() * 6.3; g.moveTo(x, y); g.quadraticCurveTo(x + 40 * Math.cos(a), y + 40 * Math.sin(a), x + 80 * Math.cos(a + .6), y + 80 * Math.sin(a + .6)); g.stroke(); } g.globalAlpha = 1;
+  g.globalAlpha = .1; for (let i = 0; i < 120; i++) { const lo = lerp(-81.9, -80.4, r()), la = lerp(24.62, 25.15, r()); g.strokeStyle = r() < .5 ? '#2a8fa6' : '#b9f3e0'; g.lineWidth = 2 + 4 * r(); g.beginPath(); const x = tx(lo) * k, y = ty(la) * k, a = r() * 6.3; g.moveTo(x, y); g.quadraticCurveTo(x + 40 * Math.cos(a), y + 40 * Math.sin(a), x + 80 * Math.cos(a + .6), y + 80 * Math.sin(a + .6)); g.stroke(); } g.globalAlpha = 1;
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
 })();
 const rippleTex = (function () { const n = 512, c = document.createElement('canvas'); c.width = c.height = n; const g = c.getContext('2d'), r = rng(3); g.fillStyle = '#808080'; g.fillRect(0, 0, n, n);
@@ -160,65 +158,26 @@ lap('water');
 // ---------- geometry
 const X0 = wx(TB.lo0), X1 = wx(TB.lo1), Z0 = wz(TB.la1), Z1 = wz(TB.la0);
 // water plane (texture frame) + a big dark-blue sea beyond it, hidden by the haze
-const sea = new THREE.Mesh(new THREE.PlaneGeometry(6000, 6000), new THREE.MeshStandardMaterial({ color: '#155f8c', roughness: .3, metalness: .15, bumpMap: rippleTex, bumpScale: .5 }));
+const sea = new THREE.Mesh(new THREE.PlaneGeometry(6000, 6000), new THREE.MeshStandardMaterial({ color: '#125a8a', roughness: .3, metalness: .15, bumpMap: rippleTex, bumpScale: .5 }));
 sea.rotation.x = -Math.PI / 2; sea.position.y = -0.06; sea.receiveShadow = true; scene.add(sea);
-const water = new THREE.Mesh(new THREE.PlaneGeometry(X1 - X0, Z1 - Z0, 1, 1), new THREE.MeshStandardMaterial({ map: waterTex, roughness: .22, metalness: .12, bumpMap: rippleTex, bumpScale: .45 }));
+const water = new THREE.Mesh(new THREE.PlaneGeometry(X1 - X0, Z1 - Z0, 1, 1), new THREE.MeshStandardMaterial({ map: waterTex, roughness: .22, metalness: .12, bumpMap: rippleTex, bumpScale: .12 }));
 water.rotation.x = -Math.PI / 2; water.position.set((X0 + X1) / 2, 0, (Z0 + Z1) / 2); water.receiveShadow = true; scene.add(water);
-rippleTex.repeat.set(70, 70);
+rippleTex.repeat.set(26, 26);
 // land slab: real outlines extruded, top face mapped to the painted texture
-const LANDH = 0.42;
+const LANDH = 2.2;
 (function () {
   const shapes = LAND.map(p => { const s = new THREE.Shape(p.o.map(([lo, la]) => new THREE.Vector2(wx(lo), -wz(la)))); p.h.forEach(h => s.holes.push(new THREE.Path(h.map(([lo, la]) => new THREE.Vector2(wx(lo), -wz(la)))))); return s; });
-  const geo = new THREE.ExtrudeGeometry(shapes, { depth: LANDH, bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.1, bevelSegments: 2, curveSegments: 1 });
+  const geo = new THREE.ExtrudeGeometry(shapes, { depth: LANDH, bevelEnabled: true, bevelThickness: 0.9, bevelSize: 0.55, bevelSegments: 5, curveSegments: 1 });
   const pos = geo.attributes.position, uv = geo.attributes.uv;
   for (let i = 0; i < pos.count; i++) uv.setXY(i, (pos.getX(i) - X0) / (X1 - X0), 1 - (-pos.getY(i) - Z0) / (Z1 - Z0));
   geo.rotateX(-Math.PI / 2);
-  const top = new THREE.MeshStandardMaterial({ map: landTex, roughness: .95, metalness: 0 });
+  const top = new THREE.MeshStandardMaterial({ map: landTex, bumpMap: landTex, bumpScale: 1.6, roughness: .95, metalness: 0 });
   const side = new THREE.MeshStandardMaterial({ color: '#e6cf9c', roughness: 1 });
   const m = new THREE.Mesh(geo, [top, side]); m.castShadow = true; m.receiveShadow = true; scene.add(m);
 })();
-const TOP = LANDH + 0.1; lap('slab');
-// trees: tree islands, cypress, mangroves, the Keys (instanced, long shadows)
-(function () {
-  const r = rng(21), pts = [];
-  const tryAdd = (lo, la, s) => { if (onLand(lo, la) && !inLake(lo, la)) pts.push([lo, la, s]); };
-  for (let i = 0; i < 9000; i++) tryAdd(lerp(-81.05, -80.42, r()), lerp(25.2, 26.42, r()), .10 + .16 * r());           // tree islands
-  for (let i = 0; i < 9000; i++) tryAdd(lerp(-81.75, -80.95, r()), lerp(25.55, 26.5, r()), .12 + .18 * r());           // Big Cypress
-  for (let i = 0; i < 9000; i++) tryAdd(lerp(-81.4, -80.38, r()), lerp(25.1, 25.42, r()), .12 + .16 * r());            // mangrove coast
-  for (let i = 0; i < 26000; i++) tryAdd(lerp(-81.85, -80.3, r()), lerp(24.52, 25.3, r()), .09 + .12 * r());           // the Keys
-  for (let i = 0; i < 9000; i++) tryAdd(lerp(-82.3, -80.0, r()), lerp(26.5, 27.45, r()), .12 + .2 * r());              // flatwoods north
-  const geo = new THREE.IcosahedronGeometry(1, 1); const mat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 1, flatShading: true });
-  const im = new THREE.InstancedMesh(geo, mat, pts.length); const o = new THREE.Object3D(), col = new THREE.Color();
-  pts.forEach(([lo, la, s], i) => { o.position.set(wx(lo), TOP + s * .55, wz(la)); o.scale.set(s * (1 + .6 * r()), s * (.8 + .5 * r()), s * (1 + .6 * r())); o.rotation.y = r() * 6.3; o.updateMatrix(); im.setMatrixAt(i, o.matrix); col.setHSL(.29 + .07 * r(), .5 + .2 * r(), .2 + .14 * r()); im.setColorAt(i, col); });
-  im.castShadow = true; im.receiveShadow = true; scene.add(im);
-})();
+const TOP = LANDH + 0.9; lap('slab');
 lap('trees');
-// buildings: real urban footprints; tall where the real skylines are
-(function () {
-  const r = rng(33), cores = [[-80.191, 25.772, 2.7, .035], [-80.193, 25.758, 2.3, .022], [-80.131, 25.80, 1.25, .028], [-80.122, 25.87, .95, .03], [-80.14, 26.12, 1.4, .03], [-80.055, 26.712, 1.1, .03], [-80.27, 25.75, .5, .04], [-80.19, 25.81, 1.2, .03]];
-  const pts = [];
-  const hAt = (lo, la) => { let h = 0; for (const [cx, cy, hh, sg] of cores) { const d = Math.hypot((lo - cx) * CO, la - cy); h = Math.max(h, hh * Math.exp(-d * d / (2 * sg * sg))); } return h; };
-  const urb = D.urban.filter(u => u[0][0] > -80.6 && u[0][1] < 27.2);
-  for (let i = 0; i < 120000 && pts.length < 15000; i++) { const lo = lerp(-80.5, -80.0, r()), la = lerp(25.4, 26.95, r()); if (!onLand(lo, la)) continue; if (!urb.some(u => inPoly(u, lo, la))) continue; pts.push([lo, la, .07 + .12 * r() + hAt(lo, la) * (.35 + .65 * r())]); }
-  for (let i = 0; i < 2600; i++) { const [cx, cy, hh, sg] = cores[Math.floor(r() * 4)], a = r() * 6.3, d = Math.abs((r() + r() + r() - 1.5)) * sg * 1.5, lo = cx + Math.cos(a) * d / CO, la = cy + Math.sin(a) * d; if (onLand(lo, la)) pts.push([lo, la, .2 + hAt(lo, la) * (.45 + .55 * r())]); }
-  for (let i = 0; i < 420; i++) { const la = lerp(25.765, 25.93, r()), k = (la - 25.762) / (25.935 - 25.762), lo = lerp(-80.129, -80.1235, k) + (r() - .5) * .006; if (onLand(lo, la)) pts.push([lo, la, .25 + .9 * r() * (1 - .5 * k)]); } // Miami Beach hotel strip
-  const geo = new THREE.BoxGeometry(1, 1, 1); geo.translate(0, .5, 0);
-  const mat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: .55, metalness: .1 });
-  const im = new THREE.InstancedMesh(geo, mat, pts.length); const o = new THREE.Object3D(), col = new THREE.Color();
-  pts.forEach(([lo, la, h], i) => { const w = h > .8 ? .13 + .1 * r() : .1 + .12 * r(); o.position.set(wx(lo), TOP - .02, wz(la)); o.scale.set(w, h, w * (.7 + .6 * r())); o.rotation.y = (r() < .8 ? 0 : .5) + .05 * (r() - .5); o.updateMatrix(); im.setMatrixAt(i, o.matrix);
-    const p = r(); if (p < .55) col.set('#fbe9d6'); else if (p < .75) col.set('#f6c9b6'); else if (p < .88) col.set('#bfe3e0'); else col.set('#ffe2a8'); col.multiplyScalar(.82 + .22 * r()); im.setColorAt(i, col); });
-  im.castShadow = true; im.receiveShadow = true; scene.add(im);
-})();
 lap('buildings');
-// Overseas Highway (real US-1 from Natural Earth) + the two Miami Beach causeways: a pale concrete ribbon just above the water
-(function () {
-  const us1 = D.roads.filter(rd => rd.n === '1' && rd.c[0][1] < 25.5 || (rd.n === '1' && rd.c[rd.c.length - 1][1] < 25.5));
-  const strips = us1.map(rd => rd.c).concat([[[-80.186, 25.777], [-80.166, 25.776], [-80.146, 25.772], [-80.135, 25.771]], [[-80.186, 25.812], [-80.16, 25.812], [-80.133, 25.813]], [[-80.19, 25.748], [-80.172, 25.735], [-80.162, 25.705]]]);
-  const mat = new THREE.MeshStandardMaterial({ color: '#f4e6cf', roughness: .8, emissive: '#5a4630', emissiveIntensity: .35 });
-  strips.forEach(c => { const pts = c.map(([lo, la]) => new THREE.Vector3(wx(lo), TOP + .1, wz(la))); if (pts.length < 2) return; const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .2); const g = new THREE.TubeGeometry(curve, Math.max(8, pts.length * 6), .09, 5, false); const m = new THREE.Mesh(g, mat); m.scale.y = .5; m.position.y = (TOP + .1) * .5; m.castShadow = true; scene.add(m); });
-})();
-
-
 // ---------- clouds: soft puffs drifting between the camera and the ground + their shadows (Jan: "a map from the air, with clouds")
 const CLOUDS = [];
 const CAMPTS = [[-79.985, 25.905, 7.6], [-79.975, 25.90, 8.2], [-80.10, 26.08, 18], [-80.27, 26.30, 30], [-80.25, 25.85, 22], [-80.22, 25.36, 25], [-80.26, 25.33, 23.5], [-80.09, 25.84, 6], [-80.5, 25.1, 8], [-80.6, 25.07, 8]];
@@ -231,44 +190,39 @@ const CAMPTS = [[-79.985, 25.905, 7.6], [-79.975, 25.90, 8.2], [-80.10, 26.08, 1
     for (let i = 0; i < 9; i++) blob(150 + 220 * q(), 120 + 40 * q(), 30 + 30 * q(), 'rgba(255,226,190,.5)', .5);             // sun-lit rim
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
   const TEX = [puffTex(1), puffTex(2), puffTex(3), puffTex(4)];
-  const sc = document.createElement('canvas'); sc.width = sc.height = 256; const sg = sc.getContext('2d'), sgr = sg.createRadialGradient(128, 128, 0, 128, 128, 128); sgr.addColorStop(0, 'rgba(30,22,60,.42)'); sgr.addColorStop(.6, 'rgba(30,22,60,.22)'); sgr.addColorStop(1, 'rgba(30,22,60,0)'); sg.fillStyle = sgr; sg.fillRect(0, 0, 256, 256);
+  const sc = document.createElement('canvas'); sc.width = sc.height = 256; const sg = sc.getContext('2d'), sgr = sg.createRadialGradient(128, 128, 0, 128, 128, 128); sgr.addColorStop(0, 'rgba(40,24,50,.3)'); sgr.addColorStop(.6, 'rgba(40,24,50,.15)'); sgr.addColorStop(1, 'rgba(30,22,60,0)'); sg.fillStyle = sgr; sg.fillRect(0, 0, 256, 256);
   const shTex = new THREE.CanvasTexture(sc);
   const keep = [[-80.191, 25.772], [-80.80, 25.70], [-80.83, 24.86]];                                   // label anchors stay clear
-  const sunFlat = new THREE.Vector2(sunDir.x, sunDir.z).normalize(), off = 1 / Math.tan(SUN_EL);
-  for (let i = 0; i < 80; i++) {
-    const lo = lerp(-81.75, -79.75, r()), la = lerp(24.45, 26.75, r()), h = 2.6 + 5.2 * r(), size = 5 + 9 * r();
-    if (keep.some(([a, b]) => Math.hypot((lo - a) * CO, la - b) < .085)) continue;
-    if (CAMPTS.some(([a, b, hh]) => Math.hypot(wx(lo) - wx(a), wz(la) - wz(b)) < size * 1.5 + 9 && h > hh - 7)) continue;   // never a cloud in the lens
+  const sunFlat = new THREE.Vector2(sunDir.x, sunDir.z).normalize(), off = 1.5;   // shadow offset kept short so each shadow reads with its cloud
+  for (let i = 0; i < 60; i++) {
+    const lo = lerp(-82.3, -79.8, r()), la = lerp(24.35, 27.3, r()), h = 16 + 16 * r(), size = 16 + 22 * r();
+    if (keep.some(([a, b]) => Math.abs((lo - a) * CO) < .62 && la - b > -.3 && la - b < 1.0)) continue;   // nothing over a pin or behind its card (cards sit north of the pin)
     const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: TEX[i % 4], transparent: true, depthWrite: false, opacity: .9, fog: true }));
     sp.scale.set(size, size * .625, 1); sp.position.set(wx(lo), h, wz(la)); sp.renderOrder = 5; scene.add(sp);
     const sh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: shTex, transparent: true, depthWrite: false, fog: true }));
-    sh.rotation.x = -Math.PI / 2; sh.rotation.z = -Math.atan2(sunFlat.y, sunFlat.x); sh.scale.set(size * 2.6, size * .95, 1); sh.renderOrder = 2; scene.add(sh);
+    sh.rotation.x = -Math.PI / 2; sh.rotation.z = -Math.atan2(sunFlat.y, sunFlat.x); sh.scale.set(size * 1.5, size * .9, 1); sh.renderOrder = 2; scene.add(sh);
     CLOUDS.push({ sp, sh, x: wx(lo), z: wz(la), h, v: .25 + .35 * r() });
   }
-  window.moveClouds = t => CLOUDS.forEach(c => { const x = c.x + c.v * t * 1.6, z = c.z + c.v * t * .5; c.sp.position.set(x, c.h, z); c.sh.position.set(x - sunFlat.x * c.h * off, TOP + .32, z - sunFlat.y * c.h * off); });
+  window.moveClouds = t => CLOUDS.forEach(c => { const x = c.x + c.v * t * 1.6, z = c.z + c.v * t * .5; c.sp.position.set(x, c.h, z); c.sh.position.set(x - sunFlat.x * c.h * off, TOP + .25, z - sunFlat.y * c.h * off); });
 })();
 
 // ---------- camera path: Miami -> across the Everglades -> the Keys
 const P = (lo, la, h) => new THREE.Vector3(wx(lo), h, wz(la));
-const KEYS = [
-  { t: 0.0, p: P(-79.985, 25.905, 7.6), q: P(-80.20, 25.765, 0.6) },
-  { t: 1.2, p: P(-79.975, 25.90, 8.2), q: P(-80.215, 25.76, 0.6) },
-  { t: 3.2, p: P(-80.27, 26.30, 30), q: P(-80.82, 25.50, 0) },
-  { t: 5.2, p: P(-80.22, 25.36, 25), q: P(-80.98, 24.80, 0) },
-  { t: 6.33, p: P(-80.26, 25.33, 23.5), q: P(-81.04, 24.775, 0) },
-];
+const PITCH = 65 * Math.PI / 180;
+const K = (tt, lo, la, h) => ({ t: tt, q: P(lo, la, 0), p: new THREE.Vector3(wx(lo), h, wz(la) + h / Math.tan(PITCH)) });
+const KEYS = [K(0, -80.55, 26.05, 300), K(1.2, -80.57, 26.02, 305), K(3.2, -80.85, 25.70, 345), K(5.2, -81.02, 25.36, 330), K(6.33, -81.05, 25.33, 325)];
 function camAt(t) { t = Math.max(0, Math.min(DUR, t)); let i = 0; while (i < KEYS.length - 2 && t > KEYS[i + 1].t) i++; const a = KEYS[i], b = KEYS[i + 1], k = eio((t - a.t) / (b.t - a.t)); return { p: a.p.clone().lerp(b.p, k), q: a.q.clone().lerp(b.q, k) }; }
 const LABELS = [
-  { el: document.getElementById('l0'), at: P(-80.191, 25.772, 2.9), on: 0.15, off: 2.25, len: 250 },
-  { el: document.getElementById('l1'), at: P(-80.80, 25.70, TOP), on: 2.45, off: 4.35, len: 300 },
-  { el: document.getElementById('l2'), at: P(-80.83, 24.86, TOP + .2), on: 4.75, off: 9, len: 300 },
+  { el: document.getElementById('l0'), at: P(-80.20, 25.775, TOP), on: 0.15, off: 99, len: 250 },
+  { el: document.getElementById('l1'), at: P(-80.85, 25.62, TOP), on: 2.45, off: 99, len: 90 },
+  { el: document.getElementById('l2'), at: P(-80.95, 24.80, TOP), on: 4.75, off: 99, len: 130 },
 ];
 const v = new THREE.Vector3();
 function draw(t) {
   const c = camAt(t); cam.position.copy(c.p); cam.lookAt(c.q); cam.updateMatrixWorld(); cam.updateProjectionMatrix();
   // sun + shadow frustum follow the look-at point
-  sun.target.position.copy(c.q); sun.position.copy(c.q).addScaledVector(sunDir, 260);
-  const sc = sun.shadow.camera, ext = 20 + cam.position.y * 3.2; sc.left = -ext; sc.right = ext; sc.top = ext; sc.bottom = -ext; sc.near = 20; sc.far = 520; sc.updateProjectionMatrix();
+  sun.target.position.copy(c.q); sun.position.copy(c.q).addScaledVector(sunDir, 420);
+  const sc = sun.shadow.camera, ext = 260; sc.left = -ext; sc.right = ext; sc.top = ext; sc.bottom = -ext; sc.near = 20; sc.far = 900; sc.updateProjectionMatrix();
   scene.getObjectByName('sky').position.copy(cam.position);
   rippleTex.offset.set(t * .012, t * .02); moveClouds(t);
   renderer.render(scene, cam);
