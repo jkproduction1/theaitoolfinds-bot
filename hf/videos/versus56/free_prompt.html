@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080, height=1920, initial-scale=1">
+<title>How bees make honey</title>
+<style>
+  :root{
+    --bg:#170833; --bg2:#2a1158; --node:#231046;
+    --mint:#7dffd0; --pink:#ff7ac8; --yellow:#ffd84a; --ink:#170833; --white:#f6efff;
+    --D:6s;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg)}
+  #stage{
+    position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:
+      radial-gradient(700px 700px at 20% 30%, rgba(255,122,200,.13), transparent 70%),
+      radial-gradient(800px 800px at 85% 58%, rgba(125,255,208,.10), transparent 70%),
+      radial-gradient(800px 800px at 25% 85%, rgba(255,216,74,.10), transparent 70%),
+      linear-gradient(180deg,var(--bg2) 0%,var(--bg) 55%,#110626 100%);
+    font-family:"Avenir Next","Nunito","Poppins","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    color:var(--white);
+  }
+  svg{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:visible}
+
+  /* ---------- title ---------- */
+  .title{position:absolute;left:0;top:130px;width:1080px;text-align:center;
+    font-size:92px;font-weight:800;line-height:1.05;letter-spacing:-1px;
+    text-shadow:0 0 34px rgba(255,216,74,.35)}
+  .title b{color:var(--yellow)}
+  .tag{position:absolute;left:50%;top:356px;transform:translateX(-50%);white-space:nowrap;
+    font-size:30px;font-weight:700;color:var(--mint);padding:10px 30px;border-radius:999px;
+    border:2px solid rgba(125,255,208,.7);background:rgba(125,255,208,.10);
+    box-shadow:0 0 26px rgba(125,255,208,.35)}
+
+  /* ---------- pills ---------- */
+  .pill{position:absolute;display:flex;align-items:center;gap:14px;white-space:nowrap;
+    border-radius:999px;font-weight:800;opacity:0;animation:var(--D) infinite both}
+  .pill.main{font-size:36px;padding:12px 30px 12px 12px;height:76px}
+  .pill.sub{font-size:27px;padding:0 26px;height:56px;font-weight:700}
+  .pill .n{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-size:30px;font-weight:900}
+  .pink{color:#ffd3ee;border:2.5px solid var(--pink);background:rgba(255,122,200,.14);box-shadow:0 0 30px rgba(255,122,200,.45)}
+  .pink .n{background:var(--pink)}
+  .mint{color:#d6fff1;border:2.5px solid var(--mint);background:rgba(125,255,208,.12);box-shadow:0 0 30px rgba(125,255,208,.40)}
+  .mint .n{background:var(--mint)}
+  .yellow{color:#fff3bf;border:2.5px solid var(--yellow);background:rgba(255,216,74,.13);box-shadow:0 0 30px rgba(255,216,74,.42)}
+  .yellow .n{background:var(--yellow)}
+  .L{left:500px;transform-origin:0 50%}
+  .R{right:500px;transform-origin:100% 50%}
+
+  #p1a{top:522px;animation-name:lab1a} #p1b{top:616px;animation-name:lab1b}
+  #p2a{top:982px;animation-name:lab2a} #p2b{top:1076px;animation-name:lab2b}
+  #p3a{top:1442px;animation-name:lab3a} #p3b{top:1536px;animation-name:lab3b}
+
+  @keyframes lab1a{0%,9%{opacity:0;transform:scale(.2)}13%{opacity:1;transform:scale(1.1)}15%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.92)}}
+  @keyframes lab1b{0%,12%{opacity:0;transform:scale(.2)}16%{opacity:1;transform:scale(1.1)}18%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.92)}}
+  @keyframes lab2a{0%,38%{opacity:0;transform:scale(.2)}42%{opacity:1;transform:scale(1.1)}44%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.92)}}
+  @keyframes lab2b{0%,41%{opacity:0;transform:scale(.2)}45%{opacity:1;transform:scale(1.1)}47%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.92)}}
+  @keyframes lab3a{0%,67%{opacity:0;transform:scale(.2)}71%{opacity:1;transform:scale(1.1)}73%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.92)}}
+  @keyframes lab3b{0%,70%{opacity:0;transform:scale(.2)}74%{opacity:1;transform:scale(1.1)}76%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.92)}}
+
+  /* ---------- nodes ---------- */
+  .node{transform-origin:0 0;opacity:0;animation:var(--D) infinite both}
+  #n1{animation-name:pop1;filter:drop-shadow(0 0 26px rgba(255,122,200,.55))}
+  #n2{animation-name:pop2;filter:drop-shadow(0 0 26px rgba(125,255,208,.50))}
+  #n3{animation-name:pop3;filter:drop-shadow(0 0 26px rgba(255,216,74,.55))}
+  @keyframes pop1{0%,2%{opacity:0;transform:scale(.3)}7%{opacity:1;transform:scale(1.1)}10%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.9)}}
+  @keyframes pop2{0%,30%{opacity:0;transform:scale(.3)}35%{opacity:1;transform:scale(1.12)}39%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.9)}}
+  @keyframes pop3{0%,59%{opacity:0;transform:scale(.3)}64%{opacity:1;transform:scale(1.12)}68%,95%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.9)}}
+
+  /* arrival ripple */
+  .ring{fill:none;stroke-width:6;transform-origin:0 0;opacity:0;animation:var(--D) infinite both}
+  #r2{stroke:var(--mint);animation-name:rip2} #r3{stroke:var(--yellow);animation-name:rip3}
+  @keyframes rip2{0%,31%{opacity:0;transform:scale(1)}33%{opacity:.9}44%,100%{opacity:0;transform:scale(1.55)}}
+  @keyframes rip3{0%,60%{opacity:0;transform:scale(1)}62%{opacity:.9}73%,100%{opacity:0;transform:scale(1.55)}}
+
+  /* ---------- connectors + travelling light ---------- */
+  .wire{fill:none;stroke-width:8;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:var(--D) infinite both}
+  #w1{animation-name:draw1} #w2{animation-name:draw2}
+  @keyframes draw1{0%,18%{stroke-dashoffset:1;opacity:1}32%,95%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+  @keyframes draw2{0%,47%{stroke-dashoffset:1;opacity:1}61%,95%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+  .spark{offset-rotate:0deg;opacity:0;animation:var(--D) infinite both;animation-timing-function:ease-in-out}
+  #s1{offset-path:path("M 290 780 C 290 900 790 760 790 880");animation-name:go1;filter:drop-shadow(0 0 16px #ff7ac8) drop-shadow(0 0 36px #7dffd0)}
+  #s2{offset-path:path("M 790 1240 C 790 1360 290 1220 290 1340");animation-name:go2;filter:drop-shadow(0 0 16px #7dffd0) drop-shadow(0 0 36px #ffd84a)}
+  @keyframes go1{0%,17%{offset-distance:0%;opacity:0}19%{offset-distance:0%;opacity:1}32%{offset-distance:100%;opacity:1}35%,100%{offset-distance:100%;opacity:0}}
+  @keyframes go2{0%,46%{offset-distance:0%;opacity:0}48%{offset-distance:0%;opacity:1}61%{offset-distance:100%;opacity:1}64%,100%{offset-distance:100%;opacity:0}}
+
+  /* ---------- inner icon motion (all divide 6s) ---------- */
+  .bob{animation:bob 1s ease-in-out infinite alternate}
+  @keyframes bob{from{transform:translateY(-7px)}to{transform:translateY(7px)}}
+  .wing{transform-box:fill-box;transform-origin:50% 100%;animation:flap .1s linear infinite alternate}
+  @keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(.45)}}
+  .sip{animation:sip 2s ease-in infinite}
+  @keyframes sip{0%{transform:translate(0,0);opacity:0}15%{opacity:1}80%{transform:translate(74px,-74px);opacity:1}100%{transform:translate(82px,-82px);opacity:0}}
+  .mol{animation:mol 2s linear infinite}
+  @keyframes mol{0%{opacity:0}10%,85%{opacity:1}100%{opacity:0}}
+  .half-l{animation:hl 2s ease-in-out infinite} .half-r{animation:hr 2s ease-in-out infinite}
+  @keyframes hl{0%,40%{transform:translateX(0)}60%,100%{transform:translateX(-36px)}}
+  @keyframes hr{0%,40%{transform:translateX(0)}60%,100%{transform:translateX(36px)}}
+  .bond{transform-box:fill-box;transform-origin:50% 50%;animation:bond 2s ease-in-out infinite}
+  @keyframes bond{0%,38%{transform:scaleX(1);opacity:1}50%,100%{transform:scaleX(0);opacity:0}}
+  .enz{animation:enz 2s ease-in-out infinite}
+  @keyframes enz{0%{transform:translateY(-70px)}35%,60%{transform:translateY(0)}100%{transform:translateY(0)}}
+  .cell{animation:cell 2s ease-in-out infinite alternate}
+  @keyframes cell{from{fill-opacity:.45}to{fill-opacity:1}}
+  .vap{animation:vap 2s ease-out infinite}
+  @keyframes vap{0%{transform:translateY(0);opacity:0}20%{opacity:.95}100%{transform:translateY(-70px);opacity:0}}
+  .tw{animation:tw 3s ease-in-out infinite alternate}
+  @keyframes tw{from{opacity:.15}to{opacity:.85}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="g1" gradientUnits="userSpaceOnUse" x1="290" y1="780" x2="790" y2="880">
+        <stop offset="0" stop-color="#ff7ac8"/><stop offset="1" stop-color="#7dffd0"/>
+      </linearGradient>
+      <linearGradient id="g2" gradientUnits="userSpaceOnUse" x1="790" y1="1240" x2="290" y2="1340">
+        <stop offset="0" stop-color="#7dffd0"/><stop offset="1" stop-color="#ffd84a"/>
+      </linearGradient>
+    </defs>
+
+    <!-- ambient dots -->
+    <g>
+      <circle class="tw" cx="120" cy="420" r="6" fill="#7dffd0"/>
+      <circle class="tw" cx="960" cy="520" r="5" fill="#ff7ac8" style="animation-delay:-1s"/>
+      <circle class="tw" cx="900" cy="760" r="7" fill="#ffd84a" style="animation-delay:-2s"/>
+      <circle class="tw" cx="90" cy="1010" r="6" fill="#ff7ac8" style="animation-delay:-1.5s"/>
+      <circle class="tw" cx="180" cy="1180" r="5" fill="#7dffd0" style="animation-delay:-.5s"/>
+      <circle class="tw" cx="980" cy="1400" r="6" fill="#ffd84a" style="animation-delay:-2.5s"/>
+      <circle class="tw" cx="860" cy="1760" r="7" fill="#7dffd0" style="animation-delay:-1s"/>
+      <circle class="tw" cx="150" cy="1800" r="5" fill="#ff7ac8" style="animation-delay:-2s"/>
+      <circle class="tw" cx="560" cy="1830" r="6" fill="#ffd84a"/>
+    </g>
+
+    <!-- connectors -->
+    <path id="w1" class="wire" pathLength="1" stroke="url(#g1)" d="M 290 780 C 290 900 790 760 790 880" style="filter:drop-shadow(0 0 12px rgba(255,122,200,.7))"/>
+    <path id="w2" class="wire" pathLength="1" stroke="url(#g2)" d="M 790 1240 C 790 1360 290 1220 290 1340" style="filter:drop-shadow(0 0 12px rgba(125,255,208,.7))"/>
+
+    <!-- STEP 1: flower + forager bee -->
+    <g transform="translate(290 600)">
+      <g id="n1" class="node">
+        <circle r="180" fill="#231046" stroke="#ff7ac8" stroke-width="8"/>
+        <g transform="translate(-36 40)">
+          <g fill="#ff7ac8">
+            <circle cx="0" cy="-56" r="40"/><circle cx="53" cy="-17" r="40"/><circle cx="33" cy="45" r="40"/>
+            <circle cx="-33" cy="45" r="40"/><circle cx="-53" cy="-17" r="40"/>
+          </g>
+          <circle r="34" fill="#ffd84a"/>
+          <circle class="sip" r="11" fill="#7dffd0"/>
+        </g>
+        <g transform="translate(74 -74)">
+          <g class="bob">
+            <ellipse class="wing" cx="-10" cy="-34" rx="17" ry="27" fill="#7dffd0" opacity=".9" transform="rotate(-18 -10 -34)"/>
+            <ellipse class="wing" cx="16" cy="-34" rx="17" ry="27" fill="#7dffd0" opacity=".9" transform="rotate(18 16 -34)"/>
+            <rect x="-44" y="-27" width="88" height="54" rx="27" fill="#ffd84a"/>
+            <rect x="-6" y="-27" width="11" height="54" fill="#231046"/>
+            <rect x="15" y="-27" width="11" height="54" fill="#231046"/>
+            <circle cx="-27" cy="-5" r="5.5" fill="#231046"/>
+          </g>
+        </g>
+      </g>
+    </g>
+
+    <!-- STEP 2: enzyme splits sucrose into glucose + fructose -->
+    <g transform="translate(790 1060)">
+      <circle id="r2" class="ring" r="180"/>
+      <g id="n2" class="node">
+        <circle r="180" fill="#231046" stroke="#7dffd0" stroke-width="8"/>
+        <g class="mol" transform="translate(0 22)">
+          <rect class="bond" x="-22" y="-9" width="44" height="18" rx="9" fill="#f6efff"/>
+          <g class="half-l"><circle cx="-50" r="40" fill="#ff7ac8"/></g>
+          <g class="half-r"><circle cx="50" r="40" fill="#ffd84a"/></g>
+          <g class="enz"><rect x="-17" y="-67" width="34" height="34" rx="9" fill="#7dffd0" transform="rotate(45 0 -50)"/></g>
+        </g>
+      </g>
+    </g>
+
+    <!-- STEP 3: honeycomb, water evaporating -->
+    <g transform="translate(290 1520)">
+      <circle id="r3" class="ring" r="180"/>
+      <g id="n3" class="node">
+        <circle r="180" fill="#231046" stroke="#ffd84a" stroke-width="8"/>
+        <g transform="translate(0 26)" fill="#ffd84a" stroke="#ffd84a" stroke-width="10" stroke-linejoin="round">
+          <polygon class="cell" points="38,0 19,33 -19,33 -38,0 -19,-33 19,-33"/>
+          <polygon class="cell" style="animation-delay:-.4s" points="38,0 19,33 -19,33 -38,0 -19,-33 19,-33" transform="translate(0 -84)"/>
+          <polygon class="cell" style="animation-delay:-.8s" points="38,0 19,33 -19,33 -38,0 -19,-33 19,-33" transform="translate(73 -42)"/>
+          <polygon class="cell" style="animation-delay:-1.2s" points="38,0 19,33 -19,33 -38,0 -19,-33 19,-33" transform="translate(73 42)"/>
+          <polygon class="cell" style="animation-delay:-1.6s" points="38,0 19,33 -19,33 -38,0 -19,-33 19,-33" transform="translate(0 84)"/>
+          <polygon class="cell" style="animation-delay:-.6s" points="38,0 19,33 -19,33 -38,0 -19,-33 19,-33" transform="translate(-73 42)"/>
+          <polygon class="cell" style="animation-delay:-1s" points="38,0 19,33 -19,33 -38,0 -19,-33 19,-33" transform="translate(-73 -42)"/>
+        </g>
+        <g fill="#7dffd0">
+          <circle class="vap" cx="-86" cy="-84" r="9"/>
+          <circle class="vap" cx="88" cy="-80" r="8" style="animation-delay:-.7s"/>
+          <circle class="vap" cx="-112" cy="-30" r="7" style="animation-delay:-1.3s"/>
+          <circle class="vap" cx="114" cy="-26" r="7" style="animation-delay:-1s"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- travelling light -->
+    <g id="s1" class="spark"><circle r="26" fill="#ffffff" opacity=".35"/><circle r="15" fill="#ffffff"/></g>
+    <g id="s2" class="spark"><circle r="26" fill="#ffffff" opacity=".35"/><circle r="15" fill="#ffffff"/></g>
+  </svg>
+
+  <div class="title">How bees<br>make <b>honey</b></div>
+  <div class="tag">nectar &rarr; enzymes &rarr; honey</div>
+
+  <div id="p1a" class="pill main pink L"><span class="n">1</span>Sips flower nectar</div>
+  <div id="p1b" class="pill sub pink L">carried in a honey stomach</div>
+
+  <div id="p2a" class="pill main mint R"><span class="n">2</span>Enzymes split sugars</div>
+  <div id="p2b" class="pill sub mint R">sucrose &rarr; glucose + fructose</div>
+
+  <div id="p3a" class="pill main yellow L"><span class="n">3</span>Wing-fanning dries it</div>
+  <div id="p3b" class="pill sub yellow L">~18% water = honey</div>
+
+</div>
+</body>
+</html>
