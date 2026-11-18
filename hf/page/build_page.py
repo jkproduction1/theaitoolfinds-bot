@@ -69,11 +69,16 @@ rep(".fp.vm #pack,.fp.vm .nav .btn,", ".fp.vm #pack .btn{margin-top:16px}.fp.vm 
 rep('data-gumroad-action="buy">Get all 12 free</a>', 'data-gumroad-action="buy">Get every prompt</a>')
 # ... and goes to the top, above the 3 prompts; the system box stays last; the old top system box is not shown
 rep("pack.parentNode.insertBefore(sell,pack);var pp=pack.querySelector('p');if(pp)pp.textContent='Get all 12 style prompts as a PDF you can keep. It includes:';",
-    "var vb=document.getElementById('vidbox');vb.parentNode.insertBefore(pack,vb);pack.className+=' topo';"
+    "var vb=document.getElementById('systop');vb.hidden=false;vb.parentNode.insertBefore(pack,vb);pack.className+=' topo';"
     # the Gumroad "buy" action only works on the product page itself, not in this direct /landing/embed view that DM links open
     # (that is why the block used to be hidden here): in video mode the button is a normal link to the product's checkout
     "var pb=pack.querySelector('a[data-gumroad-action]');if(pb){pb.removeAttribute('data-gumroad-action');pb.href='https://theaitoolfinds.gumroad.com/l/free-prompts?wanted=true';pb.target='_blank';pb.rel='noopener'}")
 rep("var st=document.getElementById('selltop');if(st)st.hidden=false;", "")
+# a compact system link right under the email frame (Jan: the system must be reachable from the top too), same button style
+rep('<div id="vidbox" hidden>', '<p id="systop" hidden style="text-align:center;margin:0 0 22px;color:var(--mut);font-size:15px">Want the whole video, not one scene?<br><a class="btn sm paid" style="margin-top:10px" href="https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH" target="_blank" rel="noopener">See the system · <s>$29</s> $19</a></p><div id="vidbox" hidden>')
+# which system button was used: top or bottom
+rep("function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag});",
+    "function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag+'&utm_campaign='+(x.closest&&x.closest('#systop')?'pos_top':'pos_below')});")
 (H / "free-prompts.html").write_text(s, encoding="utf-8")
 
 SYS = "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile&utm_content="
