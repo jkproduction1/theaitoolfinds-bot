@@ -125,6 +125,37 @@ rep('<details class="rv"><summary>How long does one video take?',
 rep('For the full look you need Claude Pro ($20/month, paid to Anthropic). It also runs in ChatGPT, even on the free plan, with simpler animations. ',
     'You need a Claude Pro plan from Anthropic, the company behind Claude. ')
 assert "$20" not in s, [s[i-60:i+40] for i in range(len(s)) if s.startswith("$20", i)][:3]
+# Jan, 2026-11-18: the FAQ looked like a wall to read before buying. Renamed to "Common questions" and merged 14 answers into 6
+# (same facts, nothing new claimed). The ChatGPT answer is off the page (it contradicted "What you need: Claude Pro").
+rep('<h2 id="h-faq">Before <span class="g">you buy</span></h2>', '<h2 id="h-faq">Common <span class="g">questions</span></h2>')
+def _q(q, a): return '<details class="rv"><summary>%s<i aria-hidden="true"></i></summary><p>%s</p></details>' % (q, a)
+FAQ = "\n      ".join([
+    _q("What do I get?", "Files you add to Claude (an AI app, like ChatGPT). Drop one file in and it sets itself up. Then you type a topic, or let it pick one, "
+       "and it makes the whole video: script, animation, captions timed to each word and a voice. You get 12 styles, a daily video, 100 ready topics and templates for hooks and captions."),
+    _q("What does it cost?", "$19 once (launch price, then $29). No subscription from us. The system runs in Claude Pro, a plan from Anthropic, the company behind Claude. "
+       "The voice uses a free ElevenLabs account, and Claude helps you create it."),
+    _q("Is it safe to pay, and can I get my money back?", "Yes. You pay through Gumroad, a US platform for digital products. It accepts international cards and delivers your files "
+       "the moment you pay, and they are yours to keep. Not for you? Message <a href=\"https://www.instagram.com/theaitoolfinds/\" target=\"_blank\" rel=\"noopener\">@theaitoolfinds</a> "
+       "on Instagram within 7 days and you get your money back."),
+    _q("How much work is it?", "Almost none. Yes, the daily video is automatic: every day Claude prepares a new video for you, on your topic or one from your plan. "
+       "You watch it, ask for a change in plain words if you want one, and upload it to Instagram, TikTok or YouTube. One video takes about 30 minutes to make."),
+    _q("Do I need experience or a special computer?", "No experience. You never open an editor, and Claude does the installing. You need a Mac or Windows computer for the one-time setup. "
+       "After that you can also make videos from the Claude app on your phone. Stuck? Tell Claude what you see, or message @theaitoolfinds and we'll help you."),
+    _q("Are the videos mine? Will they go viral?", "Every video you make is 100% yours: your channel, your clients, your business. Nobody can promise views. "
+       "What you get are the same styles behind our " + VIEWS + " views in our first month (IG)."),
+])
+i = s.index('<div class="faq">') + len('<div class="faq">'); j = s.rindex('</details>', i, s.index('</section>', i)) + len('</details>')
+s = s[:i] + "\n      " + FAQ + s[j:]
+rep('in <b>12 styles tuned to get views.</b>', 'in <b>12 styles tuned to grab attention.</b>')
+# Jan, 2026-11-18: a video takes about 20 minutes (not 30), and the top video is at 814K views now (his Instagram numbers).
+n30 = s.count("~30 min"); assert n30 >= 3, n30
+s = s.replace("~30 min", "~20 min").replace('<b class="g">~30<small> min</small></b>', '<b class="g">~20<small> min</small></b>')
+rep("count(12,30,8350,1150,", "count(12,20,8350,1150,")
+rep("About 30 minutes, including one round of changes", "About 20 minutes, including one round of changes")
+rep("One video takes about 30 minutes to make.", "One video takes about 20 minutes to make.")
+rep("Times are from our run of the coffee video above and are approximate.", "Times are approximate.")
+assert s.count("736K") == 5, s.count("736K"); s = s.replace("736K", "814K")
+assert "30 min" not in s and "about 30" not in s.lower()
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
