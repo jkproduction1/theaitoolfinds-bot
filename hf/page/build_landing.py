@@ -106,6 +106,21 @@ s = s[:i] + s[j:]
 rep('Voiceover <small class="vsm">(ElevenLabs, free plan works)</small>', 'Voiceover')
 rep('<p>Word-synced captions are built in. Want a voiceover too? Drop in an MP3 and every caption syncs to it.</p>',
     '<p>Captions timed to every word are built in. Claude sets up a natural AI voice with you during install, and the captions sync to it.</p>')
+# Jan, 2026-11-18 (comprehension test with 3 simulated visitors): one wording for the same thing everywhere, say what the
+# buyer physically gets, and say plainly that it does not post for them.
+rep('Made with this system: one command, then a round or two of feedback.', 'Made with this system: one typed line, then one round of changes.')
+rep('a complete video system for Claude (an AI app, like ChatGPT). One command installs it, then script, animation, captions and voiceover are handled for you. Instant download.',
+    'files you add to Claude (an AI app, like ChatGPT). Drop one file in and it sets itself up. From then on the script, animation, captions and voiceover are made for you. Instant download.')
+rep('About 30 minutes with one round of feedback.', 'About 30 minutes, including one round of changes you ask for in plain words.')
+rep('adds a voice if you want one and hands you a finished MP4.', 'adds the voice and hands you a finished MP4.')
+rep('A voice from ElevenLabs is optional.', 'The voice uses a free ElevenLabs account, and Claude helps you create it.')
+rep("If it's not for you, message us and you get your money back.", "If it's not for you, message @theaitoolfinds on Instagram within 7 days and you get your money back.")
+rep('<details class="rv"><summary>How long does one video take?',
+    '<details class="rv"><summary>Does it post the videos for me?<i aria-hidden="true"></i></summary><p>No. Every day a new video is made for you. '
+    'You watch it, download it and post it yourself on Instagram, TikTok or YouTube. That takes a minute.</p></details>\n'
+    '      <details class="rv"><summary>Who picks the topics?<i aria-hidden="true"></i></summary><p>You can type any topic. Or let the system plan your account: '
+    'it suggests a niche and 30 topics, and the daily video works through them.</p></details>\n'
+    '      <details class="rv"><summary>How long does one video take?')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
