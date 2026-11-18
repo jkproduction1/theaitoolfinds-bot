@@ -70,6 +70,9 @@ TRUST_FAQ = (
     '      <details class="rv"><summary>What if it\'s not for me?<i aria-hidden="true"></i></summary><p>You have 7 days to try it. If it\'s not for '
     'you, message us and you get your money back.</p></details>\n      ')
 rep('<details class="rv"><summary>How long does one video take?', TRUST_FAQ + '<details class="rv"><summary>How long does one video take?')
+# Jan, 2026-11-18 (funnel simulation): the voice needs your own MP3/ElevenLabs, and Claude Pro must be visible where people decide.
+rep('<b>script, animation, captions, voice.</b>', '<b>script, animation, captions.</b> Add a voice in one step.')
+rep('One-time payment. Works with Claude Pro on Mac or Windows.', 'One-time payment. Runs in Claude Pro ($20/mo, paid to Anthropic) on Mac or Windows.')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
