@@ -13,9 +13,9 @@
  "prompts_title": "Get the prompts",
  "system_title": "Get the system",
  "dm_full": [
-  "Here are your prompts 👇\nEach one makes a great single scene.\nIn the next message: a full video from my automated system (script, scenes, voice and captions, any topic).\nWant that? Tap “Get the system”.",
-  "Sent 🙌\nA prompt makes one scene. My automated system makes the whole video, on any topic. One it made is coming in the next message.\nTap “Get the system” to see it.",
-  "As promised 👇\nThese prompts make one scene each. The full video in the next message came from my automated system: script, voice, captions, any topic.\nWant it? Tap “Get the system”."
+  "Here are your prompts 👇\nEach one makes a great single scene.\nIn the next message: the same topic made with a free prompt vs my automated system, side by side.\nWant the full videos? Tap “Get the system”.",
+  "Sent 🙌\nA prompt makes one scene. My automated system makes the whole video. The next message shows both side by side.\nTap “Get the system” to see it.",
+  "As promised 👇\nThese prompts make one scene each. In the next message you'll see a free prompt next to my automated system: script, voice, captions.\nWant it? Tap “Get the system”."
  ],
  "dm_neutral": [
   "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
@@ -28,8 +28,8 @@
   "Here you go 👇\nPrompts make one scene. My new system builds the entire video: script, captions, MP4.",
   "As promised 👇\nP.S. I built a system that makes the full video from one typed line. No editing."
  ],
- "dm_media_file": "bot/media/dm_bees.mp4",
- "dm_media_url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@928c301efed6787d73ff1aa84920dd53b592bed5/bot/media/dm_bees.mp4",
+ "dm_media_file": "bot/media/dm_versus_bees.mp4",
+ "dm_media_url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@28b6247bd5720c11ca46533307429a972cab485e/bot/media/dm_versus_bees.mp4",
  "click_tag": "dm_click",
  "dm_full_versus_coffee": {
   "texts": [
@@ -39,5 +39,14 @@
   ],
   "file": "bot/media/dm_versus.mp4",
   "url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@7442bf2a896eac1b895c79f048eeef21137f088b/bot/media/dm_versus.mp4"
+ },
+ "dm_full_bees_story": {
+  "texts": [
+   "Here are your prompts 👇\nEach one makes a great single scene.\nIn the next message: a full video from my automated system (script, scenes, voice and captions, any topic).\nWant that? Tap “Get the system”.",
+   "Sent 🙌\nA prompt makes one scene. My automated system makes the whole video, on any topic. One it made is coming in the next message.\nTap “Get the system” to see it.",
+   "As promised 👇\nThese prompts make one scene each. The full video in the next message came from my automated system: script, voice, captions, any topic.\nWant it? Tap “Get the system”."
+  ],
+  "file": "bot/media/dm_bees.mp4",
+  "url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@928c301efed6787d73ff1aa84920dd53b592bed5/bot/media/dm_bees.mp4"
  }
 }
