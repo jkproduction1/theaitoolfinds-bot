@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>loading</title>
+<!-- gta57 r0: "/3d-map the GTA 6 map in real life" (STYLE FRAMES; draw(t) is ready for animation, t = 0..6.33 s).
+     A 3D model of REAL south Florida at golden hour, drawn in code. Coast, islands, lakes, urban areas and roads: Natural Earth 1:10m
+     (public domain), see map3d_data.js. Miami Beach barrier island and the two causeways are added by hand at their real positions.
+     Labels put GTA VI's place names (as plain text) over their real-life counterparts:
+       Vice City ~ Miami, Leonida Keys ~ Florida Keys, Grassrivers ~ Everglades.
+     Names as published on Rockstar's GTA VI site (reported by Game Informer, 2025-05-06: Vice City, Leonida Keys, Grassrivers,
+     Port Gellhorn, Ambrosia, Mount Kalaga National Park). Our own rendering and label design: no Rockstar map art, logo, font or character. -->
+<style>
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#000;font-family:Inter,'Helvetica Neue',Arial,sans-serif}
+canvas{position:absolute;inset:0;width:1080px;height:1920px;display:block}
+#grade{position:absolute;inset:0;pointer-events:none;
+ background:radial-gradient(120% 85% at 50% 46%,rgba(0,0,0,0) 55%,rgba(30,8,20,.42) 100%),
+            linear-gradient(180deg,rgba(255,150,90,.10) 0%,rgba(255,170,120,0) 34%,rgba(20,30,70,.10) 100%)}
+.lb{position:absolute;left:0;top:0;opacity:0;will-change:transform;color:#fff;text-align:center;white-space:nowrap;transform-origin:50% 100%}
+.lb b{display:block;font-weight:800;font-size:76px;letter-spacing:-.02em;line-height:1;text-shadow:0 2px 0 rgba(40,14,10,.35),0 6px 28px rgba(40,14,10,.55),0 0 60px rgba(40,14,10,.35)}
+.lb i{display:block;font-style:normal;font-weight:600;font-size:36px;letter-spacing:.01em;margin-top:12px;color:#fff3e4;text-shadow:0 2px 14px rgba(40,14,10,.7),0 0 30px rgba(40,14,10,.4)}
+.lb u{display:block;text-decoration:none;width:3px;margin:18px auto 0;background:linear-gradient(180deg,#fff,rgba(255,255,255,.75));box-shadow:0 0 14px rgba(40,14,10,.5);border-radius:2px}
+.lb s{display:block;text-decoration:none;width:20px;height:20px;margin:-2px auto 0;border-radius:50%;background:#fff;box-shadow:0 0 0 7px rgba(255,255,255,.28),0 4px 16px rgba(40,14,10,.6)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="grade"></div>
+  <div class="lb" id="l0"><b>Vice City</b><i>Miami, Florida</i><u></u><s></s></div>
+  <div class="lb" id="l1"><b>Grassrivers</b><i>The Everglades, Florida</i><u></u><s></s></div>
+  <div class="lb" id="l2"><b>Leonida Keys</b><i>The Florida Keys</i><u></u><s></s></div>
+</div>
+<script src="map3d_data.js"></script>
+<script type="module">
+import * as THREE from './three.module.js';
+const D = window.SFL, W = 1080, H = 1920, DUR = 6.33;
+// ---------- helpers
+function rng(seed){ let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const R = rng(57), cl = x => x < 0 ? 0 : x > 1 ? 1 : x, lerp = (a, b, k) => a + (b - a) * k;
+const eio = x => { x = cl(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const eo = x => 1 - Math.pow(1 - cl(x), 3);
+// world: 1 degree of latitude = 100 units; x east, z south
+const LON0 = -80.9, LAT0 = 25.6, CO = Math.cos(25.6 * Math.PI / 180), S = 100;
+const wx = lon => (lon - LON0) * CO * S, wz = lat => -(lat - LAT0) * S;
+// texture frame (lon/lat box painted into the land + water textures)
+const TB = { lo0: -82.75, lo1: -79.75, la0: 24.25, la1: 27.45 };
+const inPoly = (p, x, y) => { let c = false; for (let i = 0, j = p.length - 1; i < p.length; j = i++) { const xi = p[i][0], yi = p[i][1], xj = p[j][0], yj = p[j][1]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
+// hand-added real features Natural Earth 10m leaves out
+const MIAMI_BEACH = [[-80.1335,25.762],[-80.1255,25.764],[-80.1205,25.80],[-80.1185,25.85],[-80.1195,25.90],[-80.1215,25.935],[-80.1275,25.935],[-80.1285,25.90],[-80.131,25.85],[-80.1385,25.80],[-80.1425,25.775]];
+const LAND = D.land.filter(p => p.o[0][0] > -82.9 && !(p.o[0][0] > -79.5)).concat([{ o: MIAMI_BEACH, h: [] }]);
+const onLand = (lo, la) => { for (const p of LAND) { if (inPoly(p.o, lo, la)) { for (const h of p.h) if (inPoly(h, lo, la)) return false; return true; } } return false; };
+const inLake = (lo, la) => D.lakes.some(l => inPoly(l, lo, la));
+
+// ---------- renderer / scene
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(W, H, false); renderer.setPixelRatio(1);
+renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+const HAZE = new THREE.Color('#f3a57c');
+scene.fog = new THREE.FogExp2(HAZE, 0.0034);
+const cam = new THREE.PerspectiveCamera(34, W / H, 0.5, 2400);
+
+// sky dome: warm haze at the horizon, soft blue above, a glow where the sun sits
+(function () {
+  const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 1024);
+  gr.addColorStop(0, '#3f6fb4'); gr.addColorStop(.30, '#7fa6d8'); gr.addColorStop(.40, '#c9b9cf'); gr.addColorStop(.455, '#f6b79a'); gr.addColorStop(.492, '#ffb07c'); gr.addColorStop(.5, '#f3a57c'); gr.addColorStop(1, '#f3a57c');
+  g.fillStyle = gr; g.fillRect(0, 0, 2048, 1024);
+  // sun glow at azimuth u=0.5 (dome is rotated so that this faces the sun)
+  const sg = g.createRadialGradient(1024, 478, 0, 1024, 478, 520); sg.addColorStop(0, 'rgba(255,246,214,1)'); sg.addColorStop(.06, 'rgba(255,226,170,.95)'); sg.addColorStop(.25, 'rgba(255,170,110,.55)'); sg.addColorStop(1, 'rgba(255,150,110,0)');
+  g.fillStyle = sg; g.fillRect(0, 0, 2048, 1024);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+  const m = new THREE.Mesh(new THREE.SphereGeometry(2000, 48, 24), new THREE.MeshBasicMaterial({ map: t, side: THREE.BackSide, fog: false, depthWrite: false }));
+  m.name = 'sky'; scene.add(m);
+})();
+// sun: low in the west-south-west
+const SUN_AZ = Math.atan2(0.42, -1), SUN_EL = 15 * Math.PI / 180;       // direction TO the sun in (x, z): mostly -x (west), a little +z (south)
+const sunDir = new THREE.Vector3(-Math.cos(SUN_EL) * Math.cos(Math.atan2(0.42, 1)), Math.sin(SUN_EL), Math.cos(SUN_EL) * Math.sin(Math.atan2(0.42, 1))).normalize();
+scene.getObjectByName('sky').rotation.y = Math.atan2(sunDir.x, sunDir.z) + Math.PI / 2 + Math.PI; // u=0.5 of the dome towards the sun
+const sun = new THREE.DirectionalLight('#ffc48a', 3.4); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.06; sun.shadow.radius = 5;
+scene.add(sun, sun.target);
+scene.add(new THREE.HemisphereLight('#bcd3ff', '#7a5a48', 0.95));
+const fill = new THREE.DirectionalLight('#9fc0ff', 0.55); fill.position.set(60, 80, -40); scene.add(fill);
+
+// ---------- textures painted in lon/lat space
+const TW = 4096, TH = 4096; const T0 = performance.now(); const lap = n => console.log("lap", n, Math.round(performance.now() - T0));
+const tx = lo => (lo - TB.lo0) / (TB.lo1 - TB.lo0) * TW, ty = la => (TB.la1 - la) / (TB.la1 - TB.la0) * TH;
+function landPath(g, sx = 1) { g.beginPath(); for (const p of LAND) { p.o.forEach(([lo, la], i) => i ? g.lineTo(tx(lo) * sx, ty(la) * sx) : g.moveTo(tx(lo) * sx, ty(la) * sx)); g.closePath(); for (const h of p.h) { h.forEach(([lo, la], i) => i ? g.lineTo(tx(lo) * sx, ty(la) * sx) : g.moveTo(tx(lo) * sx, ty(la) * sx)); g.closePath(); } } }
+const landTex = (function () {
+  const c = document.createElement('canvas'); c.width = TW; c.height = TH; const g = c.getContext('2d'), r = rng(11);
+  g.fillStyle = '#c9b383'; g.fillRect(0, 0, TW, TH);                      // anything outside the clip reads as sand
+  g.save(); landPath(g); g.clip('evenodd');
+  // base: pasture / pine flatwoods north, greener south
+  const b = g.createLinearGradient(0, 0, 0, TH); b.addColorStop(0, '#7c9344'); b.addColorStop(.45, '#6f9a42'); b.addColorStop(1, '#5c9a48'); g.fillStyle = b; g.fillRect(0, 0, TW, TH);
+  const blob = (lo, la, rx, ry, col, a, rot = 0) => { g.save(); g.translate(tx(lo), ty(la)); g.rotate(rot); const gr = g.createRadialGradient(0, 0, 0, 0, 0, 1); gr.addColorStop(0, col); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.scale(rx, ry); g.globalAlpha = a; g.fillStyle = gr; g.beginPath(); g.arc(0, 0, 1, 0, 7); g.fill(); g.restore(); };
+  // patchy flatwoods / pasture mottling
+  for (let i = 0; i < 2600; i++) blob(lerp(TB.lo0, TB.lo1, r()), lerp(25.9, TB.la1, r()), 30 + 90 * r(), 24 + 60 * r(), r() < .5 ? '#8aa24a' : '#56813a', .22, r() * 3);
+  // Everglades: wide golden-green sawgrass river
+  [[-80.72, 25.92, 620, 900], [-80.78, 25.52, 560, 700], [-80.62, 26.28, 520, 560], [-80.92, 25.36, 520, 420], [-80.55, 25.72, 330, 560]].forEach(([lo, la, rx, ry]) => blob(lo, la, rx, ry, '#b7b45a', .95));
+  [[-80.75, 25.75, 700, 1000]].forEach(([lo, la, rx, ry]) => blob(lo, la, rx, ry, '#c2bb62', .55));
+  // Big Cypress: darker cypress green to the west
+  [[-81.22, 26.02, 520, 560], [-81.3, 25.78, 430, 330], [-81.05, 26.25, 380, 330]].forEach(([lo, la, rx, ry]) => blob(lo, la, rx, ry, '#3f7a3c', .9));
+  // sloughs: long darker water streaks flowing south-south-west through the sawgrass
+  g.lineCap = 'round';
+  for (let i = 0; i < 900; i++) { const lo = lerp(-81.05, -80.42, r()), la = lerp(25.22, 26.42, r()), L = 60 + 220 * r(), an = 1.75 + (lo + 80.7) * 0.9 + (r() - .5) * .25;
+    g.strokeStyle = r() < .55 ? 'rgba(74,120,92,.55)' : 'rgba(214,206,120,.5)'; g.lineWidth = 3 + 7 * r(); g.beginPath(); const x = tx(lo), y = ty(la); g.moveTo(x, y); g.quadraticCurveTo(x + Math.cos(an) * L * .5 + 14 * (r() - .5), y + Math.sin(an) * L * .5, x + Math.cos(an) * L, y + Math.sin(an) * L); g.stroke(); }
+  // tree islands: dark teardrops aligned with the flow
+  for (let i = 0; i < 1500; i++) { const lo = lerp(-81.0, -80.45, r()), la = lerp(25.25, 26.4, r()), an = 1.75 + (lo + 80.7) * 0.9; g.save(); g.translate(tx(lo), ty(la)); g.rotate(an); g.fillStyle = r() < .5 ? 'rgba(38,84,46,.85)' : 'rgba(52,100,52,.8)'; g.beginPath(); g.ellipse(0, 0, 7 + 16 * r(), 3 + 5 * r(), 0, 0, 7); g.fill(); g.restore(); }
+  // Everglades Agricultural Area south of Lake Okeechobee: patchwork fields
+  for (let i = 0; i < 900; i++) { const lo = lerp(-81.0, -80.38, r()), la = lerp(26.36, 26.92, r()), w = 26 + 34 * r(), h = 20 + 30 * r(); g.fillStyle = ['rgba(120,92,58,.85)', 'rgba(150,170,84,.85)', 'rgba(98,140,66,.85)', 'rgba(170,150,96,.8)', 'rgba(84,120,60,.85)'][Math.floor(r() * 5)]; g.fillRect(Math.round(tx(lo) / 30) * 30, Math.round(ty(la) / 26) * 26, w, h); }
+  // citrus / farms inland further north
+  for (let i = 0; i < 700; i++) { const lo = lerp(-82.2, -80.6, r()), la = lerp(26.95, 27.45, r()); g.fillStyle = ['rgba(128,150,70,.6)', 'rgba(150,128,84,.55)', 'rgba(96,132,62,.6)'][Math.floor(r() * 3)]; g.fillRect(Math.round(tx(lo) / 34) * 34, Math.round(ty(la) / 30) * 30, 24 + 30 * r(), 20 + 26 * r()); }
+  // urban areas (real footprints): warm concrete with a fine street grid
+  g.save(); g.beginPath(); D.urban.forEach(u => { u.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.closePath(); }); g.clip();
+  g.fillStyle = '#cdb99c'; g.fillRect(0, 0, TW, TH);
+  for (let i = 0; i < 5000; i++) { g.fillStyle = ['rgba(226,208,180,.7)', 'rgba(176,160,138,.6)', 'rgba(120,150,96,.55)', 'rgba(236,224,204,.6)'][Math.floor(r() * 4)]; g.fillRect(r() * TW, r() * TH, 8 + 22 * r(), 8 + 22 * r()); }
+  g.strokeStyle = 'rgba(96,84,74,.42)'; g.lineWidth = 1.6; g.beginPath(); for (let x = 0; x < TW; x += 14) { g.moveTo(x, 0); g.lineTo(x, TH); } for (let y = 0; y < TH; y += 14) { g.moveTo(0, y); g.lineTo(TW, y); } g.stroke();
+  g.restore();
+  // real roads
+  g.lineJoin = 'round'; D.roads.forEach(rd => { g.strokeStyle = rd.t === 'Major Highway' || rd.t === 'Beltway' ? 'rgba(244,228,196,.95)' : 'rgba(236,216,180,.8)'; g.lineWidth = rd.t === 'Major Highway' ? 5 : 3.4; g.beginPath(); rd.c.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.stroke(); });
+  // lakes
+  g.fillStyle = '#3f86a8'; D.lakes.forEach(l => { g.beginPath(); l.forEach(([lo, la], i) => i ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la))); g.closePath(); g.fill(); g.strokeStyle = 'rgba(210,196,150,.8)'; g.lineWidth = 5; g.stroke(); });
+  // mangrove fringe on the south-west and Florida Bay coast, sand on the Atlantic side
+  g.lineWidth = 46; g.strokeStyle = 'rgba(40,96,58,.85)'; LAND.forEach(p => { g.beginPath(); let on = false; p.o.forEach(([lo, la]) => { const m = (lo < -80.42 && la < 26.0) || (lo < -81.6 && la < 26.9); if (m) { on ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la)); on = true; } else on = false; }); g.stroke(); });
+  g.lineWidth = 16; g.strokeStyle = 'rgba(240,222,176,.95)'; LAND.forEach(p => { g.beginPath(); let on = false; p.o.forEach(([lo, la]) => { const m = !((lo < -80.42 && la < 26.0) || (lo < -81.6 && la < 26.9)); if (m) { on ? g.lineTo(tx(lo), ty(la)) : g.moveTo(tx(lo), ty(la)); on = true; } else on = false; }); g.stroke(); });
+  // grain
+  for (let i = 0; i < 90000; i++) { g.fillStyle = r() < .5 ? 'rgba(255,240,200,.07)' : 'rgba(20,40,20,.08)'; g.fillRect(r() * TW, r() * TH, 2 + 3 * r(), 2 + 3 * r()); }
+  g.restore();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; t.generateMipmaps = true; return t;
+})();
+const WTW = 2048; lap("land");
+const waterTex = (function () {
+  const c = document.createElement('canvas'); c.width = WTW; c.height = WTW; const g = c.getContext('2d'), k = WTW / TW, r = rng(5);
+  // deep water: Gulf Stream blue on the Atlantic side, greener Gulf to the west
+  const b = g.createLinearGradient(0, 0, WTW, 0); b.addColorStop(0, '#16628c'); b.addColorStop(.55, '#1a6f9a'); b.addColorStop(1, '#0e4f8c'); g.fillStyle = b; g.fillRect(0, 0, WTW, WTW);
+  // shallow shelves: soft turquoise halo around all land
+  const halo = (blur, col, n) => { g.save(); g.shadowColor = col; g.shadowBlur = blur; g.fillStyle = col; for (let i = 0; i < n; i++) { landPath(g, k); g.fill('evenodd'); } g.restore(); };
+  halo(170, 'rgba(36,170,186,.55)', 2); halo(70, 'rgba(70,214,206,.8)', 2); halo(22, 'rgba(150,240,222,.9)', 1);
+  // Florida Bay and the Gulf side of the Keys: wide bright shallows; the reef tract on the Atlantic side
+  const sh = (pts, col, blur) => { g.save(); g.filter = `blur(${blur}px)`; g.fillStyle = col; g.beginPath(); pts.forEach(([lo, la], i) => i ? g.lineTo(tx(lo) * k, ty(la) * k) : g.moveTo(tx(lo) * k, ty(la) * k)); g.closePath(); g.fill(); g.restore(); };
+  sh([[-81.12, 25.12], [-80.45, 25.2], [-80.36, 25.08], [-80.62, 24.9], [-81.05, 24.72], [-81.45, 24.72], [-81.95, 24.62], [-82.2, 24.75], [-81.9, 24.98], [-81.3, 25.05]], 'rgba(86,220,206,.9)', 46);
+  sh([[-80.22, 25.6], [-80.16, 25.72], [-80.14, 25.92], [-80.2, 25.9], [-80.3, 25.6], [-80.36, 25.36], [-80.3, 25.3]], 'rgba(96,226,210,.9)', 20);
+  sh([[-80.2, 25.36], [-80.36, 25.02], [-80.75, 24.74], [-81.4, 24.52], [-82.0, 24.46], [-82.0, 24.52], [-81.4, 24.6], [-80.72, 24.84], [-80.32, 25.1], [-80.14, 25.4]], 'rgba(60,196,200,.7)', 30);
+  // faint banks / channels
+  g.globalAlpha = .35; for (let i = 0; i < 260; i++) { const lo = lerp(-81.9, -80.4, r()), la = lerp(24.62, 25.15, r()); g.strokeStyle = r() < .5 ? '#2a8fa6' : '#b9f3e0'; g.lineWidth = 2 + 4 * r(); g.beginPath(); const x = tx(lo) * k, y = ty(la) * k, a = r() * 6.3; g.moveTo(x, y); g.quadraticCurveTo(x + 40 * Math.cos(a), y + 40 * Math.sin(a), x + 80 * Math.cos(a + .6), y + 80 * Math.sin(a + .6)); g.stroke(); } g.globalAlpha = 1;
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+})();
+const rippleTex = (function () { const n = 512, c = document.createElement('canvas'); c.width = c.height = n; const g = c.getContext('2d'), r = rng(3); g.fillStyle = '#808080'; g.fillRect(0, 0, n, n);
+  for (let i = 0; i < 2600; i++) { const x = r() * n, y = r() * n, w = 8 + 34 * r(), v = Math.floor(90 + 80 * r()); g.strokeStyle = `rgba(${v},${v},${v},.5)`; g.lineWidth = 1 + 2 * r(); g.beginPath(); for (const ox of [-n, 0, n]) for (const oy of [-n, 0, n]) { g.moveTo(x + ox, y + oy); g.quadraticCurveTo(x + ox + w * .5, y + oy + 3 * (r() - .5), x + ox + w, y + oy); } g.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(90, 90); return t; })();
+
+lap('water');
+// ---------- geometry
+const X0 = wx(TB.lo0), X1 = wx(TB.lo1), Z0 = wz(TB.la1), Z1 = wz(TB.la0);
+// water plane (texture frame) + a big dark-blue sea beyond it, hidden by the haze
+const sea = new THREE.Mesh(new THREE.PlaneGeometry(6000, 6000), new THREE.MeshStandardMaterial({ color: '#155f8c', roughness: .3, metalness: .15, bumpMap: rippleTex, bumpScale: .5 }));
+sea.rotation.x = -Math.PI / 2; sea.position.y = -0.06; sea.receiveShadow = true; scene.add(sea);
+const water = new THREE.Mesh(new THREE.PlaneGeometry(X1 - X0, Z1 - Z0, 1, 1), new THREE.MeshStandardMaterial({ map: waterTex, roughness: .22, metalness: .12, bumpMap: rippleTex, bumpScale: .45 }));
+water.rotation.x = -Math.PI / 2; water.position.set((X0 + X1) / 2, 0, (Z0 + Z1) / 2); water.receiveShadow = true; scene.add(water);
+rippleTex.repeat.set(70, 70);
+// land slab: real outlines extruded, top face mapped to the painted texture
+const LANDH = 0.42;
+(function () {
+  const shapes = LAND.map(p => { const s = new THREE.Shape(p.o.map(([lo, la]) => new THREE.Vector2(wx(lo), -wz(la)))); p.h.forEach(h => s.holes.push(new THREE.Path(h.map(([lo, la]) => new THREE.Vector2(wx(lo), -wz(la)))))); return s; });
+  const geo = new THREE.ExtrudeGeometry(shapes, { depth: LANDH, bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.1, bevelSegments: 2, curveSegments: 1 });
+  const pos = geo.attributes.position, uv = geo.attributes.uv;
+  for (let i = 0; i < pos.count; i++) uv.setXY(i, (pos.getX(i) - X0) / (X1 - X0), 1 - (-pos.getY(i) - Z0) / (Z1 - Z0));
+  geo.rotateX(-Math.PI / 2);
+  const top = new THREE.MeshStandardMaterial({ map: landTex, roughness: .95, metalness: 0 });
+  const side = new THREE.MeshStandardMaterial({ color: '#e6cf9c', roughness: 1 });
+  const m = new THREE.Mesh(geo, [top, side]); m.castShadow = true; m.receiveShadow = true; scene.add(m);
+})();
+const TOP = LANDH + 0.1; lap('slab');
+// trees: tree islands, cypress, mangroves, the Keys (instanced, long shadows)
+(function () {
+  const r = rng(21), pts = [];
+  const tryAdd = (lo, la, s) => { if (onLand(lo, la) && !inLake(lo, la)) pts.push([lo, la, s]); };
+  for (let i = 0; i < 9000; i++) tryAdd(lerp(-81.05, -80.42, r()), lerp(25.2, 26.42, r()), .10 + .16 * r());           // tree islands
+  for (let i = 0; i < 9000; i++) tryAdd(lerp(-81.75, -80.95, r()), lerp(25.55, 26.5, r()), .12 + .18 * r());           // Big Cypress
+  for (let i = 0; i < 9000; i++) tryAdd(lerp(-81.4, -80.38, r()), lerp(25.1, 25.42, r()), .12 + .16 * r());            // mangrove coast
+  for (let i = 0; i < 26000; i++) tryAdd(lerp(-81.85, -80.3, r()), lerp(24.52, 25.3, r()), .09 + .12 * r());           // the Keys
+  for (let i = 0; i < 9000; i++) tryAdd(lerp(-82.3, -80.0, r()), lerp(26.5, 27.45, r()), .12 + .2 * r());              // flatwoods north
+  const geo = new THREE.IcosahedronGeometry(1, 1); const mat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 1, flatShading: true });
+  const im = new THREE.InstancedMesh(geo, mat, pts.length); const o = new THREE.Object3D(), col = new THREE.Color();
+  pts.forEach(([lo, la, s], i) => { o.position.set(wx(lo), TOP + s * .55, wz(la)); o.scale.set(s * (1 + .6 * r()), s * (.8 + .5 * r()), s * (1 + .6 * r())); o.rotation.y = r() * 6.3; o.updateMatrix(); im.setMatrixAt(i, o.matrix); col.setHSL(.29 + .07 * r(), .5 + .2 * r(), .2 + .14 * r()); im.setColorAt(i, col); });
+  im.castShadow = true; im.receiveShadow = true; scene.add(im);
+})();
+lap('trees');
+// buildings: real urban footprints; tall where the real skylines are
+(function () {
+  const r = rng(33), cores = [[-80.191, 25.772, 2.7, .035], [-80.193, 25.758, 2.3, .022], [-80.131, 25.80, 1.25, .028], [-80.122, 25.87, .95, .03], [-80.14, 26.12, 1.4, .03], [-80.055, 26.712, 1.1, .03], [-80.27, 25.75, .5, .04], [-80.19, 25.81, 1.2, .03]];
+  const pts = [];
+  const hAt = (lo, la) => { let h = 0; for (const [cx, cy, hh, sg] of cores) { const d = Math.hypot((lo - cx) * CO, la - cy); h = Math.max(h, hh * Math.exp(-d * d / (2 * sg * sg))); } return h; };
+  const urb = D.urban.filter(u => u[0][0] > -80.6 && u[0][1] < 27.2);
+  for (let i = 0; i < 120000 && pts.length < 15000; i++) { const lo = lerp(-80.5, -80.0, r()), la = lerp(25.4, 26.95, r()); if (!onLand(lo, la)) continue; if (!urb.some(u => inPoly(u, lo, la))) continue; pts.push([lo, la, .07 + .12 * r() + hAt(lo, la) * (.35 + .65 * r())]); }
+  for (let i = 0; i < 2600; i++) { const [cx, cy, hh, sg] = cores[Math.floor(r() * 4)], a = r() * 6.3, d = Math.abs((r() + r() + r() - 1.5)) * sg * 1.5, lo = cx + Math.cos(a) * d / CO, la = cy + Math.sin(a) * d; if (onLand(lo, la)) pts.push([lo, la, .2 + hAt(lo, la) * (.45 + .55 * r())]); }
+  for (let i = 0; i < 420; i++) { const la = lerp(25.765, 25.93, r()), k = (la - 25.762) / (25.935 - 25.762), lo = lerp(-80.129, -80.1235, k) + (r() - .5) * .006; if (onLand(lo, la)) pts.push([lo, la, .25 + .9 * r() * (1 - .5 * k)]); } // Miami Beach hotel strip
+  const geo = new THREE.BoxGeometry(1, 1, 1); geo.translate(0, .5, 0);
+  const mat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: .55, metalness: .1 });
+  const im = new THREE.InstancedMesh(geo, mat, pts.length); const o = new THREE.Object3D(), col = new THREE.Color();
+  pts.forEach(([lo, la, h], i) => { const w = h > .8 ? .13 + .1 * r() : .1 + .12 * r(); o.position.set(wx(lo), TOP - .02, wz(la)); o.scale.set(w, h, w * (.7 + .6 * r())); o.rotation.y = (r() < .8 ? 0 : .5) + .05 * (r() - .5); o.updateMatrix(); im.setMatrixAt(i, o.matrix);
+    const p = r(); if (p < .55) col.set('#fbe9d6'); else if (p < .75) col.set('#f6c9b6'); else if (p < .88) col.set('#bfe3e0'); else col.set('#ffe2a8'); col.multiplyScalar(.82 + .22 * r()); im.setColorAt(i, col); });
+  im.castShadow = true; im.receiveShadow = true; scene.add(im);
+})();
+lap('buildings');
+// Overseas Highway (real US-1 from Natural Earth) + the two Miami Beach causeways: a pale concrete ribbon just above the water
+(function () {
+  const us1 = D.roads.filter(rd => rd.n === '1' && rd.c[0][1] < 25.5 || (rd.n === '1' && rd.c[rd.c.length - 1][1] < 25.5));
+  const strips = us1.map(rd => rd.c).concat([[[-80.186, 25.777], [-80.166, 25.776], [-80.146, 25.772], [-80.135, 25.771]], [[-80.186, 25.812], [-80.16, 25.812], [-80.133, 25.813]], [[-80.19, 25.748], [-80.172, 25.735], [-80.162, 25.705]]]);
+  const mat = new THREE.MeshStandardMaterial({ color: '#f4e6cf', roughness: .8, emissive: '#5a4630', emissiveIntensity: .35 });
+  strips.forEach(c => { const pts = c.map(([lo, la]) => new THREE.Vector3(wx(lo), TOP + .1, wz(la))); if (pts.length < 2) return; const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .2); const g = new THREE.TubeGeometry(curve, Math.max(8, pts.length * 6), .09, 5, false); const m = new THREE.Mesh(g, mat); m.scale.y = .5; m.position.y = (TOP + .1) * .5; m.castShadow = true; scene.add(m); });
+})();
+
+// ---------- camera path: Miami -> across the Everglades -> the Keys
+const P = (lo, la, h) => new THREE.Vector3(wx(lo), h, wz(la));
+const KEYS = [
+  { t: 0.0, p: P(-79.985, 25.905, 7.6), q: P(-80.20, 25.765, 0.6) },
+  { t: 1.2, p: P(-79.975, 25.90, 8.2), q: P(-80.215, 25.76, 0.6) },
+  { t: 3.2, p: P(-80.27, 26.30, 30), q: P(-80.82, 25.50, 0) },
+  { t: 5.2, p: P(-80.22, 25.36, 13.5), q: P(-80.98, 24.80, 0) },
+  { t: 6.33, p: P(-80.26, 25.33, 12.6), q: P(-81.04, 24.775, 0) },
+];
+function camAt(t) { t = Math.max(0, Math.min(DUR, t)); let i = 0; while (i < KEYS.length - 2 && t > KEYS[i + 1].t) i++; const a = KEYS[i], b = KEYS[i + 1], k = eio((t - a.t) / (b.t - a.t)); return { p: a.p.clone().lerp(b.p, k), q: a.q.clone().lerp(b.q, k) }; }
+const LABELS = [
+  { el: document.getElementById('l0'), at: P(-80.191, 25.772, 2.9), on: 0.15, off: 2.25, len: 250 },
+  { el: document.getElementById('l1'), at: P(-80.80, 25.70, TOP), on: 2.45, off: 4.35, len: 300 },
+  { el: document.getElementById('l2'), at: P(-80.83, 24.86, TOP + .2), on: 4.75, off: 9, len: 300 },
+];
+const v = new THREE.Vector3();
+function draw(t) {
+  const c = camAt(t); cam.position.copy(c.p); cam.lookAt(c.q); cam.updateMatrixWorld(); cam.updateProjectionMatrix();
+  // sun + shadow frustum follow the look-at point
+  sun.target.position.copy(c.q); sun.position.copy(c.q).addScaledVector(sunDir, 260);
+  const sc = sun.shadow.camera, ext = 20 + cam.position.y * 3.2; sc.left = -ext; sc.right = ext; sc.top = ext; sc.bottom = -ext; sc.near = 20; sc.far = 520; sc.updateProjectionMatrix();
+  scene.getObjectByName('sky').position.copy(cam.position);
+  rippleTex.offset.set(t * .012, t * .02);
+  renderer.render(scene, cam);
+  LABELS.forEach(L => { const a = eo((t - L.on) / .45) * (1 - eo((t - L.off) / .35)); v.copy(L.at).project(cam); const x = (v.x * .5 + .5) * W, y = (-v.y * .5 + .5) * H; const el = L.el; el.querySelector('u').style.height = (L.len * eo((t - L.on - .1) / .5)) + 'px';
+    el.style.opacity = v.z < 1 ? a : 0; const w = el.offsetWidth, h = el.offsetHeight; el.style.transform = `translate(${x - w / 2}px,${y - h + 10}px) scale(${.92 + .08 * a})`; });
+}
+lap('pre-draw'); window.draw = draw; window.DURATION = DUR;
+const q = new URLSearchParams(location.search); draw(parseFloat(q.get('t') || '0.6')); lap('first draw');
+document.fonts.ready.then(() => { draw(parseFloat(q.get('t') || '0.6')); document.title = 'ok'; });
+</script>
+</body>
+</html>

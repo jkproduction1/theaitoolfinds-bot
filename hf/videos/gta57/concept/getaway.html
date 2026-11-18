@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>getaway</title>
+<!-- gta57 r1: /route-map a GTA 6 getaway from Vice City to the Keys.
+  Our own golden-hour Florida look (no Rockstar artwork, logo, font, HUD, character or brand car).
+  Geography is the REAL route, compressed and simplified (not to scale): Miami Beach -> MacArthur Causeway over Biscayne Bay ->
+  downtown Miami -> south along US-1 -> Overseas Highway bridges between the Florida Keys.
+  Game names are plain text labels on their real-life counterparts (Vice City = Miami, Leonida Keys = Florida Keys). -->
+<style>
+  body{margin:0;background:#000;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#f4b98a;font-family:"Inter",system-ui,Arial,sans-serif}
+  canvas{position:absolute;inset:0;display:block;filter:saturate(1.16) contrast(1.06)}
+  #grade{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 85% at 50% 45%,rgba(0,0,0,0) 55%,rgba(40,10,30,.38) 100%),linear-gradient(180deg,rgba(255,150,90,.10),rgba(255,120,160,.05) 45%,rgba(20,40,90,.10))}
+  #ov{position:absolute;inset:0;pointer-events:none}
+  .pin{position:absolute;transform:translate(-50%,-100%);text-align:center;white-space:nowrap;opacity:0}
+  .pin .card{display:inline-block;background:rgba(20,16,30,.86);border-radius:22px;padding:12px 26px 14px;box-shadow:0 14px 40px rgba(30,10,20,.45);border:2px solid rgba(255,255,255,.16)}
+  .pin b{display:block;font-weight:800;font-size:48px;letter-spacing:-.02em;color:#fff;line-height:1.05}
+  .pin span{display:block;font-weight:600;font-size:34px;color:#ffd9b0;margin-top:2px}
+  .pin i{display:block;width:4px;height:54px;margin:0 auto;background:linear-gradient(#fff,rgba(255,255,255,.2))}
+  .pin.down i{background:linear-gradient(rgba(255,255,255,.2),#fff);height:40px}
+  .pin.down u{margin:0 0 -2px 14%;transform:translateX(-50%)}
+  .pin.down i{margin:0 0 0 14%;transform:translateX(-50%)}
+  .pin u{display:block;width:22px;height:22px;border-radius:50%;margin:-2px auto 0;background:#ff7a1a;box-shadow:0 0 0 7px rgba(255,122,26,.3)}
+  #wanted{position:absolute;left:50%;top:270px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(20,16,30,.86);border-radius:999px;padding:14px 30px;border:2px solid rgba(255,255,255,.16);box-shadow:0 14px 40px rgba(30,10,20,.4)}
+  #wanted em{font-style:normal;font-weight:800;font-size:34px;letter-spacing:.08em;color:#ffd9b0;margin-right:8px}
+  #wanted svg{width:50px;height:50px}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.js","three/addons/":"./"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="grade"></div>
+  <div id="ov">
+    <div id="wanted"><em>WANTED</em></div>
+    <div class="pin" id="pA"><div class="card"><b>Vice City</b><span>Miami Beach</span></div><i></i><u></u></div>
+    <div class="pin down" id="pB"><u></u><i></i><div class="card"><b>Leonida Keys</b><span>Florida Keys</span></div></div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+
+window.DUR = 6.33;
+const W = 1080, H = 1920, stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.92;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+stage.insertBefore(renderer.domElement, stage.firstChild);
+const scene = new THREE.Scene();
+const HAZE = new THREE.Color('#f7b9a0');
+scene.fog = new THREE.Fog(HAZE, 170, 760);
+const cam = new THREE.PerspectiveCamera(42, W / H, 0.5, 3000);
+
+// ---------- helpers ----------
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const cl = x => x < 0 ? 0 : x > 1 ? 1 : x, ramp = (t, a, b) => cl((t - a) / (b - a));
+const sm = x => x * x * (3 - 2 * x), io = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const lerp = (a, b, k) => a + (b - a) * k;
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .85, metalness: 0, flatShading: true }, o));
+
+// ---------- sky dome (golden hour) ----------
+const SUN = V(-0.8, 0.13, 0.58).normalize();   // November sunset in south Florida is west-south-west
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(1500, 48, 24), new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, fog: false, uniforms: { sun: { value: SUN }, hz: { value: HAZE } },
+  vertexShader: 'varying vec3 d;void main(){d=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader: `varying vec3 d;uniform vec3 sun,hz;
+    void main(){float h=clamp(d.y,-.2,1.);
+      vec3 hor=hz,mid=vec3(.92,.40,.40),top=vec3(.20,.24,.62);
+      vec3 c=mix(hor,mid,smoothstep(0.,.10,h));c=mix(c,top,smoothstep(.07,.42,h));
+      float s=max(dot(normalize(d),sun),0.);
+      c+=(vec3(1.,.5,.2)*pow(s,6.)*.35+vec3(1.,.75,.45)*pow(s,120.)*.9+vec3(1.,.9,.7)*smoothstep(.9990,.9996,s)*4.)*smoothstep(-.01,.03,d.y);
+      // soft cloud bands near the horizon
+      float b=sin(d.x*9.+d.z*4.)*.5+.5;c+=vec3(1.,.75,.6)*smoothstep(.02,.1,h)*(1.-smoothstep(.1,.24,h))*b*.10;
+      gl_FragColor=vec4(c,1.);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+    }` })));
+
+// ---------- light ----------
+scene.add(new THREE.HemisphereLight('#ffe1d2', '#4a8a7a', 1.15));
+const sunL = new THREE.DirectionalLight('#ffcf9e', 2.5);
+sunL.position.copy(SUN.clone().multiplyScalar(260).add(V(-30, 0, -10))); sunL.target.position.set(-30, 0, -10); scene.add(sunL, sunL.target);
+sunL.castShadow = true; sunL.shadow.mapSize.set(4096, 4096);
+const sc = sunL.shadow.camera; sc.left = -150; sc.right = 150; sc.top = 150; sc.bottom = -150; sc.near = 10; sc.far = 600; sunL.shadow.bias = -0.0006; sunL.shadow.normalBias = 0.4;
+const fill = new THREE.DirectionalLight('#9fc8ff', 0.5); fill.position.set(80, 60, 60); scene.add(fill);
+
+// ---------- water ----------
+const water = new THREE.Mesh(new THREE.PlaneGeometry(3000, 3000, 1, 1), new THREE.ShaderMaterial({
+  uniforms: { t: { value: 0 }, sun: { value: SUN }, fogC: { value: HAZE }, camP: { value: V(0, 0, 0) } },
+  vertexShader: 'varying vec3 wp;void main(){vec4 w=modelMatrix*vec4(position,1.);wp=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}',
+  fragmentShader: `varying vec3 wp;uniform float t;uniform vec3 sun,fogC,camP;
+    float n(vec2 p){return sin(dot(p,vec2(.8,.6)))+sin(dot(p,vec2(-.5,.86))*1.3)+sin(dot(p,vec2(.28,-.96))*.7);}
+    void main(){vec2 p=wp.xz;
+      float w=(n(p*.55+vec2(t*.9,t*.5))*.45+n(p*1.9-vec2(t*1.3,t*.7))*.22+n(p*.11+vec2(t*.2,-t*.25))*.5)*.4;
+      vec3 deep=vec3(.0,.26,.44),shal=vec3(.02,.70,.66);
+      float open=smoothstep(40.,170.,p.x+p.y*.35+30.);            // Atlantic side gets deeper
+      vec3 c=mix(shal,deep,open*.75+ .12);
+      c+=w*.035;
+      vec3 v=normalize(camP-wp);vec3 nrm=normalize(vec3(w*.10,1.,w*.08));vec3 r=reflect(-v,nrm);
+      float g=pow(max(dot(r,sun),0.),60.);c+=vec3(1.,.70,.40)*g*1.6;                    // sun path
+      float fres=pow(1.-max(dot(v,vec3(0.,1.,0.)),0.),3.);c=mix(c,fogC,fres*.26);  // sky reflection at low angles
+      float d=length(camP-wp);c=mix(c,fogC,smoothstep(170.,760.,d));
+      gl_FragColor=vec4(c,1.);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+    }` }));
+water.rotation.x = -Math.PI / 2; scene.add(water);
+
+// shallow halos (turquoise) around land
+const haloTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'); const r = g.createRadialGradient(128, 128, 20, 128, 128, 128); r.addColorStop(0, 'rgba(150,255,235,.75)'); r.addColorStop(.55, 'rgba(120,240,225,.35)'); r.addColorStop(1, 'rgba(120,240,225,0)'); g.fillStyle = r; g.fillRect(0, 0, 256, 256); return new THREE.CanvasTexture(c); })();
+const haloM = new THREE.MeshBasicMaterial({ map: haloTex, transparent: true, depthWrite: false, fog: true });
+function halo(x, z, rx, rz, rot = 0) { const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), haloM); m.rotation.x = -Math.PI / 2; m.rotation.z = rot; m.scale.set(rx * 2, rz * 2, 1); m.position.set(x, 0.03 + rnd() * .02, z); m.renderOrder = 1; scene.add(m); }
+
+const M4x = new THREE.Matrix4(), Qx = new THREE.Quaternion();
+// ---------- land ----------
+const SAND = std('#f0d7a6'), GRASS = std('#86c25c'), MARSH = std('#58a56e'), CITYG = std('#c9bfae');
+function blob(pts, h, mat, y = 0, bevel = 0) {
+  const s = new THREE.Shape(); pts.forEach((p, i) => i ? s.lineTo(p[0], -p[1]) : s.moveTo(p[0], -p[1]));
+  const g = new THREE.ExtrudeGeometry(s, { depth: h, bevelEnabled: bevel > 0, bevelSize: bevel, bevelThickness: bevel, bevelSegments: 2, curveSegments: 4 });
+  g.rotateX(-Math.PI / 2); const m = new THREE.Mesh(g, mat); m.position.y = y; m.receiveShadow = true; scene.add(m); return m;
+}
+function ell(cx, cz, rx, rz, rot, n = 18, j = .16) { const o = []; for (let i = 0; i < n; i++) { const a = i / n * 6.2832, k = 1 + (rnd() - .5) * j * 2, x = Math.cos(a) * rx * k, z = Math.sin(a) * rz * k; o.push([cx + x * Math.cos(rot) - z * Math.sin(rot), cz + x * Math.sin(rot) + z * Math.cos(rot)]); } return o; }
+const scaleP = (pts, cx, cz, k) => pts.map(p => [cx + (p[0] - cx) * k, cz + (p[1] - cz) * k]);
+// mainland (south-east Florida, simplified): east coast, then the tip sweeping west (Everglades / Cape Sable)
+const MAIN = [[-400, -400], [-6, -400], [-7, -130], [-9, -104], [-6, -96], [-8, -86], [-13, -74], [-12, -60], [-16, -44], [-17, -30], [-21, -18], [-28, -10], [-40, -6], [-56, -8], [-74, -4], [-92, -10], [-112, -22], [-128, -40], [-150, -52], [-400, -70]];
+blob(MAIN.map(p => [p[0] + 1.6, p[1] + 1.2]), 0.35, SAND, 0);
+blob(MAIN, 0.6, GRASS, 0);
+blob([[-400, -400], [-40, -400], [-38, -120], [-34, -70], [-38, -34], [-52, -20], [-80, -16], [-112, -30], [-150, -60], [-400, -80]], 0.66, MARSH, 0);   // Everglades
+blob([[-30, -108], [-9, -104], [-7, -96], [-9, -86], [-14, -74], [-13, -62], [-30, -60]], 0.72, CITYG, 0);                                            // city ground
+for (let z = -128; z < -8; z += 9) halo(-4 - (z > -40 ? (z + 40) * .35 : 0), z, 16, 12);
+// Miami Beach barrier island
+const MB = [[27, -132], [33, -130], [35, -104], [34, -84], [31, -72], [27, -70], [25, -84], [26, -108]];
+blob(scaleP(MB, 30, -100, 1.07), 0.3, SAND, 0); blob(MB.map(p => [p[0] - .6, p[1]]), 0.55, CITYG, 0); halo(31, -100, 16, 44);
+// causeway islets
+[[18, -89.5, 4.5, 2.2], [8, -88.8, 5, 2.4]].forEach(([x, z, a, b]) => { const e = ell(x, z, a, b, 0, 14, .1); blob(scaleP(e, x, z, 1.15), .25, SAND); blob(e, .5, GRASS); halo(x, z, a * 2, b * 2.6); });
+// the Keys (islands under the land parts of the route)
+const KEYS = [[-17, 3, 9, 4.2, 1.15], [-25, 21, 8, 3.4, 1.0], [-35, 35, 7, 3.0, .85], [-48, 47, 8, 3.2, .7], [-62, 56.5, 6, 2.6, .5], [-88, 68, 11, 4.2, .35], [-106, 72, 8, 3.4, .15]];
+KEYS.forEach(([x, z, a, b, r]) => { const e = ell(x, z, a, b, r, 16, .14); blob(scaleP(e, x, z, 1.16), .25, SAND); blob(e, .55, GRASS); halo(x, z, a * 2.1, b * 3.4, -r); });
+for (let i = 0; i < 16; i++) { const k = KEYS[1 + (i % 5)], x = k[0] + (rnd() - .5) * 26 - 6, z = k[1] + (rnd() - .5) * 16 - 7, a = 1 + rnd() * 2.2; const e = ell(x, z, a, a * .6, rnd() * 3, 9, .2); blob(e, .4, MARSH); halo(x, z, a * 2.4, a * 2); }   // mangrove islets (bay side)
+
+// Everglades detail: ponds, sawgrass patches, farm fields near Homestead
+{ const cg = new THREE.CircleGeometry(1, 9); cg.rotateX(-Math.PI / 2); const N = 620, im = new THREE.InstancedMesh(cg, new THREE.MeshStandardMaterial({ roughness: .9 }), N); const col = new THREE.Color(); const cols = ['#2f8f86', '#3a9c8f', '#74b86a', '#9ccf6c', '#4c9a62', '#2a7f7c'];
+  for (let i = 0; i < N; i++) { const x = -38 - Math.pow(rnd(), .8) * 190, z = -20 - rnd() * 230 + (x + 38) * .12, a = 1.2 + rnd() * 4.5; M4x.compose(V(x, .68 + rnd() * .02, z), Qx.setFromAxisAngle(V(0, 1, 0), rnd() * 3), V(a * (1 + rnd() * 1.6), 1, a)); im.setMatrixAt(i, M4x); im.setColorAt(i, col.set(cols[i % cols.length])); } im.receiveShadow = true; scene.add(im);
+  const fg = new THREE.BoxGeometry(1, .06, 1), fc = ['#c9d77a', '#a8c96a', '#e3d596', '#8fbf63', '#d8c487'];
+  for (let i = 0; i < 46; i++) { const m = new THREE.Mesh(fg, std(fc[i % fc.length])); m.position.set(-24 - rnd() * 12, .66, -52 + rnd() * 36); m.scale.set(2 + rnd() * 2.5, 1, 2 + rnd() * 2.5); m.receiveShadow = true; scene.add(m); } }
+// ---------- route ----------
+const RY = 0.95, BY = 2.3;      // road height on land / on bridges
+const PTS = [[31, -79, RY], [31, -88, RY], [27, -90.5, RY], [22, -90, BY], [18, -89.5, RY + .3], [13, -89, BY], [8, -88.8, RY + .3], [2, -88.5, BY], [-5, -89, BY], [-10, -88, RY + .3],
+  [-12.5, -82, RY + .3], [-13, -70, RY + .3], [-14.5, -56, RY], [-17, -42, RY], [-18.5, -28, RY], [-21, -17, RY], [-22, -9, RY + .2], [-19.5, -3, BY], [-17, 3, RY],
+  [-20, 12, BY + .3], [-25, 21, RY], [-30, 28.5, BY + .3], [-35, 35, RY], [-41, 41.5, BY + .3], [-48, 47, RY], [-55, 52.5, BY + .3], [-62, 56.5, RY], [-70, 61, BY + .6], [-79, 65, BY + .6], [-88, 68, RY], [-97, 70.5, BY], [-106, 72, RY]];
+const curve = new THREE.CatmullRomCurve3(PTS.map(p => V(p[0], p[2], p[1])), false, 'catmullrom', 0.5);
+const NS = 900, CP = curve.getSpacedPoints(NS);
+function ribbon(w, yoff, mat, order = 0) {
+  const pos = [], idx = [];
+  for (let i = 0; i <= NS; i++) { const p = CP[i], a = CP[Math.max(0, i - 1)], b = CP[Math.min(NS, i + 1)]; const tx = b.x - a.x, tz = b.z - a.z, l = Math.hypot(tx, tz) || 1, nx = -tz / l, nz = tx / l;
+    pos.push(p.x + nx * w, p.y + yoff, p.z + nz * w, p.x - nx * w, p.y + yoff, p.z - nz * w); if (i < NS) { const k = i * 2; idx.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); } }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+  const m = new THREE.Mesh(g, mat); m.renderOrder = order; scene.add(m); return m;
+}
+const road = ribbon(1.55, 0, new THREE.MeshStandardMaterial({ color: '#5b5560', roughness: .9, side: THREE.DoubleSide })); road.receiveShadow = true; road.castShadow = true;
+ribbon(1.9, -0.06, new THREE.MeshStandardMaterial({ color: '#e9dcc6', roughness: .9, side: THREE.DoubleSide })).castShadow = true;          // kerb / deck edge
+const glow = ribbon(2.3, 0.10, new THREE.MeshBasicMaterial({ color: '#ff7a1a', transparent: true, opacity: .5, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false }), 3);
+const route = ribbon(0.8, 0.14, new THREE.MeshBasicMaterial({ color: '#ff7a14', side: THREE.DoubleSide, fog: false, toneMapped: false }), 4);
+// bridge pylons where the road is above water level
+const pyG = new THREE.BoxGeometry(.5, 1, 1.6), pyM = std('#d9cdb8');
+for (let i = 6; i < NS; i += 12) { const p = CP[i]; if (p.y > RY + .55) { const m = new THREE.Mesh(pyG, pyM); const b = CP[i + 1]; m.position.set(p.x, p.y / 2 - .1, p.z); m.scale.y = p.y; m.rotation.y = Math.atan2(b.x - p.x, b.z - p.z) + Math.PI / 2; m.castShadow = true; scene.add(m); } }
+
+// ---------- city ----------
+const bG = new THREE.BoxGeometry(1, 1, 1); bG.translate(0, .5, 0);
+const PAL = ['#f4e3cf', '#f7c9b4', '#bfe3df', '#f6dd9c', '#e9eef2', '#f2b7c4', '#cfd8ea'];
+const winT = (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, 64, 64); g.fillStyle = 'rgba(40,60,90,.55)'; for (let y = 6; y < 64; y += 16) for (let x = 5; x < 64; x += 16) g.fillRect(x, y, 10, 9); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; return t; })();
+function tower(x, z, w, d, h, c, glass = false) {
+  const mat = new THREE.MeshStandardMaterial({ color: c, roughness: glass ? .3 : .8, metalness: glass ? .25 : 0, flatShading: true });
+  if (h > 3.2) { const t = winT.clone(); t.needsUpdate = true; t.repeat.set(Math.max(1, Math.round(w * 1.4)), Math.max(2, Math.round(h * 1.1))); mat.map = t; }
+  const m = new THREE.Mesh(bG, mat);
+  m.position.set(x, .7, z); m.scale.set(w, h, d); m.castShadow = m.receiveShadow = true; scene.add(m);
+  if (h > 6) { const cap = new THREE.Mesh(bG, std('#fff6ea')); cap.position.set(x, .7 + h, z); cap.scale.set(w * .6, h * .07 + .4, d * .6); cap.castShadow = true; scene.add(cap); }
+}
+// downtown / Brickell skyline (generic towers)
+for (let i = 0; i < 46; i++) { const x = -11 - rnd() * 13, z = -100 + rnd() * 34; if (Math.abs(x + 12.6) < 2.4 && z > -90 && z < -62) continue; const h = 4 + Math.pow(rnd(), 1.8) * 22 * (1 - Math.abs(z + 85) / 30);
+  tower(x, z, 1.6 + rnd() * 1.8, 1.6 + rnd() * 1.8, Math.max(3, h), rnd() < .55 ? ['#9fd0df', '#8fbfd6', '#b7dbe2', '#a9c6e6'][i % 4] : PAL[i % PAL.length], rnd() < .6); }
+for (let i = 0; i < 70; i++) { const x = -12 - rnd() * 17, z = -60 + rnd() * 44; if (Math.abs(x - (-13 - (z + 70) * .12)) < 2.6) continue; tower(x, z, 1.4 + rnd() * 2, 1.4 + rnd() * 2, .8 + rnd() * 1.6, PAL[i % PAL.length]); }   // suburbs along US-1
+// Miami Beach: low pastel art-deco blocks facing the ocean
+for (let i = 0; i < 34; i++) { const z = -128 + i * 1.72 + rnd() * .3; if (Math.abs(z + 84) < 4 && false) continue; const h = 1.6 + rnd() * 2.6; tower(32.6, z, 2.2, 1.45, h, PAL[i % PAL.length]); if (rnd() < .7) tower(28.6 + rnd() * .6, z, 1.8, 1.4, 1.2 + rnd() * 3.4, PAL[(i + 3) % PAL.length]); }
+[[29, -122, 5.5], [28.5, -112, 6.5], [29.5, -100, 5]].forEach(([x, z, h]) => tower(x, z, 2.2, 2.2, h, '#e9eef2', true));
+// small houses on the Keys
+KEYS.forEach(([x, z, a, b, r]) => { for (let i = 0; i < 7; i++) { const u = (rnd() - .5) * a * 1.3, v = (rnd() < .5 ? -1 : 1) * (1.7 + rnd() * (b - 2)); const px = x + u * Math.cos(r) - v * Math.sin(r), pz = z + u * Math.sin(r) + v * Math.cos(r); tower(px, pz, 1 + rnd(), 1 + rnd(), .7 + rnd() * .8, PAL[(i + 2) % PAL.length]); } });
+
+// ---------- palms (instanced) ----------
+const palmPos = [];
+function addPalm(x, z, s = 1) { palmPos.push([x, z, s * (.8 + rnd() * .5), rnd() * 6.28]); }
+for (let i = 0; i < 44; i++) addPalm(35.2 + rnd() * .5, -130 + i * 1.36, 1);                               // Ocean Drive
+for (let i = 0; i < 60; i++) { const p = CP[40 + i * 5]; if (!p) break; const side = i % 2 ? 1 : -1; if (p.y < RY + .5) addPalm(p.x + side * 2.6, p.z + (rnd() - .5), .9); }
+for (let i = 240; i < NS; i += 5) { const p = CP[i]; if (p.y < RY + .35) { addPalm(p.x + (rnd() < .5 ? -1 : 1) * (2.4 + rnd() * 1.2), p.z + (rnd() - .5) * 2, .9); } }
+KEYS.forEach(([x, z, a, b, r]) => { for (let i = 0; i < 12; i++) { const u = (rnd() - .5) * a * 1.6, v = (rnd() - .5) * b * 1.5; if (Math.abs(v) < 1.6) continue; addPalm(x + u * Math.cos(r) - v * Math.sin(r), z + u * Math.sin(r) + v * Math.cos(r), .85); } });
+const trunkG = new THREE.CylinderGeometry(.09, .16, 2.4, 5); trunkG.translate(0, 1.2, 0);
+const leafG = new THREE.ConeGeometry(.28, 1.7, 4); leafG.rotateZ(-Math.PI / 2 - .45); leafG.translate(.78, 2.25, 0); leafG.scale(1, 1, .45);
+const trunkI = new THREE.InstancedMesh(trunkG, std('#9a6f4d'), palmPos.length), leafI = new THREE.InstancedMesh(leafG, std('#3f9a4a'), palmPos.length * 7);
+const M4 = new THREE.Matrix4(), Q = new THREE.Quaternion(), UP = V(0, 1, 0);
+palmPos.forEach(([x, z, s, r], i) => { M4.compose(V(x, .6, z), Q.setFromAxisAngle(UP, r), V(s, s, s)); trunkI.setMatrixAt(i, M4); for (let k = 0; k < 7; k++) { M4.compose(V(x, .6, z), Q.setFromAxisAngle(UP, r + k / 7 * 6.2832), V(s, s, s)); leafI.setMatrixAt(i * 7 + k, M4); } });
+trunkI.castShadow = leafI.castShadow = true; scene.add(trunkI, leafI);
+
+// ---------- cars ----------
+function car(body, police = false) {
+  const g = new THREE.Group();
+  const prof = new THREE.Shape(); [[-1.75, .22], [1.75, .22], [1.78, .55], [1.1, .66], [.45, 1.05], [-.75, 1.08], [-1.4, .74], [-1.78, .7]].forEach((q, i) => i ? prof.lineTo(q[0], q[1]) : prof.moveTo(q[0], q[1]));
+  const bg = new THREE.ExtrudeGeometry(prof, { depth: 1.5, bevelEnabled: true, bevelSize: .06, bevelThickness: .06, bevelSegments: 1 }); bg.translate(0, 0, -.75); bg.rotateY(-Math.PI / 2);
+  const b = new THREE.Mesh(bg, new THREE.MeshStandardMaterial({ color: body, roughness: .3, metalness: .35 })); g.add(b);
+  const c = new THREE.Mesh(new THREE.BoxGeometry(1.36, .34, 1.15), new THREE.MeshStandardMaterial({ color: '#141a26', roughness: .15, metalness: .6 })); c.position.set(0, .86, -.12); g.add(c);
+  if (police) { const d1 = new THREE.Mesh(new THREE.BoxGeometry(1.64, .3, 1.2), std('#f4f6fb')); d1.position.set(0, .52, -.1); g.add(d1); }
+  const wG = new THREE.CylinderGeometry(.34, .34, .3, 10); wG.rotateZ(Math.PI / 2); [[-.75, 1.05], [.75, 1.05], [-.75, -1.05], [.75, -1.05]].forEach(([x, z]) => { const w = new THREE.Mesh(wG, std('#15151a')); w.position.set(x, .34, z); g.add(w); });
+  if (police) {
+    g.userData.L = [['#ff2a2a', -.36], ['#2a66ff', .36]].map(([col, x]) => { const l = new THREE.Mesh(new THREE.BoxGeometry(.5, .2, .34), new THREE.MeshBasicMaterial({ color: col, fog: false, toneMapped: false })); l.position.set(x, 1.2, -.15); g.add(l);
+      const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: haloSprite(col), blending: THREE.AdditiveBlending, depthWrite: false, fog: false, transparent: true })); s.position.set(x, 1.5, -.15); s.scale.set(5, 5, 1); g.add(s); return [l, s]; }); }
+  g.traverse(o => { if (o.isMesh) o.castShadow = true; }); g.scale.setScalar(1.25); scene.add(g); return g;
+}
+function haloSprite(col) { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); const r = g.createRadialGradient(64, 64, 2, 64, 64, 64); r.addColorStop(0, col); r.addColorStop(.25, col + 'aa'); r.addColorStop(1, col + '00'); g.fillStyle = r; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); }
+const hero = car('#e0246e'), cop1 = car('#1b2130', true), cop2 = car('#1b2130', true);
+function place(g, u, lane = 0) { u = cl(u); const p = curve.getPointAt(u), q = curve.getPointAt(cl(u + .004)); const dx = q.x - p.x, dz = q.z - p.z, l = Math.hypot(dx, dz) || 1; g.position.set(p.x - dz / l * lane, p.y + .16, p.z + dx / l * lane); g.rotation.y = Math.atan2(dx, dz); }
+
+// ---------- boats + wakes ----------
+const wakeT = (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 256; const g = c.getContext('2d'); const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, 'rgba(255,255,255,.95)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.beginPath(); g.moveTo(32, 0); g.lineTo(64, 256); g.lineTo(48, 256); g.lineTo(32, 40); g.lineTo(16, 256); g.lineTo(0, 256); g.closePath(); g.fill(); return new THREE.CanvasTexture(c); })();
+const boats = [[20, -80, 2.4, 1.1], [12, -98, -.6, .9], [3, -76, 1.2, 1], [24, -104, 3.6, 1], [-2, -10, .5, 1.2], [-8, 14, 2.2, 1], [-40, 28, 1.0, 1.1], [-60, 44, 2.6, 1], [-30, 52, 4.2, 1.2], [-76, 80, 1.6, 1.1], [44, -92, 0.3, 1.3], [-52, 70, 5.2, 1]].map(([x, z, r, s]) => {
+  const g = new THREE.Group(); const h = new THREE.Mesh(new THREE.ConeGeometry(.55, 2.4, 4), std('#ffffff', { flatShading: true })); h.rotation.x = Math.PI / 2; h.scale.set(1, 1, .5); h.position.y = .25; g.add(h);
+  const cb = new THREE.Mesh(new THREE.BoxGeometry(.6, .4, .7), std('#2b3a55')); cb.position.set(0, .55, -.3); g.add(cb);
+  const w = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 11), new THREE.MeshBasicMaterial({ map: wakeT, transparent: true, depthWrite: false, opacity: .8 })); w.rotation.x = -Math.PI / 2; w.position.set(0, .06, -6.2); w.renderOrder = 2; g.add(w);
+  g.position.set(x, 0, z); g.rotation.y = r; g.scale.setScalar(s); g.userData = { x, z, r }; h.castShadow = true; scene.add(g); return g; });
+
+// ---------- overlay ----------
+const wanted = document.getElementById('wanted'); const stars = [];
+for (let i = 0; i < 5; i++) { wanted.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 24 24"><path d="M12 2.2l2.9 6.2 6.8.8-5 4.7 1.3 6.7-6-3.3-6 3.3 1.3-6.7-5-4.7 6.8-.8z" fill="#3b3446" stroke="#6a6276" stroke-width="1.2" stroke-linejoin="round"/></svg>'); stars.push(wanted.lastChild.firstChild); }
+const pA = document.getElementById('pA'), pB = document.getElementById('pB'), tmp = V(0, 0, 0);
+function pin(el, wp, a) { tmp.copy(wp).project(cam); const x = Math.max(215, Math.min(W - 250, (tmp.x * .5 + .5) * W)), y = (-tmp.y * .5 + .5) * H; el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.opacity = tmp.z < 1 ? a : 0; el.style.transform = el.classList.contains('down') ? `translate(-14%,-11px) scale(${.6 + .4 * a})` : `translate(-50%,-100%) scale(${.6 + .4 * a})`; el.style.transformOrigin = el.classList.contains('down') ? '50% 0' : '50% 100%'; }
+
+// ---------- camera ----------
+const HEAD3 = curve.getPointAt(prog(3.2));
+const CAM = [   // t, position, look-at  (one calm crane move, always heading south-west, into the sunset)
+  [0.0, V(100, 17, -118), V(21, 7, -83)],
+  [1.3, V(90, 27, -110), V(10, 4, -78)],
+  [3.2, HEAD3.clone().add(V(30, 24, -30)), HEAD3.clone().add(V(-14, 2, 12))],
+  [4.9, V(92, 150, -200), V(-28, 0, -14)],
+  [6.33, V(98, 160, -212), V(-29, 0, -11)]];
+function camAt(t) { let i = 0; while (i < CAM.length - 2 && t > CAM[i + 1][0]) i++; const a = CAM[i], b = CAM[i + 1], k = sm(cl((t - a[0]) / (b[0] - a[0])));
+  // smooth through keys with a Catmull-Rom on the key list
+  const g = (j) => CAM[Math.max(0, Math.min(CAM.length - 1, j))]; const cr = (n, kk) => { const p0 = g(i - 1)[n], p1 = a[n], p2 = b[n], p3 = g(i + 2)[n]; const o = V(0, 0, 0); ['x', 'y', 'z'].forEach(ax => { const v0 = p0[ax], v1 = p1[ax], v2 = p2[ax], v3 = p3[ax]; o[ax] = .5 * ((2 * v1) + (-v0 + v2) * kk + (2 * v0 - 5 * v1 + 4 * v2 - v3) * kk * kk + (-v0 + 3 * v1 - 3 * v2 + v3) * kk * kk * kk); }); return o; };
+  const kk = cl((t - a[0]) / (b[0] - a[0])); cam.position.copy(cr(1, kk)); cam.lookAt(cr(2, kk)); cam.position.y += Math.sin(t * 1.3) * .25; }
+
+// ---------- timeline ----------
+function prog(t) { const x = ramp(t, 0.0, 5.7); return 0.06 + 0.94 * (0.35 * x + 0.65 * io(x)); }
+window.draw = function (t) {
+  t = Math.max(0, Math.min(window.DUR, +t || 0));
+  const u = cl(prog(t)); const n = Math.floor(u * NS) * 6;
+  route.geometry.setDrawRange(0, n); glow.geometry.setDrawRange(0, n);
+  place(hero, u, -.35); place(cop1, u - 0.034 - .004 * Math.sin(t * 2), .45); place(cop2, u - 0.056 + .004 * Math.sin(t * 1.7), -.5);
+  camAt(t); const far = cl((cam.position.y - 30) / 70); [hero, cop1, cop2].forEach(g => g.scale.setScalar(1.0 + far * 2.0));
+  [cop1, cop2].forEach((c, ci) => c.userData.L.forEach(([l, s], k) => { const on = (Math.floor(t * 7 + ci) + k) % 2 === 0; l.material.opacity = on ? 1 : .25; l.material.transparent = true; s.material.opacity = on ? .95 : .12; s.scale.setScalar(on ? 2.4 + far * 2.2 : 1.4); }));
+  boats.forEach((b, i) => { const d = t * (1.2 + (i % 3) * .5); b.position.set(b.userData.x + Math.sin(b.userData.r) * d, 0, b.userData.z + Math.cos(b.userData.r) * d); });
+  water.material.uniforms.t.value = t; water.material.uniforms.camP.value.copy(cam.position);
+  cam.updateMatrixWorld();
+  const lit = 1 + Math.floor(ramp(t, 0.5, 4.6) * 4.001); stars.forEach((s, i) => { const on = i < lit; s.setAttribute('fill', on ? '#ffc23a' : '#3b3446'); s.setAttribute('stroke', on ? '#fff0c2' : '#6a6276'); });
+  pin(pA, V(31, 3.2, -79), sm(ramp(t, 0.05, 0.45)) * (1 - sm(ramp(t, 2.0, 2.5))) + sm(ramp(t, 4.3, 4.9)));
+  pin(pB, V(-106, 3.2, 72), sm(ramp(t, 4.6, 5.3)));
+  renderer.render(scene, cam);
+};
+window.DBG={route,glow,hero,cam,scene,THREE,curve};
+const q = new URLSearchParams(location.search); window.draw(+(q.get('t') || 0));
+requestAnimationFrame(() => { document.title = 'ok'; });
+</script>
+</body>
+</html>
