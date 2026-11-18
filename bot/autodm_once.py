@@ -8,7 +8,12 @@ Only the url of url-buttons changes; texts, keywords, post binding and audience 
 Story replies (Jan, 2026-11-17): python -m bot.autodm_once story dry|apply <KEYWORD>
 Creates ONE Zernio automation with trigger "story_reply" (any story, no post binding) that answers the keyword with a DM and a
 "Get the system" button. Existing automations are only read, never changed; if a story_reply automation with that keyword exists,
-nothing is created."""
+nothing is created.
+
+DM video (Jan, 2026-11-18): python -m bot.autodm_once media dry|apply <automation id|all>
+Adds the "free prompt vs system" video (data/dm_system.json dm_media_file, uploaded to Zernio once, url cached as dm_media_url)
+as a second DM message, the new dm_full texts and a click tag, to our own prompt automations (hosts_full). Buttons, keywords,
+post binding, audience and follow gate stay as they are. Start with ONE id, check its logs (mediaError), then "all"."""
 import json
 import sys
 from pathlib import Path
@@ -162,10 +167,61 @@ def story(apply: bool, kw: str) -> None:
     print("\n".join(out))
 
 
+def media(apply: bool, which: str) -> None:
+    cfg_p = Path("data/dm_system.json")
+    cfg = json.loads(cfg_p.read_text())
+    url = cfg.get("dm_media_url") or ""
+    out = [f"MEDIA {'APPLY' if apply else 'DRY'} target={which}"]
+    if apply and not url:
+        url = poster.upload(Path(cfg["dm_media_file"]), "video/mp4")
+        cfg["dm_media_url"] = url
+        cfg_p.write_text(json.dumps(cfg, indent=1, ensure_ascii=False))
+        out.append(f"uploaded {cfg['dm_media_file']} -> {url}")
+    data = poster._z("GET", "/comment-automations")
+    items = data.get("automations") or data.get("data") or (data if isinstance(data, list) else [])
+    done = 0
+    for a in items:
+        aid = a.get("id") or a.get("_id")
+        if which != "all" and aid != which:
+            continue
+        urls = [b for b in (a.get("buttons") or []) if b.get("type") == "url" and "viral-styles-launchpad" not in (b.get("url") or "")]
+        host = (urls[0].get("url") or "").split("/")[2] if urls and "//" in (urls[0].get("url") or "") else ""
+        if host not in cfg["hosts_full"] or a.get("trigger") not in (None, "comment"):
+            if which != "all":
+                out.append(f"SKIP {aid} {a.get('name')}: not one of our prompt automations (host={host}, trigger={a.get('trigger')})")
+            continue
+        patch = {"dmMedia": {"type": "video", "url": url or "<uploaded on apply>"}, "linkTracking": True, "clickTag": cfg.get("click_tag", "dm_click"),
+                 "dmMessage": cfg["dm_full"][0], "dmMessageVariations": cfg["dm_full"][1:]}
+        if not apply:
+            out.append(f"would set {aid} {a.get('name')} active={a.get('isActive')} stats={json.dumps(a.get('stats'))[:160]}")
+            continue
+        try:
+            got = poster._z("PATCH", f"/comment-automations/{aid}", json=patch)
+            got = got.get("automation") or got
+            done += 1
+            out.append(f"set {aid} {a.get('name')}: dmMedia={json.dumps(got.get('dmMedia'))[:120]} clickTag={got.get('clickTag')} linkTracking={got.get('linkTracking')}")
+        except Exception as e:
+            out.append(f"FAILED {aid} {a.get('name')}: {e}")
+    if which != "all":  # latest log rows of the tested automation (mediaError shows here)
+        try:
+            lg = poster._z("GET", f"/comment-automations/{which}/logs")
+            rows = lg.get("logs") or lg.get("data") or (lg if isinstance(lg, list) else [])
+            for r in rows[:10]:
+                out.append("  LOG " + json.dumps(r, ensure_ascii=False)[:500])
+        except Exception as e:
+            out.append(f"  LOGS failed: {e}")
+    out.append(f"changed {done}")
+    Path("logs").mkdir(exist_ok=True)
+    Path("logs/autodm.log").write_text("\n".join(out))
+    print("\n".join(out))
+
+
 if sys.argv[1] == "setdm":
     setdm(len(sys.argv) > 2 and sys.argv[2] == "apply")
 elif sys.argv[1] == "seturl":
     seturl(len(sys.argv) > 2 and sys.argv[2] == "apply")
+elif sys.argv[1] == "media":
+    media(len(sys.argv) > 2 and sys.argv[2] == "apply", sys.argv[3] if len(sys.argv) > 3 and not sys.argv[3].startswith(".") else "none")
 elif sys.argv[1] == "story":
     story(len(sys.argv) > 2 and sys.argv[2] == "apply", sys.argv[3] if len(sys.argv) > 3 and not sys.argv[3].startswith(".") else "SYSTEM")
 else:

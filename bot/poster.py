@@ -135,6 +135,9 @@ def auto_dm(post_id: str, meta: dict, platform_post_id: str | None = None) -> st
                                        "url": cfg["system_url"] + kw.lower()}]
             dm = cfg["dm_full"] if full else cfg["dm_neutral"]
             body["dmMessage"], body["dmMessageVariations"] = dm[0], dm[1:]
+            if full and cfg.get("dm_media_url"):  # Jan 2026-11-18: "free prompt vs system" video as a second DM message
+                body["dmMedia"] = {"type": "video", "url": cfg["dm_media_url"]}
+                body["linkTracking"], body["clickTag"] = True, cfg.get("click_tag", "dm_click")
     except Exception as e:  # never block posting over the extra button
         print("auto_dm: system button skipped:", e)
     res = _z("POST", "/comment-automations", json=body)

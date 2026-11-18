@@ -13,14 +13,22 @@
  "prompts_title": "Get the prompts",
  "system_title": "Get the system",
  "dm_full": [
-  "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
-  "Your prompts are here 👇\nWant the whole video done for you? One line in, finished video out.",
-  "Here you go 👇\nPrompts make one scene. My new system builds the entire video: script, captions, MP4.",
-  "As promised 👇\nP.S. I built a system that makes the full video from one typed line. No editing."
+  "Here are your prompts 👇\nA prompt makes one scene. My system makes the whole video from one line. The difference is in the video below.",
+  "Sent 🙌\nThese prompts make one scene. Want the full video with script, captions and voice? Watch the side-by-side below 👇",
+  "As promised 👇\nOne prompt = one scene. One line in my system = a finished video. Both are in the video below."
  ],
  "dm_neutral": [
   "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
   "Here you go 👇\nWant the whole video built for you? One line in, finished video out.",
   "As promised 👇\nP.S. I built a system that makes the full video from one typed line. No editing."
- ]
+ ],
+ "dm_full_old": [
+  "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
+  "Your prompts are here 👇\nWant the whole video done for you? One line in, finished video out.",
+  "Here you go 👇\nPrompts make one scene. My new system builds the entire video: script, captions, MP4.",
+  "As promised 👇\nP.S. I built a system that makes the full video from one typed line. No editing."
+ ],
+ "dm_media_file": "bot/media/dm_versus.mp4",
+ "dm_media_url": "",
+ "click_tag": "dm_click"
 }
