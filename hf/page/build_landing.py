@@ -175,6 +175,10 @@ rep('<h3>Download and post</h3>\n        <p>A 9:16 MP4, ready for Reels, TikTok 
 rep('On any topic you want, in 12 tuned styles. Watch it, download it and post it.</p>',
     'On any topic you want, in 12 tuned styles. Wake up to a new video, ready to post.</p>')
 rep('on your topic or one from your plan. ', 'on your topic or one from your plan, even when your computer is off. ')
+# Jan, 2026-11-18: reel badges were stale. From data/stats.json pulled today (Zernio, lags a little behind Instagram):
+# explainer-styles reel styles33 = 138,000 (was "131K"), what's-inside reel inside3 = 133,438 (was "129K").
+assert s.count("131K") == 6 and s.count("129K") == 4, (s.count("131K"), s.count("129K"))
+s = s.replace("131K", "138K").replace("129K", "133K")
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
