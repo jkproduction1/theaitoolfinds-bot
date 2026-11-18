@@ -40,6 +40,20 @@ assert m
 rep('<video src="https://public-files.gumroad.com/h04j5pb694lso8w7f09i1b85mm54" autoplay muted loop playsinline preload="metadata" aria-label="Video made by Viral Styles Launchpad">',
     '<video src="https://public-files.gumroad.com/h04j5pb694lso8w7f09i1b85mm54" ' + m.group(1) + ' autoplay muted loop playsinline preload="metadata" aria-label="Video made by Viral Styles Launchpad">')
 rep(".vring .vsp{border:0;border-radius:26px;box-shadow:none!important}", ".vring .vsp{border:0;border-radius:26px;box-shadow:none!important;background:#150d24}")
+# Jan, 2026-11-18: say where the views are from, and put the bees story (flat science) in the middle of the hero instead of the
+# paper-collage planes video. Coffee (left) and Venice (right) stay; the planes still show in the styles gallery.
+rep('<span>views in our first month</span>', '<span>views in our first month (IG)</span>')
+rep("behind our %s views in our first month" % VIEWS, "behind our %s views in our first month (IG)" % VIEWS)
+import base64
+BEES = "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@6bdac1ebdc0229a19317f64a1efb59cf686f11b7/hf/page/media/bees.mp4"
+BP = "data:image/jpeg;base64," + base64.b64encode((H / "media" / "bees_poster.jpg").read_bytes()).decode()
+m = re.search(r'<video src="https://public-files.gumroad.com/hsld0i22exeuz8q2yjiculhass2y" poster="data:image/jpeg;base64,[^"]+"', s)
+assert m
+rep(m.group(0), '<video src="%s" poster="%s"' % (BEES, BP))
+rep("aria-label=\"Example video: why planes don't fly straight, Paper Collage style. Tap to turn sound on or off\" style=\"background-image:var(--im-planes)\"",
+    'aria-label="Example video: how bees make honey, Flat Science style. Tap to turn sound on or off" style="background-image:url(%s)"' % BP)
+rep("\"why planes don't fly straight, Paper Collage style\",\"why Venice", '"how bees make honey, Flat Science style","why Venice')
+rep("/story why planes don't fly straight", "/story how bees make honey")
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
