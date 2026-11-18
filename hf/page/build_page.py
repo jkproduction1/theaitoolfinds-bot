@@ -58,18 +58,18 @@ def rep(old, new):
 if add:  # insert the new videos as text right after `var VID={`
     rep("var VID={", "var VID={" + json.dumps(add, ensure_ascii=True, separators=(",", ":"))[1:-1] + ",")
 # email block: every prompt from all videos (same box, same classes)
-rep('<h2>Want <em>all 12 styles?</em></h2>', '<h2>Get <em>every prompt</em><br>from our videos. Free.</h2>')
+rep('<h2>Want <em>all 12 styles?</em></h2>', '<h2>Get <em>new styles</em><br>first. Free.</h2>')
 rep('<p>Get the full prompt pack as a PDF you can keep. It has these 8 plus 4 more:</p>',
-    '<p>All %d prompts from %d videos in one PDF you can keep.</p>' % (NP, NV))
+    '<p>When we release a new style, its prompt lands in your inbox first.</p>')
 rep('<ul class="ex"><li><b>Zoom In</b><span>One continuous zoom into the tiny world.</span></li><li><b>Exploded View</b><span>A product flies apart and snaps back.</span></li><li><b>Neon Intro</b><span>An 80s synthwave intro of your name.</span></li><li><b>Kinetic Type</b><span>A punchy text promo.</span></li></ul>',
     '<ul class="ex"><li><b>Every video</b><span>One prompt per video topic.</span></li><li><b>Sorted by style</b><span>Paper Collage, X-Ray, True Scale and more.</span></li><li><b>Copy and paste</b><span>Change the topic line to your own.</span></li><li><b>Works in Claude</b><span>Paste it into the Claude app.</span></li></ul>')
-rep('data-gumroad-action="buy">Get all 12 prompts · Free</a>', 'data-gumroad-action="buy">Get every prompt · Free</a>')
+rep('data-gumroad-action="buy">Get all 12 prompts · Free</a>', 'data-gumroad-action="buy">Get new styles · Free</a>')
 # video mode: the email block is visible (compact, without the list) ...
 rep(".fp.vm #pack,.fp.vm .nav .btn,", ".fp.vm #pack .btn{margin-top:16px}.fp.vm #pack .ex,.fp.vm .nav .btn,")
-rep('data-gumroad-action="buy">Get all 12 free</a>', 'data-gumroad-action="buy">Get every prompt</a>')
+rep('data-gumroad-action="buy">Get all 12 free</a>', 'data-gumroad-action="buy">Get new styles</a>')
 # ... and goes to the top, above the 3 prompts; the system box stays last; the old top system box is not shown
 rep("pack.parentNode.insertBefore(sell,pack);var pp=pack.querySelector('p');if(pp)pp.textContent='Get all 12 style prompts as a PDF you can keep. It includes:';",
-    "var vb=document.getElementById('systop');vb.hidden=false;vb.parentNode.insertBefore(pack,vb);pack.className+=' topo';"
+    "var vb=document.getElementById('systop');vb.hidden=false;var sb=document.querySelector('.fp .box.sell:not(.topo)');if(sb)sb.parentNode.insertBefore(pack,sb.nextSibling);"
     # the Gumroad "buy" action only works on the product page itself, not in this direct /landing/embed view that DM links open
     # (that is why the block used to be hidden here): in video mode the button is a normal link to the product's checkout
     "var pb=pack.querySelector('a[data-gumroad-action]');if(pb){pb.removeAttribute('data-gumroad-action');pb.href='https://theaitoolfinds.gumroad.com/l/free-prompts?wanted=true';pb.target='_blank';pb.rel='noopener'}")
@@ -94,6 +94,14 @@ rep('<div id="vidbox" hidden>', SYSTOP + '<div id="vidbox" hidden>')
 # which system button was used: top or bottom
 rep("function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag});",
     "function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag+'&utm_campaign='+(x.closest&&x.closest('#systop')?'pos_top':'pos_below')});")
+# Jan, 2026-11-18: people left happy with the big free PDF and never looked at the system. Video mode now = bees/system box on top,
+# the 3 prompts of that video, the system box, and a small "new styles first" email signup LAST. No 166-prompt PDF promise.
+rep("<p class=\"fine\">Enter your email and it's yours. We'll also email you when we share new styles. Unsubscribe anytime.</p>",
+    "<p class=\"fine\">Enter your email. One email per new style, plus news about our system. Unsubscribe anytime.</p>")
+rep('<p class="fine"><b>$19 once. No subscription.</b> First 50 buyers, then $29.</p>',
+    '<p class="fine"><b>$19 once, no subscription from us.</b> First 50 buyers, then $29.</p>')
+rep('<p class="fine" style="margin-top:4px">7-day money-back guarantee. Works with Claude Pro.</p>',
+    '<p class="fine" style="margin-top:4px">Runs in Claude Pro ($20/mo, paid to Anthropic). 7-day money-back guarantee.</p>')
 (H / "free-prompts.html").write_text(s, encoding="utf-8")
 
 SYS = "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile&utm_content="
