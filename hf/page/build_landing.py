@@ -173,7 +173,7 @@ rep('<h3>Download and post</h3>\n        <p>A 9:16 MP4, ready for Reels, TikTok 
     '<h3>A finished video every day</h3>\n        <p>On any topic you want, in 12 tuned styles. Watch it, download it and post it.</p>')
 # Jan, 2026-11-18: he confirmed the daily video arrives with his computer off (the scheduled task runs in Claude's cloud).
 rep('On any topic you want, in 12 tuned styles. Watch it, download it and post it.</p>',
-    'On any topic you want, in 12 tuned styles. Watch it, download it and post it. Your computer doesn\'t even need to be on.</p>')
+    'On any topic you want, in 12 tuned styles. Wake up to a new video, ready to post.</p>')
 rep('on your topic or one from your plan. ', 'on your topic or one from your plan, even when your computer is off. ')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
