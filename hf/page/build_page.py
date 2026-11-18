@@ -75,7 +75,17 @@ rep("pack.parentNode.insertBefore(sell,pack);var pp=pack.querySelector('p');if(p
     "var pb=pack.querySelector('a[data-gumroad-action]');if(pb){pb.removeAttribute('data-gumroad-action');pb.href='https://theaitoolfinds.gumroad.com/l/free-prompts?wanted=true';pb.target='_blank';pb.rel='noopener'}")
 rep("var st=document.getElementById('selltop');if(st)st.hidden=false;", "")
 # a compact system link right under the email frame (Jan: the system must be reachable from the top too), same button style
-rep('<div id="vidbox" hidden>', '<p id="systop" hidden style="text-align:center;margin:0 0 22px;color:var(--mut);font-size:15px">Want the whole video, not one scene?<br><a class="btn sm paid" style="margin-top:10px" href="https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH" target="_blank" rel="noopener">See the system · <s>$29</s> $19</a></p><div id="vidbox" hidden>')
+CK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>'
+SYSTOP = ('<div class="box sell topo" id="systop" hidden>'
+          '<h2>Want an automated<br><em>faceless channel?</em></h2>'
+          '<p class="one" style="margin-top:10px">Ours got 1.8M views in its first 4 weeks. No camera, no editing, no face.</p>'
+          '<ul class="ck" style="max-width:330px;margin:14px auto 0;text-align:left">'
+          '<li>%s<span>Type one line, get the whole video: script, every scene, captions</span></li>'
+          '<li>%s<span>Claude drafts a new video for you every day</span></li>'
+          '<li>%s<span>The same styles as our videos, on any topic</span></li></ul>'
+          '<p style="margin-top:16px"><a class="btn paid" href="https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH" target="_blank" rel="noopener">See the system · <s>$29</s> $19</a></p>'
+          '<p class="fine" style="margin-top:8px">7-day money-back guarantee.</p></div>') % ((CK,) * 3)
+rep('<div id="vidbox" hidden>', SYSTOP + '<div id="vidbox" hidden>')
 # which system button was used: top or bottom
 rep("function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag});",
     "function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag+'&utm_campaign='+(x.closest&&x.closest('#systop')?'pos_top':'pos_below')});")
