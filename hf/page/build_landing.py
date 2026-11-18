@@ -45,7 +45,7 @@ rep(".vring .vsp{border:0;border-radius:26px;box-shadow:none!important}", ".vrin
 rep('<span>views in our first month</span>', '<span>views in our first month (IG)</span>')
 rep("behind our %s views in our first month" % VIEWS, "behind our %s views in our first month (IG)" % VIEWS)
 import base64
-BEES = "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@6bdac1ebdc0229a19317f64a1efb59cf686f11b7/hf/page/media/bees.mp4"
+BEES = "https://public-files.gumroad.com/uua53m7bvsylcb6i17litrrdfuqe"   # product cover Jan uploaded 2026-11-18 (bees story); pages may only load media from Gumroad
 BP = "data:image/jpeg;base64," + base64.b64encode((H / "media" / "bees_poster.jpg").read_bytes()).decode()
 m = re.search(r'<video src="https://public-files.gumroad.com/hsld0i22exeuz8q2yjiculhass2y" poster="data:image/jpeg;base64,[^"]+"', s)
 assert m
