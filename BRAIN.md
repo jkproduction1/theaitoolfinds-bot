@@ -82,6 +82,9 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - **Prompt first, then the result (Jan, 2026-11-12, hard rule):** in the classic App demo nothing of the result may be visible before
   the prompt is sent: no dimmed/blurred "ghost" preview behind the chat while typing (impact22, asteroid24, space25, body26 had one
   = wrong, don't copy it). Order is always: chat + typing → send → result. Template without it: hf/videos/styles28/build.py.
+- **Instagram first (Jan, 2026-11-18):** pick topics, styles and hooks by INSTAGRAM numbers only (views, saves, sales). TikTok still
+  gets the same posts, but it no longer decides anything: no "TikTok needs its own answer" tests. No GTA / game-trend videos
+  (gta57 dropped: stylised 3D maps and cities are not our strength, and gtamap22 did ~3k on IG).
 - **Daily mix v6 (Jan, 2026-11-18, CURRENT):** goal 5 sales/day. 2 "Type it, get it" videos as in v5 (08:00, 15:00) + **1 video that
   sells the system itself every day (21:00)**, keyword SYSTEM (or a fresh system keyword), post.json `url` = the sales page
   `https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=<name>` so the DM
