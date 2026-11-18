@@ -73,6 +73,23 @@ rep('<details class="rv"><summary>How long does one video take?', TRUST_FAQ + '<
 # Jan, 2026-11-18 (funnel simulation): the voice needs your own MP3/ElevenLabs, and Claude Pro must be visible where people decide.
 rep('<b>script, animation, captions, voice.</b>', '<b>script, animation, captions.</b> Add a voice in one step.')
 rep('One-time payment. Works with Claude Pro on Mac or Windows.', 'One-time payment. Runs in Claude Pro ($20/mo, paid to Anthropic) on Mac or Windows.')
+# Jan, 2026-11-18: the package also runs in ChatGPT's Codex app (tested by Jan on the FREE plan: works, simpler animations).
+# Said plainly, by app name (beginners don't know what a "model" is); every example on the page was made with Claude.
+rep('One-time payment. Runs in Claude Pro ($20/mo, paid to Anthropic) on Mac or Windows.',
+    'One-time payment. Runs in Claude Pro ($20/mo) or in ChatGPT, even free, on Mac or Windows.')
+rep('<p>Claude Pro</p></div>', '<p>Claude Pro or ChatGPT <small>Claude for the full look, ChatGPT (free works) for simpler videos</small></p></div>')
+rep('<p>No manual install. <small>Claude sets it up for you.</small></p>', '<p>No manual install. <small>Your AI app sets it up for you.</small></p>')
+rep('<small>Your AI app sets it up for you.</small></p></div>\n    </div>',
+    '<small>Your AI app sets it up for you.</small></p></div>\n    </div>\n'
+    '    <p class="note" style="max-width:640px;margin:22px auto 0;text-align:center;line-height:1.6"><b>Which app?</b> Claude ($20/month) gives the full look you see '
+    'in our videos. ChatGPT works too, even on the free plan, through its Codex app, with simpler animations. Every example on this page was made with Claude.</p>')
+rep('You need your own Claude Pro plan.</p>', 'You need Claude Pro, or ChatGPT for simpler videos.</p>')
+rep('Nothing more from us. The system runs inside Claude, so you need Claude Pro ($20/month, paid to Anthropic). A voice from ElevenLabs is optional.',
+    'Nothing more from us. For the full look you need Claude Pro ($20/month, paid to Anthropic). It also runs in ChatGPT, even on the free plan, with simpler animations. A voice from ElevenLabs is optional.')
+rep('<details class="rv"><summary>What if it\'s not for me?',
+    '<details class="rv"><summary>I don\'t have Claude. Can I still use it?<i aria-hidden="true"></i></summary><p>Yes. It also runs in ChatGPT through the free '
+    'Codex app (Mac or Windows), even on the free ChatGPT plan. The animations are simpler there. You can switch to Claude any time; the same files work in both.</p></details>\n'
+    '      <details class="rv"><summary>What if it\'s not for me?')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>

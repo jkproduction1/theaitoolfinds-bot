@@ -82,7 +82,15 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - **Prompt first, then the result (Jan, 2026-11-12, hard rule):** in the classic App demo nothing of the result may be visible before
   the prompt is sent: no dimmed/blurred "ghost" preview behind the chat while typing (impact22, asteroid24, space25, body26 had one
   = wrong, don't copy it). Order is always: chat + typing → send → result. Template without it: hf/videos/styles28/build.py.
-- **Daily mix v5 (Jan, 2026-11-17, CURRENT, replaces v4):** **2 "Type it, get it" videos EVERY day** = the series made with OUR
+- **Daily mix v6 (Jan, 2026-11-18, CURRENT):** goal 5 sales/day. 2 "Type it, get it" videos as in v5 (08:00, 15:00) + **1 video that
+  sells the system itself every day (21:00)**, keyword SYSTEM (or a fresh system keyword), post.json `url` = the sales page
+  `https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=<name>` so the DM
+  has one "Get the system" button. Rotate the angle: free prompt vs system side by side (versus56 template), a full one-take story
+  made with the system (bees55), Jan's real install recording (Apple-style edit, when he sends one), a buyer's result (only with the
+  buyer's OK), "one line in → finished video". Truthful only: say what the system really does (Claude drafts, you approve and
+  post; ~30 min a video; Claude Pro or ChatGPT (Codex) needed, ChatGPT gives simpler animations). The v5 tutorial/other slot is
+  replaced by this. Summary to Jan: sales page views, paid sales and conversion of the last day (Gumroad), and which post sold.
+- **Daily mix v5 (INACTIVE since 2026-11-18; Jan, 2026-11-17):** **2 "Type it, get it" videos EVERY day** = the series made with OUR
   system's styles (like styles28/33/37/44, storm45: "Type /<style> <topic>… and you get this", real renders from our skill pack,
   series counter "Type it, get it #N" from data/series.json) + **1 other** video (Tutorial §3e, a sales/proof video like versus46
   "free prompt vs our system" with keyword SYSTEM, or a test). Slots: Type it 08:00 and 15:00, the other 21:00. Why (Jan + stats
