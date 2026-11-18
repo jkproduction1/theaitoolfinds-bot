@@ -11,7 +11,7 @@ PAGE = (HERE / "map3d.html").resolve().as_uri()
 if __name__ == "__main__":
     ts = [float(x) for x in sys.argv[2:]] or [0.6, 3.2, 5.8]
     with sync_playwright() as pw:
-        b = pw.chromium.launch(args=["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
+        b = pw.chromium.launch(args=["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--allow-file-access-from-files"])
         pg = b.new_page(viewport={"width": 1080, "height": 1920}); pg.set_default_timeout(600000); errs = []
         pg.on("pageerror", lambda e: errs.append(str(e))); pg.on("console", lambda m: m.type == "error" and errs.append(m.text))
         pg.goto(PAGE); pg.wait_for_function("document.title==='ok'", timeout=600000)

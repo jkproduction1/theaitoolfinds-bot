@@ -18,19 +18,20 @@ canvas{position:absolute;inset:0;width:1080px;height:1920px;display:block}
  background:radial-gradient(120% 85% at 50% 46%,rgba(0,0,0,0) 55%,rgba(30,8,20,.42) 100%),
             linear-gradient(180deg,rgba(255,150,90,.10) 0%,rgba(255,170,120,0) 34%,rgba(20,30,70,.10) 100%)}
 .lb{position:absolute;left:0;top:0;opacity:0;will-change:transform;color:#fff;text-align:center;white-space:nowrap;transform-origin:50% 100%}
-.lb b{display:block;font-weight:800;font-size:76px;letter-spacing:-.02em;line-height:1;text-shadow:0 2px 0 rgba(40,14,10,.35),0 6px 28px rgba(40,14,10,.55),0 0 60px rgba(40,14,10,.35)}
-.lb i{display:block;font-style:normal;font-weight:600;font-size:36px;letter-spacing:.01em;margin-top:12px;color:#fff3e4;text-shadow:0 2px 14px rgba(40,14,10,.7),0 0 30px rgba(40,14,10,.4)}
-.lb u{display:block;text-decoration:none;width:3px;margin:18px auto 0;background:linear-gradient(180deg,#fff,rgba(255,255,255,.75));box-shadow:0 0 14px rgba(40,14,10,.5);border-radius:2px}
-.lb s{display:block;text-decoration:none;width:20px;height:20px;margin:-2px auto 0;border-radius:50%;background:#fff;box-shadow:0 0 0 7px rgba(255,255,255,.28),0 4px 16px rgba(40,14,10,.6)}
+.lb .cd{display:inline-block;background:rgba(22,14,26,.80);border:2px solid rgba(255,255,255,.55);border-radius:20px;padding:14px 28px 16px;box-shadow:0 14px 38px rgba(40,10,20,.4)}
+.lb b{display:block;font-weight:800;font-size:58px;letter-spacing:-.02em;line-height:1.05}
+.lb i{display:block;font-style:normal;font-weight:600;font-size:34px;margin-top:6px;color:#ffd9b8}
+.lb u{display:block;text-decoration:none;width:3px;margin:0 auto;background:linear-gradient(180deg,#fff,rgba(255,255,255,.8));box-shadow:0 0 12px rgba(40,14,10,.5);border-radius:2px}
+.lb s{display:block;text-decoration:none;width:20px;height:20px;margin:-2px auto 0;border-radius:50%;background:#ff6a3d;box-shadow:0 0 0 6px rgba(255,255,255,.75),0 4px 16px rgba(40,14,10,.6)}
 </style>
 </head>
 <body>
 <div id="stage">
   <canvas id="c" width="1080" height="1920"></canvas>
   <div id="grade"></div>
-  <div class="lb" id="l0"><b>Vice City</b><i>Miami, Florida</i><u></u><s></s></div>
-  <div class="lb" id="l1"><b>Grassrivers</b><i>The Everglades, Florida</i><u></u><s></s></div>
-  <div class="lb" id="l2"><b>Leonida Keys</b><i>The Florida Keys</i><u></u><s></s></div>
+  <div class="lb" id="l0"><div class="cd"><b>Vice City</b><i>Miami, Florida</i></div><u></u><s></s></div>
+  <div class="lb" id="l1"><div class="cd"><b>Grassrivers</b><i>The Everglades, Florida</i></div><u></u><s></s></div>
+  <div class="lb" id="l2"><div class="cd"><b>Leonida Keys</b><i>The Florida Keys</i></div><u></u><s></s></div>
 </div>
 <script src="map3d_data.js"></script>
 <script type="module">
@@ -68,11 +69,12 @@ const cam = new THREE.PerspectiveCamera(34, W / H, 0.5, 2400);
 (function () {
   const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
   const gr = g.createLinearGradient(0, 0, 0, 1024);
-  gr.addColorStop(0, '#3f6fb4'); gr.addColorStop(.30, '#7fa6d8'); gr.addColorStop(.40, '#c9b9cf'); gr.addColorStop(.455, '#f6b79a'); gr.addColorStop(.492, '#ffb07c'); gr.addColorStop(.5, '#f3a57c'); gr.addColorStop(1, '#f3a57c');
+  gr.addColorStop(0, '#3f6fb4'); gr.addColorStop(.30, '#7fa6d8'); gr.addColorStop(.38, '#c9b9cf'); gr.addColorStop(.44, '#f4b79c'); gr.addColorStop(.475, '#f3a57c'); gr.addColorStop(.5, '#f3a57c'); gr.addColorStop(1, '#f3a57c');
   g.fillStyle = gr; g.fillRect(0, 0, 2048, 1024);
   // sun glow at azimuth u=0.5 (dome is rotated so that this faces the sun)
-  const sg = g.createRadialGradient(1024, 478, 0, 1024, 478, 520); sg.addColorStop(0, 'rgba(255,246,214,1)'); sg.addColorStop(.06, 'rgba(255,226,170,.95)'); sg.addColorStop(.25, 'rgba(255,170,110,.55)'); sg.addColorStop(1, 'rgba(255,150,110,0)');
+  const sg = g.createRadialGradient(1024, 440, 0, 1024, 440, 520); sg.addColorStop(0, 'rgba(255,240,205,.9)'); sg.addColorStop(.06, 'rgba(255,222,170,.7)'); sg.addColorStop(.25, 'rgba(255,176,120,.35)'); sg.addColorStop(1, 'rgba(255,150,110,0)');
   g.fillStyle = sg; g.fillRect(0, 0, 2048, 1024);
+  const hz = g.createLinearGradient(0, 300, 0, 490); hz.addColorStop(0, 'rgba(243,165,124,0)'); hz.addColorStop(.55, 'rgba(244,172,132,.55)'); hz.addColorStop(1, 'rgba(243,165,124,1)'); g.fillStyle = hz; g.fillRect(0, 300, 2048, 724);
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
   const m = new THREE.Mesh(new THREE.SphereGeometry(2000, 48, 24), new THREE.MeshBasicMaterial({ map: t, side: THREE.BackSide, fog: false, depthWrite: false }));
   m.name = 'sky'; scene.add(m);
@@ -216,14 +218,44 @@ lap('buildings');
   strips.forEach(c => { const pts = c.map(([lo, la]) => new THREE.Vector3(wx(lo), TOP + .1, wz(la))); if (pts.length < 2) return; const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .2); const g = new THREE.TubeGeometry(curve, Math.max(8, pts.length * 6), .09, 5, false); const m = new THREE.Mesh(g, mat); m.scale.y = .5; m.position.y = (TOP + .1) * .5; m.castShadow = true; scene.add(m); });
 })();
 
+
+// ---------- clouds: soft puffs drifting between the camera and the ground + their shadows (Jan: "a map from the air, with clouds")
+const CLOUDS = [];
+const CAMPTS = [[-79.985, 25.905, 7.6], [-79.975, 25.90, 8.2], [-80.10, 26.08, 18], [-80.27, 26.30, 30], [-80.25, 25.85, 22], [-80.22, 25.36, 25], [-80.26, 25.33, 23.5], [-80.09, 25.84, 6], [-80.5, 25.1, 8], [-80.6, 25.07, 8]];
+(function () {
+  const r = rng(404);
+  function puffTex(seed) { const c = document.createElement('canvas'); c.width = 512; c.height = 320; const g = c.getContext('2d'), q = rng(seed);
+    const blob = (x, y, rad, col, a) => { const gr = g.createRadialGradient(x, y, 0, x, y, rad); gr.addColorStop(0, col); gr.addColorStop(.55, col.replace(/[\d.]+\)$/, (a * .6) + ')')); gr.addColorStop(1, col.replace(/[\d.]+\)$/, '0)')); g.fillStyle = gr; g.beginPath(); g.arc(x, y, rad, 0, 7); g.fill(); };
+    for (let i = 0; i < 16; i++) blob(110 + 290 * q(), 205 + 30 * (q() - .5), 60 + 55 * q(), 'rgba(214,150,150,.5)', .5);      // shaded warm underside
+    for (let i = 0; i < 26; i++) { const x = 90 + 330 * q(), k = 1 - Math.abs(x - 256) / 240; blob(x, 185 - 75 * k * q(), 46 + 60 * k * q(), 'rgba(255,244,232,.62)', .62); }
+    for (let i = 0; i < 9; i++) blob(150 + 220 * q(), 120 + 40 * q(), 30 + 30 * q(), 'rgba(255,226,190,.5)', .5);             // sun-lit rim
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
+  const TEX = [puffTex(1), puffTex(2), puffTex(3), puffTex(4)];
+  const sc = document.createElement('canvas'); sc.width = sc.height = 256; const sg = sc.getContext('2d'), sgr = sg.createRadialGradient(128, 128, 0, 128, 128, 128); sgr.addColorStop(0, 'rgba(30,22,60,.42)'); sgr.addColorStop(.6, 'rgba(30,22,60,.22)'); sgr.addColorStop(1, 'rgba(30,22,60,0)'); sg.fillStyle = sgr; sg.fillRect(0, 0, 256, 256);
+  const shTex = new THREE.CanvasTexture(sc);
+  const keep = [[-80.191, 25.772], [-80.80, 25.70], [-80.83, 24.86]];                                   // label anchors stay clear
+  const sunFlat = new THREE.Vector2(sunDir.x, sunDir.z).normalize(), off = 1 / Math.tan(SUN_EL);
+  for (let i = 0; i < 80; i++) {
+    const lo = lerp(-81.75, -79.75, r()), la = lerp(24.45, 26.75, r()), h = 2.6 + 5.2 * r(), size = 5 + 9 * r();
+    if (keep.some(([a, b]) => Math.hypot((lo - a) * CO, la - b) < .085)) continue;
+    if (CAMPTS.some(([a, b, hh]) => Math.hypot(wx(lo) - wx(a), wz(la) - wz(b)) < size * 1.5 + 9 && h > hh - 7)) continue;   // never a cloud in the lens
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: TEX[i % 4], transparent: true, depthWrite: false, opacity: .9, fog: true }));
+    sp.scale.set(size, size * .625, 1); sp.position.set(wx(lo), h, wz(la)); sp.renderOrder = 5; scene.add(sp);
+    const sh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: shTex, transparent: true, depthWrite: false, fog: true }));
+    sh.rotation.x = -Math.PI / 2; sh.rotation.z = -Math.atan2(sunFlat.y, sunFlat.x); sh.scale.set(size * 2.6, size * .95, 1); sh.renderOrder = 2; scene.add(sh);
+    CLOUDS.push({ sp, sh, x: wx(lo), z: wz(la), h, v: .25 + .35 * r() });
+  }
+  window.moveClouds = t => CLOUDS.forEach(c => { const x = c.x + c.v * t * 1.6, z = c.z + c.v * t * .5; c.sp.position.set(x, c.h, z); c.sh.position.set(x - sunFlat.x * c.h * off, TOP + .32, z - sunFlat.y * c.h * off); });
+})();
+
 // ---------- camera path: Miami -> across the Everglades -> the Keys
 const P = (lo, la, h) => new THREE.Vector3(wx(lo), h, wz(la));
 const KEYS = [
   { t: 0.0, p: P(-79.985, 25.905, 7.6), q: P(-80.20, 25.765, 0.6) },
   { t: 1.2, p: P(-79.975, 25.90, 8.2), q: P(-80.215, 25.76, 0.6) },
   { t: 3.2, p: P(-80.27, 26.30, 30), q: P(-80.82, 25.50, 0) },
-  { t: 5.2, p: P(-80.22, 25.36, 13.5), q: P(-80.98, 24.80, 0) },
-  { t: 6.33, p: P(-80.26, 25.33, 12.6), q: P(-81.04, 24.775, 0) },
+  { t: 5.2, p: P(-80.22, 25.36, 25), q: P(-80.98, 24.80, 0) },
+  { t: 6.33, p: P(-80.26, 25.33, 23.5), q: P(-81.04, 24.775, 0) },
 ];
 function camAt(t) { t = Math.max(0, Math.min(DUR, t)); let i = 0; while (i < KEYS.length - 2 && t > KEYS[i + 1].t) i++; const a = KEYS[i], b = KEYS[i + 1], k = eio((t - a.t) / (b.t - a.t)); return { p: a.p.clone().lerp(b.p, k), q: a.q.clone().lerp(b.q, k) }; }
 const LABELS = [
@@ -238,10 +270,11 @@ function draw(t) {
   sun.target.position.copy(c.q); sun.position.copy(c.q).addScaledVector(sunDir, 260);
   const sc = sun.shadow.camera, ext = 20 + cam.position.y * 3.2; sc.left = -ext; sc.right = ext; sc.top = ext; sc.bottom = -ext; sc.near = 20; sc.far = 520; sc.updateProjectionMatrix();
   scene.getObjectByName('sky').position.copy(cam.position);
-  rippleTex.offset.set(t * .012, t * .02);
+  rippleTex.offset.set(t * .012, t * .02); moveClouds(t);
   renderer.render(scene, cam);
   LABELS.forEach(L => { const a = eo((t - L.on) / .45) * (1 - eo((t - L.off) / .35)); v.copy(L.at).project(cam); const x = (v.x * .5 + .5) * W, y = (-v.y * .5 + .5) * H; const el = L.el; el.querySelector('u').style.height = (L.len * eo((t - L.on - .1) / .5)) + 'px';
-    el.style.opacity = v.z < 1 ? a : 0; const w = el.offsetWidth, h = el.offsetHeight; el.style.transform = `translate(${x - w / 2}px,${y - h + 10}px) scale(${.92 + .08 * a})`; });
+    el.style.opacity = v.z < 1 ? a : 0; const w = el.offsetWidth, h = el.offsetHeight; el.style.transform = `translate(${x - w / 2}px,${y - h + 10}px) scale(${.92 + .08 * a})`;
+    const cd = el.querySelector('.cd'), cw = cd.offsetWidth, dx = Math.max(70 + cw / 2, Math.min(W - 70 - cw / 2, x)) - x; cd.style.transform = `translateX(${dx}px)`; });
 }
 lap('pre-draw'); window.draw = draw; window.DURATION = DUR;
 const q = new URLSearchParams(location.search); draw(parseFloat(q.get('t') || '0.6')); lap('first draw');
