@@ -1,0 +1,50 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:I;src:url(Inter-Black.otf);font-weight:900}
+@font-face{font-family:I;src:url(Inter-ExtraBold.otf);font-weight:800}
+@font-face{font-family:I;src:url(Inter-Bold.otf);font-weight:700}
+@font-face{font-family:I;src:url(Inter-SemiBold.otf);font-weight:600}
+*{margin:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;background:transparent;font-family:I,sans-serif;color:#fff;overflow:hidden}
+.L{position:absolute;inset:0;display:none}
+body[data-l="bg"] #bg,body[data-l="fg"] #fg,body[data-l="r1"] #r1,body[data-l="r2"] #r2,body[data-l="r3"] #r3,body[data-l="end"] #end,body[data-l="mask"] #mask{display:block}
+#bg{background:radial-gradient(70% 35% at 50% 8%,rgba(139,77,255,.45),transparent 70%),radial-gradient(60% 30% at 75% 60%,rgba(255,75,31,.16),transparent 70%),#0c0714}
+h1{position:absolute;top:215px;left:60px;width:900px;text-align:center;font-weight:900;font-size:86px;line-height:1.02;letter-spacing:-2px}
+h1 .v{font-size:52px;color:#b8acd0;font-weight:800;margin:0 10px}
+h1 .g{background:linear-gradient(90deg,#c9a8ff,#a56bff 50%,#ff8a5c);-webkit-background-clip:text;color:transparent}
+.sub{position:absolute;top:400px;left:60px;width:900px;text-align:center;font-size:34px;font-weight:600;color:#b8acd0}
+/* panels: x 60 & 530, w 430, y 440, h 764 */
+.ring{position:absolute;top:478px;width:400px;height:711px;border-radius:34px}
+.rl{left:80px;border:3px solid #3a2a5e}
+.rr{left:560px;padding:5px;background:conic-gradient(from 200deg,#a56bff,#ff4b1f,#ffd36b,#7ff0c9,#6f35e8,#a56bff);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.glow{position:absolute;top:478px;left:560px;width:400px;height:711px;border-radius:34px;box-shadow:0 0 80px -6px rgba(165,107,255,.9),0 40px 90px -30px rgba(255,75,31,.7)}
+.pill{position:absolute;top:500px;transform:translateX(-50%);white-space:nowrap;font-size:24px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:9px 18px;border-radius:999px;background:rgba(12,7,20,.85)}
+.pl{left:280px;color:#b8acd0;border:2px solid #3a2a5e}
+.pr{left:760px;border:2px solid #a56bff}
+.vs{position:absolute;left:485px;top:798px;width:70px;height:70px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:26px;background:linear-gradient(135deg,#ff6a3d,#ff4b1f);box-shadow:0 12px 34px -6px rgba(255,75,31,.9)}
+.row{position:absolute;left:80px;width:880px;display:grid;grid-template-columns:1fr 1fr;gap:40px;font-size:29px;font-weight:700}
+.row div{display:flex;align-items:center;gap:14px}
+.x,.c{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:26px;font-weight:900}
+.x{background:rgba(255,107,107,.16);color:#ff6b6b}.c{background:linear-gradient(140deg,#7ff0c9,#2bb68a);color:#0c0714}
+.row .n{color:#b8acd0;font-weight:600}
+#r1 .row{top:1206px}#r2 .row{top:1262px}#r3 .row{top:1318px}
+#end{background:rgba(12,7,20,.94)}
+#end .t1{position:absolute;top:520px;width:100%;text-align:center;font-size:62px;font-weight:800;color:#e9e1ff}
+#end .t2{position:absolute;top:640px;width:100%;text-align:center;font-size:128px;font-weight:900;letter-spacing:-3px;line-height:1.05}
+#end .t2 b{color:#ff4b1f}
+#end .t3{position:absolute;top:960px;left:90px;width:840px;text-align:center;font-size:40px;font-weight:600;color:#b8acd0;line-height:1.35}
+#end .t3 b{color:#fff}
+#end .h{position:absolute;top:1180px;width:100%;text-align:center;font-size:30px;font-weight:700;color:#8a7fa3}
+#mask{background:#000}
+.cta{position:absolute;top:1412px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:44px;font-weight:900;padding:18px 36px;border-radius:999px;background:rgba(30,18,52,.85);border:2px solid rgba(214,190,255,.35);box-shadow:0 0 36px -10px rgba(165,107,255,.55),inset 0 1px 0 rgba(255,255,255,.12)}
+.cta b{color:#ff4b1f}
+#mask i{position:absolute;top:0;left:0;width:400px;height:711px;border-radius:32px;background:#fff}
+</style></head><body>
+<div class="L" id="bg"><h1>Free prompt <span class="v">vs.</span><br><span class="g">our system</span></h1><p class="sub">Same topic. Same Claude. No edits.</p></div>
+<div class="L" id="fg"><div class="ring rl"></div><div class="glow"></div><div class="ring rr"></div><span class="pill pl">Free prompt</span><span class="pill pr">Our system</span><div class="vs">VS</div><div class="cta">Tap “<b>Get the system</b>” above</div></div>
+<div class="L" id="r1"><div class="row"><div><span class="x">✕</span><span class="n">One scene</span></div><div><span class="c">✓</span>Full story</div></div></div>
+<div class="L" id="r2"><div class="row"><div><span class="x">✕</span><span class="n">No voice</span></div><div><span class="c">✓</span>Voiceover</div></div></div>
+<div class="L" id="r3"><div class="row"><div><span class="x">✕</span><span class="n">No captions</span></div><div><span class="c">✓</span>Word captions</div></div></div>
+<div class="L" id="end"><p class="t1">Want the full video?</p><p class="t2" style="font-size:104px">Tap “<b>Get the<br>system</b>”</p><p class="t3">It's the button <b>right above</b> this video.</p><p class="h">@theaitoolfinds</p></div>
+<div class="L" id="mask"><i></i></div>
+</body></html>
