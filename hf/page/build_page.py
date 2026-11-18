@@ -75,16 +75,21 @@ rep("pack.parentNode.insertBefore(sell,pack);var pp=pack.querySelector('p');if(p
     "var pb=pack.querySelector('a[data-gumroad-action]');if(pb){pb.removeAttribute('data-gumroad-action');pb.href='https://theaitoolfinds.gumroad.com/l/free-prompts?wanted=true';pb.target='_blank';pb.rel='noopener'}")
 rep("var st=document.getElementById('selltop');if(st)st.hidden=false;", "")
 # a compact system link right under the email frame (Jan: the system must be reachable from the top too), same button style
+import base64
+BEES_POSTER = 'data:image/jpeg;base64,' + base64.b64encode((H / 'media' / 'bees_poster.jpg').read_bytes()).decode()  # Jan 2026-11-18: DM video arrives late, so the prompts page shows it too
 CK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>'
 SYSTOP = ('<div class="box sell topo" id="systop" hidden>'
-          '<h2>Want an automated<br><em>faceless channel?</em></h2>'
-          '<p class="one" style="margin-top:10px">Ours got 1.8M views in its first 4 weeks. No camera, no editing, no face.</p>'
+          '<h2>This video wasn\'t made<br>with a <em>prompt.</em></h2>'
+          '<video src="https://public-files.gumroad.com/xqbht7ua8bvhn6adis7pqrvk16me" poster="%s" autoplay muted loop playsinline controls preload="metadata" '
+          'style="display:block;width:100%%;max-width:250px;aspect-ratio:9/16;margin:14px auto 0;border-radius:18px;background:#150d24;object-fit:cover"></video>'
+          '<p class="one" style="margin-top:12px">Claude made it by itself with our automated system. The prompts below make one scene; the system makes the whole video.</p>'
+          '<p class="one" style="margin-top:6px">Our account: 2M views on Instagram in its first month. No camera, no editing, no face.</p>'
           '<ul class="ck" style="max-width:330px;margin:14px auto 0;text-align:left">'
           '<li>%s<span>Type one line, get the whole video: script, every scene, captions</span></li>'
           '<li>%s<span>Claude drafts a new video for you every day</span></li>'
           '<li>%s<span>The same styles as our videos, on any topic</span></li></ul>'
           '<p style="margin-top:16px"><a class="btn paid" href="https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH" target="_blank" rel="noopener">See the system · <s>$29</s> $19</a></p>'
-          '<p class="fine" style="margin-top:8px">7-day money-back guarantee.</p></div>') % ((CK,) * 3)
+          '<p class="fine" style="margin-top:8px">7-day money-back guarantee.</p></div>') % ((BEES_POSTER,) + (CK,) * 3)
 rep('<div id="vidbox" hidden>', SYSTOP + '<div id="vidbox" hidden>')
 # which system button was used: top or bottom
 rep("function(x){x.href=x.href+(x.href.indexOf('?')<0?'?':'&')+'utm_source=ig&utm_medium=prompts&utm_content='+tag});",

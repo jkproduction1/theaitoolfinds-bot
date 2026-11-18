@@ -18,7 +18,7 @@ s = (H / "landing.src.html").read_text(encoding="utf-8")
 # real reviews go here: {"q": "what they wrote", "n": "First name or @handle", "c": "Country", "u": "https://link-to-their-video (optional)"}
 REVIEWS = []
 
-VIEWS, REELS, RANGE = "1.8M", 56, "Oct 20 – Nov 17, 2026"   # Instagram, data/stats.json pulled 2026-11-17: 1,893,906 views on 56 reels
+VIEWS, REELS, RANGE = "2M", 56, "Oct 20 – Nov 18, 2026"   # Jan 2026-11-18: IG profile shows 2M; reel count not re-checked, so the note no longer names it   # Instagram, data/stats.json pulled 2026-11-17: 1,893,906 views on 56 reels
 
 
 def rep(old, new, n=1):
@@ -29,7 +29,7 @@ def rep(old, new, n=1):
 
 rep('<b class="g">1.5M</b><span>views in our first month</span>', '<b class="g">%s</b><span>views in our first month</span>' % VIEWS)
 rep("the same styles behind our 1.5M views in our first month", "the same styles behind our %s views in our first month" % VIEWS)
-rep("all 42 reels, Oct 20 – Nov 15, 2026", "all %d reels, %s" % (REELS, RANGE))
+rep("all 42 reels, Oct 20 – Nov 15, 2026", "all our reels, %s" % RANGE)
 assert "1.5M" not in s
 
 # comparison video: if it is slow or fails to load, show a still frame on a solid card instead of the spinning rainbow ring behind it
