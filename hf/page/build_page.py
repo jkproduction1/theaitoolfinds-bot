@@ -79,10 +79,10 @@ import base64
 BEES_POSTER = 'data:image/jpeg;base64,' + base64.b64encode((H / 'media' / 'bees_poster.jpg').read_bytes()).decode()  # Jan 2026-11-18: DM video arrives late, so the prompts page shows it too
 CK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>'
 SYSTOP = ('<div class="box sell topo" id="systop" hidden>'
-          '<h2>This video wasn\'t made<br>with a <em>prompt.</em></h2>'
+          '<h2>A prompt makes a scene.<br>The system makes <em>the video.</em></h2>'
           '<video src="https://public-files.gumroad.com/xqbht7ua8bvhn6adis7pqrvk16me" poster="%s" autoplay muted loop playsinline controls preload="metadata" '
           'style="display:block;width:100%%;max-width:250px;aspect-ratio:9/16;margin:14px auto 0;border-radius:18px;background:#150d24;object-fit:cover"></video>'
-          '<p class="one" style="margin-top:12px">Claude made it by itself with our automated system. The prompts below make one scene; the system makes the whole video.</p>'
+          '<p class="one" style="margin-top:12px">Each prompt below makes one short scene, and that\'s great to start with. This whole video, with script, voice and captions, came from our automated system.</p>'
           '<p class="one" style="margin-top:6px">Our account: 2M views on Instagram in its first month. No camera, no editing, no face.</p>'
           '<ul class="ck" style="max-width:330px;margin:14px auto 0;text-align:left">'
           '<li>%s<span>Type one line, get the whole video: script, every scene, captions</span></li>'
