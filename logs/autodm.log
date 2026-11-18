@@ -1,6 +1,11 @@
-MEDIA APPLY target=6afbe3ccd70c97fdf7100683
-set 6afbe3ccd70c97fdf7100683 Claude explainer styles (TITANIC): dmMedia={"url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@7442bf2a896eac1b895c79f048eeef21137f088b/bot/media clickTag=dm_click linkTracking=True
-  LOG {"createdAt": "2026-11-18T02:38:30.551Z", "commenterUsername": "janaban_15", "status": "pending", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
+MEDIA DRY target=6afbe3ccd70c97fdf7100683
+would set 6afbe3ccd70c97fdf7100683 Claude explainer styles (TITANIC) active=True stats={"read": 189, "dmsSent": 195, "delivered": 189, "dmsFailed": 20, "triggered": 547, "linkClicks": 322, "trackedSends": 195, "uniqueClicks": 180, "followGateSent"
+  LOG {"createdAt": "2026-11-18T02:46:29.379Z", "commenterUsername": "dhe_.tobizz", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
+  LOG {"createdAt": "2026-11-18T02:42:33.061Z", "commenterUsername": "joell.shan", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
+  LOG {"createdAt": "2026-11-18T02:42:31.630Z", "commenterUsername": "akmalov_1220", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
+  LOG {"createdAt": "2026-11-18T02:41:59.085Z", "commenterUsername": "only_adi0", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
+  LOG {"createdAt": "2026-11-18T02:39:32.697Z", "commenterUsername": "rhytham_911_", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
+  LOG {"createdAt": "2026-11-18T02:38:30.551Z", "commenterUsername": "janaban_15", "status": "sent", "audienceOutcome": "gate_passed"} | media: {"mediaError": null}
   LOG {"createdAt": "2026-11-18T02:35:59.473Z", "commenterUsername": "atharv_shetty9729", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
   LOG {"createdAt": "2026-11-18T02:33:45.406Z", "commenterUsername": "king_entera33", "status": "sent", "audienceOutcome": "passed"} | media: {"mediaError": null}
   LOG {"createdAt": "2026-11-18T02:33:33.717Z", "commenterUsername": "ravshanov_teo", "status": "sent", "audienceOutcome": "gate_passed"} | media: {"mediaError": null}
@@ -10,9 +15,4 @@ set 6afbe3ccd70c97fdf7100683 Claude explainer styles (TITANIC): dmMedia={"url": 
   LOG {"createdAt": "2026-11-18T02:31:21.793Z", "commenterUsername": "_ananta5", "status": "sent", "audienceOutcome": "gate_passed"} | media: {"mediaError": null}
   LOG {"createdAt": "2026-11-18T02:28:50.253Z", "commenterUsername": "jordiakbar80", "status": "sent", "error": "Follow gate: not following", "audienceOutcome": "gate_passed"} | media: {"mediaError": null}
   LOG {"createdAt": "2026-11-18T02:26:19.530Z", "commenterUsername": "xlivexey", "status": "sent", "audienceOutcome": "gate_passed"} | media: {"mediaError": null}
-  LOG {"createdAt": "2026-11-18T02:26:16.690Z", "commenterUsername": "dal_3r9", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
-  LOG {"createdAt": "2026-11-18T02:26:13.232Z", "commenterUsername": "cay_denns", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
-  LOG {"createdAt": "2026-11-18T02:24:34.161Z", "commenterUsername": "jamesdetoning", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
-  LOG {"createdAt": "2026-11-18T02:24:21.265Z", "commenterUsername": "idakingofnaps", "status": "failed", "error": "This comment is not eligible for a private reply. Instagram does not say why, or whether the comment's single private reply was already used. Common causes are a comment that already got a private reply (from this or another tool), a commenter whose privacy settings block message requests, or a temporary messaging restriction on the account. It is not a token or permission problem: reconnecting will not help, and retrying the same comment returns the same error.", "platformError": {"code": 100, "subcode": 2534025}} | media: {"mediaError": null}
-  LOG {"createdAt": "2026-11-18T02:20:22.510Z", "commenterUsername": "nvn.jacob", "status": "gated", "audienceOutcome": "gate_sent"} | media: {"mediaError": null}
-changed 1
+changed 0
