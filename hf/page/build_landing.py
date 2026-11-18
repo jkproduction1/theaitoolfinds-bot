@@ -90,6 +90,22 @@ rep('<details class="rv"><summary>What if it\'s not for me?',
     '<details class="rv"><summary>I don\'t have Claude. Can I still use it?<i aria-hidden="true"></i></summary><p>Yes. It also runs in ChatGPT through the free '
     'Codex app (Mac or Windows), even on the free ChatGPT plan. The animations are simpler there. You can switch to Claude any time; the same files work in both.</p></details>\n'
     '      <details class="rv"><summary>What if it\'s not for me?')
+# Jan, 2026-11-18 (positioning): sell the whole system, not "make videos": set up once, a new video every day, no work, fast,
+# proven styles, everything set up for you. No technical talk in the main part (ElevenLabs/ChatGPT only in the FAQ). True limits
+# kept: the system makes the videos, the buyer posts them ("You just post it"); Claude Pro stays visible by the button.
+rep('<h1 id="h1">Make videos<br> like <span class="g">this.</span></h1>', '<h1 id="h1">Your faceless channel,<br> on <span class="g">autopilot.</span></h1>')
+rep('<p class="sub">Type a topic. Claude builds the video: <b>script, animation, captions.</b> Add a voice in one step.</p>',
+    '<p class="sub">Set it up once. Every day AI makes a new video for you, on any topic, in <b>12 styles tuned to get views.</b> You just post it.</p>')
+rep('One-time payment. Runs in Claude Pro ($20/mo) or in ChatGPT, even free, on Mac or Windows.', 'One-time payment, no subscription. Runs in Claude Pro on Mac or Windows.')
+rep('<b>What you get:</b> a set of skills you add to Claude (an AI app, like ChatGPT) and a guide that starts from zero. Instant download.',
+    '<b>What you get:</b> a complete video system for Claude (an AI app, like ChatGPT). One command installs it, then script, animation, captions and voiceover are handled for you. Instant download.')
+rep('<p>Claude Pro or ChatGPT <small>Claude for the full look, ChatGPT (free works) for simpler videos</small></p></div>', '<p>Claude Pro <small>the AI app the system runs in</small></p></div>')
+rep('<p>Optional voice: ElevenLabs <small>add it whenever you want</small></p>', '<p>Voiceover <small>Claude sets it up with you during install</small></p>')
+i = s.index('<p class="note" style="max-width:640px;margin:22px auto 0;text-align:center;line-height:1.6"><b>Which app?</b>'); j = s.index('</p>', i) + 4
+s = s[:i] + s[j:]
+rep('Voiceover <small class="vsm">(ElevenLabs, free plan works)</small>', 'Voiceover')
+rep('<p>Word-synced captions are built in. Want a voiceover too? Drop in an MP3 and every caption syncs to it.</p>',
+    '<p>Captions timed to every word are built in. Claude sets up a natural AI voice with you during install, and the captions sync to it.</p>')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
