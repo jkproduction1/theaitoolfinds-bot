@@ -135,8 +135,8 @@ FAQ = "\n      ".join([
     _q("What does it cost?", "$19 once (launch price, then $29). No subscription from us. The system runs in Claude Pro, a plan from Anthropic, the company behind Claude. "
        "The voice uses a free ElevenLabs account, and Claude helps you create it."),
     _q("Is it safe to pay, and can I get my money back?", "Yes. You pay through Gumroad, a US platform for digital products. It accepts international cards and delivers your files "
-       "the moment you pay, and they are yours to keep. Not for you? Message <a href=\"https://www.instagram.com/theaitoolfinds/\" target=\"_blank\" rel=\"noopener\">@theaitoolfinds</a> "
-       "on Instagram within 7 days and you get your money back."),
+       "the moment you pay, and they are yours to keep. Not for you? Just email <a href=\"mailto:theaitoolfinds@gmail.com\">theaitoolfinds@gmail.com</a> or message "
+       "<a href=\"https://www.instagram.com/theaitoolfinds/\" target=\"_blank\" rel=\"noopener\">@theaitoolfinds</a> on Instagram within 7 days and you get your money back."),
     _q("How much work is it?", "Almost none. Yes, the daily video is automatic: every day Claude prepares a new video for you, on your topic or one from your plan. "
        "You watch it, ask for a change in plain words if you want one, and upload it to Instagram, TikTok or YouTube. One video takes about 30 minutes to make."),
     _q("Do I need experience or a special computer?", "No experience. You never open an editor, and Claude does the installing. You need a Mac or Windows computer for the one-time setup. "
