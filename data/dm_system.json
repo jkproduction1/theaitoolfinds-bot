@@ -13,9 +13,9 @@
  "prompts_title": "Get the prompts",
  "system_title": "Get the system",
  "dm_full": [
-  "Here are your prompts 👇\nA prompt makes one scene. My system makes the whole video from one line. The difference is in the video below.",
-  "Sent 🙌\nThese prompts make one scene. Want the full video with script, captions and voice? Watch the side-by-side below 👇",
-  "As promised 👇\nOne prompt = one scene. One line in my system = a finished video. Both are in the video below."
+  "Here are your prompts 👇\nBtw, Claude made the video below for me. By itself.\nNo editing, no camera. Just my automated system: any topic, 12 styles, a new video every day.\nWant it? Tap “Get the system”.",
+  "Sent 🙌\nSee the video below? Claude made it for me. By itself.\nNo editing, no camera. Just my automated system: any topic, 12 styles, a new video every day.\nWant it? Tap “Get the system”.",
+  "As promised 👇\nThe video below wasn't made with a prompt. Claude built it by itself with my automated system: any topic, 12 styles, a new video every day.\nWant it? Tap “Get the system”."
  ],
  "dm_neutral": [
   "Sent 🙌\nOur videos hit 1.5M views in a month. Same styles, now in one system you install in 2 steps.",
@@ -28,7 +28,16 @@
   "Here you go 👇\nPrompts make one scene. My new system builds the entire video: script, captions, MP4.",
   "As promised 👇\nP.S. I built a system that makes the full video from one typed line. No editing."
  ],
- "dm_media_file": "bot/media/dm_versus.mp4",
- "dm_media_url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@7442bf2a896eac1b895c79f048eeef21137f088b/bot/media/dm_versus.mp4",
- "click_tag": "dm_click"
+ "dm_media_file": "bot/media/dm_bees.mp4",
+ "dm_media_url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@928c301efed6787d73ff1aa84920dd53b592bed5/bot/media/dm_bees.mp4",
+ "click_tag": "dm_click",
+ "dm_full_versus_coffee": {
+  "texts": [
+   "Here are your prompts 👇\nA prompt makes one scene. My system makes the whole video from one line. The difference is in the video below.",
+   "Sent 🙌\nThese prompts make one scene. Want the full video with script, captions and voice? Watch the side-by-side below 👇",
+   "As promised 👇\nOne prompt = one scene. One line in my system = a finished video. Both are in the video below."
+  ],
+  "file": "bot/media/dm_versus.mp4",
+  "url": "https://cdn.jsdelivr.net/gh/jkproduction1/theaitoolfinds-bot@7442bf2a896eac1b895c79f048eeef21137f088b/bot/media/dm_versus.mp4"
+ }
 }
