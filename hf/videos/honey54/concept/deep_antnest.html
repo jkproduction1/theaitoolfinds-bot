@@ -1,0 +1,132 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// honey54 r2: /deep-dive inside an ant nest (one continuous descent through a cross-section, depth readout)
+// Facts / source: Walter R. Tschinkel, "The nest architecture of the Florida harvester ant, Pogonomyrmex badius",
+//   Journal of Insect Science 4:21 (2004), pmc.ncbi.nlm.nih.gov/articles/PMC528881:
+//   - "Mature colonies are commonly 2.5 to 3.0 m deep" (deepest measured 3.06 m)  -> depth readout ends near 3 m, card "nest floor / about 3 m down"
+//   - "seeds are stored exclusively in chambers between 40 and 100 cm below ground" -> card "seed store / 40-100 cm down"
+//   - "brood and newly emerged workers are located primarily in the bottom third"   -> card "nursery / brood in the bottom third"
+//   - shafts are helices, chambers are horizontal and lobed, larger and closer together near the surface -> the drawing
+//   The paper does not locate the queen, so no queen label. Schematic: tunnels, chambers and ants are drawn far bigger than to scale.
+const g=document.getElementById('c').getContext('2d');
+const LERP=(a,b,t)=>a+(b-a)*t, MONO="'DejaVu Sans Mono','Liberation Mono',monospace";
+const M=1100, Y0=1300, WH=5300;            // px per metre, world y offset inside the strip, strip height
+const camY=(t)=>-60+40*t+720*EIO((t-0.7)/1.7)+1850*EIO((t-3.1)/1.7);
+const shaftX=(y)=>540+150*CL(y/170)*Math.sin(y/128+0.4)+18*Math.sin(y/47);
+// chambers: [depth m, side(-1 left / 1 right), width, height, kind]
+const CH=[[.13,-1,360,104,0],[.27,1,330,100,0],[.45,-1,330,100,1],[.62,1,320,98,1],[.80,-1,330,100,1],[.97,1,300,96,1],
+ [1.22,-1,250,88,0],[1.48,1,250,88,0],[1.74,-1,240,86,0],[1.98,1,250,88,0],[2.22,-1,300,98,2],[2.44,1,310,100,2],[2.64,-1,300,98,2],[2.84,1,300,98,2]];
+CH.forEach(c=>{c.y=c[0]*M; c.sx=shaftX(c.y); c.x0=c.sx+c[1]*10; c.x1=c.sx+c[1]*(c[2]+30); c.fl=c.y+c[3]/2;});
+function chamberPath(p,c,gr){ const a=Math.min(c.x0,c.x1)-gr, b=Math.max(c.x0,c.x1)+gr, top=c.y-c[3]/2-gr, fl=c.fl+gr, w=b-a;
+  p.beginPath(); p.moveTo(a+26,fl); p.lineTo(b-26,fl); p.quadraticCurveTo(b,fl,b,fl-30);
+  p.bezierCurveTo(b,top+10,b-w*.25,top-8,b-w*.42,top+6); p.bezierCurveTo(b-w*.5,top+16,b-w*.58,top-10,b-w*.75,top+4);
+  p.bezierCurveTo(a+w*.1,top+8,a,top+30,a,fl-30); p.quadraticCurveTo(a,fl,a+26,fl); p.closePath(); }
+function shaftStroke(p,w,col){ p.strokeStyle=col; p.lineWidth=w; p.lineCap='round'; p.lineJoin='round'; p.beginPath(); for(let y=-6;y<=3.0*M;y+=6){ const x=shaftX(y); y<0?p.moveTo(x,y):p.lineTo(x,y);} p.stroke(); }
+const SEEDS=[], BROOD=[];
+// ---------- static world strip ----------
+const strip=off(1080,WH,(p,w,h)=>{ const R=R0(21); p.translate(0,Y0);
+  // sky (dusk-blue to warm horizon)
+  const sk=p.createLinearGradient(0,-Y0,0,0); sk.addColorStop(0,'#0c1830'); sk.addColorStop(.55,'#27456f'); sk.addColorStop(.9,'#e8a56a'); sk.addColorStop(1,'#f7cf96'); p.fillStyle=sk; p.fillRect(0,-Y0,w,Y0);
+  p.fillStyle='rgba(255,236,200,.55)'; p.filter='blur(60px)'; p.beginPath(); p.arc(800,-60,150,0,7); p.fill(); p.filter='none';
+  // far dunes + pines silhouette
+  p.fillStyle='#31455c'; p.beginPath(); p.moveTo(0,-90); for(let x=0;x<=1080;x+=30) p.lineTo(x,-90-30*Math.sin(x/170)-14*Math.sin(x/53)); p.lineTo(1080,0); p.lineTo(0,0); p.fill();
+  // soil body
+  const so=p.createLinearGradient(0,0,0,3900); so.addColorStop(0,'#c9a66f'); so.addColorStop(.06,'#d9bd8a'); so.addColorStop(.3,'#cfa972'); so.addColorStop(.62,'#b98958'); so.addColorStop(1,'#7d5637');
+  p.fillStyle=so; p.fillRect(0,0,w,4000);
+  // strata bands
+  for(let i=0;i<26;i++){ const y=R()*3900, th=20+R()*90; p.fillStyle=R()<.5?'rgba(255,240,205,'+(.03+R()*.06)+')':'rgba(70,40,18,'+(.03+R()*.06)+')'; p.beginPath(); p.moveTo(0,y); for(let x=0;x<=1080;x+=40) p.lineTo(x,y+14*Math.sin(x/190+i)); for(let x=1080;x>=0;x-=40) p.lineTo(x,y+th+18*Math.sin(x/150+i*2)); p.fill(); }
+  // sand grain
+  for(let i=0;i<150000;i++){ const x=R()*1080,y=R()*3950; p.fillStyle=R()<.5?'rgba(60,34,14,'+(R()*.16)+')':'rgba(255,244,214,'+(R()*.16)+')'; p.fillRect(x,y,1+R()*2.4,1+R()*2.4); }
+  // pebbles
+  for(let i=0;i<150;i++){ const x=R()*1080,y=40+R()*3850,r=4+R()*15; if(Math.abs(x-shaftX(y))<70) continue; p.save(); p.translate(x,y); p.rotate(R()*3); const pg=p.createLinearGradient(0,-r,0,r); pg.addColorStop(0,'rgba(236,226,206,.85)'); pg.addColorStop(1,'rgba(120,98,76,.85)'); p.fillStyle=pg; p.beginPath(); p.ellipse(0,0,r,r*(.55+R()*.3),0,0,7); p.fill(); p.restore(); }
+  // roots near the top
+  p.lineCap='round'; for(let i=0;i<16;i++){ let x=R()*1080,y=0; if(Math.abs(x-540)<120) continue; p.strokeStyle='rgba(92,62,36,.75)'; let wd=7+R()*5; const dir=R()-.5;
+    for(let k=0;k<26&&wd>1;k++){ const nx=x+(dir+(R()-.5))*26, ny=y+10+R()*16; p.lineWidth=wd; p.beginPath(); p.moveTo(x,y); p.lineTo(nx,ny); p.stroke(); x=nx; y=ny; wd*=.9; } }
+  // ---- nest: outer dark rim, then lit interior ----
+  const all=(gr,fill)=>{ CH.forEach(c=>{chamberPath(p,c,gr); p.fillStyle=fill; p.fill();}); };
+  shaftStroke(p,66,'rgba(64,36,18,.55)'); all(9,'rgba(64,36,18,.55)');
+  // end chamber at the nest floor
+  const fl=3.0*M, fx=shaftX(fl);
+  const endC=(gr)=>{ p.beginPath(); p.ellipse(fx,fl-6,150+gr,56+gr,0,Math.PI,0); p.lineTo(fx+150+gr,fl+30); p.quadraticCurveTo(fx+150+gr,fl+52+gr,fx+110,fl+52+gr); p.lineTo(fx-110,fl+52+gr); p.quadraticCurveTo(fx-150-gr,fl+52+gr,fx-150-gr,fl+30); p.closePath(); };
+  endC(9); p.fillStyle='rgba(64,36,18,.55)'; p.fill();
+  shaftStroke(p,50,'#3a2111'); all(0,'#3a2111'); endC(0); p.fillStyle='#3a2111'; p.fill();
+  shaftStroke(p,34,'#4b2d18'); 
+  CH.forEach(c=>{ p.save(); chamberPath(p,c,0); p.clip(); const cg=p.createLinearGradient(0,c.y-c[3]/2,0,c.fl); cg.addColorStop(0,'#2c180c'); cg.addColorStop(.6,'#4a2c17'); cg.addColorStop(1,'#6a4424'); p.fillStyle=cg; p.fillRect(0,c.y-80,1080,180);
+    p.fillStyle='rgba(255,214,150,.10)'; p.fillRect(0,c.fl-10,1080,12); p.restore(); });
+  p.save(); endC(0); p.clip(); const eg=p.createLinearGradient(0,fl-60,0,fl+52); eg.addColorStop(0,'#2c180c'); eg.addColorStop(1,'#6a4424'); p.fillStyle=eg; p.fillRect(0,fl-80,1080,160); p.restore();
+  // entrance crater + mound of excavated sand
+  p.fillStyle='#e0c592'; p.beginPath(); p.moveTo(150,2); p.bezierCurveTo(330,-10,430,-64,500,-70); p.lineTo(522,-26); p.lineTo(558,-26); p.lineTo(580,-70); p.bezierCurveTo(650,-64,750,-10,930,2); p.closePath(); p.fill();
+  p.fillStyle='#3a2111'; p.beginPath(); p.moveTo(510,-72); p.lineTo(570,-72); p.lineTo(558,6); p.lineTo(522,6); p.closePath(); p.fill();
+  for(let i=0;i<900;i++){ const x=160+R()*760, y=-R()*70*Math.max(0,1-Math.abs(x-540)/390); if(Math.abs(x-540)<32) continue; p.fillStyle=R()<.5?'rgba(120,84,44,.35)':'rgba(255,246,220,.5)'; p.fillRect(x,y,2+R()*2,2+R()*2); }
+  // grass tufts
+  for(let i=0;i<46;i++){ const x=R()*1080; if(Math.abs(x-540)<400) continue; for(let k=0;k<5;k++){ p.strokeStyle=['#3f5a36','#56733f','#2f4a30'][k%3]; p.lineWidth=3; p.beginPath(); p.moveTo(x+k*4,4); p.quadraticCurveTo(x+k*4+(R()-.5)*30,-30-R()*30,x+k*4+(R()-.5)*50,-50-R()*50); p.stroke(); } }
+  // seeds piled in the store chambers, brood positions in the nursery chambers
+  CH.forEach((c,ci)=>{ const a=Math.min(c.x0,c.x1)+34, b=Math.max(c.x0,c.x1)-30, far=c[1]>0?b:a, near=c[1]>0?a:b;
+    if(c[4]==1){ for(let i=0;i<130;i++){ const u=Math.pow(R(),.7), x=LERP(near+c[1]*70,far,u), hmax=44*Math.sin(Math.PI*CL(u*.9+.1)), y=c.fl-5-R()*hmax; SEEDS.push(1);
+        p.save(); p.translate(x,y); p.rotate(R()*3); const sc=['#e9cf8f','#c99a4e','#8c6a3a','#f2e2b6','#a9793f'][Math.floor(R()*5)]; p.fillStyle=sc; p.beginPath(); p.ellipse(0,0,7.5,4.6,0,0,7); p.fill(); p.fillStyle='rgba(255,255,255,.35)'; p.beginPath(); p.ellipse(-2,-1.5,3,1.4,0,0,7); p.fill(); p.restore(); } }
+    if(c[4]==2){ for(let i=0;i<15;i++){ const u=R(); BROOD.push({x:LERP(near+c[1]*80,far,u),y:c.fl-8-R()*10,r:R()*.8-.4,ph:R()*6.3,k:R()<.35?1:0}); } } });
+});
+// ---------- ants ----------
+function ant(x,y,ang,s,t,ph,carry,flip){ g.save(); g.translate(x,y); g.rotate(ang); if(flip) g.scale(1,-1); g.scale(s,s);
+  const w=Math.sin(t*22+ph); g.strokeStyle='#2a120a'; g.lineWidth=2.6; g.lineCap='round'; g.lineJoin='round';
+  [[-7,-1],[1,1],[8,-1]].forEach((l,i)=>{ const sw=(i%2?-1:1)*w*5; g.beginPath(); g.moveTo(l[0],2); g.lineTo(l[0]+l[1]*4+sw*.5,11); g.lineTo(l[0]+l[1]*9+sw,20); g.stroke(); g.globalAlpha=.55; g.beginPath(); g.moveTo(l[0],2); g.lineTo(l[0]+l[1]*4-sw*.5,10); g.lineTo(l[0]+l[1]*8-sw,19); g.stroke(); g.globalAlpha=1; });
+  const bd=(cx,cy,rx,ry,c0,c1)=>{ const gr=g.createLinearGradient(0,cy-ry,0,cy+ry); gr.addColorStop(0,c0); gr.addColorStop(1,c1); g.fillStyle=gr; g.beginPath(); g.ellipse(cx,cy,rx,ry,0,0,7); g.fill(); };
+  bd(-19,-3,12,8.6,'#b04a22','#4f1c0c'); bd(-5.5,-1,3.6,3.4,'#8f3518','#4f1c0c'); bd(3,-2,8.5,5.6,'#b9522a','#5a210e'); bd(16,-4,8,7,'#c25a2e','#5e230f');
+  g.fillStyle='rgba(255,220,190,.5)'; g.beginPath(); g.ellipse(-21,-7,5,2,-.2,0,7); g.fill(); g.fillStyle='#140805'; g.beginPath(); g.arc(18,-5,1.7,0,7); g.fill();
+  g.lineWidth=1.8; g.beginPath(); g.moveTo(20,-9); g.quadraticCurveTo(26,-17+w*2,33,-13+w*3); g.stroke(); g.beginPath(); g.moveTo(21,-7); g.quadraticCurveTo(29,-10-w*2,35,-4-w*3); g.stroke();
+  if(carry){ g.fillStyle='#ecd596'; g.beginPath(); g.ellipse(27,-1,7,4.6,.4,0,7); g.fill(); g.fillStyle='rgba(255,255,255,.4)'; g.beginPath(); g.ellipse(25,-2.5,3,1.3,.4,0,7); g.fill(); }
+  g.restore(); }
+const AR=R0(9), SH=[...Array(30)].map((_,i)=>({o:AR()*3300,sp:(95+AR()*70)*(i%3==0?-1:1),ph:AR()*6.3,side:AR()<.5?-1:1}));
+const CA=[]; CH.forEach((c,ci)=>{ const n=c[4]==2?4:(c[4]==1?3:2); for(let i=0;i<n;i++) CA.push({c,ph:AR()*6.3,sp:.5+AR()*.5,u:AR()}); });
+const SF=[...Array(7)].map((_,i)=>({o:AR(),sp:.16+AR()*.08,side:i%2?1:-1,ph:AR()*6.3}));
+function ants(t){
+  // surface: walking over the mound into the entrance
+  SF.forEach(a=>{ const u=(a.o+t*a.sp)%1, d=(1-u)*470; if(d<26) return; const x=540+a.side*d, hh=(x)=>-70*Math.max(0,1-Math.abs(x-540)/390)*(Math.abs(x-540)<40?0.4:1);
+    const y=hh(x)-13, ang=Math.atan2(hh(x-a.side*10)-hh(x),-a.side*10); ant(x,y,ang,1.05,t,a.ph,a.side>0&&u>.1,Math.cos(ang)<0); });
+  // shaft: two lanes (down carrying seeds / up empty)
+  SH.forEach(a=>{ let y=((a.o+t*a.sp)%3240+3240)%3240+20; const dy=a.sp>0?6:-6, x=shaftX(y), x2=shaftX(y+dy), ang=Math.atan2(dy,x2-x), nx=-Math.sin(ang), ny=Math.cos(ang);
+    const lane=a.sp>0?9:-9; ant(x+nx*lane,y+ny*lane,ang,.92,t,a.ph,a.sp>0&&y<1050,lane<0); });
+  // chambers: workers pacing on the floor
+  CA.forEach(a=>{ const c=a.c, lo=Math.min(c.x0,c.x1)+50, hi=Math.max(c.x0,c.x1)-46, ph=t*a.sp*.9+a.ph, u=.5+.5*Math.sin(ph), dir=Math.cos(ph)>0?1:-1;
+    const x=LERP(lo,hi,LERP(.08,.92,u)); ant(x,c.fl-17,dir>0?0:Math.PI,.92,t*(.4+Math.abs(Math.cos(ph))*.6),a.ph,c[4]==1&&dir*c[1]>0,dir<0); });
+}
+function brood(t){ BROOD.forEach(b=>{ g.save(); g.translate(b.x,b.y+1.2*Math.sin(t*3+b.ph)); g.rotate(b.r+.08*Math.sin(t*2.2+b.ph)); const gr=g.createLinearGradient(0,-8,0,8); gr.addColorStop(0,'#fffaf0'); gr.addColorStop(1,'#d9c7a6'); g.fillStyle=gr;
+    if(b.k){ g.beginPath(); g.ellipse(0,0,6,3.6,0,0,7); g.fill(); } else { g.beginPath(); g.ellipse(0,0,14,7.5,0,0,7); g.fill(); g.strokeStyle='rgba(150,120,90,.45)'; g.lineWidth=1.2; for(let i=-2;i<=2;i++){ g.beginPath(); g.moveTo(i*4.4,-6.5); g.lineTo(i*4.4,6.5); g.stroke(); } }
+    g.restore(); }); }
+// ---------- overlay ----------
+function card(a,x,y,bold,mono,col,tx,ty,right){if(a<=0)return;g.save();g.globalAlpha=a;const dy=(1-a)*16;
+  g.font='800 44px '+SANS;const bw=g.measureText(bold).width;g.font='500 29px '+MONO;const mw=g.measureText(mono).width;const w=Math.max(bw,mw)+52,h=122;if(right)x=x-w;y+=dy;
+  if(tx!=null){const ax=CL((tx-x)/w)*w*.7+x+w*.15,ay=ty<y?y:y+h;g.strokeStyle=col;g.lineWidth=3;g.beginPath();g.moveTo(ax,ay);g.lineTo(tx,ty);g.stroke();
+    g.fillStyle='rgba(255,255,255,.2)';g.beginPath();g.arc(tx,ty,17,0,7);g.fill();g.fillStyle=col;g.shadowColor=col;g.shadowBlur=14;g.beginPath();g.arc(tx,ty,7.5,0,7);g.fill();g.shadowBlur=0;}
+  g.fillStyle='rgba(18,11,6,.9)';g.beginPath();g.roundRect(x,y,w,h,14);g.fill();g.strokeStyle=col;g.lineWidth=2.5;g.stroke();
+  g.fillStyle='#fff';g.font='800 44px '+SANS;g.fillText(bold,x+26,y+55);g.fillStyle=col;g.font='500 29px '+MONO;g.fillText(mono,x+26,y+98);g.restore();}
+const fade=(t,a,b,d)=>E3((t-a)/(d||.4))*(b==null?1:1-CL((t-b)/.3));
+const GOLD='#ffd27a', CREAM='#ffe9c9';
+function draw(t){ const cy=camY(t), sway=10*Math.sin(t*.9), top=cy-960, z=1+.02*Math.sin(t*.7);
+  g.setTransform(1,0,0,1,0,0); g.fillStyle='#000'; g.fillRect(0,0,1080,1920);
+  g.save(); g.translate(540,960); g.scale(z,z); g.translate(-540+sway,-960);
+  g.drawImage(strip,0,top+Y0-20,1080,1960,0,-20,1080,1960);
+  g.translate(0,-top); ants(t); brood(t);
+  g.restore();
+  // depth mood: darker with depth, warm lamp pool in the middle
+  const dp=CL(cy/2600); g.fillStyle='rgba(20,10,4,'+(.34*dp)+')'; g.fillRect(0,0,1080,1920);
+  const vg=g.createRadialGradient(540,900,300,540,960,1250); vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(8,4,2,'+(.35+.4*dp)+')'); g.fillStyle=vg; g.fillRect(0,0,1080,1920);
+  // floating dust in the lamp
+  const DR=R0(5); for(let i=0;i<40;i++){ const x=(DR()*1080+t*(8+DR()*20)+20*Math.sin(t+i))%1080, y=((DR()*1920-t*(260*CL(cy/400+.2))*(.3+DR()*.5))%1920+1920)%1920; g.fillStyle='rgba(255,236,200,'+(.05+DR()*.14)*CL(cy/300)+')'; g.beginPath(); g.arc(x,y,1.5+DR()*3,0,7); g.fill(); }
+  // labels (anchored to world points)
+  const sy=(wy)=>wy-top, c2=CH[3], c11=CH[11];
+  card(fade(t,2.0,3.55),90,sy(c2.y)-330,'seed store','40–100 cm down',GOLD,c2.sx+150-sway*0,sy(c2.fl)-30,false);
+  card(fade(t,4.55),990,sy(c11.y)-340,'nursery','brood in the bottom third',CREAM,c11.sx+170,sy(c11.fl)-22,true);
+  card(fade(t,5.35),110,sy(3.0*M)+110,'nest floor','about 3 m down',GOLD,shaftX(3.0*M)-60,sy(3.0*M)+30,false);
+  // depth readout
+  const d=Math.max(0,cy/M); g.save(); g.globalAlpha=E3((t-.15)/.4); const rw=380,rx=540-rw/2,ry=268;
+  g.fillStyle='rgba(18,11,6,.86)'; g.beginPath(); g.roundRect(rx,ry,rw,84,42); g.fill(); g.strokeStyle='rgba(255,210,122,.7)'; g.lineWidth=2.5; g.stroke();
+  g.fillStyle=GOLD; g.font='500 27px '+MONO; g.fillText('DEPTH',rx+34,ry+54); g.fillStyle='#fff'; g.font='800 46px '+SANS; g.textAlign='right'; g.fillText(d.toFixed(2)+' m',rx+rw-34,ry+60); g.textAlign='left';
+  // depth rail on the right
+  g.restore(); g.save(); g.globalAlpha=.75*E3((t-.3)/.4); g.strokeStyle='rgba(255,236,200,.6)'; g.fillStyle='rgba(255,236,200,.85)'; g.font='500 24px '+MONO; g.lineWidth=2;
+  for(let m=0;m<=30;m++){ const y=sy(m*.1*M); if(y<380||y>1500) continue; const big=m%5==0; g.beginPath(); g.moveTo(1040,y); g.lineTo(1040-(big?34:16),y); g.stroke(); if(big){ g.textAlign='right'; g.fillText((m/10).toFixed(1),996,y+8); g.textAlign='left'; } }
+  g.restore();
+  g.globalAlpha=.5; g.drawImage(GRAIN,0,0); g.globalAlpha=1;
+}
+document.fonts.ready.then(()=>{ draw(0); document.title='ok'; });
+</script></body></html>

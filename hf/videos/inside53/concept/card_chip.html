@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Card chip pays</title>
+<!--
+  inside53 r2: /explain-3d how a card chip pays. Facts (checked 2026-11-18):
+  - The EMV chip is a small computer; the terminal powers it through the contact plate when the card is inserted.
+  - For every payment the chip generates a unique cryptogram (one-time code) with a secret key stored in the chip; the key never
+    leaves the chip, so data copied from one payment can't be replayed for the next one (counterfeit protection).
+    Sources: EMVCo (emvco.com, EMV chip overview), Entrust "EMV 101: behind the transaction", Cryptomathic "reducing payment card fraud
+    by shifting over to EMV chip technology".
+  Design: generic card (no bank, network logos or numbers) and a generic terminal, our own look. Units: mm.
+-->
+<style>
+  :root{--accent:#ffb23d}
+  body{margin:0;background:#000;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#151b26;font-family:"Inter",system-ui,Arial,sans-serif}
+  canvas{position:absolute;inset:0;display:block}
+  #ov{position:absolute;inset:0;pointer-events:none}
+  #ov svg{position:absolute;inset:0}
+  .pill{position:absolute;transform:translate(-50%,-50%);background:rgba(12,16,24,.84);border:2px solid rgba(255,255,255,.18);border-radius:20px;padding:12px 26px 14px;color:#fff;text-align:center;white-space:nowrap;box-shadow:0 10px 34px rgba(0,0,0,.4);opacity:0}
+  .pill b{display:block;font-weight:800;font-size:44px;letter-spacing:-.5px}
+  .pill i{display:block;font-style:normal;font-weight:600;font-size:32px;color:var(--accent);margin-top:2px}
+  #read{position:absolute;left:540px;top:350px;transform:translate(-50%,-50%);width:800px;background:linear-gradient(#0d121b,#0a0e15);border:2px solid rgba(255,255,255,.16);border-radius:28px;
+        box-shadow:0 18px 50px rgba(0,0,0,.5);padding:16px 30px 22px;color:#fff;text-align:center;opacity:0}
+  #read .h{font-weight:700;font-size:34px;color:#ffb23d;letter-spacing:.5px}
+  #read .w{font:700 96px/1.1 "DejaVu Sans Mono",monospace;color:#9ef0ff;text-shadow:0 0 22px rgba(80,210,255,.55);letter-spacing:2px}
+  #read .row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:8px;font-weight:700;font-size:35px;color:#dfe7ef;white-space:nowrap;opacity:0}
+  #tick{width:52px;height:52px;border-radius:50%;background:#3ddc84;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(61,220,132,.7)}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.js","three/addons/":"./"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div id="read"><div class="h">ONE-TIME CODE</div><div class="w" id="code">---- ----</div>
+      <div class="row" id="chk"><span id="tick"><svg width="34" height="34" viewBox="0 0 34 34"><path id="tp" d="M7 18 L14 25 L28 9" fill="none" stroke="#06210f" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="40" stroke-dashoffset="40"/></svg></span><span>works once, a copy won't</span></div></div>
+    <div class="pill" id="pPow"><b>power in</b><i>through the gold contacts</i></div>
+    <div class="pill" id="pKey"><b>secret key</b><i>never leaves the chip</i></div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
+
+const W = 1080, H = 1920;
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+stage.prepend(renderer.domElement);
+
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ramp = (t, a, b) => cl((t - a) / (b - a));
+const sm = x => x * x * (3 - 2 * x);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eout = x => 1 - Math.pow(1 - x, 3);
+const popS = x => { const c1 = 1.70158, c3 = c1 + 1, y = x - 1; return 1 + c3 * y * y * y + c1 * y * y; };
+function canvasTex(w, h, draw) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; }
+
+const scene = new THREE.Scene();
+scene.background = canvasTex(64, 512, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h);
+  gr.addColorStop(0, '#0e1420'); gr.addColorStop(.45, '#1f2a3b'); gr.addColorStop(.75, '#2a3647'); gr.addColorStop(1, '#1a2230'); g.fillStyle = gr; g.fillRect(0, 0, w, h); });
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(30, W / H, 1, 4000);
+scene.add(new THREE.HemisphereLight('#cfe0ff', '#2a2420', 0.55));
+const key = new THREE.DirectionalLight('#fff1dc', 2.4); key.position.set(-120, 260, 220); key.castShadow = true;
+Object.assign(key.shadow.camera, { left: -150, right: 150, top: 150, bottom: -150, near: 10, far: 800 }); key.shadow.mapSize.set(1024, 1024); key.shadow.bias = -0.0005;
+scene.add(key);
+const rim = new THREE.DirectionalLight('#8fc8ff', 1.5); rim.position.set(200, 120, -220); scene.add(rim);
+
+// ---------- counter ----------
+const aoTex = canvasTex(128, 128, (g) => { const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(0,0,0,.75)'); r.addColorStop(.6, 'rgba(0,0,0,.3)'); r.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128); });
+const counter = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshStandardMaterial({ color: '#363e4b', roughness: .6 }));
+counter.rotation.x = -Math.PI / 2; counter.position.y = -150; counter.receiveShadow = true; scene.add(counter);
+{ const m = new THREE.Mesh(new THREE.PlaneGeometry(200, 140), new THREE.MeshBasicMaterial({ map: aoTex, transparent: true, depthWrite: false })); m.rotation.x = -Math.PI / 2; m.position.y = -149.8; scene.add(m); }
+
+// ---------- terminal: base (opaque) + reader head (ghosts later). Slot on top at y=0 ----------
+const bodyM = new THREE.MeshStandardMaterial({ color: '#2a2f37', roughness: .45, metalness: .25 });
+const headM = new THREE.MeshPhysicalMaterial({ color: '#2f353e', roughness: .35, metalness: .2, transparent: true, opacity: 1, clearcoat: .5 });
+const base = new THREE.Mesh(new RoundedBoxGeometry(86, 100, 46, 4, 8), bodyM); base.position.set(0, -100, -4); base.castShadow = base.receiveShadow = true; scene.add(base);
+const head = new THREE.Mesh(new RoundedBoxGeometry(86, 52, 46, 4, 8), headM); head.position.set(0, -26, -4); head.castShadow = true; head.renderOrder = 5; scene.add(head);
+// screen + keypad on the base front
+const scrTex = canvasTex(256, 160, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#16324a'); gr.addColorStop(1, '#0b1a28'); g.fillStyle = gr; g.fillRect(0, 0, w, h);
+  g.fillStyle = 'rgba(158,240,255,.85)'; g.font = 'bold 30px sans-serif'; g.textAlign = 'center'; g.fillText('Pay', w / 2, 70); g.font = '22px sans-serif'; g.fillText('insert card', w / 2, 112); });
+const scr = new THREE.Mesh(new THREE.PlaneGeometry(62, 38), new THREE.MeshBasicMaterial({ map: scrTex, toneMapped: false })); scr.position.set(0, -72, 19.2); scene.add(scr);
+const keyM = new THREE.MeshStandardMaterial({ color: '#3d434d', roughness: .5 });
+for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) { const k = new THREE.Mesh(new RoundedBoxGeometry(15, 7, 3, 2, 1.2), keyM); k.position.set(-20 + c * 20, -103 - r * 11, 19.5); scene.add(k); }
+// slot (dark rounded opening on top)
+const slot = new THREE.Mesh(new RoundedBoxGeometry(62, 1.2, 4, 2, .5), new THREE.MeshBasicMaterial({ color: '#05070a' })); slot.position.set(0, 0.1, 0); scene.add(slot);
+// contact pins (spring arms) in front of the chip position, inside the head
+const pinM = new THREE.MeshStandardMaterial({ color: '#d4a64a', roughness: .3, metalness: 1, emissive: '#ffb23d', emissiveIntensity: 0 });
+const pins = [];
+const CHIP = new THREE.Vector3(-6, -24, 0.5); // chip centre when inserted
+for (let r = 0; r < 4; r++) for (const c of [-1, 1]) { const p = new THREE.Mesh(new THREE.CylinderGeometry(.55, .55, 3.4, 10), pinM); p.rotation.x = Math.PI / 2;
+  p.position.set(CHIP.x + c * 3.0, CHIP.y + 3.6 - r * 2.4, 2.6); p.renderOrder = 6; scene.add(p); pins.push(p); }
+const pinBar = new THREE.Mesh(new RoundedBoxGeometry(12, 13, 1.2, 2, .4), new THREE.MeshStandardMaterial({ color: '#1b1f25', roughness: .6, transparent: true, opacity: 0 }));
+pinBar.position.set(CHIP.x, CHIP.y, 4.6); scene.add(pinBar);
+
+// ---------- card: 54 x 85.6 x 0.8 mm portrait, chip-first ----------
+const cardTex = canvasTex(540, 856, (g, w, h) => { const gr = g.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#1d3b6e'); gr.addColorStop(.55, '#152a4f'); gr.addColorStop(1, '#0d1b33'); g.fillStyle = gr; g.fillRect(0, 0, w, h);
+  g.strokeStyle = 'rgba(140,190,255,.10)'; g.lineWidth = 3; for (let i = 0; i < 16; i++) { g.beginPath(); for (let y = 0; y <= h; y += 8) { const x = 80 + i * 34 + 40 * Math.sin(y / 120 + i * .4); y ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke(); }
+  g.fillStyle = 'rgba(255,255,255,.07)'; g.beginPath(); g.arc(w * .8, h * .25, 230, 0, 7); g.fill(); });
+const cardEdge = new THREE.MeshStandardMaterial({ color: '#0c1526', roughness: .5 });
+const cardFace = new THREE.MeshPhysicalMaterial({ map: cardTex, roughness: .32, clearcoat: .7, clearcoatRoughness: .25 });
+const card = new THREE.Group(); scene.add(card);
+const cardMesh = new THREE.Mesh(new RoundedBoxGeometry(54, 85.6, .8, 3, .38), [cardEdge, cardEdge, cardEdge, cardEdge, cardFace, cardEdge]);
+cardMesh.position.y = 42.8; cardMesh.castShadow = true; card.add(cardMesh); // card origin = bottom edge centre
+// chip plate: canvas redrawn each frame (gold contacts -> circuit view)
+const CW = 440, CH = 360; const chipCan = document.createElement('canvas'); chipCan.width = CW; chipCan.height = CH; const cg = chipCan.getContext('2d');
+const chipTex = new THREE.CanvasTexture(chipCan); chipTex.colorSpace = THREE.SRGBColorSpace; chipTex.anisotropy = 8;
+const chip = new THREE.Mesh(new THREE.PlaneGeometry(11.6, 9.5), new THREE.MeshStandardMaterial({ map: chipTex, emissiveMap: chipTex, emissive: '#ffffff', emissiveIntensity: 0.0, roughness: .25, metalness: .6 }));
+chip.position.set(CHIP.x, CHIP.y + 0, .42); card.add(chip); // relative to card origin; card origin y set so chip lands on CHIP
+const CHIP_REL = 18; chip.position.y = CHIP_REL;
+const glowChip = new THREE.Mesh(new THREE.PlaneGeometry(40, 34), new THREE.MeshBasicMaterial({ map: aoTex, color: '#ffb23d', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+glowChip.position.set(CHIP.x, CHIP_REL, .5); card.add(glowChip);
+function drawChip(t, pow, xr, keyA) {
+  const g = cg; g.clearRect(0, 0, CW, CH);
+  // gold plate
+  const gr = g.createLinearGradient(0, 0, CW, CH); gr.addColorStop(0, '#f6d98a'); gr.addColorStop(.5, '#c99a3c'); gr.addColorStop(1, '#f0cf7a');
+  g.fillStyle = gr; g.beginPath(); g.roundRect(4, 4, CW - 8, CH - 8, 46); g.fill();
+  // contact segment grooves
+  g.strokeStyle = 'rgba(90,60,15,.85)'; g.lineWidth = 7;
+  const cx = CW / 2, cy = CH / 2;
+  g.beginPath(); g.roundRect(cx - 70, cy - 60, 140, 120, 20); g.stroke();
+  for (const s of [-1, 1]) { g.beginPath(); g.moveTo(cx + s * 70, cy - 60 + 0); g.lineTo(cx + s * 70, cy - 60); g.moveTo(cx + s * 70, cy - 20); g.lineTo(s < 0 ? 4 : CW - 4, cy - 30);
+    g.moveTo(cx + s * 70, cy + 20); g.lineTo(s < 0 ? 4 : CW - 4, cy + 30); g.moveTo(cx + s * 50, cy - 60); g.lineTo(cx + s * 120, 4); g.moveTo(cx + s * 50, cy + 60); g.lineTo(cx + s * 120, CH - 4); g.stroke(); }
+  // power: glowing current flowing along the grooves
+  if (pow > 0) { g.save(); g.globalCompositeOperation = 'lighter'; g.strokeStyle = `rgba(255,190,80,${.9 * pow})`; g.lineWidth = 10; g.setLineDash([22, 26]); g.lineDashOffset = -t * 260;
+    g.beginPath(); g.roundRect(cx - 70, cy - 60, 140, 120, 20); g.stroke();
+    for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s < 0 ? 4 : CW - 4, cy - 30); g.lineTo(cx + s * 70, cy - 20); g.moveTo(s < 0 ? 4 : CW - 4, cy + 30); g.lineTo(cx + s * 70, cy + 20); g.stroke(); }
+    g.restore(); }
+  // x-ray: the tiny computer under the plate
+  if (xr > 0) { g.save(); g.globalAlpha = xr;
+    g.fillStyle = '#0b1622'; g.beginPath(); g.roundRect(4, 4, CW - 8, CH - 8, 46); g.fill();
+    g.strokeStyle = 'rgba(110,200,255,.55)'; g.lineWidth = 3; // traces
+    for (let i = 0; i < 14; i++) { const y = 30 + i * 22; g.beginPath(); g.moveTo(20, y); g.lineTo(110, y); g.lineTo(130, y + (i < 7 ? 20 : -20)); g.stroke(); g.beginPath(); g.moveTo(CW - 20, y); g.lineTo(CW - 110, y); g.lineTo(CW - 130, y + (i < 7 ? 20 : -20)); g.stroke(); }
+    // processor die
+    g.fillStyle = '#16283a'; g.strokeStyle = 'rgba(158,240,255,.9)'; g.lineWidth = 4; g.beginPath(); g.roundRect(cx - 95, cy - 95, 190, 190, 14); g.fill(); g.stroke();
+    g.strokeStyle = 'rgba(158,240,255,.35)'; g.lineWidth = 2; for (let i = 1; i < 6; i++) { g.beginPath(); g.moveTo(cx - 95 + i * 32, cy - 95); g.lineTo(cx - 95 + i * 32, cy + 95); g.moveTo(cx - 95, cy - 95 + i * 32); g.lineTo(cx + 95, cy - 95 + i * 32); g.stroke(); }
+    // data pulses running on traces
+    g.fillStyle = 'rgba(158,240,255,.95)'; for (let i = 0; i < 14; i++) { const ph = ((t * 1.3 + i * .37) % 1); g.beginPath(); g.arc(20 + ph * 90, 30 + i * 22, 5, 0, 7); g.fill(); g.beginPath(); g.arc(CW - 20 - ph * 90, 30 + i * 22, 5, 0, 7); g.fill(); }
+    g.restore(); }
+  // key in a vault on the die
+  if (keyA > 0) { g.save(); g.globalAlpha = keyA; g.translate(cx, cy); const s = 1 + .05 * Math.sin(t * 7);
+    g.scale(s, s); g.shadowColor = '#ffb23d'; g.shadowBlur = 30; g.fillStyle = '#ffb23d'; g.strokeStyle = '#ffb23d'; g.lineWidth = 14;
+    g.beginPath(); g.arc(-30, 0, 26, 0, 7); g.stroke(); g.fillRect(-4, -7, 72, 14); g.fillRect(40, 0, 12, 26); g.fillRect(58, 0, 10, 20);
+    g.restore(); }
+  chipTex.needsUpdate = true;
+}
+
+// ---------- dust ----------
+const dust = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(Array.from({ length: 300 }, (_, i) => i % 3 === 2 ? (Math.sin(i * 12.9) * 120) : (Math.sin(i * 78.2) * 220)), 3)),
+  new THREE.PointsMaterial({ color: '#cfe6ff', size: 1.1, transparent: true, opacity: .4, depthWrite: false }));
+scene.add(dust);
+
+// ---------- timing ----------
+const T_IN0 = 0.0, T_IN1 = 1.5, T_GH0 = 1.25, T_GH1 = 2.0, T_POW = 1.95, T_XR0 = 2.75, T_XR1 = 3.3, T_CODE0 = 3.75, T_CODE1 = 4.75, T_OK = 4.95, T_END = 6.33;
+const ty = t => -42 + 80 * (1 - eio(ramp(t, T_IN0, T_IN1))) - 0.6 * Math.exp(-Math.max(0, t - T_IN1) * 6) * Math.sin(Math.max(0, t - T_IN1) * 20); // card bottom y
+function camAt(t) {
+  const u = eio(ramp(t, 0.5, 3.0)), v = ramp(t, 3.0, T_END);
+  const dist = 440 + (95 - 440) * u - 10 * eout(v);
+  const az = -0.42 + (0.02 + 0.42) * u + 0.08 * v, el = 0.22 + (0.07 - 0.22) * u + .02 * Math.sin(t * .9);
+  const tx = 0 + (CHIP.x - 0) * u, tyy = -10 + (CHIP.y + 2 + 10) * u;
+  camera.position.set(tx + dist * Math.cos(el) * Math.sin(az), tyy + dist * Math.sin(el), dist * Math.cos(el) * Math.cos(az));
+  camera.lookAt(tx, tyy - 6 * (1 - u), 0); camera.updateMatrixWorld();
+}
+const svg = document.getElementById('lines'), pPow = document.getElementById('pPow'), pKey = document.getElementById('pKey'), READ = document.getElementById('read'), CODE = document.getElementById('code'), CHK = document.getElementById('chk'), TP = document.getElementById('tp'), TICK = document.getElementById('tick');
+const tv = new THREE.Vector3();
+function proj(x, y, z) { tv.set(x, y, z).project(camera); return [(tv.x + 1) / 2 * W, (1 - tv.y) / 2 * H]; }
+function pill(el, x, y, a, sc = 1) { el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.opacity = a; el.style.transform = `translate(-50%,-50%) scale(${sc})`; }
+const HEX = '0123456789ABCDEF', FINAL = '7F3A 9C1E';
+
+function render(t) {
+  t = cl(t, 0, T_END);
+  camAt(t);
+  const by = ty(t); card.position.set(0, by, 0); card.rotation.z = 0.12 * (1 - eout(ramp(t, 0, T_IN1))); card.rotation.y = -0.18 * (1 - eout(ramp(t, 0, T_IN1)));
+  // chip relative y: card bottom at -42 -> chip at CHIP.y (-24)
+  const gh = eio(ramp(t, T_GH0, T_GH1)); headM.opacity = 1 - 0.9 * gh; headM.depthWrite = gh < .3; slot.visible = gh < .5;
+  pinBar.material.opacity = 0; pinBar.visible = false;
+  const pow = sm(ramp(t, T_POW, T_POW + .35)) * (0.75 + 0.25 * Math.sin(t * 9));
+  pinM.emissiveIntensity = 2.2 * pow;
+  for (const p of pins) p.position.z = 2.6 - 0.5 * sm(ramp(t, T_POW - .25, T_POW));
+  const xr = sm(ramp(t, T_XR0, T_XR1)), keyA = sm(ramp(t, T_XR1 - .1, T_XR1 + .35));
+  drawChip(t, pow * (1 - .5 * xr), xr, keyA);
+  chip.material.emissiveIntensity = .25 * pow + .6 * xr;
+  glowChip.material.opacity = .9 * pow * (1 - .4 * xr) + .5 * keyA * (0.8 + .2 * Math.sin(t * 7));
+  dust.rotation.y = t * .05; dust.position.y = Math.sin(t * .7) * 3;
+  renderer.render(scene, camera);
+
+  // labels
+  const [cx, cy] = proj(CHIP.x, CHIP.y, 1);
+  const aP = sm(ramp(t, 2.05, 2.4)) * (1 - sm(ramp(t, 3.15, 3.4)));
+  const aK = sm(ramp(t, 3.3, 3.65));
+  pill(pPow, 540, cy + 420, aP, .85 + .15 * popS(ramp(t, 2.05, 2.55)));
+  pill(pKey, 540, cy + 420, aK, .85 + .15 * popS(ramp(t, 3.3, 3.8)));
+  const aR = sm(ramp(t, T_CODE0 - .2, T_CODE0 + .15)); READ.style.opacity = aR; READ.style.transform = `translate(-50%,-50%) scale(${.9 + .1 * popS(ramp(t, T_CODE0 - .2, T_CODE0 + .3))})`;
+  const u = ramp(t, T_CODE0, T_CODE1); let s = '';
+  for (let i = 0; i < FINAL.length; i++) { const ch = FINAL[i]; if (ch === ' ') { s += ' '; continue; } const lock = u >= (i + 1) / (FINAL.length + 1); s += lock ? ch : HEX[(Math.floor(t * 24) * 7 + i * 5) % 16]; }
+  CODE.textContent = u > 0 ? s : '---- ----';
+  const aOk = sm(ramp(t, T_OK, T_OK + .3)); CHK.style.opacity = aOk; TP.setAttribute('stroke-dashoffset', 40 * (1 - sm(ramp(t, T_OK + .05, T_OK + .4))));
+  TICK.style.transform = `scale(${.6 + .4 * popS(ramp(t, T_OK, T_OK + .4))})`;
+  CODE.style.color = aOk > .5 ? '#7ff2b0' : '#9ef0ff';
+  // flowing code path chip -> readout + label leaders
+  const aS = sm(ramp(t, T_CODE0 - .25, T_CODE0 + .1));
+  const ex = 540, ey = 350 + 95;
+  const lead = (a, col) => `<g opacity="${a}"><line x1="540" y1="${cy + 420 - 62}" x2="${cx}" y2="${cy + 270}" stroke="${col}" stroke-width="3"/><circle cx="${cx}" cy="${cy + 262}" r="8" fill="${col}"/></g>`;
+  svg.innerHTML = lead(aP, '#ffb23d') + lead(aK, '#ffb23d') +
+    `<path opacity="${aS * .95}" d="M${cx} ${cy - 270} C ${cx - 40} ${(cy + ey) / 2}, ${ex} ${(cy + ey) / 2 + 80}, ${ex} ${ey}" fill="none" stroke="#8fd8ff" stroke-width="5" stroke-dasharray="12 16" stroke-dashoffset="${t * 140}"/>`;
+}
+window.renderAt = t => render(t);
+window.DUR = 6.33;
+const q = new URLSearchParams(location.search);
+render(q.has('t') ? parseFloat(q.get('t')) : 5.5);
+requestAnimationFrame(() => { document.title = 'ok'; });
+</script>
+</body>
+</html>

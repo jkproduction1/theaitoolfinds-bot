@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Toothbrush exploded</title>
+<!--
+inside53 r1: /explode an electric toothbrush. Generic rechargeable brush of our own design (no brand shapes, colours or logos).
+Facts used (labels):
+ - A drive motor in the handle moves the brush head (Sonicare: magnetic drive; oscillating brushes: DC motor + gearing).
+ - A rechargeable battery and a circuit board (microcontroller + motor driver) sit in the sealed handle.
+ - It charges by induction: a coil in the base of the handle picks up the charger's magnetic field, no metal contacts.
+ Sources: https://www.righto.com/2016/09/sonicare-toothbrush-teardown.html ;
+          https://www.eeworldonline.com/teardown-whats-inside-phillips-sonicare-electric-toothbrush/ ;
+          https://www.ifixit.com/News/43726/a-teardown-peek-inside-oral-bs-seriously-connected-io-toothbrush
+-->
+<style>
+  body{margin:0;background:#000;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;
+    background:radial-gradient(ellipse 900px 1100px at 50% 44%, #3a3e46 0%, #24272d 45%, #121317 100%);
+    font-family:"Inter",system-ui,Arial,sans-serif}
+  canvas{position:absolute;inset:0;display:block}
+  #ov{position:absolute;inset:0;pointer-events:none}
+  #ov svg{position:absolute;inset:0}
+  .pill{position:absolute;transform:translate(-50%,-50%);background:rgba(14,15,19,.82);border:2px solid rgba(255,255,255,.16);border-radius:18px;
+    padding:10px 24px 12px;color:#fff;text-align:center;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.4);opacity:0}
+  .pill b{display:block;font-weight:800;font-size:40px;letter-spacing:-.5px;line-height:1.1}
+  .pill i{display:block;font-style:normal;font-weight:700;font-size:32px;color:#ff8a3d;margin-top:2px;line-height:1.1}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.js","three/addons/":"./"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="lMot"><b>drive motor</b></div>
+    <div class="pill" id="lPcb"><b>circuit board</b></div>
+    <div class="pill" id="lBat"><b>rechargeable battery</b></div>
+    <div class="pill" id="lCoil"><b>charging coil</b><i>no metal contacts</i></div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
+
+const W = 1080, H = 1920;
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+stage.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(30, W / H, 1, 400);
+
+scene.add(new THREE.HemisphereLight('#c9d3e6', '#20232a', 0.5));
+const key = new THREE.DirectionalLight('#fff1e0', 2.1);
+key.position.set(-22, 40, 30); key.castShadow = true;
+Object.assign(key.shadow.camera, { left: -20, right: 20, top: 30, bottom: -20, near: 5, far: 140 });
+key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.04; key.shadow.radius = 4;
+key.target.position.set(0, 10, 0); scene.add(key, key.target);
+const rimL = new THREE.DirectionalLight('#ffb27a', 1.2); rimL.position.set(30, 14, -30); scene.add(rimL);
+const rimB = new THREE.DirectionalLight('#9fc0ff', 0.8); rimB.position.set(-30, 8, -25); scene.add(rimB);
+
+const shadowy = m => { m.castShadow = true; m.receiveShadow = true; return m; };
+function canvasTex(w, h, draw) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+
+// ---------- materials ----------
+const shellM = new THREE.MeshPhysicalMaterial({ color: '#eef0f3', roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.12, side: THREE.DoubleSide });
+const shellIn = new THREE.MeshStandardMaterial({ color: '#b9bdc4', roughness: 0.6, side: THREE.BackSide });
+const greyM = new THREE.MeshPhysicalMaterial({ color: '#4a4f57', roughness: 0.4, clearcoat: 0.5 });
+const orange = new THREE.MeshStandardMaterial({ color: '#ff7a2e', roughness: 0.35, emissive: '#ff5a10', emissiveIntensity: 0.55 });
+const blackPl = new THREE.MeshStandardMaterial({ color: '#16171a', roughness: 0.45 });
+const steel = new THREE.MeshStandardMaterial({ color: '#dfe2e8', roughness: 0.32, metalness: 0.85, envMapIntensity: 3.5 });
+const brass = new THREE.MeshStandardMaterial({ color: '#d8a54a', roughness: 0.28, metalness: 1 });
+const copper = new THREE.MeshStandardMaterial({ color: '#c8773a', roughness: 0.3, metalness: 1 });
+const ferrite = new THREE.MeshStandardMaterial({ color: '#2b2c30', roughness: 0.7, metalness: 0.2 });
+
+const parts = []; // {g, base:Vector3, off:Vector3, rot:[x,y,z], i}
+const root = new THREE.Group(); root.rotation.z = -0.1; scene.add(root);
+function part(i, off, rot = [0, 0, 0]) { const g = new THREE.Group(); root.add(g); parts.push({ g, off: new THREE.Vector3(...off), rot, i }); return g; }
+
+// handle profile (r, y)
+const PROF = [[0.01, 0.15], [1.05, 0.15], [1.38, 0.45], [1.55, 1.6], [1.62, 5.5], [1.58, 9.5], [1.42, 12.2], [1.05, 13.6], [0.62, 14.25], [0.5, 14.35]]
+  .map(([r, y]) => new THREE.Vector2(r, y));
+// 0 front shell half (z >= 0), carries the power button
+{ const g = part(0, [3.7, 0.6, 2.6], [0, -0.55, 0.06]);
+  const geo = new THREE.LatheGeometry(PROF, 64, -Math.PI / 2, Math.PI);
+  g.add(shadowy(new THREE.Mesh(geo, shellM)));
+  const btn = shadowy(new THREE.Mesh(new RoundedBoxGeometry(0.9, 1.7, 0.5, 4, 0.22), orange)); btn.position.set(0, 8.6, 1.45); g.add(btn);
+  const dot = new THREE.Mesh(new RoundedBoxGeometry(0.5, 0.14, 0.2, 2, 0.06), orange); dot.position.set(0, 10.6, 1.52); g.add(dot);
+  const grip = new THREE.Mesh(new RoundedBoxGeometry(1.4, 4.5, 0.4, 4, 0.18), greyM); grip.position.set(0, 3.6, 1.42); g.add(grip);
+}
+// 1 back shell half (z <= 0)
+{ const g = part(1, [-3.7, 0.6, -2.2], [0, 0.55, -0.06]);
+  const geo = new THREE.LatheGeometry(PROF, 64, Math.PI / 2, Math.PI);
+  g.add(shadowy(new THREE.Mesh(geo, shellM)));
+}
+// 2 brush head + neck (pops on top)
+const HEAD = part(2, [0, 4.4, 0]);
+{ const g = HEAD;
+  const neck = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.62, 6.2, 32), shellM)); neck.position.y = 17.4; g.add(neck);
+  const collar = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.66, 0.66, 0.5, 32), greyM)); collar.position.y = 14.55; g.add(collar);
+  const head = shadowy(new THREE.Mesh(new RoundedBoxGeometry(1.25, 2.6, 0.6, 5, 0.28), shellM)); head.position.set(0, 21.3, 0.05); g.add(head);
+  const bW = new THREE.MeshStandardMaterial({ color: '#f4f6f8', roughness: 0.55 }), bO = new THREE.MeshStandardMaterial({ color: '#ff8a3d', roughness: 0.5 });
+  const bg = new THREE.CylinderGeometry(0.1, 0.12, 0.85, 8); bg.rotateX(Math.PI / 2);
+  for (let r = 0; r < 10; r++) for (let c = 0; c < 4; c++) {
+    const b = shadowy(new THREE.Mesh(bg, (r === 0 || r === 9 || (c === 1 || c === 2) && r % 3 === 1) ? bO : bW));
+    b.position.set(-0.39 + c * 0.26, 20.2 + r * 0.245, 0.72); g.add(b); }
+}
+// 3 drive motor + shaft
+const MOT = part(3, [0, 2.7, 0]);
+{ const g = MOT;
+  const body = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 2.9, 40), steel)); body.position.y = 11.3; g.add(body);
+  const capB = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.87, 0.87, 0.35, 40), blackPl)); capB.position.y = 9.75; g.add(capB);
+  const capT = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.87, 0.4, 40), blackPl)); capT.position.y = 12.9; g.add(capT);
+  const shaft = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 2.1, 12), steel)); shaft.position.y = 14.0; g.add(shaft);
+  const band = new THREE.Mesh(new THREE.CylinderGeometry(0.87, 0.87, 0.25, 40), orange); band.position.y = 11.9; g.add(band);
+  for (const [x, c] of [[-0.25, '#c33'], [0.25, '#111']]) { const wv = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.9, 8), new THREE.MeshStandardMaterial({ color: c, roughness: .5 })); wv.position.set(x, 9.3, 0.3); g.add(wv); }
+}
+// 4 circuit board
+const PCB = part(4, [0, 1.1, 0.4]);
+{ const g = PCB;
+  const tex = canvasTex(256, 640, (c, cw, ch) => {
+    c.fillStyle = '#145a32'; c.fillRect(0, 0, cw, ch);
+    let a = 11; const rr = () => (a = (a * 16807) % 2147483647) / 2147483647;
+    c.strokeStyle = 'rgba(214,176,92,.85)'; c.lineWidth = 3; c.lineCap = 'round';
+    for (let i = 0; i < 40; i++) { let x = rr() * cw, y = rr() * ch; c.beginPath(); c.moveTo(x, y);
+      for (let k = 0; k < 3; k++) { if (rr() < .5) x += (rr() - .5) * 120; else y += (rr() - .5) * 200; c.lineTo(x, y); } c.stroke();
+      c.fillStyle = '#e2c27a'; c.beginPath(); c.arc(x, y, 4, 0, 7); c.fill(); }
+  });
+  const gM = new THREE.MeshStandardMaterial({ color: '#145a32', roughness: .5 }), tM = new THREE.MeshStandardMaterial({ map: tex, roughness: .45 });
+  const board = shadowy(new THREE.Mesh(new THREE.BoxGeometry(1.9, 3.4, 0.14), [gM, gM, gM, gM, tM, tM]));
+  board.position.set(0, 7.85, 0.2); g.add(board);
+  const chipM = new THREE.MeshStandardMaterial({ color: '#111214', roughness: 0.35 });
+  for (const [x, y, sx, sy] of [[0, 8.4, 0.9, 0.9], [-0.35, 7.1, 0.6, 0.45], [0.45, 7.0, 0.45, 0.6]]) {
+    const ch = shadowy(new THREE.Mesh(new RoundedBoxGeometry(sx, sy, 0.16, 2, 0.04), chipM)); ch.position.set(x, y, 0.35); g.add(ch);
+    const n = Math.round(sx / 0.18); for (let k = 0; k < n; k++) for (const s of [-1, 1]) { const pin = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.12, 0.05), steel); pin.position.set(x - sx / 2 + (k + 0.5) * sx / n, y + s * (sy / 2 + 0.05), 0.3); g.add(pin); } }
+  const led = new THREE.Mesh(new THREE.SphereGeometry(0.13, 12, 8), orange); led.position.set(0.55, 9.2, 0.35); g.add(led);
+  for (const [x, y] of [[-0.6, 9.15], [0.6, 6.5]]) { const cp = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.36, 14), new THREE.MeshStandardMaterial({ color: '#2a2d33', roughness: .3, metalness: .4 }))); cp.rotation.x = Math.PI / 2; cp.position.set(x, y, 0.42); g.add(cp); }
+}
+// 5 battery
+const BAT = part(5, [0, -0.9, 0]);
+{ const g = BAT;
+  const wrap = canvasTex(512, 256, (c, cw, ch) => { c.fillStyle = '#2d5d9a'; c.fillRect(0, 0, cw, ch); c.fillStyle = '#ff7a2e'; c.fillRect(0, ch * 0.72, cw, ch * 0.08);
+    c.fillStyle = 'rgba(255,255,255,.85)'; c.font = '700 40px Inter, Arial'; c.fillText('+', 30, 60); });
+  const body = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.78, 0.78, 3.9, 48), new THREE.MeshPhysicalMaterial({ map: wrap, roughness: 0.3, clearcoat: 0.8 }))); body.position.y = 4.15; g.add(body);
+  const top = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.62, 0.12, 32), steel)); top.position.y = 6.15; g.add(top);
+  const nub = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.12, 20), steel)); nub.position.y = 6.25; g.add(nub);
+  const bot = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.72, 0.72, 0.1, 32), steel)); bot.position.y = 2.15; g.add(bot);
+}
+// 6 charging coil (ferrite core + copper windings)
+const COIL = part(6, [0, -2.5, 0]);
+{ const g = COIL;
+  const core = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 1.7, 32), ferrite)); core.position.y = 1.05; g.add(core);
+  const flange = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.98, 0.98, 0.14, 40), ferrite)); flange.position.y = 0.25; g.add(flange);
+  const flange2 = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(0.98, 0.98, 0.14, 40), ferrite)); flange2.position.y = 1.85; g.add(flange2);
+  for (let k = 0; k < 9; k++) { const t = shadowy(new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.085, 10, 48), copper)); t.rotation.x = Math.PI / 2; t.position.y = 0.42 + k * 0.165; g.add(t); }
+}
+// 7 bottom cap
+const CAP = part(7, [0, -3.0, 0]);
+{ const g = CAP;
+  const c = shadowy(new THREE.Mesh(new THREE.CylinderGeometry(1.08, 1.0, 0.4, 48), greyM)); c.position.y = 0.0; g.add(c);
+  const r = new THREE.Mesh(new THREE.TorusGeometry(0.75, 0.05, 8, 48), orange); r.rotation.x = Math.PI / 2; r.position.y = -0.21; g.add(r);
+}
+
+// ---------- animation ----------
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ramp = (t, a, b) => cl((t - a) / (b - a));
+const expoOut = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const sm = x => x * x * (3 - 2 * x);
+const popS = x => { const c1 = 1.70158, c3 = c1 + 1, y = x - 1; return 1 + c3 * y * y * y + c1 * y * y; };
+const T_EX = 0.7, T_EXD = 2.0;
+const DEL = { 0: 0, 1: 0.04, 2: 0.18, 3: 0.26, 4: 0.32, 5: 0.36, 6: 0.42, 7: 0.46 };
+const exK = (i, t) => expoOut(ramp(t, T_EX + DEL[i], T_EX + DEL[i] + T_EXD));
+const T_END = 190 / 30;
+function setCam(t) {
+  const k = eio(ramp(t, 0.3, 3.0));
+  const yaw = -0.42 + 0.62 * eio(ramp(t, 0, T_END));
+  const elev = 0.2 - 0.06 * k;
+  const dist = 56 + 27 * k + 3 * ramp(t, 3, T_END);
+  const ty = 11.6 + 0.1 * k;
+  camera.position.set(Math.sin(yaw) * Math.cos(elev) * dist, ty + Math.sin(elev) * dist, Math.cos(yaw) * Math.cos(elev) * dist);
+  camera.lookAt(0, ty - 0.8 - 2.2 * k, 0); camera.updateMatrixWorld();
+}
+const svg = document.getElementById('lines');
+const wp = (g, x, y, z) => g.localToWorld(new THREE.Vector3(x, y, z));
+const LBL = [
+  { el: document.getElementById('lMot'), t: 2.55, anchor: () => wp(MOT, 0.85, 11.3, 0), off: [230, -40] },
+  { el: document.getElementById('lPcb'), t: 3.0, anchor: () => wp(PCB, -0.6, 7.8, 0.3), off: [-240, -30] },
+  { el: document.getElementById('lBat'), t: 3.45, anchor: () => wp(BAT, 0.78, 4.4, 0), off: [230, 20] },
+  { el: document.getElementById('lCoil'), t: 3.9, anchor: () => wp(COIL, -0.7, 1.05, 0.2), off: [-230, 10] },
+];
+const tmp = new THREE.Vector3();
+function proj(v) { tmp.copy(v).project(camera); return [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H]; }
+function render(t) {
+  for (const P of parts) { const k = exK(P.i, t);
+    const fl = P.i > 1 ? 0.14 * Math.sin(t * 1.5 + P.i * 0.9) * ramp(t, 2.2, 3.4) : 0;
+    P.g.position.set(P.off.x * k, P.off.y * k + fl, P.off.z * k);
+    P.g.rotation.set(P.rot[0] * k, P.rot[1] * k, P.rot[2] * k); }
+  // brush head hums while assembled, then settles
+  HEAD.rotation.y = 0.05 * Math.sin(t * 2 * Math.PI * 7) * (1 - ramp(t, 0.5, 1.0));
+  MOT.children[0].rotation.y = t * 8;
+  root.rotation.y = 0.0;
+  setCam(t);
+  key.shadow.camera.updateProjectionMatrix();
+  renderer.render(scene, camera);
+  let s = '';
+  for (const l of LBL) { const a = ramp(t, l.t, l.t + 0.3), p = popS(ramp(t, l.t, l.t + 0.45));
+    const [ax, ay] = proj(l.anchor()); let px = ax + l.off[0], py = ay + l.off[1];
+    const r = l.el.getBoundingClientRect(); const hw = (r.width / (p > 0.05 ? (0.7 + 0.3 * p) : 1)) / 2;
+    px = cl(px, 70 + hw, W - 70 - hw);
+    l.el.style.left = px + 'px'; l.el.style.top = py + 'px'; l.el.style.opacity = sm(a);
+    l.el.style.transform = `translate(-50%,-50%) scale(${0.7 + 0.3 * p})`;
+    const la = sm(ramp(t, l.t + 0.05, l.t + 0.35));
+    const ex = ax + (px - ax) * la, ey = ay + (py - ay) * la;
+    s += `<g opacity="${sm(a)}"><line x1="${ax}" y1="${ay}" x2="${ex}" y2="${ey}" stroke="#ff8a3d" stroke-width="3"/><circle cx="${ax}" cy="${ay}" r="9" fill="#ff8a3d" stroke="#1a1b1f" stroke-width="3"/></g>`;
+  }
+  svg.innerHTML = s;
+}
+window.renderAt = t => render(t);
+window.DUR = T_END;
+const q = new URLSearchParams(location.search);
+await Promise.race([document.fonts.load('800 40px "Inter"'), new Promise(r => setTimeout(r, 2000))]);
+render(q.has('t') ? parseFloat(q.get('t')) : 5.5);
+requestAnimationFrame(() => { document.title = 'ok'; });
+</script>
+</body>
+</html>
