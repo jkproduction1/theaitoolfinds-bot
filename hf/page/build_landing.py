@@ -156,6 +156,21 @@ rep("One video takes about 30 minutes to make.", "One video takes about 20 minut
 rep("Times are from our run of the coffee video above and are approximate.", "Times are approximate.")
 assert s.count("736K") == 5, s.count("736K"); s = s.replace("736K", "814K")
 assert "30 min" not in s and "about 30" not in s.lower()
+# Jan, 2026-11-18: "How it works" as the buyer lives it: 1 drop the file into Claude and type one line, 2 Claude sets everything
+# up, 3 a finished video every day. (The "type a topic -> video" story stays in the "One line in. A video out." demo above.)
+rep('<h2 id="h-steps">Type. Wait. <span class="g">Post.</span></h2>', '<h2 id="h-steps">Set up once. <span class="g">Videos daily.</span></h2>')
+rep('<p>One-time setup first. Claude does the installing.</p>', '<p>Three steps. The first two happen only once.</p>')
+rep('<h3>Type a topic</h3>\n        <p class="type"><span><span id="typed">/story how bees make honey</span>',
+    '<h3>Drop it into Claude</h3>\n        <p>Drag the file you get into Claude and type one line:</p>\n        <p class="type"><span><span id="typed">Set this up</span>')
+rep('<h3>Claude builds it</h3>\n        <p>Script, scenes, captions and voice. About 20 minutes, including one round of changes you ask for in plain words.</p>',
+    '<h3>Claude sets everything up</h3>\n        <p>It installs everything, sets up your voice with you and makes your first video. Nothing technical for you to do.</p>')
+for a, b in (("Script", "Install"), ("Scenes", "12 styles"), ("Captions", "Voice"), ("Voice", "First video")):
+    i = s.index('<ul class="ticks"'); j = s.index('</ul>', i); blk = s[i:j]
+    assert blk.count('>' + a + '</li>') == 1, (a, blk.count('>' + a + '</li>'))
+    s = s[:i] + blk.replace('>' + a + '</li>', '>\x00' + b + '</li>') + s[j:]
+s = s.replace('\x00', '')
+rep('<h3>Download and post</h3>\n        <p>A 9:16 MP4, ready for Reels, TikTok and Shorts.</p>',
+    '<h3>A finished video every day</h3>\n        <p>On any topic you want, in 12 tuned styles. Watch it, download it and post it.</p>')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
