@@ -85,6 +85,14 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - **Instagram first (Jan, 2026-11-18):** pick topics, styles and hooks by INSTAGRAM numbers only (views, saves, sales). TikTok still
   gets the same posts, but it no longer decides anything: no "TikTok needs its own answer" tests. No GTA / game-trend videos
   (gta57 dropped: stylised 3D maps and cities are not our strength, and gtamap22 did ~3k on IG).
+- **Slots by audience (Jan, 2026-11-18 night, part of mix v7):** IG followers are 35% India, 5.8% USA, 92% men, 46% under 25. Jan wants BOTH:
+  keep the big reach (about 2M views a month, needed for brand deals) AND more buyers from the USA/Europe. Slot times stay
+  08:00 / 15:00 / 21:00 Prague; what changes is WHICH video goes where (slots fill in release order, so release in this order):
+  1) **08:00 = reach video** (midday in India): PROMPTS, the biggest proven global topic (Earth, space, "what's inside"). Never a SYSTEM video here.
+  2) **15:00** (morning in New York, afternoon in Europe, evening in India): PROMPTS on day A, SYSTEM on day B.
+  3) **21:00 = buyer video** (15:00 New York, evening in Europe, night in India): always SYSTEM, topic for adults in the USA/Europe
+     (money, work, tech, how things work; US/EU examples, miles and Fahrenheit next to metric).
+  Judge after 7 days: views per slot must not fall (monthly IG views stay about 2M) and paid sales per 100 DMs per slot.
 - **Daily mix v7 (Jan, 2026-11-18 night, CURRENT):** 3 "Type it, get it" videos a day (08:00 / 15:00 / 21:00), nothing else: sales-proof
   videos flopped (versus46 ~1k views; people come for the styles and the prompts). **Every other video sells the system instead of
   giving prompts:**
