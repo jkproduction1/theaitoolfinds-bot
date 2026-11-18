@@ -85,18 +85,19 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
 - **Instagram first (Jan, 2026-11-18):** pick topics, styles and hooks by INSTAGRAM numbers only (views, saves, sales). TikTok still
   gets the same posts, but it no longer decides anything: no "TikTok needs its own answer" tests. No GTA / game-trend videos
   (gta57 dropped: stylised 3D maps and cities are not our strength, and gtamap22 did ~3k on IG).
-- **A/B by video (Jan, 2026-11-18):** alternate the two daily Type it videos: one is 'prompts + system' as before, the other is
-  SYSTEM-ONLY (voice + end card + caption end with 'Comment <KW> and I'll show you how I make these.', post.json url = the sales page
-  with utm_content=<name>, so the DM has one 'Get the system' button; never promise prompts there). Keep the biggest-reach topic
-  (Earth / what-if) on 'prompts + system'. Report paid sales per 100 DMs for both kinds in the morning summary; decide after 3-4 days.
-- **Daily mix v6 (Jan, 2026-11-18, CURRENT):** goal 5 sales/day. 2 "Type it, get it" videos as in v5 (08:00, 15:00) + **1 video that
-  sells the system itself every day (21:00)**, keyword SYSTEM (or a fresh system keyword), post.json `url` = the sales page
-  `https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=<name>` so the DM
-  has one "Get the system" button. Rotate the angle: free prompt vs system side by side (versus56 template), a full one-take story
-  made with the system (bees55), Jan's real install recording (Apple-style edit, when he sends one), a buyer's result (only with the
-  buyer's OK), "one line in → finished video". Truthful only: say what the system really does (Claude drafts, you approve and
-  post; ~30 min a video; Claude Pro or ChatGPT (Codex) needed, ChatGPT gives simpler animations). The v5 tutorial/other slot is
-  replaced by this. Summary to Jan: sales page views, paid sales and conversion of the last day (Gumroad), and which post sold.
+- **Daily mix v7 (Jan, 2026-11-18 night, CURRENT):** 3 "Type it, get it" videos a day (08:00 / 15:00 / 21:00), nothing else: sales-proof
+  videos flopped (versus46 ~1k views; people come for the styles and the prompts). **Every other video sells the system instead of
+  giving prompts:**
+  - PROMPTS video (as before): ends "Comment <KW> and I'll send you the prompts.", post.json url = the prompts page (c/t), DM has
+    "Get the prompts" + "Get the system".
+  - SYSTEM video: voice, end card and caption end with **"Comment STYLES and I'll send you the system that makes these."** (end card
+    line under the keyword: "to get the system that makes these"), keyword STYLES, post.json url =
+    `https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=dm&utm_content=<name>` so the DM has
+    one "Get the system" button. Never say or imply prompts in a SYSTEM video.
+  Alternate strictly by release order (look at the last released video in hf/videos/*/post.json: url with viral-styles-launchpad =
+  SYSTEM). Keep the biggest-reach topics (Earth / what-if) on PROMPTS when there is a choice. Morning summary: sales page views,
+  paid sales, conversion, and paid sales per 100 DMs for PROMPTS vs SYSTEM videos (Gumroad utm_content + Zernio stats).
+- **Daily mix v6 (INACTIVE, replaced the same day by v7):** 2 Type it + 1 system-selling video (versus/story/install recording).
 - **Daily mix v5 (INACTIVE since 2026-11-18; Jan, 2026-11-17):** **2 "Type it, get it" videos EVERY day** = the series made with OUR
   system's styles (like styles28/33/37/44, storm45: "Type /<style> <topic>… and you get this", real renders from our skill pack,
   series counter "Type it, get it #N" from data/series.json) + **1 other** video (Tutorial §3e, a sales/proof video like versus46
