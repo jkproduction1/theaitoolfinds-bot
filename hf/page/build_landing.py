@@ -54,6 +54,22 @@ rep("aria-label=\"Example video: why planes don't fly straight, Paper Collage st
     'aria-label="Example video: how bees make honey, Flat Science style. Tap to turn sound on or off" style="background-image:url(%s)"' % BP)
 rep("\"why planes don't fly straight, Paper Collage style\",\"why Venice", '"how bees make honey, Flat Science style","why Venice')
 rep("/story why planes don't fly straight", "/story how bees make honey")
+# Jan, 2026-11-18: buyers' real fears (a buyer from India: scams, paying abroad in USD, subscriptions, the site vanishing, hidden
+# costs) answered where they decide: one trust line under the buy button + four FAQ answers. Everything stated here is true.
+rep('<span data-claim="refund">7-day money-back guarantee. Try it risk-free.</span></p>',
+    '<span data-claim="refund">7-day money-back guarantee. Try it risk-free.</span>'
+    '<span>Secure checkout by Gumroad. Instant download, yours to keep.</span></p>', 2)
+TRUST_FAQ = (
+    '<details class="rv"><summary>Is it safe to pay? I\'m not in the US.<i aria-hidden="true"></i></summary><p>Yes. You pay through Gumroad, a US platform '
+    'for digital products, not to us directly. It accepts international cards and delivers your files the moment you pay, on screen and '
+    'with a download link by email. You never wait on us.</p></details>\n'
+    '      <details class="rv"><summary>Is it a subscription?<i aria-hidden="true"></i></summary><p>No. It\'s a one-time payment. You download the '
+    'files and they\'re yours to keep, even if this page ever goes away. Just keep a backup.</p></details>\n'
+    '      <details class="rv"><summary>Are there any other costs?<i aria-hidden="true"></i></summary><p>Nothing more from us. The system runs inside '
+    'Claude, so you need Claude Pro ($20/month, paid to Anthropic). A voice from ElevenLabs is optional.</p></details>\n'
+    '      <details class="rv"><summary>What if it\'s not for me?<i aria-hidden="true"></i></summary><p>You have 7 days to try it. If it\'s not for '
+    'you, message us and you get your money back.</p></details>\n      ')
+rep('<details class="rv"><summary>How long does one video take?', TRUST_FAQ + '<details class="rv"><summary>How long does one video take?')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
