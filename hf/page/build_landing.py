@@ -116,11 +116,15 @@ rep('adds a voice if you want one and hands you a finished MP4.', 'adds the voic
 rep('A voice from ElevenLabs is optional.', 'The voice uses a free ElevenLabs account, and Claude helps you create it.')
 rep("If it's not for you, message us and you get your money back.", "If it's not for you, message @theaitoolfinds on Instagram within 7 days and you get your money back.")
 rep('<details class="rv"><summary>How long does one video take?',
-    '<details class="rv"><summary>Does it post the videos for me?<i aria-hidden="true"></i></summary><p>No. Every day a new video is made for you. '
-    'You watch it, download it and post it yourself on Instagram, TikTok or YouTube. That takes a minute.</p></details>\n'
+    '<details class="rv"><summary>Is the daily video really automatic?<i aria-hidden="true"></i></summary><p>Yes! Every day Claude prepares a new video for you. '
+    'All you do is upload it to Instagram, TikTok or YouTube.</p></details>\n'
     '      <details class="rv"><summary>Who picks the topics?<i aria-hidden="true"></i></summary><p>You can type any topic. Or let the system plan your account: '
     'it suggests a niche and 30 topics, and the daily video works through them.</p></details>\n'
     '      <details class="rv"><summary>How long does one video take?')
+# Jan, 2026-11-18: no price of Claude Pro on the page, just "Claude Pro" (it stays clear that it is a separate plan from Anthropic).
+rep('For the full look you need Claude Pro ($20/month, paid to Anthropic). It also runs in ChatGPT, even on the free plan, with simpler animations. ',
+    'You need a Claude Pro plan from Anthropic, the company behind Claude. ')
+assert "$20" not in s, [s[i-60:i+40] for i in range(len(s)) if s.startswith("$20", i)][:3]
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
