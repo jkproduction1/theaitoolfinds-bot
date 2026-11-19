@@ -1,0 +1,224 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block;position:absolute;left:0;top:0}#wrap{position:relative;width:1080px;height:1920px}</style>
+</head><body><div id="wrap"><canvas id="gl" width="1080" height="1920"></canvas><canvas id="ui" width="1080" height="1920"></canvas></div><script>
+// earth58 r0 (?s=0) /what-if all the ice on Earth melted  ·  r1 (?s=1) /simulate Earth's oceans draining away
+// Procedural planet (3D value-noise heightmap in metres, no real map data). Raw WebGL2 fragment shader, 2D canvas labels.
+// Facts shown: USGS — if all glaciers and ice sheets melted, sea level would rise about 70 m (230 ft).
+//              NOAA — average ocean depth about 3,700 m; Challenger Deep (Mariana Trench) about 10,935 m (≈11 km).
+const S=+(new URLSearchParams(location.search).get('s')||0);
+const CL=x=>x<0?0:x>1?1:x, EIO=x=>{x=CL(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}, E3=x=>1-Math.pow(1-CL(x),3), SM=(a,b,x)=>{const t=CL((x-a)/(b-a));return t*t*(3-2*t);};
+const EBK=x=>{x=CL(x);const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+const D2R=Math.PI/180;
+function llv(lat,lon){ lat*=D2R; lon*=D2R; return [Math.cos(lat)*Math.cos(lon),Math.sin(lat),-Math.cos(lat)*Math.sin(lon)]; }
+// ---------------- noise ----------------
+function hash(x,y,z,s){ let h=Math.imul(x,374761393)^Math.imul(y,668265263)^Math.imul(z,2147483647)^Math.imul(s,144665); h=Math.imul(h^(h>>>13),1274126177); h^=h>>>16; return (h>>>0)/4294967296; }
+function vn(x,y,z,s){ const xi=Math.floor(x),yi=Math.floor(y),zi=Math.floor(z); let xf=x-xi,yf=y-yi,zf=z-zi; xf=xf*xf*(3-2*xf); yf=yf*yf*(3-2*yf); zf=zf*zf*(3-2*zf);
+  const a=hash(xi,yi,zi,s),b=hash(xi+1,yi,zi,s),c=hash(xi,yi+1,zi,s),d=hash(xi+1,yi+1,zi,s),e=hash(xi,yi,zi+1,s),f=hash(xi+1,yi,zi+1,s),g=hash(xi,yi+1,zi+1,s),h=hash(xi+1,yi+1,zi+1,s);
+  const l1=a+(b-a)*xf, l2=c+(d-c)*xf, l3=e+(f-e)*xf, l4=g+(h-g)*xf, m1=l1+(l2-l1)*yf, m2=l3+(l4-l3)*yf; return m1+(m2-m1)*zf; }
+function fbm(x,y,z,s,o){ let t=0,a=.5,f=1,n=0; for(let i=0;i<o;i++){ t+=a*vn(x*f,y*f,z*f,s+i*31); n+=a; f*=2.03; a*=.5; } return t/n; }
+function rid(x,y,z,s,o){ let t=0,a=.5,f=1,n=0; for(let i=0;i<o;i++){ const v=1-Math.abs(vn(x*f,y*f,z*f,s+i*17)*2-1); t+=a*v*v; n+=a; f*=2.1; a*=.5; } return t/n; }
+// ---------------- planet ----------------
+const W=2048,H=1024;
+const CFG=S==0?{seed:11,lowC:llv(57,-18),ridgeN:llv(8,-60),trC:llv(30,-178),trR:12,trDir:llv(14,-150)}
+             :{seed:11,lowC:llv(57,-18),ridgeN:llv(8,-60),trC:llv(30,-178),trR:12,trDir:llv(14,-150)};
+function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+function buildPlanet(){ const D=new Float32Array(W*H*4); const sd=CFG.seed; let mn=1e9, mnI=0;
+  const rn=CFG.ridgeN, tc=CFG.trC, tR=CFG.trR*D2R, td=CFG.trDir, lc=CFG.lowC;
+  for(let j=0;j<H;j++){ const lat=(0.5-(j+.5)/H)*Math.PI, cl=Math.cos(lat), sl=Math.sin(lat);
+    for(let i=0;i<W;i++){ const lon=((i+.5)/W*2-1)*Math.PI; const x=cl*Math.cos(lon), y=sl, z=-cl*Math.sin(lon);
+      const wx=fbm(x*2+5,y*2,z*2,sd+100,3)-.5, wy=fbm(x*2,y*2+9,z*2,sd+200,3)-.5;
+      let c=fbm(x*1.5+wx*.9,y*1.5+wy*.9,z*1.5,sd,6);
+      // polar landmass (ice sheet bed) + a big low coastal plain region near lowC
+      c+=0.10*SM(0.80,0.95,y)+0.05*SM(-0.80,-0.95,-y);
+      const dl=dot([x,y,z],lc); c+=0.06*SM(0.90,0.985,dl);
+      const th=0.53, xx=c-th; let h;
+      const det=fbm(x*24,y*24,z*24,sd+300,4);
+      if(xx>0){ const lowness=1-0.82*SM(0.93,0.99,dl);
+        h=2600*Math.pow(Math.min(xx/0.25,1.2),2.1)*lowness + 4+60*det*SM(0,.04,xx);
+        h+=3200*Math.pow(rid(x*5,y*5,z*5,sd+400,5),2.2)*SM(0.05,0.18,xx)*lowness; }
+      else { const d=-xx; const shelf=-15-150*SM(0,.03,d); const ab=-4200-900*fbm(x*6,y*6,z*6,sd+500,3)+500*(det-.5);
+        h=shelf+(ab-shelf)*SM(0.025,0.085,d);
+        const deep=SM(0.05,0.12,d);
+        // mid-ocean ridge with transform offsets
+        const along=Math.atan2(z,x); const off=0.035*Math.sign(Math.sin(along*14))*0+0.03*(Math.floor(along*9/Math.PI*2)%2);
+        const r=Math.abs(dot([x,y,z],rn)+off+0.05*(fbm(x*4,y*4,z*4,sd+600,3)-.5));
+        h+=deep*(2300*Math.exp(-1*(r/0.06)**2)-700*Math.exp(-1*(r/0.007)**2)+250*(fbm(x*40,y*40,z*40,sd+700,2)-.5)*Math.exp(-1*(r/0.1)**2));
+        // trench arc (small circle around tc, on the side facing td)
+        const ang=Math.acos(Math.max(-1,Math.min(1,dot([x,y,z],tc))));
+        const sec=SM(0.55,0.9,dot([x,y,z],td));
+        h+=-7200*Math.exp(-1*((ang-tR)/0.022)**2)*sec*SM(0.02,0.06,d);
+      }
+      if(h<-10935) h=-10935;
+      const k=(j*W+i)*4; D[k]=h; D[k+1]=fbm(x*3+wx*2,y*6,z*3,sd+800,5); D[k+2]=det; D[k+3]=fbm(x*5,y*5,z*5,sd+900,3);
+      if(h<mn){mn=h;mnI=k;}
+    } }
+  D.minIdx=mnI/4; return D; }
+// ---------------- GL ----------------
+const cv=document.getElementById('gl'); const gl=cv.getContext('webgl2',{preserveDrawingBuffer:true,antialias:false});
+const VS=`#version 300 es
+in vec2 p; out vec2 uv; void main(){ uv=p*.5+.5; gl_Position=vec4(p,0,1); }`;
+const FS=`#version 300 es
+precision highp float; in vec2 uv; out vec4 o;
+uniform sampler2D T; uniform vec3 cp; uniform mat3 cr; uniform float fov,sea,melt,spin,time,oldLine,mode,cloudA;
+uniform vec3 sun;
+const float PI=3.14159265;
+float h3(vec3 p){ p=fract(p*.3183099+.1); p*=17.; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float n3(vec3 x){ vec3 i=floor(x), f=fract(x); f=f*f*(3.-2.*f);
+  return mix(mix(mix(h3(i),h3(i+vec3(1,0,0)),f.x),mix(h3(i+vec3(0,1,0)),h3(i+vec3(1,1,0)),f.x),f.y),mix(mix(h3(i+vec3(0,0,1)),h3(i+vec3(1,0,1)),f.x),mix(h3(i+vec3(0,1,1)),h3(i+vec3(1,1,1)),f.x),f.y),f.z); }
+vec2 ll(vec3 q){ float lat=asin(clamp(q.y,-1.,1.)); float lon=atan(-q.z,q.x); return vec2(lon/(2.*PI)+.5, .5-lat/PI); }
+vec4 S(vec3 q){ return texture(T,ll(q)); }
+mat3 rotY(float a){ float c=cos(a),s=sin(a); return mat3(c,0,-s, 0,1,0, s,0,c); }
+void main(){
+  vec2 sp=(uv*2.-1.)*vec2(1080./1920.,1.)*tan(fov*.5);
+  vec3 rd=normalize(cr*vec3(sp,-1.)); vec3 ro=cp;
+  float b=dot(ro,rd), c=dot(ro,ro)-1., disc=b*b-c;
+  vec3 col;
+  // space + stars
+  vec3 sd=rd*420.; float st=h3(floor(sd)); col=vec3(.004,.006,.012)+vec3(.85,.9,1.)*smoothstep(.9975,1.,st)*smoothstep(.45,.0,length(fract(sd)-.5));
+  float tca=-b; float d2=dot(ro,ro)-tca*tca; float dmin=sqrt(max(d2,0.));
+  if(disc>0. && -b-sqrt(disc)>0.){
+    float t=-b-sqrt(disc); vec3 pw=ro+rd*t; vec3 n0=normalize(pw);
+    vec3 q=rotY(spin)*n0; // planet-space
+    vec4 A=S(q); float h=A.x;
+    // normal from heightmap
+    vec3 e=normalize(cross(vec3(0,1,0),q)+vec3(1e-5)); vec3 nn=cross(q,e);
+    float dd=0.0016; float hx=S(normalize(q+e*dd)).x, hy=S(normalize(q+nn*dd)).x;
+    float landK = h>sea ? 1. : 0.;
+    float ex=(mode<.5)? 9.0e-5 : (h<0.? 1.6e-5 : 5.0e-5);
+    vec3 gq=normalize(q - (e*(hx-h)+nn*(hy-h))/dd*ex);
+    // fine bump
+    float fb=n3(q*900.)*.6+n3(q*2100.)*.4; vec3 bq=normalize(gq+ (vec3(n3(q*700.+3.),n3(q*700.+7.),n3(q*700.+11.))-.5)*0.10);
+    vec3 N=transpose(rotY(spin))*bq; vec3 Ns=n0;
+    float dif=max(dot(N,sun),0.), difS=max(dot(Ns,sun),0.);
+    float day=smoothstep(-.12,.25,dot(Ns,sun));
+    float lat=asin(q.y)/PI*180.;
+    // ice
+    float iceLat=mix(64.,93.,melt)+ (A.w-.5)*14.;
+    float landIce = (h>0. ? smoothstep(iceLat-1.5,iceLat+1.5,abs(lat)) : 0.);
+    float hiSnow = smoothstep(2700.+melt*2600.,3300.+melt*2600.,h+ (A.z-.5)*800.);
+    float seaIce = (h<=sea ? smoothstep(iceLat+5.,iceLat+8.,abs(lat)) : 0.)*smoothstep(1.,.6,melt);
+    vec3 C;
+    if(h>sea){
+      vec3 lo=mix(vec3(.20,.29,.12),vec3(.36,.36,.20),A.w); vec3 hi=mix(vec3(.36,.30,.22),vec3(.30,.27,.25),A.z);
+      vec3 dry=vec3(.58,.48,.32);
+      C=mix(lo,hi,smoothstep(150.,1600.,h)); C=mix(C,dry,smoothstep(.55,.75,A.y*.6+A.w*.6-.1)*smoothstep(55.,30.,abs(lat))*.7);
+      C=mix(C, vec3(.38,.40,.34), smoothstep(45.,62.,abs(lat))*.5);
+      if(h<0.){ // exposed sea floor
+        vec3 sed=mix(vec3(.52,.45,.36),vec3(.36,.33,.30),smoothstep(-800.,-5000.,h)); sed=mix(sed,vec3(.46,.40,.34),A.w*.6); sed=mix(sed,vec3(.24,.22,.22),smoothstep(-6500.,-9000.,h));
+        sed=mix(sed,vec3(.22,.21,.22),smoothstep(-3000.,-2200.,h)*smoothstep(-6000.,-4000.,h)*A.w*.0);
+        sed*= .85+.3*A.z; C=sed;
+        float salt=smoothstep(-200.,-40.,h)*0.;
+        float wet=smoothstep(sea+400.,sea,h); C=mix(C,C*.55,wet);
+      }
+      C*= .85+.3*fb;
+      float ice=max(landIce,hiSnow); C=mix(C,vec3(.92,.95,1.),ice);
+      float sh=dif*.95+.05; col=C*sh*day*1.15 + C*.025;
+      if(h<0.) { float wet=smoothstep(sea+300.,sea,h); vec3 hv=normalize(sun-rd); col+=wet*.25*pow(max(dot(N,hv),0.),40.)*day; }
+    } else {
+      float dep=sea-h;
+      vec3 wc=mix(vec3(.10,.55,.62),vec3(.02,.12,.30),smoothstep(0.,180.,dep)); wc=mix(wc,vec3(.01,.05,.16),smoothstep(500.,4500.,dep));
+      if(mode<.5){ float nw=smoothstep(70.,0.,dep)*smoothstep(0.,1.,sea/20.)*step(0.,h); wc=mix(wc, vec3(.30,.42,.36), nw*.55); } // freshly flooded land: muddy shallow
+      wc=mix(wc,vec3(.9,.95,1.),seaIce);
+      vec3 wn=normalize(Ns+ (vec3(n3(q*90.+time*.4),n3(q*90.+5.-time*.3),n3(q*90.+9.))-.5)*.02);
+      vec3 hv=normalize(sun-rd); float spec=pow(max(dot(wn,hv),0.),220.)*0.9+pow(max(dot(wn,hv),0.),18.)*.08;
+      float fr=pow(1.-max(dot(Ns,-rd),0.),5.);
+      col=wc*(difS*.9+.06)*day+ (spec*(1.-seaIce))*day*vec3(1.,.95,.85) + fr*vec3(.25,.45,.8)*day*.6;
+      // shoreline foam
+      col+=vec3(.8,.9,.95)*smoothstep(8.,0.,dep)*.25*day*step(h,sea);
+    }
+    // today's coastline (r0)
+    float fw=fwidth(h)*1.2+.5; float line=1.-smoothstep(0.,fw,abs(h)); col=mix(col,vec3(1.,.86,.35),line*oldLine*step(sea*.0,h+1e9));
+    // clouds
+    vec3 qc=rotY(spin+time*.012)*n0; float cd=S(qc).y; float cv=smoothstep(.56,.75,cd)*cloudA;
+    col=mix(col,vec3(1.)*(difS*.9+.08)*day,cv*.8);
+    // atmosphere haze on disc
+    float mu=max(dot(Ns,-rd),0.); col=mix(col,vec3(.35,.6,1.)*(.25+.9*difS)*day+vec3(.0,.01,.03),pow(1.-mu,3.)*.55);
+  }
+  // atmosphere glow outside the limb
+  float hgt=dmin-1.; if(tca>0.){ float g=exp(-max(hgt,0.)/0.022)*step(0.,hgt); vec3 L=normalize(ro+rd*tca); float lit=smoothstep(-.3,.5,dot(L,sun)); col+=vec3(.30,.55,1.)*g*lit*1.1; }
+  col=1.-exp(-col*1.25); col=pow(col,vec3(1./1.05));
+  o=vec4(col,1.);
+}`;
+function sh(t,s){ const x=gl.createShader(t); gl.shaderSource(x,s); gl.compileShader(x); if(!gl.getShaderParameter(x,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(x)); return x; }
+const pr=gl.createProgram(); gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS)); gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS)); gl.linkProgram(pr); gl.useProgram(pr);
+const bf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,bf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+const pl=gl.getAttribLocation(pr,'p'); gl.enableVertexAttribArray(pl); gl.vertexAttribPointer(pl,2,gl.FLOAT,false,0,0);
+const U={}; ['T','cp','cr','fov','sea','melt','spin','time','oldLine','mode','cloudA','sun'].forEach(k=>U[k]=gl.getUniformLocation(pr,k));
+let _t0=performance.now(); const P=buildPlanet(); console.log("planet ms",performance.now()-_t0);
+const tx=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,tx); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA16F,W,H,0,gl.RGBA,gl.FLOAT,P);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+gl.uniform1i(U.T,0); gl.viewport(0,0,1080,1920);
+// deepest point (planet space) for the trench pin
+const mi=P.minIdx, mj=Math.floor(mi/W), mI=mi%W; const DLAT=(0.5-(mj+.5)/H)*180, DLON=((mI+.5)/W*2-1)*180;
+// ---------------- camera helpers ----------------
+function norm(v){const l=Math.hypot(...v);return v.map(a=>a/l);} function cross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];}
+function rotYv(v,a){ const c=Math.cos(a),s=Math.sin(a); return [c*v[0]+s*v[2], v[1], -s*v[0]+c*v[2]]; } // inverse of shader rotY? (planet->world)
+function look(eye,tgt,up){ const f=norm(tgt.map((x,i)=>x-eye[i])); const r=norm(cross(f,up)); const u=cross(r,f); return {r,u,f}; }
+let CAM;
+function project(w){ const d=w.map((x,i)=>x-CAM.eye[i]); const z=dot(d,CAM.f), x=dot(d,CAM.r), y=dot(d,CAM.u); const k=1/Math.tan(CAM.fov/2);
+  return [540+ x/z*k*960, 960 - y/z*k*960, z]; }
+function visible(w){ const d=w.map((x,i)=>x-CAM.eye[i]); return dot(w,norm(d))<0; }
+// shader rotY(spin) maps world->planet; planet->world = rotY(-spin) in shader convention. Implement shader mat3 rotY for vec3.
+function shRot(a,v){ const c=Math.cos(a),s=Math.sin(a); // mat3(c,0,-s, 0,1,0, s,0,c) column-major => m*v
+  return [c*v[0]+s*v[2], v[1], -s*v[0]+c*v[2]]; }
+function planetToWorld(spin,q){ return shRot(-spin,q); }
+// ---------------- UI ----------------
+const ui=document.getElementById('ui').getContext('2d'); const FS_="'Fira Sans','DejaVu Sans',sans-serif";
+function pill(g,x,y,txt,sub,a,acc){ if(a<=0) return; g.save(); g.globalAlpha=CL(a); const s=0.85+0.15*EBK(a);
+  g.font="800 58px "+FS_; const w1=g.measureText(txt).width; g.font="600 36px "+FS_; const w2=sub?g.measureText(sub).width:0; const W_=Math.max(w1,w2)+64, H_=sub?140:92;
+  g.translate(x,y); g.scale(s,s); g.translate(-W_/2,0);
+  g.fillStyle='rgba(6,12,22,.72)'; g.shadowColor='rgba(0,0,0,.5)'; g.shadowBlur=30; g.beginPath(); g.roundRect(0,0,W_,H_,24); g.fill(); g.shadowColor='transparent';
+  g.fillStyle=acc||'#ffd34d'; g.fillRect(0,22,7,H_-44);
+  g.fillStyle='#fff'; g.font="800 58px "+FS_; g.fillText(txt,32,66); if(sub){ g.fillStyle='rgba(220,232,245,.9)'; g.font="600 36px "+FS_; g.fillText(sub,32,116); } g.restore(); }
+function shadowText(g,t,x,y,font,col,al){ g.save(); g.font=font; g.textAlign=al||'left'; g.fillStyle='rgba(0,0,0,.55)'; g.shadowColor='rgba(0,0,0,.8)'; g.shadowBlur=18; g.fillText(t,x,y+3); g.shadowColor='transparent'; g.fillStyle=col; g.fillText(t,x,y); g.restore(); }
+// ---------------- scenes ----------------
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+function draw(t){ let eye,tgt,up=[0,1,0],fov,sea,melt=0,spin,old=0,cloudA=.55,sun;
+  if(S==0){
+    melt=EIO((t-0.5)/4.2); sea=70*EIO((t-0.9)/4.3);
+    spin=0.02*t; // planet slowly turns under the camera
+    const R=1.62-0.10*EIO(t/6.3); const ce=planetToWorld(spin,llv(44+2*t/6.3,-24+3*t/6.3)), ct=planetToWorld(spin,llv(66,-16));
+    eye=ce.map(x=>x*R); tgt=ct; fov=50*D2R; up=planetToWorld(spin,[0,1,0]);
+    old=SM(0.6,1.4,t); cloudA=.35; sun=norm([0.6,0.65,0.45]);
+  } else {
+    sea=-10800*(0.5*EIO((t-0.5)/2.3)*0.0+ (function(){ // eased drain with a hold near 3.7 km
+      const a=EIO((t-0.4)/2.0)*3700, b=EIO((t-3.0)/2.6)*(10800-3700); return (a+b)/10800; })());
+    spin=0.03*t; const R=3.1-0.45*EIO(t/6.3);
+    const ce=planetToWorld(spin,llv(DLAT-16+3*t/6.3,DLON+14-3*t/6.3)), ct=planetToWorld(spin,llv(DLAT-2,DLON+2));
+    eye=ce.map(x=>x*R); tgt=ct.map(x=>x*0.45); fov=42*D2R; up=planetToWorld(spin,[0,1,0]); cloudA=.30*(1-SM(0.4,2.2,t))+.06;
+    { const e=norm(eye), rt=norm(cross(e,[0,1,0])); sun=norm(e.map((x,i)=>x*0.8+rt[i]*0.75+[0,0.45,0][i])); }
+  }
+  const L=look(eye,tgt,up); CAM={eye,fov,...L};
+  gl.uniform3fv(U.cp,eye); gl.uniformMatrix3fv(U.cr,false,[...L.r,...L.u,...L.f.map(x=>-x)]);
+  gl.uniform1f(U.fov,fov); gl.uniform1f(U.sea,sea); gl.uniform1f(U.melt,melt); gl.uniform1f(U.spin,spin); gl.uniform1f(U.time,t);
+  gl.uniform1f(U.oldLine,old); gl.uniform1f(U.mode,S); gl.uniform1f(U.cloudA,cloudA); gl.uniform3fv(U.sun,sun);
+  gl.drawArrays(gl.TRIANGLES,0,3);
+  // ---- labels ----
+  const g=ui; g.clearRect(0,0,1080,1920);
+  const vg=g.createLinearGradient(0,0,0,360); vg.addColorStop(0,'rgba(0,0,0,.55)'); vg.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=vg; g.fillRect(0,0,1080,360);
+  if(S==0){
+    const a=SM(0.3,0.8,t);
+    g.globalAlpha=a; shadowText(g,'SEA LEVEL',92,322,"700 40px "+FS_,'rgba(210,228,245,.95)');
+    shadowText(g,'+'+Math.round(sea)+' m',88,420,"800 104px "+FS_,'#fff'); g.globalAlpha=1;
+    // ice meter
+    g.globalAlpha=a; shadowText(g,'ICE LEFT',740,322,"700 40px "+FS_,'rgba(210,228,245,.95)');
+    g.fillStyle='rgba(255,255,255,.18)'; g.beginPath(); g.roundRect(740,350,250,30,15); g.fill();
+    g.fillStyle='#dff3ff'; g.beginPath(); g.roundRect(740,350,Math.max(30,250*(1-melt)),30,15); g.fill(); g.globalAlpha=1;
+    if(t>0.8&&t<4.6) { g.globalAlpha=SM(0.8,1.3,t)*(1-SM(4.2,4.6,t)); shadowText(g,'— today’s coastline',92,488,"600 38px "+FS_,'#ffd34d'); g.globalAlpha=1; }
+    pill(g,540,1250,'Sea level +70 m (230 ft)','if all glaciers and ice sheets melted · USGS',(t-4.7)/0.5);
+  } else {
+    const a=SM(0.3,0.8,t);
+    g.globalAlpha=a; shadowText(g,'WATER LEVEL',92,322,"700 40px "+FS_,'rgba(210,228,245,.95)');
+    shadowText(g,(sea>-1?'0':'−'+fmt(-sea))+' m',88,420,"800 104px "+FS_,'#fff'); g.globalAlpha=1;
+    pill(g,540,1240,'Avg ocean depth ≈ 3.7 km','average ocean depth · NOAA',Math.min(CL((t-2.0)/0.45),1-CL((t-4.3)/0.4)));
+    // trench pin
+    const wq=planetToWorld(spin,llv(DLAT,DLON)); const pp=project(wq.map(x=>x*1.0));
+    const pa=CL((t-4.9)/0.4);
+    if(pa>0&&visible(wq)){ const [x,y]=pp; g.save(); g.globalAlpha=pa; g.strokeStyle='#ff5a3c'; g.lineWidth=5; g.beginPath(); g.arc(x,y,16+10*Math.sin(t*6),0,7); g.stroke();
+      g.fillStyle='#ff5a3c'; g.beginPath(); g.arc(x,y,8,0,7); g.fill(); g.beginPath(); if(y<760){g.moveTo(x,y+26); g.lineTo(x,y+90);} else {g.moveTo(x,y-26); g.lineTo(x,y-120);} g.stroke(); g.restore();
+      pill(g,Math.max(330,Math.min(750,x)),y<760?y+90:y-250,'Mariana Trench ≈ 11 km','the last water left · Challenger Deep',pa,'#ff5a3c'); }
+  }
+}
+window.draw=draw; window.DEEP=[DLAT,DLON];
+document.fonts.load("800 58px 'Fira Sans'").then(()=>{ draw(0); document.title='ok'; });
+</script></body></html>

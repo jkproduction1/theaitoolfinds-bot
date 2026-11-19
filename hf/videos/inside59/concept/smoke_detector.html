@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Smoke detector explained</title>
+<!-- inside59 r1: /explain-3d how a smoke detector works. Generic round photoelectric ceiling detector (own design, no brand).
+  Mechanism (photoelectric type): an LED shines a beam across a dark labyrinth chamber; the light sensor (photodiode) sits off the beam's
+  path, so normally no light reaches it. Smoke entering the chamber scatters light onto the sensor, which triggers the alarm.
+  Refs: U.S. Fire Administration / NFPA "Smoke alarms" (photoelectric vs ionization); Kidde / First Alert "How photoelectric smoke alarms work".
+  The (infrared) LED beam is drawn visible for clarity. Simplified, not to scale. Units ~ cm. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pLed">LED</div>
+    <div class="pill" id="pSen">Light sensor</div>
+    <div class="pill hot" id="pSc">Smoke scatters the light</div>
+    <div class="pill red" id="pAl">Alarm</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(30, [.018, .02, .026], [.13, .135, .15]);
+const rnd = mulberry32(7); const R = (a, b) => a + rnd() * (b - a);
+
+const CUT = new THREE.Plane(V(0, 0, -1), 0.6);           // keep z < 0.6 (front quarter cut away)
+const white = new THREE.MeshPhysicalMaterial({ color: '#eef0f2', roughness: 0.42, clearcoat: 0.3, clearcoatRoughness: 0.4, side: THREE.DoubleSide, clippingPlanes: [CUT] });
+const whiteIn = new THREE.MeshStandardMaterial({ color: '#c9ccd0', roughness: 0.7, side: THREE.DoubleSide, clippingPlanes: [CUT] });
+const black = new THREE.MeshStandardMaterial({ color: '#111216', roughness: 0.75, side: THREE.DoubleSide, clippingPlanes: [CUT] });
+const pcbM = new THREE.MeshStandardMaterial({ color: '#1d5b3a', roughness: 0.5, metalness: 0.1, clippingPlanes: [CUT] });
+const steel = new THREE.MeshStandardMaterial({ color: '#cfd3d8', metalness: 1, roughness: 0.3, clippingPlanes: [CUT] });
+const add = (g, m, x = 0, y = 0, z = 0, p = scene) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); p.add(o); return o; };
+
+// ---------- ceiling ----------
+
+// ---------- detector body ----------
+const det = new THREE.Group(); scene.add(det);
+add(new THREE.CylinderGeometry(6.4, 6.4, 0.7, 96), white, 0, -0.35, 0, det);                    // mounting base
+{ const pts = [V(6.15, -0.7), V(6.2, -1.3), V(6.1, -1.75)].map(v => new THREE.Vector2(v.x, v.y));
+  add(new THREE.LatheGeometry(pts, 96), white, 0, 0, 0, det); }
+// louvred side wall (gaps let smoke in)
+for (let i = 0; i < 36; i++) { const a = i / 36 * Math.PI * 2; const m = add(new THREE.BoxGeometry(0.35, 1.3, 0.6), white, Math.cos(a) * 5.95, -2.45, Math.sin(a) * 5.95, det); m.rotation.y = -a + 0.5; }
+{ const pts = [[6.0, -3.1], [5.8, -3.6], [5.1, -4.05], [3.6, -4.35], [0, -4.5]].map(v => new THREE.Vector2(...v));
+  add(new THREE.LatheGeometry(pts, 96), white, 0, 0, 0, det); }
+// inner surfaces / PCB
+add(new THREE.CylinderGeometry(5.6, 5.6, 0.16, 64), pcbM, 0, -0.95, 0, det);
+for (let i = 0; i < 14; i++) { const a = R(0, 6.28), r = R(3.8, 5.2); add(new THREE.BoxGeometry(R(.4, .9), 0.25, R(.3, .6)), rnd() < .5 ? black : steel, Math.cos(a) * r, -1.15, Math.sin(a) * r, det); }
+add(new THREE.CylinderGeometry(0.7, 0.7, 0.9, 32), new THREE.MeshStandardMaterial({ color: '#2c2f35', roughness: .4, clippingPlanes: [CUT] }), 4.3, -1.5, -2.0, det); // horn
+// optical chamber (dark labyrinth)
+const CY = -2.45, CR = 3.4;
+add(new THREE.CylinderGeometry(CR + 0.15, CR + 0.15, 0.2, 64), black, 0, -1.2, 0, det);
+add(new THREE.CylinderGeometry(CR + 0.15, CR + 0.15, 0.2, 64), black, 0, -3.7, 0, det);
+for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2; const v = add(new THREE.BoxGeometry(1.0, 2.3, 0.14), black, Math.cos(a) * CR, CY, Math.sin(a) * CR, det); v.rotation.y = -a + 0.9; }
+// LED (left) and photodiode (back, off the beam axis)
+const LED = V(-2.7, CY, 0), SEN = V(1.0, CY - 0.75, -2.6);
+add(new THREE.CylinderGeometry(CR + 0.25, CR + 0.25, 2.5, 64, 1, true), black, 0, CY, 0, det);
+{ const b = add(new THREE.CylinderGeometry(0.32, 0.32, 0.6, 24), new THREE.MeshStandardMaterial({ color: '#2a2d33', roughness: .4 }), LED.x - 0.3, CY, 0, det); b.rotation.z = Math.PI / 2; }
+const ledDome = add(new THREE.SphereGeometry(0.33, 24, 16), new THREE.MeshStandardMaterial({ color: '#ffdede', emissive: '#ff6a5a', emissiveIntensity: 2, roughness: .2 }), LED.x, CY, 0, det);
+add(new THREE.BoxGeometry(0.9, 0.9, 0.35), new THREE.MeshStandardMaterial({ color: '#202228', roughness: .5 }), SEN.x, SEN.y, SEN.z - 0.15, det);
+const senFace = add(new THREE.PlaneGeometry(0.62, 0.62), new THREE.MeshStandardMaterial({ color: '#0b1430', emissive: '#40e0ff', emissiveIntensity: 0, roughness: .15, metalness: .3 }), SEN.x, SEN.y, SEN.z + 0.04, det);
+// beam (drawn visible) + light trap spot on the far wall
+const beamM = new THREE.MeshBasicMaterial({ color: '#ff8a7a', transparent: true, opacity: 0.0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+const beamGM = beamM.clone();
+const BL = 5.6;
+for (const [r, m] of [[0.07, beamM], [0.28, beamGM]]) { const b = add(new THREE.CylinderGeometry(r, r * 1.6, BL, 20, 1, true), m, LED.x + BL / 2 + 0.3, CY, 0, det); b.rotation.z = -Math.PI / 2; }
+const tex = softTex();
+const spotM = new THREE.SpriteMaterial({ map: tex, color: '#ff8a7a', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
+const spot = new THREE.Sprite(spotM); spot.position.set(LED.x + BL + 0.3, CY, 0); spot.scale.set(1.4, 1.4, 1); det.add(spot);
+const ledGlow = new THREE.Sprite(spotM.clone()); ledGlow.position.copy(LED); ledGlow.scale.set(1.6, 1.6, 1); det.add(ledGlow);
+const senGlowM = new THREE.SpriteMaterial({ map: tex, color: '#5ee8ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
+const senGlow = new THREE.Sprite(senGlowM); senGlow.position.set(SEN.x, SEN.y, SEN.z + 0.3); senGlow.scale.set(2.2, 2.2, 1); det.add(senGlow);
+// alarm indicator LED on the underside + light
+const AL = V(-2.2, -4.3, -0.9);
+const alM = new THREE.MeshStandardMaterial({ color: '#4a0d0d', emissive: '#ff2020', emissiveIntensity: 0, roughness: .2 });
+const alLed = add(new THREE.SphereGeometry(0.34, 20, 12), alM, AL.x, AL.y, AL.z, det); alLed.scale.y = 0.45;
+const alGlowM = new THREE.SpriteMaterial({ map: tex, color: '#ff3030', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
+const alGlow = new THREE.Sprite(alGlowM); alGlow.position.copy(AL); alGlow.scale.set(4, 4, 1); det.add(alGlow);
+const alLight = new THREE.PointLight('#ff2a2a', 0, 40, 1.5); alLight.position.set(AL.x, AL.y - 1.5, AL.z + 3); scene.add(alLight);
+// alarm rings (sound / light pulses)
+const rings = [];
+for (let i = 0; i < 3; i++) { const m = new THREE.Mesh(new THREE.TorusGeometry(1, 0.012, 6, 128), new THREE.MeshBasicMaterial({ color: '#ff4040', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  m.rotation.x = Math.PI / 2; m.position.y = -4.6; scene.add(m); rings.push(m); }
+
+// ---------- smoke particles (custom point shader with per-point alpha/size) ----------
+function pointsMat(blend) {
+  return new THREE.ShaderMaterial({ uniforms: { uTex: { value: tex } }, transparent: true, depthWrite: false, blending: blend,
+    vertexShader: `attribute float aA; attribute float aS; attribute vec3 aC; varying float vA; varying vec3 vC;
+      void main(){ vA = aA; vC = aC; vec4 mv = modelViewMatrix*vec4(position,1.0); gl_PointSize = aS*900.0/(-mv.z); gl_Position = projectionMatrix*mv; }`,
+    fragmentShader: `uniform sampler2D uTex; varying float vA; varying vec3 vC; void main(){ vec4 t = texture2D(uTex, gl_PointCoord); gl_FragColor = vec4(vC, t.a*vA); }` });
+}
+const NS = 260, sm_ = [];
+const sPos = new Float32Array(NS * 3), sA = new Float32Array(NS), sS = new Float32Array(NS), sC = new Float32Array(NS * 3);
+const gPos = new Float32Array(NS * 3), gA = new Float32Array(NS), gS = new Float32Array(NS), gC = new Float32Array(NS * 3);
+for (let i = 0; i < NS; i++) {
+  const inside = i < 110;  // these end up inside the chamber
+  const side = rnd() < 0.7 ? -1 : 1;
+  sm_.push({ inside, t0: inside ? R(0.0, 2.4) : R(-2.5, 4.5), dur: R(2.0, 2.8),
+    p0: V(side * R(4, 13), R(-17, -12), R(-3, 2)), p1: V(side * R(6.3, 7.5), CY + R(-0.6, 0.6), R(-2.5, 0.4)),
+    p2: inside ? V(R(-2.2, 2.6), CY + R(-0.9, 0.9), R(-2.6, 0.5)) : V(side * R(7, 12), R(-3.5, -1), R(-4, 1)),
+    ph: R(0, 6.28), s: R(3.0, 5.5), g: R(0.6, 1) });
+  sC.set([0.80, 0.80, 0.82], i * 3); gC.set([1.0, 0.65, 0.55], i * 3);
+}
+function mkPts(pos, a, s, c, mat) { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3)); g.setAttribute('aA', new THREE.BufferAttribute(a, 1));
+  g.setAttribute('aS', new THREE.BufferAttribute(s, 1)); g.setAttribute('aC', new THREE.BufferAttribute(c, 3)); const p = new THREE.Points(g, mat); p.frustumCulled = false; scene.add(p); return g; }
+const smokeG = mkPts(sPos, sA, sS, sC, pointsMat(THREE.NormalBlending));
+const glintG = mkPts(gPos, gA, gS, gC, pointsMat(THREE.AdditiveBlending));
+// scattered rays: from smoke in the beam toward the sensor (and a few other ways)
+const NR = 22, rPos = new Float32Array(NR * 6), rCol = new Float32Array(NR * 6);
+const rayG = new THREE.BufferGeometry(); rayG.setAttribute('position', new THREE.BufferAttribute(rPos, 3)); rayG.setAttribute('color', new THREE.BufferAttribute(rCol, 3));
+const rays = new THREE.LineSegments(rayG, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+rays.frustumCulled = false; scene.add(rays);
+const rayD = []; for (let i = 0; i < NR; i++) rayD.push({ x: R(-1.6, 2.0), ph: R(0, 1), sp: R(0.7, 1.3), toSen: i < 14, dir: V(R(-1, 1), R(-1, 1), R(-1, 0.3)).normalize() });
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight('#e6ecf5', '#3a3530', 0.55));
+const key = new THREE.DirectionalLight('#fff2e2', 2.2); key.position.set(-20, -10, 30); scene.add(key);
+const fill = new THREE.DirectionalLight('#a9c8ff', 1.0); fill.position.set(25, -20, 5); scene.add(fill);
+const inL = new THREE.PointLight('#ffd6c8', 6, 9, 2); inL.position.set(0, CY, 2.5); scene.add(inL);
+
+// ---------- camera ----------
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.3 * u + 0.7 * eio(u);
+  const az = -0.30 + 0.42 * s, el = -0.17 + 0.05 * s, d = 40 - 6 * s;
+  const T = V(0.2, -5.6 + 0.4 * s, 0);
+  camera.position.set(T.x + Math.sin(az) * Math.cos(el) * d, T.y + Math.sin(el) * d, T.z + Math.cos(az) * Math.cos(el) * d);
+  camera.lookAt(T); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const SCX = 0.5;  // scatter label anchor (in the beam)
+const lab = labels(camera, [
+  { el: E('pLed'), t0: 0.35, at: [LED.x - 0.2, CY + 0.4, 0], pos: (x, y) => [cl(x - 120, 150, 930), Math.max(270, y - 300)] },
+  { el: E('pSen'), t0: 0.85, at: [SEN.x + 0.3, SEN.y + 0.3, SEN.z + 0.05], pos: (x, y) => [cl(x + 200, 260, 800), Math.max(270, y - 420)] },
+  { el: E('pSc'), t0: 2.6, at: [SCX, CY, 0], col: '#ffb547', pos: (x, y) => [540, y + 420] },
+  { el: E('pAl'), t0: 3.75, at: [AL.x, AL.y - 0.2, AL.z], col: '#ff4a4a', pos: (x, y) => [cl(x - 60, 200, 880), y + 480] },
+]);
+
+const T_ON = 0.15, T_SC = 2.3, T_AL = 3.55;
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  const on = sm(ramp(t, T_ON, T_ON + 0.35)), flick = 0.9 + 0.1 * Math.sin(t * 23) * Math.sin(t * 7);
+  beamM.opacity = 0.9 * on * flick; beamGM.opacity = 0.18 * on * flick; spotM.opacity = 0.9 * on; ledGlow.material.opacity = 0.9 * on;
+  ledDome.material.emissiveIntensity = 0.3 + 2.2 * on;
+  // smoke density inside the chamber (0..1)
+  const dens = sm(ramp(t, 1.8, 3.2));
+  for (let i = 0; i < NS; i++) {
+    const d = sm_[i]; let k = (t - d.t0) / d.dur, p;
+    if (!d.inside) k = ((k % 1) + 1) % 1;
+    const kk = cl(k);
+    if (d.inside && k >= 1) { p = d.p2.clone(); const w = t - d.t0 - d.dur; p.x += Math.sin(w * 1.3 + d.ph) * 0.25; p.y += Math.sin(w * 1.1 + d.ph * 2) * 0.15; p.z += Math.cos(w * 0.9 + d.ph) * 0.2; }
+    else { const a = 1 - kk, b = kk; // quadratic bezier p0 -> p1 -> p2 with curl
+      p = d.p0.clone().multiplyScalar(a * a).add(d.p1.clone().multiplyScalar(2 * a * b)).add(d.p2.clone().multiplyScalar(b * b));
+      p.x += Math.sin(t * 1.4 + d.ph) * 0.5 * (1 - kk); p.z += Math.cos(t * 1.1 + d.ph) * 0.4 * (1 - kk); }
+    sPos.set([p.x, p.y, p.z], i * 3); gPos.set([p.x, p.y, p.z], i * 3);
+    const inCh = Math.hypot(p.x, p.z) < CR && Math.abs(p.y - CY) < 1.2;
+    let alpha = d.inside ? cl(k * 4) * 0.35 : Math.sin(Math.PI * kk) * 0.4;
+    if (k < 0 && d.inside) alpha = 0;
+    const sz = d.s * (inCh ? 0.55 : 1) * (0.7 + 0.5 * kk);
+    sA[i] = alpha * (p.z > 0.9 && Math.hypot(p.x, p.z) < 6.3 && p.y > -4.5 ? 0.3 : 1); sS[i] = sz;
+    // glint where smoke crosses the beam
+    const nearBeam = Math.exp(-((p.y - CY) ** 2 + p.z * p.z) / 0.25) * (p.x > LED.x && p.x < LED.x + BL ? 1 : 0);
+    gA[i] = nearBeam * on * alpha * 4.0 * (0.7 + 0.3 * Math.sin(t * 9 + d.ph)); gS[i] = sz * 0.35;
+  }
+  for (const g of [smokeG, glintG]) for (const k of ['position', 'aA', 'aS']) g.attributes[k].needsUpdate = true;
+  // scattered rays
+  const sc = sm(ramp(t, T_SC, T_SC + 0.5));
+  for (let i = 0; i < NR; i++) { const r = rayD[i], q = (t * r.sp + r.ph) % 1, a = Math.sin(Math.PI * q) * sc;
+    const A = V(r.x, CY, 0), B = r.toSen ? V(SEN.x + (i % 3 - 1) * 0.12, SEN.y, SEN.z + 0.1) : A.clone().add(r.dir.clone().multiplyScalar(1.6));
+    const Bq = A.clone().lerp(B, cl(q * 1.6));
+    rPos.set([A.x, A.y, A.z, Bq.x, Bq.y, Bq.z], i * 6);
+    const c = r.toSen ? [1.6 * a, 1.2 * a, 0.8 * a] : [0.8 * a, 0.5 * a, 0.4 * a]; rCol.set([...c, ...c], i * 6); }
+  rayG.attributes.position.needsUpdate = true; rayG.attributes.color.needsUpdate = true;
+  const hit = sm(ramp(t, T_SC + 0.25, T_SC + 0.8));
+  senFace.material.emissiveIntensity = 2.5 * hit * (0.8 + 0.2 * Math.sin(t * 15)); senGlowM.opacity = 0.9 * hit;
+  // alarm: blinking red + rings + red wash
+  const al = sm(ramp(t, T_AL, T_AL + 0.2)), blink = 0.5 + 0.5 * Math.cos((t - T_AL) * Math.PI * 2 * 2.2);
+  alM.emissiveIntensity = al * (0.6 + 3.4 * blink); alGlowM.opacity = al * (0.25 + 0.75 * blink); alLight.intensity = al * (8 + 40 * blink);
+  bgU.uT.value.setRGB(0.10 * al * (0.3 + 0.7 * blink), 0.005 * al, 0.008 * al);
+  rings.forEach((m, i) => { const q = ((t - T_AL) * 0.9 + i / 3) % 1; const v = t > T_AL ? q : 0; m.scale.set(6.6 + v * 7, 6.6 + v * 7, 1); m.material.opacity = al * (1 - v) * 0.6 * (t - T_AL > i * 0.35 ? 1 : 0); });
+
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

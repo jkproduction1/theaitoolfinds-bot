@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>X-ray airplane wing</title>
+<!-- inside59 r0: /x-ray an airplane wing. Generic swept airliner wing (our own design, no brand), three.js, all procedural.
+  Structure shown (true for typical airliners): front + rear spars (the main spanwise beams), ribs (airfoil-shaped cross members
+  that hold the skin shape), integral fuel tank in the wing box between the spars (airliners carry most of their fuel in the wings),
+  trailing-edge flaps (inboard, lowered for take-off/landing) and ailerons (outboard, roll control).
+  Refs: FAA Pilot's Handbook of Aeronautical Knowledge ch. 3 (Aircraft Structure) + ch. 6 (Flight Controls);
+        Boeing/Airbus wing-box descriptions (integral wing fuel tanks). Simplified, not to scale. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pSp">Spars</div>
+    <div class="pill" id="pRi">Ribs</div>
+    <div class="pill hot" id="pFu">Fuel tank</div>
+    <div class="pill" id="pFl">Flaps</div>
+    <div class="pill" id="pAi">Aileron</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(32, [.012, .025, .05], [.05, .11, .19]);
+const rnd = mulberry32(59); const R = (a, b) => a + rnd() * (b - a);
+
+// ---------- wing planform (units ~ metres) ----------
+const S = 30;                                     // semi-span from fuselage side
+const st = s => ({ x: s * S, zLE: s * S * Math.tan(27 * Math.PI / 180), c: 9 - 6 * s, y0: -1.6 + s * S * Math.tan(5 * Math.PI / 180), tc: 0.13 - 0.03 * s });
+function foil(u, s, side, thick = 1) {          // side +1 upper, -1 lower
+  const q = st(s), yt = 5 * q.tc * (0.2969 * Math.sqrt(u) - 0.126 * u - 0.3516 * u * u + 0.2843 * u ** 3 - 0.1036 * u ** 4) * q.c;
+  const yc = 0.025 * q.c * Math.sin(Math.PI * u) * (1 - 0.3 * u);
+  return [q.x, q.y0 + yc + side * yt * thick, q.zLE + u * q.c];
+}
+function ring(u0, u1, n, s, thick) {
+  const pts = [];
+  for (let i = 0; i <= n; i++) { const k = i / n, u = u0 + (u1 - u0) * (0.5 - 0.5 * Math.cos(Math.PI * k)); pts.push(foil(u, s, 1, thick)); }
+  for (let i = n; i >= 0; i--) { const k = i / n, u = u0 + (u1 - u0) * (0.5 - 0.5 * Math.cos(Math.PI * k)); pts.push(foil(u, s, -1, thick)); }
+  return pts;
+}
+function loft(u0, u1, s0, s1, nS = 24, n = 28, thick = 1, caps = true) {
+  const pos = [], idx = []; const M = (n + 1) * 2;
+  for (let j = 0; j <= nS; j++) { const s = s0 + (s1 - s0) * j / nS; for (const p of ring(u0, u1, n, s, thick)) pos.push(...p); }
+  for (let j = 0; j < nS; j++) for (let i = 0; i < M; i++) { const a = j * M + i, b = j * M + (i + 1) % M, c = a + M, d = b + M; idx.push(a, c, b, b, c, d); }
+  if (caps) for (const [j, flip] of [[0, 1], [nS, 0]]) {
+    let cx = 0, cy = 0, cz = 0; for (let i = 0; i < M; i++) { cx += pos[(j * M + i) * 3]; cy += pos[(j * M + i) * 3 + 1]; cz += pos[(j * M + i) * 3 + 2]; }
+    const ci = pos.length / 3; pos.push(cx / M, cy / M, cz / M);
+    for (let i = 0; i < M; i++) { const a = j * M + i, b = j * M + (i + 1) % M; flip ? idx.push(ci, b, a) : idx.push(ci, a, b); }
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+
+// ---------- scan clipping + x-ray shader ----------
+let SCAN = -14;
+const planeS = new THREE.Plane(V(1, 0, 0), -SCAN), planeX = new THREE.Plane(V(-1, 0, 0), SCAN);
+const XV = `#include <clipping_planes_pars_vertex>
+varying vec3 vN; varying vec3 vV; varying vec3 vW;
+void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vW = wp.xyz; vec4 mvPosition = viewMatrix*wp;
+  vN = normalize(normalMatrix*normal); vV = normalize(-mvPosition.xyz); gl_Position = projectionMatrix*mvPosition;
+  #include <clipping_planes_vertex>
+}`;
+const XF = `#include <clipping_planes_pars_fragment>
+uniform vec3 uC; uniform float uB, uG, uA, uScan;
+varying vec3 vN; varying vec3 vV; varying vec3 vW;
+void main(){
+  #include <clipping_planes_fragment>
+  float f = pow(1.0-abs(dot(normalize(vN),normalize(vV))), 2.0);
+  float s = 0.85+0.15*sin(vW.x*6.0);
+  float band = exp(-abs(vW.x-uScan)*0.9)*1.5;
+  gl_FragColor = vec4(uC*((uB+uG*f)*s + band*(0.3+f))*uA, 1.0); }`;
+const XM = [], EM = [];
+function xrayMat(color, base, gain) {
+  const m = new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(color) }, uB: { value: base }, uG: { value: gain }, uA: { value: 0 }, uScan: { value: SCAN } },
+    vertexShader: XV, fragmentShader: XF, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, clipping: true });
+  m.clippingPlanes = [planeX]; XM.push(m); return m;
+}
+function edgeMat(color, op) { const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+  m.clippingPlanes = [planeX]; m.userData.op = op; EM.push(m); return m; }
+function shell(geo, solid, parent, col = '#3aa8ff', xr = [0.035, 0.75], edge = 25, eop = 0.55) {
+  const g = new THREE.Group();
+  const s = solid.clone(); s.clippingPlanes = [planeS]; s.side = THREE.DoubleSide; g.add(new THREE.Mesh(geo, s));
+  g.add(new THREE.Mesh(geo, xrayMat(col, xr[0], xr[1])));
+  if (edge) g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, edge), edgeMat(col === '#3aa8ff' ? '#9fe6ff' : '#ffd08a', eop)));
+  parent.add(g); return g;
+}
+
+// ---------- materials ----------
+const skin = new THREE.MeshPhysicalMaterial({ color: '#cdd3da', roughness: 0.3, metalness: 0.35, clearcoat: 0.7, clearcoatRoughness: 0.25 });
+const skinGrey = new THREE.MeshPhysicalMaterial({ color: '#b9c0c9', roughness: 0.35, metalness: 0.4, clearcoat: 0.5 });
+const alu = new THREE.MeshStandardMaterial({ color: '#c3d6e4', metalness: 0.85, roughness: 0.3, emissive: '#2a6c9a', emissiveIntensity: 0.35 });
+const ribM = new THREE.MeshStandardMaterial({ color: '#a9d7c8', metalness: 0.6, roughness: 0.35, emissive: '#1f6e64', emissiveIntensity: 0.45, side: THREE.DoubleSide });
+
+const wing = new THREE.Group(); scene.add(wing);
+// main wing box + leading edge (u 0..0.72), and fixed trailing-edge pieces
+shell(loft(0, 0.72, 0, 1, 30, 30), skin, wing);
+const TE = (s0, s1) => shell(loft(0.72, 1, s0, s1, 6, 10), skin, wing, '#3aa8ff', [0.035, 0.75], 25, 0.4);
+TE(0, 0.035); TE(0.45, 0.62); TE(0.92, 1);
+// moving surfaces (hinged at u = 0.72)
+function hinged(s0, s1, col) {
+  const a = V(...foil(0.72, s0, 0)), b = V(...foil(0.72, s1, 0));
+  const geo = loft(0.725, 1, s0 + 0.004, s1 - 0.004, 10, 10); geo.translate(-a.x, -a.y, -a.z);
+  const pivot = new THREE.Group(); pivot.position.copy(a); wing.add(pivot);
+  shell(geo, skinGrey, pivot, col, [0.06, 1.0], 25, 0.7);
+  return { pivot, axis: b.clone().sub(a).normalize() };
+}
+const flap = hinged(0.035, 0.45, '#ffb547');
+const ail = hinged(0.62, 0.92, '#ffb547');
+// fuselage side (left) + engine nacelle
+const fus = new THREE.Mesh(new THREE.CylinderGeometry(6, 6, 60, 64, 1, true), skin); // placeholder replaced below
+{ const g = new THREE.CylinderGeometry(6.2, 6.2, 70, 72, 1, false); g.rotateX(Math.PI / 2); g.translate(-5.6, 0.6, 6); shell(g, skin, scene, '#3aa8ff', [0.02, 0.5], 0, 0); }
+{ const sN = 0.34, q = st(sN); const g = new THREE.CylinderGeometry(1.75, 1.45, 7.5, 48, 1, false); g.rotateX(Math.PI / 2); g.translate(q.x, q.y0 - 2.6, q.zLE - 1.2);
+  shell(g, skinGrey, scene, '#3aa8ff', [0.03, 0.8], 30, 0.5);
+  const p = new RoundedBox(0.45, 1.6, 4.5); p.translate(q.x, q.y0 - 1.1, q.zLE + 0.8); shell(p, skinGrey, scene, '#3aa8ff', [0.03, 0.7], 30, 0.4);
+  const fan = new THREE.Mesh(new THREE.CircleGeometry(1.6, 40), new THREE.MeshStandardMaterial({ color: '#15181d', roughness: .5, metalness: .6 }));
+  fan.position.set(q.x, q.y0 - 2.6, q.zLE - 4.96); fan.rotation.y = Math.PI; fan.material.clippingPlanes = [planeS]; scene.add(fan); }
+function RoundedBox(w, h, d) { return new THREE.BoxGeometry(w, h, d); }
+
+// ---------- inner structure ----------
+const inner = new THREE.Group(); scene.add(inner);
+function sparGeo(u, s0, s1, n = 30, th = 0.14) {
+  const pos = [], idx = [];
+  for (let j = 0; j <= n; j++) { const s = s0 + (s1 - s0) * j / n, top = foil(u, s, 1, 0.9), bot = foil(u, s, -1, 0.9);
+    pos.push(top[0], top[1], top[2] - th, bot[0], bot[1], bot[2] - th, bot[0], bot[1], bot[2] + th, top[0], top[1], top[2] + th); }
+  for (let j = 0; j < n; j++) for (let k = 0; k < 4; k++) { const a = j * 4 + k, b = j * 4 + (k + 1) % 4; idx.push(a, a + 4, b, b, a + 4, b + 4); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+inner.add(new THREE.Mesh(sparGeo(0.15, 0.0, 0.97), alu));
+inner.add(new THREE.Mesh(sparGeo(0.66, 0.0, 0.97), alu));
+// ribs with lightening holes
+const ribS = []; for (let i = 0; i <= 20; i++) ribS.push(0.02 + i * 0.047);
+for (const s of ribS) {
+  const sh = new THREE.Shape(); const pts = [];
+  for (let i = 0; i <= 18; i++) { const u = 0.02 + 0.68 * (0.5 - 0.5 * Math.cos(Math.PI * i / 18)); const p = foil(u, s, 1, 0.9); pts.push([p[2], p[1]]); }
+  for (let i = 18; i >= 0; i--) { const u = 0.02 + 0.68 * (0.5 - 0.5 * Math.cos(Math.PI * i / 18)); const p = foil(u, s, -1, 0.9); pts.push([p[2], p[1]]); }
+  sh.moveTo(...pts[0]); pts.slice(1).forEach(p => sh.lineTo(...p));
+  for (const u of [0.27, 0.41, 0.55]) { const a = foil(u, s, 1, 1), b = foil(u, s, -1, 1), r = (a[1] - b[1]) * 0.24, hp = new THREE.Path();
+    hp.absarc(a[2], (a[1] + b[1]) / 2, r, 0, Math.PI * 2, true); sh.holes.push(hp); }
+  const g = new THREE.ExtrudeGeometry(sh, { depth: 0.09, bevelEnabled: false, curveSegments: 10 });
+  const m = new THREE.Mesh(g, ribM); m.rotation.y = -Math.PI / 2; m.position.x = s * S + 0.045; inner.add(m);
+}
+// integral fuel tank in the wing box (between the spars, inboard)
+const fuelU = { uT: { value: 0 }, uA: { value: 0 } };
+const fuelM = new THREE.ShaderMaterial({ uniforms: fuelU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+  vertexShader: `varying vec3 vN; varying vec3 vV; varying vec3 vW; void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vW = wp.xyz; vec4 mv = viewMatrix*wp; vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix*mv; }`,
+  fragmentShader: `uniform float uT, uA; varying vec3 vN; varying vec3 vV; varying vec3 vW;
+    void main(){ float f = pow(1.0-abs(dot(normalize(vN),normalize(vV))), 1.6);
+      float wave = 0.5+0.5*sin(vW.x*0.9 - uT*3.0 + vW.z*0.6);
+      vec3 c = vec3(1.0,0.62,0.18)*(0.10+0.55*f+0.10*wave);
+      gl_FragColor = vec4(c*uA,1.0); }` });
+const fuel = new THREE.Mesh(loft(0.17, 0.64, 0.0, 0.66, 24, 18, 0.82), fuelM); inner.add(fuel);
+const fuelSolid = new THREE.Mesh(loft(0.17, 0.64, 0.0, 0.66, 24, 18, 0.80), new THREE.MeshStandardMaterial({ color: '#ff9a2e', emissive: '#ff8a1e', emissiveIntensity: 0.6, transparent: true, opacity: 0, roughness: .3, depthWrite: false }));
+inner.add(fuelSolid);
+// lights
+scene.add(new THREE.HemisphereLight('#cfe0ff', '#1b2230', 0.7));
+const key = new THREE.DirectionalLight('#fff3e2', 2.4); key.position.set(-30, 60, 30); scene.add(key);
+const rim = new THREE.DirectionalLight('#8fc6ff', 1.6); rim.position.set(40, 20, -40); scene.add(rim);
+const fuelGlow = new THREE.PointLight('#ffa040', 0, 30, 1.5); fuelGlow.position.set(8, 3, 6); scene.add(fuelGlow);
+
+// scan sheet
+const sheetTex = (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 64, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+const sheetM = new THREE.MeshBasicMaterial({ map: sheetTex, color: '#59c8ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+const sheet = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 1), sheetM); sheet.rotation.x = -Math.PI / 2; scene.add(sheet);
+// blueprint grid floor + drifting motes
+const grid = new THREE.GridHelper(160, 80, '#2d6fa8', '#18406a'); grid.position.y = -9; grid.material.transparent = true; grid.material.opacity = 0.35; scene.add(grid);
+const NP = 120, motes = [], dpos = new Float32Array(NP * 3);
+for (let i = 0; i < NP; i++) motes.push([R(-10, 40), R(-6, 14), R(-10, 30), R(0, 6.28), R(.2, .6)]);
+const dGeo = new THREE.BufferGeometry(); dGeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+scene.add(new THREE.Points(dGeo, new THREE.PointsMaterial({ map: softTex(), size: 0.35, color: '#9fd6ff', transparent: true, opacity: .5, depthWrite: false, blending: THREE.AdditiveBlending })));
+
+// ---------- camera: glides outboard along the wing ----------
+const CAM = (new URLSearchParams(location.search).get('cam') || '-15,6,33,3,9,16,-6,0.8').split(',').map(Number);
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.25 * u + 0.75 * eio(u);
+  const cx = CAM[0] + CAM[1] * s;
+  camera.position.set(cx, CAM[2] - CAM[3] * s, CAM[4] + 2.5 * s);
+  const tx = CAM[5] + CAM[1] * s; camera.lookAt(tx, st(tx / S).y0 + CAM[6], st(tx / S).zLE + CAM[7]); camera.updateMatrixWorld();
+}
+// ---------- labels ----------
+const E = id => document.getElementById(id);
+const mid = (u, s) => { const a = foil(u, s, 1), b = foil(u, s, -1); return [a[0], (a[1] + b[1]) / 2, a[2]]; };
+const top = (u, s) => foil(u, s, 1);
+const T_S0 = 0.25, T_S1 = 2.7, T_FL = 2.9, T_AI = 3.5;
+const lab = labels(camera, [
+  { el: E('pSp'), t0: 1.15, at: top(0.66, 0.50), pos: (x, y) => [cl(x + 300, 200, 860), cl(y + 20, 300, 1480)] },
+  { el: E('pRi'), t0: 1.65, at: top(0.40, 0.78), pos: (x, y) => [cl(x - 30, 200, 880), cl(y - 230, 280, 1480)] },
+  { el: E('pFu'), t0: 2.15, at: top(0.40, 0.30), col: '#ffb547', pos: (x, y) => [cl(x - 120, 220, 860), cl(y + 330, 280, 1480)] },
+  { el: E('pFl'), t0: T_FL + 0.25, at: t => { const p = V(...foil(1, 0.25, 0)).sub(flap.pivot.position).applyQuaternion(flap.pivot.quaternion).add(flap.pivot.position); return [p.x, p.y, p.z]; }, col: '#ffb547', pos: (x, y) => [cl(x + 150, 200, 880), cl(y + 170, 300, 1480)] },
+  { el: E('pAi'), t0: T_AI + 0.25, at: t => { const p = V(...foil(1, 0.77, 0)).sub(ail.pivot.position).applyQuaternion(ail.pivot.quaternion).add(ail.pivot.position); return [p.x, p.y, p.z]; }, col: '#ffb547', pos: (x, y) => [cl(x + 60, 200, 860), cl(y + 210, 300, 1480)] },
+]);
+
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  const rr = ramp(t, T_S0, T_S1), sp = 0.35 * rr + 0.65 * sm(rr); SCAN = -3 + 37 * sp;
+  planeS.constant = -SCAN; planeX.constant = SCAN;
+  const xa = sm(ramp(t, T_S0 - 0.15, T_S0 + 0.3));
+  XM.forEach(m => { m.uniforms.uA.value = xa; m.uniforms.uScan.value = SCAN; });
+  EM.forEach(m => m.opacity = m.userData.op * xa);
+  const sa = sm(ramp(t, T_S0 - 0.1, T_S0 + 0.2)) * (1 - sm(ramp(t, T_S1 - 0.3, T_S1)));
+  sheet.visible = sa > 0.001; sheetM.opacity = sa;
+  { const s = cl(SCAN / S, 0, 1), q = st(s); sheet.position.set(SCAN, q.y0 + 0.4, q.zLE + q.c / 2); sheet.scale.set(1, q.c + 4, 1); }
+  bgU.uGrid.value = 0.6 + 0.6 * sm(ramp(t, T_S0, T_S1));
+  // fuel glows once revealed, gentle slosh
+  const fa = sm(ramp(t, 1.9, 2.6)); fuelU.uA.value = fa * 1.4; fuelU.uT.value = t; fuelSolid.material.opacity = 0.22 * fa;
+  fuelGlow.intensity = 30 * fa * (0.85 + 0.15 * Math.sin(t * 4));
+  // flaps lower (take-off/landing setting), aileron flicks up/down
+  const fl = eio(ramp(t, T_FL, T_FL + 1.1)); flap.pivot.quaternion.setFromAxisAngle(flap.axis, 0.42 * fl);
+  const ai = ramp(t, T_AI, T_AI + 0.3); ail.pivot.quaternion.setFromAxisAngle(ail.axis, -0.32 * ai * Math.sin((t - T_AI) * 3.2));
+  for (let i = 0; i < NP; i++) { const d = motes[i]; dpos[i * 3] = d[0] + t * 0.8 * d[4]; dpos[i * 3 + 1] = d[1] + Math.sin(t * d[4] + d[3]) * 0.6; dpos[i * 3 + 2] = d[2] - t * 0.5; }
+  dGeo.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

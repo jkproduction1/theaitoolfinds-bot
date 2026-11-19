@@ -1,0 +1,129 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// earth58 r2: /deep-dive the deepest cave on Earth — one continuous descent through a limestone cross-section, depth readout.
+// Fact: Veryovkina Cave (Arabika Massif, Abkhazia, Georgia) is the deepest known cave, 2,212 m (surveyed 2018, Guinness World Records).
+// Schematic: shafts/meanders are a stylised pattern (not a survey), passages and caver drawn far bigger than to scale.
+const g=document.getElementById('c').getContext('2d');
+const CL=x=>x<0?0:x>1?1:x, EIO=x=>{x=CL(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}, SM=(a,b,x)=>{const t=CL((x-a)/(b-a));return t*t*(3-2*t);};
+const EBK=x=>{x=CL(x);const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+function R0(s){ return function(){ s=(s*16807)%2147483647; return (s-1)/2147483646; }; }
+function off(w,h,f){ const c=document.createElement('canvas'); c.width=w; c.height=h; f(c.getContext('2d'),w,h); return c; }
+const FS_="'Fira Sans','DejaVu Sans',sans-serif";
+const K=2.55, Y0=1150, DMAX=2212, SW=1280, SH=Math.ceil(Y0+DMAX*K+1000);   // px per metre, surface y in strip
+const wy=d=>Y0+d*K;
+// ---- cave path: alternating pitches and meanders ----
+const PATH=[[640,-20],[640,0]]; (function(){ const R=R0(9); let x=640,d=0, side=1;
+  while(d<DMAX-120){ const pd=Math.min(DMAX-90-d, 50+R()*170); const n=Math.ceil(pd/12); for(let i=1;i<=n;i++) PATH.push([x+Math.sin((d+pd*i/n)/9)*4+(R()-.5)*5, d+pd*i/n]); d+=pd;
+    if(d>=DMAX-100) break;
+    let dx=side*(90+R()*230); if(x+dx<300||x+dx>980) dx=-dx; side=-Math.sign(dx); const md=8+R()*24, n2=8;
+    for(let i=1;i<=n2;i++) PATH.push([x+dx*i/n2, d+md*i/n2+Math.sin(i*1.3)*1.2]); x+=dx; d+=md; }
+  const n=10; const x0=x; for(let i=1;i<=n;i++) PATH.push([x0+(640-x0)*i/n, d+(DMAX-d)*i/n]); })();
+const ENDX=640;
+function atDepth(d){ for(let i=1;i<PATH.length;i++){ if(PATH[i][1]>=d){ const a=PATH[i-1],b=PATH[i]; const u=(b[1]-a[1])<1e-6?1:(d-a[1])/(b[1]-a[1]); return [a[0]+(b[0]-a[0])*u, i]; } } return [ENDX,PATH.length-1]; }
+// ---- static strip ----
+const strip=off(SW,SH,(p,w,h)=>{ const R=R0(4);
+  // sky
+  const sk=p.createLinearGradient(0,0,0,Y0); sk.addColorStop(0,'#0b1424'); sk.addColorStop(.5,'#243a5a'); sk.addColorStop(.85,'#c98d63'); sk.addColorStop(1,'#e8b68a'); p.fillStyle=sk; p.fillRect(0,0,w,Y0+10);
+  p.save(); p.filter='blur(70px)'; p.fillStyle='rgba(255,210,160,.55)'; p.beginPath(); p.arc(1000,Y0-260,170,0,7); p.fill(); p.restore();
+  // far ranges
+  const range=(base,amp,col,f,s)=>{ p.fillStyle=col; p.beginPath(); p.moveTo(0,Y0); for(let x=0;x<=w;x+=8){ const y=base-amp*(0.5+0.5*Math.sin(x/f+s))*(0.6+0.4*Math.sin(x/(f*0.37)+s*2))-amp*0.25*Math.abs(Math.sin(x/(f*0.13)+s)); p.lineTo(x,y);} p.lineTo(w,Y0); p.fill(); };
+  range(Y0-150,330,'#3a4a62',260,1); range(Y0-60,220,'#2c3646',190,4);
+  // snow caps on far range
+  // limestone body
+  const so=p.createLinearGradient(0,Y0,0,h); so.addColorStop(0,'#bcb3a2'); so.addColorStop(.12,'#a99f8d'); so.addColorStop(.45,'#8a8274'); so.addColorStop(.8,'#6c665c'); so.addColorStop(1,'#4c4842'); p.fillStyle=so;
+  p.beginPath(); p.moveTo(0,Y0+40); for(let x=0;x<=w;x+=20) p.lineTo(x,Y0+18*Math.sin(x/90)+10*Math.sin(x/31)+(Math.abs(x-640)<70?6:0)); p.lineTo(w,h); p.lineTo(0,h); p.fill();
+  // bedding planes (slight dip) + colour bands
+  for(let i=0;i<160;i++){ const y=Y0+30+R()*(h-Y0); const th=6+R()*40; p.fillStyle=R()<.5?'rgba(255,248,230,'+(.03+R()*.07)+')':'rgba(40,34,26,'+(.04+R()*.08)+')';
+    p.beginPath(); p.moveTo(0,y); for(let x=0;x<=w;x+=40) p.lineTo(x,y+x*0.05+5*Math.sin(x/120+i)); for(let x=w;x>=0;x-=40) p.lineTo(x,y+th+x*0.05+6*Math.sin(x/100+i*2)); p.fill(); }
+  p.lineCap='round';
+  for(let i=0;i<260;i++){ const y=Y0+40+R()*(h-Y0); p.strokeStyle='rgba(30,26,22,'+(.18+R()*.25)+')'; p.lineWidth=1+R()*2; p.beginPath(); let x=R()*w-200; p.moveTo(x,y); const L=200+R()*700; for(let k=0;k<L;k+=30){ p.lineTo(x+k,y+k*0.05+(R()-.5)*3); } p.stroke(); }
+  // vertical joints
+  for(let i=0;i<160;i++){ let x=R()*w, y=Y0+40+R()*(h-Y0); p.strokeStyle='rgba(28,24,20,'+(.15+R()*.25)+')'; p.lineWidth=1+R()*1.6; p.beginPath(); p.moveTo(x,y); const L=40+R()*220; for(let k=0;k<L;k+=14){ x+=(R()-.5)*6; p.lineTo(x,y+k);} p.stroke(); }
+  // calcite veins
+  for(let i=0;i<70;i++){ let x=R()*w, y=Y0+40+R()*(h-Y0); p.strokeStyle='rgba(240,236,224,'+(.15+R()*.2)+')'; p.lineWidth=1+R()*2; p.beginPath(); p.moveTo(x,y); const a=R()*3; for(let k=0;k<8;k++){ x+=Math.cos(a)*14+(R()-.5)*8; y+=Math.sin(a)*14+(R()-.5)*8; p.lineTo(x,y);} p.stroke(); }
+  // grain
+  for(let i=0;i<220000;i++){ const x=R()*w,y=Y0+R()*(h-Y0); p.fillStyle=R()<.5?'rgba(20,16,12,'+(R()*.14)+')':'rgba(255,250,236,'+(R()*.12)+')'; p.fillRect(x,y,1+R()*2.2,1+R()*2.2); }
+  // fossils / chert nodules
+  for(let i=0;i<120;i++){ const x=R()*w,y=Y0+60+R()*(h-Y0-60),r=4+R()*12; p.fillStyle='rgba(60,54,46,.35)'; p.beginPath(); p.ellipse(x,y,r*1.6,r,0.05,0,7); p.fill(); }
+  // ---- cave passage ----
+  const pts=[]; for(let i=0;i<PATH.length;i++){ const [x,d]=PATH[i]; pts.push([x,wy(d)]); }
+  function passage(extra,col){ for(let i=1;i<pts.length;i++){ const a=pts[i-1],b=pts[i]; const vert=Math.abs(b[1]-a[1])>Math.abs(b[0]-a[0]); const RR=R0(100+i);
+      const wd=(vert?(46+26*Math.sin(i*0.7)+14*RR()):(30+10*RR()))+extra; p.strokeStyle=col; p.lineWidth=wd; p.beginPath(); p.moveTo(a[0],a[1]); p.lineTo(b[0],b[1]); p.stroke(); } }
+  // chambers at some pitch bottoms + terminal chamber
+  const chambers=[]; for(let i=2;i<pts.length-1;i++){ const a=pts[i-1],b=pts[i],c=pts[i+1]; const v1=Math.abs(b[1]-a[1])>Math.abs(b[0]-a[0]), v2=Math.abs(c[1]-b[1])>Math.abs(c[0]-b[0]); if(v1&&!v2&&(i%3==0)) chambers.push([b[0],b[1]-10,60+(i%5)*12,34]); }
+  const ey=wy(DMAX); chambers.push([ENDX,ey-70,240,110]);
+  p.lineJoin='round'; p.lineCap='round';
+  passage(22,'rgba(70,60,48,.55)'); chambers.forEach(c=>{ p.fillStyle='rgba(70,60,48,.55)'; p.beginPath(); p.ellipse(c[0],c[1],c[2]+14,c[3]+14,0,0,7); p.fill(); });
+  passage(8,'#2a241e'); chambers.forEach(c=>{ p.fillStyle='#2a241e'; p.beginPath(); p.ellipse(c[0],c[1],c[2]+6,c[3]+6,0,0,7); p.fill(); });
+  passage(0,'#0d0b09'); chambers.forEach(c=>{ p.fillStyle='#0d0b09'; p.beginPath(); p.ellipse(c[0],c[1],c[2],c[3],0,0,7); p.fill(); });
+  // jagged rim breakup
+  for(let i=1;i<pts.length;i++){ const a=pts[i-1],b=pts[i]; const RR=R0(500+i); for(let k=0;k<6;k++){ const u=RR(); const x=a[0]+(b[0]-a[0])*u+(RR()-.5)*70, y=a[1]+(b[1]-a[1])*u+(RR()-.5)*20; p.fillStyle=RR()<.5?'#0d0b09':'rgba(90,80,66,.9)'; p.beginPath(); p.ellipse(x,y,4+RR()*9,3+RR()*7,RR()*3,0,7); p.fill(); } }
+  // terminal sump lake
+  p.save(); p.beginPath(); p.ellipse(ENDX,ey-70,240,110,0,0,7); p.clip(); const lk=p.createLinearGradient(0,ey-30,0,ey+40); lk.addColorStop(0,'#1d6f78'); lk.addColorStop(1,'#07242c'); p.fillStyle=lk; p.fillRect(ENDX-260,ey-26,520,140);
+  p.fillStyle='rgba(180,240,240,.5)'; p.fillRect(ENDX-235,ey-28,470,3); p.restore();
+  // stalactites in end chamber
+  for(let i=0;i<14;i++){ const x=ENDX-190+i*28+Math.sin(i*3)*6, y=ey-70-Math.sqrt(Math.max(0,1-((x-ENDX)/240)**2))*110+2, L=10+((i*7)%5)*7; p.fillStyle='#3e362d'; p.beginPath(); p.moveTo(x-6,y); p.lineTo(x+6,y); p.lineTo(x,y+L); p.fill(); }
+  // entrance doline
+  p.fillStyle='#8f8574'; p.beginPath(); p.moveTo(470,Y0+8); p.quadraticCurveTo(560,Y0+4,600,Y0+40); p.lineTo(680,Y0+40); p.quadraticCurveTo(720,Y0+4,810,Y0+8); p.lineTo(810,Y0+16); p.lineTo(470,Y0+16); p.fill();
+  p.fillStyle='#0d0b09'; p.beginPath(); p.moveTo(602,Y0+2); p.quadraticCurveTo(640,Y0-6,678,Y0+2); p.lineTo(668,Y0+60); p.lineTo(612,Y0+60); p.fill();
+  // surface scrub
+  for(let i=0;i<420;i++){ const x=R()*w; if(Math.abs(x-640)<60) continue; const y=Y0+10*Math.sin(x/90)+6*Math.sin(x/31)-2, s=4+R()*10; p.fillStyle=R()<.5?'#2f3b25':'#3d4a2d'; p.beginPath(); p.ellipse(x,y-s*.5,s,s*.8,0,0,7); p.fill(); }
+  for(let i=0;i<34;i++){ const x=R()*w; if(Math.abs(x-640)<110) continue; const y=Y0+10*Math.sin(x/90)+6*Math.sin(x/31)+2, s=26+R()*40; p.fillStyle='#1f2a1c'; p.beginPath(); p.moveTo(x,y-s*2.2); p.lineTo(x+s*.45,y); p.lineTo(x-s*.45,y); p.fill(); }
+});
+// rope (precomputed polyline in strip coords, offset to the wall)
+const ROPE=PATH.map(([x,d])=>[x+10,wy(d)]);
+const DARK=document.createElement('canvas'); DARK.width=1080; DARK.height=1920; const dk=DARK.getContext('2d');
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+function shadowText(t,x,y,font,col,al){ g.save(); g.font=font; g.textAlign=al||'left'; g.shadowColor='rgba(0,0,0,.85)'; g.shadowBlur=20; g.fillStyle='rgba(0,0,0,.5)'; g.fillText(t,x,y+3); g.shadowColor='transparent'; g.fillStyle=col; g.fillText(t,x,y); g.restore(); }
+function draw(t){
+  const dc=DMAX*EIO((t-0.7)/4.5);                      // caver depth
+  const [cx]=atDepth(dc);
+  const sc=1.0+0.05*t/6.3;                                   // slow push-in
+  const fy=780+260*SM(4.6,5.6,t);                            // where the caver sits on screen (drops lower at the end to show the chamber + label)
+  const camX=640+(cx-640)*0.55, camY=wy(dc);
+  const ox=540-camX*sc+Math.sin(t*0.7)*6, oy=fy-camY*sc+Math.sin(t*0.9)*4-120*(1-SM(0,0.9,t));
+  g.setTransform(1,0,0,1,0,0); g.fillStyle='#000'; g.fillRect(0,0,1080,1920);
+  g.setTransform(sc,0,0,sc,ox,oy); g.drawImage(strip,0,0);
+  // rope from entrance down to the caver
+  g.strokeStyle='rgba(255,140,40,.95)'; g.lineWidth=2.6/sc; g.beginPath(); g.moveTo(650,Y0-10);
+  const [,ci]=atDepth(dc); for(let i=1;i<ci;i++) g.lineTo(ROPE[i][0],ROPE[i][1]); g.lineTo(cx+10,camY); g.stroke();
+  // caver: helmet + body + lamp
+  const sw=Math.sin(t*3)*3; g.save(); g.translate(cx+10+sw,camY+18); g.fillStyle='#d24a1e'; g.beginPath(); g.roundRect(-5,-2,10,18,4); g.fill(); g.fillStyle='#f2c230'; g.beginPath(); g.arc(0,-6,5.5,0,7); g.fill();
+  g.strokeStyle='#d24a1e'; g.lineWidth=3; g.beginPath(); g.moveTo(-3,15); g.lineTo(-5,26); g.moveTo(3,15); g.lineTo(5,26); g.stroke(); g.restore();
+  g.setTransform(1,0,0,1,0,0);
+  // ---- darkness with headlamp + final reveal ----
+  const scY=d=>oy+wy(d)*sc; const reveal=SM(4.9,5.9,t);
+  dk.globalCompositeOperation='source-over'; dk.clearRect(0,0,1080,1920);
+  const s0=scY(0), s1=scY(420); const dg=dk.createLinearGradient(0,s0,0,Math.max(s1,s0+1)); dg.addColorStop(0,'rgba(2,3,6,0)'); dg.addColorStop(1,'rgba(2,3,6,'+(0.80-0.40*reveal)+')');
+  dk.fillStyle=dg; dk.fillRect(0,0,1080,1920); dk.fillStyle='rgba(2,3,6,'+(0.80-0.40*reveal)+')'; if(s1<1920) dk.fillRect(0,Math.max(0,s1),1080,1920);
+  dk.globalCompositeOperation='destination-out';
+  const lx=ox+(cx+10)*sc, ly=oy+camY*sc+10; const lr=dk.createRadialGradient(lx,ly,0,lx,ly,330); lr.addColorStop(0,'rgba(0,0,0,1)'); lr.addColorStop(.45,'rgba(0,0,0,.75)'); lr.addColorStop(1,'rgba(0,0,0,0)'); dk.fillStyle=lr; dk.fillRect(0,0,1080,1920);
+  const ex=ox+640*sc, ey=scY(DMAX)-70*sc; if(reveal>0){ const rr=dk.createRadialGradient(ex,ey,0,ex,ey,520); rr.addColorStop(0,'rgba(0,0,0,'+reveal+')'); rr.addColorStop(1,'rgba(0,0,0,0)'); dk.fillStyle=rr; dk.fillRect(0,0,1080,1920); }
+  g.drawImage(DARK,0,0);
+  // warm lamp glow + chamber glow
+  g.globalCompositeOperation='lighter'; const wg=g.createRadialGradient(lx,ly,0,lx,ly,170); wg.addColorStop(0,'rgba(255,220,150,.40)'); wg.addColorStop(1,'rgba(255,200,120,0)'); g.fillStyle=wg; g.fillRect(0,0,1080,1920);
+  g.fillStyle='rgba(255,250,230,1)'; g.beginPath(); g.arc(lx,ly-14*sc,3.5,0,7); g.fill();
+  if(reveal>0){ const cg=g.createRadialGradient(ex,ey+20,0,ex,ey+20,360); cg.addColorStop(0,'rgba(120,220,230,'+(.22*reveal)+')'); cg.addColorStop(1,'rgba(80,160,200,0)'); g.fillStyle=cg; g.fillRect(0,0,1080,1920); }
+  // drifting dust in the light
+  const R=R0(33); for(let i=0;i<60;i++){ const x=(R()*1080+t*(8+R()*14))%1080, y=(R()*1920+t*(20+R()*30))%1920; const dd=Math.hypot(x-lx,y-ly); if(dd<300){ g.fillStyle='rgba(255,230,190,'+(0.5*(1-dd/300))+')'; g.fillRect(x,y,2,2);} }
+  g.globalCompositeOperation='source-over';
+  // ---- depth ruler (right) ----
+  g.save(); g.font="600 34px 'DejaVu Sans Mono',monospace"; g.textAlign='right';
+  for(let m=0;m<=DMAX;m+=50){ const y=scY(m); if(y<230||y>1520) continue; const major=m%500==0; const a=Math.min(1,(y-230)/60,(1520-y)/60);
+    g.globalAlpha=a*(major?0.95:0.55); g.strokeStyle='#e8eef2'; g.lineWidth=major?4:2; g.beginPath(); g.moveTo(1010-(major?44:20),y); g.lineTo(1010,y); g.stroke();
+    if(major&&m>0){ g.fillStyle='#e8eef2'; g.shadowColor='rgba(0,0,0,.9)'; g.shadowBlur=10; g.fillText(fmt(m)+' m',950,y+12); g.shadowColor='transparent'; } }
+  g.restore(); g.globalAlpha=1;
+  // ---- readout ----
+  const tg=g.createLinearGradient(0,0,0,480); tg.addColorStop(0,'rgba(0,0,0,.6)'); tg.addColorStop(1,'rgba(0,0,0,0)'); g.fillStyle=tg; g.fillRect(0,0,1080,480);
+  const a=SM(0.2,0.7,t); g.globalAlpha=a;
+  shadowText('DEPTH',92,322,"700 40px "+FS_,'rgba(215,226,236,.95)');
+  shadowText(fmt(dc)+' m',88,420,"800 104px "+FS_,'#fff'); g.globalAlpha=1;
+  // ---- final card ----
+  const ca=(t-5.25)/0.5; if(ca>0){ const s=0.85+0.15*EBK(ca); g.save(); g.globalAlpha=CL(ca*1.4); g.font="800 60px "+FS_; const t1='Veryovkina Cave · 2,212 m'; const w1=g.measureText(t1).width; g.font="600 36px "+FS_; const t2='deepest known cave · Abkhazia, Georgia'; const w2=g.measureText(t2).width;
+    const W_=Math.max(w1,w2)+64, H_=142, y=Math.min(1330, ey+150); g.translate(540,y); g.scale(s,s); g.translate(-W_/2,0);
+    g.fillStyle='rgba(6,10,16,.78)'; g.shadowColor='rgba(0,0,0,.6)'; g.shadowBlur=30; g.beginPath(); g.roundRect(0,0,W_,H_,24); g.fill(); g.shadowColor='transparent';
+    g.fillStyle='#ff8c28'; g.fillRect(0,22,7,H_-44); g.fillStyle='#fff'; g.font="800 60px "+FS_; g.fillText(t1,32,68); g.fillStyle='rgba(220,230,240,.9)'; g.font="600 36px "+FS_; g.fillText(t2,32,118); g.restore(); }
+}
+window.draw=draw;
+document.fonts.load("800 58px 'Fira Sans'").then(()=>{ draw(0); document.title='ok'; });
+</script></body></html>

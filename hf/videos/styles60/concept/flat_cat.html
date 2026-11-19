@@ -1,0 +1,91 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles60 r0: /flat-science why cats land on their feet (flat glowing vector look of styles48 flat_goosebumps).
+// Generic stylised cat silhouette drawn in code (no known character).
+// Facts: the "righting reflex" lets a falling cat turn the front half of its body first, then the back half, and land feet-down;
+// it appears at about 3-4 weeks of age (Wikipedia "Cat righting reflex"; Britannica / Cornell Feline Health Center summaries).
+let g=document.getElementById('c').getContext('2d');const G0=g;const LAY=off(1080,1920,()=>{}),LG=LAY.getContext('2d');
+const LERP=(a,b,t)=>a+(b-a)*t, PI=Math.PI;
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.5,60,w*.5,h*.5,1300);gr.addColorStop(0,'#2a1d6c');gr.addColorStop(.5,'#160f4a');gr.addColorStop(1,'#05041a');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[220,560,300,'rgba(90,190,255,.20)'],[860,980,300,'rgba(150,90,255,.24)'],[260,1320,280,'rgba(255,110,170,.16)'],[760,1700,420,'rgba(80,140,255,.16)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(11);for(let i=0;i<200;i++){p.fillStyle='rgba(225,235,255,'+(R()*.6)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.4,0,7);p.fill();}});
+function label(txt,x,y,tx,ty,col,fs){g.save();fs=fs||40;g.font='800 '+fs+'px '+SANS;const w=g.measureText(txt).width+52,hh=fs*.9+36;
+  if(tx!=null){g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();g.moveTo(Math.min(Math.max(tx,x+30),x+w-30),ty<y?y-hh/2:y+hh/2);g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();}
+  g.fillStyle='rgba(12,8,44,.92)';g.beginPath();g.roundRect(x,y-hh/2,w,hh,hh/2);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=3;g.shadowColor=col;g.shadowBlur=14;g.stroke();g.shadowBlur=0;g.fillStyle='#fff';g.fillText(txt,x+26,y+fs*.35);g.restore();}
+function pop(t,x,y,fn,out){if(t<=0)return;g.save();const s=EBK(t/.45)*(out==null?1:1-.3*out);g.globalAlpha*=CL(t/.15)*(out==null?1:1-out);if(g.globalAlpha<=0.001){g.restore();return;}g.translate(x,y);g.scale(s,s);g.translate(-x,-y);fn();g.restore();}
+// ---------- the cat: two halves, each "twists" about the spine axis (scaleY = cos(angle)) ----------
+const BODY='#4a3aa4', BODY2='#6a58d6', DARK='#22185c', GLOW='rgba(127,216,255,.8)';
+function leg(x,y,len,ang,w){g.save();g.translate(x,y);g.rotate(ang);g.lineCap='round';g.strokeStyle=g.fillStyle;g.lineWidth=w;g.beginPath();g.moveTo(0,0);g.lineTo(0,len);g.stroke();g.beginPath();g.ellipse(2,len,w*.62,w*.48,0,0,7);g.fill();g.restore();}
+function frontHalf(sp,lt,stretch){ // x>0 side; legs point +y when upright
+  g.beginPath();g.ellipse(48,0,82,52,0,0,7);g.fill();
+  g.beginPath();g.moveTo(0,-46);g.lineTo(30,-50);g.lineTo(30,50);g.lineTo(0,46);g.fill();
+  leg(70,26,62+30*stretch,-.25*stretch+.15*Math.sin(lt*9)*(1-stretch),30);leg(102,24,58+30*stretch,-.05-.2*stretch,30);
+  // head
+  g.beginPath();g.ellipse(150,-30,50,44,0,0,7);g.fill();
+  g.beginPath();g.moveTo(118,-58);g.lineTo(122,-112);g.lineTo(150,-70);g.closePath();g.fill();
+  g.beginPath();g.moveTo(158,-72);g.lineTo(186,-110);g.lineTo(190,-52);g.closePath();g.fill();
+  g.save();g.fillStyle='#ffe07a';g.shadowColor='#ffd060';g.shadowBlur=16;[[140,-36],[176,-36]].forEach(([x,y])=>{g.beginPath();g.ellipse(x,y,9,11*Math.abs(sp),0,0,7);g.fill();});
+  g.fillStyle='#ff9ab8';g.shadowBlur=0;g.beginPath();g.moveTo(186,-12);g.lineTo(198,-12);g.lineTo(192,-4);g.closePath();g.fill();
+  g.strokeStyle='rgba(220,230,255,.7)';g.lineWidth=2.5;[-6,6].forEach(dy=>{g.beginPath();g.moveTo(194,-6+dy*.3);g.lineTo(250,-14+dy*1.8);g.stroke();});g.restore();}
+function backHalf(sp,lt,stretch){
+  g.beginPath();g.ellipse(-50,2,84,56,0,0,7);g.fill();
+  g.beginPath();g.moveTo(0,-46);g.lineTo(-30,-50);g.lineTo(-30,50);g.lineTo(0,46);g.fill();
+  leg(-96,28,64+30*stretch,.28*stretch-.12*Math.sin(lt*8)*(1-stretch),34);leg(-64,30,60+30*stretch,.1*stretch+.1,32);
+  // tail sweeps as a counterbalance
+  const tw=Math.sin(lt*3.2)*.5;g.save();g.strokeStyle=g.fillStyle;g.lineCap='round';g.lineWidth=24;g.beginPath();g.moveTo(-122,-18);
+  g.bezierCurveTo(-190,-40,-210,-110+60*tw,-170+30*tw,-160+40*tw);g.stroke();g.restore();}
+function half(fn,ang,lt,stretch){const sp=Math.cos(ang);g.save();g.scale(1,sp>=0?Math.max(.08,sp):Math.min(-.08,sp));
+  g.save();g.fillStyle=BODY;fn(sp,lt,stretch);g.restore();
+  // belly/back shading: lighter on the side facing us
+  g.save();g.globalCompositeOperation='source-atop';g.restore();g.restore();}
+function drawCat(lt,x,y,aF,aB,stretch,sq,tilt){LG.setTransform(1,0,0,1,0,0);LG.clearRect(0,0,1080,1920);LG.setTransform(G0.getTransform());g=LG;g.save();g.translate(x,y);g.rotate(tilt);g.scale(1.55*(1+.12*sq),1.55*(1-.14*sq));
+  // the half turned further from upright is drawn behind
+  if(Math.cos(aF)<Math.cos(aB)){half(frontHalf,aF,lt,stretch);half(backHalf,aB,lt,stretch);}else{half(backHalf,aB,lt,stretch);half(frontHalf,aF,lt,stretch);}
+  // spine glow line
+  g.save();g.globalCompositeOperation='source-atop';const hg=g.createRadialGradient(40,-60,10,0,0,260);hg.addColorStop(0,'rgba(140,120,255,.55)');hg.addColorStop(1,'rgba(20,10,80,.25)');g.fillStyle=hg;g.fillRect(-300,-300,600,600);g.restore();
+  g.save();g.strokeStyle='rgba(155,230,255,.55)';g.lineWidth=4;g.setLineDash([10,10]);g.lineDashOffset=-lt*30;g.beginPath();g.moveTo(-120,0);g.lineTo(140,0);g.stroke();g.restore();
+  g.restore();g=G0;g.save();g.setTransform(1,0,0,1,0,0);g.shadowColor=GLOW;g.shadowBlur=40;g.drawImage(LAY,0,0);g.restore();}
+// twist arrow around a half (screen space)
+function twist(cx,cy,a,col){if(a<=0)return;g.save();g.globalAlpha=a;g.strokeStyle=col;g.shadowColor=col;g.shadowBlur=18;g.lineWidth=7;g.lineCap='round';
+  g.beginPath();g.ellipse(cx,cy,46,120,0,-1.2,1.2+2.4*CL(a*1.2));g.stroke();const e=1.2+2.4*CL(a*1.2),ex=cx+Math.cos(e)*46,ey=cy+Math.sin(e)*120;arrowHead(g,ex,ey,e+PI/2,18,7,col);g.restore();}
+const SR=R0(9),STREAK=[...Array(16)].map(()=>({x:120+SR()*840,ph:SR()*900,l:80+SR()*160,w:2+SR()*3}));
+const GY=1300; // ground
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.drawImage(bg,0,0);const pulse=.5+.5*Math.sin(lt*6);
+  // camera drift
+  const z=1.04+.05*EIO(lt/6.3),dx=Math.sin(lt*.7)*10,dy=Math.cos(lt*.55)*8+(-30*EIO(lt/4));
+  g.save();g.translate(540+dx,960+dy);g.scale(z,z);g.translate(-540,-960);
+  // fall: gravity ease-in, land at 3.4
+  const u=CL((lt-.25)/3.15),land=lt>=3.4;const y=LERP(640,GY-182,u*u);
+  const aF=PI*(1-EIO((lt-.95)/.95)), aB=PI*(1-EIO((lt-1.95)/.95));
+  const stretch=EIO((lt-2.6)/.7);
+  const lp=lt-3.4, sq=land?Math.exp(-lp*5)*Math.sin(lp*14+1.2)*.9:0;
+  const tilt=.18*Math.sin(lt*1.4)*(1-CL((lt-2.9)/.5));
+  // speed streaks
+  const sp=land?Math.max(0,1-lp*3):u;if(sp>.02){g.save();g.lineCap='round';g.shadowColor='#7fd8ff';g.shadowBlur=12;STREAK.forEach(s=>{const yy=((s.ph-lt*900)%1300+1300)%1300+200;const gr=g.createLinearGradient(0,yy,0,yy+s.l);gr.addColorStop(0,'rgba(170,230,255,'+(.6*sp)+')');gr.addColorStop(1,'rgba(170,230,255,0)');g.strokeStyle=gr;g.lineWidth=s.w;g.beginPath();g.moveTo(s.x,yy);g.lineTo(s.x,yy+s.l);g.stroke();});g.restore();}
+  // ground: glowing floor
+  g.save();const fg=g.createLinearGradient(0,GY,0,GY+500);fg.addColorStop(0,'#3b2a9a');fg.addColorStop(1,'#120a40');g.fillStyle=fg;g.fillRect(-200,GY,1500,700);
+  g.strokeStyle='#9be6ff';g.shadowColor='#7fd8ff';g.shadowBlur=24;g.lineWidth=6;g.beginPath();g.moveTo(-200,GY);g.lineTo(1300,GY);g.stroke();g.shadowBlur=0;
+  g.strokeStyle='rgba(155,230,255,.18)';g.lineWidth=2;for(let i=-8;i<=8;i++){g.beginPath();g.moveTo(540+i*40,GY);g.lineTo(540+i*170,GY+420);g.stroke();}
+  for(let k=1;k<6;k++){const yy=GY+k*k*14;g.beginPath();g.moveTo(-200,yy);g.lineTo(1300,yy);g.stroke();}
+  // shadow grows as the cat nears
+  g.fillStyle='rgba(5,3,25,'+(.15+.45*u)+')';g.beginPath();g.ellipse(540,GY+8,90+150*u,14+10*u,0,0,7);g.fill();
+  if(land){const r=lp*520;g.strokeStyle='rgba(155,230,255,'+Math.max(0,.8-lp*1.2)+')';g.lineWidth=5;g.beginPath();g.ellipse(540,GY+4,r,r*.12,0,0,7);g.stroke();}
+  g.restore();
+  // twist arrows
+  const fa=CL((lt-.95)/.3)*(1-CL((lt-1.9)/.3)), ba=CL((lt-1.95)/.3)*(1-CL((lt-2.9)/.3));
+  twist(540+.0*1.55+150,y,fa,'#ffd08a');twist(540-80,y,ba,'#8fe3ff');
+  drawCat(lt,540-20,y+(land?0:0),aF,aB,stretch,sq,tilt);
+  // labels
+  const out1=CL((lt-3.3)/.3);
+  pop(lt-.95,540,500,()=>label('Front half turns first',230,500,700,y-90,'#ffd08a',44),out1);
+  pop(lt-1.95,540,1420,()=>label('Then the back follows',110,1420,430,y+60,'#8fe3ff',44));
+  g.restore();
+  // after landing: the name of the trick
+  pop(lt-3.55,540,500,()=>label('Righting reflex',270,500,null,null,'#ff8ab0',56));
+  pop(lt-4.2,540,610,()=>label('kittens: from 3–4 weeks old',225,610,null,null,'rgba(255,255,255,.35)',36));
+  if(lt>3.4){const ga=Math.max(0,.10-.1*(lt-3.4));g.save();g.globalCompositeOperation='lighter';g.fillStyle='rgba(120,200,255,'+ga+')';g.fillRect(0,0,1080,1920);g.restore();}
+  g.drawImage(GRAIN,0,0);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 80px '+SANS;g.fillText('Why cats land',540,290);
+  g.fillStyle='#9be6ff';g.shadowColor='rgba(110,210,255,.95)';g.shadowBlur=26+16*pulse*CL((lt-3.4)/.5);g.fillText('on their feet',540,380);g.restore();}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script></body></html>

@@ -1,0 +1,104 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles60 r2: /painted-story how the Golden Gate Bridge was built (painterly look of styles48 painted_titanic). Own drawing, no photo reference.
+// Facts (Golden Gate Bridge, Highway & Transportation District, goldengate.org "Bridge Construction" / "Facts & Stats"):
+//  construction began January 5, 1933; the bridge opened in May 1937 (pedestrians May 27, vehicles May 28).
+//  towers were built first, then the two main cables were spun in place, then the roadway was hung from suspender ropes.
+//  "Each main cable contains 27,572 wires" (district figure).
+const g=document.getElementById('c').getContext('2d');
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const WL=1190, T1=300, T2=800, TT=470, DK=1085;
+// ---------- world: sunset sky, hills, water ----------
+const WORLD=off(1300,2100,(p,w,h)=>{const R=R0(21);p.translate(110,90);
+  const s=p.createLinearGradient(0,-90,0,WL);s.addColorStop(0,'#1d2a55');s.addColorStop(.35,'#4a4a7a');s.addColorStop(.62,'#c06a5a');s.addColorStop(.85,'#f0a050');s.addColorStop(1,'#ffd08a');p.fillStyle=s;p.fillRect(-110,-90,w,WL+90);
+  strokes(p,2200,R,-110,-90,w,WL+90,['#2c3868','#5a4f80','#8a5a70','#c27a60'],170,28,0.05,0.06,0.16);
+  for(let k=0;k<7;k++){const cy=180+k*110+R()*40;strokes(p,120,R,-160+R()*700,cy,700+R()*500,30,k>3?['#ffb070','#f08a60','#ffd090']:['#7a6090','#a06a80','#c88070'],130,16,-0.03,0.12,0.25);}
+  // low sun
+  const sg=p.createRadialGradient(560,1060,10,560,1060,520);sg.addColorStop(0,'rgba(255,240,190,.95)');sg.addColorStop(.12,'rgba(255,200,120,.6)');sg.addColorStop(1,'rgba(255,160,90,0)');p.fillStyle=sg;p.fillRect(-110,500,w,700);
+  p.fillStyle='#fff3c8';p.beginPath();p.arc(560,1080,58,0,7);p.fill();
+  // headlands: Marin (left, tall) and the city side (right, low)
+  p.fillStyle='#3a3048';p.beginPath();p.moveTo(-120,WL);p.lineTo(-120,880);p.quadraticCurveTo(60,860,180,1010);p.quadraticCurveTo(250,1100,330,WL);p.closePath();p.fill();
+  strokes(p,500,R,-120,880,450,320,['#4a3a52','#2a2238','#5a4458','#6a4a4a'],50,10,0.3,0.15,0.25);
+  p.fillStyle='#3e3550';p.beginPath();p.moveTo(760,WL);p.quadraticCurveTo(860,1110,980,1100);p.quadraticCurveTo(1100,1080,1190,1090);p.lineTo(1190,WL);p.closePath();p.fill();
+  strokes(p,300,R,760,1080,430,110,['#4a3a58','#2a2238','#6a5068'],40,8,0,0.15,0.25);
+  // water
+  const wg=p.createLinearGradient(0,WL,0,h);wg.addColorStop(0,'#c2786a');wg.addColorStop(.12,'#5a5a80');wg.addColorStop(.5,'#2a3458');wg.addColorStop(1,'#141a32');p.fillStyle=wg;p.fillRect(-110,WL,w,h-WL);
+  strokes(p,2600,R,-110,WL,w,h-WL,['#3a4470','#5a5f88','#1e2848','#8a6a7a'],120,12,0,0.1,0.2);
+  for(let i=0;i<40;i++){const y=WL+6+i*12,ww=200-i*4+R()*60;p.fillStyle='rgba(255,220,160,'+Math.max(0,0.6-i*.014)+')';p.fillRect(560-ww/2+(R()-.5)*60,y,ww,4);}
+});
+// ---------- a tower (offscreen 180x760: legs, portal struts) ----------
+const TOWER=off(180,760,(p)=>{const R=R0(5);const col=['#c23a24','#a32a1a','#d8502e','#e06a3a'];
+  const leg=(x0,x1)=>{p.fillStyle='#b8341f';p.beginPath();p.moveTo(x0+4,0);p.lineTo(x1-4,0);p.lineTo(x1+2,760);p.lineTo(x0-2,760);p.closePath();p.fill();};
+  leg(14,56);leg(124,166);
+  [[40,70],[200,52],[340,48],[470,44],[590,40]].forEach(([y,hh])=>{p.fillStyle='#a82e1c';p.fillRect(14,y,152,hh*.55);p.fillStyle='#d24a2c';p.fillRect(14,y,152,6);
+    p.fillStyle='#7a1e12';p.fillRect(56,y+hh*.55,68,6);});
+  // deco steps on top
+  p.fillStyle='#c23a24';p.fillRect(10,0,52,14);p.fillRect(118,0,52,14);p.fillStyle='#e8703e';p.fillRect(20,-0,32,6);p.fillRect(128,0,32,6);
+  p.save();p.globalCompositeOperation='source-atop';strokes(p,700,R,0,0,180,760,col,40,6,1.57,0.15,0.3);
+  const lg=p.createLinearGradient(0,0,180,0);lg.addColorStop(0,'rgba(255,190,120,.35)');lg.addColorStop(.5,'rgba(255,190,120,0)');lg.addColorStop(1,'rgba(30,10,30,.35)');p.fillStyle=lg;p.fillRect(0,0,180,760);
+  const vg=p.createLinearGradient(0,0,0,760);vg.addColorStop(0,'rgba(255,200,140,.15)');vg.addColorStop(1,'rgba(30,10,40,.4)');p.fillStyle=vg;p.fillRect(0,0,180,760);p.restore();});
+// ---------- cable geometry ----------
+function cableY(x){if(x<T1){const u=(x+60)/(T1+60);return LERP(1120,TT+8,u)+60*u*(1-u);}if(x>T2){const u=(x-T2)/(1140-T2);return LERP(TT+8,1110,u)+60*u*(1-u);}
+  const v=(x-(T1+T2)/2)/((T2-T1)/2);return DK-58+(TT+8-(DK-58))*v*v;}
+const LERP=(a,b,t)=>a+(b-a)*t;
+function deckY(x){return DK-10*(1-Math.pow((x-550)/700,2));}
+const FOG=(()=>{const R=R0(3);return [...Array(9)].map(()=>[R()*1400-200,1060+R()*140,180+R()*220,R()*6,0.4+R()*0.6]);})();
+const BOILN=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#ffd8b0','#1a1430','#8a5a70'],120,22,0.1,0.02,0.05);});
+function cap(t,t0,t1,lt,i,y,fs,col){if(lt<t0||lt>t1+0.5)return;const e=E3((lt-t0)/0.5),o=E3((lt-t1)/0.45);g.save();g.textAlign='left';g.font='italic 500 '+fs+'px '+SERIF;const w=g.measureText(t).width+64,hh=fs*1.5;
+  g.translate(72-(1-e)*(w+160)-o*(w+160),y);g.rotate(-0.012+(1-e)*0.03);tornPath(g,0,0,w,hh,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=col||'#2c1c0e';g.fillText(t,32,hh*0.7);g.restore();}
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;
+  const z=1.13-0.11*EIO(lt/6.3), cx=540+14*Math.sin(lt*.6)-20*EIO(lt/6.3), cy=900+60*(1-EIO(lt/6.3))+6*Math.cos(lt*.7);
+  g.save();g.translate(540,900);g.scale(z,z);g.translate(-cx,-cy);
+  g.drawImage(WORLD,-110,-90);
+  // water shimmer
+  g.save();g.globalCompositeOperation='lighter';for(let i=0;i<26;i++){const y=WL+20+i*16,x=((i*137+lt*(30+i*3))%1300)-110;g.fillStyle='rgba(255,210,150,'+(0.10+0.06*Math.sin(lt*3+i))+')';g.fillRect(x,y,60+(i%5)*20,3);}g.restore();
+  // towers rising out of the water
+  [[T1,0.2,1.7],[T2,0.55,2.05]].forEach(([tx,a,b])=>{const k=EIO((lt-a)/(b-a));if(k<=0)return;const top=WL-(WL-TT)*k;
+    g.save();g.beginPath();g.rect(tx-120,top-4,240,WL-top+4);g.clip();g.drawImage(TOWER,tx-90,top);g.restore();
+    // reflection
+    g.save();g.globalAlpha=.25;g.translate(tx-90,WL);g.scale(1,-.35);const hh=Math.max(1,WL-top);g.drawImage(TOWER,0,0,180,hh,0,-hh,180,hh);g.restore();
+    // working derrick on top while it grows
+    if(k<1){g.save();g.strokeStyle='#2a1a28';g.lineWidth=4;g.beginPath();g.moveTo(tx-30,top);g.lineTo(tx-10,top-70);g.lineTo(tx+50,top-50);g.moveTo(tx-10,top-70);g.lineTo(tx+20,top);g.stroke();g.beginPath();g.moveTo(tx+50,top-50);g.lineTo(tx+50,top-10+Math.sin(lt*5)*6);g.stroke();g.restore();}
+    // splash ring at the water line
+    g.save();g.strokeStyle='rgba(255,230,200,'+(0.5*(1-k))+')';g.lineWidth=4;g.beginPath();g.ellipse(tx,WL+4,110+20*Math.sin(lt*6),10,0,0,7);g.stroke();g.restore();});
+  // cables: spun with passes of a glowing spinning wheel
+  const P0=-60,P1=1140; const sp=CL((lt-2.05)/1.9);
+  if(sp>0){const passes=3,q=sp*passes,pi=Math.min(passes-1,Math.floor(q)),f=q-pi;const dir=pi%2?-1:1;const wx=dir>0?LERP(P0,P1,EIO(f)):LERP(P1,P0,EIO(f));
+    const thick=2+7*sp, reach=pi===0?wx:P1;
+    g.save();g.lineCap='round';g.strokeStyle='#2a1420';g.lineWidth=thick+2;g.beginPath();for(let x=P0;x<=reach;x+=8){const y=cableY(x);x>P0?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();
+    g.strokeStyle='#d8583a';g.lineWidth=thick*.6;g.stroke();g.strokeStyle='rgba(255,210,150,.5)';g.lineWidth=1.5;g.stroke();
+    // wheel
+    if(sp<1){const wy=cableY(wx);g.globalCompositeOperation='lighter';const wg=g.createRadialGradient(wx,wy,1,wx,wy,46);wg.addColorStop(0,'rgba(255,240,200,.95)');wg.addColorStop(1,'rgba(255,200,120,0)');g.fillStyle=wg;g.fillRect(wx-46,wy-46,92,92);
+      g.globalCompositeOperation='source-over';g.strokeStyle='#2a1a28';g.lineWidth=3;g.lineWidth=5;g.beginPath();g.arc(wx,wy-16,18,0,7);g.stroke();g.beginPath();g.moveTo(wx+Math.cos(lt*12)*18,wy-16+Math.sin(lt*12)*18);g.lineTo(wx-Math.cos(lt*12)*18,wy-16-Math.sin(lt*12)*18);g.stroke();}
+    g.restore();}
+  // deck: hung from the towers outward, with suspender ropes
+  const dk=EIO((lt-3.95)/1.3);
+  if(dk>0){const ext=dk*400;const segs=[[T1-ext*.9,T1+ext*.65],[T2-ext*.65,T2+ext*.9]];
+    g.save();g.lineCap='butt';segs.forEach(([a,b])=>{a=Math.max(-80,a);b=Math.min(1160,b);
+      g.strokeStyle='rgba(60,30,40,.85)';g.lineWidth=2.4;for(let x=Math.ceil(a/22)*22;x<=b;x+=22){if(Math.abs(x-T1)<70||Math.abs(x-T2)<70)continue;g.beginPath();g.moveTo(x,cableY(x));g.lineTo(x,deckY(x));g.stroke();}
+      g.fillStyle='#b8341f';g.beginPath();g.moveTo(a,deckY(a)-8);for(let x=a;x<=b;x+=10)g.lineTo(x,deckY(x)-8);for(let x=b;x>=a;x-=10)g.lineTo(x,deckY(x)+14);g.closePath();g.fill();
+      g.fillStyle='#5a1e1e';g.beginPath();for(let x=a;x<=b;x+=10)g.lineTo(x,deckY(x)+14);for(let x=b;x>=a;x-=10)g.lineTo(x,deckY(x)+30);g.closePath();g.fill();
+      g.strokeStyle='rgba(255,190,130,.6)';g.lineWidth=2;g.beginPath();for(let x=a;x<=b;x+=10)g.lineTo(x,deckY(x)-8);g.stroke();
+      g.strokeStyle='rgba(40,10,20,.5)';g.lineWidth=1.5;for(let x=Math.ceil(a/16)*16;x<b;x+=16){g.beginPath();g.moveTo(x,deckY(x)+14);g.lineTo(x+8,deckY(x)+30);g.lineTo(x+16,deckY(x)+14);g.stroke();}});g.restore();
+    // redraw tower fronts over the deck ends
+  }
+  // car lights once open
+  const op=CL((lt-5.25)/0.4);if(op>0){g.save();g.globalCompositeOperation='lighter';for(let i=0;i<14;i++){const x=((i*97+lt*(i%2?-160:150))%1300+1300)%1300-110,y=deckY(x)-12+(i%2)*5;
+    const c=i%2?'rgba(255,90,70,':'rgba(255,240,190,';const lg=g.createRadialGradient(x,y,0,x,y,16);lg.addColorStop(0,c+(0.95*op)+')');lg.addColorStop(1,c+'0)');g.fillStyle=lg;g.fillRect(x-16,y-16,32,32);}g.restore();}
+  // fog drifting low
+  g.save();FOG.forEach(([x0,y,r,ph,a])=>{const x=((x0+lt*40*a)%1500+1500)%1500-250;const fg=g.createRadialGradient(x,y,10,x,y,r);fg.addColorStop(0,'rgba(255,225,215,'+(0.22*a)+')');fg.addColorStop(1,'rgba(255,225,215,0)');g.fillStyle=fg;g.beginPath();g.ellipse(x,y,r*1.6,r*.45,0,0,7);g.fill();});g.restore();
+  g.restore();
+  // painterly boil + grain + vignette
+  const bk=Math.floor(lt*8+0.001),BRr=R0(1000+bk*7);BRr();g.save();g.translate(540+(BRr()-.5)*50,960+(BRr()-.5)*50);g.scale(bk%2?-1:1,(bk>>1)%2?-1:1);g.rotate((BRr()-.5)*0.04);g.drawImage(BOILN,-540,-960);g.restore();
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
+  const vg=g.createRadialGradient(540,900,420,540,900,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,6,20,.6)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  // labels (max 2 at once)
+  cap('1933–1937',0.15,9,lt,0,250,64);
+  if(lt>2.15&&lt<4.9){cap('27,572 wires',2.15,4.4,lt,1,1330,64,'#8a1c10');cap('in each main cable',2.35,4.4,lt,3,1430,48);}
+  cap('Opened 1937',5.0,9,lt,2,1360,72,'#8a1c10');
+}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>
