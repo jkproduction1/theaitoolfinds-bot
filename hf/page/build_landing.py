@@ -179,6 +179,22 @@ rep('on your topic or one from your plan. ', 'on your topic or one from your pla
 # explainer-styles reel styles33 = 138,000 (was "131K"), what's-inside reel inside3 = 133,438 (was "129K").
 assert s.count("131K") == 6 and s.count("129K") == 4, (s.count("131K"), s.count("129K"))
 s = s.replace("131K", "138K").replace("129K", "133K")
+# Jan, 2026-11-19: not only Claude. He tested the system in ChatGPT's Codex app (free ChatGPT plan): it works, the result is
+# simpler than in Claude. Other SKILL.md apps (Gemini CLI, Cursor, Copilot) are untested, so they are NOT named here.
+# Framing: the AI is the engine -> smarter model = more polished video (true, and it reads as an upside, not a weakness).
+rep('One-time payment, no subscription. Runs in Claude Pro on Mac or Windows.',
+    'One-time payment, no subscription. Works with Claude or ChatGPT on Mac or Windows.')
+rep('files you add to Claude (an AI app, like ChatGPT).', 'files you add to your AI app: Claude or ChatGPT (Codex).')
+rep('Files you add to Claude (an AI app, like ChatGPT).', 'Files you add to your AI app: Claude or ChatGPT (Codex).')
+rep('<p>Claude Pro <small>the AI app the system runs in</small></p></div>',
+    '<p>Claude or ChatGPT <small>Claude Pro for the full look, or start free in ChatGPT (Codex)</small></p></div>')
+rep('The system runs in Claude Pro, a plan from Anthropic, the company behind Claude.',
+    'The system runs in your AI app: Claude (Pro plan) for the full look, or ChatGPT\'s Codex app, which you can start on the free plan.')
+rep('Yes, the daily video is automatic: every day Claude prepares a ', 'Yes, in Claude the daily video is automatic: every day it prepares a ')
+GPT_FAQ = ('<details class="rv"><summary>Does it work with ChatGPT?<i aria-hidden="true"></i></summary><p>Yes! It runs in Claude and in '
+           'ChatGPT\'s Codex app, even on the free plan. Your AI is the engine: the smarter the model, the more polished the animation. '
+           'All our videos are made with Claude. And every time your AI gets an upgrade, so do your videos.</p></details>\n      ')
+rep('<details class="rv"><summary>Is it safe to pay, and can I get my money back?', GPT_FAQ + '<details class="rv"><summary>Is it safe to pay, and can I get my money back?')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
