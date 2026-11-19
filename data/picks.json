@@ -1,136 +1,133 @@
 {
-  "date": "2026-11-18",
+  "date": "2026-11-19",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What if… Earth 9",
+      "title": "What if… Earth 10",
       "commands": [
-        "/what-if the Moon crashed into Earth",
-        "/simulate the Yellowstone supervolcano erupting",
-        "/scale the tallest mountain versus the deepest ocean trench"
+        "/what-if Earth lost gravity for 5 seconds",
+        "/simulate a mega tsunami hitting a coastline",
+        "/scale Mount Everest versus Olympus Mons"
       ],
-      "why": "earth8 = 788k, our biggest hit; 'what would happen to Earth' in Zack D. Films 3D is the strongest IG hook; all three objects new"
+      "why": "earth8 = 788k is still our biggest hit; Earth what-if/disaster in Zack D. Films 3D is the strongest IG hook; all objects new"
     },
     {
-      "title": "Famous video styles 8",
+      "title": "Famous video styles 9",
       "commands": [
-        "/flat-science why cats always land on their feet",
-        "/paper-collage why Venice is sinking",
-        "/painted-story how the Titanic wreck was found"
+        "/flat-science why your fingers wrinkle in water",
+        "/paper-collage how the Panama Canal lifts ships",
+        "/painted-story how Pompeii was buried"
       ],
-      "why": "explainer-styles series keeps the best IG median (styles33 138k, styles44 91k, styles37 60k, styles48 44k) and top save rate; same looks, fresh topics"
+      "why": "explainer-styles series has the best IG median and save rate (styles33 138k, styles44 91k); same three looks, fresh curiosity topics"
     },
     {
-      "title": "Disasters in 3D 2",
+      "title": "Inside your body 3",
       "commands": [
-        "/explain-3d how a tornado forms",
-        "/what-if a category 5 hurricane hit New York",
-        "/zoom-in the eye of a cyclone"
+        "/x-ray the human knee",
+        "/zoom-in a taste bud",
+        "/explain-3d how your ear hears sound"
       ],
-      "why": "storm45 = 87k in a day; disaster explainers pair well with the what-if hook; tornado/hurricane not used yet"
+      "why": "body16/body26 'what's inside you' did well on both platforms; close-up organs read at first watch"
     },
     {
-      "title": "What's inside everyday things 5",
+      "title": "What's inside everyday things 6",
       "commands": [
-        "/x-ray an airplane wing",
-        "/explain-3d how a smoke detector works",
-        "/explode a game controller"
+        "/x-ray an elevator",
+        "/explain-3d how a car airbag inflates",
+        "/explode a VR headset"
       ],
-      "why": "'what's inside' is our steadiest TikTok line (mystery17, build3) and inside3 132k IG; game controller rides GTA 6 launch week"
+      "why": "'what's inside / how it works' is our steadiest TikTok line (mystery17, inside3 132k IG); airbag adds the danger angle"
     },
     {
-      "title": "Liquid chrome & glass motion 3",
+      "title": "Liquid chrome & glass motion 4",
       "commands": [
-        "/liquid-chrome a game console reveal",
-        "/glassmorphism a weather app",
-        "/kinetic-type a game launch trailer"
+        "/liquid-chrome a perfume bottle reveal",
+        "/glassmorphism a banking app card",
+        "/kinetic-type a New Year countdown"
       ],
-      "why": "motion-design trio for variety and the 'Get the system' buyers; launch-week theme without any real logo"
+      "why": "motion-design trio for variety and 'Get the system' buyers; holiday season makes product reveals and countdowns timely"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this game radio wheel of your playlist using Claude",
+      "title": "How to make this open-world game loading screen of your city using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "GTA 6 vychází 19. 11., největší launch roku (Fortune, gtaboom) – radio wheel je generický herní prvek, vlastní look, žádné logo.",
+      "trend": "GTA 6 vychází dnes 19. 11. – všichni sdílí herní edity; vlastní generický loading screen, žádné logo ani mapa ze hry.",
       "steps": [
-        "Give Claude your 8 favourite songs.",
-        "Ask for a glowing open-world-game radio wheel that spins between them.",
+        "Tell Claude your city and three spots you love.",
+        "Ask for a painted open-world loading screen with a progress bar and tips.",
         "Claude builds it, you tweak it."
       ],
       "seconds": 13,
-      "keyword": "RADIO",
+      "keyword": "LOADING",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make your own year-in-review recap using Claude",
+      "title": "How to make this magic wardrobe portal intro using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Za ~2 týdny vyjde Spotify Wrapped a všude se jede 'recap roku' formát; chytáme to dřív.",
+      "trend": "Narnie od Grety Gerwig jde 26. 11. do IMAX a pak na Netflix; 'vstup do jiného světa' je ideální intro edit (jen inspirace, žádné postavy).",
       "steps": [
-        "Paste your year: trips, songs, wins.",
-        "Ask Claude for a bold animated recap, one stat per slide.",
-        "Claude builds it, you tweak it."
-      ],
-      "seconds": 14,
-      "keyword": "RECAP",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this Black Friday price-drop animation using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "Black Friday 27. 11. – malé značky teď hledají sale videa; přímo použitelné pro obchody.",
-      "steps": [
-        "Give Claude your product and old and new price.",
-        "Ask for a falling price tag with a slam and confetti.",
+        "Ask Claude for an old wooden wardrobe in a dark room.",
+        "Doors open, snow blows out, the camera flies into a winter forest.",
         "Claude builds it, you tweak it."
       ],
       "seconds": 12,
-      "keyword": "SALE",
+      "keyword": "PORTAL",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this dystopian name-draw intro using Claude",
+      "title": "How to make this Advent calendar for your page using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Hunger Games: Sunrise on the Reaping jde do kin 20. 11.; 'reaping' losování jmen je hotový meme formát (jen inspirace, žádné logo).",
+      "trend": "1. 12. začíná advent – tvůrci a značky dělají 'otevři okénko' reels; chytáme to týden dopředu.",
       "steps": [
-        "Give Claude your friends' names.",
-        "Ask for a cinematic glass-ball name draw with ash and spotlight.",
+        "Give Claude 24 small surprises: tips, links, jokes.",
+        "Ask for a cozy calendar where each door pops open with a glow.",
         "Claude builds it, you tweak it."
       ],
       "seconds": 13,
-      "keyword": "DRAW",
+      "keyword": "ADVENT",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this snowy Christmas portrait of your pet using Higgsfield",
+      "title": "How to make this Thanksgiving countdown clock using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Díkůvzdání 26. 11. a hned Black Friday – US publikum sdílí odpočty; animovaný flip-clock s pečeným krocanem a listím.",
+      "steps": [
+        "Tell Claude the date and your vibe.",
+        "Ask for a warm flip-clock countdown with falling leaves.",
+        "Claude builds it, you tweak it."
+      ],
+      "seconds": 11,
+      "keyword": "COUNTDOWN",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this snow globe of your home town using Higgsfield",
       "tool": "Higgsfield",
       "url": "https://higgsfield.ai",
-      "trend": "Začíná sezóna vánočních AI portrétů mazlíčků (IG/TikTok), roste každým týdnem do prosince.",
+      "trend": "Vánoční 'snow globe' AI edity se každoročně šíří od poloviny listopadu na IG a TikToku; foto města → animovaná sněžítka.",
       "steps": [
-        "Upload a photo of your pet.",
-        "Pick a cozy snowy Christmas scene and animate it.",
+        "Upload a photo of your town.",
+        "Ask Higgsfield for a glass snow globe with your town inside.",
+        "Animate it: a hand shakes it and the snow swirls.",
         "Higgsfield builds it, you tweak it."
       ],
-      "seconds": 12,
-      "keyword": "PET",
-      "cost": "kredity Higgsfield, cca 10–20 (obrázek + video)",
+      "seconds": 14,
+      "keyword": "GLOBE",
+      "cost": "kredity Higgsfield, cca 10–20 (obrázek + krátké video)",
       "handle": ""
     }
   ],
   "picked": [],
-  "picked_demo": [
-    "What if… Earth 9",
-    "Famous video styles 8"
-  ],
-  "picked_tut": [],
-  "note": "Jan, 2026-11-18 night (chat), BRAIN mix v7: make 3 'Type it, get it' videos. Instagram first. 1) PROMPTS: What if… Earth with /what-if all the ice on Earth melted, /simulate Earth's oceans draining away, /deep-dive the deepest cave on Earth. 2) SYSTEM: Famous video styles (flat-science / paper-collage / painted-story, topics NOT made before; 'why cats always land on their feet' is fine; Venice and Titanic were already used), ends 'Comment STYLES and I'll send you the system that makes these.', url = sales page with utm_content=<name>. 3) PROMPTS: the next best trio from the picklist. Today's approved videos already fill 19 Nov (honey54 08:00, inside53 15:00, versus56 21:00), so these go out on 20 Nov."
+  "picked_demo": [],
+  "picked_tut": []
 }
