@@ -101,7 +101,7 @@ rep("<p class=\"fine\">Enter your email and it's yours. We'll also email you whe
 rep('<p class="fine"><b>$19 once. No subscription.</b> First 50 buyers, then $29.</p>',
     '<p class="fine"><b>$19 once, no subscription from us.</b> First 50 buyers, then $29.</p>')
 rep('<p class="fine" style="margin-top:4px">7-day money-back guarantee. Works with Claude Pro.</p>',
-    '<p class="fine" style="margin-top:4px">Runs in Claude Pro. 7-day money-back guarantee.</p>')
+    '<p class="fine" style="margin-top:4px">Works with Claude or ChatGPT, free plans included. 7-day money-back guarantee.</p>')  # Jan 2026-11-20: no Claude Pro needed
 (H / "free-prompts.html").write_text(s, encoding="utf-8")
 
 SYS = "https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad/LAUNCH?utm_source=ig&utm_medium=promptsfile&utm_content="

@@ -195,6 +195,19 @@ GPT_FAQ = ('<details class="rv"><summary>Does it work with ChatGPT?<i aria-hidde
            'ChatGPT\'s Codex app, even on the free plan. Your AI is the engine: the smarter the model, the more polished the animation. '
            'All our videos are made with Claude. And every time your AI gets an upgrade, so do your videos.</p></details>\n      ')
 rep('<details class="rv"><summary>Is it safe to pay, and can I get my money back?', GPT_FAQ + '<details class="rv"><summary>Is it safe to pay, and can I get my money back?')
+# Jan, 2026-11-20: people laugh in comments that they won't pay for Claude Pro on top -> say clearly that no paid AI plan is needed.
+# Verified 2026-11-20 on support.claude.com: Skills (incl. own uploads) and code execution are on the Claude FREE plan;
+# Pro = at least 5x more usage. ChatGPT Codex free plan tested by Jan. Framing: smarter model = more polished video.
+rep('<p>Claude or ChatGPT <small>Claude Pro for the full look, or start free in ChatGPT (Codex)</small></p></div>',
+    '<p>Claude or ChatGPT <small>free plans work, a smarter AI gives a more polished video</small></p></div>')
+rep('One-time payment, no subscription. Works with Claude or ChatGPT on Mac or Windows.',
+    'One-time payment, no subscription. Works with Claude or ChatGPT, free plans included, on Mac or Windows.')
+rep('The system runs in your AI app: Claude (Pro plan) for the full look, or ChatGPT\'s Codex app, which you can start on the free plan.',
+    'The system runs in your AI app, Claude or ChatGPT (Codex), and both work on their free plans. A paid AI plan is optional: more videos a day and smarter models.')
+PRO_FAQ = ('<details class="rv"><summary>Do I need to pay for Claude Pro?<i aria-hidden="true"></i></summary><p>No. Claude and ChatGPT both have '
+           'free plans, and the system works in both. Think of the AI as the engine: a smarter model makes smoother, more polished animation, '
+           'and a paid plan lets you make more videos a day. So start free, and upgrade only if you want more. Every video on this page was made with Claude.</p></details>\n      ')
+rep('<details class="rv"><summary>Does it work with ChatGPT?', PRO_FAQ + '<details class="rv"><summary>Does it work with ChatGPT?')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
