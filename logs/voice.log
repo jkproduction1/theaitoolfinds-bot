@@ -1,6 +1,24 @@
-[tts] ElevenLabs voice
-VOICE OK earth58 15.8s 46 words
-[tts] ElevenLabs voice
-VOICE OK inside59 14.6s 41 words
-[tts] ElevenLabs voice
-VOICE OK styles60 17.6s 55 words
+[tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"type":"payment_required","code":"payment_issue","message":"Your subscription has a fail
+WARNING: Defaulting repo_id to hexgrad/Kokoro-82M. Pass repo_id='hexgrad/Kokoro-82M' to suppress this warning.
+/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/nn/modules/rnn.py:1012: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("LSTM", *args, **kwargs)
+/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/nn/utils/weight_norm.py:145: FutureWarning: `torch.nn.utils.weight_norm` is deprecated in favor of `torch.nn.utils.parametrizations.weight_norm`.
+  WeightNorm.apply(module, name, dim)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Collecting en-core-web-sm==3.8.0
+  Downloading en_core_web_sm-3.8.0-py3-none-any.whl (12.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 111.1 MB/s  0:00:00
+Installing collected packages: en-core-web-sm
+Successfully installed en-core-web-sm-3.8.0
+[38;5;2m✔ Download and installation successful[0m
+You can now load the package via spacy.load('en_core_web_sm')
+/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[tts] Kokoro voice (am_michael)
+VOICE OK earth61 14.8s 50 words
+[tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"type":"payment_required","code":"payment_issue","message":"Your subscription has a fail
+[tts] Kokoro voice (am_michael)
+VOICE OK styles62 16.1s 54 words
+[tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"type":"payment_required","code":"payment_issue","message":"Your subscription has a fail
+[tts] Kokoro voice (am_michael)
+VOICE OK inside63 14.0s 46 words
