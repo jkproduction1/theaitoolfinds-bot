@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>X-ray contactless card</title>
+<!-- usa64 r0: /x-ray a contactless credit card. Generic card (our own design, no brand, dummy digits), three.js, all procedural.
+  Shown (true for contactless EMV cards): a copper antenna coil looped several times around the card edge inside the plastic
+  inlay, wired to the chip module (gold contacts). The card has no battery: the reader's 13.56 MHz field induces a current in the
+  coil that powers the chip, which answers with a one-time code (cryptogram) for that tap.
+  Refs: ISO/IEC 14443 (proximity cards, 13.56 MHz, passive/inductive power); EMVCo contactless spec (per-transaction cryptogram).
+  Simplified, coil drawn wider than real for legibility. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill hot" id="pCo">Antenna coil</div>
+    <div class="pill hot" id="pCh">Chip</div>
+    <div class="pill red" id="pNb">No battery</div>
+    <div class="pill" id="pPw">Powered by the reader</div>
+    <div class="pill hot" id="pOt">One-time code</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from './RoundedBoxGeometry.js';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(30, [.012, .025, .05], [.05, .11, .19]);
+const rnd = mulberry32(64); const R = (a, b) => a + rnd() * (b - a);
+renderer.toneMappingExposure = 1.05;
+
+// ---------- card dimensions (mm), portrait orientation ----------
+const CW = 54, CH = 85.6, CT = 0.76, CR = 3.2;
+const CX = -12.5, CY = 25;                              // chip module centre
+const rig = new THREE.Group(); scene.add(rig);
+
+// ---------- scan clipping (sweeps top -> bottom along card y) ----------
+let SCAN = 60;
+const planeS = new THREE.Plane(V(0, -1, 0), SCAN), planeX = new THREE.Plane(V(0, 1, 0), -SCAN);
+const XV = `#include <clipping_planes_pars_vertex>
+varying vec3 vN; varying vec3 vV; varying vec3 vL;
+uniform mat4 uInv;
+void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vL = (uInv*wp).xyz; vec4 mvPosition = viewMatrix*wp;
+  vN = normalize(normalMatrix*normal); vV = normalize(-mvPosition.xyz); gl_Position = projectionMatrix*mvPosition;
+  #include <clipping_planes_vertex>
+}`;
+const XF = `#include <clipping_planes_pars_fragment>
+uniform vec3 uC; uniform float uB, uG, uA, uScan;
+varying vec3 vN; varying vec3 vV; varying vec3 vL;
+void main(){
+  #include <clipping_planes_fragment>
+  float f = pow(1.0-abs(dot(normalize(vN),normalize(vV))), 2.0);
+  float s = 0.88+0.12*sin(vL.y*1.3+vL.x*0.4);
+  float band = exp(-abs(vL.y-uScan)*0.45)*1.4;
+  gl_FragColor = vec4(uC*((uB+uG*f)*s + band*(0.35+f))*uA, 1.0); }`;
+const XM = [], EM = [];
+const invU = { value: new THREE.Matrix4() };
+function xrayMat(color, base, gain) {
+  const m = new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(color) }, uB: { value: base }, uG: { value: gain }, uA: { value: 0 }, uScan: { value: SCAN }, uInv: invU },
+    vertexShader: XV, fragmentShader: XF, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, clipping: true });
+  m.clippingPlanes = [planeX]; XM.push(m); return m;
+}
+function edgeMat(color, op) { const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+  m.clippingPlanes = [planeX]; m.userData.op = op; EM.push(m); return m; }
+
+// ---------- card face texture (our own design: no brand, dummy digits) ----------
+function faceTex() {
+  const c = document.createElement('canvas'); c.width = 1024; c.height = Math.round(1024 * CH / CW); const g = c.getContext('2d'); const w = c.width, h = c.height;
+  const gr = g.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#1d4f6e'); gr.addColorStop(.45, '#16324f'); gr.addColorStop(1, '#2a1f4a');
+  g.fillStyle = gr; g.fillRect(0, 0, w, h);
+  // soft light sweep
+  const rg = g.createRadialGradient(w * .85, h * .15, 10, w * .85, h * .15, w * 1.1); rg.addColorStop(0, 'rgba(120,220,230,.35)'); rg.addColorStop(1, 'rgba(120,220,230,0)');
+  g.fillStyle = rg; g.fillRect(0, 0, w, h);
+  // fine guilloche waves
+  g.lineWidth = 1.6;
+  for (let k = 0; k < 34; k++) { g.strokeStyle = `rgba(160,225,255,${0.05 + 0.04 * Math.sin(k)})`; g.beginPath();
+    for (let i = 0; i <= 120; i++) { const y = i / 120 * h; const x = w * 0.35 + k * 18 + Math.sin(i * 0.11 + k * 0.35) * 70 + Math.sin(i * 0.031) * 120; i ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke(); }
+  // contactless glyph (4 arcs) to the right of the chip
+  const px = (CX + CW / 2) / CW * w, py = (CH / 2 - CY) / CH * h;
+  g.strokeStyle = 'rgba(235,245,255,.85)'; g.lineCap = 'round'; g.lineWidth = 9;
+  for (let i = 0; i < 4; i++) { g.beginPath(); g.arc(px + 150, py, 22 + i * 22, -0.75, 0.75); g.stroke(); }
+  // dummy number + labels
+  g.fillStyle = 'rgba(235,242,250,.92)'; g.font = '600 64px "DejaVu Sans Mono", monospace'; g.textAlign = 'left';
+  g.fillText('0000 0000', 70, h - 300); g.fillText('0000 0000', 70, h - 215);
+  g.font = '600 38px Inter, sans-serif'; g.fillStyle = 'rgba(220,232,245,.75)'; g.fillText('VALID THRU  00/00', 70, h - 140);
+  g.font = '800 54px Inter, sans-serif'; g.textAlign = 'right'; g.fillStyle = 'rgba(240,246,255,.9)'; g.fillText('DEBIT', w - 70, h - 80);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  t.repeat.set(1 / CW, 1 / CH); t.offset.set(0.5, 0.5); return t;
+}
+function rrShape(w, h, r) { const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r); s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s; }
+
+// ---------- card body ----------
+const cardGeo = new THREE.ExtrudeGeometry(rrShape(CW, CH, CR), { depth: CT - 0.16, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.08, bevelSegments: 2, curveSegments: 10 });
+cardGeo.translate(0, 0, -(CT - 0.16) / 2);
+const faceM = new THREE.MeshPhysicalMaterial({ map: faceTex(), roughness: 0.42, metalness: 0.15, clearcoat: 1, clearcoatRoughness: 0.12, side: THREE.DoubleSide });
+const sideM = new THREE.MeshPhysicalMaterial({ color: '#d9dee6', roughness: 0.5, metalness: 0.0, clearcoat: 0.6 });
+faceM.clippingPlanes = [planeS]; sideM.clippingPlanes = [planeS];
+rig.add(new THREE.Mesh(cardGeo, [faceM, sideM]));
+// x-ray shell + ghost of the printed face + outline edges
+rig.add(new THREE.Mesh(cardGeo, xrayMat('#3aa8ff', 0.05, 0.8)));
+const ghostM = new THREE.MeshBasicMaterial({ map: faceM.map, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+ghostM.clippingPlanes = [planeX];
+{ const g = new THREE.ShapeGeometry(rrShape(CW, CH, CR), 10); const m = new THREE.Mesh(g, ghostM); m.position.z = CT / 2 + 0.01; rig.add(m); }
+{ const pts = rrShape(CW + 0.2, CH + 0.2, CR).getPoints(16).map(p => V(p.x, p.y, 0));
+  for (const z of [CT / 2, -CT / 2, 0.1, -0.1]) { const l = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), edgeMat('#9fe6ff', z === 0.1 || z === -0.1 ? 0.35 : 0.9)); l.position.z = z; rig.add(l); } }
+
+// ---------- antenna coil (copper, 4 turns around the edge) ----------
+const TURNS = 4, IN0 = 2.4, PITCH = 1.45;
+function rr(theta, ins) { // rounded-rect (superellipse) point at angle theta, inset ins from the card edge
+  const a = CW / 2 - ins, b = CH / 2 - ins, c = Math.cos(theta), s = Math.sin(theta), n = 10;
+  return V(a * Math.sign(c) * Math.pow(Math.abs(c), 2 / n), b * Math.sign(s) * Math.pow(Math.abs(s), 2 / n), 0);
+}
+const coilPts = []; const th0 = Math.PI / 2 - 0.02;
+// lead from chip (right pad) up to the outer start of the coil
+const padA = V(CX + 5.2, CY + 2.2, 0), padB = V(CX + 5.2, CY - 2.2, 0);
+const outer0 = rr(th0, IN0), innerEnd = rr(th0 - TURNS * 2 * Math.PI, IN0 + PITCH * TURNS);
+{ const N = 900; for (let i = 0; i <= N; i++) { const k = i / N, th = th0 - k * TURNS * 2 * Math.PI; coilPts.push(rr(th, IN0 + PITCH * TURNS * k)); } }
+const leadA = [padA.clone(), V(padA.x + 3, padA.y, 0), V(outer0.x, padA.y + 4, 0.18), V(outer0.x, outer0.y - 2, 0.18), outer0.clone()];
+const leadB = [innerEnd.clone(), V(innerEnd.x, innerEnd.y - 3, 0), V(padB.x + 6, padB.y, 0), padB.clone()];
+const fullPath = [...leadA.slice(0, -1), ...coilPts, ...leadB.slice(1)];
+const curve = new THREE.CatmullRomCurve3(fullPath, false, 'catmullrom', 0.05);
+const copper = new THREE.MeshPhysicalMaterial({ color: '#d9885a', metalness: 1, roughness: 0.3, emissive: '#6a2a0c', emissiveIntensity: 0.6, clearcoat: 0.3 });
+const coilGeo = new THREE.TubeGeometry(curve, 2600, 0.42, 6, false); coilGeo.scale(1, 1, 0.5);
+const coil = new THREE.Mesh(coilGeo, copper); rig.add(coil);
+// current pulses travelling along the coil
+const pulseU = { uT: { value: 0 }, uA: { value: 0 } };
+const pulseM = new THREE.ShaderMaterial({ uniforms: pulseU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false,
+  vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `uniform float uT, uA; varying vec2 vUv;
+    void main(){ float p = fract(vUv.x*22.0 - uT*2.4); float g = smoothstep(0.72,0.96,p)*smoothstep(1.0,0.97,p);
+      vec3 c = mix(vec3(1.0,0.45,0.12), vec3(1.0,0.95,0.7), g*g);
+      gl_FragColor = vec4(c*(0.12+2.6*g)*uA,1.0); }` });
+const pulseGeo = new THREE.TubeGeometry(curve, 2600, 0.62, 6, false); pulseGeo.scale(1, 1, 0.6);
+rig.add(new THREE.Mesh(pulseGeo, pulseM));
+
+// ---------- chip module (gold contacts) ----------
+function chipTex() {
+  const c = document.createElement('canvas'); c.width = 360; c.height = 440; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 360, 440); gr.addColorStop(0, '#f7dc8a'); gr.addColorStop(.5, '#d9ae4c'); gr.addColorStop(1, '#f1cf72');
+  g.fillStyle = gr; g.fillRect(0, 0, 360, 440);
+  g.strokeStyle = '#6b4a14'; g.lineWidth = 7; g.lineCap = 'round';
+  g.beginPath(); g.moveTo(0, 150); g.lineTo(130, 150); g.lineTo(130, 290); g.lineTo(0, 290);
+  g.moveTo(360, 150); g.lineTo(230, 150); g.lineTo(230, 290); g.lineTo(360, 290);
+  g.moveTo(130, 150); g.quadraticCurveTo(180, 110, 230, 150); g.moveTo(130, 290); g.quadraticCurveTo(180, 330, 230, 290);
+  g.moveTo(180, 0); g.lineTo(180, 128); g.moveTo(180, 440); g.lineTo(180, 312); g.stroke();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+const MW = 9.2, MH = 11.2;
+const chipT = chipTex(); chipT.repeat.set(1 / MW, 1 / MH); chipT.offset.set(0.5, 0.5);
+const goldM = new THREE.MeshPhysicalMaterial({ map: chipT, color: '#ffffff', metalness: 1, roughness: 0.26, clearcoat: 0.4, emissive: '#ffb83a', emissiveIntensity: 0 });
+const chipGeo = new THREE.ExtrudeGeometry(rrShape(MW, MH, 1.3), { depth: 0.04, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.05, bevelSegments: 2, curveSegments: 8 });
+const chip = new THREE.Mesh(chipGeo, [goldM, new THREE.MeshStandardMaterial({ color: '#a8823a', metalness: 1, roughness: .4 })]);
+chip.position.set(CX, CY, CT / 2 - 0.02); rig.add(chip);
+// silicon die under the contacts (seen in x-ray), wire bonds
+const dieM = new THREE.MeshStandardMaterial({ color: '#20242c', metalness: .5, roughness: .4, emissive: '#ffc35a', emissiveIntensity: 0 });
+const die = new THREE.Mesh(new THREE.BoxGeometry(3.4, 3.4, 0.25), dieM); die.position.set(CX, CY, -0.05); rig.add(die);
+// chip glow
+const glowTex = softTex();
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: '#ffc861', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+halo.position.set(CX, CY, 1.2); halo.scale.set(34, 34, 1); rig.add(halo);
+const chipLight = new THREE.PointLight('#ffbe55', 0, 60, 1.5); chipLight.position.set(CX, CY, 6); rig.add(chipLight);
+
+// ---------- payment reader (generic pad behind the card) ----------
+const RX = 14, RY = -10, RZ = -30;
+const reader = new THREE.Group(); rig.add(reader);
+const readerBody = new THREE.Mesh(new RoundedBoxGeometry(72, 104, 10, 4, 4), new THREE.MeshPhysicalMaterial({ color: '#10141b', metalness: .3, roughness: .35, clearcoat: 1, clearcoatRoughness: .08 }));
+readerBody.position.z = -5; reader.add(readerBody);
+const readerEdgeM = new THREE.LineBasicMaterial({ color: '#4fb8ff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+{ const l = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(rrShape(71, 103, 4).getPoints(8).map(p => V(p.x, p.y, 0.1))), readerEdgeM); reader.add(l); }
+function padTex() {
+  const c = document.createElement('canvas'); c.width = c.height = 512; const g = c.getContext('2d');
+  g.clearRect(0, 0, 512, 512); g.strokeStyle = '#fff'; g.lineCap = 'round';
+  g.lineWidth = 10; g.beginPath(); g.arc(256, 256, 230, 0, Math.PI * 2); g.stroke();
+  g.lineWidth = 22; for (let i = 0; i < 4; i++) { g.beginPath(); g.arc(150, 256, 50 + i * 48, -0.75, 0.75); g.stroke(); }
+  return new THREE.CanvasTexture(c);
+}
+const padM = new THREE.MeshBasicMaterial({ map: padTex(), color: '#4fc8ff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+const pad = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), padM); pad.position.set(14, -30, 0.2); reader.add(pad);
+const padGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: '#3fb6ff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+padGlow.position.set(0, 4, 1); padGlow.scale.set(110, 110, 1); reader.add(padGlow);
+// field rings (13.56 MHz field) rising from the pad to the card
+const NR = 4, rings = [];
+for (let i = 0; i < NR; i++) {
+  const m = new THREE.MeshBasicMaterial({ color: '#6fd8ff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+  const r = new THREE.Mesh(new THREE.RingGeometry(0.97, 1, 128), m); rig.add(r); rings.push(r);
+}
+
+// ---------- one-time code packet ----------
+function codeTex() {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256; const g = c.getContext('2d');
+  g.fillStyle = 'rgba(40,22,4,.92)'; g.fillRect(0, 0, 512, 256);
+  g.strokeStyle = '#ffd27a'; g.lineWidth = 14; g.strokeRect(7, 7, 498, 242);
+  g.fillStyle = '#fff6dc'; g.font = '700 120px "DejaVu Sans Mono", monospace'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('7F3A9C', 256, 132);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+const pkt = new THREE.Group(); rig.add(pkt);
+const pktM = new THREE.MeshBasicMaterial({ map: codeTex(), transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+{ const m = new THREE.Mesh(new THREE.PlaneGeometry(20, 10), pktM); m.renderOrder = 5; pkt.add(m); }
+const pktGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: '#ffb547', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+pktGlow.scale.set(34, 22, 1); pkt.add(pktGlow);
+const NT = 14, trail = [];
+for (let i = 0; i < NT; i++) { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: '#ffc46a', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false })); rig.add(s); trail.push(s); }
+const P0 = V(CX, CY, 1.5), P1 = V(CX + 12, CY + 2, 22), P2 = V(30, -8, 18), P3 = V(RX + 14, RY - 30, RZ + 2);
+const pktPath = new THREE.CubicBezierCurve3(P0, P1, P2, P3);
+
+// ---------- scan sheet ----------
+const sheetTex = (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 64); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+const sheetM = new THREE.MeshBasicMaterial({ map: sheetTex, color: '#59c8ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+const sheet = new THREE.Mesh(new THREE.PlaneGeometry(CW + 14, 5), sheetM); rig.add(sheet);
+const sheetLineM = new THREE.MeshBasicMaterial({ color: '#d8f4ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+const sheetLine = new THREE.Mesh(new THREE.PlaneGeometry(CW + 10, 0.35), sheetLineM); rig.add(sheetLine);
+
+// lights
+scene.add(new THREE.HemisphereLight('#cfe0ff', '#1b2230', 0.6));
+const key = new THREE.DirectionalLight('#fff3e2', 2.2); key.position.set(-120, 200, 260); scene.add(key);
+const rim = new THREE.DirectionalLight('#8fc6ff', 1.4); rim.position.set(200, 60, -100); scene.add(rim);
+// drifting motes
+const NP = 90, motes = [], dpos = new Float32Array(NP * 3);
+for (let i = 0; i < NP; i++) motes.push([R(-90, 90), R(-150, 150), R(-80, 40), R(0, 6.28), R(.2, .6)]);
+const dGeo = new THREE.BufferGeometry(); dGeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+scene.add(new THREE.Points(dGeo, new THREE.PointsMaterial({ map: softTex(), size: 1.6, color: '#9fd6ff', transparent: true, opacity: .45, depthWrite: false, blending: THREE.AdditiveBlending })));
+
+// ---------- timing ----------
+const T_S0 = 1.2, T_S1 = 2.9;       // x-ray sweep
+const T_RD = 2.9;                    // reader slides in
+const T_F = 3.3;                     // field on
+const T_I = 3.7;                     // current flows
+const T_C = 4.1;                     // chip lights
+const T_P = 5.0, T_P1 = 6.0;         // code packet flight
+
+// ---------- camera / rig motion ----------
+function setCam(t) {
+  const u = cl(t / DUR);
+  const a = eio(ramp(t, 2.6, 4.6));
+  rig.rotation.set(-0.12 + 0.03 * u - 0.04 * a, 0.22 + 0.06 * u + 0.12 * a, 0.07 - 0.03 * u);
+  rig.position.set(0, 0, 0);
+  const D = 254 - 16 * sm(ramp(t, 0, 2.6)) + 34 * a;
+  camera.position.set(0, 4, D);
+  camera.lookAt(3 * a, -6 - 8 * a, 0); camera.updateMatrixWorld();
+  rig.updateMatrixWorld(true);
+  invU.value.copy(rig.matrixWorld).invert();
+}
+// ---------- labels ----------
+const El = id => document.getElementById(id);
+const wpt = (x, y, z) => { const p = V(x, y, z).applyMatrix4(rig.matrixWorld); return [p.x, p.y, p.z]; };
+const coilAt = rr(Math.PI * 1.02, IN0 + PITCH * 1.5);
+const lab = labels(camera, [
+  { el: El('pCo'), t0: 1.95, t1: 4.8, at: () => wpt(coilAt.x, -14, 0), col: '#ffb547', pos: (x, y) => [cl(x + 230, 200, 860), cl(y + 150, 300, 1450)] },
+  { el: El('pCh'), t0: 2.35, at: () => wpt(CX + 4.6, CY, 0.4), col: '#ffb547', pos: (x, y) => [cl(x + 250, 200, 900), cl(y - 10, 300, 1450)] },
+  { el: El('pNb'), t0: 3.75, t1: 5.0, at: () => wpt(CX, CY - 7, 0.4), col: '#ff6a6a', pos: (x, y) => [cl(x + 120, 220, 860), cl(y + 210, 300, 1450)] },
+  { el: El('pPw'), t0: 4.3, at: () => { const r = rings[2]; return wpt(RX + 0, RY - 40, RZ + 1); }, pos: (x, y) => [540, cl(y + 120, 300, 1460)] },
+  { el: El('pOt'), t0: T_P + 0.15, at: t => { const p = pktPath.getPoint(cl(pktU(t), 0, 1)); const w = wpt(p.x, p.y, p.z); const up = V(0, 1, 0).applyQuaternion(camera.quaternion).multiplyScalar(6.2 * pkt.scale.x * (1 - sm(ramp(t, T_P1 - 0.1, T_P1 + 0.1)))); return [w[0] + up.x, w[1] + up.y, w[2] + up.z]; }, col: '#ffb547', pos: (x, y) => [cl(x - 40, 230, 850), cl(y - 150, 300, 1450)] },
+]);
+const pktU = t => { const k = ramp(t, T_P, T_P1); return 0.3 * k + 0.7 * eio(k); };
+
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  // x-ray sweep
+  const rr_ = ramp(t, T_S0, T_S1), sp = 0.3 * rr_ + 0.7 * sm(rr_); SCAN = CH / 2 + 4 - (CH + 8) * sp;
+  // clip planes in world space, built from the rig transform
+  const n = V(0, 1, 0).transformDirection(rig.matrixWorld), p = V(0, SCAN, 0).applyMatrix4(rig.matrixWorld);
+  planeX.setFromNormalAndCoplanarPoint(n, p); planeS.setFromNormalAndCoplanarPoint(n.clone().negate(), p);
+  const xa = sm(ramp(t, T_S0 - 0.1, T_S0 + 0.3));
+  XM.forEach(m => { m.uniforms.uA.value = xa; m.uniforms.uScan.value = SCAN; });
+  EM.forEach(m => m.opacity = m.userData.op * xa);
+  ghostM.opacity = 0.16 * xa;
+  const sa = sm(ramp(t, T_S0 - 0.1, T_S0 + 0.2)) * (1 - sm(ramp(t, T_S1 - 0.25, T_S1)));
+  sheet.visible = sheetLine.visible = sa > 0.001; sheetM.opacity = 0.9 * sa; sheetLineM.opacity = sa;
+  sheet.position.set(0, SCAN, CT / 2 + 0.3); sheetLine.position.set(0, SCAN, CT / 2 + 0.35);
+  bgU.uGrid.value = 0.5 + 0.6 * sm(ramp(t, T_S0, T_S1));
+  // reader slides in behind the card
+  const rd = eout(ramp(t, T_RD, T_RD + 0.9));
+  reader.position.set(RX + 70 * (1 - rd), RY - 150 * (1 - rd), RZ - 20 * (1 - rd)); reader.visible = rd > 0.001;
+  const fa = sm(ramp(t, T_F - 0.2, T_F + 0.4));
+  const ok = sm(ramp(t, T_P1 - 0.05, T_P1 + 0.2));
+  padM.opacity = 0.15 * rd + 0.3 * fa + 0.4 * ok; padM.color.set('#4fc8ff').lerp(new THREE.Color('#5dff9a'), ok);
+  padGlow.material.opacity = 0.22 * fa * (0.85 + 0.15 * Math.sin(t * 9)); readerEdgeM.opacity = 0.7 * rd; padGlow.material.color.set('#3fb6ff').lerp(new THREE.Color('#5dff9a'), ok);
+  for (let i = 0; i < NR; i++) {
+    const ph = ((t - T_F) * 0.9 + i / NR) % 1, k = ph < 0 ? 0 : ph;
+    const r = rings[i]; const z = RZ + 1 + k * (-RZ + 4); r.position.set(RX * (1 - k) + 0 * k, (RY + 4) * (1 - k) + 0 * k, z);
+    const s = 20 + 12 * k; r.scale.set(s, s * 1.3, 1);
+    r.material.opacity = (t > T_F ? 1 : 0) * fa * Math.sin(Math.PI * k) * 0.55;
+  }
+  // current + chip
+  const ia = sm(ramp(t, T_I, T_I + 0.5));
+  pulseU.uA.value = ia; pulseU.uT.value = t;
+  copper.emissiveIntensity = 0.6 + 0.7 * ia;
+  const ca = sm(ramp(t, T_C, T_C + 0.4)), flick = 0.9 + 0.1 * Math.sin(t * 13);
+  goldM.emissiveIntensity = 0.55 * ca * flick; dieM.emissiveIntensity = 2.5 * ca;
+  halo.material.opacity = 0.8 * ca * flick + 0.5 * sm(ramp(t, T_P - 0.1, T_P + 0.1)) * (1 - sm(ramp(t, T_P + 0.2, T_P + 0.6)));
+  chipLight.intensity = 900 * ca;
+  // one-time code packet
+  const pa = sm(ramp(t, T_P, T_P + 0.15)) * (1 - sm(ramp(t, T_P1 - 0.08, T_P1 + 0.1)));
+  const pu = pktU(t);
+  pkt.position.copy(pktPath.getPoint(cl(pu, 0, 1))); pkt.quaternion.copy(camera.quaternion).premultiply(rig.quaternion.clone().invert());
+  pkt.scale.setScalar(0.6 + 0.4 * sm(ramp(t, T_P, T_P + 0.4)));
+  pktM.opacity = pa; pktGlow.material.opacity = 0.7 * pa;
+  for (let i = 0; i < NT; i++) { const uu = pu - (i + 1) * 0.022; trail[i].visible = uu > 0 && pa > 0; if (uu > 0) trail[i].position.copy(pktPath.getPoint(uu));
+    const s = 5 * (1 - i / NT); trail[i].scale.set(s, s, 1); trail[i].material.opacity = pa * 0.7 * (1 - i / NT); }
+  for (let i = 0; i < NP; i++) { const d = motes[i]; dpos[i * 3] = d[0] + t * 2 * d[4]; dpos[i * 3 + 1] = d[1] + Math.sin(t * d[4] + d[3]) * 3; dpos[i * 3 + 2] = d[2]; }
+  dGeo.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

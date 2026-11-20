@@ -5231,5 +5231,47 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "usa64",
+  "date": "2026-11-20",
+  "score": 62,
+  "mode": "full",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 3.57,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.46,
+   "dur_s": 35.2,
+   "words": 49,
+   "pace": 0.0,
+   "length": 0.57,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.75,
+   "visual_changes": 73,
+   "visuals": 0.5,
+   "ending": 0.3,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 3.6 s (cíl ≤2,5 s)",
+   "video má 35 s (cíl 18–30 s)",
+   "3.8 s bez změny obrazu (cíl ≤3 s)",
+   "po CTA ještě 5.2 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]

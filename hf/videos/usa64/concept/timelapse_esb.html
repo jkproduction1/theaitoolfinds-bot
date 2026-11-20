@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Empire State time-lapse</title>
+<!-- usa64 r1: /time-lapse the Empire State Building going up. Stylised Art Deco tower (our own procedural model, no logos/signs)
+  in a generic Manhattan grid. Facts used: construction began March 17, 1930, opened May 1, 1931 (~410 days); steel frame rose
+  about 4.5 floors a week; 102 floors; 1,454 ft (443 m) to the tip. Units: 1 = 10 m. 86 floors to the main roof (~320 m),
+  mooring mast up to the 102nd floor, antenna to 443 m. Setbacks simplified. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<style>
+  .cnt{position:absolute;top:0;left:0;transform:translate(-50%,-50%);background:rgba(6,14,26,.82);border:2.5px solid rgba(110,210,255,.8);border-radius:20px;
+    padding:8px 30px 14px;color:#fff;white-space:nowrap;box-shadow:0 0 26px rgba(70,180,255,.30),0 8px 30px rgba(0,0,0,.45);font-weight:800;font-size:64px;letter-spacing:-1px;
+    font-variant-numeric:tabular-nums;text-align:center}
+  .cnt .k{font-weight:600;color:#bfe6ff;font-size:44px;letter-spacing:0}
+  .cnt.gold{border-color:#ffc35a;box-shadow:0 0 34px rgba(255,180,70,.55),0 8px 30px rgba(0,0,0,.45)}
+  #dates{position:absolute;left:90px;width:900px;top:400px;height:60px;color:#e8f2fb;font:600 31px "Inter",system-ui,Arial,sans-serif;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+  #dates .bar{position:absolute;left:0;right:0;top:0;height:8px;border-radius:4px;background:rgba(255,255,255,.22);box-shadow:0 2px 10px rgba(0,0,0,.4)}
+  #dates .fill{position:absolute;left:0;top:0;height:8px;border-radius:4px;background:linear-gradient(90deg,#7fd4ff,#ffc35a);width:0}
+  #dates .a{position:absolute;left:0;top:18px} #dates .b{position:absolute;right:0;top:18px}
+  .pill.big{font-size:50px;padding:12px 30px 16px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="cnt" id="cDay"><span class="k">Day </span><span id="vDay">1</span></div>
+    <div class="cnt" id="cFl"><span id="vFl">0</span><span class="k" id="kFl"> floors</span></div>
+    <div id="dates"><div class="bar"><div class="fill" id="fill"></div></div><span class="a">Mar 17, 1930</span><span class="b">May 1, 1931</span></div>
+    <div class="pill" id="pWk">≈4.5 floors a week</div>
+    <div class="pill hot big" id="pEnd">1,454 ft · opened 1931</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera } = setup(30);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+camera.far = 30000; camera.updateProjectionMatrix();
+const rnd = mulberry32(64); const R = (a, b) => a + rnd() * (b - a);
+const FH = 0.372;                       // one floor (~3.7 m)
+const ROOF = 86 * FH, F102 = 38.1, TIP = 44.3;
+
+// ---------- facade shader (world-space windows, clipped by height) ----------
+function facade(opts) {
+  const m = new THREE.MeshStandardMaterial({ color: opts.color || '#ffffff', roughness: 0.82, metalness: 0.0 });
+  const u = { uNight: { value: 0 }, uFH: { value: opts.fh }, uBay: { value: opts.bay }, uSeed: { value: opts.seed || 1 }, uLit: { value: opts.lit || 0.35 },
+    uStrip: { value: opts.strip || 0 }, uStripC: { value: new THREE.Color(opts.stripC || '#8d939a') }, uGlass: { value: new THREE.Color(opts.glass || '#1b2430') },
+    uRoof: { value: new THREE.Color(opts.roof || '#5d5a55') }, uRef: { value: new THREE.Color('#888') }, uWin: { value: new THREE.Vector4(...(opts.win || [0.24, 0.76, 0.22, 0.86])) } };
+  m.userData.u = u;
+  m.onBeforeCompile = s => {
+    Object.assign(s.uniforms, u);
+    s.vertexShader = s.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vWP; varying vec3 vWN;')
+      .replace('#include <project_vertex>', `#include <project_vertex>
+        vec4 wp4 = vec4(transformed,1.0);
+        #ifdef USE_INSTANCING
+          wp4 = instanceMatrix*wp4;
+        #endif
+        wp4 = modelMatrix*wp4; vWP = wp4.xyz; vWN = normalize(mat3(modelMatrix)*objectNormal);`);
+    s.fragmentShader = s.fragmentShader.replace('#include <common>', `#include <common>
+      varying vec3 vWP; varying vec3 vWN; uniform float uNight,uFH,uBay,uSeed,uLit,uStrip; uniform vec3 uStripC,uGlass,uRoof,uRef; uniform vec4 uWin;
+      float hsh(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+      float gWin = 0.0; float gLit = 0.0;`)
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        { float wall = step(abs(vWN.y),0.5);
+          float face = abs(vWN.x)>0.5 ? 1.0 : 0.0;
+          float along = face>0.5 ? vWP.z : vWP.x;
+          vec2 cell = vec2(along/uBay, vWP.y/uFH); vec2 f = fract(cell); vec2 id = floor(cell);
+          vec2 fw = clamp(fwidth(cell),0.0,0.5);
+          float wx = smoothstep(uWin.x-fw.x,uWin.x+fw.x,f.x)*(1.0-smoothstep(uWin.y-fw.x,uWin.y+fw.x,f.x));
+          float wy = smoothstep(uWin.z-fw.y,uWin.z+fw.y,f.y)*(1.0-smoothstep(uWin.w-fw.y,uWin.w+fw.y,f.y));
+          float win = wx*wy*wall; gWin = win;
+          vec3 base = diffuseColor.rgb*(0.93+0.12*hsh(vec2(id.y,uSeed)));
+          vec3 col = mix(base, uStripC, wx*(1.0-wy)*wall*uStrip);
+          col = mix(col, uGlass + uRef*(0.25+0.3*hsh(id*1.3+uSeed)), win);
+          col = mix(uRoof*diffuseColor.rgb, col, wall);
+          diffuseColor.rgb = col;
+          float h = hsh(id + vec2(face*17.0+sign(vWN.x+vWN.z)*5.0, uSeed));
+          gLit = win*step(1.0-uLit, h)*(0.55+0.9*hsh(id.yx+3.1)); }`)
+      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n roughnessFactor = mix(roughnessFactor, 0.22, gWin);')
+      .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n totalEmissiveRadiance += vec3(1.0,0.72,0.38)*gLit*uNight*1.6;');
+  };
+  return m;
+}
+const FAC = [];
+function addFac(o) { const m = facade(o); FAC.push(m); return m; }
+
+// ---------- sky ----------
+const skyU = { uZen: { value: new THREE.Color() }, uHor: { value: new THREE.Color() }, uSun: { value: V(0, 1, 0) }, uSunC: { value: new THREE.Color() }, uStar: { value: 0 }, uFog: { value: new THREE.Color() } };
+const sky = new THREE.Mesh(new THREE.SphereGeometry(20000, 48, 24), new THREE.ShaderMaterial({ side: THREE.BackSide, depthWrite: false, uniforms: skyU,
+  vertexShader: `varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `uniform vec3 uZen,uHor,uSun,uSunC,uFog; uniform float uStar; varying vec3 vD;
+    float h3(vec3 p){ return fract(sin(dot(p,vec3(12.9898,78.233,37.719)))*43758.5453); }
+    void main(){ vec3 d = normalize(vD); float y = max(d.y,0.0);
+      vec3 c = mix(uHor, uZen, pow(smoothstep(0.0,0.6,y),0.7));
+      float sd = max(dot(d,normalize(uSun)),0.0);
+      c += uSunC*(pow(sd,900.0)*6.0 + pow(sd,12.0)*0.35 + pow(sd,3.0)*0.12*(1.0-y));
+      vec3 q = floor(d*1500.0); float st = step(0.99993,h3(q))*h3(q+1.7)*smoothstep(0.05,0.3,y);
+      c += vec3(st)*uStar*uStar*1.6;
+      gl_FragColor = vec4(c,1.0);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+      gl_FragColor.rgb = mix(uFog, gl_FragColor.rgb, smoothstep(-0.005, 0.10, d.y));
+    }` }));
+sky.renderOrder = -5; scene.add(sky);
+scene.fog = new THREE.Fog('#9fb3c8', 90, 560);
+
+// ---------- lights ----------
+const hemi = new THREE.HemisphereLight('#cfe0ff', '#2a2622', 0.8); scene.add(hemi);
+const sun = new THREE.DirectionalLight('#fff4e6', 3); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -75, right: 75, top: 75, bottom: -75, near: 1, far: 500 });
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.04; sun.target.position.set(0, 12, 0); scene.add(sun, sun.target);
+const moon = new THREE.DirectionalLight('#8fa8d8', 0.4); moon.position.set(-60, 90, 40); scene.add(moon);
+
+// ---------- ground + city grid ----------
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(40000, 40000), new THREE.MeshStandardMaterial({ color: '#34373b', roughness: 0.95 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const BX = 26, BZ = 8, LX = 23, LZ = 6;         // block pitch (avenue / street) and block size
+const box = new THREE.BoxGeometry(1, 1, 1); box.translate(0, 0.5, 0);
+const walks = [], blds = [];
+for (let i = -9; i <= 9; i++) for (let j = -26; j <= 26; j++) {
+  const cx = i * BX, cz = j * BZ; walks.push([cx, cz]);
+  for (const side of [-1, 1]) {
+    let x = cx - LX / 2;
+    while (x < cx + LX / 2 - 0.5) {
+      const w = Math.min(R(1.8, 4.8), cx + LX / 2 - x); const x0 = x; x += w;
+      if (i === 0 && j === 0 && x0 + w > -6.9 && x0 < 6.9) continue;             // the Empire State lot
+      const d = R(2.3, 3.0), dist = Math.hypot(cx, cz);
+      let h = R(1.3, 4.6); const r = rnd();
+      if (r < 0.10) h = R(5, 7.5); if (r < 0.02 && dist > 80) h = R(9, 15);
+      if (dist < 45) h = Math.min(h, 6.2);
+      if (cz > 3 && cz < 26 && x0 < 8 && x0 > -34) h = Math.min(h, 3.0);
+      const bx = x0 + w / 2 - 0.05, bz = cz + side * (LZ / 2 - d / 2);
+      blds.push([bx, bz, w - 0.12, h, d]);
+      if (rnd() < 0.45 && w > 2.2) { const k = R(0.45, 0.75); blds.push([bx + R(-0.3, 0.3), bz, (w - 0.12) * k, h + R(0.3, 1.6) * (h > 5 ? 1.6 : 1), d * R(0.55, 0.8)]); }
+    }
+  }
+}
+{ const m = new THREE.InstancedMesh(box, new THREE.MeshStandardMaterial({ color: '#77746e', roughness: 0.9 }), walks.length); const M = new THREE.Matrix4();
+  walks.forEach(([x, z], k) => m.setMatrixAt(k, M.compose(V(x, 0, z), new THREE.Quaternion(), V(LX + 0.6, 0.05, LZ + 0.6)))); m.receiveShadow = true; scene.add(m); }
+{ const pal = ['#8a5544', '#9b6a50', '#b8a68a', '#a59b8c', '#7a6a5e', '#c2b59b', '#6e5048', '#9a948a', '#b49378'];
+  const mat = addFac({ fh: 0.36, bay: 0.34, seed: 3, lit: 0.42, glass: '#20252c', roof: '#6a6560', win: [0.3, 0.7, 0.3, 0.8] });
+  const m = new THREE.InstancedMesh(box, mat, blds.length); const M = new THREE.Matrix4(), C = new THREE.Color();
+  blds.forEach(([x, z, w, h, d], k) => { m.setMatrixAt(k, M.compose(V(x, 0.05, z), new THREE.Quaternion(), V(w, h, d))); m.setColorAt(k, C.set(pal[Math.floor(rnd() * pal.length)])); });
+  m.castShadow = m.receiveShadow = true; scene.add(m); }
+
+// ---------- the tower: tiers (floor from, floor to, width x, depth z) ----------
+const TIERS = [[0, 5, 13.0, 5.9], [5, 21, 9.4, 5.3], [21, 25, 8.4, 4.8], [25, 30, 7.6, 4.4], [30, 72, 6.6, 4.0], [72, 81, 5.2, 3.4], [81, 86, 4.0, 2.9]];
+const steelPlane = new THREE.Plane(V(0, -1, 0), 0), slabPlane = new THREE.Plane(V(0, -1, 0), 0), cladPlane = new THREE.Plane(V(0, -1, 0), 0), mastPlane = new THREE.Plane(V(0, -1, 0), 0);
+// excavation + footings
+const pit = new THREE.Mesh(new THREE.BoxGeometry(13.6, 0.1, 6.4), new THREE.MeshStandardMaterial({ color: '#5e4c3a', roughness: 1 })); pit.position.y = 0.0; pit.receiveShadow = true; scene.add(pit);
+// steel
+const steelM = new THREE.MeshStandardMaterial({ color: '#6a3d2e', roughness: 0.6, metalness: 0.35, clippingPlanes: [steelPlane] });
+const slabM = new THREE.MeshStandardMaterial({ color: '#9c968c', roughness: 0.95, clippingPlanes: [slabPlane] });
+const sMat = [], slabs = [], foots = [];
+const Q0 = new THREE.Quaternion();
+for (const [f0, f1, w, d] of TIERS) {
+  const sw = w - 0.16, sd = d - 0.16, nx = Math.max(3, Math.round(sw / 0.8) + 1), nz = Math.max(3, Math.round(sd / 0.8) + 1);
+  const xs = [...Array(nx)].map((_, i) => -sw / 2 + sw * i / (nx - 1)), zs = [...Array(nz)].map((_, i) => -sd / 2 + sd * i / (nz - 1));
+  for (let f = f0; f < f1; f++) {
+    const y = f * FH;
+    for (const x of xs) for (const z of zs) { sMat.push([x, y, z, 0.1, FH, 0.1]); if (f === 0) foots.push([x, z]); }
+    for (const z of zs) sMat.push([0, y + FH - 0.07, z, sw, 0.07, 0.07]);
+    for (const x of xs) sMat.push([x, y + FH - 0.07, 0, 0.07, 0.07, sd]);
+    slabs.push([0, y + FH - 0.1, 0, sw, 0.05, sd]);
+  }
+}
+function inst(list, mat, shadow = true) { const m = new THREE.InstancedMesh(box, mat, list.length); const M = new THREE.Matrix4();
+  list.forEach(([x, y, z, w, h, d], k) => m.setMatrixAt(k, M.compose(V(x, y, z), Q0, V(w, h, d)))); m.castShadow = shadow; m.receiveShadow = true; scene.add(m); return m; }
+inst(sMat, steelM); inst(slabs, slabM);
+inst(foots.map(([x, z]) => [x, 0, z, 0.32, 0.12, 0.32]), new THREE.MeshStandardMaterial({ color: '#b5b0a6', roughness: 0.9 }));
+// cladding (limestone + aluminium spandrels in vertical strips)
+const cladM = addFac({ color: '#d9d0bf', fh: FH, bay: 0.5, seed: 7, lit: 0.5, strip: 1, stripC: '#6c737b', glass: '#1d2631', roof: '#8a857c', win: [0.3, 0.7, 0.2, 0.84] });
+cladM.clippingPlanes = [cladPlane];
+for (const [f0, f1, w, d] of TIERS) { const m = new THREE.Mesh(box, cladM); m.scale.set(w, (f1 - f0) * FH, d); m.position.y = f0 * FH; m.castShadow = m.receiveShadow = true; scene.add(m); }
+// setback parapets (thin lighter slab on each tier roof)
+const capM = new THREE.MeshStandardMaterial({ color: '#cfc6b4', roughness: 0.8, clippingPlanes: [cladPlane] });
+for (const [f0, f1, w, d] of TIERS) { const m = new THREE.Mesh(box, capM); m.scale.set(w + 0.12, 0.12, d + 0.12); m.position.y = f1 * FH - 0.06; m.castShadow = true; scene.add(m); }
+// mooring mast + antenna
+const mastM = new THREE.MeshStandardMaterial({ color: '#d4d0c6', roughness: 0.35, metalness: 0.55, clippingPlanes: [mastPlane] });
+{ const pr = [[1.55, ROOF], [1.55, ROOF + 0.9], [1.3, ROOF + 1.0], [1.28, 34.6], [1.05, 34.75], [1.02, 36.3], [0.78, 36.45], [0.72, 37.4], [0.5, 37.6], [0.45, F102], [0.26, F102 + 0.15], [0.22, 39.3], [0.1, 39.5], [0.09, 41.5], [0.035, 41.6], [0.025, TIP], [0.0, TIP]];
+  const g = new THREE.LatheGeometry(pr.map(([r, y]) => new THREE.Vector2(r, y)), 8); g.rotateY(Math.PI / 8);
+  const m = new THREE.Mesh(g, mastM); m.castShadow = true; m.receiveShadow = true; scene.add(m);
+  for (let k = 0; k < 4; k++) { const f = new THREE.Mesh(box, mastM); const a = k * Math.PI / 2; f.scale.set(0.14, 4.6, 0.5); f.position.set(Math.cos(a) * 1.15, ROOF + 0.9, Math.sin(a) * 1.15); f.rotation.y = -a; f.castShadow = true; scene.add(f); } }
+const tipGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex(), color: '#ff5a4a', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 }));
+tipGlow.position.set(0, TIP, 0); tipGlow.scale.set(1.6, 1.6, 1); scene.add(tipGlow);
+
+// ---------- derricks on the climbing steel ----------
+const derM = new THREE.MeshStandardMaterial({ color: '#2f3134', roughness: 0.6, metalness: 0.4 });
+const cyl = new THREE.CylinderGeometry(1, 1, 1, 8); cyl.translate(0, 0.5, 0);
+const ders = [];
+for (let k = 0; k < 3; k++) {
+  const g = new THREE.Group();
+  const mast = new THREE.Mesh(cyl, derM); mast.scale.set(0.07, 2.4, 0.07); g.add(mast);
+  const arm = new THREE.Group(); arm.position.y = 0.25; g.add(arm);
+  const boom = new THREE.Mesh(cyl, derM); boom.scale.set(0.06, 2.9, 0.06); boom.rotation.z = -0.85; arm.add(boom);
+  const tipX = Math.sin(0.85) * 2.9, tipY = Math.cos(0.85) * 2.9;
+  const cab = new THREE.Mesh(cyl, derM); cab.scale.set(0.015, 1.3, 0.015); cab.position.set(tipX, tipY - 1.3, 0); arm.add(cab);
+  const beam = new THREE.Mesh(box, steelM.clone()); beam.material.clippingPlanes = []; beam.scale.set(0.09, 0.09, 1.1); beam.position.set(tipX, tipY - 1.38, 0); arm.add(beam);
+  g.traverse(o => { if (o.isMesh) o.castShadow = true; });
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex(), color: '#ffcf7a', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 }));
+  glow.scale.set(2.2, 2.2, 1); glow.position.y = 0.6; g.add(glow);
+  scene.add(g); ders.push({ g, arm, glow, ph: k * 2.1 });
+}
+const tierAt = fl => TIERS.find(([a, b]) => fl < b) || TIERS[TIERS.length - 1];
+
+// ---------- timeline ----------
+const T_ST0 = 0.75, T_ST1 = 3.35, T_M0 = 3.35, T_M1 = 4.25;
+function steelF(t) { const u = ramp(t, T_ST0, T_ST1); return 86 * (0.15 * sm(u) + 0.85 * u); }   // near-constant pace
+function cladF(t) { const k = eio(ramp(t, 3.0, 4.15)); return Math.min(steelF(t), (steelF(t - 0.55) - 2) * (1 - k) + 86 * k); }
+function mastY(t) { return ROOF + (TIP - ROOF) * eio(ramp(t, T_M0, T_M1)); }
+function floors(t) { const s = steelF(t); if (t < T_M0) return s; return 86 + 16 * cl((mastY(t) - ROOF) / (F102 - ROOF)); }
+function dayOf(t) {
+  if (t < 0.25) return 1;
+  if (t < T_ST0) return 1 + 26 * ramp(t, 0.25, T_ST0);
+  if (t < T_ST1) return 27 + (86 / 4.5 * 7) * steelF(t) / 86;                // 4.5 floors per 7 days
+  const d1 = 27 + 86 / 4.5 * 7; return d1 + (410 - d1) * sm(ramp(t, T_ST1, 4.95));
+}
+function sunPhase(t) { const g = 0.82 * ramp(t, 0.0, 4.95) + 0.18 * (1 - Math.pow(1 - ramp(t, 0.0, 4.95), 2)); return 0.40 + 5.335 * g + 0.012 * ramp(t, 4.95, DUR); }
+
+// ---------- camera: rises and pulls back with the tower ----------
+function topY(t) { return Math.max(4, Math.min(TIP, Math.max(steelF(t) * FH, mastY(t) * ramp(t, T_M0, T_M0 + 0.01)) + 2.5)); }
+const CQ = (new URLSearchParams(location.search).get('cam') || '').split(',').filter(Boolean).map(Number);
+function setCam(t) {
+  // smooth the framing height (look-ahead average)
+  let hT = 0; for (let k = 0; k < 7; k++) hT += topY(t + 0.12 * k - 0.1); hT /= 7;
+  const fin = sm(ramp(t, 4.3, 6.2));
+  const hf = hT + (TIP + 2 - hT) * 0;            // frame height
+  const dist = 34 + hf * 2.18 + 4 * fin;
+  const az = -0.62 + 0.22 * (t / DUR);
+  const ty = 1.0 + hf * 0.62;
+  const cy = 26 + hf * 0.33;
+  const tx = Math.cos(az) * 0, tz = 0;
+  camera.position.set(Math.sin(az) * dist, cy, Math.cos(az) * dist);
+  camera.lookAt(tx, ty, tz);
+  // shift tower a little right of centre
+  camera.position.addScaledVector(V(Math.cos(az), 0, -Math.sin(az)), -0.07 * dist);
+  camera.updateMatrixWorld();
+}
+
+// ---------- labels ----------
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pWk'), t0: 1.25, t1: 3.3, at: t => { const [, , w, d] = tierAt(steelF(t)); return [-w / 2, steelF(t) * FH, d / 2]; }, pos: (x, y) => [cl(x - 390, 250, 800), cl(y + 120, 600, 1420)] },
+  { el: E('pEnd'), t0: 4.55, at: [0, TIP, 0], col: '#ffc35a', pos: (x, y) => [cl(x - 400, 320, 760), cl(y + 260, 600, 1420)] },
+]);
+const cDay = E('cDay'), cFl = E('cFl');
+function overlay(t) {
+  const a = sm(ramp(t, 0.05, 0.35));
+  const day = Math.round(dayOf(t)), fl = Math.floor(floors(t) + 1e-6);
+  E('vDay').textContent = day; E('vFl').textContent = fl; E('kFl').textContent = fl === 1 ? ' floor' : ' floors';
+  cDay.style.left = '300px'; cDay.style.top = '305px'; cFl.style.left = '765px'; cFl.style.top = '305px';
+  cDay.style.opacity = cFl.style.opacity = a; E('dates').style.opacity = a;
+  const done = sm(ramp(t, 4.15, 4.35)); cFl.classList.toggle('gold', fl >= 102); cDay.classList.toggle('gold', day >= 410);
+  const pop = fl >= 102 ? 1 + 0.12 * Math.sin(Math.PI * ramp(t, 4.2, 4.55)) : 1;
+  cFl.style.transform = `translate(-50%,-50%) scale(${pop})`;
+  const pop2 = day >= 410 ? 1 + 0.12 * Math.sin(Math.PI * ramp(t, 4.95, 5.3)) : 1;
+  cDay.style.transform = `translate(-50%,-50%) scale(${pop2})`;
+  E('fill').style.width = (100 * (dayOf(t) - 1) / 409).toFixed(2) + '%';
+}
+
+// ---------- render ----------
+const cZen = new THREE.Color(), cHor = new THREE.Color(), tmpC = new THREE.Color();
+const DAYZ = new THREE.Color('#3f74b8'), DAYH = new THREE.Color('#c3d5e6'), DUSZ = new THREE.Color('#3a5aa8'), DUSH = new THREE.Color('#ff9550'), NITZ = new THREE.Color('#0c1532'), NITH = new THREE.Color('#2c3c66');
+function render(t) {
+  t = cl(t, 0, DUR);
+  // sun
+  const f = sunPhase(t) % 1, ang = 2 * Math.PI * (f - 0.25), e = Math.sin(ang);
+  const sd = V(Math.cos(ang) * 0.85, e, -0.5 + 0.2 * Math.cos(ang)).normalize();
+  // orient the arc so the low evening sun lights the camera-facing side
+  sd.applyAxisAngle(V(0, 1, 0), 1.2);
+  const day = sm(ramp(e, -0.08, 0.3)), dusk = Math.exp(-Math.pow((e - 0.04) / 0.13, 2)), night = 1 - sm(ramp(e, -0.12, 0.12));
+  cZen.copy(NITZ).lerp(DAYZ, day).lerp(DUSZ, dusk * 0.5); cHor.copy(NITH).lerp(DAYH, day).lerp(DUSH, dusk * 0.85);
+  skyU.uZen.value.copy(cZen); skyU.uHor.value.copy(cHor); skyU.uSun.value.copy(sd); skyU.uStar.value = night;
+  skyU.uSunC.value.set('#ffd9a0').lerp(new THREE.Color('#ff8a40'), dusk).multiplyScalar(sm(ramp(e, -0.06, 0.02)));
+  scene.fog.color.copy(cHor).multiplyScalar(0.9); skyU.uFog.value.copy(scene.fog.color).convertLinearToSRGB();   // three converts fog colour to sRGB itself
+  sun.position.copy(sun.target.position).addScaledVector(sd, 200);
+  sun.intensity = 3.4 * sm(ramp(e, -0.04, 0.08)); sun.color.set('#fff3e2').lerp(tmpC.set('#ff9a50'), dusk);
+  hemi.intensity = 0.42 + 0.5 * day; hemi.color.set('#40548a').lerp(tmpC.set('#cfe0ff'), day);
+  moon.intensity = 0.6 * night;
+  const lights = 1 - sm(ramp(e, -0.02, 0.16));
+  FAC.forEach(m => { m.userData.u.uNight.value = lights; m.userData.u.uRef.value.copy(cHor).lerp(cZen, 0.4).multiplyScalar(0.7); });
+  // construction progress
+  const sF = steelF(t), sY = t < T_ST0 ? -0.01 : sF * FH;
+  steelPlane.constant = sY + 0.001; slabPlane.constant = Math.max(0, sF - 1.5) * FH;
+  cladPlane.constant = Math.max(-0.01, cladF(t) * FH) + (cladF(t) > 85.9 ? 0.3 : 0); mastPlane.constant = t < T_M0 ? ROOF - 0.01 : mastY(t);
+  tipGlow.material.opacity = night * sm(ramp(mastY(t), TIP - 0.3, TIP)) * (0.8 + 0.2 * Math.sin(t * 9));
+  // derricks
+  const dv = t > 0.5 && t < T_M0 + 0.25;
+  const [, , tw, td] = tierAt(Math.min(sF, 85.9));
+  ders.forEach((d, k) => {
+    d.g.visible = dv; if (!dv) return;
+    const cx = [-1, 1, -1][k] * (tw / 2 - 0.5), cz = [1, -1, -1][k] * (td / 2 - 0.5);
+    d.g.position.set(cx, Math.max(0, sY), cz);
+    d.arm.rotation.y = d.ph + t * 2.3 * (k % 2 ? 1 : -1);
+    d.glow.material.opacity = 0.8 * night;
+  });
+  setCam(t); sky.position.copy(camera.position);
+  renderer.render(scene, camera);
+  lab(t); overlay(t);
+}
+await ready(render);
+</script>
+</body>
+</html>
