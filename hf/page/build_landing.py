@@ -208,6 +208,13 @@ PRO_FAQ = ('<details class="rv"><summary>Do I need to pay for Claude Pro?<i aria
            'free plans, and the system works in both. Think of the AI as the engine: a smarter model makes smoother, more polished animation, '
            'and a paid plan lets you make more videos a day. So start free, and upgrade only if you want more. Every video on this page was made with Claude.</p></details>\n      ')
 rep('<details class="rv"><summary>Does it work with ChatGPT?', PRO_FAQ + '<details class="rv"><summary>Does it work with ChatGPT?')
+# Jan, 2026-11-20: "How it works" steps + voice lines name ChatGPT too (not only Claude).
+rep('<h3>Drop it into Claude', '<h3>Drop it into Claude or ChatGPT')
+rep('Drag the file you get into Claude and type one line:', 'Drag the file you get into Claude or ChatGPT and type one line:')
+rep('<h3>Claude sets everything up', '<h3>Your AI sets everything up')
+rep('Voiceover <small>Claude sets it up with you during install', 'Voiceover <small>your AI sets it up with you during install')
+rep('Claude sets up a natural AI voice with you during install', 'Your AI sets up a natural voice with you during install')
+s = s.replace('and Claude helps you create it.', 'and your AI helps you create it.')
 (H / "landing-A.html").write_text(s, encoding="utf-8")
 
 SECTION = '''<section class="sec alt" id="reviews" aria-labelledby="h-rev" hidden>
