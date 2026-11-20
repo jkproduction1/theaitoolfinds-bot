@@ -1,0 +1,70 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles62 r2: /painted-story how Pompeii was buried (painterly look of styles60 painted_goldengate). Own generic town + volcano, no photo/artwork reference.
+// Facts: Mount Vesuvius erupted in AD 79; Pompeii was buried under about 4-6 m (13-20 ft) of volcanic ash and pumice;
+// excavation began in 1748 (Britannica "Pompeii"; Wikipedia "Pompeii" / "Eruption of Mount Vesuvius in 79 AD").
+const g=document.getElementById('c').getContext('2d');const LERP=(a,b,t)=>a+(b-a)*t;
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+
+const GY=1330;
+const WORLD=off(1300,2100,(p,w,h)=>{const R=R0(31);p.translate(110,90);
+  const s=p.createLinearGradient(0,-90,0,GY);s.addColorStop(0,'#5d7fa8');s.addColorStop(.55,'#a8b8c4');s.addColorStop(1,'#e6d2a8');p.fillStyle=s;p.fillRect(-110,-90,w,GY+90);
+  strokes(p,1800,R,-110,-90,w,GY,['#7a94b4','#9fb0c0','#c4c4b8','#e0cfa8'],170,26,0.05,0.06,0.14);
+  // sea on the right
+  p.fillStyle='#4f7a98';p.beginPath();p.moveTo(700,1010);p.lineTo(1200,1000);p.lineTo(1200,1120);p.lineTo(700,1120);p.closePath();p.fill();strokes(p,300,R,700,1000,500,110,['#6a92ae','#3e6684','#a8c4d4'],60,6,0,0.15,0.25);
+  // Vesuvius
+  p.fillStyle='#6a5a52';p.beginPath();p.moveTo(-160,1080);p.quadraticCurveTo(230,1000,290,640);p.quadraticCurveTo(300,606,330,604);p.lineTo(390,606);p.quadraticCurveTo(420,606,430,640);p.quadraticCurveTo(500,1000,880,1060);p.closePath();p.fill();p.save();p.clip();
+  strokes(p,900,R,-120,600,980,480,['#5a4a44','#7a6658','#8a7a6a','#4a3c38'],60,12,-0.6,0.15,0.3);strokes(p,500,R,40,640,780,420,['#6e7a4e','#5a6a40'],40,9,0.6,0.08,0.18);p.restore();
+  // plain + far fields
+  p.fillStyle='#9a9a62';p.fillRect(-110,1060,w,GY-1060);strokes(p,900,R,-110,1060,w,GY-1060,['#8a8a52','#b0a870','#6e7a4e','#c4b480'],70,10,0,0.15,0.3);
+  // the town: generic Roman houses + a temple
+  const house=(x,y,ww,hh,roof)=>{p.fillStyle='#e8d9b8';p.fillRect(x,y-hh,ww,hh);p.fillStyle='#b84a2c';p.beginPath();p.moveTo(x-10,y-hh);p.lineTo(x+ww/2,y-hh-roof);p.lineTo(x+ww+10,y-hh);p.closePath();p.fill();
+    p.fillStyle='#5a3a2a';for(let k=0;k<Math.floor(ww/50);k++)p.fillRect(x+16+k*50,y-hh+22,18,26);p.fillRect(x+ww/2-14,y-40,28,40);};
+  const RR=R0(9);for(let i=0;i<16;i++){const x=-80+i*84+RR()*20,y=1200+(i%3)*40+RR()*20;house(x,y,70+RR()*40,60+RR()*40,24+RR()*14);}
+  // temple
+  p.fillStyle='#efe2c4';p.fillRect(560,1110,260,24);p.beginPath();p.moveTo(550,1000);p.lineTo(690,940);p.lineTo(830,1000);p.closePath();p.fill();p.fillRect(560,1000,260,16);
+  for(let k=0;k<6;k++){p.fillRect(574+k*44,1016,20,94);}p.fillStyle='rgba(120,90,60,.4)';for(let k=0;k<6;k++)p.fillRect(588+k*44,1016,6,94);
+  for(let i=0;i<14;i++){const x=-60+i*96+RR()*20,y=1310+RR()*20;house(x,y,80+RR()*30,70+RR()*30,26);}
+  strokes(p,1400,R,-110,930,w,GY-930,['#d8c49c','#a85a3a','#8a6a4a','#f0e0c0'],22,5,0,0.06,0.16);
+  // foreground ground
+  const fg=p.createLinearGradient(0,GY,0,h);fg.addColorStop(0,'#8a7454');fg.addColorStop(1,'#3a2e26');p.fillStyle=fg;p.fillRect(-110,GY,w,h-GY);strokes(p,1600,R,-110,GY,w,h-GY,['#7a6448','#5a4836','#9a8462'],80,12,0,0.1,0.2);
+});
+const PL=(()=>{const R=R0(44);return [...Array(70)].map((_,i)=>{const u=i/70;return {u,dx:(R()-.5),r:.6+R()*.8,ph:R()*6,c:R()};});})();
+const ASH=(()=>{const R=R0(12);return [...Array(170)].map(()=>[R()*1300-110,R()*2000,1+R()*1.2,R()]);})();
+const BOILN=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#ffd8b0','#1a1430','#8a5a70'],120,22,0.1,0.02,0.05);});
+function cap(t,t0,t1,lt,i,y,fs,col){if(lt<t0||lt>t1+0.5)return;const e=E3((lt-t0)/0.5),o=E3((lt-t1)/0.45);g.save();g.textAlign='left';g.font='italic 500 '+fs+'px '+SERIF;const w=g.measureText(t).width+64,hh=fs*1.5;
+  g.translate(72-(1-e)*(w+160)-o*(w+160),y);g.rotate(-0.012+(1-e)*0.03);tornPath(g,0,0,w,hh,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=col||'#2c1c0e';g.fillText(t,32,hh*0.7);g.restore();}
+
+function plume(lt){const k=E3((lt-.25)/2.2);if(k<=0)return;const sx=360,sy=600;g.save();
+  PL.forEach(b=>{const v=b.u*k;if(v<=0)return;const y=sy-v*560,spread=v>.7?(v-.7)/.3:0;const x=sx+b.dx*(60+v*140+spread*520)+Math.sin(lt*.8+b.ph)*10;const r=(70+v*120+spread*80)*b.r*(0.6+0.4*k);
+    const gr=g.createRadialGradient(x-r*.3,y-r*.3,r*.1,x,y,r);const c=b.c<.5?[120,108,100]:[90,82,78];gr.addColorStop(0,'rgba('+(c[0]+50)+','+(c[1]+45)+','+(c[2]+40)+',.95)');gr.addColorStop(.7,'rgba('+c+',.9)');gr.addColorStop(1,'rgba('+c+',0)');g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,7);g.fill();});
+  // glow at the summit
+  g.globalCompositeOperation='lighter';const gl=g.createRadialGradient(sx,sy,5,sx,sy,160);gl.addColorStop(0,'rgba(255,150,60,'+(.8*k)+')');gl.addColorStop(1,'rgba(255,90,30,0)');g.fillStyle=gl;g.fillRect(sx-160,sy-160,320,320);g.restore();}
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;
+  const z=1.22+0.10*EIO(lt/6.3), cx=500+10*Math.sin(lt*.6), cy=900-60*EIO(lt/6.3)+6*Math.cos(lt*.7);
+  g.save();g.translate(540,960);g.scale(z,z);g.translate(-cx,-cy);
+  g.drawImage(WORLD,-110,-90);
+  // sky darkens under the cloud
+  const dk=CL((lt-1.0)/3.0);g.fillStyle='rgba(40,30,30,'+(0.55*dk)+')';g.fillRect(-200,-200,1500,GY+200);
+  plume(lt);
+  // ash + pumice layer rising over the town
+  const ak=EIO((lt-2.0)/3.0);if(ak>0){const top=LERP(GY+30,995,ak);g.save();g.beginPath();g.moveTo(-200,2100);for(let x=-200;x<=1300;x+=20)g.lineTo(x,top+Math.sin(x*.02+3)*10+Math.sin(x*.007)*16);g.lineTo(1300,2100);g.closePath();
+    const ag=g.createLinearGradient(0,top,0,top+500);ag.addColorStop(0,'#b8ada0');ag.addColorStop(.3,'#8f857a');ag.addColorStop(1,'#5e564e');g.fillStyle=ag;g.fill();g.clip();
+    const R=R0(5);strokes(g,500,R,-150,top,1450,560,['#a89c8e','#7a7066','#cfc4b4','#6a625a'],60,10,0,0.15,0.3);
+    g.strokeStyle='rgba(70,60,52,.45)';g.lineWidth=5;for(let k=1;k<6;k++){const y=top+k*60;g.beginPath();for(let x=-200;x<=1300;x+=40)g.lineTo(x,y+Math.sin(x*.01+k)*6);g.stroke();}g.restore();}
+  g.restore();
+  // falling ash and pumice (screen space)
+  const fa=CL((lt-1.4)/.6)*(1-CL((lt-5.4)/.6));if(fa>0){g.save();g.globalAlpha=fa;ASH.forEach(([x,y0,s,c])=>{const y=(y0+lt*380*s)%2000-40;g.fillStyle=c<.3?'#d8d0c4':'#5a524c';g.beginPath();g.ellipse(x+Math.sin(lt*2+y0)*14,y,3*s+(c<.3?3:0),4*s+(c<.3?3:0),0,0,7);g.fill();});g.restore();}
+  // painterly boil + grain + vignette
+  const bk=Math.floor(lt*8+0.001),BRr=R0(1000+bk*7);BRr();g.save();g.translate(540+(BRr()-.5)*50,960+(BRr()-.5)*50);g.scale(bk%2?-1:1,(bk>>1)%2?-1:1);g.rotate((BRr()-.5)*0.04);g.drawImage(BOILN,-540,-960);g.restore();
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
+  const vg=g.createRadialGradient(540,900,420,540,900,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,6,20,.6)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  cap('AD 79',0.15,9,lt,0,250,72,'#8a1c10');
+  if(lt>2.5&&lt<5.2){cap('4–6 m of ash & pumice',2.5,4.8,lt,1,1330,58,'#2c1c0e');cap('that is 13–20 ft',2.7,4.8,lt,3,1430,48);}
+  cap('Found again in 1748',5.0,9,lt,2,1360,66,'#8a1c10');
+}
+window.DUR=6.3;const _d=draw;window.draw=(t)=>_d(t*1.25);_d(5.5);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

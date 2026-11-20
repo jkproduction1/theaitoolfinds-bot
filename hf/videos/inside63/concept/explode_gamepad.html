@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploded game controller</title>
+<!-- inside59 r2: /explode a game controller. GENERIC gamepad of our own design: no brand shapes, symbols, letters, colours or logos;
+  plain unlabeled buttons. Parts true for typical wireless gamepads (teardown guides, e.g. iFixit controller teardowns):
+  two shell halves, main circuit board, two analog thumbstick modules (on the board), two rumble motors with off-centre weights
+  in the grips, rechargeable battery pack. Simplified, not to scale. Units ~ cm. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pSt">Thumbsticks</div>
+    <div class="pill" id="pPc">Circuit board</div>
+    <div class="pill hot" id="pRm">Rumble motors</div>
+    <div class="pill" id="pBa">Battery</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from './RoundedBoxGeometry.js';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(30, [.03, .033, .04], [.20, .205, .22]);
+const rnd = mulberry32(21); const R = (a, b) => a + rnd() * (b - a);
+
+// ---------- outline (shape coords: x right, y = toward the shoulders) ----------
+const half = [[0, 3.1], [3.2, 3.25], [5.6, 3.0], [6.9, 2.0], [7.5, 0.0], [7.7, -2.6], [7.2, -5.0], [5.9, -5.9], [4.6, -5.2], [3.6, -3.5], [2.0, -2.5], [0, -2.4]];
+function outlinePts(sc = 1) {
+  const p = half.map(([x, y]) => [x * sc, y * sc + (1 - sc) * -1.2]);
+  const l = half.slice(1, -1).reverse().map(([x, y]) => [-x * sc, y * sc + (1 - sc) * -1.2]);
+  return [...p, ...l].map(([x, y]) => new THREE.Vector2(x, y));
+}
+function shapeFrom(pts) { const s = new THREE.Shape(); s.moveTo(pts[0].x, pts[0].y); s.splineThru([...pts.slice(1), pts[0]]); return s; }
+const circ = (x, y, r) => { const p = new THREE.Path(); p.absarc(x, y, r, 0, Math.PI * 2, true); return p; };
+function extr(shape, depth, bevel = 0.3) {
+  const g = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: bevel > 0, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 4, curveSegments: 40 });
+  g.rotateX(-Math.PI / 2); return g;   // shape y -> world -z, extrusion -> +y
+}
+const STK = [[-2.4, -1.5], [2.4, -1.5]], DP = [-4.7, 0.9], FB = [4.7, 0.9];
+
+// ---------- materials ----------
+const shellTop = new THREE.MeshPhysicalMaterial({ color: '#e3e5e8', roughness: 0.48, clearcoat: 0.35, clearcoatRoughness: 0.5 });
+const shellBot = new THREE.MeshPhysicalMaterial({ color: '#2a2d33', roughness: 0.6, clearcoat: 0.2, side: THREE.DoubleSide });
+const shellIn = new THREE.MeshStandardMaterial({ color: '#1c1e22', roughness: 0.8 });
+const btnM = new THREE.MeshPhysicalMaterial({ color: '#33363d', roughness: 0.25, clearcoat: 0.9, clearcoatRoughness: 0.15 });
+const rubber = new THREE.MeshStandardMaterial({ color: '#202226', roughness: 0.85 });
+const steel = new THREE.MeshStandardMaterial({ color: '#cdd1d6', metalness: 1, roughness: 0.28 });
+const brass = new THREE.MeshStandardMaterial({ color: '#c9a35a', metalness: 1, roughness: 0.32 });
+const chipM = new THREE.MeshStandardMaterial({ color: '#15161a', roughness: 0.4 });
+const pcbTex = (() => { const c = document.createElement('canvas'); c.width = 1024; c.height = 640; const g = c.getContext('2d');
+  g.fillStyle = '#16573a'; g.fillRect(0, 0, 1024, 640); g.strokeStyle = 'rgba(120,200,140,.55)'; g.lineWidth = 3;
+  for (let i = 0; i < 90; i++) { let x = R(0, 1024), y = R(0, 640); g.beginPath(); g.moveTo(x, y); for (let k = 0; k < 4; k++) { if (rnd() < .5) x += R(-160, 160); else y += R(-120, 120); g.lineTo(x, y); } g.stroke(); }
+  g.fillStyle = '#d8b56a'; for (let i = 0; i < 160; i++) { g.beginPath(); g.arc(R(0, 1024), R(0, 640), R(3, 6), 0, 7); g.fill(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+const pcbM = new THREE.MeshStandardMaterial({ map: pcbTex, roughness: 0.45, metalness: 0.15 });
+const batM = new THREE.MeshPhysicalMaterial({ color: '#3d5f8a', roughness: 0.35, clearcoat: 0.8 });
+
+const pad = new THREE.Group(); scene.add(pad);
+const layer = () => { const g = new THREE.Group(); pad.add(g); return g; };
+const mesh = (g, m, p, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); p.add(o); return o; };
+
+// bottom shell: hollow tub (wall ring + floor)
+const Lbot = layer();
+{ const outer = outlinePts(1), inner = outlinePts(0.9);
+  const ring = shapeFrom(outer); const hole = new THREE.Path(); hole.moveTo(inner[0].x, inner[0].y); hole.splineThru([...inner.slice(1), inner[0]]); ring.holes.push(hole);
+  mesh(extr(ring, 1.3, 0.3), shellBot, Lbot, 0, -1.6, 0);
+  mesh(extr(shapeFrom(outer), 0.2, 0.3), shellBot, Lbot, 0, -1.9, 0);
+  mesh(extr(shapeFrom(inner), 0.05, 0), shellIn, Lbot, 0, -1.38, 0);
+  for (const [x, z] of [[-4.5, -1], [4.5, -1], [0, 1.5], [-6, 3.5], [6, 3.5]]) mesh(new THREE.CylinderGeometry(0.28, 0.32, 1.0, 16), shellIn, Lbot, x, -0.9, z); }
+// battery (centre, in the bottom shell)
+const Lbat = layer();
+{ mesh(new RoundedBoxGeometry(5.0, 1.0, 2.2, 3, 0.25), batM, Lbat, 0, 0, 0);
+  mesh(new THREE.BoxGeometry(5.05, 0.3, 0.5), new THREE.MeshStandardMaterial({ color: '#e8e8e8', roughness: .6 }), Lbat, 0, 0.1, 0);
+  mesh(new THREE.BoxGeometry(0.9, 0.2, 0.5), new THREE.MeshStandardMaterial({ color: '#f2f2f2', roughness: .5 }), Lbat, 2.0, 0.55, -1.0);
+  for (const [c, dx] of [['#c62828', 0], ['#111', 0.25]]) { const w = mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.4, 8), new THREE.MeshStandardMaterial({ color: c, roughness: .5 }), Lbat, 2.0 + dx, 0.6, -1.7); w.rotation.x = Math.PI / 2; } }
+// rumble motors (in the grips) with off-centre weights
+const Lrm = layer(), weights = [];
+for (const s of [-1, 1]) { const g = new THREE.Group(); g.position.set(s * 5.7, 0, 3.7); g.rotation.y = s * 0.35; Lrm.add(g);
+  const can = mesh(new THREE.CylinderGeometry(0.75, 0.75, 2.0, 32), steel, g); can.rotation.z = Math.PI / 2;
+  const cap = mesh(new THREE.CylinderGeometry(0.78, 0.78, 0.3, 32), rubber, g, s * 1.0, 0, 0); cap.rotation.z = Math.PI / 2;
+  const ax = mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.6, 8), steel, g, -s * 1.25, 0, 0); ax.rotation.z = Math.PI / 2;
+  const wg = new THREE.Group(); wg.position.x = -s * 1.55; g.add(wg);
+  const wt = mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.55, 32, 1, false, 0, Math.PI), brass, wg); wt.rotation.z = Math.PI / 2;
+  const clip = mesh(new RoundedBoxGeometry(2.4, 0.4, 1.9, 2, 0.12), rubber, g, 0, -0.75, 0);
+  weights.push(wg); }
+// circuit board with chips and the thumbstick modules + buttons on it
+const Lpcb = layer();
+{ const sh = shapeFrom(outlinePts(0.84)); const g = new THREE.ExtrudeGeometry(sh, { depth: 0.16, bevelEnabled: false, curveSegments: 40 }); g.rotateX(-Math.PI / 2);
+  const uv = g.attributes.uv, pos = g.attributes.position; for (let i = 0; i < uv.count; i++) uv.setXY(i, (pos.getX(i) + 7) / 14, (pos.getZ(i) + 4) / 9);
+  mesh(g, pcbM, Lpcb, 0, 0, 0);
+  mesh(new THREE.BoxGeometry(1.6, 0.18, 1.6), chipM, Lpcb, 0, 0.25, -0.6);
+  mesh(new THREE.BoxGeometry(0.9, 0.16, 0.9), chipM, Lpcb, -1.0, 0.24, 1.5);
+  mesh(new THREE.BoxGeometry(1.2, 0.2, 0.7), steel, Lpcb, 1.2, 0.26, -1.9);
+  mesh(new THREE.BoxGeometry(0.9, 0.35, 0.5), steel, Lpcb, 0, 0.3, 2.2);
+  for (let i = 0; i < 12; i++) mesh(new THREE.BoxGeometry(R(.2, .45), 0.12, R(.15, .3)), rnd() < .6 ? chipM : brass, Lpcb, R(-3.5, 3.5), 0.22, R(-2.5, 1));
+  // button contact pads
+  for (const [dx, dy] of [[0, .9], [.9, 0], [0, -.9], [-.9, 0]]) { mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.05, 20), brass, Lpcb, FB[0] + dx, 0.19, -(FB[1] + dy)); mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.05, 20), brass, Lpcb, DP[0] + dx, 0.19, -(DP[1] + dy)); } }
+// thumbsticks (modules + caps), buttons
+const Lstk = layer(), caps = [];
+for (const [x, y] of STK) { const g = new THREE.Group(); g.position.set(x, 0, -y); Lstk.add(g);
+  mesh(new RoundedBoxGeometry(2.0, 1.2, 2.0, 2, 0.08), new THREE.MeshStandardMaterial({ color: '#2b2e33', roughness: .5 }), g, 0, 0, 0);
+  mesh(new THREE.BoxGeometry(2.1, 0.12, 2.1), steel, g, 0, 0.62, 0);
+  mesh(new THREE.BoxGeometry(0.5, 0.9, 0.9), new THREE.MeshStandardMaterial({ color: '#3b3f46', roughness: .5 }), g, 1.25, 0, 0);
+  const st = new THREE.Group(); st.position.y = 0.6; g.add(st);
+  mesh(new THREE.CylinderGeometry(0.32, 0.38, 1.6, 20), rubber, st, 0, 0.8, 0);
+  mesh(new THREE.SphereGeometry(0.75, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), rubber, st, 0, 1.2, 0).scale.y = 0.4;
+  mesh(new THREE.CylinderGeometry(1.0, 0.95, 0.42, 40), rubber, st, 0, 1.75, 0);
+  const rim = mesh(new THREE.TorusGeometry(0.88, 0.13, 12, 40), rubber, st, 0, 1.98, 0); rim.rotation.x = Math.PI / 2;
+  caps.push(st); }
+const Lbtn = layer();
+for (const [dx, dy] of [[0, .9], [.9, 0], [0, -.9], [-.9, 0]]) { mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.5, 28), btnM, Lbtn, FB[0] + dx, 0, -(FB[1] + dy)); }
+{ mesh(new RoundedBoxGeometry(2.3, 0.5, 0.75, 2, 0.12), btnM, Lbtn, DP[0], 0, -DP[1]); mesh(new RoundedBoxGeometry(0.75, 0.5, 2.3, 2, 0.12), btnM, Lbtn, DP[0], 0, -DP[1]); }
+for (const s of [-1, 1]) mesh(new RoundedBoxGeometry(3.0, 0.7, 1.1, 2, 0.3), btnM, Lbtn, s * 4.8, -0.4, -3.4);
+// top shell with holes
+const Ltop = layer();
+{ const sh = shapeFrom(outlinePts(1)); for (const [x, y] of STK) sh.holes.push(circ(x, y, 1.2)); sh.holes.push(circ(DP[0], DP[1], 1.35));
+  for (const [dx, dy] of [[0, .9], [.9, 0], [0, -.9], [-.9, 0]]) sh.holes.push(circ(FB[0] + dx, FB[1] + dy, 0.48));
+  sh.holes.push(circ(0, 0.6, 0.45));
+  mesh(extr(sh, 0.6, 0.35), shellTop, Ltop, 0, 0, 0);
+  mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.4, 28), btnM, Ltop, 0, 0.3, -0.6); }
+
+// assembled y / exploded y per layer
+const LAY = [[Lbot, 0, -8.8, 0.25], [Lbat, -0.1, -5.6, 0.18], [Lrm, -0.1, -2.6, 0.12], [Lpcb, 0.45, 0.6, 0.06], [Lstk, 1.0, 3.6, 0.0], [Lbtn, 1.25, 6.4, 0.03], [Ltop, 1.1, 9.0, 0.08]];
+
+// floor glow + motes
+{ const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+  const r = g.createRadialGradient(64, 64, 10, 64, 64, 64); r.addColorStop(0, 'rgba(0,0,0,.7)'); r.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128);
+  const ao = new THREE.Mesh(new THREE.PlaneGeometry(26, 20), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false }));
+  ao.rotation.x = -Math.PI / 2; ao.position.y = -11.5; scene.add(ao); }
+const NP = 70, motes = [], dpos = new Float32Array(NP * 3);
+for (let i = 0; i < NP; i++) motes.push([R(-16, 16), R(-12, 14), R(-12, 8), R(0, 6.28), R(.15, .4)]);
+const dGeo = new THREE.BufferGeometry(); dGeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+scene.add(new THREE.Points(dGeo, new THREE.PointsMaterial({ map: softTex(), size: 0.3, color: '#ffe7c4', transparent: true, opacity: .4, depthWrite: false, blending: THREE.AdditiveBlending })));
+// lights
+scene.add(new THREE.HemisphereLight('#dfe7f5', '#2a2622', 0.6));
+const key = new THREE.DirectionalLight('#fff1e0', 2.6); key.position.set(-30, 50, 35); scene.add(key);
+const rim = new THREE.DirectionalLight('#9cc8ff', 1.8); rim.position.set(35, 10, -40); scene.add(rim);
+const warm = new THREE.PointLight('#ffb070', 30, 40, 2); warm.position.set(12, 0, 10); scene.add(warm);
+
+// camera
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.3 * u + 0.7 * eio(u);
+  const ex = eio(ramp(t, 0.4, 2.2)), az = -0.40 + 0.36 * s, el = 0.40 - 0.06 * s, d = 50 + 14 * ex - 1 * s, T = V(0, 0.2, 0.5);
+  camera.position.set(T.x + Math.sin(az) * Math.cos(el) * d, T.y + Math.sin(el) * d, T.z + Math.cos(az) * Math.cos(el) * d);
+  camera.lookAt(T); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const wp = (o, x = 0, y = 0, z = 0) => () => { const v = o.localToWorld(V(x, y, z)); return [v.x, v.y, v.z]; };
+const lab = labels(camera, [
+  { el: E('pSt'), t0: 2.0, at: wp(caps[0], -0.9, 1.8, 0), pos: (x, y) => [230, cl(y + 150, 270, 1480)] },
+  { el: E('pPc'), t0: 2.4, at: wp(Lpcb, -4.6, 0.1, 1.0), pos: (x, y) => [cl(x - 60, 260, 820), cl(y + 130, 270, 1480)] },
+  { el: E('pRm'), t0: 2.8, col: '#ffb547', at: wp(weights[1], 0, 0.5, 0), pos: (x, y) => [cl(x - 40, 260, 800), cl(y + 150, 270, 1480)] },
+  { el: E('pBa'), t0: 3.2, at: wp(Lbat, -1.5, 0.5, 0.6), pos: (x, y) => [cl(x - 220, 230, 820), cl(y + 150, 270, 1480)] },
+]);
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  pad.rotation.y = -0.12 + 0.12 * eio(cl(t / DUR));
+  for (const [g, a, b, d] of LAY) { const k = eio(ramp(t, 0.45 + d * 2.2, 2.0 + d * 2.2)); g.position.y = a + (b - a) * k + k * 0.15 * Math.sin(t * 1.7 + b); }
+  const run = Math.max(0, t - 2.6), runE = run < 0.5 ? run * run : run - 0.25;
+  weights.forEach((w, i) => { w.rotation.x = (i ? 1 : -1) * runE * 40; });
+  Lrm.position.x = 0.02 * Math.sin(t * 90) * sm(ramp(t, 2.6, 3.0));
+  caps.forEach((c, i) => { const a = sm(ramp(t, 2.2, 2.8)); c.rotation.x = 0.28 * a * Math.sin(t * 2.6 + i * 1.6); c.rotation.z = 0.28 * a * Math.cos(t * 2.6 + i * 1.6); });
+  for (let i = 0; i < NP; i++) { const d = motes[i]; dpos[i * 3] = d[0] + Math.sin(t * d[4] + d[3]) * 0.8; dpos[i * 3 + 1] = d[1] + t * d[4]; dpos[i * 3 + 2] = d[2]; }
+  dGeo.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

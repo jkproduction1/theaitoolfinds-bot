@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- earth61 result clips, drawn in code (three.js r1xx + GLSL), made with Claude. ?s=0 /what-if Earth lost gravity for 5 seconds,
+     ?s=1 /simulate a mega tsunami hitting a coastline, ?s=2 /scale Mount Everest vs Olympus Mons. render.py drives draw(t). -->
+<style>
+html,body{margin:0;background:#000;overflow:hidden}
+#wrap{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:Inter,sans-serif}
+canvas{position:absolute;left:0;top:0}
+.lb{position:absolute;opacity:0;white-space:nowrap;transform:translate(0,-50%);isolation:isolate;background:rgba(10,11,14,.74);padding:10px 18px 12px;border-radius:14px}
+.lb b{display:block;font-weight:700;font-size:38px;color:#fff;letter-spacing:-.01em}
+.lb span{display:block;font-family:'JetBrains Mono','DejaVu Sans Mono',monospace;font-size:25px;color:#c4ccd6;margin-top:3px}
+.ld{position:absolute;left:0;top:50%;height:2px;background:rgba(255,255,255,.7);transform-origin:0 50%;z-index:-1}
+.ld::after{content:'';position:absolute;right:-7px;top:-6px;width:14px;height:14px;border-radius:50%;background:#ff6a3d;box-shadow:0 0 0 6px rgba(255,106,61,.25)}
+.big{position:absolute;left:0;right:0;top:190px;text-align:center;color:#fff;opacity:0;text-shadow:0 4px 30px rgba(0,0,0,.8)}
+.big b{display:block;font-weight:800;font-size:40px;letter-spacing:.12em;text-transform:uppercase;color:#ffd2c2}
+.big i{display:block;font-style:normal;font-weight:800;font-size:150px;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}
+</style></head><body><div id="wrap"><canvas id="cv" width="1080" height="1920"></canvas><div id="ov"></div></div>
+<script src="../../impact22/media/three.min.js"></script><script src="../../impact22/media/three-extras.js"></script><script src="../../impact22/media/studio_exr.js"></script>
+<script src="helpers.js"></script>
+<script>
+const S=+(new URLSearchParams(location.search).get('s')||0);
+const SCN=[];
+function L(id,t,s){ return '<div class="lb" id="'+id+'"><i class="ld"></i><b>'+t+'</b>'+(s?'<span>'+s+'</span>':'')+'</div>'; }
+// label at (lx,ly) with a leader line to the point (px,py); px<0 = no leader
+function lab(id,lx,ly,px,py,a){ const el=document.getElementById(id); el.style.left=lx+'px'; el.style.top=ly+'px'; el.style.opacity=a;
+  const ld=el.querySelector('.ld'); if(px<0){ ld.style.width='0px'; ld.style.display='none'; return; } ld.style.display='block';
+  const w=el.offsetWidth, h=el.offsetHeight; const sx=(px<lx)?0:w, ox=sx; const dx=px-(lx+ox), dy=py-ly; const len=Math.hypot(dx,dy);
+  ld.style.left=ox+'px'; ld.style.width=(len*cl(a*1.4))+'px'; ld.style.transform='rotate('+Math.atan2(dy,dx)+'rad)'; }
+const easeO=x=>1-Math.pow(1-cl(x),3), easeO5=x=>1-Math.pow(1-cl(x),5);
+</script>
+<script src="scenes.js"></script>
+<script>
+function draw(t){ SCN[S](t); }
+document.fonts.load("800 58px Inter").then(()=>{ draw(0); draw(0.01); document.title='ok'; });
+</script></body></html>

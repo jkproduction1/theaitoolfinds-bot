@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploded VR headset</title>
+<!-- inside63 r2: /explode a VR headset. GENERIC standalone headset of our own design: no brand shape, logo, wordmark or colours.
+  Parts true for typical standalone VR headsets (iFixit / Road to VR teardowns of several headsets): front cover, outward tracking
+  cameras, main board with the processor and a cooling fan, battery, two displays (one per eye), two lenses, face cushion, head strap.
+  Simplified, not to scale. Units ~ cm. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pCa">Tracking cameras</div>
+    <div class="pill" id="pCh">Chip + cooling fan</div>
+    <div class="pill" id="pBa">Battery</div>
+    <div class="pill hot" id="pDi">Two displays</div>
+    <div class="pill" id="pLe">Lenses</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from './RoundedBoxGeometry.js';
+import { W, H, DUR, cl, ramp, sm, eio, eout, popS, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(30, [.03, .033, .04], [.20, .205, .22]);
+const rnd = mulberry32(63); const R = (a, b) => a + rnd() * (b - a);
+const add = (g, m, p, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); p.add(o); return o; };
+
+const white = new THREE.MeshPhysicalMaterial({ color: '#eceef0', roughness: 0.32, clearcoat: 0.8, clearcoatRoughness: 0.2 });
+const greyP = new THREE.MeshPhysicalMaterial({ color: '#3a3d43', roughness: 0.5, clearcoat: 0.3 });
+const glassBlk = new THREE.MeshPhysicalMaterial({ color: '#07080a', roughness: 0.05, metalness: 0.2, clearcoat: 1 });
+const pcb = new THREE.MeshStandardMaterial({ color: '#16452f', roughness: 0.5 });
+const chipM = new THREE.MeshStandardMaterial({ color: '#15161a', roughness: 0.35, metalness: 0.4 });
+const alu = new THREE.MeshStandardMaterial({ color: '#c9ced5', metalness: 1, roughness: 0.28 });
+const batM = new THREE.MeshPhysicalMaterial({ color: '#4a4f58', roughness: 0.35, metalness: 0.5, clearcoat: 0.6 });
+const foam = new THREE.MeshPhysicalMaterial({ color: '#3a3c42', roughness: 1.0, bumpMap: (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); for (let i = 0; i < 4000; i++) { g.fillStyle = `rgba(255,255,255,${Math.random()*0.5})`; g.fillRect(Math.random()*128, Math.random()*128, 2, 2); } const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(6, 3); return t; })(), bumpScale: 2.0, sheen: 1, sheenColor: new THREE.Color('#6a6f7a'), sheenRoughness: 0.7 });
+const lensM = new THREE.MeshPhysicalMaterial({ color: '#bfe6ff', roughness: 0.05, metalness: 0.1, clearcoat: 1, transparent: true, opacity: 0.62, envMapIntensity: 2.5, emissive: '#2a5a7a', emissiveIntensity: 0.25, side: THREE.DoubleSide });
+
+// ---------- layers (local z = front of the headset) ----------
+const hs = new THREE.Group(); scene.add(hs);
+const L = {};
+function layer(name, z0, z1) { const g = new THREE.Group(); hs.add(g); L[name] = { g, z0, z1 }; return g; }
+// front cover: rounded visor
+const cover = layer('cover', 2.4, 13);
+{ const g = new RoundedBoxGeometry(18, 9.6, 2.2, 6, 1.0); add(g, white, cover);
+  for (const [x, y] of [[-7.3, 3.2], [7.3, 3.2], [-7.6, -3.3], [7.6, -3.3]]) add(new THREE.CylinderGeometry(0.75, 0.75, 0.1, 32).rotateX(Math.PI / 2), glassBlk, cover, x, y, 1.12); }
+// tracking cameras
+const cams = layer('cams', 0.9, 8.5);
+const camPos = [[-7.3, 3.2], [7.3, 3.2], [-7.6, -3.3], [7.6, -3.3]];
+for (const [x, y] of camPos) { add(new RoundedBoxGeometry(1.8, 1.8, 0.9, 3, 0.2), chipM, cams, x, y, 0);
+  add(new THREE.CylinderGeometry(0.6, 0.6, 0.6, 32).rotateX(Math.PI / 2), alu, cams, x, y, 0.55);
+  add(new THREE.CylinderGeometry(0.42, 0.42, 0.1, 32).rotateX(Math.PI / 2), glassBlk, cams, x, y, 0.88); }
+// main board + chip + fan
+const board = layer('board', -0.2, 4);
+{ add(new RoundedBoxGeometry(14, 7, 0.18, 2, 0.08), pcb, board);
+  add(new THREE.BoxGeometry(3.2, 3.2, 0.3), chipM, board, -1.2, 0.2, 0.22);
+  add(new THREE.BoxGeometry(3.6, 3.6, 0.12), alu, board, -1.2, 0.2, 0.42);
+  for (let i = 0; i < 12; i++) add(new THREE.BoxGeometry(R(0.4, 1.4), R(0.3, 1.0), 0.18), chipM, board, R(-6.3, 6.3) * (i % 2 ? 1 : 1), R(-2.8, 2.8), 0.16);
+  const fan = new THREE.Group(); fan.position.set(3.6, 0.3, 0.35); board.add(fan); L.fan = fan;
+  add(new THREE.TorusGeometry(1.55, 0.12, 8, 48), greyP, fan);
+  for (let k = 0; k < 9; k++) { const b = add(new THREE.BoxGeometry(1.2, 0.36, 0.06), greyP, fan, 0, 0, 0); b.geometry.translate(0.75, 0, 0); b.rotation.z = k / 9 * Math.PI * 2; b.rotation.x = 0.4; }
+  add(new THREE.CylinderGeometry(0.42, 0.42, 0.25, 24).rotateX(Math.PI / 2), greyP, fan); }
+// battery
+const bat = layer('bat', -1.2, 0);
+add(new RoundedBoxGeometry(11, 4.2, 0.9, 3, 0.3), batM, bat, 0, -0.6, 0);
+add(new THREE.BoxGeometry(1.4, 0.8, 0.2), new THREE.MeshStandardMaterial({ color: '#c08a2a', metalness: 0.8, roughness: 0.3 }), bat, 5.0, 1.0, 0.1);
+// displays (generic glowing image)
+const disp = layer('disp', -2.1, -4.5);
+const dTex = (() => { const c = document.createElement('canvas'); c.width = 256; c.height = 256; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 256); gr.addColorStop(0, '#2b5fd9'); gr.addColorStop(.55, '#ff8a4c'); gr.addColorStop(1, '#3a1d5c'); g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
+  g.fillStyle = '#ffd38a'; g.beginPath(); g.arc(128, 140, 34, 0, 7); g.fill();
+  g.fillStyle = '#1d1638'; g.beginPath(); g.moveTo(0, 256); g.lineTo(0, 170); g.lineTo(70, 120); g.lineTo(130, 175); g.lineTo(190, 110); g.lineTo(256, 160); g.lineTo(256, 256); g.fill();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+for (const x of [-4.3, 4.3]) { add(new RoundedBoxGeometry(6.4, 6.0, 0.35, 2, 0.12), chipM, disp, x, 0, 0);
+  add(new THREE.PlaneGeometry(5.8, 5.4), new THREE.MeshBasicMaterial({ map: dTex, toneMapped: false }), disp, x, 0, -0.19).rotation.y = Math.PI;
+  add(new THREE.PlaneGeometry(5.8, 5.4), new THREE.MeshBasicMaterial({ map: dTex, toneMapped: false }), disp, x, 0, 0.19); }
+// lenses
+const lens = layer('lens', -3.1, -9);
+for (const x of [-3.2, 3.2]) { const g = new THREE.SphereGeometry(2.6, 48, 24, 0, Math.PI * 2, 0, 0.5); g.scale(1, 1, 0.5); g.rotateX(-Math.PI / 2);
+  add(g, lensM, lens, x, 0, 0); add(new THREE.TorusGeometry(1.42, 0.16, 12, 64), greyP, lens, x, 0, -0.1); }
+// face cushion + strap
+const face = layer('face', -4.6, -13.5);
+{ const sh = new THREE.Shape(); sh.absellipse(0, 0, 8.6, 4.6, 0, Math.PI * 2, false);
+  const hole = new THREE.Path(); hole.absellipse(0, 0.2, 7.6, 3.7, 0, Math.PI * 2, true); sh.holes.push(hole);
+  const g = new THREE.ExtrudeGeometry(sh, { depth: 1.4, bevelEnabled: true, bevelThickness: 0.3, bevelSize: 0.25, bevelSegments: 4, curveSegments: 48 }); g.translate(0, 0, -1.8); add(g, foam, face);
+  const strap = new THREE.TorusGeometry(9.0, 0.45, 12, 80, Math.PI); strap.scale(1, 1, 3.2); strap.scale(1, 1, 1); strap.rotateX(Math.PI / 2); strap.rotateY(Math.PI); strap.scale(1, 0.6, 1.25);
+  const s = add(strap, greyP, face, 0, 0, -1.5); s.scale.set(1, 1.0, 1); }
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight('#eef2f8', '#2a2622', 0.6));
+const key = new THREE.DirectionalLight('#fff3e6', 2.6); key.position.set(20, 30, 25); scene.add(key);
+const rim = new THREE.DirectionalLight('#9fc8ff', 1.6); rim.position.set(-25, 10, -20); scene.add(rim);
+const dGlow = new THREE.PointLight('#ff9a5a', 0, 30, 1.5); scene.add(dGlow);
+// soft floor shadow blob
+const sh = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshBasicMaterial({ map: softTex(), color: '#000', transparent: true, opacity: 0.45, depthWrite: false }));
+sh.rotation.x = -Math.PI / 2; sh.position.y = -24; scene.add(sh);
+
+// ---------- motion ----------
+const T0 = 0.95, T1 = 3.0;
+const ORDER = ['cover', 'cams', 'board', 'bat', 'disp', 'lens', 'face'];
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.25 * u + 0.75 * eio(u);
+  const az = 0.55 - 0.25 * s, el = 0.22 + 0.06 * s, d = 76 + 12 * sm(ramp(t, 0.4, 2.8)) - 10 * s;
+  camera.position.set(Math.sin(az) * Math.cos(el) * d, 1 + Math.sin(el) * d, Math.cos(az) * Math.cos(el) * d);
+  camera.lookAt(0, -1.5 + 2.0 * sm(ramp(t, 0.4, 2.8)) - 0.8 * s, 0); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const wpos = (g, x, y, z) => { const p = V(x, y, z); g.localToWorld(p); return [p.x, p.y, p.z]; };
+const lab = labels(camera, [
+  { el: E('pCa'), t0: 2.05, at: () => wpos(L.cams.g, -7.6, -3.3, 0.9), pos: (x, y) => [cl(x + 20, 300, 800), cl(y - 120, 260, 1480)] },
+  { el: E('pCh'), t0: 2.45, at: () => wpos(L.board.g, 3.6, 0.3, 0.5), pos: (x, y) => [cl(x + 100, 290, 720), cl(y - 120, 260, 1480)] },
+  { el: E('pBa'), t0: 2.85, at: () => wpos(L.bat.g, -4.0, -0.6, 0.5), pos: (x, y) => [cl(x - 160, 230, 850), cl(y + 40, 260, 1480)] },
+  { el: E('pDi'), t0: 3.25, at: () => wpos(L.disp.g, 4.3, -2.0, 0.2), col: '#ffb547', pos: (x, y) => [cl(x + 120, 260, 760), cl(y + 70, 260, 1480)] },
+  { el: E('pLe'), t0: 3.65, at: () => wpos(L.lens.g, -3.2, -1.6, 0), pos: (x, y) => [cl(x - 120, 230, 850), cl(y + 150, 260, 1520)] },
+]);
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  // headset turns from facing us to "front up" while it comes apart, then floats
+  const r = eio(ramp(t, 0.0, 1.5));
+  hs.rotation.set(0.18 - 1.48 * eio(ramp(t, 0.0, 1.3)), 1.15 * (1 - eio(ramp(t, 0.8, 2.7))), 0); hs.position.y = -2 + 2.5 * r + Math.sin(t * 1.3) * 0.3 * r;
+  ORDER.forEach((k, i) => { const l = L[k]; const e = eout(ramp(t, T0 + i * 0.13, T1 + i * 0.1));
+    l.g.position.z = l.z0 + (l.z1 - l.z0) * e + Math.sin(t * 1.6 + i) * 0.25 * e; l.g.rotation.z = 0.04 * Math.sin(t * 1.1 + i * 1.7) * e; });
+  L.fan.rotation.z = t * 9;
+  dGlow.position.copy(V(...wpos(L.disp.g, 0, 0, -3))); dGlow.intensity = 60 * sm(ramp(t, 2.4, 3.2));
+  sh.material.opacity = 0.45 - 0.2 * r;
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

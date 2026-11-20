@@ -4991,5 +4991,245 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "earth61",
+  "date": "2026-11-20",
+  "score": 76,
+  "mode": "script",
+  "features": {
+   "hook": 0.4,
+   "hook_words": 14,
+   "hook_end_s": 5.38,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 19.7,
+   "words": 47,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 5.4 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "styles62",
+  "date": "2026-11-20",
+  "score": 72,
+  "mode": "script",
+  "features": {
+   "hook": 0.1,
+   "hook_words": 14,
+   "hook_end_s": 5.38,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 21.2,
+   "words": 51,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.07,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 5.4 s (cíl ≤2,5 s)",
+   "po CTA ještě 5.8 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "inside63",
+  "date": "2026-11-20",
+  "score": 74,
+  "mode": "script",
+  "features": {
+   "hook": 0.32,
+   "hook_words": 9,
+   "hook_end_s": 3.46,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.1,
+   "words": 43,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.07,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 3.5 s (cíl ≤2,5 s)",
+   "po CTA ještě 5.8 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "inside63",
+  "date": "2026-11-20",
+  "score": 64,
+  "mode": "full",
+  "features": {
+   "hook": 0.41,
+   "hook_words": 9,
+   "hook_end_s": 2.6,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.35,
+   "dur_s": 33.5,
+   "words": 43,
+   "pace": 0.0,
+   "length": 0.71,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 4.0,
+   "visual_changes": 83,
+   "visuals": 0.4,
+   "ending": 0.28,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "video má 34 s (cíl 18–30 s)",
+   "4.0 s bez změny obrazu (cíl ≤3 s)",
+   "po CTA ještě 5.3 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "earth61",
+  "date": "2026-11-20",
+  "score": 70,
+  "mode": "full",
+  "features": {
+   "hook": 0.4,
+   "hook_words": 14,
+   "hook_end_s": 3.96,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.44,
+   "dur_s": 34.2,
+   "words": 47,
+   "pace": 0.0,
+   "length": 0.65,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 74,
+   "visuals": 0.7,
+   "ending": 0.89,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 4.0 s (cíl ≤2,5 s)",
+   "video má 34 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "styles62",
+  "date": "2026-11-20",
+  "score": 62,
+  "mode": "full",
+  "features": {
+   "hook": 0.1,
+   "hook_words": 14,
+   "hook_end_s": 3.96,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.58,
+   "dur_s": 33.9,
+   "words": 51,
+   "pace": 0.0,
+   "length": 0.67,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.75,
+   "visual_changes": 70,
+   "visuals": 0.5,
+   "ending": 0.3,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 14 slov (cíl ≤10)",
+   "hook končí v 4.0 s (cíl ≤2,5 s)",
+   "video má 34 s (cíl 18–30 s)",
+   "3.8 s bez změny obrazu (cíl ≤3 s)",
+   "po CTA ještě 5.2 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]

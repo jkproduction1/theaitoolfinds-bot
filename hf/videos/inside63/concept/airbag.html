@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Airbag explained</title>
+<!-- inside63 r1: /explain-3d how a car airbag inflates. Generic steering wheel (own design, no brand, no logo).
+  Mechanism: crash sensors detect the sudden stop and send a signal; an igniter sets off the inflator, which makes gas that fills the
+  folded nylon bag (it bursts through the hub cover) in a fraction of a second; vent holes let the gas out so the bag softens as the
+  driver moves into it. Refs: NHTSA "Air Bags"; IIHS "Airbags" (inflate in a fraction of a second); HowStuffWorks "How Airbags Work".
+  Motion slowed down for clarity. Simplified, not to scale. Units ~ dm. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill red" id="pSe">Crash sensor</div>
+    <div class="pill hot" id="pIg">Igniter</div>
+    <div class="pill" id="pGa">Gas fills the bag</div>
+    <div class="pill" id="pVe">Vents let gas out</div>
+    <div class="pill" id="pSl" style="font-size:34px;padding:8px 22px 10px">Slow motion</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from './RoundedBoxGeometry.js';
+import { W, H, DUR, cl, ramp, sm, eio, eout, popS, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(32, [.02, .022, .028], [.15, .155, .17]);
+const rnd = mulberry32(19); const R = (a, b) => a + rnd() * (b - a);
+const add = (g, m, p = scene, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); p.add(o); return o; };
+
+// ---------- materials ----------
+const CUT = new THREE.Plane(V(-1, 0, 0), 0.02);                 // cut away the right half of the hub cover
+const plastic = new THREE.MeshPhysicalMaterial({ color: '#26282d', roughness: 0.55, clearcoat: 0.25, clearcoatRoughness: 0.6 });
+const leather = new THREE.MeshPhysicalMaterial({ color: '#1c1d21', roughness: 0.62, sheen: 1, sheenColor: new THREE.Color('#555a66'), sheenRoughness: 0.6 });
+const coverM = new THREE.MeshPhysicalMaterial({ color: '#2b2d33', roughness: 0.5, clearcoat: 0.3, side: THREE.DoubleSide, clippingPlanes: [CUT] });
+const chrome = new THREE.MeshStandardMaterial({ color: '#d8dde3', metalness: 1, roughness: 0.22 });
+const inflM = new THREE.MeshStandardMaterial({ color: '#b9bec6', metalness: 0.9, roughness: 0.35, emissive: '#ff6a1a', emissiveIntensity: 0 });
+const fabric = new THREE.MeshPhysicalMaterial({ color: '#cfccc4', roughness: 0.7, sheen: 0.6, sheenColor: new THREE.Color('#ffffff'), sheenRoughness: 0.5, side: THREE.DoubleSide, envMapIntensity: 0.6 });
+
+// ---------- dashboard + column ----------
+const rig = new THREE.Group(); scene.add(rig);
+{ const g = new THREE.BoxGeometry(16, 3.2, 5); g.translate(0, 0.6, -5.4); add(g, plastic, rig);
+  const g2 = new THREE.BoxGeometry(16, 0.5, 2.6); g2.translate(0, 2.3, -3.2); add(g2, plastic, rig);
+  // instrument cluster hood + glowing dials (generic)
+  const hood = new THREE.CylinderGeometry(2.4, 2.4, 1.6, 48, 1, true, -Math.PI / 2, Math.PI); hood.rotateZ(Math.PI / 2); hood.rotateY(Math.PI / 2); hood.translate(0, 2.4, -2.9);
+  add(hood, new THREE.MeshStandardMaterial({ color: '#202226', roughness: 0.6, side: THREE.DoubleSide }), rig);
+  for (const x of [-0.95, 0.95]) { const r = add(new THREE.TorusGeometry(0.62, 0.035, 8, 64), new THREE.MeshBasicMaterial({ color: '#7fd4ff', toneMapped: false }), rig, x, 2.0, -3.4); }
+}
+const wheel = new THREE.Group(); wheel.position.set(0, 0, 0); wheel.rotation.x = -0.32; rig.add(wheel);
+{ const col = new THREE.CylinderGeometry(0.42, 0.55, 5, 32); col.rotateX(Math.PI / 2); col.translate(0, 0, -2.7); add(col, plastic, wheel);
+  add(new THREE.TorusGeometry(1.95, 0.2, 24, 120), leather, wheel);
+  for (const a of [0, Math.PI, -Math.PI / 2]) { const sp = add(new THREE.BoxGeometry(1.35, 0.34, 0.16), plastic, wheel); sp.position.set(Math.cos(a) * 1.25, Math.sin(a) * 1.25, -0.05); sp.rotation.z = a; }
+  add(new THREE.CylinderGeometry(0.85, 0.95, 0.5, 64).rotateX(Math.PI / 2), plastic, wheel, 0, 0, -0.2);
+}
+// inflator (pancake type) + igniter inside the hub
+const infl = add(new THREE.CylinderGeometry(0.48, 0.48, 0.28, 48).rotateX(Math.PI / 2), inflM, wheel, 0, 0, 0.05);
+for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2; add(new THREE.CylinderGeometry(0.035, 0.035, 0.06, 10).rotateZ(Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#333' }), wheel, Math.cos(a) * 0.49, Math.sin(a) * 0.49, 0.05).rotation.z = a; }
+const tex = softTex();
+const igM = new THREE.SpriteMaterial({ map: tex, color: '#ffb547', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
+const igGlow = new THREE.Sprite(igM); igGlow.scale.set(2.4, 2.4, 1); igGlow.position.set(0, 0, 0.3); wheel.add(igGlow);
+const igLight = new THREE.PointLight('#ff9a3a', 0, 12, 1.6); igLight.position.set(0.6, 0, 1.2); wheel.add(igLight);
+// folded bag (visible through the cut before it fires)
+const folds = new THREE.Group(); folds.position.z = -0.12; wheel.add(folds);
+for (let i = 0; i < 5; i++) { const f = add(new THREE.BoxGeometry(1.25 - i * 0.12, 0.09, 0.32), fabric, folds, 0, -0.26 + i * 0.13, 0.28); f.rotation.z = R(-0.08, 0.08); }
+// hub cover (two flaps that burst open), clipped on the right half to show the inside
+const flaps = [];
+for (const s of [1, -1]) {
+  const piv = new THREE.Group(); piv.position.set(0, s * 0.8, 0.32); wheel.add(piv);
+  const g = new THREE.CylinderGeometry(0.8, 0.8, 0.16, 64, 1, false, s > 0 ? -Math.PI / 2 : Math.PI / 2, Math.PI); g.rotateX(Math.PI / 2); g.translate(0, -s * 0.8, 0);
+  add(g, coverM, piv); flaps.push({ piv, s });
+}
+// ---------- the bag ----------
+const bagG = new THREE.SphereGeometry(1, 96, 64);
+const base = bagG.attributes.position.array.slice();
+const bag = new THREE.Mesh(bagG, fabric); wheel.add(bag); bag.position.set(0, 0, 0.4);
+const seamM = new THREE.MeshStandardMaterial({ color: '#cfccc4', roughness: 0.9 });
+const seam = new THREE.Mesh(new THREE.TorusGeometry(1, 0.02, 6, 160), seamM); bag.add(seam);
+function shapeBag(inf, slack) {
+  const p = bagG.attributes.position.array;
+  for (let i = 0; i < p.length; i += 3) {
+    const x = base[i], y = base[i + 1], z = base[i + 2];
+    const n = Math.sin(x * 9 + y * 3) * Math.sin(y * 8 - z * 5) + 0.6 * Math.sin(z * 13 + x * 4);
+    const k = 1 + n * (0.02 + 0.10 * (1 - inf) + 0.05 * slack);
+    p[i] = x * k; p[i + 1] = y * k; p[i + 2] = z * k * (z < 0 ? 0.6 : 1);
+  }
+  bagG.attributes.position.needsUpdate = true; bagG.computeVertexNormals();
+}
+// ---------- crash sensor + wire ----------
+const SEN = V(-3.0, -4.4, -2.2);
+const senM = new THREE.MeshStandardMaterial({ color: '#2a2d33', roughness: 0.4, metalness: 0.5, emissive: '#ff2a2a', emissiveIntensity: 0 });
+add(new RoundedBoxGeometry(0.75, 0.42, 0.6, 3, 0.08), senM, rig, SEN.x, SEN.y, SEN.z);
+const wire = new THREE.CatmullRomCurve3([SEN.clone().add(V(0.45, 0, 0)), V(-1.6, -4.4, -2.0), V(-0.4, -2.6, -2.6), V(0, -0.7, -2.0)]);
+add(new THREE.TubeGeometry(wire, 80, 0.05, 8), new THREE.MeshStandardMaterial({ color: '#3a3d44', roughness: 0.5 }), rig);
+const pulseM = new THREE.SpriteMaterial({ map: tex, color: '#ff4a4a', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
+const pulse = new THREE.Sprite(pulseM); pulse.scale.set(0.9, 0.9, 1); rig.add(pulse);
+const senGlow = new THREE.Sprite(pulseM.clone()); senGlow.scale.set(2.2, 2.2, 1); senGlow.position.copy(SEN); rig.add(senGlow);
+
+// ---------- vent gas puffs ----------
+function pointsMat() {
+  return new THREE.ShaderMaterial({ uniforms: { uTex: { value: tex } }, transparent: true, depthWrite: false,
+    vertexShader: `attribute float aA; attribute float aS; varying float vA; void main(){ vA = aA; vec4 mv = modelViewMatrix*vec4(position,1.0); gl_PointSize = aS*900.0/(-mv.z); gl_Position = projectionMatrix*mv; }`,
+    fragmentShader: `uniform sampler2D uTex; varying float vA; void main(){ vec4 t = texture2D(uTex, gl_PointCoord); gl_FragColor = vec4(vec3(0.92), t.a*vA); }` });
+}
+const NG = 140, gas = [], gPos = new Float32Array(NG * 3), gA = new Float32Array(NG), gS = new Float32Array(NG);
+for (let i = 0; i < NG; i++) { const side = i % 2 ? 1 : -1; gas.push({ t0: R(3.9, 6.0), side, v: V(side * R(0.6, 1.4), R(-0.3, 0.9), R(-0.9, -0.2)), s: R(0.5, 1.1) }); }
+const gGeo = new THREE.BufferGeometry(); gGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3)); gGeo.setAttribute('aA', new THREE.BufferAttribute(gA, 1)); gGeo.setAttribute('aS', new THREE.BufferAttribute(gS, 1));
+const gasP = new THREE.Points(gGeo, pointsMat()); gasP.frustumCulled = false; wheel.add(gasP);
+const VENTS = [V(-1.15, 0.35, 0.95), V(1.15, 0.35, 0.95)];
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight('#e8eef8', '#2a2622', 0.55));
+const key = new THREE.DirectionalLight('#fff2e2', 2.6); key.position.set(8, 10, 12); scene.add(key);
+const rim = new THREE.DirectionalLight('#9fc8ff', 1.5); rim.position.set(-10, 4, -6); scene.add(rim);
+const fill = new THREE.PointLight('#ffffff', 20, 30, 1.6); fill.position.set(4, -2, 8); scene.add(fill);
+
+// ---------- timing ----------
+const T_HIT = 0.8, T_IG = 1.3, T_FIRE = 2.0, T_FULL = 2.65, T_VENT = 4.0;
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.25 * u + 0.75 * eio(u);
+  const sh = Math.exp(-Math.max(0, t - T_HIT) * 5) * (t > T_HIT ? 1 : 0);
+  camera.position.set(7.8 + 1.2 * s + Math.sin(t * 61) * 0.12 * sh, 2.0 - 1.4 * s + Math.cos(t * 47) * 0.12 * sh, 13.2 - 1.2 * s);
+  camera.lookAt(-0.5 - 0.3 * s, -1.5 + 0.7 * s, 0); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const wp = (v) => { const p = v.clone(); wheel.localToWorld(p); return [p.x, p.y, p.z]; };
+const lab = labels(camera, [
+  { el: E('pSe'), t0: T_HIT + 0.05, at: () => [SEN.x, SEN.y + 0.3, SEN.z], col: '#ff4a4a', pos: (x, y) => [cl(x + 40, 230, 850), cl(y + 190, 300, 1560)] },
+  { el: E('pIg'), t0: T_IG - 0.05, t1: T_FIRE + 0.15, at: () => wp(V(0.25, 0.1, 0.25)), col: '#ffb547', pos: (x, y) => [cl(x + 170, 230, 830), cl(y - 300, 330, 1480)] },
+  { el: E('pGa'), t0: T_FIRE + 0.35, at: () => wp(V(0.4, 0.9, 1.6)), pos: (x, y) => [cl(x - 120, 300, 780), cl(y - 330, 360, 1480)] },
+  { el: E('pVe'), t0: T_VENT + 0.15, at: () => wp(V(-1.1, 0.35, 0.9)), pos: (x, y) => [cl(x - 30, 260, 820), cl(y + 330, 300, 1560)] },
+]);
+const slEl = E('pSl');
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  // car lurches on impact
+  const hit = t > T_HIT ? Math.exp(-(t - T_HIT) * 6) * Math.sin((t - T_HIT) * 28) : 0;
+  rig.position.set(0, 0, -0.18 * hit);
+  // sensor + pulse along the wire
+  const sa = sm(ramp(t, T_HIT, T_HIT + 0.1)) * (1 - 0.6 * sm(ramp(t, T_IG + 0.4, T_IG + 1.2)));
+  senM.emissiveIntensity = 0.55 * sa; senGlow.material.opacity = 0.6 * sa;
+  const pu = ramp(t, T_HIT + 0.08, T_IG); pulse.visible = pu > 0 && pu < 1; pulseM.opacity = 1; pulse.position.copy(wire.getPointAt(Math.min(1, pu)));
+  // igniter flash
+  const ig = sm(ramp(t, T_IG, T_IG + 0.06)) * (1 - sm(ramp(t, T_IG + 0.12, T_IG + 0.9)));
+  igM.opacity = ig; igLight.intensity = 80 * ig; inflM.emissiveIntensity = 2.2 * ig;
+  // cover bursts open
+  const op = eout(ramp(t, T_FIRE, T_FIRE + 0.2));
+  flaps.forEach(f => f.piv.rotation.x = f.s * -1.9 * op);
+  // bag: inflates fast (popS overshoot), then softens as gas vents
+  const inf = popS(ramp(t, T_FIRE, T_FULL)), vent = sm(ramp(t, T_VENT, DUR));
+  const sc = 0.18 + 0.82 * inf - 0.12 * vent;
+  bag.visible = t >= T_FIRE; folds.visible = t < T_FIRE + 0.05;
+  bag.scale.set(1.85 * sc, 1.7 * sc, 1.15 * sc); bag.position.z = 0.35 + 1.0 * cl(inf, 0, 1.1);
+  shapeBag(cl(inf, 0, 1), vent);
+  seam.scale.set(1, 1, 1);
+  // gas puffs out of the vents
+  for (let i = 0; i < NG; i++) { const g = gas[i], a = t - g.t0, v = VENTS[g.side > 0 ? 1 : 0];
+    if (a < 0) { gA[i] = 0; continue; }
+    const k = 1 - Math.exp(-a * 2.2);
+    gPos[i * 3] = v.x * sc + g.v.x * k * 2.0; gPos[i * 3 + 1] = v.y * sc + g.v.y * k * 2.0; gPos[i * 3 + 2] = bag.position.z - 0.3 + g.v.z * k * 2.0;
+    gA[i] = 0.35 * sm(cl(a / 0.15)) * (1 - cl(a / 1.4)); gS[i] = g.s * (0.4 + a * 1.2); }
+  gGeo.attributes.position.needsUpdate = gGeo.attributes.aA.needsUpdate = gGeo.attributes.aS.needsUpdate = true;
+  renderer.render(scene, camera);
+  lab(t);
+  const sl = sm(ramp(t, T_FIRE - 0.1, T_FIRE + 0.2)) * (1 - sm(ramp(t, T_VENT, T_VENT + 0.3)));
+  slEl.style.left = '880px'; slEl.style.top = '200px'; slEl.style.opacity = sl; slEl.style.transform = 'translate(-50%,-50%)';
+}
+await ready(render);
+</script>
+</body>
+</html>

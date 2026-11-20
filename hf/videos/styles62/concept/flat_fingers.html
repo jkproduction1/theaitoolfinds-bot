@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles62 r0: /flat-science why your fingers wrinkle in water (flat glowing vector look of styles60 flat_cat). Generic fingertip drawn in code.
+// Facts: wrinkling is an active response controlled by the nervous system - fingers with cut nerves do not wrinkle; nerves make the blood
+// vessels under the skin narrow, the pad loses volume and the skin folds. One hypothesis: wrinkles help grip wet objects (Kareklas et al. 2013,
+// Biology Letters; a 2014 study did not replicate it -> "may help grip"). Sources: Nature news 2013 (nature.2013.12175), Scientific American.
+const g=document.getElementById('c').getContext('2d');const PI=Math.PI, LERP=(a,b,t)=>a+(b-a)*t;
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.45,60,w*.5,h*.5,1300);gr.addColorStop(0,'#1d2f6e');gr.addColorStop(.5,'#111c4f');gr.addColorStop(1,'#04071c');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[200,620,300,'rgba(90,200,255,.22)'],[880,900,300,'rgba(150,90,255,.22)'],[240,1350,280,'rgba(255,120,170,.14)'],[800,1650,420,'rgba(80,160,255,.18)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(13);for(let i=0;i<180;i++){p.fillStyle='rgba(225,235,255,'+(R()*.5)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.2,0,7);p.fill();}});
+function label(txt,x,y,tx,ty,col,fs){g.save();fs=fs||40;g.font='800 '+fs+'px '+SANS;const w=g.measureText(txt).width+52,hh=fs*.9+36;
+  if(tx!=null){g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();const ax=tx>x+w?x+w:(tx<x?x:Math.min(Math.max(tx,x+30),x+w-30));g.moveTo(ax,Math.abs(ty-y)<hh/2?y:(ty<y?y-hh/2:y+hh/2));g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();}
+  g.fillStyle='rgba(8,12,44,.92)';g.beginPath();g.roundRect(x,y-hh/2,w,hh,hh/2);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=3;g.shadowColor=col;g.shadowBlur=14;g.stroke();g.shadowBlur=0;g.fillStyle='#fff';g.fillText(txt,x+26,y+fs*.35);g.restore();}
+function pop(t,x,y,fn,out){if(t<=0)return;g.save();const s=EBK(t/.45)*(out==null?1:1-.3*out);g.globalAlpha*=CL(t/.15)*(out==null?1:1-out);if(g.globalAlpha<=0.001){g.restore();return;}g.translate(x,y);g.scale(s,s);g.translate(-x,-y);fn();g.restore();}
+// finger: centre x 540, tip top at TY, width FW; the pad faces us
+const CX=540, TY=640, FW=430;
+function fingerPath(w){const hw=w/2;g.beginPath();g.moveTo(CX-hw,1800);g.lineTo(CX-hw,TY+hw*.95);g.bezierCurveTo(CX-hw,TY-hw*.12,CX+hw,TY-hw*.12,CX+hw,TY+hw*.95);g.lineTo(CX+hw,1800);g.closePath();}
+// vessels: branching lines from the base up into the pad
+const VR=R0(5),VES=[];(function br(x,y,a,len,w,d){const x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len;VES.push([x,y,x2,y2,w]);if(d<4){br(x2,y2,a-.35-VR()*.2,len*.72,w*.7,d+1);br(x2,y2,a+.35+VR()*.2,len*.72,w*.7,d+1);}})(CX-60,1500,-PI/2-.08,300,14,0);
+(function br(x,y,a,len,w,d){const x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len;VES.push([x,y,x2,y2,w]);if(d<3){br(x2,y2,a-.4,len*.7,w*.7,d+1);br(x2,y2,a+.4,len*.7,w*.7,d+1);}})(CX+80,1500,-PI/2+.1,280,12,0);
+// wrinkles: curved folds over the pad (roughly along the finger, curling at the tip)
+const WR=[...Array(11)].map((_,i)=>{const u=(i+.5)/11;return {u,ph:i*1.7,del:i*.06};});
+function wrinkles(k,w,lt){if(k<=0)return;const hw=w/2;g.save();fingerPath(w);g.clip();g.lineCap='round';
+  WR.forEach(r=>{const kk=CL((k-r.del)/(1-.6));if(kk<=0)return;const x0=CX-hw*.85+hw*1.7*r.u;g.beginPath();
+    for(let j=0;j<=24;j++){const v=j/24,y=TY+60+v*640,curl=Math.pow(1-v,2)*(x0-CX)*.35;const x=x0-curl+Math.sin(v*7+r.ph)*9*kk+Math.sin(v*19+r.ph)*3*kk;j?g.lineTo(x,y):g.moveTo(x,y);}
+    g.strokeStyle='rgba(150,50,105,'+(.7*kk)+')';g.lineWidth=10*kk;g.stroke();g.translate(5,-3);g.strokeStyle='rgba(255,236,240,'+(.75*kk)+')';g.lineWidth=4*kk;g.stroke();g.translate(-5,3);});
+  g.restore();}
+const BUB=[...Array(24)].map((_,i)=>{const R=R0(40+i);R();return [80+R()*920,R()*1200,6+R()*16,.5+R()];});
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.drawImage(bg,0,0);const pulse=.5+.5*Math.sin(lt*6);
+  const z=1.0+.08*EIO(lt/6.3),dx=Math.sin(lt*.7)*8,dy=Math.cos(lt*.55)*8;g.save();g.translate(540+dx,1000+dy);g.scale(z,z);g.translate(-540,-1000);
+  const vk=EIO((lt-2.0)/1.2);            // vessels tighten
+  const wk=EIO((lt-3.1)/1.4);            // wrinkles form
+  const w=FW*(1-.045*vk);
+  // water body behind finger rises at the start
+  const wl=LERP(1750,560,E3(lt/1.0));
+  // finger
+  g.save();fingerPath(w);const fg=g.createLinearGradient(CX-w/2,0,CX+w/2,0);fg.addColorStop(0,'#ff9fb4');fg.addColorStop(.5,'#ffc2c9');fg.addColorStop(1,'#e98aa8');g.fillStyle=fg;g.shadowColor='rgba(255,170,200,.6)';g.shadowBlur=50;g.fill();g.shadowBlur=0;
+  g.clip();
+  // nail hint at the very top (back side, so just a rim)
+  g.fillStyle='rgba(255,235,240,.5)';g.beginPath();g.ellipse(CX,TY+28,w*.32,26,0,PI,0);g.fill();
+  // vessels
+  g.lineCap='round';VES.forEach(([x1,y1,x2,y2,vw])=>{g.strokeStyle='rgba(220,40,90,'+(.75-.25*vk)+')';g.shadowColor='#ff4f7a';g.shadowBlur=14;g.lineWidth=vw*(1-.65*vk);g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();});g.shadowBlur=0;
+  // nerve with travelling pulse
+  const na=CL((lt-1.0)/.3);if(na>0){g.save();g.globalAlpha=na;g.strokeStyle='rgba(255,220,90,.95)';g.shadowColor='#ffd860';g.shadowBlur=22;g.lineWidth=9;g.beginPath();g.moveTo(CX+20,1800);g.bezierCurveTo(CX+40,1300,CX-20,1000,CX+10,TY+140);g.stroke();
+    for(let q=0;q<3;q++){const f=((lt-1.0)*0.9+q*.33)%1,yy=LERP(1650,TY+150,f);g.fillStyle='#fff6c0';g.beginPath();g.arc(CX+10+20*Math.sin(f*3),yy,12,0,7);g.fill();}g.restore();}
+  g.restore();
+  wrinkles(wk,w,lt);
+  // grip drops sliding down the grooves at the end
+  const gk=CL((lt-4.6)/.3);if(gk>0){g.save();fingerPath(w);g.clip();g.fillStyle='rgba(190,240,255,.9)';g.shadowColor='#9be6ff';g.shadowBlur=16;for(let i=0;i<6;i++){const u=(i+.5)/6,x=CX-w*.4+w*.8*u,y=TY+120+((lt-4.6)*260+i*90)%560;g.beginPath();g.ellipse(x,y,9,14,0,0,7);g.fill();}g.restore();}
+  // water in front (translucent) with surface line
+  g.save();const wg=g.createLinearGradient(0,wl,0,1920);wg.addColorStop(0,'rgba(80,190,255,.20)');wg.addColorStop(1,'rgba(30,90,220,.34)');g.fillStyle=wg;g.beginPath();g.moveTo(-200,wl);
+  for(let x=-200;x<=1300;x+=20)g.lineTo(x,wl+Math.sin(x*.012+lt*3)*10);g.lineTo(1300,2100);g.lineTo(-200,2100);g.closePath();g.fill();
+  g.strokeStyle='#9be6ff';g.shadowColor='#7fd8ff';g.shadowBlur=20;g.lineWidth=5;g.beginPath();for(let x=-200;x<=1300;x+=20){const y=wl+Math.sin(x*.012+lt*3)*10;x>-200?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();g.shadowBlur=0;
+  BUB.forEach(([x,y0,r,s])=>{const y=wl+40+((y0-lt*160*s)%1200+1200)%1200;if(y>1900)return;g.strokeStyle='rgba(200,240,255,.55)';g.lineWidth=3;g.beginPath();g.arc(x,y,r,0,7);g.stroke();});g.restore();
+  // labels
+  const o1=CL((lt-2.0)/.3),o2=CL((lt-3.2)/.3),o3=CL((lt-4.6)/.3);
+  pop(lt-1.05,300,880,()=>label('Nerves send a signal',100,880,CX+14,1040,'#ffd86a',44),o1);
+  pop(lt-2.05,300,1180,()=>label('Blood vessels tighten',90,1180,CX-70,1300,'#ff6f95',44),o2);
+  pop(lt-3.25,300,980,()=>label('The skin folds up',150,980,CX-120,880,'#c9a2ff',48),o3);
+  g.restore();
+  pop(lt-4.7,540,1340,()=>label('May help you grip wet things',95,1340,null,null,'#9be6ff',48));
+  g.drawImage(GRAIN,0,0);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 80px '+SANS;g.fillText('Why fingers wrinkle',540,290);
+  g.fillStyle='#9be6ff';g.shadowColor='rgba(110,210,255,.95)';g.shadowBlur=26+16*pulse*wk;g.fillText('in water',540,380);g.restore();}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script></body></html>

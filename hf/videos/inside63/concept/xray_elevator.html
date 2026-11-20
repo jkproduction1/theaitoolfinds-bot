@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>X-ray elevator</title>
+<!-- inside63 r0: /x-ray an elevator. Generic traction elevator in a building shaft (own design, no brand).
+  Parts true for traction elevators: the car and a counterweight hang on steel hoist ropes looped over a sheave turned by an
+  electric motor (machine) at the top; both run on guide rails; safety brakes (safeties) on the car grip the rails if it overspeeds
+  (tripped by the governor). Refs: Otis "The basic workings of a lift" + "High-rise safety systems"; explainthatstuff.com
+  "How elevators work". Simplified, not to scale. Units ~ m. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pMo">Motor + sheave</div>
+    <div class="pill" id="pRo">Steel ropes</div>
+    <div class="pill hot" id="pCw">Counterweight</div>
+    <div class="pill" id="pCa">Elevator car</div>
+    <div class="pill red" id="pSa">Safety brakes</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(32, [.012, .025, .05], [.05, .11, .19]);
+const rnd = mulberry32(63); const R = (a, b) => a + rnd() * (b - a);
+
+// ---------- scan: x-ray above the line, solid below ----------
+let SCAN = 40;
+const planeS = new THREE.Plane(V(0, -1, 0), SCAN), planeX = new THREE.Plane(V(0, 1, 0), -SCAN);
+const XV = `#include <clipping_planes_pars_vertex>
+varying vec3 vN; varying vec3 vV; varying vec3 vW;
+void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vW = wp.xyz; vec4 mvPosition = viewMatrix*wp;
+  vN = normalize(normalMatrix*normal); vV = normalize(-mvPosition.xyz); gl_Position = projectionMatrix*mvPosition;
+  #include <clipping_planes_vertex>
+}`;
+const XF = `#include <clipping_planes_pars_fragment>
+uniform vec3 uC; uniform float uB, uG, uA, uScan;
+varying vec3 vN; varying vec3 vV; varying vec3 vW;
+void main(){
+  #include <clipping_planes_fragment>
+  float f = pow(1.0-abs(dot(normalize(vN),normalize(vV))), 2.0);
+  float s = 0.85+0.15*sin(vW.y*5.0);
+  float band = exp(-abs(vW.y-uScan)*1.1)*1.5;
+  gl_FragColor = vec4(uC*((uB+uG*f)*s + band*(0.3+f))*uA, 1.0); }`;
+const XM = [], EM = [];
+function xrayMat(color, base, gain) {
+  const m = new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(color) }, uB: { value: base }, uG: { value: gain }, uA: { value: 0 }, uScan: { value: SCAN } },
+    vertexShader: XV, fragmentShader: XF, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, clipping: true });
+  m.clippingPlanes = [planeX]; XM.push(m); return m;
+}
+function edgeMat(color, op) { const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+  m.clippingPlanes = [planeX]; m.userData.op = op; EM.push(m); return m; }
+function shell(geo, solid, parent = scene, col = '#3aa8ff', xr = [0.03, 0.7], edge = 25, eop = 0.5) {
+  const g = new THREE.Group();
+  const s = solid.clone(); s.clippingPlanes = [planeS]; s.side = THREE.DoubleSide; g.add(new THREE.Mesh(geo, s));
+  g.add(new THREE.Mesh(geo, xrayMat(col, xr[0], xr[1])));
+  if (edge) g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, edge), edgeMat('#9fe6ff', eop)));
+  parent.add(g); return g;
+}
+const box = (w, h, d, x, y, z) => { const g = new THREE.BoxGeometry(w, h, d); g.translate(x, y, z); return g; };
+
+// ---------- building (outer, x-rayed) ----------
+const conc = new THREE.MeshStandardMaterial({ color: '#c9c6c0', roughness: 0.85, metalness: 0.0 });
+const glass = new THREE.MeshPhysicalMaterial({ color: '#7f97ad', roughness: 0.15, metalness: 0.6, clearcoat: 1 });
+const doorM = new THREE.MeshStandardMaterial({ color: '#b8c0c8', roughness: 0.3, metalness: 0.9 });
+const FL = 3.4, NF = 8, TOP = NF * FL;           // 8 floors, shaft top at 27.2
+// shaft walls (back, sides, front with landing doors), machine room on top
+shell(box(8.4, TOP + 3.4, 0.4, 0, (TOP + 3.4) / 2, -3.0), conc);
+shell(box(0.4, TOP + 3.4, 6.4, -4.2, (TOP + 3.4) / 2, 0), conc);
+shell(box(0.4, TOP + 3.4, 6.4, 4.2, (TOP + 3.4) / 2, 0), conc);
+shell(box(8.4, 0.4, 6.4, 0, TOP + 3.4, 0), conc);
+for (let f = 0; f < NF; f++) {                   // front wall per floor: wall + doors + floor slab
+  const y = f * FL;
+  shell(box(2.6, FL, 0.4, -2.9, y + FL / 2, 3.0), conc, scene, '#3aa8ff', [0.03, 0.7], 25, 0.35);
+  shell(box(2.6, FL, 0.4, 2.9, y + FL / 2, 3.0), conc, scene, '#3aa8ff', [0.03, 0.7], 25, 0.35);
+  shell(box(3.2, 0.9, 0.4, 0, y + FL - 0.45, 3.0), conc, scene, '#3aa8ff', [0.03, 0.7], 25, 0.35);
+  shell(box(1.58, 2.5, 0.12, -0.8, y + 1.25, 3.05), doorM, scene, '#3aa8ff', [0.05, 0.9], 25, 0.5);
+  shell(box(1.58, 2.5, 0.12, 0.8, y + 1.25, 3.05), doorM, scene, '#3aa8ff', [0.05, 0.9], 25, 0.5);
+  shell(box(9.6, 0.22, 0.6, 0, y, 3.5), glass, scene, '#3aa8ff', [0.02, 0.5], 25, 0.25);
+  shell(box(0.6, 0.22, 7.0, -4.7, y, 0), glass, scene, '#3aa8ff', [0.02, 0.5], 25, 0.25);
+  shell(box(0.6, 0.22, 7.0, 4.7, y, 0), glass, scene, '#3aa8ff', [0.02, 0.5], 25, 0.25);
+}
+shell(box(8.4, 3.4, 0.4, 0, TOP + 1.7, 3.0), conc);
+
+// ---------- inside (always rendered, hidden behind the solid walls until scanned) ----------
+const steel = new THREE.MeshStandardMaterial({ color: '#c3d6e4', metalness: 0.85, roughness: 0.3, emissive: '#2a6c9a', emissiveIntensity: 0.35 });
+const dark = new THREE.MeshStandardMaterial({ color: '#59636e', metalness: 0.8, roughness: 0.4, emissive: '#16324a', emissiveIntensity: 0.4 });
+const ropeM = new THREE.MeshStandardMaterial({ color: '#d8e6f2', metalness: 0.9, roughness: 0.25, emissive: '#3c8ac0', emissiveIntensity: 0.7 });
+const cwM = new THREE.MeshStandardMaterial({ color: '#ffb547', metalness: 0.6, roughness: 0.4, emissive: '#a85a10', emissiveIntensity: 0.55 });
+const add = (g, m, p = scene) => { const o = new THREE.Mesh(g, m); p.add(o); return o; };
+// guide rails: car rails left/right of the car, counterweight rails at the right
+for (const z of [-2.1, 2.1]) add(box(0.16, TOP, 0.16, -1.0, TOP / 2, z), steel);
+for (const z of [-0.85, 0.85]) add(box(0.12, TOP, 0.12, 2.75, TOP / 2, z), steel);
+// car
+const car = new THREE.Group(); scene.add(car);
+const carW = 3.6, carH = 2.9, carD = 3.6, carX = -1.0;
+const panel = new THREE.MeshStandardMaterial({ color: '#d9dde2', metalness: 0.75, roughness: 0.28, emissive: '#204a6a', emissiveIntensity: 0.3 });
+add(box(carW, 0.18, carD, carX, 0.09, 0), dark, car);                                  // floor
+add(box(carW, 0.14, carD, carX, carH, 0), dark, car);                                  // roof
+add(box(0.08, carH, carD, carX - carW / 2, carH / 2, 0), panel, car);
+add(box(0.08, carH, carD, carX + carW / 2, carH / 2, 0), panel, car);
+add(box(carW, carH, 0.08, carX, carH / 2, -carD / 2), panel, car);
+add(box(carW * 0.42, carH, 0.08, carX - carW * 0.29, carH / 2, carD / 2), panel, car);
+add(box(carW * 0.42, carH, 0.08, carX + carW * 0.29, carH / 2, carD / 2), panel, car);
+const lamp = add(box(carW * 0.8, 0.04, carD * 0.8, carX, carH - 0.1, 0), new THREE.MeshBasicMaterial({ color: '#fff4dc', toneMapped: false }), car);
+const carLight = new THREE.PointLight('#ffe8c0', 14, 9, 1.4); carLight.position.set(carX, carH - 0.5, 0); car.add(carLight);
+// car sling (frame) + crosshead + safety gear at the rails
+add(box(0.22, carH + 1.0, 0.22, carX, carH / 2 + 0.2, -2.0), dark, car);
+add(box(0.22, carH + 1.0, 0.22, carX, carH / 2 + 0.2, 2.0), dark, car);
+add(box(0.3, 0.3, 4.3, carX, carH + 0.65, 0), dark, car);
+add(box(0.3, 0.3, 4.3, carX, -0.25, 0), dark, car);
+const brakeM = new THREE.MeshStandardMaterial({ color: '#7a2020', metalness: 0.5, roughness: 0.4, emissive: '#ff2a2a', emissiveIntensity: 0 });
+for (const z of [-2.1, 2.1]) for (const dx of [-0.24, 0.24]) add(box(0.18, 0.55, 0.36, carX + dx, -0.25, z), brakeM, car);
+// counterweight
+const cw = new THREE.Group(); scene.add(cw);
+for (const z of [-0.72, 0.72]) add(box(0.95, 3.6, 0.08, 2.75, 1.8, z), dark, cw); add(box(0.95, 0.12, 1.5, 2.75, 3.6, 0), dark, cw); add(box(0.95, 0.12, 1.5, 2.75, 0, 0), dark, cw);
+for (let i = 0; i < 11; i++) add(box(0.8, 0.27, 1.36, 2.75, 0.3 + i * 0.3, 0), cwM, cw);
+// machine: motor + sheave on top (in the machine room)
+const SHY = TOP + 1.6, SHX = (carX + 2.75) / 2, SHR = (2.75 - carX) / 2;
+const sheave = new THREE.Group(); sheave.position.set(SHX, SHY, 0); scene.add(sheave);
+{ const g = new THREE.CylinderGeometry(SHR, SHR, 0.9, 64); g.rotateX(Math.PI / 2); add(g, steel, sheave);
+  for (let k = 0; k < 6; k++) { const s = add(new THREE.BoxGeometry(SHR * 1.9, 0.18, 0.95), dark, sheave); s.rotation.z = k * Math.PI / 6; }
+  const hub = new THREE.CylinderGeometry(0.4, 0.4, 1.1, 32); hub.rotateX(Math.PI / 2); add(hub, dark, sheave); }
+{ const g = new THREE.CylinderGeometry(0.95, 0.95, 2.0, 48); g.rotateX(Math.PI / 2); g.translate(SHX, SHY, -1.6); add(g, dark);
+  add(box(4.2, 0.4, 3.4, SHX, SHY - SHR - 0.5, -0.6), dark); }
+// ropes: 4 strands each side, rebuilt each frame
+const ropes = [];
+for (const side of [0, 1]) for (const z of [-0.3, -0.1, 0.1, 0.3]) {
+  const g = new THREE.CylinderGeometry(0.035, 0.035, 1, 8); g.translate(0, 0.5, 0);
+  const m = add(g, ropeM); ropes.push({ m, side, z });
+}
+// lights
+scene.add(new THREE.HemisphereLight('#cfe0ff', '#1b2230', 0.7));
+const key = new THREE.DirectionalLight('#fff3e2', 2.4); key.position.set(30, 50, 40); scene.add(key);
+const rim = new THREE.DirectionalLight('#8fc6ff', 1.4); rim.position.set(-40, 20, -30); scene.add(rim);
+// scan sheet
+const sheetTex = (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 64); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+const sheetM = new THREE.MeshBasicMaterial({ map: sheetTex, color: '#59c8ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+const sheet = new THREE.Mesh(new THREE.PlaneGeometry(11, 11), sheetM); sheet.rotation.x = -Math.PI / 2; scene.add(sheet);
+const ringM = new THREE.MeshBasicMaterial({ color: '#7fd4ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+const ring = new THREE.Mesh(new THREE.EdgesGeometry(new THREE.BoxGeometry(9.6, 0.01, 7.6)), ringM); scene.add(ring);
+ring.geometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(9.6, 0.01, 7.6)); const ringL = new THREE.LineSegments(ring.geometry, ringM); scene.remove(ring); scene.add(ringL);
+// floor grid + motes
+const grid = new THREE.GridHelper(120, 60, '#2d6fa8', '#18406a'); grid.position.y = -0.2; grid.material.transparent = true; grid.material.opacity = 0.3; scene.add(grid);
+const NP = 110, motes = [], dpos = new Float32Array(NP * 3);
+for (let i = 0; i < NP; i++) motes.push([R(-14, 14), R(0, 34), R(-10, 12), R(0, 6.28), R(.2, .6)]);
+const dGeo = new THREE.BufferGeometry(); dGeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+scene.add(new THREE.Points(dGeo, new THREE.PointsMaterial({ map: softTex(), size: 0.3, color: '#9fd6ff', transparent: true, opacity: .5, depthWrite: false, blending: THREE.AdditiveBlending })));
+
+// ---------- motion ----------
+const carY = t => 10.4 + 7.0 * eio(ramp(t, 0.9, 6.0));      // car rides up 3 floors
+const cwY = t => TOP - 7.2 - (carY(t) - 10.4);                // counterweight goes down as the car goes up
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.2 * u + 0.8 * eio(u);
+  camera.position.set(27 - 12 * s, 31 - 9 * s, 36 - 13 * s);
+  camera.lookAt(0.6, 19.5 - 3.5 * s, 0); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pMo'), t0: 0.75, at: () => [SHX, SHY + SHR, 0.45], pos: (x, y) => [cl(x + 60, 260, 820), cl(y - 150, 250, 1480)] },
+  { el: E('pRo'), t0: 1.35, at: t => [carX, (carY(t) + carH + 0.8 + SHY) / 2, 0.3], pos: (x, y) => [cl(x - 260, 260, 850), cl(y - 40, 300, 1480)] },
+  { el: E('pCw'), t0: 1.95, at: t => [2.75, cwY(t) + 1.8, 0.75], col: '#ffb547', pos: (x, y) => [cl(x + 150, 260, 790), cl(y - 120, 300, 1480)] },
+  { el: E('pCa'), t0: 2.6, at: t => [carX, carY(t) + 1.5, 1.8], pos: (x, y) => [cl(x - 170, 230, 850), cl(y + 200, 300, 1500)] },
+  { el: E('pSa'), t0: 3.5, at: t => [carX, carY(t) - 0.25, 2.1], col: '#ff4a4a', pos: (x, y) => [cl(x + 250, 260, 820), cl(y + 330, 300, 1560)] },
+]);
+const up = V(0, 1, 0), dir = V();
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  const rr = ramp(t, 0.25, 2.8), sp = 0.35 * rr + 0.65 * sm(rr); SCAN = TOP + 4.0 - (TOP + 4.6) * sp;
+  planeS.constant = SCAN; planeX.constant = -SCAN;
+  const xa = sm(ramp(t, 0.1, 0.55));
+  XM.forEach(m => { m.uniforms.uA.value = xa; m.uniforms.uScan.value = SCAN; });
+  EM.forEach(m => m.opacity = m.userData.op * xa);
+  const sa = sm(ramp(t, 0.15, 0.45)) * (1 - sm(ramp(t, 2.5, 2.85)));
+  sheet.visible = ringL.visible = sa > 0.001; sheetM.opacity = 0.55 * sa; ringM.opacity = sa;
+  sheet.position.y = SCAN; ringL.position.y = SCAN;
+  bgU.uGrid.value = 0.6 + 0.6 * sm(ramp(t, 0.25, 2.8));
+  const cy = carY(t), wy = cwY(t);
+  car.position.y = cy; cw.position.y = wy;
+  sheave.rotation.z = -(cy - 10.4) / SHR;
+  for (const r of ropes) {
+    const x = r.side ? 2.75 : carX, yb = r.side ? wy + 3.6 : cy + carH + 0.8, yt = SHY;
+    r.m.position.set(x + (r.side ? -0.0 : 0), yb, r.z); r.m.scale.set(1, yt - yb, 1);
+  }
+  const br = sm(ramp(t, 3.5, 3.8)) * (0.6 + 0.4 * Math.sin(t * 9));
+  brakeM.emissiveIntensity = 1.6 * br;
+  lamp.material.color.setScalar(1);
+  for (let i = 0; i < NP; i++) { const d = motes[i]; dpos[i * 3] = d[0] + Math.sin(t * d[4] + d[3]) * 0.6; dpos[i * 3 + 1] = d[1] + t * 0.5 * d[4]; dpos[i * 3 + 2] = d[2]; }
+  dGeo.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

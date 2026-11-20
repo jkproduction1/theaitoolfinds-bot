@@ -1,5 +1,9 @@
 {
  "url": "https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?c=what-if|simulate|scale&t=Earth%20lost%20gravity%20for%205%20seconds|a%20mega%20tsunami%20hitting%20a%20coastline|Mount%20Everest%20vs%20Olympus%20Mons",
  "keyword": "GRAVITY",
- "angle": "app-demo"
+ "angle": "app-demo",
+ "tool_name": "Claude what-if Earth styles",
+ "cover_at": 6.5,
+ "summary_cs": "„Type it, get it #49“ (PROMPTS, 08:00, reach video), trio z picklistu „What if… Earth 10“: /what-if Země na 5 s ztratí gravitaci (kafe a cukr se vznesou o ~40 cm – reálná fyzika rotace Země na rovníku, pak vše spadne), /simulate megatsunami u pobřeží (moře nejdřív ustoupí, pak vlna; NOAA), /scale Everest 8 849 m vs Olympus Mons ≈22 km (2,5×). Vše kreslené v kódu (three.js), výšky ve stejném měřítku, šířky stlačené a v klipu to stojí.",
+ "caption": "What if Earth lost gravity for five seconds, a mega tsunami hit the coast, and Everest stood next to the biggest volcano we know? Three prompts in Claude, three animations.\n\nType it, get it #49. New one every day.\n\nWant all three prompts? Comment GRAVITY.\n\n#planetearth #3danimation #claudeai"
 }
