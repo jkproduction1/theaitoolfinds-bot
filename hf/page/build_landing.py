@@ -1,5 +1,6 @@
 """Sales page of Viral Styles Launchpad (Gumroad product `viral-styles-launchpad`, custom landing page).
 
+Publish (Jan, PowerShell, works 2026-11-20): cd D:\\theaitoolfinds; gumroad products page publish wbsqwp ./landing-A.html
 landing.src.html = the page exactly as Jan last published it (D:\\theaitoolfinds\\landing.html). Never edited by hand here.
 python3 hf/page/build_landing.py  ->  landing-A.html  (publish now: only the numbers are updated)
                                       landing-B.html  (A + a reviews section; NOT published until there are real reviews)
