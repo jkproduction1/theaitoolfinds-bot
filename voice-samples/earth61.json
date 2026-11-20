@@ -1,0 +1,252 @@
+[
+ {
+  "word": "Type",
+  "start": 0.0,
+  "end": 0.2375
+ },
+ {
+  "word": "slash",
+  "start": 0.2375,
+  "end": 0.65
+ },
+ {
+  "word": "what",
+  "start": 0.65,
+  "end": 0.8125
+ },
+ {
+  "word": "if",
+  "start": 0.8125,
+  "end": 1.1
+ },
+ {
+  "word": "Earth",
+  "start": 1.175,
+  "end": 1.45
+ },
+ {
+  "word": "lost",
+  "start": 1.45,
+  "end": 1.7499583333333333
+ },
+ {
+  "word": "gravity",
+  "start": 1.7499583333333333,
+  "end": 2.2
+ },
+ {
+  "word": "for",
+  "start": 2.2,
+  "end": 2.3625
+ },
+ {
+  "word": "five",
+  "start": 2.3625,
+  "end": 2.7125
+ },
+ {
+  "word": "seconds",
+  "start": 2.7125,
+  "end": 3.1
+ },
+ {
+  "word": "\u2026",
+  "start": 3.1,
+  "end": 3.1375
+ },
+ {
+  "word": "and",
+  "start": 3.1375,
+  "end": 3.2375
+ },
+ {
+  "word": "you",
+  "start": 3.2375,
+  "end": 3.35
+ },
+ {
+  "word": "get",
+  "start": 3.35,
+  "end": 3.55
+ },
+ {
+  "word": "this",
+  "start": 3.55,
+  "end": 3.96
+ },
+ {
+  "word": "Type",
+  "start": 3.9825,
+  "end": 4.2825
+ },
+ {
+  "word": "slash",
+  "start": 4.2825,
+  "end": 4.6575
+ },
+ {
+  "word": "simulate",
+  "start": 4.6575,
+  "end": 5.3
+ },
+ {
+  "word": "a",
+  "start": 5.37,
+  "end": 5.4825
+ },
+ {
+  "word": "mega",
+  "start": 5.4825,
+  "end": 5.795
+ },
+ {
+  "word": "tsunami",
+  "start": 5.795,
+  "end": 6.345
+ },
+ {
+  "word": "hitting",
+  "start": 6.345,
+  "end": 6.62
+ },
+ {
+  "word": "a",
+  "start": 6.62,
+  "end": 6.7325
+ },
+ {
+  "word": "coastline",
+  "start": 6.7325,
+  "end": 7.32
+ },
+ {
+  "word": "\u2026",
+  "start": 7.32,
+  "end": 7.3575
+ },
+ {
+  "word": "and",
+  "start": 7.3575,
+  "end": 7.457458333333333
+ },
+ {
+  "word": "you",
+  "start": 7.457458333333333,
+  "end": 7.57
+ },
+ {
+  "word": "get",
+  "start": 7.57,
+  "end": 7.769958333333333
+ },
+ {
+  "word": "this",
+  "start": 7.769958333333333,
+  "end": 8.18
+ },
+ {
+  "word": "Type",
+  "start": 8.207458333333333,
+  "end": 8.5075
+ },
+ {
+  "word": "slash",
+  "start": 8.5075,
+  "end": 8.8825
+ },
+ {
+  "word": "scale",
+  "start": 8.8825,
+  "end": 9.48
+ },
+ {
+  "word": "Mount",
+  "start": 9.53,
+  "end": 9.8175
+ },
+ {
+  "word": "Everest",
+  "start": 9.8175,
+  "end": 10.2925
+ },
+ {
+  "word": "versus",
+  "start": 10.2925,
+  "end": 10.73
+ },
+ {
+  "word": "Olympus",
+  "start": 10.73,
+  "end": 11.1675
+ },
+ {
+  "word": "Mons",
+  "start": 11.1675,
+  "end": 11.58
+ },
+ {
+  "word": "\u2026",
+  "start": 11.58,
+  "end": 11.6175
+ },
+ {
+  "word": "and",
+  "start": 11.6175,
+  "end": 11.7175
+ },
+ {
+  "word": "you",
+  "start": 11.7175,
+  "end": 11.83
+ },
+ {
+  "word": "get",
+  "start": 11.83,
+  "end": 12.03
+ },
+ {
+  "word": "this",
+  "start": 12.03,
+  "end": 12.44
+ },
+ {
+  "word": "Comment",
+  "start": 12.4675,
+  "end": 12.855
+ },
+ {
+  "word": "GRAVITY",
+  "start": 12.855,
+  "end": 13.38
+ },
+ {
+  "word": "and",
+  "start": 13.38,
+  "end": 13.4925
+ },
+ {
+  "word": "I'll",
+  "start": 13.4925,
+  "end": 13.6425
+ },
+ {
+  "word": "send",
+  "start": 13.6425,
+  "end": 13.905
+ },
+ {
+  "word": "you",
+  "start": 13.905,
+  "end": 13.9925
+ },
+ {
+  "word": "the",
+  "start": 13.9925,
+  "end": 14.08
+ },
+ {
+  "word": "prompts",
+  "start": 14.08,
+  "end": 14.65
+ }
+]

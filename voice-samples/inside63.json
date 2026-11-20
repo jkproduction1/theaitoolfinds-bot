@@ -1,0 +1,232 @@
+[
+ {
+  "word": "Type",
+  "start": 0.0,
+  "end": 0.225
+ },
+ {
+  "word": "slash",
+  "start": 0.225,
+  "end": 0.575
+ },
+ {
+  "word": "x-ray",
+  "start": 0.575,
+  "end": 1.025
+ },
+ {
+  "word": "an",
+  "start": 1.0625,
+  "end": 1.1875
+ },
+ {
+  "word": "elevator",
+  "start": 1.1875,
+  "end": 1.7499583333333333
+ },
+ {
+  "word": "\u2026",
+  "start": 1.7499583333333333,
+  "end": 1.7875
+ },
+ {
+  "word": "and",
+  "start": 1.7875,
+  "end": 1.8875
+ },
+ {
+  "word": "you",
+  "start": 1.8875,
+  "end": 1.9999583333333333
+ },
+ {
+  "word": "get",
+  "start": 1.9999583333333333,
+  "end": 2.2
+ },
+ {
+  "word": "this",
+  "start": 2.2,
+  "end": 2.6
+ },
+ {
+  "word": "Type",
+  "start": 2.6225,
+  "end": 2.885
+ },
+ {
+  "word": "slash",
+  "start": 2.885,
+  "end": 3.235
+ },
+ {
+  "word": "explain",
+  "start": 3.235,
+  "end": 3.7975
+ },
+ {
+  "word": "3D",
+  "start": 3.7975,
+  "end": 4.51
+ },
+ {
+  "word": "how",
+  "start": 4.575,
+  "end": 4.7125
+ },
+ {
+  "word": "a",
+  "start": 4.7125,
+  "end": 4.8125
+ },
+ {
+  "word": "car",
+  "start": 4.8125,
+  "end": 5.1875
+ },
+ {
+  "word": "airbag",
+  "start": 5.1875,
+  "end": 5.65
+ },
+ {
+  "word": "inflates",
+  "start": 5.65,
+  "end": 6.125
+ },
+ {
+  "word": "\u2026",
+  "start": 6.125,
+  "end": 6.1625
+ },
+ {
+  "word": "and",
+  "start": 6.1625,
+  "end": 6.275
+ },
+ {
+  "word": "you",
+  "start": 6.275,
+  "end": 6.4
+ },
+ {
+  "word": "get",
+  "start": 6.4,
+  "end": 6.6
+ },
+ {
+  "word": "this",
+  "start": 6.6,
+  "end": 7.0
+ },
+ {
+  "word": "Type",
+  "start": 7.0275,
+  "end": 7.29
+ },
+ {
+  "word": "slash",
+  "start": 7.29,
+  "end": 7.64
+ },
+ {
+  "word": "explode",
+  "start": 7.64,
+  "end": 8.189958333333333
+ },
+ {
+  "word": "a",
+  "start": 8.24,
+  "end": 8.3525
+ },
+ {
+  "word": "VR",
+  "start": 8.3525,
+  "end": 8.765
+ },
+ {
+  "word": "headset",
+  "start": 8.765,
+  "end": 9.34
+ },
+ {
+  "word": "\u2026",
+  "start": 9.34,
+  "end": 9.39
+ },
+ {
+  "word": "and",
+  "start": 9.39,
+  "end": 9.5025
+ },
+ {
+  "word": "you",
+  "start": 9.5025,
+  "end": 9.59
+ },
+ {
+  "word": "get",
+  "start": 9.59,
+  "end": 9.789958333333333
+ },
+ {
+  "word": "this",
+  "start": 9.789958333333333,
+  "end": 10.2
+ },
+ {
+  "word": "Comment",
+  "start": 10.2275,
+  "end": 10.6525
+ },
+ {
+  "word": "STYLES",
+  "start": 10.6525,
+  "end": 11.765
+ },
+ {
+  "word": "and",
+  "start": 11.765,
+  "end": 11.8775
+ },
+ {
+  "word": "I'll",
+  "start": 11.8775,
+  "end": 12.0775
+ },
+ {
+  "word": "send",
+  "start": 12.0775,
+  "end": 12.34
+ },
+ {
+  "word": "you",
+  "start": 12.34,
+  "end": 12.44
+ },
+ {
+  "word": "the",
+  "start": 12.44,
+  "end": 12.5775
+ },
+ {
+  "word": "system",
+  "start": 12.5775,
+  "end": 12.965
+ },
+ {
+  "word": "that",
+  "start": 12.965,
+  "end": 13.14
+ },
+ {
+  "word": "makes",
+  "start": 13.14,
+  "end": 13.415
+ },
+ {
+  "word": "these",
+  "start": 13.415,
+  "end": 13.92
+ }
+]
