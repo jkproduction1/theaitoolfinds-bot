@@ -1,0 +1,222 @@
+[
+ {
+  "word": "Type",
+  "start": 0.0,
+  "end": 0.225
+ },
+ {
+  "word": "slash",
+  "start": 0.225,
+  "end": 0.575
+ },
+ {
+  "word": "x-ray",
+  "start": 0.575,
+  "end": 1.025
+ },
+ {
+  "word": "the",
+  "start": 1.0625,
+  "end": 1.15
+ },
+ {
+  "word": "human",
+  "start": 1.15,
+  "end": 1.525
+ },
+ {
+  "word": "hand",
+  "start": 1.525,
+  "end": 1.8749583333333333
+ },
+ {
+  "word": "\u2026",
+  "start": 1.8749583333333333,
+  "end": 1.925
+ },
+ {
+  "word": "and",
+  "start": 1.925,
+  "end": 2.05
+ },
+ {
+  "word": "you",
+  "start": 2.05,
+  "end": 2.15
+ },
+ {
+  "word": "get",
+  "start": 2.15,
+  "end": 2.35
+ },
+ {
+  "word": "this",
+  "start": 2.35,
+  "end": 2.74
+ },
+ {
+  "word": "Type",
+  "start": 2.7625,
+  "end": 3.0375
+ },
+ {
+  "word": "slash",
+  "start": 3.0375,
+  "end": 3.4375
+ },
+ {
+  "word": "zoom",
+  "start": 3.4375,
+  "end": 3.75
+ },
+ {
+  "word": "in",
+  "start": 3.75,
+  "end": 4.0499583333333335
+ },
+ {
+  "word": "a",
+  "start": 4.125,
+  "end": 4.225
+ },
+ {
+  "word": "hair",
+  "start": 4.225,
+  "end": 4.5125
+ },
+ {
+  "word": "follicle",
+  "start": 4.5125,
+  "end": 4.95
+ },
+ {
+  "word": "\u2026",
+  "start": 4.95,
+  "end": 4.9875
+ },
+ {
+  "word": "and",
+  "start": 4.9875,
+  "end": 5.0875
+ },
+ {
+  "word": "you",
+  "start": 5.0875,
+  "end": 5.2
+ },
+ {
+  "word": "get",
+  "start": 5.2,
+  "end": 5.4
+ },
+ {
+  "word": "this",
+  "start": 5.4,
+  "end": 5.8
+ },
+ {
+  "word": "Type",
+  "start": 5.8225,
+  "end": 6.0975
+ },
+ {
+  "word": "slash",
+  "start": 6.0975,
+  "end": 6.46
+ },
+ {
+  "word": "explain",
+  "start": 6.46,
+  "end": 7.0225
+ },
+ {
+  "word": "3D",
+  "start": 7.0225,
+  "end": 7.685
+ },
+ {
+  "word": "how",
+  "start": 7.76,
+  "end": 7.935
+ },
+ {
+  "word": "a",
+  "start": 7.935,
+  "end": 8.06
+ },
+ {
+  "word": "sneeze",
+  "start": 8.06,
+  "end": 8.46
+ },
+ {
+  "word": "works",
+  "start": 8.46,
+  "end": 8.784958333333334
+ },
+ {
+  "word": "\u2026",
+  "start": 8.784958333333334,
+  "end": 8.835
+ },
+ {
+  "word": "and",
+  "start": 8.835,
+  "end": 8.96
+ },
+ {
+  "word": "you",
+  "start": 8.96,
+  "end": 9.085
+ },
+ {
+  "word": "get",
+  "start": 9.085,
+  "end": 9.284958333333334
+ },
+ {
+  "word": "this",
+  "start": 9.284958333333334,
+  "end": 9.69
+ },
+ {
+  "word": "Comment",
+  "start": 9.7175,
+  "end": 10.1175
+ },
+ {
+  "word": "BODY",
+  "start": 10.1175,
+  "end": 10.505
+ },
+ {
+  "word": "and",
+  "start": 10.505,
+  "end": 10.6175
+ },
+ {
+  "word": "I'll",
+  "start": 10.6175,
+  "end": 10.8175
+ },
+ {
+  "word": "send",
+  "start": 10.8175,
+  "end": 11.0675
+ },
+ {
+  "word": "you",
+  "start": 11.0675,
+  "end": 11.1425
+ },
+ {
+  "word": "the",
+  "start": 11.1425,
+  "end": 11.23
+ },
+ {
+  "word": "prompts",
+  "start": 11.23,
+  "end": 11.8
+ }
+]

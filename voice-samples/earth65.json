@@ -1,0 +1,247 @@
+[
+ {
+  "word": "Type",
+  "start": 0.0,
+  "end": 0.2375
+ },
+ {
+  "word": "slash",
+  "start": 0.2375,
+  "end": 0.65
+ },
+ {
+  "word": "what",
+  "start": 0.65,
+  "end": 0.8
+ },
+ {
+  "word": "if",
+  "start": 0.8,
+  "end": 1.025
+ },
+ {
+  "word": "the",
+  "start": 1.1,
+  "end": 1.2375
+ },
+ {
+  "word": "Moon",
+  "start": 1.2375,
+  "end": 1.525
+ },
+ {
+  "word": "disappeared",
+  "start": 1.525,
+  "end": 2.05
+ },
+ {
+  "word": "tonight",
+  "start": 2.05,
+  "end": 2.4
+ },
+ {
+  "word": "\u2026",
+  "start": 2.4,
+  "end": 2.45
+ },
+ {
+  "word": "and",
+  "start": 2.45,
+  "end": 2.5625
+ },
+ {
+  "word": "you",
+  "start": 2.5625,
+  "end": 2.675
+ },
+ {
+  "word": "get",
+  "start": 2.675,
+  "end": 2.875
+ },
+ {
+  "word": "this",
+  "start": 2.875,
+  "end": 3.28
+ },
+ {
+  "word": "Type",
+  "start": 3.3075,
+  "end": 3.5824583333333333
+ },
+ {
+  "word": "slash",
+  "start": 3.5824583333333333,
+  "end": 3.9574583333333333
+ },
+ {
+  "word": "simulate",
+  "start": 3.9574583333333333,
+  "end": 4.6
+ },
+ {
+  "word": "a",
+  "start": 4.665,
+  "end": 4.7775
+ },
+ {
+  "word": "meteor",
+  "start": 4.7775,
+  "end": 5.1775
+ },
+ {
+  "word": "storm",
+  "start": 5.1775,
+  "end": 5.5525
+ },
+ {
+  "word": "over",
+  "start": 5.5525,
+  "end": 5.7525
+ },
+ {
+  "word": "a",
+  "start": 5.7525,
+  "end": 5.8525
+ },
+ {
+  "word": "city",
+  "start": 5.8525,
+  "end": 6.165
+ },
+ {
+  "word": "\u2026",
+  "start": 6.165,
+  "end": 6.215
+ },
+ {
+  "word": "and",
+  "start": 6.215,
+  "end": 6.34
+ },
+ {
+  "word": "you",
+  "start": 6.34,
+  "end": 6.465
+ },
+ {
+  "word": "get",
+  "start": 6.465,
+  "end": 6.665
+ },
+ {
+  "word": "this",
+  "start": 6.665,
+  "end": 7.07
+ },
+ {
+  "word": "Type",
+  "start": 7.0925,
+  "end": 7.3675
+ },
+ {
+  "word": "slash",
+  "start": 7.3675,
+  "end": 7.7425
+ },
+ {
+  "word": "scale",
+  "start": 7.7425,
+  "end": 8.18
+ },
+ {
+  "word": "the",
+  "start": 8.2175,
+  "end": 8.305
+ },
+ {
+  "word": "Grand",
+  "start": 8.305,
+  "end": 8.7175
+ },
+ {
+  "word": "Canyon",
+  "start": 8.7175,
+  "end": 9.155
+ },
+ {
+  "word": "versus",
+  "start": 9.155,
+  "end": 9.5925
+ },
+ {
+  "word": "Valles",
+  "start": 9.5925,
+  "end": 9.9925
+ },
+ {
+  "word": "Marineris",
+  "start": 9.9925,
+  "end": 10.86
+ },
+ {
+  "word": "\u2026",
+  "start": 10.86,
+  "end": 10.92
+ },
+ {
+  "word": "and",
+  "start": 10.92,
+  "end": 11.0325
+ },
+ {
+  "word": "you",
+  "start": 11.0325,
+  "end": 11.12
+ },
+ {
+  "word": "get",
+  "start": 11.12,
+  "end": 11.32
+ },
+ {
+  "word": "this",
+  "start": 11.32,
+  "end": 11.72
+ },
+ {
+  "word": "Comment",
+  "start": 11.7525,
+  "end": 12.1775
+ },
+ {
+  "word": "MOON",
+  "start": 12.1775,
+  "end": 12.565
+ },
+ {
+  "word": "and",
+  "start": 12.565,
+  "end": 12.6775
+ },
+ {
+  "word": "I'll",
+  "start": 12.6775,
+  "end": 12.8775
+ },
+ {
+  "word": "send",
+  "start": 12.8775,
+  "end": 13.14
+ },
+ {
+  "word": "you",
+  "start": 13.14,
+  "end": 13.2275
+ },
+ {
+  "word": "the",
+  "start": 13.2275,
+  "end": 13.315
+ },
+ {
+  "word": "prompts",
+  "start": 13.315,
+  "end": 13.89
+ }
+]

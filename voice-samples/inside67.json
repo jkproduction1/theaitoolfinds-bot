@@ -1,0 +1,227 @@
+[
+ {
+  "word": "Type",
+  "start": 0.0,
+  "end": 0.225
+ },
+ {
+  "word": "slash",
+  "start": 0.225,
+  "end": 0.575
+ },
+ {
+  "word": "x-ray",
+  "start": 0.575,
+  "end": 1.025
+ },
+ {
+  "word": "a",
+  "start": 1.075,
+  "end": 1.1875
+ },
+ {
+  "word": "washing",
+  "start": 1.1875,
+  "end": 1.5875
+ },
+ {
+  "word": "machine",
+  "start": 1.5875,
+  "end": 1.975
+ },
+ {
+  "word": "\u2026",
+  "start": 1.975,
+  "end": 2.025
+ },
+ {
+  "word": "and",
+  "start": 2.025,
+  "end": 2.1375
+ },
+ {
+  "word": "you",
+  "start": 2.1375,
+  "end": 2.225
+ },
+ {
+  "word": "get",
+  "start": 2.225,
+  "end": 2.425
+ },
+ {
+  "word": "this",
+  "start": 2.425,
+  "end": 2.82
+ },
+ {
+  "word": "Type",
+  "start": 2.8475,
+  "end": 3.11
+ },
+ {
+  "word": "slash",
+  "start": 3.11,
+  "end": 3.46
+ },
+ {
+  "word": "explain",
+  "start": 3.46,
+  "end": 4.0225
+ },
+ {
+  "word": "3D",
+  "start": 4.0225,
+  "end": 4.684958333333333
+ },
+ {
+  "word": "how",
+  "start": 4.76,
+  "end": 4.91
+ },
+ {
+  "word": "a",
+  "start": 4.91,
+  "end": 5.0225
+ },
+ {
+  "word": "zipper",
+  "start": 5.0225,
+  "end": 5.335
+ },
+ {
+  "word": "works",
+  "start": 5.335,
+  "end": 5.61
+ },
+ {
+  "word": "\u2026",
+  "start": 5.61,
+  "end": 5.6475
+ },
+ {
+  "word": "and",
+  "start": 5.6475,
+  "end": 5.7475
+ },
+ {
+  "word": "you",
+  "start": 5.7475,
+  "end": 5.86
+ },
+ {
+  "word": "get",
+  "start": 5.86,
+  "end": 6.06
+ },
+ {
+  "word": "this",
+  "start": 6.06,
+  "end": 6.45
+ },
+ {
+  "word": "Type",
+  "start": 6.4775,
+  "end": 6.74
+ },
+ {
+  "word": "slash",
+  "start": 6.74,
+  "end": 7.09
+ },
+ {
+  "word": "explode",
+  "start": 7.09,
+  "end": 7.665
+ },
+ {
+  "word": "wireless",
+  "start": 7.752458333333333,
+  "end": 8.265
+ },
+ {
+  "word": "earbuds",
+  "start": 8.265,
+  "end": 8.79
+ },
+ {
+  "word": "\u2026",
+  "start": 8.79,
+  "end": 8.84
+ },
+ {
+  "word": "and",
+  "start": 8.84,
+  "end": 8.965
+ },
+ {
+  "word": "you",
+  "start": 8.965,
+  "end": 9.064958333333333
+ },
+ {
+  "word": "get",
+  "start": 9.064958333333333,
+  "end": 9.265
+ },
+ {
+  "word": "this",
+  "start": 9.265,
+  "end": 9.67
+ },
+ {
+  "word": "Comment",
+  "start": 9.6975,
+  "end": 10.1225
+ },
+ {
+  "word": "STYLES",
+  "start": 10.1225,
+  "end": 11.235
+ },
+ {
+  "word": "and",
+  "start": 11.235,
+  "end": 11.3475
+ },
+ {
+  "word": "I'll",
+  "start": 11.3475,
+  "end": 11.5475
+ },
+ {
+  "word": "send",
+  "start": 11.5475,
+  "end": 11.7975
+ },
+ {
+  "word": "you",
+  "start": 11.7975,
+  "end": 11.885
+ },
+ {
+  "word": "the",
+  "start": 11.885,
+  "end": 12.0225
+ },
+ {
+  "word": "system",
+  "start": 12.0225,
+  "end": 12.41
+ },
+ {
+  "word": "that",
+  "start": 12.41,
+  "end": 12.585
+ },
+ {
+  "word": "makes",
+  "start": 12.585,
+  "end": 12.86
+ },
+ {
+  "word": "these",
+  "start": 12.86,
+  "end": 13.19
+ }
+]
