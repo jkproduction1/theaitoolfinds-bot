@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>X-ray hand</title>
+<!-- body66 r0: /x-ray the human hand. Drawn in code (2D canvas), simplified anatomy, not a real radiograph.
+  Facts (Britannica / Cleveland Clinic "Hand bones"): 27 bones in each hand = 14 phalanges (finger bones), 5 metacarpals (palm), 8 carpals (wrist). -->
+<script src="common2d.js"></script></head><body>
+<div id="stage"><canvas id="cv" width="1080" height="1920"></canvas><div id="ov"><svg id="lines" width="1080" height="1920"></svg>
+<div class="big" id="cnt" style="top:200px;font-size:120px"><span id="cn">0</span><span style="font-size:52px;letter-spacing:0;font-weight:800;color:#9fdcff"> bones</span></div>
+<div class="pill" id="pPh">14 finger bones</div><div class="pill" id="pMc">5 palm bones</div><div class="pill hot" id="pCa">8 wrist bones</div>
+<div class="pill red" id="pTo">27 in one hand<small>both hands: about a quarter of all your bones</small></div></div></div>
+<script>
+const cv = document.getElementById('cv'), g = cv.getContext('2d'), svg = document.getElementById('lines');
+const R = mulberry32(66);
+// hand model (screen px, before camera): wrist centre (540,1360), fingers up
+const CX = 540;
+// fingers: [base x, base y, angle (rad from up), [metacarpal len, prox, mid, dist], width]
+const F = [[-150, 1150, -0.62, [0, 105, 0, 85], 28, true],   // thumb: metacarpal drawn separately
+  [-75, 960, -0.13, [0, 140, 88, 66], 26], [5, 940, -0.02, [0, 150, 96, 70], 27], [80, 955, 0.10, [0, 140, 90, 66], 26], [148, 990, 0.24, [0, 112, 70, 58], 23]];
+const MC = [[-105, 1290, -190, 1160, 'thumb'], [-55, 1300, -73, 970], [5, 1305, 4, 950], [62, 1300, 78, 966], [112, 1290, 146, 1000]]; // metacarpals: from (x0,y0) to (x1,y1)
+const CARP = [[-95, 1330, 34, 28], [-40, 1325, 30, 26], [18, 1322, 32, 27], [75, 1320, 30, 26], [-80, 1388, 36, 30], [-22, 1392, 32, 30], [38, 1390, 34, 28], [92, 1378, 26, 24]];
+const bones = [];   // {pts: [x0,y0,x1,y1], w, kind}
+MC.forEach(m => bones.push({ a: [CX + m[0], m[1]], b: [CX + m[2], m[3]], w: m[4] ? 30 : 24, kind: 'mc' }));
+F.forEach((f, i) => { let x = CX + f[0], y = f[1]; if (f[5]) { x = CX - 205; y = 1140; }
+  const segs = f[3].filter(v => v > 0); let ang = f[2];
+  segs.forEach((L, k) => { const x2 = x + Math.sin(ang) * L, y2 = y - Math.cos(ang) * L; bones.push({ a: [x, y], b: [x2, y2], w: f[4] - k * 3, kind: 'ph', fi: i, k }); x = x2 + Math.sin(ang) * 18; y = y2 - Math.cos(ang) * 18; ang += (f[5] ? 0.12 : 0.02); }); });
+CARP.forEach(c => bones.push({ c: [CX + c[0], c[1]], r: [c[2], c[3]], kind: 'ca' }));
+console.assert(bones.length === 27);
+// forearm (not counted)
+const ARM = [[CX - 70, 1440, CX - 95, 1950, 36], [CX + 60, 1440, CX + 90, 1950, 30]];
+function boneTop(b) { return b.kind === 'ca' ? b.c[1] - b.r[1] : Math.min(b.a[1], b.b[1]); }
+function drawBone(b, alpha, glow) {
+  g.save(); g.globalAlpha = alpha;
+  if (b.kind === 'ca') { const gr = g.createRadialGradient(b.c[0] - 6, b.c[1] - 6, 2, b.c[0], b.c[1], b.r[0]); gr.addColorStop(0, '#f4fbff'); gr.addColorStop(0.7, '#b9dcf2'); gr.addColorStop(1, '#6fa6cf');
+    g.fillStyle = gr; g.shadowColor = glow; g.shadowBlur = 24; g.beginPath(); g.ellipse(b.c[0], b.c[1], b.r[0], b.r[1], 0.3, 0, 7); g.fill(); g.restore(); return; }
+  const [x0, y0] = b.a, [x1, y1] = b.b; const L = Math.hypot(x1 - x0, y1 - y0), an = Math.atan2(y1 - y0, x1 - x0);
+  g.translate(x0, y0); g.rotate(an); g.shadowColor = glow; g.shadowBlur = 26;
+  const w = b.w; const gr = g.createLinearGradient(0, -w / 2, 0, w / 2); gr.addColorStop(0, '#7fb3d8'); gr.addColorStop(0.3, '#e9f6ff'); gr.addColorStop(0.5, '#cfe8f8'); gr.addColorStop(0.7, '#e9f6ff'); gr.addColorStop(1, '#7fb3d8');
+  g.fillStyle = gr; g.beginPath(); // shaft narrower in the middle, knobby ends
+  g.moveTo(0, -w / 2); g.quadraticCurveTo(L / 2, -w * 0.3, L, -w / 2); g.arc(L, 0, w / 2, -Math.PI / 2, Math.PI / 2); g.quadraticCurveTo(L / 2, w * 0.3, 0, w / 2); g.arc(0, 0, w / 2, Math.PI / 2, Math.PI * 1.5); g.fill();
+  g.shadowBlur = 0; g.fillStyle = 'rgba(40,80,120,.25)'; g.fillRect(w * 0.6, -w * 0.08, L - w * 1.2, w * 0.16);
+  g.restore(); }
+function flesh() { // soft hand silhouette
+  g.save(); g.strokeStyle = 'rgba(90,150,210,.20)'; g.lineCap = 'round'; g.lineJoin = 'round'; g.filter = 'blur(10px)';
+  bones.filter(b => b.kind !== 'ca').forEach(b => { g.lineWidth = b.w * 2.4; g.beginPath(); g.moveTo(...b.a); g.lineTo(...b.b); g.stroke(); });
+  g.fillStyle = 'rgba(90,150,210,.20)'; g.beginPath(); g.ellipse(CX + 5, 1220, 190, 200, 0, 0, 7); g.fill();
+  g.fillRect(CX - 150, 1300, 290, 700); g.restore(); }
+function render(t) {
+  t = cl(t, 0, DUR);
+  g.setTransform(1, 0, 0, 1, 0, 0); const bg = g.createRadialGradient(540, 1000, 60, 540, 1000, 1200); bg.addColorStop(0, '#0d2036'); bg.addColorStop(1, '#02050a'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const u = t / DUR, z = 1.18 + 0.12 * eio(u), ry = -40 - 30 * eio(u);
+  g.setTransform(z, 0, 0, z, 540 - 540 * z, 1100 - 1100 * z + ry);
+  // slight finger spread breathing
+  const scan = 280 + 1450 * (0.3 * ramp(t, 0.15, 2.6) + 0.7 * sm(ramp(t, 0.15, 2.6)));
+  flesh();
+  g.save(); ARM.forEach(a => { g.globalAlpha = 0.35 * sm(ramp(t, 1.6, 2.4)); g.strokeStyle = '#9cc6e6'; g.lineCap = 'round'; g.lineWidth = a[4]; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(a[2], a[3]); g.stroke(); }); g.restore();
+  let n = 0;
+  for (const b of bones) { const top = boneTop(b); const rev = sm(cl((scan - top) / 60)); if (rev > 0.5) n++;
+    const hl = (b.kind === 'ph' && t > 2.3 && t < 3.3) || (b.kind === 'mc' && t > 3.0 && t < 4.0) || (b.kind === 'ca' && t > 3.7 && t < 4.7);
+    if (rev > 0) drawBone(b, rev, hl ? 'rgba(255,190,90,.95)' : 'rgba(120,200,255,.7)'); }
+  // scan bar
+  const sa = sm(ramp(t, 0.1, 0.3)) * (1 - sm(ramp(t, 2.4, 2.7)));
+  if (sa > 0) { const gr = g.createLinearGradient(0, scan - 70, 0, scan + 6); gr.addColorStop(0, 'rgba(90,200,255,0)'); gr.addColorStop(1, `rgba(150,230,255,${0.55 * sa})`); g.fillStyle = gr; g.fillRect(-200, scan - 70, 1480, 76);
+    g.fillStyle = `rgba(220,245,255,${sa})`; g.fillRect(-200, scan, 1480, 3); }
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  // film grain lines
+  g.fillStyle = 'rgba(255,255,255,.025)'; for (let y = (t * 120) % 6; y < H; y += 6) g.fillRect(0, y, W, 1);
+  const cnt = document.getElementById('cnt'); cnt.style.opacity = sm(ramp(t, 0.3, 0.6)); document.getElementById('cn').textContent = n;
+  const S = (x, y) => [540 + (x - 540) * z, 1100 + (y - 1100) * z + ry];
+  LABEL(svg, [
+    { id: 'pPh', t0: 2.3, pos: [250, 470], at: S(CX - 75 + 5, 870), col: '#7fd4ff' },
+    { id: 'pMc', t0: 3.0, pos: [830, 1180], at: S(CX + 75, 1140) },
+    { id: 'pCa', t0: 3.7, pos: [300, 1420], at: S(CX - 40, 1360), col: '#ffb547' },
+    { id: 'pTo', t0: 4.5, pos: [540, 300], col: '#ff4a4a' },
+  ], t);
+  document.getElementById('cnt').style.opacity = sm(ramp(t, 0.3, 0.6)) * (1 - sm(ramp(t, 4.3, 4.6)));
+}
+READY(render);
+</script></body></html>

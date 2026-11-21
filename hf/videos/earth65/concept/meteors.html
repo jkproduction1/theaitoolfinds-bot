@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Meteor storm over a city</title>
+<!-- earth65 r1: /simulate a meteor storm over a city. Generic night city drawn in code (no real skyline), meteors drawn in 2D.
+  Facts: all meteors of a shower/storm seem to come from one point in the sky (the radiant); meteors start to glow and burn up about
+  50-75 miles (80-120 km) up (EarthSky / NASA Meteoroid Environment Office); the 1966 Leonid storm reached thousands of meteors per
+  minute (~40 per second seen from Arizona; NASA leonid.arc.nasa.gov, AMS, IMO). -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="sky" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill hot" id="pRa">All from one point in the sky</div>
+    <div class="pill" id="pHi">They burn up 50–75 miles high</div>
+    <div class="pill red" id="pSt">1966: thousands per minute</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, popS, V, mulberry32, pill, leader, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend','<style>#sky{position:absolute;inset:0;z-index:0}#stage canvas.gl{z-index:1}#ov{z-index:2}</style>');
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H); renderer.setClearColor(0x000000, 0); renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.domElement.className = 'gl'; stage.insertBefore(renderer.domElement, document.getElementById('ov'));
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(42, W / H, 0.5, 4000);
+const rnd = mulberry32(651); const R = (a, b) => a + rnd() * (b - a);
+// ---- city: blocks with window textures ----
+function winTex(seed) { const r = mulberry32(seed); const c = document.createElement('canvas'); c.width = 128; c.height = 256; const g = c.getContext('2d');
+  g.fillStyle = '#0b0f1a'; g.fillRect(0, 0, 128, 256);
+  for (let y = 4; y < 256; y += 10) for (let x = 4; x < 128; x += 9) { const on = r() < 0.42; g.fillStyle = on ? `rgba(255,${190 + r() * 50 | 0},${110 + r() * 60 | 0},${0.55 + r() * 0.45})` : 'rgba(40,52,78,.6)'; g.fillRect(x, y, 5, 6); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; return t; }
+const texs = [1, 2, 3, 4].map(winTex);
+const city = new THREE.Group(); scene.add(city);
+for (let row = 0; row < 4; row++) for (let i = 0; i < 26; i++) {
+  const w = R(14, 34), d = R(14, 30), h = R(30, 110) * (row === 1 ? 1.5 : 1) * (rnd() < 0.12 ? 2.0 : 1);
+  const x = -260 + i * 21 + R(-6, 6), z = -60 - row * 60 + R(-10, 10);
+  const tx = texs[(i + row) % 4].clone(); tx.needsUpdate = true; tx.repeat.set(w / 30, h / 60);
+  const m = new THREE.MeshStandardMaterial({ color: '#1a2132', emissive: '#ffffff', emissiveMap: tx, emissiveIntensity: 0.85 - row * 0.18, roughness: 0.8, map: tx });
+  const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(x, h / 2, z); city.add(b);
+  if (rnd() < 0.15) { const a = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 14, 6), new THREE.MeshBasicMaterial({ color: '#2a3245' })); a.position.set(x, h + 7, z); city.add(a);
+    const l = new THREE.Mesh(new THREE.SphereGeometry(1.2, 8, 6), new THREE.MeshBasicMaterial({ color: '#ff3b2f' })); l.position.set(x, h + 14, z); city.add(l); }
+}
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshStandardMaterial({ color: '#070a12', roughness: 1 })); ground.rotation.x = -Math.PI / 2; scene.add(ground);
+scene.add(new THREE.HemisphereLight('#4060a0', '#05060a', 0.6));
+const fl = new THREE.DirectionalLight('#9fb8ff', 0.5); fl.position.set(-50, 120, 80); scene.add(fl);
+// ---- sky (2D): gradient, stars, meteors ----
+const sky = document.getElementById('sky'), g = sky.getContext('2d');
+const stars = []; for (let i = 0; i < 700; i++) stars.push([R(0, W), R(0, 1500), R(0.4, 1.8), R(0, 6.28)]);
+const RX = 250, RY = 300;    // radiant on screen
+const MET = []; const mr = mulberry32(99);
+{ let t = -0.4; while (t < DUR) { const rate = 4 + 70 * Math.pow(sm(ramp(t, 0.5, 4.2)), 1.4); t += (0.4 + mr() * 1.2) / rate;
+  const a = 0.15 + mr() * 1.35, d0 = 60 + mr() * 700, sp = 900 + mr() * 1400, life = 0.35 + mr() * 0.55, br = 0.5 + mr() * 0.5;
+  MET.push({ t0: t, a, d0, sp, life, br, big: mr() < 0.05 }); } }
+function drawSky(t) {
+  const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#02040b'); gr.addColorStop(0.45, '#081430'); gr.addColorStop(0.72, '#1b2a52'); gr.addColorStop(0.85, '#3a3350'); gr.addColorStop(1, '#120f18');
+  g.globalCompositeOperation = 'source-over'; g.fillStyle = gr; g.fillRect(0, 0, W, H);
+  for (const s of stars) { g.fillStyle = `rgba(220,230,255,${0.35 + 0.35 * Math.sin(t * 2 + s[3])})`; g.fillRect(s[0], s[1], s[2], s[2]); }
+  const rg = g.createRadialGradient(RX, RY, 0, RX, RY, 140); rg.addColorStop(0, `rgba(180,210,255,${0.18 * sm(ramp(t, 1.4, 2.2))})`); rg.addColorStop(1, 'rgba(180,210,255,0)'); g.fillStyle = rg; g.fillRect(0, 0, W, H);
+  g.globalCompositeOperation = 'lighter'; g.lineCap = 'round';
+  for (const m of MET) { const u = t - m.t0; if (u < 0 || u > m.life) continue; const k = u / m.life, fade = Math.sin(Math.PI * Math.min(1, k * 1.15));
+    const ca = Math.cos(m.a), sa = Math.sin(m.a); const hd = m.d0 + m.sp * u, tl = Math.min(hd - m.d0, (m.big ? 480 : 300) * (0.4 + k));
+    const hx = RX + ca * hd, hy = RY + sa * hd, tx = RX + ca * (hd - tl), ty = RY + sa * (hd - tl);
+    const lg = g.createLinearGradient(tx, ty, hx, hy); lg.addColorStop(0, 'rgba(120,180,255,0)'); lg.addColorStop(0.7, `rgba(170,215,255,${0.5 * fade * m.br})`); lg.addColorStop(1, `rgba(255,255,255,${fade * m.br})`);
+    g.strokeStyle = lg; g.lineWidth = m.big ? 7 : 4; g.beginPath(); g.moveTo(tx, ty); g.lineTo(hx, hy); g.stroke();
+    const hg = g.createRadialGradient(hx, hy, 0, hx, hy, m.big ? 36 : 14); hg.addColorStop(0, `rgba(255,250,235,${fade})`); hg.addColorStop(1, 'rgba(160,210,255,0)'); g.fillStyle = hg; g.fillRect(hx - 40, hy - 40, 80, 80); }
+  g.globalCompositeOperation = 'source-over';
+}
+// fixed big fireball for the "burn up" label
+const FB = { t0: 2.35, a: 0.55, d0: 140, sp: 210, life: 2.1 };
+function drawFB(t) { const u = t - FB.t0; if (u < 0 || u > FB.life) return null; const k = u / FB.life, fade = Math.sin(Math.PI * Math.min(1, k * 1.05));
+  const ca = Math.cos(FB.a), sa = Math.sin(FB.a), hd = FB.d0 + FB.sp * u, tl = Math.min(hd - FB.d0, 520);
+  const hx = RX + ca * hd, hy = RY + sa * hd, tx = RX + ca * (hd - tl), ty = RY + sa * (hd - tl);
+  g.globalCompositeOperation = 'lighter';
+  const lg = g.createLinearGradient(tx, ty, hx, hy); lg.addColorStop(0, 'rgba(90,255,170,0)'); lg.addColorStop(0.75, `rgba(150,255,200,${0.6 * fade})`); lg.addColorStop(1, `rgba(255,255,240,${fade})`);
+  g.strokeStyle = lg; g.lineWidth = 10; g.beginPath(); g.moveTo(tx, ty); g.lineTo(hx, hy); g.stroke();
+  const hg = g.createRadialGradient(hx, hy, 0, hx, hy, 70); hg.addColorStop(0, `rgba(255,255,240,${fade})`); hg.addColorStop(0.3, `rgba(170,255,210,${0.6 * fade})`); hg.addColorStop(1, 'rgba(120,255,190,0)'); g.fillStyle = hg; g.fillRect(hx - 80, hy - 80, 160, 160);
+  g.globalCompositeOperation = 'source-over'; return [hx, hy]; }
+const svg = document.getElementById('lines'); const E = id => document.getElementById(id);
+function lab(el, t0, px, py, bx, by, col, t1) { const a = sm(ramp(t, t0, t0 + 0.4)) * (t1 ? 1 - sm(ramp(t, t1, t1 + 0.35)) : 1); return null; }
+let T = 0;
+function L(el, t0, t1, px, py, bx, by, col) { const a = sm(ramp(T, t0, t0 + 0.4)) * (t1 ? 1 - sm(ramp(T, t1, t1 + 0.35)) : 1);
+  pill(el, px, py, a, 0.86 + 0.14 * popS(ramp(T, t0, t0 + 0.45))); const hh = el.offsetHeight / 2; const ay = py + Math.sign(by - py) * hh;
+  return bx == null ? '' : leader(px, ay, bx, by, a, col); }
+function render(t) {
+  t = cl(t, 0, DUR); T = t;
+  const u = cl(t / DUR), s = 0.2 * u + 0.8 * eio(u);
+  camera.position.set(-10 + 22 * s, 8 + 4 * s, 430 - 50 * s); camera.lookAt(10 * s, 175 - 8 * s, -100); camera.updateMatrixWorld();
+  drawSky(t); const fb = drawFB(t);
+  renderer.render(scene, camera);
+  let sv = '';
+  sv += L(E('pRa'), 1.3, 0, 560, 520, RX, RY, '#ffb547');
+  sv += L(E('pHi'), 2.6, 0, 600, 880, fb ? fb[0] : null, fb ? fb[1] : null, '#7fd4ff');
+  sv += L(E('pSt'), 3.7, 0, 540, 1000, null, null, '#ff4a4a');
+  svg.innerHTML = sv;
+}
+await ready(render);
+</script>
+</body>
+</html>

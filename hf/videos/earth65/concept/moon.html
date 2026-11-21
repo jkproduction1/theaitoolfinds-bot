@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What if the Moon disappeared</title>
+<!-- earth65 r0: /what-if the Moon disappeared tonight. Procedural Earth + Moon (no map data, own look), not to scale.
+  Facts: NOAA "Tides and water levels": the Sun's tide-generating force is about 46% of the Moon's -> without the Moon only the
+  solar tide is left, ~0.46/1.46 ~ 1/3 of today's combined tide. Moonlight gone -> nights much darker. Tidal bulge drawn exaggerated. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill red" id="pGo">The Moon is gone</div>
+    <div class="pill" id="pTi">Tides shrink to about a third</div>
+    <div class="pill hot" id="pSu">Only the Sun's tides are left</div>
+    <div class="pill" id="pNi">Nights get much darker</div>
+    <div id="note">bulge exaggerated · not to scale</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend','<style>#note{position:absolute;left:0;right:0;top:1510px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:26px;color:rgba(200,215,235,.55)}</style>');
+const { renderer, scene, camera, bgU } = setup(30, [.0, .005, .015], [.02, .03, .06]);
+const rnd = mulberry32(65); const R = (a, b) => a + rnd() * (b - a);
+const NOISE = `
+float h3(vec3 p){ p=fract(p*0.3183099+.1); p*=17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float n3(vec3 x){ vec3 i=floor(x), f=fract(x); f=f*f*(3.0-2.0*f);
+  return mix(mix(mix(h3(i),h3(i+vec3(1,0,0)),f.x),mix(h3(i+vec3(0,1,0)),h3(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(h3(i+vec3(0,0,1)),h3(i+vec3(1,0,1)),f.x),mix(h3(i+vec3(0,1,1)),h3(i+vec3(1,1,1)),f.x),f.y),f.z); }
+float fbm(vec3 p){ float a=.5,s=0.; for(int i=0;i<6;i++){ s+=a*n3(p); p*=2.03; a*=.5; } return s; }`;
+const SUN = V(1, 0.12, 0.55).normalize();
+const earthM = new THREE.ShaderMaterial({ uniforms: { uSun: { value: SUN }, uT: { value: 0 }, uMoonL: { value: 1 } },
+  vertexShader: `varying vec3 vP; varying vec3 vN; varying vec3 vW; void main(){ vP=position; vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: NOISE + `uniform vec3 uSun; uniform float uT, uMoonL; varying vec3 vP; varying vec3 vN; varying vec3 vW;
+  void main(){ vec3 p=normalize(vP); float c=fbm(p*2.2+vec3(3.1,1.7,0.4)); float land=smoothstep(0.52,0.56,c);
+    float ice=smoothstep(0.80,0.9,abs(p.y));
+    vec3 ocean=mix(vec3(0.02,0.08,0.22),vec3(0.03,0.18,0.38),smoothstep(0.3,0.52,c));
+    vec3 ground=mix(vec3(0.16,0.30,0.10),vec3(0.50,0.40,0.24),fbm(p*7.0)); vec3 col=mix(ocean,ground,land); col=mix(col,vec3(0.9),ice);
+    float cloud=smoothstep(0.55,0.75,fbm(p*4.0+vec3(uT*0.03,0.,0.)));
+    float d=dot(normalize(vN),uSun); float day=smoothstep(-0.12,0.2,d);
+    vec3 lit=col*(0.08+1.2*max(d,0.))+vec3(cloud)*0.9*max(d,0.);
+    // night side: city lights + faint moonlight
+    float city=land*(1.-ice)*smoothstep(0.62,0.8,fbm(p*26.0))*1.4;
+    vec3 night=vec3(1.0,0.72,0.38)*city*(1.-day) + (col*0.55+vec3(cloud)*0.25)*0.32*uMoonL*(1.-day);
+    vec3 V=normalize(cameraPosition-vW); float rim=pow(1.-max(dot(normalize(vN),V),0.),3.);
+    vec3 c2=lit*day+night+vec3(0.25,0.5,1.0)*rim*(0.25+0.9*max(d+0.3,0.));
+    gl_FragColor=vec4(c2,1.); }` });
+const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 128, 64), earthM); scene.add(earth);
+const atm = new THREE.Mesh(new THREE.SphereGeometry(1.06, 64, 32), new THREE.ShaderMaterial({ uniforms: { uSun: { value: SUN } }, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide,
+  vertexShader: `varying vec3 vN; varying vec3 vW; void main(){ vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: `uniform vec3 uSun; varying vec3 vN; varying vec3 vW; void main(){ vec3 V=normalize(cameraPosition-vW); float r=pow(1.-abs(dot(vN,V)),2.5); float d=max(dot(vN,uSun)+0.35,0.); gl_FragColor=vec4(vec3(0.3,0.6,1.0)*r*d*1.4,1.); }` }));
+scene.add(atm);
+// tidal bulge: water shell stretched along an axis
+const bulgeM = new THREE.MeshPhysicalMaterial({ color: '#4fb3ff', transparent: true, opacity: 0.13, roughness: 0.1, emissive: '#1a6cff', emissiveIntensity: 0.2, depthWrite: false });
+const bulge = new THREE.Mesh(new THREE.SphereGeometry(1.012, 96, 48), bulgeM); scene.add(bulge);
+const bEdge = new THREE.Mesh(new THREE.SphereGeometry(1.012, 96, 48), new THREE.ShaderMaterial({ transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+  vertexShader: `varying vec3 vN; varying vec3 vW; void main(){ vN=normalize(mat3(modelMatrix)*normal); vec4 w=modelMatrix*vec4(position,1.); vW=w.xyz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: `varying vec3 vN; varying vec3 vW; void main(){ vec3 V=normalize(cameraPosition-vW); float r=pow(1.-abs(dot(normalize(vN),V)),4.); gl_FragColor=vec4(vec3(0.35,0.75,1.0)*r*0.7,1.); }` }));
+bulge.add(bEdge); bEdge.scale.setScalar(1);
+// moon
+const MOONP = V(1.0, 2.85, -0.4);
+const moonM = new THREE.ShaderMaterial({ uniforms: { uSun: { value: SUN }, uA: { value: 1 } }, transparent: true,
+  vertexShader: `varying vec3 vP; varying vec3 vN; void main(){ vP=position; vN=normalize(mat3(modelMatrix)*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+  fragmentShader: NOISE + `uniform vec3 uSun; uniform float uA; varying vec3 vP; varying vec3 vN;
+  void main(){ vec3 p=normalize(vP); float m=fbm(p*3.0); float cr=smoothstep(0.62,0.66,fbm(p*9.0+4.))*0.25; vec3 c=mix(vec3(0.42),vec3(0.82,0.8,0.76),smoothstep(0.4,0.62,m))-cr;
+    float d=max(dot(normalize(vN),uSun),0.); gl_FragColor=vec4(c*(0.03+1.25*d),uA); }` });
+const moon = new THREE.Mesh(new THREE.SphereGeometry(0.5, 96, 48), moonM); moon.position.copy(MOONP); scene.add(moon);
+// moon dust (dissolve)
+const NPm = 2600, mp0 = new Float32Array(NPm * 3), mv = new Float32Array(NPm * 3), mpos = new Float32Array(NPm * 3);
+for (let i = 0; i < NPm; i++) { const v = V(R(-1, 1), R(-1, 1), R(-1, 1)).normalize(); mp0.set([v.x * 0.5, v.y * 0.5, v.z * 0.5], i * 3); mv.set([v.x * R(0.3, 1.6), v.y * R(0.3, 1.6), v.z * R(0.3, 1.6)], i * 3); }
+const mGeo = new THREE.BufferGeometry(); mGeo.setAttribute('position', new THREE.BufferAttribute(mpos, 3));
+const dustM = new THREE.PointsMaterial({ map: softTex(), size: 0.06, color: '#e8e2d8', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
+const dust = new THREE.Points(mGeo, dustM); dust.position.copy(MOONP); scene.add(dust);
+// stars
+const NS = 1600, sp = new Float32Array(NS * 3); for (let i = 0; i < NS; i++) { const v = V(R(-1, 1), R(-1, 1), R(-1, 1)).normalize().multiplyScalar(R(60, 90)); sp.set([v.x, v.y, v.z], i * 3); }
+const sGeo = new THREE.BufferGeometry(); sGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+scene.add(new THREE.Points(sGeo, new THREE.PointsMaterial({ size: 0.16, color: '#cfd8ff', transparent: true, opacity: 0.8, depthWrite: false })));
+// sun glow off-screen right
+const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex(), color: '#fff1d6', transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending }));
+glow.position.copy(SUN.clone().multiplyScalar(40)); glow.scale.setScalar(26); scene.add(glow);
+// motion
+const TV0 = 0.9, TV1 = 2.0;
+function setCam(t) { const u = cl(t / DUR), s = 0.2 * u + 0.8 * eio(u);
+  const a = -0.12 + 0.22 * s; const r = 9.6 - 3.0 * sm(ramp(t, 1.2, 6.3));
+  camera.position.set(Math.sin(a) * r, 1.0 + 0.3 * s, Math.cos(a) * r); camera.lookAt(0, 0.75 - 0.75 * sm(ramp(t, 1.2, 5.5)), 0); camera.updateMatrixWorld(); }
+const E = id => document.getElementById(id);
+const moonDir = MOONP.clone().normalize();
+const bulgeDir = t => moonDir.clone().lerp(SUN, eio(ramp(t, 2.3, 3.9))).normalize();
+const bulgeAmt = t => 0.16 - (0.16 - 0.05) * eio(ramp(t, 2.0, 3.6));
+const lab = labels(camera, [
+  { el: E('pGo'), t0: 1.05, t1: 3.4, at: () => [MOONP.x, MOONP.y, MOONP.z], col: '#ff4a4a', pos: (x, y) => [cl(x - 80, 300, 780), cl(y + 190, 260, 1480)] },
+  { el: E('pTi'), t0: 2.2, at: t => { const d = bulgeDir(t); const k = 1.012 * (1 + bulgeAmt(t)); return [-d.x * k, -d.y * k, -d.z * k]; }, pos: (x, y) => [cl(x + 60, 400, 680), cl(y + 200, 300, 1420)] },
+  { el: E('pSu'), t0: 3.6, at: t => { const d = bulgeDir(t); const k = 1.012 * (1 + bulgeAmt(t)); return [d.x * k, d.y * k, d.z * k]; }, col: '#ffb547', pos: (x, y) => [cl(x - 40, 380, 700), cl(y - 260, 300, 1480)] },
+  { el: E('pNi'), t0: 4.5, at: () => [-0.8, -0.2, 0.55], pos: (x, y) => [cl(x - 20, 330, 750), cl(y + 330, 300, 1450)] },
+]);
+const q = new THREE.Quaternion(), up = V(0, 1, 0);
+function render(t) {
+  t = cl(t, 0, DUR); setCam(t);
+  earthM.uniforms.uT.value = t; earth.rotation.y = t * 0.08;
+  const v = ramp(t, TV0, TV1);
+  moonM.uniforms.uA.value = 1 - sm(ramp(t, TV0, TV0 + 0.35)); moon.visible = moonM.uniforms.uA.value > 0.002; moon.scale.setScalar(1 + 0.08 * sm(ramp(t, TV0 - 0.2, TV0)));
+  dustM.opacity = sm(ramp(t, TV0, TV0 + 0.15)) * (1 - sm(ramp(t, TV0 + 0.5, TV1 + 0.4)));
+  const e = eout(v) * 0.75; for (let i = 0; i < NPm; i++) { mpos[i * 3] = mp0[i * 3] + mv[i * 3] * e; mpos[i * 3 + 1] = mp0[i * 3 + 1] + mv[i * 3 + 1] * e; mpos[i * 3 + 2] = mp0[i * 3 + 2] + mv[i * 3 + 2] * e; }
+  mGeo.attributes.position.needsUpdate = true; dust.visible = dustM.opacity > 0.002;
+  earthM.uniforms.uMoonL.value = 1 - sm(ramp(t, TV0, TV1 + 1.5));
+  const d = bulgeDir(t); q.setFromUnitVectors(up, d); bulge.quaternion.copy(q); bulge.scale.set(1, 1 + bulgeAmt(t), 1);
+  renderer.render(scene, camera); lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>How a sneeze works</title>
+<!-- body66 r2: /explain-3d how a sneeze works. Generic head + airway drawn in code (2D canvas with depth shading), simplified.
+  Facts (Cleveland Clinic "Sneezing"; Library of Congress "What causes us to sneeze?"): something irritates the nose lining -> the brain's
+  sneeze centre triggers a deep breath in, the eyes shut and the throat closes so pressure builds in the chest, then the air is forced out
+  through the nose and mouth. Bourouiba (JAMA 2020, MIT): the turbulent sneeze cloud can travel up to 7-8 m (23-27 ft). -->
+<script src="common2d.js"></script></head><body>
+<div id="stage"><canvas id="cv" width="1080" height="1920"></canvas><div id="ov"><svg id="lines" width="1080" height="1920"></svg>
+<div class="pill" id="p1">1 · Something tickles your nose</div><div class="pill hot" id="p2">2 · Deep breath in</div>
+<div class="pill" id="p3">3 · Eyes shut, throat closes</div><div class="pill red" id="p4">4 · Air blasts out</div>
+<div class="pill" id="p5">The cloud can reach 26 ft (8 m)</div></div></div>
+<script>
+const cv = document.getElementById('cv'), g = cv.getContext('2d'), svg = document.getElementById('lines'); const R = mulberry32(662);
+const dust = []; for (let i = 0; i < 40; i++) dust.push([R() * 400 + 620, R() * 300 + 520, R() * 6.28, 2 + R() * 4]);
+const drops = []; for (let i = 0; i < 700; i++) { const a = (R() - 0.5) * (0.35 + R() * 0.9); drops.push([a, 0.4 + R() * 1.4, 1.5 + R() * 5, R(), R() < 0.4 ? 1 : 0]); }
+// head pivot (neck) and points in head space (pivot at 0,0)
+const PV = [250, 1250];
+function headPath() { const p = new Path2D();
+  p.moveTo(-40, 120); p.bezierCurveTo(-60, -40, -170, -120, -150, -330); p.bezierCurveTo(-130, -560, 60, -640, 200, -560);
+  p.bezierCurveTo(300, -500, 330, -400, 330, -330); p.bezierCurveTo(332, -300, 372, -270, 380, -230); // brow -> nose bridge
+  p.bezierCurveTo(395, -200, 420, -170, 410, -150); p.bezierCurveTo(400, -138, 375, -140, 362, -138); // nose tip
+  p.bezierCurveTo(360, -120, 368, -100, 365, -86); p.bezierCurveTo(372, -70, 368, -55, 360, -48); // lips
+  p.bezierCurveTo(366, -30, 360, -10, 340, 0); p.bezierCurveTo(300, 20, 260, 40, 200, 40); // chin -> jaw
+  p.bezierCurveTo(150, 60, 130, 90, 120, 160); p.lineTo(-40, 160); p.closePath(); return p; }
+const HP = headPath();
+const NOSE = [380, -150], MOUTH = [362, -70];
+function render(t) {
+  t = cl(t, 0, DUR);
+  g.setTransform(1, 0, 0, 1, 0, 0); const bg = g.createRadialGradient(520, 900, 80, 520, 900, 1300); bg.addColorStop(0, '#1b2840'); bg.addColorStop(1, '#05070c'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const cz = 1 + 0.08 * eio(ramp(t, 0, 6.3)); g.setTransform(cz, 0, 0, cz, 540 - 540 * cz, 960 - 960 * cz);
+  // phases
+  const tick = sm(ramp(t, 0.3, 1.1)), inh = sm(ramp(t, 1.2, 2.5)), hold = sm(ramp(t, 2.5, 2.9)), blast = ramp(t, 3.0, 6.3);
+  const ang = -0.16 * inh + 0.06 * hold - 0.0 + 0.42 * eout(ramp(t, 3.0, 3.25)) * (1 - 0.6 * sm(ramp(t, 3.6, 5.0)));
+  // torso + lungs (static frame, lungs scale)
+  g.save(); g.translate(PV[0], PV[1]);
+  const tg = g.createLinearGradient(-200, 0, 380, 0); tg.addColorStop(0, 'rgba(120,170,230,.10)'); tg.addColorStop(1, 'rgba(160,200,255,.22)');
+  g.fillStyle = tg; g.strokeStyle = 'rgba(160,210,255,.5)'; g.lineWidth = 3; g.beginPath(); g.moveTo(-60, 100); g.bezierCurveTo(-260, 160, -280, 400, -260, 800); g.lineTo(380, 800); g.bezierCurveTo(400, 420, 330, 160, 130, 100); g.closePath(); g.fill(); g.stroke();
+  const ls = 1 + 0.16 * inh * (1 - sm(ramp(t, 3.0, 3.4))) - 0.06 * sm(ramp(t, 3.0, 3.4));
+  for (const s of [-1, 1]) { g.save(); g.translate(60 + s * 110, 430); g.scale(ls, ls);
+    const lg = g.createRadialGradient(-s * 20, -40, 10, 0, 0, 170); lg.addColorStop(0, '#ff9aa8'); lg.addColorStop(1, '#b8405a');
+    g.fillStyle = lg; g.globalAlpha = 0.85; g.beginPath(); g.ellipse(0, 0, 95, 190, s * 0.12, 0, 7); g.fill(); g.restore(); }
+  g.strokeStyle = '#e88a9a'; g.lineWidth = 22; g.lineCap = 'round'; g.beginPath(); g.moveTo(60, 250); g.lineTo(60, 40); g.stroke();
+  // pressure glow while holding
+  if (hold > 0 && t < 3.2) { const pg = g.createRadialGradient(60, 420, 20, 60, 420, 300); pg.addColorStop(0, `rgba(255,120,80,${0.35 * hold})`); pg.addColorStop(1, 'rgba(255,120,80,0)'); g.fillStyle = pg; g.fillRect(-300, 100, 700, 700); }
+  // head
+  g.rotate(ang);
+  const hg = g.createLinearGradient(-150, -600, 400, 100); hg.addColorStop(0, 'rgba(150,190,240,.20)'); hg.addColorStop(1, 'rgba(190,220,255,.34)'); g.fillStyle = hg; g.fill(HP);
+  g.strokeStyle = 'rgba(190,225,255,.85)'; g.lineWidth = 4; g.stroke(HP);
+  // airway: nasal cavity -> throat -> trachea
+  g.strokeStyle = '#ff8fa0'; g.lineWidth = 26; g.lineCap = 'round'; g.lineJoin = 'round'; g.globalAlpha = 0.9;
+  g.beginPath(); g.moveTo(NOSE[0] - 20, NOSE[1] + 5); g.bezierCurveTo(260, -170, 140, -170, 110, -110); g.lineTo(80, 40); g.lineTo(60, 160); g.stroke();
+  g.beginPath(); g.moveTo(MOUTH[0] - 10, MOUTH[1]); g.quadraticCurveTo(230, -60, 110, -60); g.stroke(); g.globalAlpha = 1;
+  // nasal lining tickle glow
+  if (tick > 0) { const ng = g.createRadialGradient(300, -160, 0, 300, -160, 120); ng.addColorStop(0, `rgba(255,200,90,${0.8 * tick * (1 - sm(ramp(t, 3.0, 3.6)))})`); ng.addColorStop(1, 'rgba(255,200,90,0)'); g.fillStyle = ng; g.fillRect(150, -300, 300, 300); }
+  // throat closing (soft palate) marker
+  if (hold > 0) { g.fillStyle = `rgba(255,90,90,${hold * (1 - sm(ramp(t, 3.0, 3.15)))})`; g.beginPath(); g.ellipse(100, -90, 34, 20, 0.4, 0, 7); g.fill(); }
+  // eye: open -> shut
+  const shut = sm(ramp(t, 2.5, 2.75)) * (1 - sm(ramp(t, 4.0, 4.4)));
+  g.save(); g.translate(270, -300); g.fillStyle = '#e8f2ff'; g.beginPath(); g.ellipse(0, 0, 34, 18 * (1 - shut) + 1.5, 0, 0, 7); g.fill();
+  if (shut < 0.8) { g.fillStyle = '#1d2a40'; g.beginPath(); g.arc(10, 0, 11 * (1 - shut), 0, 7); g.fill(); }
+  g.strokeStyle = 'rgba(190,225,255,.9)'; g.lineWidth = 4; g.beginPath(); g.ellipse(0, 0, 36, 20 * (1 - shut) + 2, 0, Math.PI, 0); g.stroke(); g.restore();
+  const m = g.getTransform(); const nose = m.transformPoint(new DOMPoint(NOSE[0] + 20, NOSE[1])), mouth = m.transformPoint(new DOMPoint(MOUTH[0] + 10, MOUTH[1]));
+  g.restore();
+  // dust drifting into the nose, then breathed in
+  g.save(); for (const d of dust) { const k = sm(ramp(t, 0.0, 1.8 + d[2] * 0.1)); const x = d[0] + (nose.x - d[0]) * k * 0.95 + Math.sin(t * 2 + d[2]) * 10, y = d[1] + (nose.y - d[1]) * k * 0.95 + Math.cos(t * 1.7 + d[2]) * 10;
+    if (k > 0.97) continue; g.fillStyle = 'rgba(255,230,160,.85)'; g.beginPath(); g.arc(x, y, d[3], 0, 7); g.fill(); } g.restore();
+  // inhale arrows
+  if (inh > 0 && t < 2.8) { g.save(); g.globalAlpha = 0.8 * Math.sin(Math.PI * ramp(t, 1.2, 2.8)); g.strokeStyle = '#9fdcff'; g.lineWidth = 6;
+    for (let k = 0; k < 3; k++) { const u = (t * 1.6 + k / 3) % 1; const x = nose.x + 260 - 220 * u, y = nose.y - 40 + k * 40; g.beginPath(); g.moveTo(x + 60, y); g.lineTo(x, y); g.lineTo(x + 18, y - 14); g.moveTo(x, y); g.lineTo(x + 18, y + 14); g.stroke(); } g.restore(); }
+  // blast: droplets + cloud
+  if (blast > 0) { g.save(); g.globalCompositeOperation = 'lighter';
+    for (const d of drops) { const src = d[4] ? nose : mouth; const tt = t - 3.05 - d[3] * 0.25; if (tt < 0) continue;
+      const v = 620 * d[1], dist = v * (1 - Math.exp(-tt * 1.6)) / 1.6; const x = src.x + Math.cos(d[0]) * dist, y = src.y + Math.sin(d[0]) * dist + 30 * tt * tt * (d[2] > 4 ? 1 : 0.3);
+      const a = Math.max(0, 1 - tt / 4.0); g.fillStyle = `rgba(185,232,255,${0.95 * a})`; g.beginPath(); g.arc(x, y, d[2] * (1 + tt * 0.3), 0, 7); g.fill(); }
+    const cr = 60 + 380 * eout(ramp(t, 3.05, 6.0)); const cx = mouth.x + cr * 0.8, cy = mouth.y - 20; const cg = g.createRadialGradient(cx, cy, 0, cx, cy, cr);
+    cg.addColorStop(0, `rgba(140,200,255,${0.38 * (1 - sm(ramp(t, 5.4, 6.3)))})`); cg.addColorStop(1, 'rgba(140,200,255,0)'); g.fillStyle = cg; g.beginPath(); g.arc(cx, cy, cr, 0, 7); g.fill(); g.restore(); }
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  const S = p => [540 + (p.x - 540) * cz, 960 + (p.y - 960) * cz];
+  LABEL(svg, [
+    { id: 'p1', t0: 0.35, t1: 1.3, pos: [560, 420], at: S(nose) },
+    { id: 'p2', t0: 1.3, t1: 2.5, pos: [560, 420], at: [540 + (PV[0] + 170 - 540) * cz, 960 + (PV[1] + 430 - 960) * cz], col: '#ffb547' },
+    { id: 'p3', t0: 2.5, t1: 3.05, pos: [560, 420] },
+    { id: 'p4', t0: 3.05, t1: 4.4, pos: [560, 420], col: '#ff4a4a' },
+    { id: 'p5', t0: 4.4, pos: [560, 420] },
+  ], t);
+}
+READY(render);
+</script></body></html>

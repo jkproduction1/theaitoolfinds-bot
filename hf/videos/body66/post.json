@@ -1,4 +1,9 @@
 {
+ "url": "https://theaitoolfinds.gumroad.com/l/luszgi/landing/embed?c=x-ray|zoom-in|explain-3d&t=the%20human%20hand|a%20hair%20follicle|how%20a%20sneeze%20works",
  "keyword": "BODY",
- "angle": "app-demo"
+ "angle": "app-demo",
+ "tool_name": "Claude body styles",
+ "cover_at": 5.5,
+ "summary_cs": "„Type it, get it #54“ (PROMPTS, 15:00), trio z picklistu „Inside your body 4“: /x-ray lidská ruka (27 kostí = 14 článků prstů + 5 záprstních + 8 zápěstních, počítadlo), /zoom-in vlasový folikul (bulbus, mazová žláza, vzpřimovač chlupu = husí kůže, ~½ palce za měsíc, AAD), /explain-3d kýchnutí (podráždění → nádech → zavřené oči a hrdlo → výbuch, oblak až 8 m dle MIT/JAMA 2020). Vše kreslené v kódu.",
+ "caption": "Twenty-seven bones in one hand, the tiny muscle behind goosebumps, and what really happens in a sneeze. One line in Claude each.\n\nNumber 54 of Type it, get it.\n\nWant the exact prompts? Comment BODY.\n\n#humanbody #anatomy #claudeai"
 }

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How a zipper works</title>
+<!-- inside67 r1: /explain-3d how a zipper works. Generic metal zipper (own design). True mechanism: two rows of teeth on fabric
+  tapes; each tooth has a bump (hook) on top and a hollow underneath. The slider has a Y-shaped channel: pulled up, its narrowing
+  channel presses the rows together so each bump nests in the hollow of the tooth above it on the other side; pulled down, the wedge
+  in the slider pushes the teeth apart. Refs: Smithsonian / explainthatstuff.com "Zippers", Sundback patent US1219881 (1917).
+  Simplified, not to scale. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pSl">Slider</div>
+    <div class="pill hot" id="pY">Y-shaped channel</div>
+    <div class="pill" id="pHo">Each hook locks into a hollow</div>
+    <div class="pill red" id="pWe">Pull down: a wedge splits them</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from './RoundedBoxGeometry.js';
+import { W, H, DUR, cl, ramp, sm, eio, eout, popS, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(30, [.03, .033, .04], [.20, .205, .22]);
+const add = (g, m, p, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); p.add(o); return o; };
+const brass = new THREE.MeshStandardMaterial({ color: '#d9ad5b', metalness: 1, roughness: 0.25 });
+const brassHot = new THREE.MeshStandardMaterial({ color: '#ffcf7a', metalness: 0.9, roughness: 0.25, emissive: '#ff8a2a', emissiveIntensity: 0 });
+const tapeM = new THREE.MeshStandardMaterial({ color: '#2c3d63', roughness: 0.95 });
+const slM = new THREE.MeshPhysicalMaterial({ color: '#cfd6de', metalness: 0.9, roughness: 0.2, transparent: true, opacity: 0.38, depthWrite: false, side: THREE.DoubleSide });
+const slSolid = new THREE.MeshStandardMaterial({ color: '#cfd6de', metalness: 1, roughness: 0.22 });
+const wedgeM = new THREE.MeshStandardMaterial({ color: '#ff5a3a', metalness: 0.5, roughness: 0.3, emissive: '#ff2a1a', emissiveIntensity: 0 });
+const P = 0.8, N = 34, Y0 = -14;
+// tooth: body + hook bump on top + hollow (dark dimple) underneath
+function toothGeo() { const g = new RoundedBoxGeometry(1.7, 0.62, 1.2, 3, 0.18); return g; }
+const tg = toothGeo(), bump = new THREE.SphereGeometry(0.26, 16, 10), dimM = new THREE.MeshStandardMaterial({ color: '#5a4320', metalness: 0.6, roughness: 0.6 });
+const teeth = []; const tapeG = new THREE.BoxGeometry(3.4, P * 1.04, 0.3);
+for (const side of [-1, 1]) for (let k = 0; k < N; k++) {
+  const g = new THREE.Group(); scene.add(g);
+  const m = k % 7 === 3 ? brassHot : brass;
+  add(tg, m, g); add(bump, m, g, -side * 0.55, 0.3, 0).scale.set(1, 0.55, 1);
+  add(new THREE.CircleGeometry(0.24, 16).rotateX(Math.PI / 2), dimM, g, -side * 0.55, -0.32, 0);
+  add(tapeG, tapeM, g, side * 2.3, 0, -0.05);
+  teeth.push({ g, side, y: Y0 + k * P + (side > 0 ? P / 2 : 0) });
+}
+
+// slider: two cheeks + top plate (see-through) + wedge + pull tab
+const sl = new THREE.Group(); scene.add(sl);
+{ const sh = new THREE.Shape(); sh.moveTo(-3.4, 2.4); sh.lineTo(3.4, 2.4); sh.lineTo(2.0, -2.2); sh.lineTo(-2.0, -2.2); sh.lineTo(-3.4, 2.4);
+  const g = new THREE.ExtrudeGeometry(sh, { depth: 0.3, bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.1, bevelSegments: 3 });
+  const top = add(g, slM, sl, 0, 0, 0.75); const bot = add(g, slM, sl, 0, 0, -1.05);
+  const wd = new THREE.Shape(); wd.moveTo(0, 0.2); wd.lineTo(0.55, 1.4); wd.lineTo(0, 2.6); wd.lineTo(-0.55, 1.4); wd.lineTo(0, 0.2);
+  add(new THREE.ExtrudeGeometry(wd, { depth: 1.6, bevelEnabled: false }), wedgeM, sl, 0, 0, -0.8);
+  for (const s of [-1, 1]) { const c = add(new THREE.BoxGeometry(0.25, 4.6, 1.9), slM, sl, s * 2.7, 0.1, 0); c.rotation.z = s * 0.29; }
+  const tab = new THREE.Group(); tab.position.set(0, -1.2, 1.25); sl.add(tab); sl.userData.tab = tab;
+  add(new RoundedBoxGeometry(1.6, 4.2, 0.3, 3, 0.14), slSolid, tab, 0, -2.0, 0);
+  add(new THREE.TorusGeometry(0.45, 0.12, 8, 24), slSolid, tab, 0, 0, 0).rotation.y = Math.PI / 2; }
+// lights
+scene.add(new THREE.HemisphereLight('#eef2f8', '#2a2622', 0.7));
+const key = new THREE.DirectionalLight('#fff3e6', 2.6); key.position.set(20, 30, 25); scene.add(key);
+const rim = new THREE.DirectionalLight('#9fc8ff', 1.8); rim.position.set(-25, 10, -20); scene.add(rim);
+const glow = new THREE.PointLight('#ffb070', 0, 14, 1.5); scene.add(glow);
+// slider path: up, pause, a bit back down
+const sy = t => -7 + 11 * eio(ramp(t, 0.3, 3.4)) - 4.5 * eio(ramp(t, 4.1, 6.2));
+function openX(dy) { // dy = tooth y - slider centre; above the slider the rows spread in a V
+  if (dy < -1.6) return 0; if (dy < 2.4) return 1.15 * sm((dy + 1.6) / 4.0); return 1.15 + (dy - 2.4) * 0.42; }
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.25 * u + 0.75 * eio(u);
+  const az = 0.62 - 0.36 * s, el = 0.42 - 0.12 * s, d = 38 - 7 * s;
+  const ly = -1.0 + 2.2 * s;
+  camera.position.set(Math.sin(az) * Math.cos(el) * d, ly + Math.sin(el) * d, Math.cos(az) * Math.cos(el) * d);
+  camera.lookAt(0, ly, 0); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pSl'), t0: 0.6, t1: 3.4, at: t => [2.4, sy(t) + 1.6, 1.0], pos: (x, y) => [cl(x + 120, 220, 860), cl(y - 260, 260, 1480)] },
+  { el: E('pY'), t0: 1.3, t1: 3.9, at: t => [-1.4, sy(t) + 0.6, 0.9], col: '#ffb547', pos: (x, y) => [cl(x - 60, 300, 780), cl(y - 380, 260, 1480)] },
+  { el: E('pHo'), t0: 2.2, at: t => [0.0, sy(t) - 4.5, 0.6], pos: (x, y) => [cl(x, 430, 650), cl(y + 330, 300, 1560)] },
+  { el: E('pWe'), t0: 4.2, at: t => [0, sy(t) + 1.5, 0.9], col: '#ff4a4a', pos: (x, y) => [cl(x, 430, 650), cl(y - 330, 260, 1480)] },
+]);
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  const s = sy(t);
+  sl.position.set(0, s, 0);
+  sl.userData.tab.rotation.x = 0.35 + 0.25 * Math.sin(t * 2.2);
+  for (const d of teeth) { const ox = openX(d.y - s);
+    d.g.position.set(d.side * (0.55 + ox), d.y, 0); d.g.rotation.z = d.side * Math.min(0.35, ox * 0.06); }
+  // tapes follow the V above the slider: simple skew by moving a second tape piece is overkill; tilt the upper teeth only
+  brassHot.emissiveIntensity = 0.5 * sm(ramp(t, 2.2, 2.6));
+  wedgeM.emissiveIntensity = 1.4 * sm(ramp(t, 4.1, 4.4)) * (0.6 + 0.4 * Math.sin(t * 8));
+  glow.position.set(0, s, 4); glow.intensity = 40 * sm(ramp(t, 0.8, 1.6));
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>
