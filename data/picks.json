@@ -1,128 +1,128 @@
 {
-  "date": "2026-11-20",
+  "date": "2026-11-21",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What if… Earth 11",
+      "title": "What if… Earth 12",
       "commands": [
-        "/what-if the Moon disappeared tonight",
-        "/simulate a meteor storm over a city",
-        "/scale the Grand Canyon versus Valles Marineris"
+        "/what-if Earth had two Moons",
+        "/simulate an underwater volcano erupting",
+        "/scale the tallest wave ever versus a skyscraper"
       ],
-      "why": "Earth what-if in Zack D. Films 3D is still our strongest IG hook (earth8); all three objects new"
+      "why": "Earth what-if in Zack D. Films 3D is still our strongest IG hook (earth8, earth41); all three objects new"
     },
     {
-      "title": "Famous video styles 10",
+      "title": "Famous video styles 11",
       "commands": [
-        "/flat-science why cats land on their feet",
-        "/paper-collage how the Suez Canal was dug",
-        "/painted-story how Machu Picchu stayed hidden"
+        "/flat-science why we yawn",
+        "/paper-collage how the Panama Canal lifts ships",
+        "/painted-story how Pompeii was frozen in time"
       ],
       "why": "explainer-styles series = best IG save rate and median; same three looks, fresh curiosity topics"
     },
     {
-      "title": "Inside your body 4",
+      "title": "Scary space 6",
       "commands": [
-        "/x-ray the human hand",
-        "/zoom-in a hair follicle",
-        "/explain-3d how a sneeze works"
+        "/deep-dive inside a neutron star",
+        "/what-if a rogue planet passed Earth",
+        "/scale the biggest black hole versus the Solar System"
       ],
-      "why": "body16/body26 'what's inside you' worked on both platforms; sneeze adds a fun, relatable angle in flu season"
+      "why": "space7/space14 are our two TikTok outliers; scary-space 'what if' keeps the Zack D. Films feel with new objects"
     },
     {
-      "title": "What's inside everyday things 7",
+      "title": "Inside your body 5",
       "commands": [
-        "/x-ray a washing machine",
-        "/explain-3d how a zipper works",
-        "/explode wireless earbuds"
+        "/x-ray the human knee",
+        "/zoom-in a taste bud",
+        "/explain-3d how hiccups happen"
       ],
-      "why": "'what's inside / how it works' is our steadiest TikTok line (mystery17, inside3); everyday objects nobody has opened"
+      "why": "body16/body26/body66 'what's inside you' worked on both platforms; hiccups is a relatable, shareable angle"
     },
     {
-      "title": "Liquid chrome & glass motion 5",
+      "title": "What's inside everyday things 8",
       "commands": [
-        "/liquid-chrome a smartwatch reveal",
-        "/glassmorphism a weather widget",
-        "/kinetic-type a Black Friday sale"
+        "/x-ray a jet ski",
+        "/explain-3d how an elevator stops falling",
+        "/explode a gaming mouse"
       ],
-      "why": "motion-design trio for variety and 'Get the system' buyers; Black Friday (27. 11.) makes sale motion timely"
+      "why": "'what's inside / how it works' is our steadiest TikTok line (mystery17, inside3); objects nobody has opened"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this year-in-review stats story using Claude",
+      "title": "How to make this loading-bar reveal of your photo using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Spotify Wrapped vychází začátkem prosince a lidi už teď sdílí vlastní 'wrapped' recapy; vlastní design, žádné logo Spotify.",
+      "trend": "Na TikToku teď vrcholí 'loading percentage' přechody (makeup/kostým se načítá po procentech, virlo.ai listopad); verze s vlastní fotkou.",
       "steps": [
-        "Give Claude your year in five numbers.",
-        "Ask for an animated story recap with bold colors and big stats.",
-        "Claude builds it, you tweak it."
-      ],
-      "seconds": 13,
-      "keyword": "WRAPPED",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this Black Friday price drop animation using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "Black Friday je 27. 11., všechny značky a malé shopy teď hledají sale reels; animace přeškrtnuté ceny je typický formát.",
-      "steps": [
-        "Tell Claude your product, old price and new price.",
-        "Ask for a bold sale animation where the price gets slashed.",
+        "Give Claude one photo of you.",
+        "Ask for a loading bar that fills from 0 to 100% and reveals the photo.",
         "Claude builds it, you tweak it."
       ],
       "seconds": 12,
-      "keyword": "SALE",
+      "keyword": "LOADING",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this 3D Christmas tree of your photos using Claude",
+      "title": "How to make this 24-door advent calendar animation using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Začíná vánoční sezóna (advent 29. 11.), na IG se šíří 'photo memory' edity; 3D stromek z vlastních fotek v three.js.",
+      "trend": "Advent začíná 29. 11. a 1. 12. se otvírají první okénka; lidi i shopy hledají adventní posty na každý den.",
       "steps": [
-        "Give Claude ten of your favourite photos.",
-        "Ask for a spinning 3D tree where every ornament is a photo.",
+        "Tell Claude what is behind each of the 24 doors.",
+        "Ask for a 3D calendar where one door swings open each day.",
         "Claude builds it, you tweak it."
       ],
       "seconds": 13,
-      "keyword": "TREE",
+      "keyword": "ADVENT",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this northern lights sky over your city using Claude",
+      "title": "How to make this snow globe of your city using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Polární záře v listopadu znovu plní feedy (silné sluneční maximum); kreslená noční silueta tvého města s animovanou aurorou.",
+      "trend": "Začíná vánoční sezóna a na IG/TikToku se šíří vánoční přechody a edity; zasněžená koule s vlastním městem je hezký sdílitelný formát.",
       "steps": [
-        "Tell Claude your city and its skyline.",
-        "Ask for a night sky with slow, glowing northern lights.",
+        "Tell Claude your city and three landmarks.",
+        "Ask for a 3D snow globe that shakes and fills with snow.",
         "Claude builds it, you tweak it."
       ],
-      "seconds": 12,
-      "keyword": "AURORA",
+      "seconds": 13,
+      "keyword": "GLOBE",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this vintage Christmas film from your photo using Higgsfield",
+      "title": "How to make this confetti pop reveal using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "Nový rychle rostoucí formát 'Boom Clap confetti pop' na TikToku (virlo.ai, týden 16. 11.); hodí se na oznámení, slevy i odpočty.",
+      "steps": [
+        "Tell Claude what you want to reveal.",
+        "Ask for a gift box that bursts into confetti on the beat.",
+        "Claude builds it, you tweak it."
+      ],
+      "seconds": 11,
+      "keyword": "CONFETTI",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make your pet do this Christmas dance using Higgsfield",
       "tool": "Higgsfield",
       "url": "https://higgsfield.ai",
-      "trend": "Retro 'old family Christmas tape' edity (VHS / 8mm look) jsou každý prosinec virální na TikToku a IG; foto se oživí do krátkého filmu.",
+      "trend": "Na TikToku jedou vánoční taneční trendy ('How Christmas Dances Will Look This Year', 'Last Christmas' dance, virlo.ai listopad); verze s mazlíčkem přes motion control.",
       "steps": [
-        "Upload one family photo to Higgsfield.",
-        "Pick a video model and ask for a warm 8mm Christmas film look.",
-        "Higgsfield builds it, you tweak it."
+        "Upload one photo of your pet.",
+        "Pick a dance clip as the motion reference.",
+        "Higgsfield animates it, you tweak it."
       ],
-      "seconds": 13,
-      "keyword": "VINTAGE",
-      "cost": "kredity Higgsfield, cca 10–20",
+      "seconds": 12,
+      "keyword": "DANCE",
+      "cost": "kredity Higgsfield, cca 10–30 (motion control video)",
       "handle": ""
     }
   ],
