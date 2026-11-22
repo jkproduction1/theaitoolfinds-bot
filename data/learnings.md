@@ -1,85 +1,73 @@
 # learnings.md: what works for @theaitoolfinds (rewrite on Wednesday + Sunday runs from data/stats.json)
 
-Last update: 2026-11-15 (Sunday run), stats pulled 2026-11-14; Nov posts mapped to videos via data/posted.json post_id.
-Ages below = days since publish at the 11-14 pull. Posts from 11-12/13/14 are 0–2 days old (still climbing; styles37 was only hours old).
-Watch time: data/retention.md is still EMPTY, so nothing can be said about length vs. retention yet.
-Mapping caveats: two 11-10 IG-only posts have no name in Zernio; by caption they are the planet21 pair ("Claude animates it from one
-command." = planet21 prompt-first 3,166; "Comment PLANET…" = probably planet21r result-first 13,045; the second is a guess).
-"styles19" was posted twice (11-10 prompt-first v1, 11-13 result-first rewrite = styles19r) and "space14" twice (11-09 "scariest things
-in space", 11-11 TT "how a star dies" = space14b). styles20, styles20r and styles29 have NO stats (not posted through Zernio).
+Last update: 2026-11-22 (Sunday run), stats pulled 2026-11-21. **Instagram decides (Jan, 2026-11-18); TikTok only briefly.**
+Posts mapped by name / data/posted.json post_id; IG story entries (no hook, ~400-700 views) are excluded.
+Not in stats yet: everything released 11-20 and later except styles60/inside59 (earth61, styles62, inside63, usa64, earth65-67).
+Several IG posts have no IG row (inside49, styles47, inside53, versus56, heist32, asteroid24) -> unknown, not zero.
+Watch time: data/retention.md is still EMPTY -> nothing about length vs. retention. Ask Jan for screenshots again.
 
-## The big change since Wednesday
-- **IG: the "famous explainer style" series is the new engine.** styles33 = **113,899 IG views in ~1 day** (2,965 likes / 6,515 saves /
-  1,736 shares / 1,249 comments); styles19 54,316 (4 d), styles28 34,401 (2 d). Save rate 5.6–6.3% = the highest on the account
-  (earth8 4.8%, other App demos 2–4%). Shares 1.5–2.5% (others ≤1.8%).
-- **TikTok did not follow it.** The same styles posts on TT: 2,639 / 838 / 656 / 264. The IG/TT gap is ~40–170×.
-- **TikTok's space hit did NOT repeat.** After space7 (255,601 TT, 6 d) and space14 (60,587 TT, 5 d), the next space/what-if posts did
-  1,321 (space14b, star dies) and 749 (asteroid24). Wednesday's guess "space topic breaks TT" is weakened: TT App demos since 11-10
-  avg 1,738 / median 1,321 (n=5). Best TT post since 11-10 is mystery17 (4,556, "what's inside the stuff you use").
-- earth8 still growing on IG: 683,932 (was 513,871 on Wed), 32,609 saves, 12,992 comments.
+## Instagram, since 11-01 (views / saves)
+- Top 3: earth8 874,145 / 41,932 · space7 188,722 / 7,109 · styles33 147,793 / 8,222 (then inside3 135,428, storm45 98,963).
+- Bottom 3: hallmark 804 · claudemem 878 · unslop 878 (old Paper pain posts, 11-01/02).
+- Last 7 days (posted 11-15..11-21): top storm45 98,963 · styles44 98,516 · styles48 91,632; bottom styles42 5,274 ·
+  mystery52 14,954 · styles60 15,958. Targets from §3b: >=30k OK, <10k flop -> only styles42 is a flop.
+- App demo / "Type it, get it" IG: n=29, avg 73,289, **median 19,842**. Every other angle has median <= 1,534 (new-ability n=4,
+  relatable-pain n=5 878) except penguin10 (styles-list) 16,564. The format decides, the topic second.
 
-## Top / bottom 3 since 11-01 (views / likes / saves / shares / comments, age in days)
-TikTok top: space7 255,601 / 13,349 / 9,973 / 1,025 / 1,128 (6 d) · space14 60,587 / 2,497 / 1,762 / 155 / 284 (5 d) ·
-mystery17 4,556 / 144 / 80 / 9 / 39 (4 d) (then build3 3,111, styles28 2,639 at 2 d).
-TikTok bottom: tstack 164 (11 d) · styles37 264 (0 d, too young to judge) · styles19r 348 (1 d) (then visual3 407, motion3d2 437).
-Instagram top: earth8 683,932 / 22,346 / 32,609 / 11,766 / 12,992 (6 d) · space7 173,160 / 3,976 / 6,495 / 1,640 / 3,595 (6 d) ·
-inside3 125,404 / 2,242 / 5,036 / 1,607 / 1,295 (8 d) (then styles33 113,899 at 1 d, styles19 54,316, space14 53,247).
-Instagram bottom: hallmark 673 · unslop 700 · claudemem 710 (all old Paper pain posts, 11-01/02; then tstack 852, mika 930).
+## The finding of the week: the CAPTION's first line (guess, but a strong one)
+- All 4 IG posts >= 60k this week opened the caption with the promise line **"Type one command and Claude [verb] ..."**
+  (styles37 61k, storm45 99k, styles44 99k, styles48 92k).
+- Since the unique-caption rule (11-17), captions list the three topics ("Why is ice slippery? Why does popcorn pop? ...",
+  "How do bees make honey, ...") and land at 15-28k: around51 16k, mystery52 15k, honey54 28k, earth58 20k, styles60 16k, inside59 18k.
+- Same-day pair 11-17: styles48 (promise line) 91,632 vs around51 (topic list) 16,278. Same format, same styles family.
+- Caveats: newer posts are younger (1-4 days vs 5-6), styles42 (11-15, caption started "Comment FABLE...") did 5,274, and the
+  reach of the whole account may simply be cooling. n is small -> **test, don't conclude**.
+- Rule to keep: never an identical caption (Jan). Test: keep the PROMISE structure, vary the wording each time
+  ("Type one command and Claude opens up anything in 3D", "One command, and Claude turns a question into a film" ...), topics after it.
 
-## Hook / topic patterns
-- **IG winners share "Type one command and Claude [verb] you [concrete big thing]"**: what would happen to Earth (earth8), animates space
-  (space7), what's inside anything (inside3), explains anything in a famous video style (styles19/28/33). Every IG post ≥ 34k uses it.
-- "Famous video style" (paper collage / flat science / painted story) is a style promise, not a topic, and still won on IG → on IG the
-  *look* and the save-worthy prompt seem to matter more than the subject (guess; 3 strong posts, 1 young one).
-- **Re-wording the same video with a question hook lost:** styles19 prompt-first 54,316 IG (4 d) vs. its result-first rewrite styles19r
-  "Want your videos to look like the famous explainer channels?" 1,665 IG (1 d; styles33 had 113,899 at the same age). One pair, and a
-  re-post of known content, so this may be repost fatigue rather than the hook.
-- Generic framing stays weak: nature18 ("how nature works") 8,228 IG / 692 TT, motion13 ("like a motion designer") 1,374 TT.
-- Comments on IG hits are 1–2% of views (keyword DMs work at scale). Old Paper pain hooks: ≤ 2.8k IG, ~550–1,150 TT.
+## PROMPTS vs SYSTEM (mix v7 since 11-19)
+- In stats so far: PROMPTS earth58 19,842 + inside59 17,892 vs SYSTEM styles60 15,958 (IG, 1-2 days old). Same range -> the
+  system CTA does not obviously cost views. Sales per 100 DMs per slot are not in stats.json (need Gumroad utm_content + Zernio DMs).
+  **No conclusion yet; judge after 7 days (11-25) as BRAIN says.**
 
-## Formats (since 11-01; IG avg / median, TT avg / median)
-- **App demo, prompt-first "Type one command…" (non-styles)**: IG n=15 avg 77,558 / med 10,626; TT n=20 avg 17,012 / med 1,120.
-  Medians are the honest number: two TT outliers (space7, space14) carry the average.
-- **Fable explainer styles series** (styles19 v1, 28, 33, 37; 20/29 not posted): IG n=4 avg 51,484 / med 44,358 (incl. 3,322 for the
-  hours-old styles37); TT n=4 avg 1,099 / med 747. **Best IG median of any format, below the App demo median on TT.**
-- **Result-first twins**: styles19r 1,665 IG / 348 TT (1 d); planet21r (probable) 13,045 IG vs. planet21 prompt-first 3,166 IG (both
-  IG only, 4 d). Score 1–1, n=2, mapping of the planet pair partly guessed → **no conclusion yet**; styles20r has no numbers.
-- **Tutorial (§3e, "How to make this…")**: trip24 7,436 IG / 970 TT (3 d), gtamap22 2,950 IG (IG only, 3 d). Below the App demo
-  median on IG (10,626), at the median on TT. Two posts; heist32/tactics36/neon40 not in stats yet.
-- Sketch → Motion (sketch2) 5,023 IG / 737 TT; penguin10 (styles-list) 14,326 IG / 876 TT; Paper posts ≤ 2.8k IG.
-- **Length vs. views:** all mapped videos 12.8–30.2 s; Spearman dur_s vs. views TT −0.04 (n=28), IG +0.07 (n=23) → no link within this
-  range. No retention data, so nothing about watch time.
+## Hooks / topics (IG)
+- Winners: big global curiosity - Earth what-ifs (earth8), space (space7), what's inside (inside3), famous explainer styles
+  (styles33/44/48), nature at its most dangerous (storm45). Danger/scale words + one strong promise.
+- Weaker: cute/soft everyday questions (around51 popcorn/ice 16k, honey54 bees 28k), a single mystery story (mystery52 15k).
+- Voice line "Type slash <command> <topic>... and you get this" is identical on hits and misses -> it is the engine, not the differentiator.
+- Predictor on IG App demos (n=24, Spearman vs views): topic +0.28, hook_words +0.45, visuals -0.32, length -0.13, total score +0.09.
 
-## Predictor (recalibrated 2026-11-15)
-- Total score still runs AGAINST views (Spearman TT −0.32 n=28, IG −0.62 n=23): the format decides, and App demos score low on hook/payoff.
-  Inside App demos only (TT n=17): visuals +0.43 (same as Wed, +0.42), length +0.26, hook −0.05, payoff constant.
-- Change: weights hook 14→12, payoff 10→9, visuals 16→18, length 12→13. angle_prior (same median blend as 11-11, because the strict
-  avg rule would put all other angles at ≤0.07 behind two outliers): relatable-pain 0.96, new-ability 0.78, styles-list 0.83, fear 0.48,
-  listicle 0.20, app-demo 1.0. Details in hf/predict_weights.json "note".
-- Still a checklist, not a forecast: it cannot see topic, style or platform, and IG vs. TT now disagree by up to 170×.
+## TikTok (brief, does not decide anything)
+- Top: space7 365,876 · space14 65,300 · styles28 5,515 (mystery17 5,113). Bottom: tstack 165 · inside53 302 · honey54 321.
+- App demo TT median 893 (n=37); everything since 11-15 sits 300-970. TT keeps getting the same posts, no own tests (Jan, 11-18).
+
+## Length
+- All mapped videos 12.8-34 s. Spearman dur_s vs views: IG App demos +0.03 (n=24), TT App demos -0.19 (n=30) -> no link in this range.
+
+## Older findings, condensed (kept for reference)
+- Explainer-style series has the best IG save rate (5.6-6.3% on styles19/28/33); comments 1-2% of views = keyword DMs work at scale.
+- Result-first twins (styles19r, planet21r): 1-1, inconclusive; prompt-first is the rule now (Jan 11-12).
+- Tutorials (trip24 10k IG, gtamap22 ~3k): below App demos; format inactive since mix v5/v7.
+- Paper "pain" posts and generic framing (nature18 9.8k, motion13) stay weak.
+- Research leads from 11-15 (unverified): talking-object explainers, crowded Claude prompt-pack niche, Claude Code rule against
+  recreating specific games. 2026-11-22: no new web research pass this run (time went to the 3 videos); data/viral_inbox.md not read for new links.
 
 ## Test next
-- **Keep the explainer-style series daily for IG** (styles37 is the check: if it reaches ≥ 30k IG by Wednesday the series holds; if
-  < 10k, rotate styles/topics). Try new style sets in the same "famous video style" frame (guess: the frame matters more than the 3 styles).
-- **TikTok needs its own answer.** Space didn't repeat; "what's inside" (mystery17 4,556, build3 3,111) is the most consistent non-outlier.
-  Test 2–3 "what's inside / how it's made" App demos and compare TT medians, not averages.
-- Result-first vs. prompt-first: post one fresh (not re-posted) pair on the same day before deciding; re-posts of known content muddy it.
-- Tutorials: wait for heist32 / tactics36 / neon40 numbers; so far below App demos on IG.
-- Ask Jan again for 2–3 watch-time screenshots (styles33 IG, space7 TT, one weak demo) so length vs. retention can be judged.
-- Research leads (2026-11-15 WebSearch, **unverified**; check sources before scripting):
-  - "Everyday objects explain how they work" / talking-object explainers are pushed as a 2026 viral niche (cholyai newsletter, opus.pro,
-    korpi.ai, nim.video "AI Explainers"). Fits our "what's inside the stuff you use" line (mystery17 = our best recent TT): test one
-    App demo where the object itself is the narrator.
-  - Claude motion-graphics prompt packs are being sold/collected widely (fliki.ai "Claude Motion Graphics", roo.beehiiv prompts,
-    pasqualepillitteri "Opus 5.5 draws every frame" still circulating): the niche is getting crowded → keep our own named styles and the
-    DM keyword, the save rate suggests people want the prompts.
-  - Claude Code reportedly added a rule against recreating specific existing games (thursdai.news, Nov 5; v2.1.317 relaxes it for genre
-    descriptions). Check before any more "GTA 6 map"-type tutorials; phrase as genre ("open-world crime map"), not the game.
-  - New video models early Nov (thursdai.news): Pika H3 Flex open-weights text-to-video, OpenAI Images 2.6 with GIF/SVG export. Possible
-    Paper/Tutorial topic ("make a GIF/SVG from one prompt"), costs unknown.
-  - Higgsfield "Vibe Motion" (whyops.com review) is a competing prompt→motion-graphics product: possible comparison video (paid credits:
-    only if Jan taps).
-- data/viral_inbox.md: empty this week.
+1. Caption promise line ("Type one command and Claude ..." in new wording each time) on all 3 posts for 3-4 days; compare IG views
+   at the same age with the topic-list captions of 11-17..11-21.
+2. Keep reach topics (Earth, space, danger, what's inside) on 08:00 PROMPTS; avoid soft cute topics there.
+3. PROMPTS vs SYSTEM: on 11-25 compare views per slot + paid sales per 100 DMs (Gumroad utm_content).
+4. Ask Jan for watch-time screenshots (one hit, one 15k post) -> data/retention.md.
+
+## Predictor recalibration log
+- 2026-11-22 (Sun): **IG-first** (Jan 11-18), so angle_prior now from IG medians (stats 11-21), same median blend as before
+  (0.5*old + 0.5*median/app-demo median 19,842; the strict avg rule would zero everything behind earth8):
+  app-demo 1.0 (avg 73,289 / med 19,842, n=29), styles-list 0.83 (16,564, n=1, =), relatable-pain 0.96->0.50 (878, n=5),
+  new-ability 0.78->0.43 (1,534, n=4), fear 0.48->0.28 (1,527, n=1), listicle 0.20->0.13 (1,194, n=1); news/alternative/pain-command
+  no IG data, kept. Weights: topic 30->33, hook 12->11, visuals 18->16 (IG App demos: topic +0.28, hook -0.29, visuals -0.32; sum 100).
+  Total score vs IG views: all posts -0.05 (n=43), App demos +0.09 (n=24) -> still a checklist, not a forecast.
+- Earlier: 11-15 hook 14->12, payoff 10->9, visuals 16->18, length 12->13 (TikTok-based); 11-11 hook 17->14, payoff 12->10,
+  visuals 11->16; 11-08 app-demo 0.95->0.65, hook 20->17, visuals 8->11; 11-04 first calibration. Details: hf/predict_weights.json "note".
 
 ## 2026-11-16 Viral Styles Launchpad (Gumroad) — state and next steps
 - Product live: https://theaitoolfinds.gumroad.com/l/viral-styles-launchpad ($29, code LAUNCH auto-applied = $19 for the first 50). Files: Installation-Guide.html, viral-styles.zip, bonus.zip.
