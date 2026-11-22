@@ -5506,5 +5506,118 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "earth68",
+  "date": "2026-11-22",
+  "score": 76,
+  "mode": "script",
+  "features": {
+   "hook": 0.34,
+   "hook_words": 12,
+   "hook_end_s": 4.62,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.5,
+   "words": 44,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 4.6 s (cíl ≤2,5 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "space69",
+  "date": "2026-11-22",
+  "score": 73,
+  "mode": "script",
+  "features": {
+   "hook": 0.19,
+   "hook_words": 12,
+   "hook_end_s": 4.62,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 21.2,
+   "words": 51,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.07,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 4.6 s (cíl ≤2,5 s)",
+   "po CTA ještě 5.8 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "styles70",
+  "date": "2026-11-22",
+  "score": 73,
+  "mode": "script",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 4.23,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 2.6,
+   "dur_s": 18.9,
+   "words": 45,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.07,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 4.2 s (cíl ≤2,5 s)",
+   "po CTA ještě 5.8 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]
