@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles70 r2: /painted-story the first airplane flight (painterly look of styles62 painted_pompeii). Own generic dunes + a simple biplane drawn in code.
+// Facts (National Park Service, Wright Brothers National Memorial "1903 - The First Flight" nps.gov/wrbr; NASA "120 Years Ago: The First Powered
+// Flight at Kitty Hawk"): Dec 17, 1903, Kill Devil Hills near Kitty Hawk, North Carolina; first flight 12 seconds, 120 ft (37 m); cold, windy morning;
+// launched from a wooden rail. On screen: "Dec 17, 1903", "Near Kitty Hawk, North Carolina", "12 seconds in the air", "120 ft · 37 m", "The first powered flight".
+const g=document.getElementById('c').getContext('2d');const LERP=(a,b,t)=>a+(b-a)*t;
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const GY=1300, WW=2700;
+const WORLD=off(WW,2100,(p,w,h)=>{const R=R0(31);
+  const s=p.createLinearGradient(0,0,0,GY);s.addColorStop(0,'#5f7590');s.addColorStop(.6,'#a9b4bc');s.addColorStop(1,'#d9d2c0');p.fillStyle=s;p.fillRect(0,0,w,GY);
+  strokes(p,3200,R,0,0,w,GY,['#71879f','#98a7b4','#bfc4c4','#d8d0bc'],190,26,0.04,0.06,0.14);
+  // far sea strip
+  p.fillStyle='#6f8796';p.fillRect(0,1080,w,40);strokes(p,400,R,0,1080,w,40,['#5e7888','#9fb2bc'],70,5,0,0.15,0.25);
+  // big dune in the back
+  p.fillStyle='#cdb88e';p.beginPath();p.moveTo(900,1240);p.quadraticCurveTo(1350,760,1700,820);p.quadraticCurveTo(2100,880,2500,1240);p.closePath();p.fill();
+  p.save();p.clip();strokes(p,1400,R,900,760,1600,480,['#bfa77a','#dcc89e','#a89070','#e6d6b0'],80,12,0.35,0.12,0.28);p.restore();
+  // low dunes
+  p.fillStyle='#d6c49c';p.beginPath();p.moveTo(0,1180);for(let x=0;x<=w;x+=60)p.lineTo(x,1150+Math.sin(x*.004)*40+Math.sin(x*.011)*18);p.lineTo(w,GY+10);p.lineTo(0,GY+10);p.closePath();p.fill();
+  strokes(p,1800,R,0,1100,w,210,['#c8b48a','#e2d2ac','#b09a74'],70,10,0,0.12,0.25);
+  // wooden shed far left
+  p.fillStyle='#7a5a3e';p.fillRect(120,1100,260,130);p.fillStyle='#5a3e2a';p.beginPath();p.moveTo(100,1104);p.lineTo(250,1050);p.lineTo(400,1104);p.closePath();p.fill();strokes(p,200,R,120,1100,260,130,['#6a4a30','#8a6a4a'],30,5,1.57,0.2,0.3);
+  // foreground sand
+  const fg=p.createLinearGradient(0,GY,0,h);fg.addColorStop(0,'#cdb68a');fg.addColorStop(1,'#8a7250');p.fillStyle=fg;p.fillRect(0,GY,w,h-GY);
+  strokes(p,3400,R,0,GY,w,h-GY,['#bfa67a','#a88e64','#dcc8a0','#94795a'],90,12,0,0.1,0.22);
+  // grass tufts
+  for(let i=0;i<70;i++){const x=R()*w,y=GY+60+R()*700;p.strokeStyle='#7a7a48';p.lineWidth=4;p.globalAlpha=.6;for(let k=0;k<7;k++){p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+(k-3)*5,y-20,x+(k-3)*12+8,y-40-R()*20);p.stroke();}}p.globalAlpha=1;
+  // launch rail
+  p.fillStyle='#6a4a30';p.fillRect(380,GY+52,640,12);p.fillStyle='#4a3420';for(let x=380;x<1020;x+=80)p.fillRect(x,GY+60,18,10);
+});
+const BOILN=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#f0e6d0','#2a2a3a','#8a8070'],120,22,0.1,0.02,0.05);});
+const WIND=(()=>{const R=R0(5);return [...Array(26)].map(()=>[R()*1200,200+R()*1500,120+R()*160,R()]);})();
+const SAND=(()=>{const R=R0(9);return [...Array(60)].map(()=>[R()*1200,1250+R()*600,R()]);})();
+function cap(t,t0,t1,lt,i,y,fs,col){if(lt<t0||lt>t1+0.5)return;const e=E3((lt-t0)/0.5),o=E3((lt-t1)/0.45);g.save();g.textAlign='left';g.font='italic 500 '+fs+'px '+SERIF;const w=g.measureText(t).width+64,hh=fs*1.5;
+  g.translate(72-(1-e)*(w+160)-o*(w+160),y);g.rotate(-0.012+(1-e)*0.03);tornPath(g,0,0,w,hh,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=col||'#2c1c0e';g.fillText(t,32,hh*0.7);g.restore();}
+// a simple early biplane (side view with a little perspective): muslin wings, front elevator, rear rudder, two pusher props
+function plane(x,y,tilt,lt){g.save();g.translate(x,y);g.rotate(tilt);g.scale(1.35,1.35);const DX=170,DY=-52,C=104,GAP=78;
+  const wing=(yy,col)=>{g.fillStyle=col;g.beginPath();g.moveTo(-C/2,yy);g.lineTo(C/2,yy-6);g.lineTo(C/2+DX,yy-6+DY);g.lineTo(-C/2+DX,yy+DY);g.closePath();g.fill();g.strokeStyle='#4a3a2a';g.lineWidth=3;g.stroke();};
+  // skids
+  g.strokeStyle='#4a3420';g.lineWidth=5;g.beginPath();g.moveTo(-90,30);g.lineTo(150,30);g.quadraticCurveTo(190,30,200,0);g.stroke();
+  // rear rudder (twin)
+  g.fillStyle='#e9dcc0';g.strokeStyle='#4a3a2a';g.lineWidth=3;g.fillRect(-190,-110,28,96);g.strokeRect(-190,-110,28,96);
+  g.beginPath();g.moveTo(-60,-6);g.lineTo(-176,-20);g.moveTo(-60,-GAP);g.lineTo(-176,-100);g.stroke();
+  wing(0,'#e2d3b2');
+  // pilot lying on the lower wing (simple dark shape)
+  g.fillStyle='#2e2a28';g.beginPath();g.ellipse(-4,-14,40,11,0,0,7);g.fill();g.beginPath();g.arc(34,-18,10,0,7);g.fill();
+  // struts
+  g.strokeStyle='#5a4632';g.lineWidth=4;for(let k=0;k<=4;k++){const u=k/4;g.beginPath();g.moveTo(-C/2+4+u*DX,u*DY);g.lineTo(-C/2+4+u*DX,-GAP+u*DY);g.moveTo(C/2-4+u*DX,-6+u*DY);g.lineTo(C/2-4+u*DX,-GAP-6+u*DY);g.stroke();}
+  wing(-GAP,'#efe4c8');
+  // front elevator on booms
+  g.beginPath();g.moveTo(C/2,-10);g.lineTo(200,-40);g.moveTo(C/2,-GAP+4);g.lineTo(200,-60);g.stroke();
+  g.fillStyle='#efe4c8';g.beginPath();g.moveTo(180,-44);g.lineTo(240,-46);g.lineTo(266,-66);g.lineTo(206,-64);g.closePath();g.fill();g.stroke();
+  // two pusher props (motion-blurred discs) behind the wings
+  for(const px of [-C/2-6,-C/2-6+DX*.8]){const py=-GAP/2+(px>-C/2?DY*.8:0);g.save();g.globalAlpha=.45;g.fillStyle='#d8d0c0';g.beginPath();g.ellipse(px,py,12,46,0,0,7);g.fill();g.globalAlpha=.9;g.strokeStyle='#3a2a1a';g.lineWidth=5;
+    const a=lt*40;g.beginPath();g.moveTo(px,py-42*Math.cos(a));g.lineTo(px,py+42*Math.cos(a));g.stroke();g.restore();}
+  g.restore();}
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;
+  const roll=EIO((lt-0.9)/1.2), fly=CL((lt-2.0)/2.7), land=EIO((lt-4.7)/0.7);
+  let px=LERP(560,860,roll), py=GY+18, tilt=0;
+  if(lt>2.0){px=860+EIO(fly)*680+land*90; const hgt=Math.sin(Math.PI*Math.min(1,fly))*150+Math.sin(fly*16)*14*(1-land); py=GY+18-hgt*(1-land); tilt=-0.06*Math.cos(fly*9)*(1-land)-0.05*(1-fly)*(fly>0?1:0);}
+  const z=1.25+0.06*EIO(lt/6.3), cx=Math.max(640,px-40)+8*Math.sin(lt*.6), cy=1150-60*CL((lt-2)/2)+40*land+6*Math.cos(lt*.7);
+  g.save();g.translate(540,980);g.scale(z,z);g.translate(-cx,-cy);
+  g.drawImage(WORLD,0,0);
+  // shadow on the sand
+  g.fillStyle='rgba(60,45,30,'+(0.35-0.2*CL((GY+18-py)/150))+')';g.beginPath();g.ellipse(px+30,GY+56,170,14,0,0,7);g.fill();
+  plane(px,py,tilt,lt);
+  // dust at landing
+  const dk=CL((lt-5.0)/.25)*(1-CL((lt-5.9)/.4));if(dk>0){g.save();g.globalAlpha=dk*.7;const R=R0(3);for(let i=0;i<18;i++){const r=20+R()*40*(1+(lt-5)),x=px-40+R()*180-(lt-5)*80,y=GY+40-R()*40;g.fillStyle='#dccaa4';g.beginPath();g.arc(x,y,r,0,7);g.fill();}g.restore();}
+  g.restore();
+  // wind streaks + blowing sand (screen space): a cold windy morning
+  g.save();g.strokeStyle='rgba(240,240,235,.35)';g.lineCap='round';WIND.forEach(([x0,y,l,s])=>{const x=((x0-lt*(500+300*s))%1500+1500)%1500-200;g.lineWidth=2+s*3;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+l/2,y-6,x+l,y);g.stroke();});
+  g.fillStyle='rgba(230,215,180,.7)';SAND.forEach(([x0,y,s])=>{const x=((x0-lt*(700+400*s))%1300+1300)%1300-100;g.beginPath();g.arc(x,y+Math.sin(lt*3+x0)*8,2+s*3,0,7);g.fill();});g.restore();
+  const bk=Math.floor(lt*8+0.001),BRr=R0(1000+bk*7);BRr();g.save();g.translate(540+(BRr()-.5)*50,960+(BRr()-.5)*50);g.scale(bk%2?-1:1,(bk>>1)%2?-1:1);g.rotate((BRr()-.5)*0.04);g.drawImage(BOILN,-540,-960);g.restore();
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
+  const vg=g.createRadialGradient(540,900,420,540,900,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,6,20,.55)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  cap('Dec 17, 1903',0.15,4.6,lt,0,230,72,'#8a1c10');
+  cap('Near Kitty Hawk, North Carolina',0.45,2.0,lt,1,360,46);
+  cap('12 seconds in the air',2.3,9,lt,3,1330,60,'#2c1c0e');
+  cap('120 ft · 37 m',3.3,9,lt,4,1450,52,'#2c1c0e');
+  cap('The first powered flight',5.0,9,lt,2,230,66,'#8a1c10');
+}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

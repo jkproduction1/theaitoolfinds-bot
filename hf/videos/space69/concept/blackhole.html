@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Giant black hole vs our Solar System</title>
+<!-- space69 r2: /scale a giant black hole versus our Solar System. Everything on one plane, distances to scale (AU).
+  Planet orbits: NASA (Neptune ~30.07 AU). TON 618 mass estimates ~40 billion (Ge et al. 2019) to ~66 billion Suns (Shemmer 2004);
+  Schwarzschild radius = 2.95 km per solar mass -> 40e9 Suns = ~789 AU radius (~1,580 AU across). Drawn with the LOWER estimate.
+  Glow ring is an illustration. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pNe">Neptune's orbit: 60 AU across</div>
+    <div class="pill red" id="pBh">TON 618, one of the biggest black holes</div>
+    <div class="pill hot" id="pEh">Its edge: ~1,600 AU across</div>
+    <div class="pill" id="pSs">Our whole Solar System</div>
+    <div id="note">1 AU = Earth–Sun distance (93 million mi)<br>sizes to scale · mass estimate 40–66 billion Suns</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, setup, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend','<style>#note{position:absolute;left:0;right:0;top:1500px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:27px;line-height:1.5;color:rgba(200,215,235,.65);opacity:0}</style>');
+const { renderer, scene, camera } = setup(40, [.0, .003, .01], [.01, .018, .04]);
+camera.far = 20000; camera.updateProjectionMatrix();
+const RB = 789, BHZ = -(RB + 130);
+const planeM = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, uniforms: { uT: { value: 0 }, uBH: { value: 0 }, uNep: { value: 0 } },
+  extensions: { derivatives: true },
+  vertexShader: `varying vec2 vX; void main(){ vec4 w=modelMatrix*vec4(position,1.); vX=w.xz; gl_Position=projectionMatrix*viewMatrix*w; }`,
+  fragmentShader: `uniform float uT, uBH, uNep; varying vec2 vX;
+  float h2(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+  float n2(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h2(i),h2(i+vec2(1,0)),f.x),mix(h2(i+vec2(0,1)),h2(i+vec2(1,1)),f.x),f.y); }
+  float line(float r, float R, float px, float w){ return 1.-smoothstep(w*px*0.5, w*px*0.5+px, abs(r-R)); }
+  float dotA(vec2 p, vec2 c, float rad, float px){ float d=length(p-c); float rr=max(rad, 5.0*px); return 1.-smoothstep(rr-px, rr+px, d); }
+  void main(){ vec2 p=vX; float r=length(p); float px=fwidth(r)+1e-6;
+    vec3 col=vec3(0.); float a=0.;
+    // orbits
+    float orb[8]; orb[0]=0.39; orb[1]=0.72; orb[2]=1.0; orb[3]=1.52; orb[4]=5.2; orb[5]=9.58; orb[6]=19.2; orb[7]=30.07;
+    for(int i=0;i<8;i++){ float L=line(r, orb[i], px, i==7?4.5:2.2)*(i==7?1.0:0.55); vec3 c=i==7?mix(vec3(0.6,0.8,1.0),vec3(0.5,0.85,1.0),uNep):vec3(0.62,0.7,0.85);
+      col=mix(col,c,L); a=max(a,L);
+      float ang=float(i)*2.1+uT*0.6/sqrt(orb[i]); vec2 c2=orb[i]*vec2(cos(ang),sin(ang));
+      float D=dotA(p,c2,0.0,px*1.0); col=mix(col,vec3(0.95,0.92,0.85),D); a=max(a,D); }
+    // sun
+    float sd=r; float sun=1.-smoothstep(0.0, max(0.25,7.0*px), sd); float sg=exp(-sd/max(1.2,25.0*px))*0.8;
+    col+=vec3(1.0,0.85,0.55)*(sun+sg); a=max(a,max(sun,sg));
+    // black hole
+    vec2 q=p-vec2(0.0,${BHZ.toFixed(1)}); float rb=length(q); float th=atan(q.y,q.x);
+    float ring=exp(-pow((rb-${(RB * 1.08).toFixed(1)})/${(RB * 0.06).toFixed(1)},2.))*(0.75+0.5*n2(vec2(th*6.0+uT*0.4, rb*0.01)));
+    float halo=exp(-max(rb-${RB.toFixed(1)},0.)/${(RB * 0.35).toFixed(1)})*0.45;
+    float swirl=n2(vec2(th*3.0-uT*0.5+rb*0.004, rb*0.004));
+    vec3 hot=mix(vec3(1.0,0.45,0.12),vec3(1.0,0.86,0.6),swirl);
+    float out_=step(${RB.toFixed(1)},rb);
+    vec3 bhc=hot*(ring*1.5+halo*(0.6+0.6*swirl))*out_;
+    float bha=clamp((ring*1.4+halo)*out_,0.,1.);
+    float disk=1.-smoothstep(${RB.toFixed(1)}-px, ${RB.toFixed(1)}+px, rb);
+    col=mix(col, vec3(0.), disk*uBH); a=max(a, disk*uBH);
+    col+=bhc*uBH; a=max(a,bha*uBH);
+    gl_FragColor=vec4(col, a); }` });
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(12000, 12000), planeM); plane.rotation.x = -Math.PI / 2; scene.add(plane);
+// background stars (screen-space feel): far points under the plane
+const NS = 2500, sp = new Float32Array(NS * 3); for (let i = 0; i < NS; i++) { sp.set([(Math.random() - .5) * 30000, -9000, (Math.random() - .5) * 30000 - 2000], i * 3); }
+const sGeo = new THREE.BufferGeometry(); sGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+const starsM = new THREE.PointsMaterial({ size: 2.2, sizeAttenuation: false, color: '#cfd8ff', transparent: true, opacity: 0.6, depthWrite: false });
+scene.add(new THREE.Points(sGeo, starsM));
+const H0 = 150, H1 = 5000, LZ1 = BHZ * 0.62;
+function camH(t) { return H0 * Math.exp(Math.log(1.25) * sm(ramp(t, 0, 1.7)) * 0.9) * Math.exp(Math.log(H1 / (H0 * 1.22)) * eio(ramp(t, 1.5, 4.5))) * (1 + 0.05 * sm(ramp(t, 4.5, 6.33))); }
+function setCam(t) { const h = camH(t), f = cl((h - H0) / (H1 - H0)); const lz = LZ1 * f + 6 * (1 - f);
+  camera.position.set(0, h, lz + h * 0.32); camera.up.set(0, 0, -1); camera.lookAt(0, 0, lz); camera.updateMatrixWorld(); }
+const E = id => document.getElementById(id);
+const nep = [30.07 * Math.cos(-2.3), 0, 30.07 * Math.sin(-2.3)];
+const lab = labels(camera, [
+  { el: E('pNe'), t0: 0.35, t1: 2.3, at: () => [30.07 * Math.cos(0.9), 0, 30.07 * Math.sin(0.9)], pos: (x, y) => [540, cl(y + 230, 1100, 1420)] },
+  { el: E('pBh'), t0: 2.9, at: () => [0, 0, BHZ - RB * 0.5], col: '#ff4a4a', pos: (x, y) => [540, cl(y - 330, 230, 900)] },
+  { el: E('pEh'), t0: 3.7, at: () => [-RB, 0, BHZ], col: '#ffb547', pos: (x, y) => [cl(x + 260, 360, 720), cl(y + 260, 400, 1200)] },
+  { el: E('pSs'), t0: 4.5, at: () => [0, 0, 0], pos: (x, y) => [540, cl(y + 160, 300, 1420)] },
+]);
+function render(t) {
+  t = cl(t, 0, DUR); setCam(t);
+  planeM.uniforms.uT.value = t; planeM.uniforms.uBH.value = sm(ramp(t, 2.35, 3.1)); planeM.uniforms.uNep.value = sm(ramp(t, 0.35, 0.8));
+  renderer.render(scene, camera); lab(t);
+  E('note').style.opacity = sm(ramp(t, 4.9, 5.3));
+}
+await ready(render);
+</script>
+</body>
+</html>

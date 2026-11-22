@@ -5619,5 +5619,127 @@
    "visuals": 18,
    "ending": 2
   }
+ },
+ {
+  "name": "earth68",
+  "date": "2026-11-22",
+  "score": 76,
+  "mode": "full",
+  "features": {
+   "hook": 0.36,
+   "hook_words": 12,
+   "hook_end_s": 3.05,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.4,
+   "dur_s": 33.1,
+   "words": 44,
+   "pace": 0.0,
+   "length": 0.74,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.0,
+   "visual_changes": 70,
+   "visuals": 1.0,
+   "ending": 0.94,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 3.0 s (cíl ≤2,5 s)",
+   "video má 33 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "space69",
+  "date": "2026-11-22",
+  "score": 64,
+  "mode": "full",
+  "features": {
+   "hook": 0.19,
+   "hook_words": 12,
+   "hook_end_s": 3.55,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.54,
+   "dur_s": 34.7,
+   "words": 51,
+   "pace": 0.0,
+   "length": 0.61,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.5,
+   "visual_changes": 83,
+   "visuals": 0.6,
+   "ending": 0.37,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 3.5 s (cíl ≤2,5 s)",
+   "video má 35 s (cíl 18–30 s)",
+   "po CTA ještě 5.1 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
+ },
+ {
+  "name": "styles70",
+  "date": "2026-11-22",
+  "score": 67,
+  "mode": "full",
+  "features": {
+   "hook": 0.27,
+   "hook_words": 11,
+   "hook_end_s": 2.97,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.56,
+   "dur_s": 31.8,
+   "words": 47,
+   "pace": 0.0,
+   "length": 0.85,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.75,
+   "visual_changes": 67,
+   "visuals": 0.5,
+   "ending": 0.36,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "video má 32 s (cíl 18–30 s)",
+   "3.8 s bez změny obrazu (cíl ≤3 s)",
+   "po CTA ještě 5.1 s"
+  ],
+  "weights": {
+   "topic": 30,
+   "hook": 12,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 18,
+   "ending": 2
+  }
  }
 ]

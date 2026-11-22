@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// styles70 r0: /flat-science why we yawn (flat glowing vector look of styles62 flat_fingers). Generic head drawn in code.
+// Facts: why we yawn is not settled. One leading hypothesis (Gallup & Gallup 2007; Gallup & Eldakar 2011): a yawn - a wide jaw stretch
+// plus a deep breath of air - increases blood flow and helps cool the brain. -> on screen "One idea: it cools your brain" + "Scientists still debate it".
+// Sources: Gallup & Gallup 2007 Evolutionary Psychology; National Geographic "Why do we yawn" (2011); Frontiers for Young Minds 2017 (frym.2017.00052).
+const g=document.getElementById('c').getContext('2d');const PI=Math.PI, LERP=(a,b,t)=>a+(b-a)*t;
+const bg=off(1080,1920,(p,w,h)=>{const gr=p.createRadialGradient(w*.5,h*.45,60,w*.5,h*.5,1300);gr.addColorStop(0,'#1d2f6e');gr.addColorStop(.5,'#111c4f');gr.addColorStop(1,'#04071c');p.fillStyle=gr;p.fillRect(0,0,w,h);
+  p.filter='blur(90px)';[[200,620,300,'rgba(90,200,255,.22)'],[880,900,300,'rgba(150,90,255,.22)'],[240,1350,280,'rgba(255,120,170,.14)'],[800,1650,420,'rgba(80,160,255,.18)']].forEach(([x,y,r,c])=>{p.fillStyle=c;p.beginPath();p.arc(x,y,r,0,7);p.fill();});p.filter='none';
+  const R=R0(13);for(let i=0;i<180;i++){p.fillStyle='rgba(225,235,255,'+(R()*.5)+')';p.beginPath();p.arc(R()*w,R()*h,R()*2.2,0,7);p.fill();}});
+function label(txt,x,y,tx,ty,col,fs){g.save();fs=fs||40;g.font='800 '+fs+'px '+SANS;const w=g.measureText(txt).width+52,hh=fs*.9+36;
+  if(tx!=null){g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=4;g.beginPath();const ax=tx>x+w?x+w:(tx<x?x:Math.min(Math.max(tx,x+30),x+w-30));g.moveTo(ax,Math.abs(ty-y)<hh/2?y:(ty<y?y-hh/2:y+hh/2));g.lineTo(tx,ty);g.stroke();g.fillStyle='#fff';g.beginPath();g.arc(tx,ty,9,0,7);g.fill();}
+  g.fillStyle='rgba(8,12,44,.92)';g.beginPath();g.roundRect(x,y-hh/2,w,hh,hh/2);g.fill();g.strokeStyle=col||'rgba(255,255,255,.25)';g.lineWidth=3;g.shadowColor=col;g.shadowBlur=14;g.stroke();g.shadowBlur=0;g.fillStyle='#fff';g.fillText(txt,x+26,y+fs*.35);g.restore();}
+function pop(t,x,y,fn,out){if(t<=0)return;g.save();const s=EBK(t/.45)*(out==null?1:1-.3*out);g.globalAlpha*=CL(t/.15)*(out==null?1:1-out);if(g.globalAlpha<=0.001){g.restore();return;}g.translate(x,y);g.scale(s,s);g.translate(-x,-y);fn();g.restore();}
+const mixc=(a,b,t)=>'rgb('+a.map((v,i)=>Math.round(LERP(v,b[i],t))).join(',')+')';
+// head in profile facing right. Hinge of the jaw at H.
+const H=[500,1010];
+const UP=[[300,1240],[250,1060],[230,880],[270,700],[380,590],[540,560],[680,610],[750,720],[760,820],[800,900],[850,960],[790,985],[800,1015],[760,1030]];
+const JAW=[[760,1030],[790,1045],[785,1100],[740,1150],[640,1170],[560,1210],[520,1300]];
+function rot(p,a){const dx=p[0]-H[0],dy=p[1]-H[1];return [H[0]+dx*Math.cos(a)-dy*Math.sin(a),H[1]+dx*Math.sin(a)+dy*Math.cos(a)];}
+function smooth(pts){g.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length-1;i++){const m=[(pts[i][0]+pts[i+1][0])/2,(pts[i][1]+pts[i+1][1])/2];g.quadraticCurveTo(pts[i][0],pts[i][1],m[0],m[1]);}const l=pts[pts.length-1];g.lineTo(l[0],l[1]);}
+const GY=[...Array(9)].map((_,i)=>{const R=R0(70+i);R();return {y:690+i*34,ph:R()*6,a:10+R()*8};});
+const AIR=[...Array(26)].map((_,i)=>{const R=R0(200+i);R();return {o:R(),dy:(R()-.5)*50,r:6+R()*8};});
+const BLOOD=[...Array(10)].map((_,i)=>i/10);
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.drawImage(bg,0,0);const pulse=.5+.5*Math.sin(lt*6);
+  const z=1.0+.07*EIO(lt/6.3),dx=Math.sin(lt*.7)*8,dy=Math.cos(lt*.55)*8;g.save();g.translate(540+dx,1000+dy);g.scale(z,z);g.translate(-540,-1000);
+  const open=EIO((lt-0.7)/1.0)*(1-EIO((lt-4.3)/1.0));       // jaw opens wide, then closes
+  const ja=0.55*open;                                        // jaw angle
+  const air=CL((lt-1.5)/.3)*(1-CL((lt-4.4)/.4));              // cool air flowing in
+  const cool=EIO((lt-2.6)/1.8);                              // brain cools down
+  const bf=CL((lt-2.2)/.4);                                  // faster blood flow
+  const JW=[1,1,1,1,.75,.35,0];const jaw=JAW.map((p,i)=>rot(p,ja*JW[i]));
+  // mouth cavity
+  if(open>0.01){g.save();g.fillStyle='#4a0f2e';g.shadowColor='#ff4f7a';g.shadowBlur=30;g.beginPath();g.moveTo(H[0]+20,H[1]);g.lineTo(760,1030);g.lineTo(jaw[1][0],jaw[1][1]);g.closePath();g.fill();
+    g.shadowBlur=0;g.fillStyle='#ff7aa0';g.beginPath();g.ellipse(LERP(H[0]+60,jaw[1][0],.5),LERP(H[1]+10,jaw[1][1],.5)+14*open,90*open+10,22*open+4,0.25*open,0,7);g.fill();g.restore();}
+  // neck + head silhouette (glass skin)
+  const skin=g.createLinearGradient(230,0,860,0);skin.addColorStop(0,'#24407e');skin.addColorStop(1,'#2f5aa0');
+  g.save();g.fillStyle=skin;g.strokeStyle='rgba(190,230,255,.9)';g.lineWidth=6;g.shadowColor='#7fd0ff';g.shadowBlur=26;
+  g.shadowBlur=0;g.beginPath();g.moveTo(300,1900);smooth(UP);g.lineTo(H[0]+40,H[1]+30);g.lineTo(520,1300);g.lineTo(560,1900);g.closePath();g.fill();g.beginPath();g.moveTo(H[0]+10,H[1]);for(const p of jaw)g.lineTo(p[0],p[1]);g.lineTo(560,1900);g.lineTo(380,1900);g.closePath();g.fill();g.shadowBlur=26;
+  g.beginPath();smooth(UP);g.stroke();
+  g.beginPath();smooth(jaw);g.lineTo(560,1900);g.stroke();
+  g.beginPath();g.moveTo(300,1240);g.lineTo(300,1900);g.stroke();g.restore();
+  if(open>0.01){g.save();g.globalAlpha=CL(open*3);g.fillStyle='#4a0f2e';g.beginPath();g.moveTo(H[0]+60,H[1]+5);g.lineTo(760,1030);g.lineTo(jaw[1][0],jaw[1][1]);g.closePath();g.fill();g.fillStyle='#ff7aa0';g.beginPath();g.ellipse(LERP(H[0]+90,jaw[1][0],.5),LERP(H[1]+12,jaw[1][1],.5)+10*open,80*open+8,18*open+4,0.3*open,0,7);g.fill();g.restore();}
+  // ear + eye
+  g.save();g.strokeStyle='rgba(190,230,255,.7)';g.lineWidth=5;g.beginPath();g.ellipse(430,900,34,58,0.1,-1.2,3.6);g.stroke();
+  const blink=open>.5?0.25:1;g.fillStyle='#e8f6ff';g.beginPath();g.ellipse(700,800,16,16*blink,0,0,7);g.fill();g.restore();
+  // brain: warm -> cool
+  const bc=mixc([255,122,69],[90,209,255],cool);g.save();g.shadowColor=bc;g.shadowBlur=40+20*pulse*(1-cool);g.fillStyle=mixc([255,150,90],[120,220,255],cool);g.globalAlpha=.9;
+  g.beginPath();g.ellipse(500,770,215,150,-0.08,0,7);g.fill();g.shadowBlur=0;g.globalAlpha=1;g.save();g.beginPath();g.ellipse(500,770,215,150,-0.08,0,7);g.clip();
+  g.strokeStyle=mixc([190,60,40],[30,110,190],cool);g.lineWidth=7;g.lineCap='round';GY.forEach(r=>{g.beginPath();for(let x=290;x<=720;x+=8){const y=r.y+Math.sin(x*.05+r.ph)*r.a;x>290?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();});g.restore();g.restore();
+  // heat shimmer above a warm brain
+  if(cool<.95){g.save();g.globalAlpha=(1-cool)*.8;g.strokeStyle='#ffb070';g.lineWidth=6;g.lineCap='round';for(let i=0;i<3;i++){const x=420+i*80;g.beginPath();for(let k=0;k<=12;k++){const y=590-k*10-((lt*60)%30);g.lineTo(x+Math.sin(k*.9+lt*5+i)*10,y);}g.stroke();}g.restore();}
+  // blood flow: neck artery up to the brain
+  g.save();g.strokeStyle='rgba(255,80,120,.55)';g.lineWidth=14;g.lineCap='round';g.shadowColor='#ff4f7a';g.shadowBlur=16;g.beginPath();g.moveTo(420,1880);g.bezierCurveTo(420,1500,400,1150,440,900);g.stroke();g.shadowBlur=0;
+  BLOOD.forEach(o=>{const f=((lt*(0.25+0.55*bf))+o)%1;const t=f,x=Math.pow(1-t,3)*420+3*Math.pow(1-t,2)*t*420+3*(1-t)*t*t*400+t*t*t*440,y=Math.pow(1-t,3)*1880+3*Math.pow(1-t,2)*t*1500+3*(1-t)*t*t*1150+t*t*t*900;
+    g.fillStyle='#ffd0dc';g.beginPath();g.arc(x,y,10,0,7);g.fill();});g.restore();
+  // cool air stream into the mouth
+  if(air>0){g.save();g.globalAlpha=air;AIR.forEach(a=>{const f=(lt*0.7+a.o)%1;let x,y;if(f<.6){const u=f/.6;x=LERP(1100,790,u);y=LERP(1040+a.dy,1060+(jaw[1][1]-1045)*.4+a.dy*.3,u);}else{const u=(f-.6)/.4;x=LERP(790,560,u);y=LERP(1060+(jaw[1][1]-1045)*.4,1120,u)+a.dy*.2*(1-u);}
+    g.fillStyle='rgba(155,230,255,.9)';g.shadowColor='#9be6ff';g.shadowBlur=18;g.beginPath();g.arc(x,y,a.r*(f<.6?1:1-(f-.6)),0,7);g.fill();});g.restore();}
+  // labels
+  const o1=CL((lt-2.2)/.3),o2=CL((lt-3.3)/.3),o3=CL((lt-4.4)/.3);
+  pop(lt-0.9,300,1340,()=>label('Jaw stretches wide',90,1340,jaw[3][0],jaw[3][1],'#ff9fb4',44),o1);
+  pop(lt-1.7,800,1300,()=>label('Deep breath of air',545,1300,960,1075,'#9be6ff',44),o2);
+  pop(lt-2.6,220,1400,()=>label('More blood flow',60,1400,418,1500,'#ff6f95',44),o3);
+  g.restore();
+  pop(lt-4.5,540,1330,()=>label('One idea: it cools your brain',75,1330,null,null,'#9be6ff',50));
+  pop(lt-5.0,540,1450,()=>{g.save();g.textAlign='center';g.font='italic 600 40px '+SANS;g.fillStyle='rgba(220,235,255,.9)';g.fillText('Scientists still debate it',540,1462);g.restore();});
+  g.drawImage(GRAIN,0,0);
+  g.save();g.textAlign='center';g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=20;g.fillStyle='#fff';g.font='800 88px '+SANS;g.fillText('Why we',540,290);
+  g.fillStyle=mixc([255,170,110],[155,230,255],cool);g.shadowColor=mixc([255,140,80],[110,210,255],cool);g.shadowBlur=26+16*pulse;g.fillText('yawn',540,388);g.restore();}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script></body></html>

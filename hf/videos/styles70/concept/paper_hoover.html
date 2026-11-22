@@ -1,0 +1,85 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Permanent Marker';src:url(permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// styles70 r1: /paper-collage how the Hoover Dam works. Generic cross-section drawn in code (no photo, no logo).
+// Facts (US Bureau of Reclamation, Hoover Dam FAQ usbr.gov/lc/hooverdam/faqs/damfaqs.html): 726.4 ft (221.4 m) tall, 660 ft (201 m) thick at the
+// base, 45 ft at the crest; holds back Lake Mead; water falls through penstocks to turbines in the powerhouse at the foot of the dam.
+// Water pressure grows with depth -> the dam is thickest at the bottom.
+const g=document.getElementById('c').getContext('2d'), MK="'Permanent Marker',cursive";
+function jit(t,seed,a){const R=R0(1+seed*131+Math.floor(t*12)*977);R();return [(R()-.5)*2*a,(R()-.5)*2*a,(R()-.5)*0.006*a];}
+const BG=off(1080,1920,(p,w,h)=>{p.fillStyle='#ece3cf';p.fillRect(0,0,w,h);const R=R0(4);
+  for(let i=0;i<9000;i++){p.strokeStyle='rgba(120,95,60,'+(R()*.08)+')';p.lineWidth=1;const x=R()*w,y=R()*h,a=R()*6.28,l=4+R()*14;p.beginPath();p.moveTo(x,y);p.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}
+  p.fillStyle='rgba(60,50,40,.10)';for(let c=0;c<4;c++)for(let y=30;y<h;y+=22){const x0=30+c*262,L=(R()<.08)?60+R()*100:210+R()*30;p.fillRect(x0,y,L,7);}});
+const SKY=off(1900,1250,(p,w,h)=>{p.save();p.translate(20,20);tornPath(p,0,0,w-40,h-40,5,14);const sk=p.createLinearGradient(0,0,0,h);sk.addColorStop(0,'#86b9cf');sk.addColorStop(1,'#e9dcc0');
+  p.shadowColor='rgba(60,40,20,.35)';p.shadowBlur=16;p.shadowOffsetY=8;p.fillStyle=sk;p.fill();p.shadowColor='transparent';p.clip();
+  for(let y=0;y<h;y+=12)for(let x=(y/12%2)*6;x<w;x+=12){p.fillStyle='rgba(20,60,90,.13)';p.beginPath();p.arc(x,y,0.5+2.6*(1-y/h),0,7);p.fill();}p.restore();});
+function cloud(seed,w){return sticker(off(w,w*0.42,(p)=>{const R=R0(seed);p.fillStyle='#fbf8f0';for(let i=0;i<6;i++){const x=w*(0.18+0.64*i/5),r=w*(0.12+R()*0.08);p.beginPath();p.arc(x,w*0.42-r*0.9-R()*w*0.05,r,0,7);p.fill();}
+  p.fillRect(w*0.1,w*0.3,w*0.8,w*0.12);}),5);}
+const C1=cloud(11,280),C2=cloud(23,200);
+const SEA=off(1400,520,(p,w,h)=>{p.save();tornPath(p,10,10,w-20,h-20,9,12);p.shadowColor='rgba(40,30,20,.4)';p.shadowBlur=14;p.shadowOffsetY=-4;p.fillStyle='#4f7f96';p.fill();p.shadowColor='transparent';p.clip();
+  for(let y=20;y<h;y+=10)for(let x=(y/10%2)*5;x<w;x+=10){p.fillStyle='rgba(10,40,60,.22)';p.beginPath();p.arc(x,y,1.8,0,7);p.fill();}
+  p.strokeStyle='rgba(240,248,250,.55)';p.lineWidth=4;p.lineCap='round';const R=R0(6);for(let i=0;i<40;i++){const x=R()*w,y=30+R()*(h-60);p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+20,y-8,x+44,y);p.stroke();}p.restore();});
+function tag(lt,t0,x,y,rot,W,lines,seed,side){ if(lt<t0) return; const a=EBK((lt-t0)/0.45);
+  let H=30; lines.forEach(L=>{L._y=H+L.s*0.8;H+=L.s*1.05;}); H+=18; const j=jit(lt,seed,1.2);
+  g.save(); g.translate(x+W/2+j[0],y+H/2+j[1]); g.rotate(rot+j[2]+(1-a)*0.25); g.scale(0.4+0.6*a,0.4+0.6*a); g.globalAlpha=CL((lt-t0)/0.12)*(lines.out?1-CL((lt-lines.out)/.3):1); g.translate(-W/2,-H/2);
+  tornPath(g,0,0,W,H,seed,7); g.fillStyle='#f6f1e4'; g.shadowColor='rgba(30,20,10,.4)'; g.shadowBlur=18; g.shadowOffsetY=10; g.fill(); g.shadowColor='transparent';
+  lines.forEach(L=>{ g.save(); g.font=L.f; const w=g.measureText(L.t).width;
+    if(L.hl!=null){const hl=EIO((lt-t0-L.hl)/0.4); if(hl>0){ g.fillStyle=L.hc||'rgba(255,214,0,.9)'; g.beginPath(); g.moveTo(24,L._y-L.s*0.78); g.lineTo(24+(w+24)*hl,L._y-L.s*0.84); g.lineTo(24+(w+24)*hl,L._y+L.s*0.22); g.lineTo(24,L._y+L.s*0.2); g.closePath(); g.fill(); }}
+    g.fillStyle=L.c; g.fillText(L.t,36,L._y); g.restore(); });
+  g.fillStyle='rgba(240,232,200,.85)'; g.save(); g.translate(side?W-30:30,-4); g.rotate(side?0.5:-0.5); g.fillRect(-46,-14,92,30); g.restore(); g.restore(); }
+
+
+const LERP=(a,b,t)=>a+(b-a)*t;
+// world: lake left, wedge dam, powerhouse + river right. Crest y 860, base y 1440.
+const CY=860, BY=1440, UX=380, CX2=420, DX=900, LAKE=880;
+const GROUND=sticker(off(1500,700,(p)=>{p.translate(150,-1360);p.fillStyle='#b98a5a';p.beginPath();p.moveTo(-150,BY);p.lineTo(1350,BY);p.lineTo(1350,2060);p.lineTo(-150,2060);p.closePath();p.fill();
+  p.globalCompositeOperation='source-atop';for(let y=1400;y<2060;y+=9)for(let x=((y/9)%2)*4-150;x<1350;x+=9){p.fillStyle='rgba(110,70,35,.18)';p.beginPath();p.arc(x,y,1.4,0,7);p.fill();}
+  p.strokeStyle='rgba(90,55,25,.35)';p.lineWidth=5;for(let k=0;k<5;k++){p.beginPath();p.moveTo(-150,BY+60+k*110);for(let x=-150;x<=1350;x+=60)p.lineTo(x,BY+60+k*110+Math.sin(x*.01+k)*14);p.stroke();}}),5);
+const CANL=sticker(off(330,760,(p)=>{p.fillStyle='#c4774a';p.beginPath();p.moveTo(0,760);p.lineTo(0,120);p.lineTo(80,40);p.lineTo(170,90);p.lineTo(240,0);p.lineTo(330,60);p.lineTo(330,760);p.closePath();p.fill();
+  p.globalCompositeOperation='source-atop';for(let y=0;y<760;y+=40){p.fillStyle='rgba(120,55,25,.25)';p.fillRect(0,y,330,12);}}),5);
+const CANR=sticker(off(300,700,(p)=>{p.fillStyle='#b86a3e';p.beginPath();p.moveTo(0,700);p.lineTo(0,90);p.lineTo(90,0);p.lineTo(200,70);p.lineTo(300,30);p.lineTo(300,700);p.closePath();p.fill();
+  p.globalCompositeOperation='source-atop';for(let y=0;y<700;y+=40){p.fillStyle='rgba(110,50,20,.25)';p.fillRect(0,y,300,12);}}),5);
+const DAM=sticker(off(560,600,(p)=>{p.translate(-360,-850);p.fillStyle='#e6dfcf';p.beginPath();p.moveTo(UX,CY-10);p.lineTo(CX2+10,CY-10);p.bezierCurveTo(CX2+40,CY+200,DX-260,BY-120,DX,BY);p.lineTo(UX-20,BY);p.closePath();p.fill();
+  p.globalCompositeOperation='source-atop';for(let y=850;y<1460;y+=9)for(let x=((y/9)%2)*4+360;x<920;x+=9){p.fillStyle='rgba(80,70,55,.16)';p.beginPath();p.arc(x,y,1.3,0,7);p.fill();}
+  p.strokeStyle='rgba(90,80,60,.3)';p.lineWidth=3;for(let y=CY+50;y<BY;y+=50){p.beginPath();p.moveTo(UX-20,y);p.lineTo(DX,y);p.stroke();}
+  p.fillStyle='#6d5a44';p.beginPath();p.moveTo(UX+12,1150);p.lineTo(UX+40,1150);p.lineTo(DX-60,BY-58);p.lineTo(DX-60,BY-30);p.lineTo(DX-90,BY-30);p.closePath();p.fill();}),5);
+const PH=sticker(off(170,130,(p)=>{p.fillStyle='#d9cdb4';p.fillRect(0,20,170,110);p.fillStyle='#8a3f26';p.fillRect(0,0,170,26);p.fillStyle='#5a4a3a';for(let k=0;k<4;k++)p.fillRect(16+k*40,50,22,40);}),5);
+const TOWER=sticker(off(60,330,(p)=>{p.fillStyle='#e0d8c4';p.fillRect(8,30,44,300);p.fillStyle='#b8341f';p.fillRect(0,0,60,34);p.fillStyle='rgba(60,50,40,.3)';for(let y=60;y<330;y+=40)p.fillRect(14,y,32,6);}),5);
+const BOLT='M0 0 L-26 52 L-6 52 L-22 104 L28 36 L6 36 L22 0 Z';
+function water(x0,x1,top,bot,lt,seed){g.save();tornPath(g,x0,top,x1-x0,bot-top,seed,5);g.fillStyle='#4f7f96';g.fill();g.clip();
+  for(let y=top;y<bot;y+=10)for(let x=x0+((y/10)%2)*5;x<x1;x+=10){g.fillStyle='rgba(10,40,60,.22)';g.beginPath();g.arc(x,y,1.8,0,7);g.fill();}
+  g.strokeStyle='rgba(240,248,250,.6)';g.lineWidth=4;g.lineCap='round';const R=R0(seed);for(let i=0;i<(x1-x0)/60;i++){const x=x0+R()*(x1-x0)+Math.sin(lt*2+i)*8,y=top+14+R()*40;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+16,y-6,x+34,y);g.stroke();}g.restore();}
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.drawImage(BG,0,0);
+  const pr=EIO((lt-0.7)/1.3), bm=CL((lt-2.2)/.6), hm=CL((lt-3.3)/.6), fl=CL((lt-4.2)/.3), pw=EBK((lt-5.0)/.5);
+  const s=1.14+0.07*EIO(lt/6.3),fx=600+Math.sin(lt*.8)*6+30*EIO((lt-3.8)/2),fy=1090+Math.cos(lt*.6)*6;
+  g.save();g.translate(540,1150);g.scale(s,s);g.translate(-fx,-fy);
+  g.drawImage(SKY,-380,300);
+  {let j=jit(lt,1,1.5);g.drawImage(C1,780-lt*12+j[0],560+j[1]);j=jit(lt,2,1.5);g.drawImage(C2,160+lt*10+j[0],660+j[1]);}
+  {const j=jit(lt,5,1);g.drawImage(CANL,-330-CANL.ox+j[0],BY-760+60-CANL.oy+j[1]);const k=jit(lt,6,1);g.drawImage(CANR,1060-CANR.ox+k[0],BY-640-CANR.oy+k[1]);}
+  water(-300,UX-6,LAKE,BY+20,lt,3);
+  water(DX-20,1400,BY-70,BY+20,lt,8);
+  {const j=jit(lt,9,.8);g.drawImage(DAM,360-DAM.ox+j[0],850-DAM.oy+j[1]);}
+  {const j=jit(lt,10,.8);g.drawImage(TOWER,UX-110-TOWER.ox+j[0],CY-40-TOWER.oy+j[1]);}
+  {const j=jit(lt,11,.8);g.drawImage(PH,DX-40-PH.ox+j[0],BY-120-PH.oy+j[1]);}
+  {const j=jit(lt,12,.6);g.drawImage(GROUND,-150-GROUND.ox+j[0],BY-GROUND.oy+j[1]);}
+  // pressure arrows: longer with depth
+  if(pr>0){for(let k=0;k<6;k++){const y=LAKE+60+k*90,L=(30+k*34)*EIO((pr*1.6)-k*.12);if(L<4)continue;const e=marker(g,[[UX-20-L-20,y],[UX-26,y]],1,9,'#b3261e');arrowHead(g,e[0],e[1],0,20,9,'#b3261e');}}
+  // base thickness marker
+  if(bm>0){const x1=LERP(UX-20,DX,EIO(bm));const e=marker(g,[[UX-20,BY-12],[x1,BY-12]],1,8,'#17222b');if(bm>.9)arrowHead(g,e[0],e[1],0,22,8,'#17222b');}
+  // height marker on the left
+  if(hm>0){const y1=LERP(BY,CY-10,EIO(hm));const e=marker(g,[[UX-160,BY-4],[UX-160,y1]],1,8,'#17222b');if(hm>.9)arrowHead(g,e[0],e[1],-Math.PI/2,22,8,'#17222b');}
+  // water falling through the penstock -> turbine spins -> power
+  if(fl>0){g.save();g.globalAlpha=fl;const P=[[UX+26,1150],[DX-75,BY-44]];for(let q=0;q<5;q++){const f=((lt-4.2)*1.3+q/5)%1;const x=LERP(P[0][0],P[1][0],f),y=LERP(P[0][1],P[1][1],f);g.fillStyle='#9cc8de';g.strokeStyle='#fbfaf5';g.lineWidth=4;g.beginPath();g.arc(x,y,12,0,7);g.fill();g.stroke();}
+    const tx=DX-78,ty=BY-40;g.translate(tx,ty);g.rotate((lt-4.2)*9);g.fillStyle='#e3b23c';g.strokeStyle='#fbfaf5';g.lineWidth=4;for(let b=0;b<6;b++){g.rotate(Math.PI/3);g.beginPath();g.ellipse(0,-20,9,20,0,0,7);g.fill();g.stroke();}g.restore();}
+  if(lt>5.0){g.save();g.translate(DX+50,BY-300);g.scale(pw*1.6,pw*1.6);g.rotate(0.1);g.fillStyle='#e3b23c';g.strokeStyle='#fbfaf5';g.lineWidth=5;g.stroke(new Path2D(BOLT));g.fill(new Path2D(BOLT));g.restore();}
+  g.restore();
+  tag(lt,0.15,80,720,-0.03,360,Object.assign([{t:'Lake Mead',f:"400 64px "+DISP,s:64,c:'#17222b'}],{out:2.1}),21,0);
+  tag(lt,0.8,355,330,0.02,645,Object.assign([{t:'Water pushes hardest',f:"400 60px "+DISP,s:60,c:'#17222b'},{t:'at the bottom',f:"400 60px "+DISP,s:60,c:'#17222b',hl:0.3,hc:'rgba(255,214,0,.9)'}],{out:4.0}),12,1);
+  tag(lt,2.3,80,560,-0.02,600,Object.assign([{t:'660 ft thick base',f:"62px "+MK,s:62,c:'#17222b'},{t:'201 m · top only 45 ft',f:"italic 500 40px "+SERIF,s:40,c:'#4c4338'}],{out:3.3}),17,0);
+  tag(lt,3.5,90,590,0.02,400,Object.assign([{t:'726 ft tall',f:"62px "+MK,s:62,c:'#b3261e'},{t:'221 m',f:"italic 500 40px "+SERIF,s:40,c:'#4c4338'}],{out:5.0}),33,1);
+  tag(lt,4.3,80,360,-0.02,600,[{t:'Falling water',f:"400 64px "+DISP,s:64,c:'#17222b'},{t:'spins the turbines',f:"400 64px "+DISP,s:64,c:'#17222b',hl:0.3,hc:'rgba(120,190,220,.9)'}],27,0);
+  g.drawImage(GRAIN,0,0);}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script><script>Promise.all([document.fonts.load("400 40px 'DM Serif Display'"),document.fonts.load("italic 500 30px 'EB Garamond'"),document.fonts.load("40px 'Permanent Marker'")]).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

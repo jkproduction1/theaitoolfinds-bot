@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tallest wave vs a skyscraper</title>
+<!-- earth68 r2: /scale the tallest wave versus a skyscraper. Same scale (meters), procedural slope + generic stepped tower (own look).
+  Facts: USGS / NASA Earth Observatory: Lituya Bay, Alaska, 9 July 1958: the wave surged up to 524 m (1,720 ft) on the slope opposite the
+  rockslide and stripped the forest to that height (largest wave run-up ever recorded). Empire State Building: 443 m (1,454 ft) to the tip
+  (CTBUH / esbnyc.com). -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="hl" width="1080" height="1920" style="position:absolute;inset:0"></svg>
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pEs">Empire State Building<small>1,454 ft · 443 m</small></div>
+    <div class="pill red" id="pWa">Lituya Bay wave, 1958<small>1,720 ft · 524 m up the slope</small></div>
+    <div class="pill hot" id="pFo">Forest wiped out up to here</div>
+    <div class="pill red" id="pGap">+266 ft · 81 m higher</div>
+    <div id="note">same scale · Alaska, 1958</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready, projector } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend','<style>.pill small{display:block;font-size:31px;font-weight:600;color:#cfd6e0;margin-top:2px;text-align:center}.pill{text-align:center}#note{position:absolute;left:50%;top:1490px;transform:translateX(-50%);white-space:nowrap;font-family:"JetBrains Mono",monospace;font-size:27px;color:rgba(240,244,250,.95);background:rgba(0,0,0,.62);padding:8px 16px;border-radius:10px}#pGap{font-size:40px;padding:8px 22px 10px}</style>');
+const { renderer, scene, camera, bgU } = setup(30, [.05, .07, .10], [.30, .36, .44]);
+camera.far = 20000; camera.updateProjectionMatrix();
+const rnd = mulberry32(681); const R = (a, b) => a + rnd() * (b - a);
+function hsh(i, j, s) { let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(s, 144665); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+function vn(x, y, s) { const i = Math.floor(x), j = Math.floor(y); let fx = x - i, fy = y - j; fx = fx * fx * (3 - 2 * fx); fy = fy * fy * (3 - 2 * fy);
+  const a = hsh(i, j, s), b = hsh(i + 1, j, s), c = hsh(i, j + 1, s), d = hsh(i + 1, j + 1, s); return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy; }
+function fbm(x, y, s) { let t = 0, a = .5, f = 1, n = 0; for (let i = 0; i < 5; i++) { t += a * vn(x * f, y * f, s + i); n += a; f *= 2.1; a *= .5; } return t / n; }
+// slope: rises to the left (x < X0), 60 deg-ish
+const X0 = -40, K = 1.75;
+const slopeY = (x, z) => Math.max(0, (X0 - x) * K) + (x < X0 ? (fbm(x / 120, z / 120, 3) - 0.5) * 50 * cl((X0 - x) / 60) : 0);
+const TG = new THREE.PlaneGeometry(900, 1400, 120, 180); TG.rotateX(-Math.PI / 2); TG.translate(-410, 0, -300);
+const tp = TG.attributes.position, tc = new Float32Array(tp.count * 3), c = new THREE.Color();
+for (let i = 0; i < tp.count; i++) { const x = tp.getX(i), z = tp.getZ(i); const y = slopeY(x, z); tp.setY(i, y);
+  const n = fbm(x / 40, z / 40, 7); c.set('#2f3a2a').lerp(new THREE.Color('#6a6258'), cl((y - 650) / 250) + 0.25 * n); if (y < 4) c.set('#3a3632'); c.multiplyScalar(0.8 + 0.4 * n); tc.set([c.r, c.g, c.b], i * 3); }
+TG.setAttribute('color', new THREE.BufferAttribute(tc, 3)); TG.computeVertexNormals();
+scene.add(new THREE.Mesh(TG, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, envMapIntensity: 0.15 })));
+// water sheet surging up the slope (same surface +4 m, clipped at height h)
+const clip = new THREE.Plane(V(0, -1, 0), 0);
+const SG = TG.clone(); { const p = SG.attributes.position; for (let i = 0; i < p.count; i++) p.setY(i, p.getY(i) + 5); SG.computeVertexNormals(); }
+const surge = new THREE.Mesh(SG, new THREE.MeshPhysicalMaterial({ color: '#3d8fb5', roughness: 0.18, metalness: 0.1, transmission: 0, emissive: '#1d5a7a', emissiveIntensity: 0.35, clippingPlanes: [clip], transparent: true, opacity: 0.95 }));
+scene.add(surge);
+// trees on the slope (instanced cones), knocked down below the water line
+const NT = 2600, trees = new THREE.InstancedMesh(new THREE.ConeGeometry(5, 22, 6).translate(0, 11, 0), new THREE.MeshStandardMaterial({ color: '#1d3322', roughness: 0.9 }), NT);
+const tx = [], tz = [], ty = [], m4 = new THREE.Matrix4(), qq = new THREE.Quaternion(), e3 = new THREE.Euler();
+for (let i = 0; i < NT; i++) { const y = R(10, 760); const x = X0 - y / K; const z = R(-900, 300); tx.push(x + R(-4, 4)); tz.push(z); ty.push(slopeY(x, z)); }
+scene.add(trees);
+// bay water
+const bay = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000, 1, 1).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#13324a', roughness: 0.2, metalness: 0.1, envMapIntensity: 0.8 }));
+bay.position.y = 0.5; scene.add(bay);
+// shore shelf for the tower
+const shelf = new THREE.Mesh(new THREE.BoxGeometry(380, 8, 380), new THREE.MeshStandardMaterial({ color: '#3d3f44', roughness: 0.9 })); shelf.position.set(150, 3, 60); scene.add(shelf);
+// generic stepped art-deco tower, 443 m to the tip
+function winTex() { const cv = document.createElement('canvas'); cv.width = 64; cv.height = 256; const g = cv.getContext('2d'); g.fillStyle = '#8a8f98'; g.fillRect(0, 0, 64, 256);
+  for (let y = 0; y < 256; y += 4) for (let x = 2; x < 64; x += 6) { g.fillStyle = rnd() < 0.22 ? '#ffd9a0' : '#2b3038'; g.fillRect(x, y + 1, 3, 2); }
+  const t = new THREE.CanvasTexture(cv); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; return t; }
+const tower = new THREE.Group(); tower.position.set(150, 7, 60); scene.add(tower);
+const TM = (w, h, d, y, rep) => { const tx = winTex(); tx.repeat.set(w / 24, h / 30); const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ map: tx, emissiveMap: tx, emissive: '#ffffff', emissiveIntensity: 0.25, roughness: 0.6, metalness: 0.2 })); m.position.y = y + h / 2; tower.add(m); return m; };
+TM(130, 24, 60, 0); TM(96, 60, 52, 24); TM(64, 236, 42, 84); TM(50, 30, 34, 320); TM(36, 22, 26, 350); TM(22, 9, 22, 372);
+for (const fx of [-30, -15, 0, 15, 30]) { const f = new THREE.Mesh(new THREE.BoxGeometry(3, 236, 46), new THREE.MeshStandardMaterial({ color: '#c9ccd2', roughness: 0.5, metalness: 0.3 })); f.position.set(fx, 84 + 118, 0); tower.add(f); }
+for (const [ly, lw, ld] of [[24, 134, 64], [84, 100, 56], [320, 68, 46], [350, 54, 38]]) { const l = new THREE.Mesh(new THREE.BoxGeometry(lw, 3, ld), new THREE.MeshStandardMaterial({ color: '#d8dbe0', roughness: 0.5 })); l.position.y = ly; tower.add(l); }
+const mast = new THREE.Mesh(new THREE.CylinderGeometry(5, 8, 31, 12), new THREE.MeshStandardMaterial({ color: '#b9bec6', roughness: 0.4, metalness: 0.6 })); mast.position.y = 381 - 7 + 15.5; tower.add(mast);
+const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 2, 31, 8), new THREE.MeshStandardMaterial({ color: '#d0d4da', metalness: 0.7, roughness: 0.3 })); ant.position.y = 412 - 7 + 15.5; tower.add(ant);
+scene.add(new THREE.HemisphereLight('#d8e4f4', '#141a20', 0.8));
+const sun = new THREE.DirectionalLight('#fff0dc', 2.6); sun.position.set(800, 900, 1200); scene.add(sun);
+// spray at the surge front
+const NS = 1400, sp = new Float32Array(NS * 3), sx = [], sz = [], sd = [];
+for (let i = 0; i < NS; i++) { sx.push(R(-1, 1)); sz.push(R(-900, 300)); sd.push(R(0, 1)); }
+const sGeo = new THREE.BufferGeometry(); sGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+const sprayM = new THREE.PointsMaterial({ map: softTex(), size: 26, color: '#f2f8ff', transparent: true, opacity: 0, depthWrite: false });
+const spray = new THREE.Points(sGeo, sprayM); spray.frustumCulled = false; scene.add(spray);
+// timing: surge rises 0.9 -> 3.8 s, max 524 m
+const TOP = 524, ESB = 443;
+const hAt = t => 40 + (TOP - 40) * eout(ramp(t, 0.2, 3.6));
+// camera: low at the tower base looking up -> wide side view with both at the same scale
+function setCam(t) { const a = eio(ramp(t, 0.2, 4.4)), u = cl(t / DUR);
+  const p0 = V(620, 70, 640), l0 = V(-40, 210, -60);
+  const p1 = V(980 + 40 * u, 360, 1500), l1 = V(-110, 270, -60);
+  camera.position.lerpVectors(p0, p1, a); const l = l0.clone().lerp(l1, a); camera.lookAt(l); camera.updateMatrixWorld(); }
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pEs'), t0: 0.3, at: () => [150, ESB, 60], col: '#7fd4ff', pos: (x, y) => [cl(x - 150, 360, 740), cl(y + 170, 250, 1460)] },
+  { el: E('pWa'), t0: 3.4, at: () => [X0 - TOP / K, TOP, -100], col: '#ff4a4a', pos: (x, y) => [cl(x + 60, 380, 700), cl(y - 260, 250, 1400)] },
+  { el: E('pFo'), t0: 4.4, at: () => [X0 - 480 / K, 480, -350], col: '#ffb547', pos: (x, y) => [cl(x - 200, 400, 680), cl(y + 420, 300, 1460)] },
+]);
+const proj = projector(camera), hl = document.getElementById('hl');
+function render(t) { t = cl(t, 0, DUR); setCam(t);
+  const h = hAt(t); clip.constant = h; surge.visible = h > 1;
+  for (let i = 0; i < NT; i++) { const under = ty[i] < h - 6; const k = under ? 1 - sm(cl((h - 6 - ty[i]) / 40)) : 1;
+    e3.set(0, 0, under ? -1.2 * (1 - k) : 0); qq.setFromEuler(e3); m4.compose(V(tx[i], ty[i], tz[i]), qq, V(k, k, k)); trees.setMatrixAt(i, m4); }
+  trees.instanceMatrix.needsUpdate = true;
+  const rising = 1 - sm(ramp(t, 3.4, 4.2));
+  for (let i = 0; i < NS; i++) { const y = Math.max(0, h - 30 + sd[i] * 70); const x = X0 - y / K + 20 + sx[i] * 25; sp.set([x, y, sz[i]], i * 3); }
+  sGeo.attributes.position.needsUpdate = true; sprayM.opacity = 0.55 * sm(ramp(t, 0.0, 0.3)) * rising;
+  renderer.render(scene, camera); lab(t);
+  // height lines (dashed) at 443 m and 524 m
+  const la = sm(ramp(t, 3.0, 3.6)), lb = sm(ramp(t, 3.6, 4.2)); let s = '';
+  const ln = (y, a, col) => { if (a < 0.01) return ''; const [x1, y1] = proj(X0 - y / K, y, -100), [x2, y2] = proj(230, y, 60);
+    return `<line x1="${x1}" y1="${y1}" x2="${x1 + (x2 - x1) * a}" y2="${y2}" stroke="${col}" stroke-width="4" stroke-dasharray="16 12" opacity="${0.9 * a}"/>`; };
+  s += ln(ESB, la, '#7fd4ff') + ln(TOP, lb, '#ff4a4a');
+  const bd = sm(ramp(t, 4.2, 4.8));
+  if (bd > 0.01) { const [a1x, a1y] = proj(X0 - TOP / K, TOP, -100), [a2x, a2y] = proj(230, TOP, 60), [b2x, b2y] = proj(230, ESB, 60), [b1x, b1y] = proj(X0 - ESB / K, ESB, -100);
+    s = `<polygon points="${a1x},${a1y} ${a2x},${a2y} ${b2x},${b2y} ${b1x},${b1y}" fill="#ff4a4a" opacity="${0.22 * bd}"/>` + s;
+    const bx = Math.min(1000, a2x + 18);
+    s += `<g opacity="${bd}" stroke="#ff4a4a" stroke-width="5" fill="none"><line x1="${bx}" y1="${a2y}" x2="${bx}" y2="${b2y}"/><line x1="${bx - 16}" y1="${a2y}" x2="${bx}" y2="${a2y}"/><line x1="${bx - 16}" y1="${b2y}" x2="${bx}" y2="${b2y}"/></g>`;
+    const g = document.getElementById('pGap'); g.style.left = Math.min(1010 - g.offsetWidth / 2, bx - 20) + 'px'; g.style.top = (a2y - 62) + 'px'; g.style.opacity = sm(ramp(t, 4.5, 4.9)); g.style.transform = `translate(-50%,-50%) scale(${0.9 + 0.1 * sm(ramp(t, 4.5, 4.9))})`; }
+  hl.innerHTML = s;
+  document.getElementById('note').style.opacity = sm(ramp(t, 3.0, 3.5)); }
+await ready(render);
+</script>
+</body>
+</html>
