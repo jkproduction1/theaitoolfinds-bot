@@ -1,0 +1,237 @@
+[
+ {
+  "word": "Type",
+  "start": 0.0,
+  "end": 0.2375
+ },
+ {
+  "word": "slash",
+  "start": 0.2375,
+  "end": 0.65
+ },
+ {
+  "word": "what",
+  "start": 0.65,
+  "end": 0.8
+ },
+ {
+  "word": "if",
+  "start": 0.8,
+  "end": 1.0
+ },
+ {
+  "word": "Earth",
+  "start": 1.075,
+  "end": 1.3375
+ },
+ {
+  "word": "had",
+  "start": 1.3375,
+  "end": 1.5375
+ },
+ {
+  "word": "two",
+  "start": 1.5375,
+  "end": 1.7625
+ },
+ {
+  "word": "Moons",
+  "start": 1.7625,
+  "end": 2.2
+ },
+ {
+  "word": "\u2026",
+  "start": 2.2,
+  "end": 2.2375
+ },
+ {
+  "word": "and",
+  "start": 2.2375,
+  "end": 2.3375
+ },
+ {
+  "word": "you",
+  "start": 2.3375,
+  "end": 2.45
+ },
+ {
+  "word": "get",
+  "start": 2.45,
+  "end": 2.65
+ },
+ {
+  "word": "this",
+  "start": 2.65,
+  "end": 3.05
+ },
+ {
+  "word": "Type",
+  "start": 3.0725,
+  "end": 3.3475
+ },
+ {
+  "word": "slash",
+  "start": 3.3475,
+  "end": 3.7225
+ },
+ {
+  "word": "simulate",
+  "start": 3.7225,
+  "end": 4.36
+ },
+ {
+  "word": "an",
+  "start": 4.42,
+  "end": 4.5575
+ },
+ {
+  "word": "underwater",
+  "start": 4.5575,
+  "end": 5.22
+ },
+ {
+  "word": "volcano",
+  "start": 5.22,
+  "end": 5.87
+ },
+ {
+  "word": "erupting",
+  "start": 5.87,
+  "end": 6.345
+ },
+ {
+  "word": "\u2026",
+  "start": 6.345,
+  "end": 6.3825
+ },
+ {
+  "word": "and",
+  "start": 6.3825,
+  "end": 6.495
+ },
+ {
+  "word": "you",
+  "start": 6.495,
+  "end": 6.62
+ },
+ {
+  "word": "get",
+  "start": 6.62,
+  "end": 6.82
+ },
+ {
+  "word": "this",
+  "start": 6.82,
+  "end": 7.22
+ },
+ {
+  "word": "Type",
+  "start": 7.2475,
+  "end": 7.547458333333333
+ },
+ {
+  "word": "slash",
+  "start": 7.547458333333333,
+  "end": 7.922458333333333
+ },
+ {
+  "word": "scale",
+  "start": 7.922458333333333,
+  "end": 8.484958333333333
+ },
+ {
+  "word": "the",
+  "start": 8.547458333333333,
+  "end": 8.6475
+ },
+ {
+  "word": "tallest",
+  "start": 8.6475,
+  "end": 9.109958333333333
+ },
+ {
+  "word": "wave",
+  "start": 9.109958333333333,
+  "end": 9.3725
+ },
+ {
+  "word": "versus",
+  "start": 9.3725,
+  "end": 9.81
+ },
+ {
+  "word": "a",
+  "start": 9.81,
+  "end": 9.8975
+ },
+ {
+  "word": "skyscraper",
+  "start": 9.8975,
+  "end": 10.61
+ },
+ {
+  "word": "\u2026",
+  "start": 10.61,
+  "end": 10.6475
+ },
+ {
+  "word": "and",
+  "start": 10.6475,
+  "end": 10.7475
+ },
+ {
+  "word": "you",
+  "start": 10.7475,
+  "end": 10.86
+ },
+ {
+  "word": "get",
+  "start": 10.86,
+  "end": 11.06
+ },
+ {
+  "word": "this",
+  "start": 11.06,
+  "end": 11.46
+ },
+ {
+  "word": "Comment",
+  "start": 11.4925,
+  "end": 11.8925
+ },
+ {
+  "word": "EARTH",
+  "start": 11.8925,
+  "end": 12.1925
+ },
+ {
+  "word": "and",
+  "start": 12.1925,
+  "end": 12.2925
+ },
+ {
+  "word": "I'll",
+  "start": 12.2925,
+  "end": 12.4925
+ },
+ {
+  "word": "send",
+  "start": 12.4925,
+  "end": 12.755
+ },
+ {
+  "word": "you",
+  "start": 12.755,
+  "end": 12.855
+ },
+ {
+  "word": "the",
+  "start": 12.855,
+  "end": 12.955
+ },
+ {
+  "word": "prompts",
+  "start": 12.955,
+  "end": 13.53
+ }
+]
