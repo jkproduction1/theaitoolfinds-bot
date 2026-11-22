@@ -7,7 +7,7 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
   WeightNorm.apply(module, name, dim)
 Collecting en-core-web-sm==3.8.0
   Downloading en_core_web_sm-3.8.0-py3-none-any.whl (12.8 MB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 88.0 MB/s  0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 101.9 MB/s  0:00:00
 Installing collected packages: en-core-web-sm
 Successfully installed en-core-web-sm-3.8.0
 [38;5;2m✔ Download and installation successful[0m
@@ -15,10 +15,10 @@ You can now load the package via spacy.load('en_core_web_sm')
 /opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
   warnings.warn(
 [tts] Kokoro voice (am_michael)
-VOICE OK earth65 14.0s 49 words
+VOICE OK earth68 13.6s 47 words
 [tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"type":"payment_required","code":"payment_issue","message":"Your subscription has a fail
 [tts] Kokoro voice (am_michael)
-VOICE OK body66 11.9s 44 words
+VOICE OK space69 15.2s 54 words
 [tts] ElevenLabs failed: ElevenLabs HTTP 401: {"detail":{"type":"payment_required","code":"payment_issue","message":"Your subscription has a fail
 [tts] Kokoro voice (am_michael)
-VOICE OK inside67 13.3s 45 words
+VOICE OK styles70 14.4s 48 words
