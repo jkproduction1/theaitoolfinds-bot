@@ -17,226 +17,236 @@
  {
   "word": "science",
   "start": 0.8875,
-  "end": 1.425
+  "end": 1.35
  },
  {
   "word": "why",
-  "start": 1.5,
-  "end": 1.7
+  "start": 1.425,
+  "end": 1.625
  },
  {
   "word": "we",
-  "start": 1.7,
-  "end": 1.8625
+  "start": 1.625,
+  "end": 1.7875
  },
  {
   "word": "yawn",
-  "start": 1.8625,
-  "end": 2.2
+  "start": 1.7875,
+  "end": 2.1249583333333333
  },
  {
   "word": "\u2026",
-  "start": 2.2,
-  "end": 2.2375
+  "start": 2.1249583333333333,
+  "end": 2.1625
  },
  {
   "word": "and",
-  "start": 2.2375,
-  "end": 2.35
+  "start": 2.1625,
+  "end": 2.275
  },
  {
   "word": "you",
-  "start": 2.35,
-  "end": 2.45
+  "start": 2.275,
+  "end": 2.3749583333333333
  },
  {
   "word": "get",
-  "start": 2.45,
-  "end": 2.65
+  "start": 2.3749583333333333,
+  "end": 2.575
  },
  {
   "word": "this",
-  "start": 2.65,
-  "end": 3.05
+  "start": 2.575,
+  "end": 2.97
  },
  {
   "word": "Type",
-  "start": 3.0725,
-  "end": 3.335
+  "start": 2.9875,
+  "end": 3.25
  },
  {
   "word": "slash",
-  "start": 3.335,
-  "end": 3.71
+  "start": 3.25,
+  "end": 3.625
  },
  {
   "word": "paper",
-  "start": 3.71,
-  "end": 4.035
+  "start": 3.625,
+  "end": 3.95
  },
  {
   "word": "collage",
-  "start": 4.035,
-  "end": 4.684958333333333
+  "start": 3.95,
+  "end": 4.525
+ },
+ {
+  "word": "how",
+  "start": 4.575,
+  "end": 4.7125
  },
  {
   "word": "the",
-  "start": 4.76,
-  "end": 4.86
+  "start": 4.7125,
+  "end": 4.7999583333333335
  },
  {
-  "word": "Panama",
-  "start": 4.86,
-  "end": 5.335
+  "word": "Hoover",
+  "start": 4.7999583333333335,
+  "end": 5.1
  },
  {
-  "word": "Canal",
-  "start": 5.335,
-  "end": 5.71
+  "word": "Dam",
+  "start": 5.1,
+  "end": 5.4
  },
  {
-  "word": "locks",
-  "start": 5.71,
-  "end": 6.035
+  "word": "works",
+  "start": 5.4,
+  "end": 5.725
  },
  {
   "word": "\u2026",
-  "start": 6.035,
-  "end": 6.0725
+  "start": 5.725,
+  "end": 5.775
  },
  {
   "word": "and",
-  "start": 6.0725,
-  "end": 6.1725
+  "start": 5.775,
+  "end": 5.8875
  },
  {
   "word": "you",
-  "start": 6.1725,
-  "end": 6.26
+  "start": 5.8875,
+  "end": 6.0
  },
  {
   "word": "get",
-  "start": 6.26,
-  "end": 6.46
+  "start": 6.0,
+  "end": 6.2
  },
  {
   "word": "this",
-  "start": 6.46,
-  "end": 6.86
+  "start": 6.2,
+  "end": 6.6
  },
  {
   "word": "Type",
-  "start": 6.8825,
-  "end": 7.1575
+  "start": 6.6225,
+  "end": 6.8975
  },
  {
   "word": "slash",
-  "start": 7.1575,
-  "end": 7.544958333333334
+  "start": 6.8975,
+  "end": 7.285
  },
  {
   "word": "painted",
-  "start": 7.544958333333334,
-  "end": 7.945
+  "start": 7.285,
+  "end": 7.685
  },
  {
   "word": "story",
-  "start": 7.945,
-  "end": 8.445
- },
- {
-  "word": "Pompeii's",
-  "start": 8.495,
-  "end": 9.07
- },
- {
-  "word": "last",
-  "start": 9.07,
-  "end": 9.395
- },
- {
-  "word": "day",
-  "start": 9.395,
-  "end": 9.745
- },
- {
-  "word": "\u2026",
-  "start": 9.745,
-  "end": 9.82
- },
- {
-  "word": "and",
-  "start": 9.82,
-  "end": 9.9325
- },
- {
-  "word": "you",
-  "start": 9.9325,
-  "end": 10.02
- },
- {
-  "word": "get",
-  "start": 10.02,
-  "end": 10.22
- },
- {
-  "word": "this",
-  "start": 10.22,
-  "end": 10.63
- },
- {
-  "word": "Comment",
-  "start": 10.6625,
-  "end": 11.0875
- },
- {
-  "word": "STYLES",
-  "start": 11.0875,
-  "end": 12.2
- },
- {
-  "word": "and",
-  "start": 12.2,
-  "end": 12.3125
- },
- {
-  "word": "I'll",
-  "start": 12.3125,
-  "end": 12.4625
- },
- {
-  "word": "send",
-  "start": 12.4625,
-  "end": 12.725
- },
- {
-  "word": "you",
-  "start": 12.725,
-  "end": 12.825
+  "start": 7.685,
+  "end": 8.16
  },
  {
   "word": "the",
-  "start": 12.825,
-  "end": 12.9625
+  "start": 8.1975,
+  "end": 8.297458333333333
+ },
+ {
+  "word": "first",
+  "start": 8.297458333333333,
+  "end": 8.635
+ },
+ {
+  "word": "airplane",
+  "start": 8.635,
+  "end": 9.1475
+ },
+ {
+  "word": "flight",
+  "start": 9.1475,
+  "end": 9.51
+ },
+ {
+  "word": "\u2026",
+  "start": 9.51,
+  "end": 9.56
+ },
+ {
+  "word": "and",
+  "start": 9.56,
+  "end": 9.672458333333333
+ },
+ {
+  "word": "you",
+  "start": 9.672458333333333,
+  "end": 9.76
+ },
+ {
+  "word": "get",
+  "start": 9.76,
+  "end": 9.96
+ },
+ {
+  "word": "this",
+  "start": 9.96,
+  "end": 10.36
+ },
+ {
+  "word": "Comment",
+  "start": 10.3875,
+  "end": 10.8125
+ },
+ {
+  "word": "STYLES",
+  "start": 10.8125,
+  "end": 11.925
+ },
+ {
+  "word": "and",
+  "start": 11.925,
+  "end": 12.0375
+ },
+ {
+  "word": "I'll",
+  "start": 12.0375,
+  "end": 12.1875
+ },
+ {
+  "word": "send",
+  "start": 12.1875,
+  "end": 12.45
+ },
+ {
+  "word": "you",
+  "start": 12.45,
+  "end": 12.55
+ },
+ {
+  "word": "the",
+  "start": 12.55,
+  "end": 12.6875
  },
  {
   "word": "system",
-  "start": 12.9625,
-  "end": 13.375
+  "start": 12.6875,
+  "end": 13.1
  },
  {
   "word": "that",
-  "start": 13.375,
-  "end": 13.525
+  "start": 13.1,
+  "end": 13.25
  },
  {
   "word": "makes",
-  "start": 13.525,
-  "end": 13.8
+  "start": 13.25,
+  "end": 13.525
  },
  {
   "word": "these",
-  "start": 13.8,
-  "end": 14.3
+  "start": 13.525,
+  "end": 13.88
  }
 ]
