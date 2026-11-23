@@ -218,7 +218,66 @@ def media(apply: bool, which: str) -> None:
     print("\n".join(out))
 
 
-if sys.argv[1] == "setdm":
+def ig(apply: bool, code: str, kw: str) -> None:
+    """Auto-DM for a reel Jan posted himself (not via Zernio), Jan 2026-11-23:
+    python -m bot.autodm_once ig dry|apply <reel shortcode> <KEYWORD>
+    Finds the reel's Instagram media id in Zernio /analytics (source=all) by its URL, bound via platformPostId.
+    DM = "Get the prompts" (data/dm_manual.json[<shortcode>].prompts_url) + "Get the system" (utm_content=<keyword>),
+    same dm_full texts / DM video as our own prompt automations. dry = only look up and print, nothing is created."""
+    out = [f"IG {'APPLY' if apply else 'DRY'} code={code} kw={kw}"]
+    cfg = json.loads(Path("data/dm_system.json").read_text())
+    manual = json.loads(Path("data/dm_manual.json").read_text()) if Path("data/dm_manual.json").exists() else {}
+    hit, page = None, 1
+    while not hit and page <= 4:
+        d = poster._z("GET", "/analytics", params={"source": "all", "limit": 50, "page": page, "sort_by": "date"})
+        for p in d.get("posts") or []:
+            for x in p.get("platforms") or []:
+                if code in (x.get("platformPostUrl") or ""):
+                    hit = (p, x)
+        if not d.get("posts"):
+            break
+        page += 1
+    if not hit:
+        out.append("reel NOT found in /analytics yet (Zernio may not have synced it); nothing created")
+    else:
+        p, x = hit
+        mid = x.get("platformPostId") or x.get("postId") or x.get("id")
+        out.append("found: " + json.dumps({k: v for k, v in x.items() if k != "analytics"}, ensure_ascii=False)[:600])
+        out.append("caption: " + (p.get("content") or "")[:600])
+        data = poster._z("GET", "/comment-automations")
+        items = data.get("automations") or data.get("data") or (data if isinstance(data, list) else [])
+        clash = [a.get("name") for a in items if kw.lower() in [k.lower() for k in (a.get("keywords") or [])]]
+        out.append(f"keyword {kw} already used by: {clash}")
+        purl = (manual.get(code) or {}).get("prompts_url")
+        out.append(f"media id={mid} prompts_url={purl}")
+        if apply and mid and purl and not clash:
+            acc = poster.instagram_account()
+            prof = acc.get("profileId")
+            prof = prof.get("_id") if isinstance(prof, dict) else prof
+            c = poster.dm_copy(code, kw, "Claude prompts")
+            body = {"profileId": prof, "accountId": acc.get("_id") or acc.get("id"), "platformPostId": str(mid),
+                    "postTitle": f"Manual reel {code}", "name": f"Manual reel {code} ({kw})",
+                    "trigger": "comment", "keywords": [kw, kw.lower()], "matchMode": "word", "typoTolerance": True,
+                    "alsoMatchInDms": True, **{k: v for k, v in c.items() if k != "btn"},
+                    "dmMessage": cfg["dm_full"][0], "dmMessageVariations": cfg["dm_full"][1:],
+                    "buttons": [{"type": "url", "title": cfg["prompts_title"][:20], "url": purl},
+                                {"type": "url", "title": cfg["system_title"][:20], "url": cfg["system_url"] + kw.lower()}],
+                    "audience": {"followerStatus": "follower", "whenUnknown": "verify"}}
+            if cfg.get("dm_media_url"):
+                body["dmMedia"] = {"type": "video", "url": cfg["dm_media_url"]}
+                body["linkTracking"], body["clickTag"] = True, cfg.get("click_tag", "dm_click")
+            res = poster._z("POST", "/comment-automations", json=body)
+            out.append("CREATED " + json.dumps(res.get("automation") or res, ensure_ascii=False)[:500])
+        elif apply:
+            out.append("NOT created (missing media id / prompts_url, or keyword clash)")
+    Path("logs").mkdir(exist_ok=True)
+    Path("logs/autodm.log").write_text("\n".join(out))
+    print("\n".join(out))
+
+
+if sys.argv[1] == "ig":
+    ig(sys.argv[2] == "apply", sys.argv[3], sys.argv[4])
+elif sys.argv[1] == "setdm":
     setdm(len(sys.argv) > 2 and sys.argv[2] == "apply")
 elif sys.argv[1] == "seturl":
     seturl(len(sys.argv) > 2 and sys.argv[2] == "apply")
