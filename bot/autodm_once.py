@@ -264,7 +264,7 @@ def ig(apply: bool, code: str, kw: str) -> None:
         out.append(f"keyword {kw} already used by: {clash}")
         purl = (manual.get(code) or {}).get("prompts_url")
         out.append(f"media id={mid} prompts_url={purl}")
-        if apply and mid and purl and not clash:
+        if apply and mid and purl:  # clash only warned: comments are bound to the post; DMs stay with the older automation
             acc = poster.instagram_account()
             prof = acc.get("profileId")
             prof = prof.get("_id") if isinstance(prof, dict) else prof
@@ -272,7 +272,7 @@ def ig(apply: bool, code: str, kw: str) -> None:
             body = {"profileId": prof, "accountId": acc.get("_id") or acc.get("id"), "platformPostId": str(mid),
                     "postTitle": f"Manual reel {code}", "name": f"Manual reel {code} ({kw})",
                     "trigger": "comment", "keywords": [kw, kw.lower()], "matchMode": "word", "typoTolerance": True,
-                    "alsoMatchInDms": True, **{k: v for k, v in c.items() if k != "btn"},
+                    "alsoMatchInDms": not clash, **{k: v for k, v in c.items() if k != "btn"},
                     "dmMessage": cfg["dm_full"][0], "dmMessageVariations": cfg["dm_full"][1:],
                     "buttons": [{"type": "url", "title": cfg["prompts_title"][:20], "url": purl},
                                 {"type": "url", "title": cfg["system_title"][:20], "url": cfg["system_url"] + kw.lower()}],
@@ -283,7 +283,7 @@ def ig(apply: bool, code: str, kw: str) -> None:
             res = poster._z("POST", "/comment-automations", json=body)
             out.append("CREATED " + json.dumps(res.get("automation") or res, ensure_ascii=False)[:500])
         elif apply:
-            out.append("NOT created (missing media id / prompts_url, or keyword clash)")
+            out.append("NOT created (missing media id or prompts_url)")
     Path("logs").mkdir(exist_ok=True)
     Path("logs/autodm.log").write_text("\n".join(out))
     print("\n".join(out))
