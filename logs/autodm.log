@@ -1,2 +1,7 @@
 IG DRY code=DgFIPMHBL8S kw=POPCORN
-reel NOT found in /analytics yet (Zernio may not have synced it); nothing created
+found: {"id": "18024948434944353", "accountId": "6ad69dcdecad4ce8494e92b1", "accountUsername": "theaitoolfinds", "platform": "instagram", "content": "Comment “popcorn” and I’ll send you the link.\n\n#explainervideo #claudeai #animations", "createdTime": "2026-11-23T10:08:39.000Z", "permalink": "https://www.instagram.com/reel/DgFIPMHBL8S/", "picture": "https://scontent-lhr6-1.cdninstagram.com/v/t51.82787-15/902825699_17964631644032548_9023714921417902238_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&_nc_map=urlgen_bucketless&ccb=7-5&_nc_sid=18de74&efg=eyJlZmdfdGFnIjoiQ0xJUFMuYmVzdF9pbWFnZV91cmxnZW4uQzMifQ%3D%
+caption: Comment “popcorn” and I’ll send you the link.
+
+#explainervideo #claudeai #animations
+keyword POPCORN already used by: ['Claude explainer styles (POPCORN)']
+media id=18024948434944353 prompts_url=None
