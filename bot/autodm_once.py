@@ -237,8 +237,22 @@ def ig(apply: bool, code: str, kw: str) -> None:
         if not d.get("posts"):
             break
         page += 1
+    if not hit:  # fallback: Zernio inbox lists the account's posts with comments (permalink + IG media id)
+        try:
+            acc_id = poster.instagram_account().get("_id")
+            d = poster._z("GET", "/inbox/comments", params={"accountId": acc_id, "limit": 50})
+            rows = d.get("data") or d.get("posts") or d.get("comments") or (d if isinstance(d, list) else [])
+            for r in rows:
+                if code in json.dumps(r):
+                    hit = ({"content": r.get("caption") or r.get("content") or ""},
+                           {**r, "platformPostId": r.get("platformPostId") or r.get("postId") or r.get("id")})
+                    break
+            if not hit:
+                out.append("inbox sample: " + json.dumps(rows[:2], ensure_ascii=False)[:1200])
+        except Exception as e:
+            out.append(f"inbox lookup failed: {e}")
     if not hit:
-        out.append("reel NOT found in /analytics yet (Zernio may not have synced it); nothing created")
+        out.append("reel NOT found in /analytics or /inbox/comments; nothing created")
     else:
         p, x = hit
         mid = x.get("platformPostId") or x.get("postId") or x.get("id")
