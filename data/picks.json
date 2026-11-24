@@ -1,129 +1,128 @@
 {
-  "date": "2026-11-23",
+  "date": "2026-11-24",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What if… Earth 14",
+      "title": "What if… Earth 15",
       "commands": [
-        "/what-if Earth spun twice as fast",
-        "/simulate the ocean freezing solid overnight",
-        "/scale the Amazon River versus Europe"
+        "/what-if Earth's core stopped spinning",
+        "/simulate the Sahara turning green again",
+        "/scale the Pacific Ocean versus the Moon"
       ],
-      "why": "Earth what-if ve stylu Zack D. Films je náš nejsilnější IG hook (earth8 874k, earth58 ~20k); tři nové objekty, nebezpečí + měřítko"
+      "why": "Earth what-if (Zack D. Films duch) je náš nejsilnější IG hook (earth8 874k); nebezpečí + měřítko, tři nové objekty"
     },
     {
-      "title": "Scary space 8",
+      "title": "Scary space 9",
       "commands": [
-        "/deep-dive inside a neutron star",
-        "/what-if a rogue planet passed by Earth",
-        "/scale Saturn's rings versus Earth"
+        "/deep-dive inside Jupiter's Great Red Spot",
+        "/what-if a gamma-ray burst hit Earth",
+        "/scale the biggest black hole versus our Solar System"
       ],
-      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); hrozba + měřítko, nic z toho jsme ještě neměli"
+      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); hrozba + měřítko, nic z toho ještě nebylo"
     },
     {
-      "title": "Dangerous nature 3",
+      "title": "Deadliest nature 4",
       "commands": [
-        "/simulate a tornado forming over a field",
-        "/deep-dive inside a lava tube",
-        "/what-if a dust storm swallowed a city"
+        "/simulate an avalanche burying a valley",
+        "/deep-dive inside a hurricane's eye",
+        "/x-ray a volcano right before it erupts"
       ],
-      "why": "příroda v nejnebezpečnější podobě (storm45 99k) funguje; žádná měkká roztomilá témata (around51 16k)"
+      "why": "příroda v nejnebezpečnější podobě (storm45 99k) drží; žádná měkká roztomilá témata (around51 16k)"
     },
     {
-      "title": "What's inside giant machines",
+      "title": "What's inside giant machines 2",
       "commands": [
-        "/x-ray an aircraft carrier",
-        "/explode a jet ski",
-        "/explain-3d how an elevator brake stops a fall"
+        "/x-ray a submarine",
+        "/explode a Formula 1 car",
+        "/explain-3d how a nuclear reactor makes electricity"
       ],
-      "why": "what's inside (inside3 135k) drží; obří stroje + strach z pádu výtahu = silnější 'wow' než malé gadgety"
+      "why": "what's inside (inside3 135k) funguje; obří stroje + skrytý mechanismus, všechny objekty nové"
     },
     {
-      "title": "Famous video styles 13",
+      "title": "Famous video styles 14",
       "commands": [
-        "/flat-science why your fingers wrinkle in water",
-        "/paper-collage why the Netherlands is below sea level",
+        "/flat-science why your knuckles crack",
+        "/paper-collage why Venice is sinking",
         "/painted-story how Pompeii was buried in a day"
       ],
-      "why": "styles série má nejlepší save rate (5,6–6,3 %) a hity styles33/44/48 (92–148k); všechna tři témata nová"
+      "why": "styles série má nejlepší save rate (5,6–6,3 %) a hity styles33/44/48 (92–148k); caption otevřít promise linkou 'Type one command and Claude…' (test z learnings)"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this year-in-music recap using Claude",
+      "title": "How to make this GTA 6 'mission passed' screen using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Spotify Wrapped 2026 vychází na přelomu listopadu a prosince (Official Charts, Techloy); vlastní 'inspired by' recap bez loga, který si každý chce sdílet do stories.",
+      "trend": "GTA 6 vyšlo 19. 11. a rekordy + memy z launch týdne pořád jedou na X/TikToku (Dexerto, Virlo); vlastní 'mission passed' karta pro tvůj den, jen název jako text, žádné logo.",
       "steps": [
-        "Give Claude your top 5 songs and artists.",
-        "Ask for bold animated stat cards in bright gradients.",
+        "Tell Claude what you finished today.",
+        "Ask for a bold 'mission passed' screen with a cash counter.",
         "Claude builds it, you tweak it."
       ],
       "seconds": 12,
-      "keyword": "RECAP",
+      "keyword": "MISSION",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this 'how I see myself' moodboard using Claude",
+      "title": "How to make this Black Friday price-drop ad using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "Trend 'Editing how I see myself' moodboard běží teď na TikToku (Virlo, listopad 2026); animovaná koláž s barvami, slovy a tvary místo fotek.",
+      "trend": "Black Friday je v pátek 27. 11.; malé značky a tvůrci teď všude postují animované slevové reklamy, tohle je hotová šablona pro vlastní produkt.",
       "steps": [
-        "Tell Claude three words that describe you.",
-        "Ask for a moving collage of colors, shapes and type that fits them.",
+        "Give Claude your product and both prices.",
+        "Ask for the old price to crash down into the new one.",
         "Claude builds it, you tweak it."
       ],
       "seconds": 12,
-      "keyword": "MOOD",
+      "keyword": "DEAL",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make this advent calendar that opens itself using Claude",
+      "title": "How to make this animated 2026 year-in-review using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "1. prosinec je za týden; digitální adventní kalendář, kde se okénka postupně otvírají, sedí na prosincové stories a dárky.",
+      "trend": "konec roku = sezóna recapů (Wrapped vychází začátkem prosince, 'my 2026 in 12 months' edity rostou na IG); osobní timeline z tvých vlastních fotek.",
       "steps": [
-        "Ask Claude for a 24-door advent calendar in a warm winter look.",
-        "Have each door flip open to a tiny surprise.",
+        "Give Claude one photo and one line for each month.",
+        "Ask for a scrolling timeline with big month numbers.",
         "Claude builds it, you tweak it."
-      ],
-      "seconds": 12,
-      "keyword": "ADVENT",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to turn your selfie into a snow globe using Higgsfield",
-      "tool": "Higgsfield",
-      "url": "https://higgsfield.ai",
-      "trend": "Sváteční AI edity (sněžítka, zimní figurky) se každý prosinec šíří na IG a TikToku; první sníh a Vánoce za dveřmi.",
-      "steps": [
-        "Upload one selfie to Higgsfield.",
-        "Ask for a tiny you inside a glass snow globe, snow swirling.",
-        "Animate it into a short video.",
-        "Higgsfield builds it, you tweak it."
       ],
       "seconds": 13,
-      "keyword": "GLOBE",
-      "cost": "kredity Higgsfield, cca 10–20 (obrázek + krátké video)",
+      "keyword": "TIMELINE",
+      "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to make your pet play in the first snow using Kling",
-      "tool": "Kling",
-      "url": "https://klingai.com",
-      "trend": "S prvním sněhem jdou na TikToku a IG nahoru videa mazlíčků ve sněhu; AI verze z jedné fotky zvířete, které sníh nikdy nevidělo.",
+      "title": "How to turn your city into a GTA 6-style trailer using Higgsfield",
+      "tool": "Higgsfield",
+      "url": "https://higgsfield.ai",
+      "trend": "po launchi GTA 6 (19. 11.) letí AI edity 'moje město jako GTA trailer' s miliony views (games.gg o AI GTA videích); jen neonový filmový look, žádné postavy ani logo hry.",
       "steps": [
-        "Upload a photo of your pet to Kling.",
-        "Prompt: jumping into fresh snow, slow motion, flakes everywhere.",
-        "Kling builds it, you tweak it."
+        "Upload three photos of your street.",
+        "Pick a cinematic neon sunset camera move.",
+        "Higgsfield builds it, you tweak it."
+      ],
+      "seconds": 14,
+      "keyword": "TRAILER",
+      "cost": "kredity Higgsfield, cca 20–40 (3 krátká videa)",
+      "handle": ""
+    },
+    {
+      "title": "How to turn your photo into a Christmas ornament using Higgsfield",
+      "tool": "Higgsfield",
+      "url": "https://higgsfield.ai",
+      "trend": "po Black Friday startuje vánoční sezóna a 'me as a tiny ornament / figurka' AI edity se vracejí na IG a TikTok; sdílitelný výsledek z vlastní fotky.",
+      "steps": [
+        "Upload a selfie or a pet photo.",
+        "Ask for a glass ornament hanging on a glowing tree.",
+        "Higgsfield builds it, you tweak it."
       ],
       "seconds": 12,
-      "keyword": "SNOW",
-      "cost": "kredity Kling, cca 20–35 za 5–10 s video",
+      "keyword": "ORNAMENT",
+      "cost": "kredity Higgsfield, cca 10–20 (obrázek + krátké video)",
       "handle": ""
     }
   ],
