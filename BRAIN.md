@@ -203,6 +203,8 @@ First beat ≤1 s (the app-listing tap was too long). Frame renderer for spec ad
 kinetic type with one key word in an accent pill, story = the product's core mechanic, end reveal grows out of the hero object).
 
 ## 3e. Format "Tutorial": "How to make this <viral thing> using <tool>" (Jan, 2026-11-11; 1 video every day, mix v4)
+**INACTIVE since 2026-11-25 (Jan): tutorials did not perform (gtamap22 ~3k, trip24 10k IG). Daily = only "Type it, get it" (mix v7, §3b).
+The morning picklist sends no tutorial ideas any more ("tutorials": []). Keep this section only as reference.**
 Template: `hf/videos/gtamap22/` (build.py = v3 with subtitles + own sfx; scenes.js = the result). Built live with Jan over many
 rounds; these are his calls:
 - **Idea:** ONE specific tool + ONE viral thing people want to make right now. Go through what is trending (IG/TikTok/X edits and
