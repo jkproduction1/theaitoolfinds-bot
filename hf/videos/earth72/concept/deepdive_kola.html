@@ -72,8 +72,8 @@ function setCam(t) { const d = depthAt(t), a = eio(ramp(t, 3.7, 6.2));
 const E = id => document.getElementById(id);
 const lab = labels(camera, [
   { el: E('pW'), t0: .5, t1: 2.2, at: () => [holeX, -depthAt(.9) + 0.2, .05], pos: (x, y) => [cl(x + 230, 330, 750), cl(y + 260, 500, 1450)] },
-  { el: E('pB'), t0: 3.4, t1: 5.0, at: () => [holeX, -DEP, .05], col: '#ff4a4a', pos: (x, y) => [cl(x + 200, 330, 750), cl(y + 300, 500, 1480)] },
-  { el: E('pK'), t0: 4.8, at: () => [holeX, -DEP, .05], col: '#ffb547', pos: (x, y) => [cl(x + 120, 330, 750), cl(y + 220, 500, 1480)] },
+  { el: E('pB'), t0: 3.4, t1: 4.35, at: () => [holeX, -DEP, .05], col: '#ff4a4a', pos: (x, y) => [cl(x + 200, 330, 750), cl(y + 300, 500, 1480)] },
+  { el: E('pK'), t0: 4.85, at: () => [holeX, -DEP, .05], col: '#ffb547', pos: (x, y) => [cl(x + 120, 330, 750), cl(y + 220, 500, 1480)] },
   { el: E('pE'), t0: 5.1, at: () => [8, EV, -4], pos: (x, y) => [cl(x, 330, 750), cl(y - 170, 520, 1400)] },
 ]);
 const SPEED = 1.17; // fits ~5.4 s on screen

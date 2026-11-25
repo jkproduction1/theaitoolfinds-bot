@@ -98,13 +98,13 @@ const sv = [...Array(NS)].map(() => V(R(-1, 1), R(.5, 2), R(-1, 1)));
 const glow = new THREE.PointLight('#ff4a10', 0, 6, 1.5); glow.position.set(1.25, .8, -.1); DIO.add(glow);
 // camera: wide Sun -> Earth, then fly in to the diorama
 function setCam(t) { const a = eio(ramp(t, 1.9, 3.6));
-  const p0 = V(6, 16, 74), l0 = V(-3, 18, 0); const p1 = V(4.6, RE + 3.4, 8.8), l1 = V(.3, RE + .5, -.3);
+  const p0 = V(6, 16, 78), l0 = V(-3, 11, 0); const p1 = V(4.6, RE + 3.4, 8.8), l1 = V(.3, RE + .5, -.3);
   camera.position.copy(p0.clone().lerp(p1, a)).add(V(.3 * Math.sin(t * .7), .2 * Math.cos(t * .5), 0)); camera.lookAt(l0.clone().lerp(l1, a)); camera.updateMatrixWorld(); }
 const E = id => document.getElementById(id); const dw = v => DIO.localToWorld(v.clone());
 const lab = labels(camera, [
   { el: E('pS'), t0: .3, t1: 1.9, at: () => SUNP.clone().lerp(V(0, 0, 0), .35), col: '#ffb547', pos: (x, y) => [cl(x + 120, 300, 780), cl(y + 160, 420, 1400)] },
-  { el: E('pF'), t0: 1.2, t1: 2.3, at: () => V(-RE * 2.2, RE * .8, 0), pos: (x, y) => [cl(x + 120, 300, 780), cl(y + 210, 420, 1450)] },
-  { el: E('pL'), t0: 3.6, at: () => dw(V(-1.9, 1.25, -.4)), col: '#ffb547', pos: (x, y) => [cl(x + 40, 330, 750), cl(y + 380, 560, 1450)] },
+  { el: E('pF'), t0: 1.2, t1: 2.3, at: () => V(-RE * 2.2, RE * .8, 0), pos: (x, y) => [cl(x + 160, 300, 780), cl(y - 240, 420, 1300)] },
+  { el: E('pL'), t0: 3.6, at: () => dw(V(-1.9, 1.25, -.4)), col: '#ffb547', pos: (x, y) => [cl(x + 40, 410, 670), cl(y + 380, 560, 1450)] },
   { el: E('pT'), t0: 4.3, at: () => dw(V(1.25, .7, -.1)), col: '#ff4a4a', pos: (x, y) => [cl(x, 330, 750), cl(y - 330, 520, 1400)] },
 ]);
 const SPEED = 1.17; // fits ~5.4 s on screen

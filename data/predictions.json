@@ -5858,5 +5858,46 @@
    "visuals": 16,
    "ending": 2
   }
+ },
+ {
+  "name": "earth72",
+  "date": "2026-11-25",
+  "score": 69,
+  "mode": "full",
+  "features": {
+   "hook": 0.14,
+   "hook_words": 13,
+   "hook_end_s": 4.25,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.68,
+   "dur_s": 33.7,
+   "words": 54,
+   "pace": 0.0,
+   "length": 0.7,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.25,
+   "visual_changes": 69,
+   "visuals": 0.7,
+   "ending": 0.69,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook má 13 slov (cíl ≤10)",
+   "hook končí v 4.3 s (cíl ≤2,5 s)",
+   "video má 34 s (cíl 18–30 s)"
+  ],
+  "weights": {
+   "topic": 33,
+   "hook": 11,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
  }
 ]
