@@ -1,0 +1,121 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// yellow71 r2: /painted-story how the Trojan horse fooled a city (painterly look of styles70 painted_flight). Own generic walls, horse and figures drawn in code.
+// Story = legend: Homer, Odyssey book 8 (Demodocus sings of the wooden horse) and Virgil, Aeneid book 2 (Greeks pretend to sail away, leave the horse,
+// Trojans pull it into the city, at night the hidden warriors climb out and open the gates). On screen only: "Troy, as the legend goes", "A gift... or a trap?",
+// "Pulled inside the walls", "At night, the hatch opened", "Told by Homer and Virgil".
+const g=document.getElementById('c').getContext('2d');const LERP=(a,b,t)=>a+(b-a)*t;
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const GY=1340, WW=2400;
+// two skies (dusk / night) painted once, blended over time
+const SKYD=off(WW,GY,(p,w,h)=>{const R=R0(41);const s=p.createLinearGradient(0,0,0,h);s.addColorStop(0,'#3d3a5e');s.addColorStop(.55,'#c0705a');s.addColorStop(1,'#f0b070');p.fillStyle=s;p.fillRect(0,0,w,h);
+  strokes(p,2600,R,0,0,w,h,['#59507a','#a76060','#e0946a','#f4c48a'],200,26,0.03,0.06,0.14);
+  p.fillStyle='rgba(255,220,160,.9)';p.beginPath();p.arc(1900,1040,70,0,7);p.fill();strokes(p,300,R,1780,920,240,240,['#ffe0a0','#ffc070'],40,8,0,0.15,0.25);});
+const SKYN=off(WW,GY,(p,w,h)=>{const R=R0(43);const s=p.createLinearGradient(0,0,0,h);s.addColorStop(0,'#0b1024');s.addColorStop(.7,'#1e2a4a');s.addColorStop(1,'#33405e');p.fillStyle=s;p.fillRect(0,0,w,h);
+  strokes(p,2400,R,0,0,w,h,['#141c36','#26345a','#3a4870'],200,26,0.03,0.08,0.16);
+  for(let i=0;i<260;i++){p.fillStyle='rgba(240,235,210,'+(0.3+R()*0.6)+')';p.beginPath();p.arc(R()*w,R()*h*0.8,1+R()*2.6,0,7);p.fill();}
+  p.fillStyle='#f2ead0';p.beginPath();p.arc(560,330,62,0,7);p.fill();p.fillStyle='rgba(242,234,208,.18)';p.beginPath();p.arc(560,330,130,0,7);p.fill();});
+// walls + gate + ground (painted once)
+const WORLD=off(WW,2200,(p,w,h)=>{const R=R0(31);
+  // city behind the wall: towers and roofs
+  for(let i=0;i<16;i++){const x=780+i*95+R()*40,ww=60+R()*70,hh=120+R()*220;p.fillStyle=['#8a7258','#7a644e','#9a8064'][i%3];p.fillRect(x,GY-330-hh,ww,hh+40);
+    p.fillStyle='#5a4636';p.beginPath();p.moveTo(x-10,GY-330-hh);p.lineTo(x+ww/2,GY-370-hh);p.lineTo(x+ww+10,GY-330-hh);p.closePath();p.fill();}
+  strokes(p,900,R,760,GY-720,1600,420,['#6a5440','#a08466','#8a7058'],40,8,1.57,0.12,0.22);
+  // wall
+  const wl=(x0,x1)=>{p.fillStyle='#b49a76';p.fillRect(x0,GY-360,x1-x0,370);for(let x=x0;x<x1;x+=56){p.fillRect(x,GY-400,32,44);}
+    strokes(p,(x1-x0)*1.4,R,x0,GY-400,x1-x0,410,['#9c8262','#c8ae88','#86704f','#d6bf98'],46,9,0,0.14,0.26);
+    p.strokeStyle='rgba(80,60,40,.35)';p.lineWidth=3;for(let y=GY-330;y<GY;y+=46){p.beginPath();p.moveTo(x0,y);p.lineTo(x1,y+R()*4);p.stroke();for(let x=x0+((y/46)%2)*40;x<x1;x+=80){p.beginPath();p.moveTo(x,y);p.lineTo(x,y+46);p.stroke();}}};
+  wl(700,1380);wl(1640,2400);
+  // gate towers
+  for(const tx of [1300,1620]){p.fillStyle='#a88e6a';p.fillRect(tx,GY-560,120,570);for(let x=tx;x<tx+120;x+=40)p.fillRect(x,GY-600,26,44);strokes(p,500,R,tx,GY-600,120,610,['#94795a','#c2a780','#7e6648'],40,9,0,0.14,0.26);}
+  // gate opening (dark, warm torch light inside)
+  const gx0=1420,gx1=1620;p.fillStyle='#2a1c14';p.beginPath();p.moveTo(gx0,GY+5);p.lineTo(gx0,GY-300);p.quadraticCurveTo((gx0+gx1)/2,GY-420,gx1,GY-300);p.lineTo(gx1,GY+5);p.closePath();p.fill();
+  const tg=p.createRadialGradient(1520,GY-120,10,1520,GY-120,260);tg.addColorStop(0,'rgba(255,170,80,.55)');tg.addColorStop(1,'rgba(255,170,80,0)');p.fillStyle=tg;p.fill();
+  // plain + road
+  const fg=p.createLinearGradient(0,GY,0,h);fg.addColorStop(0,'#b09468');fg.addColorStop(1,'#6a5236');p.fillStyle=fg;p.fillRect(0,GY,w,h-GY);
+  strokes(p,3600,R,0,GY,w,h-GY,['#a08458','#8a6e48','#c4a878','#7a603e'],90,12,0,0.1,0.22);
+  p.fillStyle='rgba(200,170,120,.45)';p.beginPath();p.moveTo(1420,GY);p.lineTo(1620,GY);p.lineTo(1300,h);p.lineTo(200,h);p.closePath();p.fill();
+  strokes(p,900,R,300,GY,1300,h-GY,['#c8ac7c','#b0946a'],70,10,-0.3,0.08,0.18);
+  // dry grass
+  for(let i=0;i<80;i++){const x=R()*w,y=GY+40+R()*800;p.strokeStyle='#6e6a3c';p.lineWidth=4;p.globalAlpha=.55;for(let k=0;k<7;k++){p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+(k-3)*5,y-20,x+(k-3)*12+8,y-40-R()*20);p.stroke();}}p.globalAlpha=1;
+});
+const PLAZA=off(WW,2200,(p,w,h)=>{const R=R0(57);
+  // inner side of the wall far behind
+  p.fillStyle='#4a4a5e';p.fillRect(0,GY-420,w,140);for(let x=0;x<w;x+=56)p.fillRect(x,GY-460,32,44);strokes(p,2000,R,0,GY-460,w,180,['#3e3e52','#5a5a70','#34344a'],46,9,0,0.14,0.26);
+  // houses around the square
+  for(let i=0;i<14;i++){const x=i*175-40+R()*40,ww=150+R()*60,hh=200+R()*160;p.fillStyle=['#5e5068','#544660','#685a70'][i%3];p.fillRect(x,GY-hh,ww,hh);
+    p.fillStyle='#3a2e44';p.beginPath();p.moveTo(x-12,GY-hh);p.lineTo(x+ww/2,GY-hh-60);p.lineTo(x+ww+12,GY-hh);p.closePath();p.fill();
+    p.fillStyle='rgba(255,190,110,.75)';if(R()>.4)p.fillRect(x+ww*.3,GY-hh*.6,26,36);if(R()>.5)p.fillRect(x+ww*.62,GY-hh*.45,26,36);}
+  strokes(p,1800,R,0,GY-420,w,420,['#4a3e58','#6a5a78','#3a3048'],40,8,1.57,0.1,0.2);
+  const fg=p.createLinearGradient(0,GY,0,h);fg.addColorStop(0,'#5c5060');fg.addColorStop(1,'#2e2834');p.fillStyle=fg;p.fillRect(0,GY,w,h-GY);
+  strokes(p,3200,R,0,GY,w,h-GY,['#544a5a','#463e4e','#6a5e6e'],90,12,0,0.1,0.22);
+  p.strokeStyle='rgba(30,24,36,.5)';p.lineWidth=3;for(let y=GY+40;y<h;y+=60){p.beginPath();p.moveTo(0,y);p.lineTo(w,y+10);p.stroke();}
+});
+const BOILN=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#f0e6d0','#2a2a3a','#8a8070'],120,22,0.1,0.02,0.05);});
+// the wooden horse (side view), on a wheeled platform; hatch on the belly
+function horse(x,y,lt,hatch){g.save();g.translate(x,y);const s=0.82;g.scale(s,s);const R=R0(5);
+  const wood=['#8a5a30','#a06c3a','#6e4624','#b47c46'];
+  // platform + wheels
+  g.fillStyle='#5a3a20';g.fillRect(-300,-40,600,40);
+  for(const wx of [-240,-80,80,240]){g.save();g.translate(wx,6);g.rotate(-lt*1.6*(hatch>0?0:1));g.fillStyle='#4a2e18';g.beginPath();g.arc(0,0,44,0,7);g.fill();g.strokeStyle='#2e1c0e';g.lineWidth=6;g.stroke();
+    for(let k=0;k<4;k++){g.rotate(Math.PI/4);g.beginPath();g.moveTo(-40,0);g.lineTo(40,0);g.stroke();}g.restore();}
+  // legs
+  g.fillStyle='#7a4e28';for(const [lx,ly] of [[-200,0],[-130,0],[130,0],[200,0]]){g.beginPath();g.moveTo(lx-26,-40);g.lineTo(lx+26,-40);g.lineTo(lx+20,-330);g.lineTo(lx-22,-330);g.closePath();g.fill();}
+  // body
+  g.fillStyle='#9a6434';g.beginPath();g.ellipse(0,-420,280,130,0,0,7);g.fill();
+  // neck + head
+  g.beginPath();g.moveTo(150,-520);g.quadraticCurveTo(200,-640,250,-700);g.lineTo(350,-680);g.quadraticCurveTo(330,-560,300,-430);g.closePath();g.fill();
+  g.beginPath();g.moveTo(230,-720);g.quadraticCurveTo(300,-790,370,-760);g.lineTo(450,-640);g.quadraticCurveTo(465,-600,430,-590);g.lineTo(360,-620);g.quadraticCurveTo(320,-640,300,-660);g.closePath();g.fill();
+  g.fillStyle='#6e4422';g.beginPath();g.moveTo(262,-740);g.lineTo(276,-800);g.lineTo(300,-748);g.closePath();g.fill(); // ear
+  // mane
+  g.strokeStyle='#5a3a1c';g.lineWidth=10;for(let i=0;i<9;i++){const u=i/8;g.beginPath();g.moveTo(LERP(165,250,u),LERP(-520,-720,u));g.lineTo(LERP(135,225,u),LERP(-505,-712,u)-24);g.stroke();}
+  // tail
+  g.beginPath();g.moveTo(-270,-450);g.quadraticCurveTo(-360,-400,-330,-230);g.lineWidth=18;g.stroke();
+  // planks
+  g.save();g.beginPath();g.ellipse(0,-420,280,130,0,0,7);g.clip();g.strokeStyle='rgba(60,36,16,.55)';g.lineWidth=4;for(let yy=-560;yy<-280;yy+=30){g.beginPath();g.moveTo(-300,yy);g.lineTo(300,yy+6);g.stroke();}
+  for(let i=0;i<260;i++){g.strokeStyle=wood[Math.floor(R()*4)];g.globalAlpha=.25;g.lineWidth=6;const xx=-280+R()*560,yy=-550+R()*260;g.beginPath();g.moveTo(xx,yy);g.lineTo(xx+40+R()*40,yy+R()*4);g.stroke();}g.restore();g.globalAlpha=1;
+  // eye
+  g.fillStyle='#2a1a0c';g.beginPath();g.arc(350,-712,10,0,7);g.fill();
+  // hatch
+  if(hatch>0){g.fillStyle='#ffb35a';g.shadowColor='#ffb35a';g.shadowBlur=40*hatch;g.fillRect(-60,-300,120,20+0*hatch);g.shadowBlur=0;
+    g.save();g.translate(-60,-290);g.rotate(1.3*hatch);g.fillStyle='#6e4422';g.fillRect(0,-4,120,16);g.restore();
+    // rope ladder + climbing silhouettes
+    g.strokeStyle='#3a2a1a';g.lineWidth=4;const L=260*hatch;g.beginPath();g.moveTo(-20,-282);g.lineTo(-20,-282+L);g.moveTo(20,-282);g.lineTo(20,-282+L);g.stroke();
+    for(let yy=-262;yy<-282+L;yy+=26){g.beginPath();g.moveTo(-20,yy);g.lineTo(20,yy);g.stroke();}
+    if(hatch>.6){const k=(hatch-.6)/.4;g.fillStyle='#1a120c';g.beginPath();g.ellipse(0,-200+60*k,16,40,0,0,7);g.fill();g.beginPath();g.arc(0,-250+60*k,14,0,7);g.fill();}}
+  g.restore();}
+// rope pullers (simple dark silhouettes) in front of the horse
+function pullers(x,y,lt,a){if(a<=0)return;g.save();g.globalAlpha=a;g.strokeStyle='#3a2a1a';g.lineWidth=5;g.beginPath();g.moveTo(x+300,y-60);g.lineTo(x+760,y-40);g.stroke();
+  for(let i=0;i<5;i++){const px=x+400+i*80,bob=Math.sin(lt*7+i)*4;g.fillStyle='#2a1e16';g.beginPath();g.moveTo(px-14,y);g.lineTo(px+14,y);g.lineTo(px+22,y-90+bob);g.lineTo(px-6,y-96+bob);g.closePath();g.fill();
+    g.beginPath();g.arc(px+12,y-112+bob,16,0,7);g.fill();g.beginPath();g.moveTo(px+4,y-70+bob);g.lineTo(px-30,y-52);g.lineWidth=7;g.stroke();g.lineWidth=5;}g.restore();}
+function cap(t,t0,t1,lt,i,y,fs,col){if(lt<t0||lt>t1+0.5)return;const e=E3((lt-t0)/0.5),o=E3((lt-t1)/0.45);g.save();g.textAlign='left';g.font='italic 500 '+fs+'px '+SERIF;const w=g.measureText(t).width+64,hh=fs*1.5;
+  g.translate(72-(1-e)*(w+160)-o*(w+160),y);g.rotate(-0.012+(1-e)*0.03);tornPath(g,0,0,w,hh,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=col||'#2c1c0e';g.fillText(t,32,hh*0.7);g.restore();}
+function draw(lt){g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;
+  const roll=EIO(lt/3.4), night=EIO((lt-2.9)/1.0), hatch=EIO((lt-4.1)/1.3);
+  const hx=LERP(380,1180,roll), hy=GY+60;
+  const z=1.0+0.08*EIO(lt/6.3)+0.10*night, cx=hx+90+8*Math.sin(lt*.6), cy=LERP(1060,1100,night)+6*Math.cos(lt*.7);
+  g.save();g.translate(540,980);g.scale(z,z);g.translate(-cx,-cy);
+  g.drawImage(SKYD,0,0);g.globalAlpha=night;g.drawImage(SKYN,0,0);g.globalAlpha=1;
+  g.drawImage(WORLD,0,0);g.globalAlpha=night;g.drawImage(PLAZA,0,0);g.globalAlpha=1;
+  // the horse goes INTO the gate: draw a gate-front mask after it passes x>1380
+  g.fillStyle='rgba(40,30,20,'+(0.35-0.2*night)+')';g.beginPath();g.ellipse(hx,hy+40,330,22,0,0,7);g.fill();
+  horse(hx,hy,lt,hatch);
+  pullers(hx,hy+30,lt,1-EIO((lt-2.6)/0.6));
+  // night tint over the world + torch glow at the gate
+  g.globalAlpha=night*0.3;g.fillStyle='#0a1430';g.fillRect(0,0,WW,2200);g.globalAlpha=1;
+  const tg=g.createRadialGradient(hx,hy-300,10,hx,hy-300,420);tg.addColorStop(0,'rgba(255,170,80,'+0.45*hatch+')');tg.addColorStop(1,'rgba(255,170,80,0)');g.fillStyle=tg;g.fillRect(hx-500,hy-800,1000,1000);
+  g.restore();
+  const bk=Math.floor(lt*8+0.001),BRr=R0(1000+bk*7);BRr();g.save();g.translate(540+(BRr()-.5)*50,960+(BRr()-.5)*50);g.scale(bk%2?-1:1,(bk>>1)%2?-1:1);g.rotate((BRr()-.5)*0.04);g.drawImage(BOILN,-540,-960);g.restore();
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
+  const vg=g.createRadialGradient(540,900,420,540,900,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,6,20,.55)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  cap('Troy, as the legend goes',0.15,2.4,lt,0,230,64,'#8a1c10');
+  cap('A gift… or a trap?',0.55,2.4,lt,1,350,50);
+  cap('Pulled inside the walls',2.0,3.9,lt,2,1440,58,'#2c1c0e');
+  cap('At night, the hatch opened',4.2,9,lt,3,230,62,'#8a1c10');
+  cap('Told by Homer and Virgil',5.0,9,lt,4,1440,48,'#2c1c0e');
+}
+window.DUR=6.3;window.draw=draw;draw(5.5);document.title='ok';
+</script><script>document.fonts.load("italic 500 30px 'EB Garamond'").then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

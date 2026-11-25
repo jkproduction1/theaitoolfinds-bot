@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script src="d3-array.min.js"></script><script src="d3-geo.min.js"></script><script src="topojson-client.min.js"></script>
+<script src="land_50m.js"></script><script src="countries_50m.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script>
+// yellow71 r1: /scale the Amazon River versus Europe. Real coastlines + borders: Natural Earth 1:50m via world-atlas@2.0.2 (public domain).
+// River course: simplified main stem (Mismi source -> Apurimac/Ene/Tambo/Ucayali -> Iquitos -> Manaus -> Obidos -> mouth), hand-picked town coordinates.
+// Length: Britannica "Amazon River": about 4,000 miles (6,400 km). Straightened line laid on the sphere from Lisbon toward Moscow (great circle, true
+// distance on an orthographic globe): Lisbon -> Moscow = 3,906 km (own haversine), 6,400 km ends at 76.3E 52.9N (Kazakhstan), i.e. past the Urals.
+const g = document.getElementById('c').getContext('2d'), W = 1080, H = 1920;
+const CL = x => x < 0 ? 0 : x > 1 ? 1 : x, RAMP = (t, a, b) => CL((t - a) / (b - a)), SM = x => x * x * (3 - 2 * x);
+const EIO = x => (x = CL(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2), EO = x => 1 - Math.pow(1 - CL(x), 4);
+const POP = x => { x = CL(x); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const LAND = topojson.feature(LAND_50M, LAND_50M.objects.land);
+const BORD = topojson.mesh(COUNTRIES_50M, COUNTRIES_50M.objects.countries, (a, b) => a !== b);
+const RIV = [[-71.69,-15.52],[-72.4,-14.4],[-73.2,-13.0],[-74.0,-11.9],[-74.1,-11.0],[-73.75,-10.73],[-74.3,-9.4],[-74.55,-8.38],[-75.0,-7.35],[-74.6,-6.2],[-73.85,-5.06],[-73.55,-4.47],[-73.25,-3.75],[-72.5,-3.5],[-71.85,-3.32],[-70.9,-4.0],[-69.95,-4.22],[-68.6,-3.4],[-67.2,-2.7],[-66.0,-2.5],[-64.7,-3.35],[-63.15,-4.08],[-61.6,-3.4],[-60.0,-3.13],[-58.45,-3.14],[-56.7,-2.6],[-55.5,-1.9],[-54.7,-2.4],[-53.6,-1.9],[-52.6,-1.5],[-51.3,-0.9],[-50.0,-0.1]];
+// ---- sphere helpers
+const rad = Math.PI / 180, RE = 6371;
+const toV = ([lo, la]) => [Math.cos(la * rad) * Math.cos(lo * rad), Math.cos(la * rad) * Math.sin(lo * rad), Math.sin(la * rad)];
+const toLL = ([x, y, z]) => [Math.atan2(y, x) / rad, Math.asin(Math.max(-1, Math.min(1, z / Math.hypot(x, y, z)))) / rad];
+function slerp(a, b, t) { const d = Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])), w = Math.acos(d); if (w < 1e-6) return a; const s = Math.sin(w);
+  const k1 = Math.sin((1 - t) * w) / s, k2 = Math.sin(t * w) / s; return [a[0] * k1 + b[0] * k2, a[1] * k1 + b[1] * k2, a[2] * k1 + b[2] * k2]; }
+function dest([lo, la], br, dist) { const l1 = lo * rad, p1 = la * rad, dd = dist / RE;
+  const p2 = Math.asin(Math.sin(p1) * Math.cos(dd) + Math.cos(p1) * Math.sin(dd) * Math.cos(br));
+  return [(l1 + Math.atan2(Math.sin(br) * Math.sin(dd) * Math.cos(p1), Math.cos(dd) - Math.sin(p1) * Math.sin(p2))) / rad, p2 / rad]; }
+function brg([lo1, la1], [lo2, la2]) { const a = la1 * rad, b = la2 * rad, dl = (lo2 - lo1) * rad;
+  return Math.atan2(Math.sin(dl) * Math.cos(b), Math.cos(a) * Math.sin(b) - Math.sin(a) * Math.cos(b) * Math.cos(dl)); }
+const LIS = [-9.14, 38.72], MOS = [37.62, 55.75], BR = brg(LIS, MOS), LEN = 6400;
+// river arc-length fractions -> straight target points along Lisbon->Moscow great circle (dense)
+const segs = []; let tot = 0; for (let i = 1; i < RIV.length; i++) { const d = d3.geoDistance(RIV[i - 1], RIV[i]); segs.push(d); tot += d; }
+const NP = 240, SRC = [], DST = [];
+for (let k = 0; k <= NP; k++) { const f = k / NP; let acc = 0, i = 0; while (i < segs.length - 1 && acc + segs[i] < f * tot) { acc += segs[i]; i++; }
+  const u = CL((f * tot - acc) / segs[i]); SRC.push(slerp(toV(RIV[i]), toV(RIV[i + 1]), u)); DST.push(toV(dest(LIS, BR, f * LEN))); }
+// ---- projection: orthographic, rotate + zoom over time
+const proj = d3.geoOrthographic().translate([540, 960]).clipAngle(90).precision(0.3);
+const path = d3.geoPath(proj, g);
+const STARS = (() => { let s = 7; const R = () => (s = (s * 16807) % 2147483647) / 2147483647; return [...Array(260)].map(() => [R() * W, R() * H, R() * 1.6 + .3, R()]); })();
+function pill(x, y, a, sc, title, sub, col) {
+  if (a <= 0.01) return; g.save(); g.globalAlpha = a; g.translate(x, y); g.scale(sc, sc);
+  g.font = '800 46px Inter'; const w1 = g.measureText(title).width; g.font = '600 31px Inter'; const w2 = sub ? g.measureText(sub).width : 0;
+  const w = Math.max(w1, w2) + 60, h = sub ? 108 : 72;
+  g.shadowColor = col; g.shadowBlur = 30; g.fillStyle = 'rgba(6,14,26,.86)'; g.beginPath(); g.roundRect(-w / 2, -h / 2, w, h, 18); g.fill();
+  g.shadowBlur = 0; g.lineWidth = 2.5; g.strokeStyle = col; g.stroke();
+  g.textAlign = 'center'; g.fillStyle = '#fff'; g.font = '800 46px Inter'; g.fillText(title, 0, sub ? -h / 2 + 52 : 16);
+  if (sub) { g.font = '600 31px Inter'; g.fillStyle = '#cfd6e0'; g.fillText(sub, 0, 34); } g.restore(); }
+function leader(ax, ay, bx, by, a, col) { if (a <= .01) return; g.save(); g.globalAlpha = a; g.strokeStyle = col; g.lineWidth = 3.5; g.beginPath(); g.moveTo(ax, ay); g.lineTo(ax + (bx - ax) * Math.min(1, a * 1.3), ay + (by - ay) * Math.min(1, a * 1.3)); g.stroke();
+  if (a > .6) { g.fillStyle = col; g.beginPath(); g.arc(bx, by, 9, 0, 7); g.fill(); g.globalAlpha = a * .6; g.lineWidth = 2.5; g.beginPath(); g.arc(bx, by, 19, 0, 7); g.stroke(); } g.restore(); }
+function label(t, t0, t1, ll, px, py, title, sub, col) { const a = SM(RAMP(t, t0, t0 + .4)) * (t1 ? 1 - SM(RAMP(t, t1, t1 + .35)) : 1); if (a <= 0) return;
+  const p = proj(ll); if (!p) return; leader(px, py + (p[1] > py ? 50 : -50), p[0], p[1], a, col); pill(px, py, a, .86 + .14 * POP(RAMP(t, t0, t0 + .45)), title, sub, col); }
+function draw(t) {
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  const bg = g.createRadialGradient(540, 900, 100, 540, 900, 1300); bg.addColorStop(0, '#0d1830'); bg.addColorStop(1, '#03050c'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  STARS.forEach(([x, y, r, s]) => { g.globalAlpha = .35 + .4 * Math.sin(t * 2 + s * 20) ** 2; g.fillStyle = '#cfe0ff'; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }); g.globalAlpha = 1;
+  // camera: Amazon close -> fly across the Atlantic -> Europe wide
+  const fly = EIO(RAMP(t, 1.7, 3.5)), out = EIO(RAMP(t, 3.4, 6.3));
+  const c0 = [-62, -6], c1 = [22, 47]; const cv = toLL(slerp(toV(c0), toV(c1), fly));
+  const sc = (1650 - 650 * Math.sin(Math.PI * fly) - 0 * fly) * (1 - 0.18 * out) * (1 + 0.03 * t / 6.3) + (fly > 0.5 ? -640 * SM((fly - .5) * 2) : 0);
+  proj.rotate([-cv[0], -cv[1], 0]).scale(sc);
+  // globe
+  const R = proj.scale(); const og = g.createRadialGradient(540 - R * .35, 960 - R * .4, R * .1, 540, 960, R); og.addColorStop(0, '#1e5a8c'); og.addColorStop(1, '#0a2444');
+  g.beginPath(); path({ type: 'Sphere' }); g.fillStyle = og; g.fill();
+  g.beginPath(); path(d3.geoGraticule10()); g.strokeStyle = 'rgba(160,210,255,.08)'; g.lineWidth = 1.5; g.stroke();
+  g.beginPath(); path(LAND); g.fillStyle = '#3f6a45'; g.fill(); g.strokeStyle = 'rgba(220,240,220,.35)'; g.lineWidth = 1.6; g.stroke();
+  g.beginPath(); path(BORD); g.strokeStyle = 'rgba(235,245,235,.28)'; g.lineWidth = 1.2; g.stroke();
+  // atmosphere rim
+  const rim = g.createRadialGradient(540, 960, R * .96, 540, 960, R * 1.08); rim.addColorStop(0, 'rgba(110,190,255,.0)'); rim.addColorStop(.35, 'rgba(110,190,255,.35)'); rim.addColorStop(1, 'rgba(110,190,255,0)');
+  g.fillStyle = rim; g.beginPath(); g.arc(540, 960, R * 1.08, 0, 7); g.fill();
+  // river: trace (0.2-1.5 s), then morph to the straight line over Europe (1.8-3.6 s) while the globe turns
+  const trace = EO(RAMP(t, 0.1, 1.5)), mor = EIO(RAMP(t, 1.8, 3.6)), nVis = Math.round(NP * trace);
+  const pts = []; for (let k = 0; k <= nVis; k++) { const f = k / NP, lag = CL(mor * 1.25 - (1 - f) * .25); const v = slerp(SRC[k], DST[k], lag);
+    // lift off the surface mid-flight
+    const lift = 1 + .12 * Math.sin(Math.PI * lag); const q = proj(toLL(v)); if (!q) continue; const dx = q[0] - 540, dy = q[1] - 960; pts.push([540 + dx * lift, 960 + dy * lift]); }
+  if (pts.length > 1) { g.save(); g.lineJoin = g.lineCap = 'round';
+    for (const [w, c, b] of [[26, 'rgba(60,200,255,.25)', 30], [12, 'rgba(120,225,255,.75)', 16], [5, '#eafaff', 0]]) { g.strokeStyle = c; g.lineWidth = w * (0.8 + .2 * (1 - out)); g.shadowColor = '#3cc8ff'; g.shadowBlur = b; g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.stroke(); }
+    const [hx, hy] = pts[pts.length - 1]; g.fillStyle = '#fff'; g.shadowBlur = 30; g.beginPath(); g.arc(hx, hy, 11, 0, 7); g.fill(); g.restore(); }
+  // city dots + km ticks on the Europe line
+  const cityA = SM(RAMP(t, 3.5, 3.9));
+  for (const [ll, name, dy] of [[LIS, 'Lisbon', 46], [MOS, 'Moscow', -34]]) { const p = proj(ll); if (!p || cityA <= 0) continue; g.globalAlpha = cityA; g.fillStyle = '#ffd54a'; g.beginPath(); g.arc(p[0], p[1], 10, 0, 7); g.fill();
+    g.font = '700 36px Inter'; g.textAlign = 'center'; g.fillStyle = '#fff'; g.shadowColor = '#000'; g.shadowBlur = 10; g.fillText(name, p[0], p[1] + dy); g.shadowBlur = 0; g.globalAlpha = 1; }
+  label(t, 0.4, 1.7, [-60, -3.1], 540, 560, 'Amazon River', 'South America', '#7fd4ff');
+  label(t, 3.7, 0, dest(LIS, BR, LEN), 640, 560, '6,400 km long', '4,000 miles', '#7fd4ff');
+  label(t, 4.5, 0, [14, 52], 470, 1430, 'Lisbon → Moscow: 3,900 km', '2,400 miles', '#ffd54a');
+  // note
+  g.globalAlpha = SM(RAMP(t, .5, 1)); g.font = '500 25px "JetBrains Mono", monospace'; g.fillStyle = 'rgba(220,230,245,.7)'; g.textAlign = 'center';
+  g.fillText('true scale on a globe · course simplified', 540, 1620); g.globalAlpha = 1;
+}
+window.DUR = 6.3; window.draw = draw; document.fonts.load('800 46px Inter').then(() => { draw(5.5); document.title = 'ok'; });
+</script></body></html>
