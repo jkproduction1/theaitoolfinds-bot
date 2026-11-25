@@ -67,7 +67,8 @@ const SG = new THREE.BufferGeometry(); const sp = new Float32Array(1500 * 3); fo
 SG.setAttribute('position', new THREE.BufferAttribute(sp, 3)); scene.add(new THREE.Points(SG, new THREE.PointsMaterial({ color: '#dfe8ff', size: 2.2, sizeAttenuation: false })));
 // path of the Moon: from far to just above Earth, slightly off-axis
 const P0 = V(-30, 60, -190), P1 = V(-2, 21, -10);
-function render(t) { t = cl(t, 0, DUR);
+const SPEED = 1.17; // fits ~5.4 s on screen
+function render(t) { t = cl(t * SPEED, 0, DUR);
   const fall = eio(ramp(t, 0, 2.75)) * .85 + .15 * ramp(t, 0, 2.75), brk = ramp(t, 2.6, 6.3);
   const mp = P0.clone().lerp(P1, fall); moon.position.copy(mp); moon.rotation.y = t * .3;
   const stretch = 1 + .18 * sm(ramp(t, 1.8, 2.8)); moon.scale.set(1, 1, 1); moon.scale.set(1 / Math.sqrt(stretch), 1 / Math.sqrt(stretch), stretch);

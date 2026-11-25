@@ -76,7 +76,8 @@ const lab = labels(camera, [
   { el: E('pK'), t0: 4.8, at: () => [holeX, -DEP, .05], col: '#ffb547', pos: (x, y) => [cl(x + 120, 330, 750), cl(y + 220, 500, 1480)] },
   { el: E('pE'), t0: 5.1, at: () => [8, EV, -4], pos: (x, y) => [cl(x, 330, 750), cl(y - 170, 520, 1400)] },
 ]);
-function render(t) { t = cl(t, 0, DUR); const d = depthAt(t); setCam(t);
+const SPEED = 1.17; // fits ~5.4 s on screen
+function render(t) { t = cl(t * SPEED, 0, DUR); const d = depthAt(t); setCam(t);
   lamp.position.set(holeX, -d, .6); lampS.position.set(holeX, -d, .3); lampS.material.color.set(d > 9 ? '#ffa060' : '#ffe0a0');
   trail.scale.y = Math.max(.01, d); trail.position.set(holeX, -d / 2, .03); trail.material.opacity = .55 + .3 * (d / DEP);
   renderer.render(scene, camera); lab(t);
