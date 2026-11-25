@@ -3,17 +3,18 @@
 <head>
 <meta charset="utf-8">
 <title>Yellowstone supervolcano erupting</title>
-<!-- yellow71 r0: /simulate the Yellowstone supervolcano erupting. Procedural plateau + ring-fracture eruption (own look), inspired by the
-  Lava Creek eruption. Facts: USGS "Summary of Yellowstone eruption history" (usgs.gov/volcanoes/yellowstone): Lava Creek Tuff, 0.640 Ma
-  ("640,000 years ago"), Yellowstone caldera 85 x 45 km, 1,000 km3 erupted (~240 mi3, own conversion). Caldera = collapse of the roof
-  over the emptied magma chamber. Distances in km, terrain height exaggerated, time sped up. -->
+<!-- yellow71 r0 v2 (Jan: v1 did not read as a volcano): /simulate the Yellowstone supervolcano erupting. Procedural plateau + ring-fracture
+  eruption (own look): lava fountains along the ring, a towering ash column lit from below, volcanic lightning, glowing collapse.
+  Facts: USGS "Summary of Yellowstone eruption history" (usgs.gov/volcanoes/yellowstone): Lava Creek Tuff, 0.640 Ma ("640,000 years ago"),
+  Yellowstone caldera 85 x 45 km, 1,000 km3 erupted (~240 mi3, own conversion). Volcanic lightning in ash plumes: USGS volcano hazards.
+  Distances in km, terrain height exaggerated, time sped up. -->
 <script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
 </head>
 <body>
 <div id="stage">
   <div id="ov">
     <svg id="lines" width="1080" height="1920"></svg>
-    <div class="pill hot" id="pRing">The ground cracks open</div>
+    <div class="pill hot" id="pRing">Yellowstone blows</div>
     <div class="pill red" id="pCal">Caldera: 85 × 45 km<small>53 × 28 miles</small></div>
     <div class="pill" id="pVol">1,000 km³ of rock and ash<small>about 240 cubic miles</small></div>
     <div id="note">inspired by Lava Creek, 640,000 years ago · time sped up</div>
@@ -23,109 +24,132 @@
 import * as THREE from 'three';
 import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
 injectCSS();
-document.head.insertAdjacentHTML('beforeend','<style>.pill small{display:block;font-size:31px;font-weight:600;color:#cfd6e0;margin-top:2px;text-align:center}.pill{text-align:center}#note{position:absolute;left:40px;right:40px;top:1560px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(230,225,220,.7)}</style>');
-const { renderer, scene, camera } = setup(34, [.07, .05, .05], [.42, .30, .24]);
+document.head.insertAdjacentHTML('beforeend','<style>.pill small{display:block;font-size:31px;font-weight:600;color:#cfd6e0;margin-top:2px;text-align:center}.pill{text-align:center}#note{position:absolute;left:40px;right:40px;top:1600px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(240,225,215,.75)}</style>');
+const { renderer, scene, camera } = setup(40, [.05, .02, .02], [.85, .36, .14]);
+renderer.toneMappingExposure = 1.1;
 camera.far = 5000; camera.updateProjectionMatrix();
-scene.fog = new THREE.Fog('#5a4a40', 420, 1300);
+scene.fog = new THREE.Fog('#4a1e10', 350, 1300);
 const rnd = mulberry32(71); const R = (a, b) => a + rnd() * (b - a);
 const RX = 42.5, RZ = 22.5; // caldera half-axes (km)
 const ell = (x, z) => Math.hypot(x / RX, z / RZ);
-// ---- plateau (km); heights exaggerated x3 for readability
 const HS = (i, j) => { let h = Math.imul(i, 374761393) + Math.imul(j, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
 function vn(x, z) { const i = Math.floor(x), j = Math.floor(z), fx = x - i, fz = z - j, u = fx * fx * (3 - 2 * fx), v = fz * fz * (3 - 2 * fz);
   return (HS(i, j) * (1 - u) + HS(i + 1, j) * u) * (1 - v) + (HS(i, j + 1) * (1 - u) + HS(i + 1, j + 1) * u) * v; }
-function n2(x, z) { let s = 0, a = 1, f = 1 / 38; for (let o = 0; o < 5; o++) { s += a * (vn(x * f + 17, z * f + 3) - .5); a *= .5; f *= 2.03; } return s * 1.6; }
-const TG = new THREE.PlaneGeometry(700, 700, 260, 260); TG.rotateX(-Math.PI / 2);
+function n2(x, z) { let s = 0, a = 1, f = 1 / 30; for (let o = 0; o < 5; o++) { s += a * (vn(x * f + 17, z * f + 3) - .5); a *= .5; f *= 2.03; } return s * 1.6; }
+// ---- plateau with mountains around it (heights exaggerated)
+const TG = new THREE.PlaneGeometry(800, 800, 260, 260); TG.rotateX(-Math.PI / 2);
 const tp = TG.attributes.position, tx = Float32Array.from({ length: tp.count }, (_, i) => tp.getX(i)), tz = Float32Array.from({ length: tp.count }, (_, i) => tp.getZ(i));
-const base = Float32Array.from({ length: tp.count }, (_, i) => 0.9 + 0.9 * n2(tx[i], tz[i]) + 1.6 * sm(cl((Math.hypot(tx[i], tz[i]) - 110) / 220)) * (0.6 + n2(tx[i] * 2, tz[i] * 2)));
+const base = Float32Array.from({ length: tp.count }, (_, i) => { const d = Math.hypot(tx[i], tz[i]);
+  return 1.2 + 1.3 * n2(tx[i], tz[i]) + 5 * sm(cl((d - 250) / 200)) * (0.55 + n2(tx[i] * 2.2, tz[i] * 2.2)) + 2.2 * Math.exp(-Math.pow((ell(tx[i], tz[i]) - 1.12) / .12, 2)); });
 const TC = new Float32Array(tp.count * 3); TG.setAttribute('color', new THREE.BufferAttribute(TC, 3));
-const forest = new THREE.Color('#2f4a2c'), rock = new THREE.Color('#6b6356'), ash = new THREE.Color('#9d958b'), glow = new THREE.Color('#ff6a1f'), cc = new THREE.Color();
-const terrain = new THREE.Mesh(TG, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .95, metalness: 0, emissive: '#000', }));
+const forest = new THREE.Color('#24361f'), rock = new THREE.Color('#4a423c'), ash = new THREE.Color('#5a524c'), glow = new THREE.Color('#ff5a10'), lava = new THREE.Color('#ffb040'), cc = new THREE.Color();
+const terrain = new THREE.Mesh(TG, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .95, metalness: 0 }));
 scene.add(terrain);
-scene.add(new THREE.HemisphereLight('#f0d9c4', '#2a1a12', 1.0));
-const sunL = new THREE.DirectionalLight('#ffd1a0', 2.4); sunL.position.set(-200, 160, 120); scene.add(sunL);
-const fire = new THREE.PointLight('#ff6a20', 0, 400, 1.2); fire.position.set(0, 8, 0); scene.add(fire);
+scene.add(new THREE.HemisphereLight('#c08060', '#160a06', 0.8));
+const moon = new THREE.DirectionalLight('#ffb080', 1.2); moon.position.set(-150, 120, 100); scene.add(moon);
+const fire = new THREE.PointLight('#ff6a20', 0, 0, 1.0); fire.position.set(0, 6, 25); scene.add(fire);
+const fire2 = new THREE.PointLight('#ff8a30', 0, 0, 1.0); fire2.position.set(0, 30, 0); scene.add(fire2);
+const flash = new THREE.PointLight('#cfe0ff', 0, 0, 1.0); flash.position.set(10, 45, 0); scene.add(flash);
 function updTerrain(t) {
-  const crack = sm(ramp(t, -0.6, 0.6)), sink = eio(ramp(t, 2.2, 5.6)), ashK = sm(ramp(t, 2.6, 6.2));
-  const ashR = 20 + 230 * eout(ramp(t, 1.8, 6.3));
+  const crack = sm(ramp(t, -0.4, 0.5)), sink = eio(ramp(t, 2.2, 5.8)), ashK = sm(ramp(t, 3.2, 6.3));
+  const ashR = 30 + 260 * eout(ramp(t, 2.4, 6.3));
   for (let i = 0; i < tp.count; i++) {
     const x = tx[i], z = tz[i], e = ell(x, z), d = Math.hypot(x, z);
     let y = base[i] * 2.2;
-    y -= 4 * sink * sm(cl((1.04 - e) / .12));            // roof collapses into the emptied chamber
-    const ring = Math.exp(-Math.pow((e - 1) / .035, 2));
-    y -= 1.5 * ring * crack;
+    y -= 5 * sink * sm(cl((1.03 - e) / .14));            // roof collapses into the emptied chamber
+    const ring = Math.exp(-Math.pow((e - 1) / .04, 2));
+    y -= 1.2 * ring * crack;
     tp.setY(i, y);
     const hgt = base[i];
-    cc.copy(forest).lerp(rock, cl((hgt - 1.6) / 1.4));
-    const covered = ashK * sm(cl((ashR - d) / 40)) * (0.55 + 0.45 * cl(1.2 - d / 300));
-    cc.lerp(ash, covered);
-    cc.lerp(glow, ring * crack * (0.85 + 0.15 * Math.sin(x * .7 + t * 8)));
-    if (e < 1) cc.lerp(glow, 0.55 * sink * sm(cl((1 - e) / .3)) * (1 - 0.6 * ashK));
+    cc.copy(forest).lerp(rock, cl((hgt - 2.2) / 3));
+    cc.lerp(ash, ashK * sm(cl((ashR - d) / 50)) * 0.8);
+    const flick = 0.8 + 0.2 * Math.sin(x * .9 + z * .6 + t * 9);
+    cc.lerp(lava, ring * crack * flick);
+    // lava spilling outward from the ring
+    const spill = Math.exp(-Math.pow((e - 1.05 - .25 * eout(ramp(t, 0.3, 4))) / .16, 2)) * (e > 1 ? 1 : 0) * (0.5 + 0.5 * Math.sin(Math.atan2(z, x) * 11 + 1.3)) ** 2;
+    cc.lerp(glow, cl(spill * 1.4) * crack);
+    if (e < 1) cc.lerp(glow, 0.7 * sink * sm(cl((1 - e) / .35)) * (0.75 + 0.25 * Math.sin(x * .4 + t * 3)));
     TC[i * 3] = cc.r; TC[i * 3 + 1] = cc.g; TC[i * 3 + 2] = cc.b;
   }
   tp.needsUpdate = true; TG.attributes.color.needsUpdate = true; TG.computeVertexNormals();
 }
-// ---- particles: ring-vent columns, collapsing flows, umbrella cloud
-const N = 12000, T0 = -1.0;
-const P = new Float32Array(N * 3), C = new Float32Array(N * 3), S = new Float32Array(N), A = new Float32Array(N);
-const birth = new Float32Array(N), th = new Float32Array(N), rr = new Float32Array(N), kind = new Float32Array(N), sp = new Float32Array(N);
-for (let i = 0; i < N; i++) { kind[i] = i < 3000 ? 1 : 0; th[i] = R(0, Math.PI * 2); rr[i] = rnd(); sp[i] = R(.75, 1.25);
-  birth[i] = kind[i] ? R(0.9, DUR) : T0 + (DUR - T0) * Math.pow(rnd(), 1.2); }
-const PG = new THREE.BufferGeometry();
-PG.setAttribute('position', new THREE.BufferAttribute(P, 3)); PG.setAttribute('color', new THREE.BufferAttribute(C, 3));
-PG.setAttribute('size', new THREE.BufferAttribute(S, 1)); PG.setAttribute('alpha', new THREE.BufferAttribute(A, 1));
-const PM = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, uniforms: { map: { value: softTex() } },
+const PM = (add) => new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: add ? THREE.AdditiveBlending : THREE.NormalBlending, uniforms: { map: { value: softTex() } },
   vertexShader: `attribute float size; attribute float alpha; attribute vec3 color; varying vec3 vC; varying float vA;
     void main(){ vC=color; vA=alpha; vec4 mv=modelViewMatrix*vec4(position,1.); gl_PointSize=size*900./(-mv.z); gl_Position=projectionMatrix*mv; }`,
   fragmentShader: `uniform sampler2D map; varying vec3 vC; varying float vA; void main(){ vec4 m=texture2D(map,gl_PointCoord); gl_FragColor=vec4(vC, m.a*vA); }` });
-const cloud = new THREE.Points(PG, PM); cloud.frustumCulled = false; scene.add(cloud);
-const HT = 46, col = new THREE.Color(), dark = new THREE.Color('#4a423c'), light = new THREE.Color('#f1e8dc'), hot = new THREE.Color('#ff8a3c');
-function updCloud(t) {
-  for (let i = 0; i < N; i++) {
-    const age = t - birth[i]; let a = 0, x = 0, y = 0, z = 0, s = 1;
-    const vx = Math.cos(th[i]) * RX, vz = Math.sin(th[i]) * RZ;
+function pts(N, add) { const P = new Float32Array(N * 3), C = new Float32Array(N * 3), S = new Float32Array(N), A = new Float32Array(N);
+  const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.BufferAttribute(P, 3)); G.setAttribute('color', new THREE.BufferAttribute(C, 3));
+  G.setAttribute('size', new THREE.BufferAttribute(S, 1)); G.setAttribute('alpha', new THREE.BufferAttribute(A, 1));
+  const o = new THREE.Points(G, PM(add)); o.frustumCulled = false; scene.add(o); return { P, C, S, A, G }; }
+// ---- ash column + umbrella (normal blend), lava fountains (additive)
+const NA = 11000, ASH = pts(NA, false); const ab = new Float32Array(NA), ath = new Float32Array(NA), arr = new Float32Array(NA), asp = new Float32Array(NA), akind = new Float32Array(NA);
+for (let i = 0; i < NA; i++) { akind[i] = i < 2400 ? 1 : 0; ath[i] = R(0, Math.PI * 2); arr[i] = rnd(); asp[i] = R(.75, 1.25); ab[i] = akind[i] ? R(1.0, DUR) : -1.6 + (DUR + 1.6) * Math.pow(rnd(), 1.15); }
+const NF = 3500, FOUNT = pts(NF, true); const fb = new Float32Array(NF), fth = new Float32Array(NF), fv = new Float32Array(NF), fsp = new Float32Array(NF);
+for (let i = 0; i < NF; i++) { fth[i] = R(0, Math.PI * 2); fb[i] = R(-1.4, DUR); fv[i] = R(.6, 1.0); fsp[i] = R(-.25, .25); }
+const HT = 52, col = new THREE.Color(), dark = new THREE.Color('#3a3330'), mid = new THREE.Color('#857a72'), light = new THREE.Color('#ddd2c8'), hot = new THREE.Color('#ff7a2a');
+function updAsh(t) { const { P, C, S, A, G } = ASH;
+  for (let i = 0; i < NA; i++) {
+    const age = t - ab[i]; let a = 0, x = 0, y = 0, z = 0, s = 1;
+    const vx = Math.cos(ath[i]) * RX, vz = Math.sin(ath[i]) * RZ;
     if (age > 0) {
-      if (kind[i]) { // pyroclastic flow: column collapse, races outward hugging the ground
-        const u = age * sp[i]; const r = 2 + 34 * (1 - Math.exp(-u / 1.3)) * (0.5 + rr[i]);
-        const dx = Math.cos(th[i]), dz = Math.sin(th[i]);
-        x = vx + dx * r + Math.sin(th[i] * 9 + u) * 3; z = vz + dz * r; y = 4 + 5 * Math.exp(-u) + 3 * rr[i];
-        s = 6 + 5 * u; a = 0.28 * sm(cl(age / .3)) * cl(1.4 - u / 3.5);
-        col.copy(dark).lerp(light, 0.35 + 0.3 * rr[i]); if (u < .6) col.lerp(hot, .45 * (1 - u / .6));
-      } else { // ring-vent columns merging into one umbrella cloud
-        const tau = 1.6 * sp[i]; const h = HT * (1 - Math.exp(-age / tau)) * (0.9 + 0.15 * rr[i]);
-        const top = sm(cl((h - 26) / 12)); const pull = sm(cl(h / 30));
-        const umb = top * (30 + 90 * eout(cl((age - 1.2) / 5))) * Math.sqrt(rr[i]);
-        const cx = vx * (1 - .55 * pull), cz = vz * (1 - .55 * pull);
-        x = cx + Math.cos(th[i] * 7 + age * .3) * (1.2 + h * .12) * rr[i] + Math.cos(th[i] + 1.7) * umb;
-        z = cz + Math.sin(th[i] * 7 + age * .3) * (1.2 + h * .12) * rr[i] + Math.sin(th[i] + 1.7) * umb * .8;
-        y = h + 2.5 * Math.sin(th[i] * 5 + age);
-        s = 3 + h * .22 + top * 9; a = (0.5 - 0.2 * top) * sm(cl(age / .25));
-        const lit = cl(0.4 + 0.35 * (-x / 120) + 0.35 * (y / HT)); col.copy(dark).lerp(light, lit);
-        if (y < 7) col.lerp(hot, 0.5 * (1 - y / 7));
+      if (akind[i]) { // pyroclastic flows race outward along the ground
+        const u = age * asp[i]; const r = 2 + 40 * (1 - Math.exp(-u / 1.2)) * (0.5 + arr[i]);
+        x = vx + Math.cos(ath[i]) * r; z = vz + Math.sin(ath[i]) * r; y = 3 + 6 * Math.exp(-u) + 3 * arr[i];
+        s = 7 + 6 * u; a = 0.5 * sm(cl(age / .3)) * cl(1.4 - u / 3.5);
+        col.copy(dark).lerp(mid, arr[i] * .6); col.lerp(hot, .55 * Math.exp(-u * 1.3));
+      } else { // ring vents feed one giant column that spreads into an umbrella
+        const tau = 1.3 * asp[i]; const h = HT * (1 - Math.exp(-age / tau)) * (0.9 + 0.15 * arr[i]);
+        const top = sm(cl((h - 34) / 14)); const pull = sm(cl(h / 26));
+        const umb = top * (25 + 110 * eout(cl((age - 1.2) / 5))) * Math.sqrt(arr[i]);
+        const cx = vx * (1 - .82 * pull), cz = vz * (1 - .82 * pull);
+        const wob = (2 + h * .14) * arr[i];
+        x = cx + Math.cos(ath[i] * 7 + age * .35) * wob + Math.cos(ath[i] + 1.7) * umb;
+        z = cz + Math.sin(ath[i] * 7 + age * .35) * wob + Math.sin(ath[i] + 1.7) * umb * .8;
+        y = h + 3 * Math.sin(ath[i] * 5 + age);
+        s = 5 + h * .3 + top * 10; a = 0.62 * sm(cl(age / .25));
+        const lit = cl(0.3 + 0.45 * (y / HT) + 0.3 * (-x / 70)); col.copy(dark).lerp(mid, lit); col.lerp(light, cl((y - 40) / 20) * .5);
+        col.lerp(hot, 0.85 * Math.exp(-y / 9)); // lit from below by the lava
       }
     }
     P[i * 3] = x; P[i * 3 + 1] = y; P[i * 3 + 2] = z; S[i] = s; A[i] = a; C[i * 3] = col.r; C[i * 3 + 1] = col.g; C[i * 3 + 2] = col.b;
   }
-  PG.attributes.position.needsUpdate = PG.attributes.color.needsUpdate = PG.attributes.size.needsUpdate = PG.attributes.alpha.needsUpdate = true;
-}
-// ---- dashed caldera outline (85 x 45 km)
-const ringPts = []; for (let k = 0; k <= 128; k++) { const a = k / 128 * Math.PI * 2; ringPts.push(V(Math.cos(a) * RX, 9, Math.sin(a) * RZ)); }
+  G.attributes.position.needsUpdate = G.attributes.color.needsUpdate = G.attributes.size.needsUpdate = G.attributes.alpha.needsUpdate = true; }
+const fc = new THREE.Color(), fy = new THREE.Color('#fff1a8'), fo = new THREE.Color('#ff7a1a'), fr = new THREE.Color('#c0200a');
+function updFount(t) { const { P, C, S, A, G } = FOUNT;
+  for (let i = 0; i < NF; i++) { const age = t - fb[i]; let a = 0, x = 0, y = 0, z = 0, s = 1;
+    if (age > 0 && age < 1.6) { const v = 16 * fv[i], g = 22; y = Math.max(0, v * age - .5 * g * age * age) + 1;
+      const out = (fsp[i] * 6) * age; x = Math.cos(fth[i]) * (RX + out) ; z = Math.sin(fth[i]) * (RZ + out);
+      const k = cl(age / 1.6); s = 1.4 + 1.2 * (1 - k); a = 0.9 * (1 - k) * sm(cl(t + 0.5)); fc.copy(fy).lerp(fo, k * 1.4).lerp(fr, cl(k * 2 - 1)); }
+    P[i * 3] = x; P[i * 3 + 1] = y; P[i * 3 + 2] = z; S[i] = s; A[i] = a; C[i * 3] = fc.r; C[i * 3 + 1] = fc.g; C[i * 3 + 2] = fc.b; }
+  G.attributes.position.needsUpdate = G.attributes.color.needsUpdate = G.attributes.size.needsUpdate = G.attributes.alpha.needsUpdate = true; }
+// ---- volcanic lightning: jagged bolts inside the column at fixed moments
+const BOLTS = [[1.25, 6, 40, 3], [2.35, -12, 46, 9], [3.15, 14, 50, 4], [4.4, -6, 54, 11], [5.3, 18, 56, 2]];
+const boltMat = new THREE.LineBasicMaterial({ color: '#eaf2ff', transparent: true, opacity: 0, depthTest: false });
+const bolts = BOLTS.map(([t0, bx, by, seed]) => { const r2 = mulberry32(seed); const p = [V(bx, by, 6)]; let x = bx, y = by;
+  for (let k = 0; k < 9; k++) { x += (r2() - .5) * 7; y -= 2 + r2() * 3; p.push(V(x, y, 6)); }
+  const L = new THREE.Group(); const m = boltMat.clone(); for (const [ox, oy] of [[0, 0], [.35, 0], [-.35, 0], [0, .35], [.7, .2], [-.7, -.2]]) { const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(p.map(q => V(q.x + ox, q.y + oy, q.z))), m); l.renderOrder = 6; L.add(l); }
+  L.material = m; scene.add(L); return { L, t0 }; });
+// ---- dashed caldera outline
+const ringPts = []; for (let k = 0; k <= 128; k++) { const a = k / 128 * Math.PI * 2; ringPts.push(V(Math.cos(a) * RX, 4, Math.sin(a) * RZ)); }
 const outline = new THREE.Line(new THREE.BufferGeometry().setFromPoints(ringPts), new THREE.LineDashedMaterial({ color: '#ff4a4a', dashSize: 3, gapSize: 2, transparent: true, opacity: 0, depthTest: false }));
 outline.computeLineDistances(); outline.renderOrder = 5; scene.add(outline);
-// ---- camera: low over the forest at the ring, then up and back to the whole caldera + cloud
-function setCam(t) { const a = eio(ramp(t, 0.4, 6.0)), u = cl(t / DUR);
-  const dist = 175 + 200 * a, yaw = 0.9 - 0.4 * a + 0.05 * u;
-  camera.position.set(Math.sin(yaw) * dist, 16 + 60 * a, Math.cos(yaw) * dist);
-  camera.lookAt(0, 30 + 2 * a, 0); camera.updateMatrixWorld(); }
+// ---- camera: low over the forest looking up at the column, then up + back over the whole caldera
+function setCam(t) { const a = eio(ramp(t, 0.3, 6.1)), u = cl(t / DUR);
+  const dist = 215 + 110 * a, yaw = 0.35 - 0.2 * a + 0.04 * u;
+  camera.position.set(Math.sin(yaw) * dist, 22 + 60 * a, Math.cos(yaw) * dist);
+  camera.lookAt(0, 32 - 10 * a, 0); camera.updateMatrixWorld(); }
 const E = id => document.getElementById(id);
 const lab = labels(camera, [
-  { el: E('pRing'), t0: 0.35, t1: 2.6, at: () => [Math.cos(1.2) * RX, 3, Math.sin(1.2) * RZ], col: '#ffb547', pos: (x, y) => [cl(x - 40, 330, 750), cl(y + 260, 300, 1480)] },
-  { el: E('pCal'), t0: 3.0, at: () => [-RX, 9, 0], col: '#ff4a4a', pos: (x, y) => [cl(x + 60, 330, 750), cl(y + 240, 300, 1480)] },
-  { el: E('pVol'), t0: 4.1, at: () => [10, HT - 4, -6], pos: (x, y) => [cl(x, 330, 750), cl(y - 200, 230, 1400)] },
+  { el: E('pRing'), t0: 0.25, t1: 2.5, at: () => [0, 14, RZ], col: '#ffb547', pos: (x, y) => [540, cl(y + 330, 300, 1480)] },
+  { el: E('pCal'), t0: 3.1, at: () => [-RX * .75, 4, RZ * .66], col: '#ff4a4a', pos: (x, y) => [cl(x + 40, 330, 750), cl(y + 230, 300, 1500)] },
+  { el: E('pVol'), t0: 4.2, at: () => [6, HT - 6, 0], pos: (x, y) => [cl(x, 330, 750), cl(y - 190, 230, 1400)] },
 ]);
-function render(t) { t = cl(t, 0, DUR); setCam(t); updTerrain(t); updCloud(t);
-  fire.intensity = 900 * sm(ramp(t, 0.3, 1.5)) * (0.8 + 0.2 * Math.sin(t * 11));
-  outline.material.opacity = 0.95 * sm(ramp(t, 2.8, 3.3));
+function render(t) { t = cl(t, 0, DUR); setCam(t); updTerrain(t); updAsh(t); updFount(t);
+  const on = sm(ramp(t, -0.3, 0.6));
+  fire.intensity = 160 * on * (0.8 + 0.2 * Math.sin(t * 13)); fire2.intensity = 260 * on * (0.85 + 0.15 * Math.sin(t * 7));
+  let fl = 0; for (const b of bolts) { const k = t - b.t0; const o = k > 0 && k < .22 ? (k < .05 ? 1 : 1 - (k - .05) / .17) : 0; b.L.material.opacity = o; fl = Math.max(fl, o); }
+  flash.intensity = 120 * fl;
+  outline.material.opacity = 0.95 * sm(ramp(t, 2.9, 3.4));
   renderer.render(scene, camera); lab(t);
   E('note').style.opacity = sm(ramp(t, 0.5, 1.0)); }
 await ready(render);
