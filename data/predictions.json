@@ -5778,5 +5778,46 @@
    "visuals": 16,
    "ending": 2
   }
+ },
+ {
+  "name": "yellow71",
+  "date": "2026-11-25",
+  "score": 64,
+  "mode": "full",
+  "features": {
+   "hook": 0.23,
+   "hook_words": 11,
+   "hook_end_s": 4.95,
+   "tool_named_s": null,
+   "payoff": 0.5,
+   "wps": 1.34,
+   "dur_s": 35.9,
+   "words": 46,
+   "pace": 0.0,
+   "length": 0.51,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 3.75,
+   "visual_changes": 80,
+   "visuals": 0.5,
+   "ending": 0.92,
+   "angle": "app-demo",
+   "topic": 1.0
+  },
+  "flags": [
+   "hook končí v 5.0 s (cíl ≤2,5 s)",
+   "video má 36 s (cíl 18–30 s)",
+   "3.8 s bez změny obrazu (cíl ≤3 s)"
+  ],
+  "weights": {
+   "topic": 33,
+   "hook": 11,
+   "payoff": 9,
+   "pace": 8,
+   "length": 13,
+   "filler": 8,
+   "visuals": 16,
+   "ending": 2
+  }
  }
 ]

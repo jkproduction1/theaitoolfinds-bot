@@ -58,3 +58,4 @@ Own command names, copy only the look: no logos, mascots or characters of the ch
 - styles33 (2026-11-13): /paper-collage why Pisa's tower doesn't fall, /flat-science why tattoos last forever, /painted-story how the Hindenburg burned (Jan, live; same three styles as styles19/28)
 - styles37 (2026-11-14): /paper-collage why the Dead Sea is disappearing, /flat-science why onions make you cry, /painted-story the year without a summer (Jan, live; same three styles as styles33)
 - styles42 (2026-11-15): /flat-science how your eyes see color, /paper-collage how the Great Wall was built, /painted-story the lighthouse of Alexandria (Jan, live; Kurzgesagt look first)
+- yellow71 (2026-11-25): /simulate the Yellowstone supervolcano erupting, /scale the Amazon River versus Europe, /painted-story how the Trojan horse fooled a city (Jan, live)
