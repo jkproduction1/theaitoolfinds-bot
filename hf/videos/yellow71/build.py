@@ -19,7 +19,7 @@ for k in range(3):
         Image.new("RGB", (280, 430), (34, 34, 34)).save(A / f"th{k}.jpg")
 
 # --- gaps after each "this." so the 3D result plays
-GAPS = {10: 6.0, 22: 6.0, 37: 6.0}
+GAPS = {10: 4.5, 22: 6.0, 37: 6.0}  # Yellowstone shortened (Jan, 2026-11-25)
 if not (A / "voice_raw.mp3").exists():
     shutil.copy(A / "voice.mp3", A / "voice_raw.mp3"); shutil.copy(A / "voice.json", A / "voice_raw.json")
 vw = json.loads((A / "voice_raw.json").read_text())

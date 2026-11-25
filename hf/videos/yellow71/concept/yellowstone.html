@@ -144,7 +144,8 @@ const lab = labels(camera, [
   { el: E('pCal'), t0: 3.1, at: () => [-RX * .75, 4, RZ * .66], col: '#ff4a4a', pos: (x, y) => [cl(x + 40, 330, 750), cl(y + 230, 300, 1500)] },
   { el: E('pVol'), t0: 4.2, at: () => [6, HT - 6, 0], pos: (x, y) => [cl(x, 330, 750), cl(y - 190, 230, 1400)] },
 ]);
-function render(t) { t = cl(t, 0, DUR); setCam(t); updTerrain(t); updAsh(t); updFount(t);
+const SPEED = 1.17; // yellow71 v2 (Jan): result shortened to ~4.5 s
+function render(t) { t = cl(t * SPEED, 0, DUR); setCam(t); updTerrain(t); updAsh(t); updFount(t);
   const on = sm(ramp(t, -0.3, 0.6));
   fire.intensity = 160 * on * (0.8 + 0.2 * Math.sin(t * 13)); fire2.intensity = 260 * on * (0.85 + 0.15 * Math.sin(t * 7));
   let fl = 0; for (const b of bolts) { const k = t - b.t0; const o = k > 0 && k < .22 ? (k < .05 ? 1 : 1 - (k - .05) / .17) : 0; b.L.material.opacity = o; fl = Math.max(fl, o); }
