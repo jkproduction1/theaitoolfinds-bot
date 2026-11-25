@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What if the Moon crashed into Earth</title>
+<!-- earth72 r0: /what-if the Moon crashed into Earth. Follows our system's what-if style (hf/page/free-prompts.src.html STY["what-if"]): stylised 3D
+  shapes, soft materials, one strong light + real shadows, low cinematic camera, one bold caption at the top with the key fact in a highlight box.
+  Facts: NASA "Moon: Facts" (science.nasa.gov/moon/facts): mean radius 1,737.4 km, about 27% of Earth's (Earth 6,371 km) = "about a quarter as
+  wide as Earth". Tidal break-up inside the Roche limit (a moon that falls close enough is pulled apart by the planet's tides before it hits;
+  NASA/JPL on the Roche limit and ring formation). Coastlines: Natural Earth 1:50m via world-atlas (public domain). Distance shortened. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<script src="d3-array.min.js"></script><script src="d3-geo.min.js"></script><script src="topojson-client.min.js"></script><script src="land_50m.js"></script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="cap" id="c1">The Moon is <span class="hb">¼ as wide</span> as Earth</div>
+    <div class="cap" id="c2">Earth's pull <span class="hb">rips it apart</span> first</div>
+    <div id="note">what-if · distance shortened</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.cap{position:absolute;left:70px;right:70px;top:230px;text-align:center;color:#fff;font-weight:800;font-size:64px;line-height:1.18;letter-spacing:-1px;opacity:0;text-shadow:0 4px 30px rgba(0,0,0,.7)}
+.hb{background:#ffd23f;color:#141414;padding:0 .2em;border-radius:12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+#note{position:absolute;left:0;right:0;top:1600px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+const { renderer, scene, camera } = setup(32, [.01, .012, .03], [.06, .08, .16]);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const rnd = mulberry32(72);
+// ---- Earth: soft stylised globe, real coastlines painted into a texture
+const tex = (() => { const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+  g.fillStyle = '#2f6fb0'; g.fillRect(0, 0, 2048, 1024);
+  const pr = d3.geoEquirectangular().fitSize([2048, 1024], { type: 'Sphere' }); const pth = d3.geoPath(pr, g);
+  g.beginPath(); pth(topojson.feature(LAND_50M, LAND_50M.objects.land)); g.fillStyle = '#7fbf6a'; g.fill();
+  const gg = g.createLinearGradient(0, 0, 0, 1024); gg.addColorStop(0, 'rgba(255,255,255,.9)'); gg.addColorStop(.08, 'rgba(255,255,255,0)'); gg.addColorStop(.92, 'rgba(255,255,255,0)'); gg.addColorStop(1, 'rgba(255,255,255,.9)'); g.fillStyle = gg; g.fillRect(0, 0, 2048, 1024);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+const RE = 10, RM = RE * 1737.4 / 6371;
+const earth = new THREE.Mesh(new THREE.SphereGeometry(RE, 96, 64), new THREE.MeshStandardMaterial({ map: tex, roughness: .75, metalness: 0 }));
+earth.castShadow = earth.receiveShadow = true; earth.rotation.set(0.35, -2.2, 0); scene.add(earth);
+const atm = new THREE.Mesh(new THREE.SphereGeometry(RE * 1.035, 64, 48), new THREE.MeshBasicMaterial({ color: '#7cc4ff', transparent: true, opacity: .16, side: THREE.BackSide })); scene.add(atm);
+// ---- Moon: soft grey with craters
+const mtex = (() => { const c = document.createElement('canvas'); c.width = 1024; c.height = 512; const g = c.getContext('2d'); g.fillStyle = '#b9b5ae'; g.fillRect(0, 0, 1024, 512);
+  for (let i = 0; i < 14; i++) { g.fillStyle = 'rgba(90,88,86,.35)'; g.beginPath(); g.ellipse(rnd() * 1024, 120 + rnd() * 280, 40 + rnd() * 90, 30 + rnd() * 60, rnd() * 3, 0, 7); g.fill(); }
+  for (let i = 0; i < 260; i++) { const x = rnd() * 1024, y = rnd() * 512, r = 2 + Math.pow(rnd(), 3) * 26; g.fillStyle = 'rgba(70,68,66,.35)'; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); g.strokeStyle = 'rgba(240,236,230,.35)'; g.lineWidth = 2; g.beginPath(); g.arc(x - 1, y - 1, r, 3.6, 5.8); g.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+const moonMat = new THREE.MeshStandardMaterial({ map: mtex, roughness: .95 });
+const moon = new THREE.Mesh(new THREE.SphereGeometry(RM, 64, 48), moonMat); moon.castShadow = true; scene.add(moon);
+// fragments: chunks that replace the Moon when it breaks
+const NF = 160, frags = [];
+for (let i = 0; i < NF; i++) { const s = RM * (i < 14 ? .32 + rnd() * .2 : .05 + Math.pow(rnd(), 2) * .2);
+  const m = new THREE.Mesh(new THREE.IcosahedronGeometry(s, 0), moonMat); m.castShadow = true; m.visible = false;
+  const d = new THREE.Vector3(rnd() - .5, (rnd() - .5) * .5, rnd() - .5).normalize(); frags.push({ m, d, off: d.clone().multiplyScalar(RM * (.3 + .6 * rnd())), sp: .6 + rnd(), rot: [rnd() * 3, rnd() * 3], ph: rnd() * 6.28 }); scene.add(m); }
+// meteors: glowing streaks entering the atmosphere
+const NM = 70, MP = new Float32Array(NM * 6), MG = new THREE.BufferGeometry(); MG.setAttribute('position', new THREE.BufferAttribute(MP, 3));
+const meteorLines = new THREE.LineSegments(MG, new THREE.LineBasicMaterial({ color: '#ffb35a', transparent: true, opacity: 0 })); scene.add(meteorLines);
+const MS = [...Array(NM)].map(() => ({ a: .5 + rnd() * 2.1, b: (rnd() - .2) * .9, t0: 3.9 + rnd() * 2.3 }));
+// one strong light
+const sun = new THREE.DirectionalLight('#fff3e0', 3.2); sun.position.set(-60, 30, 40); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -40, right: 40, top: 40, bottom: -40, near: 1, far: 200 }); scene.add(sun);
+scene.add(new THREE.HemisphereLight('#9fb8ff', '#0a0c18', .35));
+// stars
+const SG = new THREE.BufferGeometry(); const sp = new Float32Array(1500 * 3); for (let i = 0; i < 1500; i++) { const v = new THREE.Vector3(rnd() - .5, rnd() - .5, rnd() - .5).normalize().multiplyScalar(900); sp.set([v.x, v.y, v.z], i * 3); }
+SG.setAttribute('position', new THREE.BufferAttribute(sp, 3)); scene.add(new THREE.Points(SG, new THREE.PointsMaterial({ color: '#dfe8ff', size: 2.2, sizeAttenuation: false })));
+// path of the Moon: from far to just above Earth, slightly off-axis
+const P0 = V(-30, 60, -190), P1 = V(-2, 21, -10);
+function render(t) { t = cl(t, 0, DUR);
+  const fall = eio(ramp(t, 0, 2.75)) * .85 + .15 * ramp(t, 0, 2.75), brk = ramp(t, 2.6, 6.3);
+  const mp = P0.clone().lerp(P1, fall); moon.position.copy(mp); moon.rotation.y = t * .3;
+  const stretch = 1 + .18 * sm(ramp(t, 1.8, 2.8)); moon.scale.set(1, 1, 1); moon.scale.set(1 / Math.sqrt(stretch), 1 / Math.sqrt(stretch), stretch);
+  moon.lookAt(earth.position); moon.visible = t < 2.75;
+  frags.forEach((f, i) => { f.m.visible = t >= 2.75; if (!f.m.visible) return;
+    const u = eout(cl(brk * f.sp)); const p = mp.clone().add(f.off).addScaledVector(f.d, 10 * u);
+    // swing around Earth into a ring arc
+    const ang = f.ph + u * 1.6 * f.sp; const rr = 17 + 6 * f.sp; const ring = V(Math.cos(ang) * rr, Math.sin(ang) * rr * .22 + f.d.y * 1.2, Math.sin(ang) * rr);
+    p.lerp(ring, sm(cl((brk - .2) * 1.5))); f.m.position.copy(p); f.m.rotation.set(f.rot[0] * t, f.rot[1] * t, 0); });
+  // meteors
+  let k = 0; MS.forEach(m => { const u = cl((t - m.t0) / .5); const on = u > 0 && u < 1; const dir = V(Math.cos(m.a), m.b, Math.sin(m.a)).normalize();
+    const head = dir.clone().multiplyScalar(RE * (1.25 - .2 * u)), tail = dir.clone().multiplyScalar(RE * (1.25 - .2 * u) + (on ? 3 : 0));
+    MP.set([head.x, head.y, head.z, tail.x, tail.y, tail.z], k * 6); k++; });
+  MG.attributes.position.needsUpdate = true; meteorLines.material.opacity = .9 * sm(ramp(t, 4.0, 4.4));
+  earth.rotation.y = -2.2 + t * .05;
+  // low cinematic camera close to Earth's limb, looking up at the Moon; slowly pulls back for the ring
+  const a = eio(ramp(t, 2.4, 6.3));
+  camera.position.set(6 + 8 * a + .6 * Math.sin(t * .5), 2 + 14 * a, 40 + 30 * a); camera.lookAt(V(0, 16, -20).lerp(V(0, 6, 0), a)); camera.updateMatrixWorld();
+  renderer.render(scene, camera);
+  const c1 = sm(ramp(t, .25, .6)) * (1 - sm(ramp(t, 2.6, 2.9))), c2 = sm(ramp(t, 2.95, 3.3));
+  document.getElementById('c1').style.opacity = c1; document.getElementById('c1').style.transform = `translateY(${(1 - sm(ramp(t, .25, .6))) * 30}px)`;
+  document.getElementById('c2').style.opacity = c2; document.getElementById('c2').style.transform = `translateY(${(1 - c2) * 30}px)`;
+  document.getElementById('note').style.opacity = sm(ramp(t, .5, 1)); }
+await ready(render);
+</script>
+</body>
+</html>

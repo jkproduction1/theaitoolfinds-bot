@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How a solar storm knocks out the power grid</title>
+<!-- earth72 r1: /explain-3d how a solar storm knocks out the power grid. Follows our system's explain-3d style (hf/page/free-prompts.src.html
+  STY["explain-3d"]): wide shot, fly the camera in, show the inside working as a cutaway, key parts labelled with thin lines, one short caption
+  with one key word in a box. Facts: NOAA NESDIS "When Solar Storms Attack: Space Weather and Our Infrastructure": 13 March 1989, a geomagnetic
+  storm took down the Hydro-Quebec grid "within 90 seconds"; "six million people were left without power for nine hours". Mechanism (NOAA SWPC
+  "Electric Power Transmission"): the storm's changing magnetic field drives extra currents into long power lines, which can overheat transformers.
+  Sizes not to scale. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill hot" id="pS">Solar storm</div>
+    <div class="pill" id="pF">Earth's magnetic field</div>
+    <div class="pill hot" id="pL">Extra current in power lines</div>
+    <div class="pill red" id="pT">Transformer overheats</div>
+    <div class="cap" id="cap"><span class="hb">6 million</span> people lost power<small>Québec, March 1989 · for 9 hours</small></div>
+    <div id="note">sizes not to scale</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.cap{position:absolute;left:70px;right:70px;top:210px;text-align:center;color:#fff;font-weight:800;font-size:66px;line-height:1.15;letter-spacing:-1px;opacity:0;text-shadow:0 4px 30px rgba(0,0,0,.8)}
+.cap small{display:block;font-size:34px;font-weight:600;color:#cfd8e6;margin-top:10px;letter-spacing:0}
+.hb{background:#ffd23f;color:#141414;padding:0 .2em;border-radius:12px}
+#note{position:absolute;left:0;right:0;top:1600px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+const { renderer, scene, camera } = setup(34, [.01, .012, .03], [.07, .08, .15]);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const rnd = mulberry32(7201), R = (a, b) => a + rnd() * (b - a);
+scene.add(new THREE.HemisphereLight('#a8c0ff', '#101018', .55));
+const key = new THREE.DirectionalLight('#fff0dc', 2.6); key.position.set(-40, 50, 30); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 200 }); scene.add(key);
+// ---- Sun (far left) + Earth (origin)
+const SUNP = V(-25, 70, -120);
+const sunM = new THREE.Mesh(new THREE.SphereGeometry(16, 48, 32), new THREE.MeshBasicMaterial({ color: '#ffb340' })); sunM.position.copy(SUNP); scene.add(sunM);
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex(), color: '#ff9a30', transparent: true, opacity: .8, depthWrite: false, blending: THREE.AdditiveBlending })); halo.scale.setScalar(70); halo.position.copy(SUNP); scene.add(halo);
+const RE = 6;
+const earth = new THREE.Mesh(new THREE.SphereGeometry(RE, 64, 48), new THREE.MeshStandardMaterial({ color: '#3c7fc4', roughness: .7 })); scene.add(earth);
+// simple soft continents: bumps of green
+for (let i = 0; i < 26; i++) { const d = new THREE.Vector3(R(-1, 1), R(-.6, 1), R(-1, 1)).normalize(); const b = new THREE.Mesh(new THREE.SphereGeometry(R(1.2, 2.6), 24, 16), new THREE.MeshStandardMaterial({ color: '#7fbf6a', roughness: .8 }));
+  b.position.copy(d.multiplyScalar(RE - .9)); b.scale.set(1, 1, .45); b.lookAt(0, 0, 0); scene.add(b); }
+// ---- magnetic field: dipole loops (thin tubes) that get squeezed when the storm hits
+const fieldMat = new THREE.MeshBasicMaterial({ color: '#7fd4ff', transparent: true, opacity: .55 });
+const loops = [];
+for (let k = 0; k < 10; k++) { const phi = k / 10 * Math.PI * 2; for (const L of [1.9, 2.8]) { const pts = [];
+  for (let i = 0; i <= 60; i++) { const th = .25 + (Math.PI - .5) * i / 60; const r = RE * L * Math.sin(th) ** 2; pts.push(V(r * Math.sin(th) * Math.cos(phi), r * Math.cos(th), r * Math.sin(th) * Math.sin(phi))); }
+  const base = pts.map(p => p.clone()); const geo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 60, .06, 5, false); const m = new THREE.Mesh(geo, fieldMat); scene.add(m); loops.push({ m, base, phi, L }); } }
+function squeeze(t) { const hit = sm(ramp(t, 1.25, 1.8)) * (1 - .4 * sm(ramp(t, 3, 4))); const toSun = SUNP.clone().normalize();
+  for (const l of loops) { const side = Math.cos(l.phi - Math.atan2(toSun.z, toSun.x)); const s = 1 - .32 * hit * Math.max(0, side) + .25 * hit * Math.max(0, -side) + .03 * Math.sin(t * 6 + l.phi) * hit;
+    l.m.scale.set(s, 1, s); } }
+// aurora ring
+const aur = new THREE.Mesh(new THREE.TorusGeometry(2.4, .35, 12, 64), new THREE.MeshBasicMaterial({ color: '#4dff9a', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+aur.rotation.x = Math.PI / 2; aur.position.y = RE * .86; scene.add(aur);
+// ---- CME particles from the Sun to Earth
+const NC = 2600, CP = new Float32Array(NC * 3), CG = new THREE.BufferGeometry(); CG.setAttribute('position', new THREE.BufferAttribute(CP, 3));
+const cme = new THREE.Points(CG, new THREE.PointsMaterial({ color: '#ffa040', size: 1.1, map: softTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); scene.add(cme);
+const cb = Float32Array.from({ length: NC }, () => R(-.2, 1.6)), co = [...Array(NC)].map(() => V(R(-1, 1), R(-1, 1), R(-1, 1)));
+function updCME(t) { for (let i = 0; i < NC; i++) { const u = (t - cb[i]) / 1.4; let p;
+  if (u <= 0) p = SUNP.clone().addScaledVector(co[i], 10); else { const f = Math.min(u, 1.05); p = SUNP.clone().lerp(V(0, 0, 0), f).addScaledVector(co[i], 10 + 14 * f);
+    if (p.length() < RE * 2.3) p.setLength(RE * 2.3 + co[i].x * 1.5); }
+  CP.set([p.x, p.y, p.z], i * 3); } CG.attributes.position.needsUpdate = true; cme.material.opacity = .9 * (1 - sm(ramp(t, 2.6, 3.2))); }
+// ---- cutaway diorama: a slab of ground on top of Earth with towers, lines, a transformer and a town
+const DIO = new THREE.Group(); DIO.position.set(0, RE + .05, 0); scene.add(DIO);
+const slab = new THREE.Mesh(new THREE.BoxGeometry(6, .5, 3.4), new THREE.MeshStandardMaterial({ color: '#5f9a55', roughness: .9 })); slab.position.y = -.25; slab.receiveShadow = true; DIO.add(slab);
+const soil = new THREE.Mesh(new THREE.BoxGeometry(6, 1.2, 3.4), new THREE.MeshStandardMaterial({ color: '#7a5a3e', roughness: 1 })); soil.position.y = -1.1; DIO.add(soil);
+const towerMat = new THREE.MeshStandardMaterial({ color: '#c9ced6', metalness: .4, roughness: .45 });
+const TX = [-2.6, -1.3, 0];
+for (const x of TX) { const tw = new THREE.Group(); const leg = new THREE.Mesh(new THREE.CylinderGeometry(.03, .09, 1.4, 6), towerMat); leg.position.y = .7; tw.add(leg);
+  const arm = new THREE.Mesh(new THREE.BoxGeometry(.06, .05, .9), towerMat); arm.position.y = 1.3; tw.add(arm); tw.position.set(x, 0, -.4); tw.traverse(o => o.castShadow = true); DIO.add(tw); }
+const wires = [-.35, 0, .35].map(z => { const pts = []; for (let i = 0; i <= 40; i++) { const x = -2.9 + 3.9 * i / 40; const seg = ((x + 2.6) / 1.3) % 1; pts.push(V(x, 1.3 - .12 * Math.sin(Math.PI * Math.max(0, Math.min(1, seg))), -.4 + z)); }
+  const c = new THREE.CatmullRomCurve3(pts); DIO.add(new THREE.Mesh(new THREE.TubeGeometry(c, 60, .015, 4), new THREE.MeshStandardMaterial({ color: '#2a2a2e' }))); return c; });
+// transformer
+const trM = new THREE.MeshStandardMaterial({ color: '#8d969e', metalness: .5, roughness: .4, emissive: '#ff2a00', emissiveIntensity: 0 });
+const tr = new THREE.Group(); const tb = new THREE.Mesh(new THREE.BoxGeometry(.8, .7, .6), trM); tb.position.y = .35; tr.add(tb);
+for (let i = 0; i < 5; i++) { const f = new THREE.Mesh(new THREE.BoxGeometry(.04, .55, .62), trM); f.position.set(-.3 + i * .15, .32, 0); tr.add(f); }
+for (const x of [-.2, 0, .2]) { const b = new THREE.Mesh(new THREE.CylinderGeometry(.04, .05, .35, 8), new THREE.MeshStandardMaterial({ color: '#e8e2d4' })); b.position.set(x, .85, 0); tr.add(b); }
+tr.position.set(1.25, 0, -.4); tr.traverse(o => o.castShadow = true); DIO.add(tr);
+// town with lit windows
+const winMat = new THREE.MeshStandardMaterial({ color: '#2a2e36', emissive: '#ffcf6a', emissiveIntensity: 1.4 });
+const houseMat = new THREE.MeshStandardMaterial({ color: '#e9e2d6', roughness: .8 });
+for (let i = 0; i < 9; i++) { const w = R(.3, .5), h = R(.35, 1.1), d = R(.3, .5); const x = 1.9 + (i % 3) * .62, z = .2 + Math.floor(i / 3) * .6 - .4;
+  const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), houseMat); b.position.set(x, h / 2, z); b.castShadow = b.receiveShadow = true; DIO.add(b);
+  for (let r = 0; r < Math.floor(h / .22); r++) { const wn = new THREE.Mesh(new THREE.PlaneGeometry(w * .55, .08), winMat); wn.position.set(x, .15 + r * .22, z + d / 2 + .002); DIO.add(wn); } }
+// current pulses + sparks
+const NP = 90, PP = new Float32Array(NP * 3), PG = new THREE.BufferGeometry(); PG.setAttribute('position', new THREE.BufferAttribute(PP, 3));
+const pulses = new THREE.Points(PG, new THREE.PointsMaterial({ color: '#ffd86a', size: .22, map: softTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 })); DIO.add(pulses);
+const NS = 60, SPa = new Float32Array(NS * 3), SGe = new THREE.BufferGeometry(); SGe.setAttribute('position', new THREE.BufferAttribute(SPa, 3));
+const sparks = new THREE.Points(SGe, new THREE.PointsMaterial({ color: '#fff1b0', size: .1, map: softTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 })); DIO.add(sparks);
+const sv = [...Array(NS)].map(() => V(R(-1, 1), R(.5, 2), R(-1, 1)));
+const glow = new THREE.PointLight('#ff4a10', 0, 6, 1.5); glow.position.set(1.25, .8, -.1); DIO.add(glow);
+// camera: wide Sun -> Earth, then fly in to the diorama
+function setCam(t) { const a = eio(ramp(t, 1.9, 3.6));
+  const p0 = V(6, 16, 74), l0 = V(-3, 18, 0); const p1 = V(4.6, RE + 3.4, 8.8), l1 = V(.3, RE + .5, -.3);
+  camera.position.copy(p0.clone().lerp(p1, a)).add(V(.3 * Math.sin(t * .7), .2 * Math.cos(t * .5), 0)); camera.lookAt(l0.clone().lerp(l1, a)); camera.updateMatrixWorld(); }
+const E = id => document.getElementById(id); const dw = v => DIO.localToWorld(v.clone());
+const lab = labels(camera, [
+  { el: E('pS'), t0: .3, t1: 1.9, at: () => SUNP.clone().lerp(V(0, 0, 0), .35), col: '#ffb547', pos: (x, y) => [cl(x + 120, 300, 780), cl(y + 160, 420, 1400)] },
+  { el: E('pF'), t0: 1.2, t1: 2.3, at: () => V(-RE * 2.2, RE * .8, 0), pos: (x, y) => [cl(x + 120, 300, 780), cl(y + 210, 420, 1450)] },
+  { el: E('pL'), t0: 3.6, at: () => dw(V(-1.9, 1.25, -.4)), col: '#ffb547', pos: (x, y) => [cl(x + 40, 330, 750), cl(y + 380, 560, 1450)] },
+  { el: E('pT'), t0: 4.3, at: () => dw(V(1.25, .7, -.1)), col: '#ff4a4a', pos: (x, y) => [cl(x, 330, 750), cl(y - 330, 520, 1400)] },
+]);
+function render(t) { t = cl(t, 0, DUR); setCam(t); squeeze(t); updCME(t);
+  aur.material.opacity = .7 * sm(ramp(t, 1.5, 2.0)) * (1 - sm(ramp(t, 2.6, 3.2))) * (.8 + .2 * Math.sin(t * 9));
+  // current pulses run along the lines from 3.4 s, faster as the storm grows
+  const on = sm(ramp(t, 3.3, 3.7)); pulses.material.opacity = on;
+  for (let i = 0; i < NP; i++) { const w = wires[i % 3]; const u = ((i / NP) * 3 + t * (0.5 + .6 * on)) % 1; const p = w.getPoint(u); PP.set([p.x, p.y, p.z], i * 3); } PG.attributes.position.needsUpdate = true;
+  const heat = sm(ramp(t, 4.1, 5.0)); trM.emissiveIntensity = 1.6 * heat; trM.emissive.set('#ff3a00'); glow.intensity = 6 * heat * (.8 + .2 * Math.sin(t * 20));
+  const sk = cl((t - 4.6) / 1.2); sparks.material.opacity = sk > 0 && sk < 1 ? 1 - sk : 0;
+  for (let i = 0; i < NS; i++) { const u = ((t - 4.6) * 1.8 + i / NS) % 1; const p = V(1.25, .8, -.1).addScaledVector(sv[i], u * .9); p.y -= u * u * 1.2; SPa.set([p.x, p.y, p.z], i * 3); } SGe.attributes.position.needsUpdate = true;
+  // blackout: windows go dark, power pulses die
+  const out = sm(ramp(t, 5.0, 5.3)); winMat.emissiveIntensity = 1.4 * (1 - out) * (1 - .5 * Math.max(0, Math.sin(t * 40)) * sm(ramp(t, 4.7, 5.0)));
+  if (out > .5) pulses.material.opacity = 0;
+  renderer.render(scene, camera); lab(t);
+  const c = sm(ramp(t, 5.2, 5.6)); E('cap').style.opacity = c; E('cap').style.transform = `translateY(${(1 - c) * 30}px)`;
+  E('note').style.opacity = sm(ramp(t, .5, 1)); }
+await ready(render);
+</script>
+</body>
+</html>

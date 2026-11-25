@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The deepest hole ever dug</title>
+<!-- earth72 r2: /deep-dive the deepest hole ever dug. Follows our system's deep-dive prompt (hf/page/free-prompts.src.html): cross-section to
+  scale, camera dives down with a small light while a depth counter runs, then pulls back to the full picture; 2-3 labels and a familiar
+  object for scale (Mount Everest). Facts: Scientific American "How Deep Is the Deepest Hole in the World?": Kola Superdeep Borehole,
+  Murmansk region, Russia, 12,262 m (about 7.5 miles), about 9 in (23 cm) wide, ~180 C (356 F) at the bottom, drilling stopped 1992.
+  Mount Everest 8,849 m / 29,032 ft (2020 Nepal-China survey). Vertical scale true (1 unit = 1 km); hole width exaggerated. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div id="ctr"><b id="dm">0</b> m<small id="df">0 ft</small></div>
+    <div class="pill" id="pW">Only 23 cm wide<small>about 9 inches</small></div>
+    <div class="pill red" id="pB">180 °C at the bottom<small>356 °F</small></div>
+    <div class="pill" id="pE">Mount Everest<small>8,849 m · 29,032 ft</small></div>
+    <div class="pill hot" id="pK">Kola Superdeep Borehole<small>12,262 m · 7.5 miles deep</small></div>
+    <div id="note">depth to scale · hole width exaggerated</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.pill small{display:block;font-size:31px;font-weight:600;color:#cfd6e0;margin-top:2px;text-align:center}.pill{text-align:center}
+#ctr{position:absolute;left:0;right:0;top:200px;text-align:center;color:#fff;font-weight:800;font-size:110px;letter-spacing:-3px;font-variant-numeric:tabular-nums;text-shadow:0 6px 30px rgba(0,0,0,.8);opacity:0}
+#ctr small{display:block;font-size:40px;font-weight:600;color:#cfd8e6;letter-spacing:0;margin-top:-6px}
+#note{position:absolute;left:0;right:0;top:1600px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+const { renderer, scene, camera } = setup(36, [.02, .025, .04], [.12, .14, .2]);
+renderer.shadowMap.enabled = true;
+const rnd = mulberry32(7202);
+const DEP = 12.262, EV = 8.849, BW = 34, BD = 18, BZ = 10; // km
+// ---- crust block with layered front face (cutaway)
+const face = (() => { const c = document.createElement('canvas'); c.width = 1024; c.height = 540; const g = c.getContext('2d');
+  const layers = [['#6b5a48', 0], ['#7d6a54', .06], ['#8a7f73', .18], ['#6f6a66', .34], ['#5d5458', .52], ['#6a4a40', .7], ['#7a3a28', .86], ['#8a3020', 1]];
+  for (let i = 0; i < layers.length - 1; i++) { const y0 = layers[i][1] * 540, y1 = layers[i + 1][1] * 540; g.fillStyle = layers[i][0]; g.beginPath(); g.moveTo(0, y0);
+    for (let x = 0; x <= 1024; x += 32) g.lineTo(x, y0 + Math.sin(x * .01 + i) * 6); g.lineTo(1024, y1 + 6); g.lineTo(0, y1 + 6); g.closePath(); g.fill(); }
+  for (let i = 0; i < 4000; i++) { g.fillStyle = `rgba(${rnd() > .5 ? '255,255,255' : '0,0,0'},${.03 + rnd() * .05})`; g.fillRect(rnd() * 1024, rnd() * 540, 2 + rnd() * 6, 1 + rnd() * 3); }
+  const hot = g.createLinearGradient(0, 0, 0, 540); hot.addColorStop(0, 'rgba(255,80,20,0)'); hot.addColorStop(.6, 'rgba(255,80,20,0)'); hot.addColorStop(1, 'rgba(255,90,20,.45)'); g.fillStyle = hot; g.fillRect(0, 0, 1024, 540);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+const side = new THREE.MeshStandardMaterial({ color: '#4e4440', roughness: 1 });
+const top = new THREE.MeshStandardMaterial({ color: '#8a9a6a', roughness: 1 });
+const block = new THREE.Mesh(new THREE.BoxGeometry(BW, BD, BZ), [side, side, top, side, new THREE.MeshStandardMaterial({ map: face, roughness: 1 }), side]);
+block.position.set(0, -BD / 2, -BZ / 2); block.receiveShadow = true; scene.add(block);
+// ---- Everest (to scale, on the surface to the right), snowy cap
+const ev = new THREE.Group();
+const evM = new THREE.Mesh(new THREE.ConeGeometry(6, EV, 7, 1), new THREE.MeshStandardMaterial({ color: '#7a7f88', roughness: .9, flatShading: true })); evM.position.y = EV / 2; ev.add(evM);
+const cap = new THREE.Mesh(new THREE.ConeGeometry(2.1, EV * .35, 7, 1), new THREE.MeshStandardMaterial({ color: '#f4f6fa', roughness: .7, flatShading: true })); cap.position.y = EV - EV * .175 + .02; ev.add(cap);
+ev.position.set(8, 0, -4); ev.traverse(o => o.castShadow = true); scene.add(ev);
+const evLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints([V(10, EV, -4), V(10, EV, 0.05)]), new THREE.LineDashedMaterial({ color: '#ffffff', dashSize: .3, gapSize: .2 })); evLine.computeLineDistances(); 
+// ---- the borehole on the cut face (width exaggerated), a drill rig on top
+const holeX = -4;
+const hole = new THREE.Mesh(new THREE.BoxGeometry(.14, DEP, .3), new THREE.MeshBasicMaterial({ color: '#0b0b0e' })); hole.position.set(holeX, -DEP / 2, .02); scene.add(hole);
+const rig = new THREE.Mesh(new THREE.CylinderGeometry(.05, .35, 1.6, 4, 1, true), new THREE.MeshStandardMaterial({ color: '#d9563a', wireframe: true })); rig.position.set(holeX, .8, -.2); scene.add(rig);
+// the little light that dives
+const lamp = new THREE.PointLight('#ffd890', 4, 4, 2); scene.add(lamp);
+const lampS = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex(), color: '#ffe0a0', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); lampS.scale.setScalar(.7); scene.add(lampS);
+const trail = new THREE.Mesh(new THREE.BoxGeometry(.06, 1, .32), new THREE.MeshBasicMaterial({ color: '#ffb35a', transparent: true, opacity: .8 })); scene.add(trail);
+scene.add(new THREE.HemisphereLight('#c8d6ff', '#201812', .7));
+const sunL = new THREE.DirectionalLight('#fff2e0', 2.2); sunL.position.set(-20, 30, 25); sunL.castShadow = true; Object.assign(sunL.shadow.camera, { left: -25, right: 25, top: 25, bottom: -25 }); scene.add(sunL);
+// dive: 0.3 -> 3.9 s; pull back 3.9 -> 6.3 s
+function depthAt(t) { return DEP * eio(ramp(t, .3, 3.9)); }
+function setCam(t) { const d = depthAt(t), a = eio(ramp(t, 3.7, 6.2));
+  const near = V(holeX + 2.5, -d + 1.2, 9.5), nearL = V(holeX + .6, -d - .6, 0);
+  const far = V(4, -2.5, 70), farL = V(3.5, -1.8, -2);
+  camera.position.copy(near.lerp(far, a)).add(V(.15 * Math.sin(t), .1 * Math.cos(t * .8), 0)); camera.lookAt(nearL.lerp(farL, a)); camera.updateMatrixWorld(); }
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pW'), t0: .5, t1: 2.2, at: () => [holeX, -depthAt(.9) + 0.2, .05], pos: (x, y) => [cl(x + 230, 330, 750), cl(y + 260, 500, 1450)] },
+  { el: E('pB'), t0: 3.4, t1: 5.0, at: () => [holeX, -DEP, .05], col: '#ff4a4a', pos: (x, y) => [cl(x + 200, 330, 750), cl(y + 300, 500, 1480)] },
+  { el: E('pK'), t0: 4.8, at: () => [holeX, -DEP, .05], col: '#ffb547', pos: (x, y) => [cl(x + 120, 330, 750), cl(y + 220, 500, 1480)] },
+  { el: E('pE'), t0: 5.1, at: () => [8, EV, -4], pos: (x, y) => [cl(x, 330, 750), cl(y - 170, 520, 1400)] },
+]);
+function render(t) { t = cl(t, 0, DUR); const d = depthAt(t); setCam(t);
+  lamp.position.set(holeX, -d, .6); lampS.position.set(holeX, -d, .3); lampS.material.color.set(d > 9 ? '#ffa060' : '#ffe0a0');
+  trail.scale.y = Math.max(.01, d); trail.position.set(holeX, -d / 2, .03); trail.material.opacity = .55 + .3 * (d / DEP);
+  renderer.render(scene, camera); lab(t);
+  const m = Math.round(d * 1000); E('dm').textContent = m.toLocaleString('en-US'); E('df').textContent = Math.round(m * 3.28084).toLocaleString('en-US') + ' ft';
+  E('ctr').style.opacity = sm(ramp(t, .2, .5)) * (1 - sm(ramp(t, 4.7, 5.0)));
+  E('note').style.opacity = sm(ramp(t, .5, 1)); }
+await ready(render);
+</script>
+</body>
+</html>
