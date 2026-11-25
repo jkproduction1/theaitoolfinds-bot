@@ -1,126 +1,126 @@
 {
-  "date": "2026-11-24",
+  "date": "2026-11-25",
   "app_demo": [
     {
-      "title": "What if… Earth 15",
+      "title": "What if… Earth 16",
       "commands": [
-        "/what-if Earth's core stopped spinning",
-        "/simulate the Sahara turning green again",
-        "/scale the Pacific Ocean versus the Moon"
+        "/what-if Earth's oxygen doubled for one day",
+        "/simulate the Yellowstone supervolcano erupting",
+        "/scale the Amazon River versus Europe"
       ],
-      "why": "Earth what-if (Zack D. Films duch) je náš nejsilnější IG hook (earth8 874k); nebezpečí + měřítko, tři nové objekty"
+      "why": "Earth what-if v duchu Zack D. Films je náš nejsilnější IG hook (earth8 874k); nebezpečí + měřítko, tři nové objekty"
     },
     {
-      "title": "Scary space 9",
+      "title": "Scary space 10",
       "commands": [
-        "/deep-dive inside Jupiter's Great Red Spot",
-        "/what-if a gamma-ray burst hit Earth",
-        "/scale the biggest black hole versus our Solar System"
+        "/what-if a rogue planet flew past the Moon",
+        "/deep-dive inside a neutron star",
+        "/simulate two galaxies colliding"
       ],
-      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); hrozba + měřítko, nic z toho ještě nebylo"
+      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); hrozba + obří měřítko, nic z toho ještě nebylo"
     },
     {
-      "title": "Deadliest nature 4",
+      "title": "Deadliest nature 5",
       "commands": [
-        "/simulate an avalanche burying a valley",
-        "/deep-dive inside a hurricane's eye",
-        "/x-ray a volcano right before it erupts"
+        "/simulate a lava flow hitting the ocean",
+        "/deep-dive into a sinkhole as it opens",
+        "/what-if lightning struck the sea right next to you"
       ],
       "why": "příroda v nejnebezpečnější podobě (storm45 99k) drží; žádná měkká roztomilá témata (around51 16k)"
     },
     {
-      "title": "What's inside giant machines 2",
+      "title": "What's inside giant machines 3",
       "commands": [
-        "/x-ray a submarine",
-        "/explode a Formula 1 car",
-        "/explain-3d how a nuclear reactor makes electricity"
+        "/x-ray a rocket on the launch pad",
+        "/explode a jet ski",
+        "/explain-3d how an elevator brake stops a fall"
       ],
-      "why": "what's inside (inside3 135k) funguje; obří stroje + skrytý mechanismus, všechny objekty nové"
+      "why": "what's inside (inside3 135k) funguje; skrytý mechanismus + lehký strach (výtah), všechny objekty nové"
     },
     {
-      "title": "Famous video styles 14",
+      "title": "Famous video styles 15",
       "commands": [
-        "/flat-science why your knuckles crack",
-        "/paper-collage why Venice is sinking",
-        "/painted-story how Pompeii was buried in a day"
+        "/flat-science why we yawn",
+        "/paper-collage why the Panama Canal needs locks",
+        "/painted-story how the Trojan horse fooled a city"
       ],
-      "why": "styles série má nejlepší save rate (5,6–6,3 %) a hity styles33/44/48 (92–148k); caption otevřít promise linkou 'Type one command and Claude…' (test z learnings)"
+      "why": "rodina explainer stylů má nejlepší save rate (styles33/44/48 92-148k); caption začít slibem 'Type one command and Claude…'"
     }
   ],
   "tutorials": [
     {
-      "title": "How to make this GTA 6 'mission passed' screen using Claude",
+      "title": "How to make this Dune-style desert title sequence using Claude",
       "tool": "Claude",
       "url": "https://claude.ai",
-      "trend": "GTA 6 vyšlo 19. 11. a rekordy + memy z launch týdne pořád jedou na X/TikToku (Dexerto, Virlo); vlastní 'mission passed' karta pro tvůj den, jen název jako text, žádné logo.",
+      "trend": "Dune: Part Three jde do kin 18. 12. a pouštní titulky/edity se na IG a TikToku začínají točit už teď; jen 'inspired by', vlastní písmo a scéna.",
       "steps": [
-        "Tell Claude what you finished today.",
-        "Ask for a bold 'mission passed' screen with a cash counter.",
-        "Claude builds it, you tweak it."
-      ],
-      "seconds": 12,
-      "keyword": "MISSION",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this Black Friday price-drop ad using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "Black Friday je v pátek 27. 11.; malé značky a tvůrci teď všude postují animované slevové reklamy, tohle je hotová šablona pro vlastní produkt.",
-      "steps": [
-        "Give Claude your product and both prices.",
-        "Ask for the old price to crash down into the new one.",
-        "Claude builds it, you tweak it."
-      ],
-      "seconds": 12,
-      "keyword": "DEAL",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this animated 2026 year-in-review using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "konec roku = sezóna recapů (Wrapped vychází začátkem prosince, 'my 2026 in 12 months' edity rostou na IG); osobní timeline z tvých vlastních fotek.",
-      "steps": [
-        "Give Claude one photo and one line for each month.",
-        "Ask for a scrolling timeline with big month numbers.",
-        "Claude builds it, you tweak it."
+        "First, open Claude and pick Fable 5.2.",
+        "Then ask for a slow desert title: wind, dunes, your words in the sand.",
+        "Claude builds it, you tweak it, and you're done."
       ],
       "seconds": 13,
-      "keyword": "TIMELINE",
+      "keyword": "DUNE",
       "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to turn your city into a GTA 6-style trailer using Higgsfield",
-      "tool": "Higgsfield",
-      "url": "https://higgsfield.ai",
-      "trend": "po launchi GTA 6 (19. 11.) letí AI edity 'moje město jako GTA trailer' s miliony views (games.gg o AI GTA videích); jen neonový filmový look, žádné postavy ani logo hry.",
+      "title": "How to make this animated advent calendar using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "1. 12. začíná advent; 'open a door every day' edity a digitální kalendáře jsou každý rok na IG/TikToku hit první prosincový týden.",
       "steps": [
-        "Upload three photos of your street.",
-        "Pick a cinematic neon sunset camera move.",
-        "Higgsfield builds it, you tweak it."
+        "First, tell Claude: 24 doors, a snowy village, one surprise per day.",
+        "Then ask it to make every door pop open with a little animation.",
+        "Claude builds it, you tweak it, and you're done."
       ],
-      "seconds": 14,
-      "keyword": "TRAILER",
-      "cost": "kredity Higgsfield, cca 20–40 (3 krátká videa)",
+      "seconds": 13,
+      "keyword": "ADVENT",
+      "cost": "zdarma, kreslí Claude v kódu",
       "handle": ""
     },
     {
-      "title": "How to turn your photo into a Christmas ornament using Higgsfield",
-      "tool": "Higgsfield",
-      "url": "https://higgsfield.ai",
-      "trend": "po Black Friday startuje vánoční sezóna a 'me as a tiny ornament / figurka' AI edity se vracejí na IG a TikTok; sdílitelný výsledek z vlastní fotky.",
+      "title": "How to make this liquid chrome name animation using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "chrome/Y2K 3D text edity drží v motion-design feedu na IG a X; jméno, které se roztaví a slije z tekutého kovu, chce mít každý.",
       "steps": [
-        "Upload a selfie or a pet photo.",
-        "Ask for a glass ornament hanging on a glowing tree.",
-        "Higgsfield builds it, you tweak it."
+        "First, type your name into Claude.",
+        "Then ask for liquid chrome that melts and forms the letters.",
+        "Claude builds it, you tweak it, and you're done."
       ],
       "seconds": 12,
-      "keyword": "ORNAMENT",
-      "cost": "kredity Higgsfield, cca 10–20 (obrázek + krátké video)",
+      "keyword": "CHROME",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this snowy Christmas card animation using Claude",
+      "tool": "Claude",
+      "url": "https://claude.ai",
+      "trend": "blíží se Vánoce a animované přání se jménem místo statické fotky je prosincový formát, který lidi posílají dál (stories, DM).",
+      "steps": [
+        "First, give Claude your names and one warm line.",
+        "Then ask for falling snow, a lit house and the text glowing in.",
+        "Claude builds it, you tweak it, and you're done."
+      ],
+      "seconds": 12,
+      "keyword": "SNOW",
+      "cost": "zdarma, kreslí Claude v kódu",
+      "handle": ""
+    },
+    {
+      "title": "How to make this Black Friday product ad using Higgsfield",
+      "tool": "Higgsfield",
+      "url": "https://higgsfield.ai",
+      "trend": "Black Friday je v pátek 27. 11.; malí prodejci teď na IG hledají rychlé produktové reklamy z obyčejné fotky.",
+      "steps": [
+        "First, upload a plain photo of your product.",
+        "Then pick a studio look and add 'slow camera push, dramatic light'.",
+        "Higgsfield builds it, you tweak it, and you're done."
+      ],
+      "seconds": 13,
+      "keyword": "PRODUCT",
+      "cost": "kredity Higgsfield, cca 2 za obrázek + video navíc (ověřit odhad před výrobou)",
       "handle": ""
     }
   ],
