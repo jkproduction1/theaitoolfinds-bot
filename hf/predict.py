@@ -76,6 +76,8 @@ def predict(name, script_only=False):
     S = [w["start"] for w in words] if words else [i / 2.6 for i in range(len(tokens))]
     E = [w["end"] for w in words] if words else [(i + 1) / 2.6 for i in range(len(tokens))]
     dur = E[-1] + 1.6
+    if not words and (post.get("angle") == "app-demo"):
+        dur += 7.0  # script-only estimate: the 3 result clips add ~7 s on top of the voice (earth8 +6.9 s); real check after render
     sents = sentences(tokens)
     hook = sents[0]
     hook_txt = " ".join(tokens[i] for i in hook)
@@ -116,8 +118,8 @@ def predict(name, script_only=False):
     wps = len(tokens) / max(speech, 1)
     F["wps"], F["dur_s"], F["words"] = round(wps, 2), round(dur, 1), len(tokens)
     F["pace"] = round(clamp(1 - abs(wps - 2.9) / 1.2), 2)
-    F["length"] = round(1.0 if 18 <= dur <= 30 else clamp(1 - (dur - 30) / 12) if dur > 30 else clamp(1 - (18 - dur) / 8), 2)
-    if dur > 30: flags.append(f"video má {dur:.0f} s (cíl 18–30 s)")
+    F["length"] = round(1.0 if 18 <= dur <= 31 else clamp(1 - (dur - 31) / 5) if dur > 31 else clamp(1 - (18 - dur) / 8), 2)
+    if dur > 31: flags.append(f"video má {dur:.0f} s (cíl 18–31 s; všechna IG videa nad 33 s měla ≤23k)")
 
     # filler after the payoff
     pay_i = next((i for i, s in enumerate(S) if s >= (t_tool or 3.0)), 0)
@@ -140,7 +142,7 @@ def predict(name, script_only=False):
 
     # ending
     cta = next((i for i, t in enumerate(tokens) if t.lower().strip(".,") == "comment"), None)
-    tail = dur - S[cta] if cta is not None else None
+    tail = (E[-1] + 1.6) - S[cta] if cta is not None else None  # voice end, not the clip-padded estimate
     F["ending"] = round(clamp((6.0 - tail) / 2.5), 2) if tail is not None else 0.5
     if tail and tail > 5: flags.append(f"po CTA ještě {tail:.1f} s")
 
@@ -152,6 +154,21 @@ def predict(name, script_only=False):
     F["topic"] = prior.get(angle, 0.5)
     if angle is None: flags.append("post.json nemá \"angle\" (typ tématu) → topic 0,5")
     elif F["topic"] < 0.45: flags.append(f"typ tématu \"{angle}\" u nás zatím slabě funguje")
+    # App demos all share one angle, so "topic" = viral heat of the three prompts (IG data, recalibrated 2026-11-26)
+    vir = cfg.get("viral")
+    if angle == "app-demo" and vir:
+        cmds = re.findall(r"[Tt]ype slash ([^,]+), (.+?)(?:…|\.\.\.) and you get this", " ".join(tokens))
+        txt = " ".join(b for a, b in cmds).lower()
+        hot = len(re.findall(vir["hot"], txt)); soft = len(re.findall(vir["soft"], txt))
+        F["hot_words"], F["soft_words"] = hot, soft
+        F["topic"] = round(clamp(0.35 + 0.25 * min(hot, 3) - 0.2 * min(soft, 2)), 2)
+        first = cmds[0][1].lower() if cmds else ""
+        F["hook"] = 1.0 if re.search(vir["hot"], first) else 0.4   # the first prompt IS the hook in this format
+        F["payoff"] = 1.0  # result is shown right after the first prompt
+        if hot < 3: flags.append(f"jen {hot} „virální“ slova (Země/vesmír/katastrofa/slavné místo…; cíl ≥3)")
+        if soft: flags.append(f"{soft}× měkké/roztomilé téma (popcorn, včely, kočky…): na IG slabé")
+        flags[:] = [f for f in flags if not f.startswith("hook ")]  # "Type slash …" line is the format, not a hook flaw
+        if not F["hook"] == 1.0: flags.append("první prompt není virální téma (ten je hook)")
     score = round(100 * sum(W[k] * F[k] for k in W) / sum(W.values()))
     row = {"name": name, "date": datetime.now().strftime("%Y-%m-%d"), "score": score, "mode": "script" if script_only else "full",
            "features": F, "flags": flags, "weights": W}

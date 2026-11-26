@@ -2,49 +2,49 @@
   "date": "2026-11-26",
   "app_demo": [
     {
-      "title": "What if… Earth 17",
+      "title": "Zack D. Films: Země 18",
       "commands": [
-        "/zack-d-films what if Earth's core went cold",
-        "/simulate a mile-wide asteroid hitting the Atlantic",
-        "/scale the Sahara Desert versus the USA"
+        "/zack-d-films what if Earth stopped orbiting the Sun",
+        "/deep-dive what lives at the bottom of the ocean",
+        "/scale a blue whale versus a jumbo jet"
       ],
-      "why": "Earth what-if v duchu Zack D. Films je náš nejsilnější IG hook (earth8 874k); katastrofa + měřítko, všechno nové"
+      "why": "vzorec earth8 (1M): Zack D. Films what-if jako první prompt; prediktor 91 (skript)"
     },
     {
-      "title": "Scary space 11",
+      "title": "Zack D. Films: vesmír 12",
       "commands": [
-        "/what-if you fell into Jupiter",
-        "/deep-dive to the bottom of Venus's clouds",
-        "/scale the biggest black hole versus our Solar System"
+        "/zack-d-films what if you fell into a black hole",
+        "/explain-3d how a star explodes into a neutron star",
+        "/scale Jupiter versus Earth"
       ],
-      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); smrtící svět + obří měřítko"
+      "why": "vzorec space7 (197k) + space14 (72k); prediktor 91"
     },
     {
-      "title": "Deadliest nature 6",
+      "title": "Slavné styly: katastrofy 2",
       "commands": [
-        "/simulate an avalanche burying a ski town",
-        "/deep-dive into the eye of a hurricane",
-        "/what-if a megadrought dried up the Mississippi"
+        "/paper-collage why the Leaning Tower of Pisa almost fell in 1990",
+        "/painted-story how the Titanic's sister ship survived a crash",
+        "/flat-science what lightning does to a plane"
       ],
-      "why": "příroda v nejnebezpečnější podobě (storm45 99k) drží; strach + obraz, žádná měkká roztomilá témata (around51 16k)"
+      "why": "vzorec styles33 (161k): slavné místo + katastrofa ve 3 stylech; prediktor 91"
     },
     {
-      "title": "How money works (SYSTEM)",
+      "title": "Smrtící příroda 7",
       "commands": [
-        "/paper-collage how a credit card swipe moves your money",
-        "/x-ray an ATM",
-        "/painted-story how the New York Stock Exchange began under a tree"
+        "/x-ray a hurricane from the eye to the ocean floor",
+        "/explain-3d how a tsunami crosses an ocean",
+        "/what-if a volcano erupted under a city"
       ],
-      "why": "pro 21:00 SYSTEM: peníze + slavné US instituce pro dospělé v USA/EU; explainer styly mají nejlepší save rate (styles33 5–6 %)"
+      "why": "vzorec storm45 (112k): příroda v nejnebezpečnější podobě; prediktor 91"
     },
     {
-      "title": "Famous machines inside (SYSTEM)",
+      "title": "SYSTEM: slavné stroje a katastrofy (21:00)",
       "commands": [
-        "/explode a Tesla battery pack",
-        "/explain-3d how a Boeing 747 stays in the air",
-        "/flat-science how Wi-Fi sends a video through your wall"
+        "/explain-3d how a plane lands itself in thick fog",
+        "/x-ray the Titanic wreck at the bottom of the ocean",
+        "/painted-story how Pompeii vanished under a volcano"
       ],
-      "why": "pro 21:00 SYSTEM: tech + jak fungují slavné věci; what's inside (inside3 135k) je ověřený hit, objekty dosud nepoužité"
+      "why": "pro 21:00 SYSTEM: US/EU dospělí, letadla + Titanic + Pompeje; prediktor 91"
     }
   ],
   "tutorials": [],

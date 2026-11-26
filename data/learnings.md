@@ -77,3 +77,11 @@ Watch time: data/retention.md is still EMPTY -> nothing about length vs. retenti
 - Keyword clash: STYLES is used by three automations and STYLE by two; comments are bound to their post, but story replies / DMs can match any of them. Pick unused keywords for new videos.
 - Buyer pack sources are NOT in this repo (they were built in a session workspace). Ask Jan before rebuilding.
 - 2026-11-16 (later): free prompts page for Gumroad product `luszgi` (/l/free-prompts) is built (file sent to Jan, he publishes it with the Gumroad CLI). It shows the exact prompts of one video when the link carries `?v=<video folder name>` (table of 48 videos is embedded) or, for new videos with no page update, `?c=<style>|<style>|<style>&t=<topic>|<topic>|<topic>` (style keys: paper-collage, flat-science, painted-story, what-if, deep-dive, scale, explain-3d, x-ray, zoom-in, explode, time-lapse, how-its-made …). Ready-made links per automation: data/dm_links_page.json (NOT applied yet; apply with `seturl` only after Jan confirms the page loads from Instagram and the parameter survives). "Get the system" second DM button is on 35 own automations (`setdm`, data/dm_system.json); new posts get it only after a `setdm apply` run.
+
+## 2026-11-26 Predictor v2 (Jan, live: "last 2 videos ~3k, focus on viral, predictor must show >=90")
+- Old score did not predict IG: every 90+ video got 1-1.6k views; earth8 (1M) scored 58.
+- New for app demos: topic = "hot" words in the 3 prompts (Earth/space/disaster/famous place) minus "soft" ones (popcorn, bees, cats…),
+  hook = first prompt is hot, length full only up to 31 s (all 5 IG app demos over 33 s got <=23k: earth58, inside59, styles60, yellow71, earth72).
+  Script-only mode adds ~7 s for the 3 result clips. In-sample Spearman vs IG views +0.45 (n=28); the 6 videos scoring >=90 are exactly
+  the 72k-1M hits. Fitted on the same data, so treat 90 as "looks like our hits", not a guarantee. Rule from Jan: release only at >=90.
+- Not explained by topic: shares fell from 1-2.6k (11-13..11-17) to 7-18 (11-25..26), and there was a 4-day posting gap 11-21..11-25.
