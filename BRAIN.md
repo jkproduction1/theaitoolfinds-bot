@@ -93,7 +93,18 @@ never its content: not its skill, topics, results or keyword ("FOLDER").
   3) **21:00 = buyer video** (15:00 New York, evening in Europe, night in India): always SYSTEM, topic for adults in the USA/Europe
      (money, work, tech, how things work; US/EU examples, miles and Fahrenheit next to metric).
   Judge after 7 days: views per slot must not fall (monthly IG views stay about 2M) and paid sales per 100 DMs per slot.
-- **Daily mix v7 (Jan, 2026-11-18 night, CURRENT):** 3 "Type it, get it" videos a day (08:00 / 15:00 / 21:00), nothing else: sales-proof
+- **Daily mix v8 (Jan, 2026-11-26, CURRENT, replaces v7's slot plan): aim at the BUYERS.** Sales data 11-15..11-26: 16 paid sales,
+  9 traceable to Instagram (6 bio link, 3 DM from SYSTEM videos), 0 from the email sequence. Buyers are adults in the USA/Europe
+  (US 4, then SK, PL, AT, BE, DE, EG, ID, PK, IN 2); the free-prompt downloads (mostly India/Pakistan/Philippines/Indonesia) almost never buy.
+  Still 3 "Type it, get it" videos a day, same keyword/url/DM rules as v7, but:
+  1) **08:00 = PROMPTS reach video**, topic chosen so it ALSO works for US/EU adults (Earth/space what-ifs, "what's inside" famous
+     machines/buildings, nature at its most dangerous; US/EU places and units). Keeps reach for brand deals.
+  2) **15:00 = SYSTEM** (every day now, not alternating), 3) **21:00 = SYSTEM**. Both on buyer topics: money and how it works
+     (inflation, the Fed, how a bank/stock market/credit card makes money), work and AI taking jobs, tech (how a chip, GPS, the
+     internet cable, a Tesla battery works), famous US/EU things (Hoover Dam, Golden Gate, Eurotunnel, the Louvre), history/war
+     engineering, cars/planes. US/EU examples, miles and Fahrenheit next to metric. No school-kid or meme topics.
+  Judge after 7 days: paid sales per day (target > 1.5) and per 100 DMs; IG views must not collapse (> ~1M/month).
+- **Daily mix v7 (Jan, 2026-11-18 night, INACTIVE since 2026-11-26, slot plan replaced by v8):** 3 "Type it, get it" videos a day (08:00 / 15:00 / 21:00), nothing else: sales-proof
   videos flopped (versus46 ~1k views; people come for the styles and the prompts). **Every other video sells the system instead of
   giving prompts:**
   - PROMPTS video (as before): ends "Comment <KW> and I'll send you the prompts.", post.json url = the prompts page (c/t), DM has
