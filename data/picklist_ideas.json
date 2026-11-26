@@ -1,128 +1,52 @@
 {
-  "date": "2026-11-25",
+  "date": "2026-11-26",
   "app_demo": [
     {
-      "title": "What if… Earth 16",
+      "title": "What if… Earth 17",
       "commands": [
-        "/what-if Earth's oxygen doubled for one day",
-        "/simulate the Yellowstone supervolcano erupting",
-        "/scale the Amazon River versus Europe"
+        "/zack-d-films what if Earth's core went cold",
+        "/simulate a mile-wide asteroid hitting the Atlantic",
+        "/scale the Sahara Desert versus the USA"
       ],
-      "why": "Earth what-if v duchu Zack D. Films je náš nejsilnější IG hook (earth8 874k); nebezpečí + měřítko, tři nové objekty"
+      "why": "Earth what-if v duchu Zack D. Films je náš nejsilnější IG hook (earth8 874k); katastrofa + měřítko, všechno nové"
     },
     {
-      "title": "Scary space 10",
+      "title": "Scary space 11",
       "commands": [
-        "/what-if a rogue planet flew past the Moon",
-        "/deep-dive inside a neutron star",
-        "/simulate two galaxies colliding"
+        "/what-if you fell into Jupiter",
+        "/deep-dive to the bottom of Venus's clouds",
+        "/scale the biggest black hole versus our Solar System"
       ],
-      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); hrozba + obří měřítko, nic z toho ještě nebylo"
+      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); smrtící svět + obří měřítko"
     },
     {
-      "title": "Deadliest nature 5",
+      "title": "Deadliest nature 6",
       "commands": [
-        "/simulate a lava flow hitting the ocean",
-        "/deep-dive into a sinkhole as it opens",
-        "/what-if lightning struck the sea right next to you"
+        "/simulate an avalanche burying a ski town",
+        "/deep-dive into the eye of a hurricane",
+        "/what-if a megadrought dried up the Mississippi"
       ],
-      "why": "příroda v nejnebezpečnější podobě (storm45 99k) drží; žádná měkká roztomilá témata (around51 16k)"
+      "why": "příroda v nejnebezpečnější podobě (storm45 99k) drží; strach + obraz, žádná měkká roztomilá témata (around51 16k)"
     },
     {
-      "title": "What's inside giant machines 3",
+      "title": "How money works (SYSTEM)",
       "commands": [
-        "/x-ray a rocket on the launch pad",
-        "/explode a jet ski",
-        "/explain-3d how an elevator brake stops a fall"
+        "/paper-collage how a credit card swipe moves your money",
+        "/x-ray an ATM",
+        "/painted-story how the New York Stock Exchange began under a tree"
       ],
-      "why": "what's inside (inside3 135k) funguje; skrytý mechanismus + lehký strach (výtah), všechny objekty nové"
+      "why": "pro 21:00 SYSTEM: peníze + slavné US instituce pro dospělé v USA/EU; explainer styly mají nejlepší save rate (styles33 5–6 %)"
     },
     {
-      "title": "Famous video styles 15",
+      "title": "Famous machines inside (SYSTEM)",
       "commands": [
-        "/flat-science why we yawn",
-        "/paper-collage why the Panama Canal needs locks",
-        "/painted-story how the Trojan horse fooled a city"
+        "/explode a Tesla battery pack",
+        "/explain-3d how a Boeing 747 stays in the air",
+        "/flat-science how Wi-Fi sends a video through your wall"
       ],
-      "why": "rodina explainer stylů má nejlepší save rate (styles33/44/48 92-148k); caption začít slibem 'Type one command and Claude…'"
+      "why": "pro 21:00 SYSTEM: tech + jak fungují slavné věci; what's inside (inside3 135k) je ověřený hit, objekty dosud nepoužité"
     }
   ],
-  "tutorials": [
-    {
-      "title": "How to make this Dune-style desert title sequence using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "Dune: Part Three jde do kin 18. 12. a pouštní titulky/edity se na IG a TikToku začínají točit už teď; jen 'inspired by', vlastní písmo a scéna.",
-      "steps": [
-        "First, open Claude and pick Fable 5.2.",
-        "Then ask for a slow desert title: wind, dunes, your words in the sand.",
-        "Claude builds it, you tweak it, and you're done."
-      ],
-      "seconds": 13,
-      "keyword": "DUNE",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this animated advent calendar using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "1. 12. začíná advent; 'open a door every day' edity a digitální kalendáře jsou každý rok na IG/TikToku hit první prosincový týden.",
-      "steps": [
-        "First, tell Claude: 24 doors, a snowy village, one surprise per day.",
-        "Then ask it to make every door pop open with a little animation.",
-        "Claude builds it, you tweak it, and you're done."
-      ],
-      "seconds": 13,
-      "keyword": "ADVENT",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this liquid chrome name animation using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "chrome/Y2K 3D text edity drží v motion-design feedu na IG a X; jméno, které se roztaví a slije z tekutého kovu, chce mít každý.",
-      "steps": [
-        "First, type your name into Claude.",
-        "Then ask for liquid chrome that melts and forms the letters.",
-        "Claude builds it, you tweak it, and you're done."
-      ],
-      "seconds": 12,
-      "keyword": "CHROME",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this snowy Christmas card animation using Claude",
-      "tool": "Claude",
-      "url": "https://claude.ai",
-      "trend": "blíží se Vánoce a animované přání se jménem místo statické fotky je prosincový formát, který lidi posílají dál (stories, DM).",
-      "steps": [
-        "First, give Claude your names and one warm line.",
-        "Then ask for falling snow, a lit house and the text glowing in.",
-        "Claude builds it, you tweak it, and you're done."
-      ],
-      "seconds": 12,
-      "keyword": "SNOW",
-      "cost": "zdarma, kreslí Claude v kódu",
-      "handle": ""
-    },
-    {
-      "title": "How to make this Black Friday product ad using Higgsfield",
-      "tool": "Higgsfield",
-      "url": "https://higgsfield.ai",
-      "trend": "Black Friday je v pátek 27. 11.; malí prodejci teď na IG hledají rychlé produktové reklamy z obyčejné fotky.",
-      "steps": [
-        "First, upload a plain photo of your product.",
-        "Then pick a studio look and add 'slow camera push, dramatic light'.",
-        "Higgsfield builds it, you tweak it, and you're done."
-      ],
-      "seconds": 13,
-      "keyword": "PRODUCT",
-      "cost": "kredity Higgsfield, cca 2 za obrázek + video navíc (ověřit odhad před výrobou)",
-      "handle": ""
-    }
-  ],
+  "tutorials": [],
   "tools": []
 }
