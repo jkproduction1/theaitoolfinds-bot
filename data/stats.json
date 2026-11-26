@@ -4,14 +4,109 @@
  "posts": [
   {
    "name": null,
+   "post_id": "6b078c558a5285b5f05ccf06",
+   "published_at": "2026-11-26T01:16:03.000Z",
+   "status": "published",
+   "hook": "",
+   "total": {
+    "views": 165,
+    "reach": 131,
+    "impressions": 165,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/stories/theaitoolfinds/4038575826793655530",
+     "views": 165,
+     "reach": 131,
+     "impressions": 165,
+     "likes": 0,
+     "comments": 0,
+     "shares": 0,
+     "saves": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-25_2059_earth72",
+   "post_id": "6b0762719c8468b08cc21205",
+   "published_at": "2026-11-26T01:14:12.000Z",
+   "status": "published",
+   "hook": "The Moon falling toward Earth, the solar storm that blacked out 6 million people in 1989, and a hole drilled deeper than Everest is tall. Three looks, one system.",
+   "total": {
+    "views": 2549,
+    "reach": 1972,
+    "impressions": 2549,
+    "likes": 42,
+    "comments": 13,
+    "shares": 7,
+    "saves": 44,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "instagram",
+     "url": "https://www.instagram.com/reel/DgL5jLITyZg/",
+     "views": 2549,
+     "reach": 1972,
+     "impressions": 2549,
+     "likes": 42,
+     "comments": 13,
+     "shares": 7,
+     "saves": 44,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": "2026-11-25_2059_earth72",
+   "post_id": "6b0762719c8468b08cc21205",
+   "published_at": "2026-11-26T01:13:38.000Z",
+   "status": "published",
+   "hook": "The Moon falling toward Earth, the solar storm that blacked out 6 million people in 1989, and a hole drilled deeper than Everest is tall. Three looks, one system. Type it, get it, part 60. Comment STY",
+   "total": {
+    "views": 215,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 2,
+    "comments": 0,
+    "shares": 0,
+    "saves": 2,
+    "follows": 0,
+    "reposts": 0
+   },
+   "platforms": [
+    {
+     "platform": "tiktok",
+     "url": "https://www.tiktok.com/@theaitoolfinds/video/7712282124409244961?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
+     "views": 215,
+     "reach": 0,
+     "impressions": 0,
+     "likes": 2,
+     "comments": 0,
+     "shares": 0,
+     "saves": 2,
+     "follows": 0,
+     "reposts": 0
+    }
+   ]
+  },
+  {
+   "name": null,
    "post_id": "6b071eb5d5cf7581871ebffc",
    "published_at": "2026-11-25T13:23:03.000Z",
    "status": "published",
    "hook": "",
    "total": {
-    "views": 365,
-    "reach": 304,
-    "impressions": 365,
+    "views": 485,
+    "reach": 379,
+    "impressions": 485,
     "likes": 0,
     "comments": 0,
     "shares": 0,
@@ -22,9 +117,9 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/stories/theaitoolfinds/4038221999829563348",
-     "views": 365,
-     "reach": 304,
-     "impressions": 365,
+     "views": 485,
+     "reach": 379,
+     "impressions": 485,
      "likes": 0,
      "comments": 0,
      "shares": 0,
@@ -40,26 +135,26 @@
    "status": "published",
    "hook": "Yellowstone blowing its top, the Amazon laid across Europe, and the night the Trojan horse opened. Three prompts, three animations.",
    "total": {
-    "views": 3829,
-    "reach": 3063,
-    "impressions": 3829,
-    "likes": 44,
-    "comments": 10,
-    "shares": 17,
-    "saves": 62,
+    "views": 4118,
+    "reach": 3299,
+    "impressions": 4118,
+    "likes": 48,
+    "comments": 13,
+    "shares": 18,
+    "saves": 67,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DgKoCJTBX2L/",
-     "views": 3829,
-     "reach": 3063,
-     "impressions": 3829,
-     "likes": 44,
-     "comments": 10,
-     "shares": 17,
-     "saves": 62,
+     "views": 4118,
+     "reach": 3299,
+     "impressions": 4118,
+     "likes": 48,
+     "comments": 13,
+     "shares": 18,
+     "saves": 67,
      "reposts": 0
     }
    ]
@@ -71,7 +166,7 @@
    "status": "published",
    "hook": "Yellowstone blowing its top, the Amazon laid across Europe, and the night the Trojan horse opened. Three prompts, three animations. Type it, get it #59, one more every day. I'll DM you all three promp",
    "total": {
-    "views": 605,
+    "views": 608,
     "reach": 0,
     "impressions": 0,
     "likes": 10,
@@ -85,7 +180,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7712098695105219879?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 605,
+     "views": 608,
      "reach": 0,
      "impressions": 0,
      "likes": 10,
@@ -135,11 +230,11 @@
    "status": "published",
    "hook": "Comment “popcorn” and I’ll send you the link.",
    "total": {
-    "views": 6211,
-    "reach": 4816,
-    "impressions": 6211,
+    "views": 6235,
+    "reach": 4837,
+    "impressions": 6235,
     "likes": 94,
-    "comments": 54,
+    "comments": 56,
     "shares": 65,
     "saves": 157,
     "reposts": 0
@@ -148,11 +243,11 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DgFIPMHBL8S/",
-     "views": 6211,
-     "reach": 4816,
-     "impressions": 6211,
+     "views": 6235,
+     "reach": 4837,
+     "impressions": 6235,
      "likes": 94,
-     "comments": 54,
+     "comments": 56,
      "shares": 65,
      "saves": 157,
      "reposts": 0
@@ -166,7 +261,7 @@
    "status": "published",
    "hook": "A neutron star sliced open, a rogue planet brushing past Earth, and a black hole so big our whole Solar System looks like a speck. Made in 3D with Claude. Number 57 in the Type it, get it series. Want",
    "total": {
-    "views": 753,
+    "views": 757,
     "reach": 721,
     "impressions": 0,
     "likes": 14,
@@ -180,7 +275,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7710995966689627424?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 753,
+     "views": 757,
      "reach": 721,
      "impressions": 0,
      "likes": 14,
@@ -232,26 +327,26 @@
    "status": "published",
    "hook": "An airplane wing, a smoke detector and a game controller, opened up in 3D with Claude.",
    "total": {
-    "views": 20746,
-    "reach": 15816,
-    "impressions": 20746,
+    "views": 20770,
+    "reach": 15836,
+    "impressions": 20770,
     "likes": 243,
     "comments": 104,
-    "shares": 72,
-    "saves": 430,
+    "shares": 74,
+    "saves": 431,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Df_pad-hVp7/",
-     "views": 20746,
-     "reach": 15816,
-     "impressions": 20746,
+     "views": 20770,
+     "reach": 15836,
+     "impressions": 20770,
      "likes": 243,
      "comments": 104,
-     "shares": 72,
-     "saves": 430,
+     "shares": 74,
+     "saves": 431,
      "reposts": 0
     }
    ]
@@ -263,7 +358,7 @@
    "status": "published",
    "hook": "An airplane wing, a smoke detector and a game controller, opened up in 3D with Claude. Part #47 of a daily series. Comment OPEN and I'll DM you the prompts. #howthingswork #3danimation #aitools",
    "total": {
-    "views": 755,
+    "views": 757,
     "reach": 746,
     "impressions": 0,
     "likes": 16,
@@ -277,7 +372,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7710516233187200288?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 755,
+     "views": 757,
      "reach": 746,
      "impressions": 0,
      "likes": 16,
@@ -391,12 +486,12 @@
    "status": "published",
    "hook": "Why cats land on their feet, why the Statue of Liberty is green, and how the Golden Gate Bridge went up. Three famous video styles, all made in Claude.",
    "total": {
-    "views": 17355,
-    "reach": 13382,
-    "impressions": 17355,
+    "views": 17373,
+    "reach": 13388,
+    "impressions": 17373,
     "likes": 372,
-    "comments": 158,
-    "shares": 131,
+    "comments": 157,
+    "shares": 132,
     "saves": 663,
     "reposts": 0
    },
@@ -404,12 +499,12 @@
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Df8_MnrsQ4r/",
-     "views": 17355,
-     "reach": 13382,
-     "impressions": 17355,
+     "views": 17373,
+     "reach": 13388,
+     "impressions": 17373,
      "likes": 372,
-     "comments": 158,
-     "shares": 131,
+     "comments": 157,
+     "shares": 132,
      "saves": 663,
      "reposts": 0
     }
@@ -422,7 +517,7 @@
    "status": "published",
    "hook": "Why cats land on their feet, why the Statue of Liberty is green, and how the Golden Gate Bridge went up. Three famous video styles, all made in Claude. Episode 48 of Type it, get it. Comment STYLES an",
    "total": {
-    "views": 711,
+    "views": 713,
     "reach": 700,
     "impressions": 0,
     "likes": 21,
@@ -436,7 +531,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7710133065825242400?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 711,
+     "views": 713,
      "reach": 700,
      "impressions": 0,
      "likes": 21,
@@ -550,26 +645,26 @@
    "status": "published",
    "hook": "What happens if all the ice on Earth melts, if the oceans drain away, and how deep does the deepest cave go? Three prompts in Claude, three animations.",
    "total": {
-    "views": 23269,
-    "reach": 19286,
-    "impressions": 23269,
+    "views": 23367,
+    "reach": 19427,
+    "impressions": 23367,
     "likes": 651,
-    "comments": 319,
-    "shares": 386,
-    "saves": 838,
+    "comments": 320,
+    "shares": 389,
+    "saves": 841,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Df7GPaGhv_-/",
-     "views": 23269,
-     "reach": 19286,
-     "impressions": 23269,
+     "views": 23367,
+     "reach": 19427,
+     "impressions": 23367,
      "likes": 651,
-     "comments": 319,
-     "shares": 386,
-     "saves": 838,
+     "comments": 320,
+     "shares": 389,
+     "saves": 841,
      "reposts": 0
     }
    ]
@@ -581,7 +676,7 @@
    "status": "published",
    "hook": "What happens if all the ice on Earth melts, if the oceans drain away, and how deep does the deepest cave go? Three prompts in Claude, three animations. Type it, get it #46, a new one every day. I'll D",
    "total": {
-    "views": 918,
+    "views": 921,
     "reach": 897,
     "impressions": 0,
     "likes": 23,
@@ -595,7 +690,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7709860862504209696?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 918,
+     "views": 921,
      "reach": 897,
      "impressions": 0,
      "likes": 23,
@@ -1919,7 +2014,7 @@
    "status": "published",
    "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style. Part #30 of a daily series. Comment FABLE and I'll DM you the prompts. #claude #motiondesign #aitools",
    "total": {
-    "views": 909,
+    "views": 913,
     "reach": 718,
     "impressions": 0,
     "likes": 24,
@@ -1933,7 +2028,7 @@
     {
      "platform": "tiktok",
      "url": "https://www.tiktok.com/@theaitoolfinds/video/7707679152001895712?utm_campaign=tt4d_open_api&utm_source=7608030276714774544",
-     "views": 909,
+     "views": 913,
      "reach": 718,
      "impressions": 0,
      "likes": 24,
@@ -2080,26 +2175,26 @@
    "status": "published",
    "hook": "Type one command and Claude Fable 5.2 explains anything in a famous video style.",
    "total": {
-    "views": 43115,
-    "reach": 35216,
-    "impressions": 43115,
-    "likes": 1093,
-    "comments": 607,
-    "shares": 902,
-    "saves": 2314,
+    "views": 43583,
+    "reach": 35768,
+    "impressions": 43583,
+    "likes": 1106,
+    "comments": 613,
+    "shares": 913,
+    "saves": 2335,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/Dfpge5XhXdA/",
-     "views": 43115,
-     "reach": 35216,
-     "impressions": 43115,
-     "likes": 1093,
-     "comments": 607,
-     "shares": 902,
-     "saves": 2314,
+     "views": 43583,
+     "reach": 35768,
+     "impressions": 43583,
+     "likes": 1106,
+     "comments": 613,
+     "shares": 913,
+     "saves": 2335,
      "reposts": 0
     }
    ]
@@ -2493,26 +2588,26 @@
    "status": "published",
    "hook": "Type one command and Claude shows you how nature works.",
    "total": {
-    "views": 10247,
-    "reach": 7724,
-    "impressions": 10247,
-    "likes": 187,
-    "comments": 157,
+    "views": 10268,
+    "reach": 7739,
+    "impressions": 10268,
+    "likes": 188,
+    "comments": 158,
     "shares": 82,
-    "saves": 281,
+    "saves": 280,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfkHcD5Bo-Y/",
-     "views": 10247,
-     "reach": 7724,
-     "impressions": 10247,
-     "likes": 187,
-     "comments": 157,
+     "views": 10268,
+     "reach": 7739,
+     "impressions": 10268,
+     "likes": 188,
+     "comments": 158,
      "shares": 82,
-     "saves": 281,
+     "saves": 280,
      "reposts": 0
     }
    ]
@@ -2749,26 +2844,26 @@
    "status": "published",
    "hook": "Type one command and Claude shows you the scariest things in space.",
    "total": {
-    "views": 71175,
-    "reach": 55770,
-    "impressions": 71175,
-    "likes": 1303,
-    "comments": 1028,
-    "shares": 866,
-    "saves": 1966,
+    "views": 72182,
+    "reach": 56722,
+    "impressions": 72182,
+    "likes": 1328,
+    "comments": 1038,
+    "shares": 883,
+    "saves": 2011,
     "reposts": 0
    },
    "platforms": [
     {
      "platform": "instagram",
      "url": "https://www.instagram.com/reel/DfhhSTTFMUt/",
-     "views": 71175,
-     "reach": 55770,
-     "impressions": 71175,
-     "likes": 1303,
-     "comments": 1028,
-     "shares": 866,
-     "saves": 1966,
+     "views": 72182,
+     "reach": 56722,
+     "impressions": 72182,
+     "likes": 1328,
+     "comments": 1038,
+     "shares": 883,
+     "saves": 2011,
      "reposts": 0
     }
    ]
