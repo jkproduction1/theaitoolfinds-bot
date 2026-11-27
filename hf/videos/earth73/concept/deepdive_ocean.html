@@ -86,7 +86,7 @@ const lab = labels(camera, [
   { el: E('pS'), t0: 4.35, at: () => [snail.position.x + .4, snail.position.y + .55, snail.position.z], pos: (x, y) => [cl(x, 330, 750), cl(y - 330, 560, 1450)], col: '#ff4a4a' },
 ]);
 const deep = new THREE.Color(.0, .008, .02), deepB = new THREE.Color(.01, .03, .06), sA = new THREE.Color(.05, .3, .42), sB = new THREE.Color(.2, .62, .74);
-function render(t) { t = cl(t, 0, DUR); const d = depthAt(t), y = U(d);
+function render(t) { t = cl(t * 1.32, 0, DUR); const d = depthAt(t), y = U(d);
   // water colour + light die off with depth (gone by ~1,000 m)
   const k = cl(Math.pow(d / 1000, .6));
   bgU.uA.value.copy(sA).lerp(deep, k); bgU.uB.value.copy(sB).lerp(deepB, k); hemi.intensity = 1.4 * (1 - k) + .06;

@@ -81,7 +81,7 @@ const lab = labels(camera, [
   { el: E('pJ'), t0: 2.9, at: () => [J.position.x + 2, J.position.y + 4, 0], pos: (x, y) => [cl(x + 60, 300, 780), cl(y - 260, 560, 1500)], col: '#ffb547' },
   { el: E('pX'), t0: 4.6, at: () => [W2.position.x - 2, W2.position.y + 2, W2.position.z], pos: (x, y) => [cl(x - 40, 300, 780), cl(y + 250, 560, 1500)], col: '#ff4a4a' },
 ]);
-function render(t) { t = cl(t, 0, DUR);
+function render(t) { t = cl(t * 1.32, 0, DUR);
   // pop-ins
   const pw = popS(ramp(t, .2, .75)), pj = popS(ramp(t, 2.4, 3.0)), px = sm(ramp(t, 4.3, 4.9));
   W1.scale.setScalar(Math.max(.001, pw)); J.scale.setScalar(Math.max(.001, pj)); J.visible = t > 2.4;
@@ -91,7 +91,7 @@ function render(t) { t = cl(t, 0, DUR);
   const a = eio(ramp(t, 1.9, 4.2));
   const near = V(-44, 38, 58), far = V(-34, 178, 100);
   camera.position.copy(near.lerp(far, a)).add(V(.4 * Math.sin(t * .6), .3 * Math.cos(t * .5), 0));
-  camera.lookAt(V(-10, 8, 13).lerp(V(-3, 0, -6), a)); camera.updateMatrixWorld();
+  camera.lookAt(V(-10, 8, 13).lerp(V(-3, 0, -11), a)); camera.updateMatrixWorld();
   renderer.render(scene, camera); lab(t);
   const c1 = sm(ramp(t, .2, .55)) * (1 - sm(ramp(t, 2.5, 2.8))), c2 = sm(ramp(t, 2.85, 3.2));
   E('c1').style.opacity = c1; E('c1').style.transform = `translateY(${(1 - sm(ramp(t, .2, .55))) * 30}px)`;

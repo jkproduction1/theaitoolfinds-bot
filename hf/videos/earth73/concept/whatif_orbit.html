@@ -74,7 +74,7 @@ function earthPos(t) {
   if (t <= TB) { const a = A0 + W0 * t; return [V(Math.cos(a) * R0, 0, Math.sin(a) * R0), 0]; }
   const a = A0 + W0 * TB, p = V(Math.cos(a) * R0, 0, Math.sin(a) * R0), tan = V(-Math.sin(a), 0, Math.cos(a));
   const s = (t - TB) * W0 * R0 * (1 + 2.2 * Math.pow(ramp(t, TB, DUR), 2)); return [p.addScaledVector(tan, s), s]; }
-const SPEED = 1.0;
+const SPEED = 1.32;
 function render(t) { t = cl(t * SPEED, 0, DUR);
   const [ep, s] = earthPos(t); earth.position.copy(ep); eMesh.rotation.y = t * .6; ice.rotation.y = t * .6;
   const aB = A0 + W0 * TB, pB = V(Math.cos(aB) * R0, 0, Math.sin(aB) * R0);
