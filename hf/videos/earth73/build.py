@@ -230,7 +230,7 @@ TY.forEach((d,k)=>{
 TY.forEach((d,k)=>{ tl.set('#serl',{opacity:0},d.full); if(k<2) tl.set('#serl',{opacity:1},d.end); });
 tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
 tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
-F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);
+F2('#end',{opacity:0},{opacity:1,duration:.1,ease:'none'},END);
 F2('#end svg',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.45,ease:'back.out(2)'},END+0.05);
 F2('#e1',{opacity:0,y:40},{opacity:1,y:0,duration:.35,ease:A},END+0.02);
 F2('#e2',{opacity:0,scale:1.5},{opacity:1,scale:1,duration:.4,ease:'back.out(1.8)'},Math.min(S[46]-0.1,END+0.1));

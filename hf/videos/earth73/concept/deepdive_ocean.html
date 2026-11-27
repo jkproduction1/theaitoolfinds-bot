@@ -75,9 +75,9 @@ const sub = new THREE.SpotLight('#dff2ff', 60, 30, .55, .6, 1.5); scene.add(sub)
 const NS = 900, SP = new Float32Array(NS * 3), SB = []; for (let i = 0; i < NS; i++) SB.push([(rnd() - .5) * 18, rnd() * 30, (rnd() - .5) * 10 - 2]);
 const SG = new THREE.BufferGeometry(); SG.setAttribute('position', new THREE.BufferAttribute(SP, 3));
 const snow = new THREE.Points(SG, new THREE.PointsMaterial({ color: '#d8ecff', size: 3, sizeAttenuation: false, transparent: true, opacity: .55 })); scene.add(snow);
-const NB = 140, BP = new Float32Array(NB * 3); for (let i = 0; i < NB; i++) BP.set([(rnd() - .5) * 16, U(1300 + rnd() * 6800), (rnd() - .5) * 8 - 2], i * 3);
+const NB = 420, BP = new Float32Array(NB * 3); for (let i = 0; i < NB; i++) BP.set([(rnd() - .5) * 14, U(1200 + rnd() * 7000), (rnd() - .5) * 8 - 1], i * 3);
 const BG = new THREE.BufferGeometry(); BG.setAttribute('position', new THREE.BufferAttribute(BP, 3));
-scene.add(new THREE.Points(BG, new THREE.PointsMaterial({ color: '#5fd8ff', size: .35, map: glow, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })));
+scene.add(new THREE.Points(BG, new THREE.PointsMaterial({ color: '#5fd8ff', size: .9, map: glow, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })));
 const hemi = new THREE.HemisphereLight('#bfe8ff', '#0a1a22', 1.4); scene.add(hemi);
 const E = id => document.getElementById(id);
 const lab = labels(camera, [
