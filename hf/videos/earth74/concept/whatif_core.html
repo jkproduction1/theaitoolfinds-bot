@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What if Earth's core went cold</title>
+<!-- earth74 r0: /what-if Earth's core went cold. What-if style (as earth72/73): stylised 3D, one strong light, bold caption with a highlight box.
+  Facts: inner core about 5,200 °C / 9,392 °F (National Geographic "Core"; USGS/NASA give similar ~5,000-5,400 °C). Earth's magnetic field is made by
+  the moving liquid iron of the outer core (geodynamo, NASA); without it, the solar wind strips an atmosphere over a very long time, as on Mars
+  (NASA MAVEN, 2015). Layer radii to scale: inner core 1,220 km, outer core to 3,480 km, Earth 6,371 km. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<script src="d3-array.min.js"></script><script src="d3-geo.min.js"></script><script src="topojson-client.min.js"></script><script src="land_50m.js"></script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="cap" id="c1">The core <span class="hb">glows white-hot</span></div>
+    <div class="cap" id="c2">It cools, and the <span class="hb">magnetic shield</span> dies</div>
+    <div class="cap" id="c3">The solar wind <span class="hb">strips the air</span></div>
+    <div class="pill hot" id="p1">Inner core: ~5,200 °C<div class="sub">about 9,400 °F</div></div>
+    <div class="pill" id="p2">Like Mars<div class="sub">over a very long time</div></div>
+    <div id="note">what-if · not to scale</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, injectCSS, ready, labels } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.cap{position:absolute;left:70px;right:70px;top:220px;text-align:center;color:#fff;font-weight:800;font-size:64px;line-height:1.18;letter-spacing:-1px;opacity:0;text-shadow:0 4px 30px rgba(0,0,0,.7)}
+.hb{background:#ffd23f;color:#141414;padding:0 .2em;border-radius:12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.pill .sub{font-size:31px;font-weight:600;color:#cfd6e0;text-align:center;margin-top:2px}
+.pill{text-align:center}
+#note{position:absolute;left:0;right:0;top:1640px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+const { renderer, scene, camera } = setup(30, [.01, .012, .03], [.06, .08, .16]);
+const rnd = mulberry32(74);
+const RE = 10;
+// ---- crust: soft stylised globe with real coastlines, wedge cut out toward the camera
+const tex = (() => { const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+  g.fillStyle = '#2f6fb0'; g.fillRect(0, 0, 2048, 1024);
+  const pr = d3.geoEquirectangular().fitSize([2048, 1024], { type: 'Sphere' }); const pth = d3.geoPath(pr, g);
+  g.beginPath(); pth(topojson.feature(LAND_50M, LAND_50M.objects.land)); g.fillStyle = '#7fbf6a'; g.fill();
+  const gg = g.createLinearGradient(0, 0, 0, 1024); gg.addColorStop(0, 'rgba(255,255,255,.9)'); gg.addColorStop(.08, 'rgba(255,255,255,0)'); gg.addColorStop(.92, 'rgba(255,255,255,0)'); gg.addColorStop(1, 'rgba(255,255,255,.9)'); g.fillStyle = gg; g.fillRect(0, 0, 2048, 1024);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+const clip = [new THREE.Plane(V(-1, 0, 0), 0), new THREE.Plane(V(0, 0, -1), 0)];
+const earthG = new THREE.Group(); scene.add(earthG);
+const crust = new THREE.Mesh(new THREE.SphereGeometry(RE, 128, 96), new THREE.MeshStandardMaterial({ map: tex, roughness: .75, clippingPlanes: clip, clipIntersection: true, side: THREE.DoubleSide }));
+crust.rotation.y = -1.2; earthG.add(crust);
+// ---- cut faces: two half-discs painted with the layers (redrawn while the core cools)
+const lc = document.createElement('canvas'); lc.width = lc.height = 1024; const lg = lc.getContext('2d');
+const ltex = new THREE.CanvasTexture(lc); ltex.colorSpace = THREE.SRGBColorSpace;
+const mix = (a, b, u) => a.map((x, i) => Math.round(x + (b[i] - x) * u));
+const rgb = a => `rgb(${a[0]},${a[1]},${a[2]})`;
+function paintLayers(u, t) { // u: 0 hot -> 1 cold
+  const C = 512; lg.clearRect(0, 0, 1024, 1024);
+  const ring = (r0, r1, cA, cB) => { const gr = lg.createRadialGradient(C, C, r0 * C, C, C, r1 * C); gr.addColorStop(0, rgb(cA)); gr.addColorStop(1, rgb(cB)); lg.fillStyle = gr; lg.beginPath(); lg.arc(C, C, r1 * C, 0, Math.PI * 2); lg.moveTo(C + r0 * C, C); lg.arc(C, C, r0 * C, Math.PI * 2, 0, true); lg.fill(); };
+  ring(0.985, 1.0, [120, 92, 70], [96, 74, 58]);                                              // crust
+  ring(0.546, 0.985, mix([255, 120, 40], [92, 84, 82], u), mix([150, 40, 22], [60, 56, 58], u)); // mantle
+  ring(0.192, 0.546, mix([255, 228, 120], [110, 110, 118], u), mix([255, 140, 30], [80, 80, 90], u)); // outer core (liquid iron)
+  const gr = lg.createRadialGradient(C, C, 0, C, C, .192 * C); gr.addColorStop(0, rgb(mix([255, 255, 245], [150, 150, 160], u))); gr.addColorStop(1, rgb(mix([255, 236, 160], [120, 120, 130], u)));
+  lg.fillStyle = gr; lg.beginPath(); lg.arc(C, C, .192 * C, 0, 7); lg.fill();
+  // flowing swirls in the liquid outer core while hot
+  if (u < .95) { lg.save(); lg.globalAlpha = .28 * (1 - u); lg.strokeStyle = '#fff6c8'; lg.lineWidth = 6;
+    for (let k = 0; k < 7; k++) { const r = (.24 + k * .043) * C; lg.beginPath(); lg.arc(C, C, r, t * (.8 + k * .13) + k, t * (.8 + k * .13) + k + 1.1); lg.stroke(); } lg.restore(); }
+  lg.strokeStyle = 'rgba(0,0,0,.25)'; lg.lineWidth = 3; [.192, .546, .985].forEach(r => { lg.beginPath(); lg.arc(C, C, r * C, 0, 7); lg.stroke(); });
+  ltex.needsUpdate = true; }
+const capMat = new THREE.MeshStandardMaterial({ map: ltex, emissiveMap: ltex, emissive: new THREE.Color('#ffffff'), emissiveIntensity: .55, roughness: .9, side: THREE.DoubleSide });
+const half = new THREE.CircleGeometry(RE * .999, 128, -Math.PI / 2, Math.PI);
+const capA = new THREE.Mesh(half, capMat); earthG.add(capA);                       // plane z=0, x>0
+const capB = new THREE.Mesh(half, capMat); capB.rotation.y = -Math.PI / 2; earthG.add(capB); // plane x=0, z>0
+// core glow light
+const coreLight = new THREE.PointLight('#ffb050', 60, 60, 1.6); coreLight.position.set(3, 0, 3); earthG.add(coreLight);
+// ---- atmosphere halo
+const atmMat = new THREE.MeshBasicMaterial({ color: '#7cc4ff', transparent: true, opacity: .22, side: THREE.BackSide, depthWrite: false });
+const atm = new THREE.Mesh(new THREE.SphereGeometry(RE * 1.06, 64, 48), atmMat); scene.add(atm);
+// ---- magnetic field: dipole loops r = L sin^2(theta)
+const fieldMat = new THREE.LineBasicMaterial({ color: '#59c8ff', transparent: true, opacity: .8, blending: THREE.AdditiveBlending, depthWrite: false });
+const field = new THREE.Group(); scene.add(field);
+for (const L of [1.5, 2.0, 2.7, 3.6]) for (let k = 0; k < 8; k++) { const pts = [];
+  for (let i = 0; i <= 120; i++) { const th = .02 + (Math.PI - .04) * i / 120, r = RE * L * Math.sin(th) ** 2; if (r < RE * 1.02) continue; pts.push(V(r * Math.sin(th), r * Math.cos(th), 0)); }
+  const ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), fieldMat); ln.rotation.y = k * Math.PI / 4 + .2; field.add(ln); }
+field.rotation.z = .19;
+// ---- solar wind: short glowing streaks flowing left -> right on screen
+const NP = 420, PP = new Float32Array(NP * 6), PG = new THREE.BufferGeometry(); PG.setAttribute('position', new THREE.BufferAttribute(PP, 3));
+const windMat = new THREE.LineBasicMaterial({ color: '#ffd27a', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+const wind = new THREE.LineSegments(PG, windMat); scene.add(wind);
+const PS = [...Array(NP)].map(() => ({ u: (rnd() - .5) * 46, w: (rnd() - .5) * 30, ph: rnd(), sp: .8 + rnd() * .5 }));
+// light + stars
+const sun = new THREE.DirectionalLight('#fff3e0', 2.6); sun.position.set(-60, 30, 40); scene.add(sun);
+scene.add(new THREE.HemisphereLight('#9fb8ff', '#0a0c18', .55));
+const SG = new THREE.BufferGeometry(); const sp = new Float32Array(1500 * 3); for (let i = 0; i < 1500; i++) { const v = new THREE.Vector3(rnd() - .5, rnd() - .5, rnd() - .5).normalize().multiplyScalar(900); sp.set([v.x, v.y, v.z], i * 3); }
+SG.setAttribute('position', new THREE.BufferAttribute(sp, 3)); scene.add(new THREE.Points(SG, new THREE.PointsMaterial({ color: '#dfe8ff', size: 2.2, sizeAttenuation: false })));
+const L = labels(camera, [
+  { el: document.getElementById('p1'), at: [0.9, 0.6, 0.9], pos: [700, 1420], t0: .45, t1: 1.6, col: '#ffb547' },
+  { el: document.getElementById('p2'), at: [-RE * 1.02, 3, 0], pos: [300, 1440], t0: 3.4, col: '#7fd4ff' } ]);
+function render(t) {
+  const cool = sm(ramp(t, 1.45, 2.7)), fOff = sm(ramp(t, 1.7, 2.9)), strip = sm(ramp(t, 3.0, 5.4));
+  paintLayers(cool, t);
+  capMat.emissiveIntensity = .6 * (1 - cool) + .05; coreLight.intensity = 60 * (1 - cool);
+  crust.rotation.y = -1.2 + t * .04;
+  fieldMat.opacity = .75 * (1 - fOff) * sm(ramp(t, .1, .5)); field.scale.setScalar(1 - .25 * fOff); field.rotation.y = t * .1;
+  atmMat.opacity = .34 * (1 - .9 * strip); atm.scale.setScalar(1 - .03 * strip);
+  // wind: on screen from ~1.0 s; deflected around the field boundary while it lasts
+  const wa = sm(ramp(t, .9, 1.4)); windMat.opacity = .95 * wa;
+  const Rb = RE * (2.6 - 1.45 * fOff), WA = .8, D = V(Math.cos(WA), 0, -Math.sin(WA)), N2 = V(Math.sin(WA), 0, Math.cos(WA));
+  const push = v => { const d = v.length(); if (d < Rb) v.multiplyScalar(Rb / Math.max(d, .001)); return v; };
+  PS.forEach((p, i) => { const x = -70 + ((p.ph * 140 + t * 34 * p.sp) % 140);
+    const h = push(D.clone().multiplyScalar(x).add(V(0, p.u, 0)).addScaledVector(N2, p.w)), tl = push(D.clone().multiplyScalar(x - 4.5 * p.sp).add(V(0, p.u, 0)).addScaledVector(N2, p.w));
+    PP.set([h.x, h.y, h.z, tl.x, tl.y, tl.z], i * 6); });
+  PG.attributes.position.needsUpdate = true;
+  // camera: toward the open wedge, slow push, then pull back a little for the wind
+  const a = eio(ramp(t, 0, 2.2)), b = eio(ramp(t, 2.6, 5.0));
+  const ang = .78 + .1 * a - .25 * b, dist = 78 - 12 * a + 22 * b, h = 18 - 6 * a + 6 * b;
+  camera.position.set(Math.sin(ang) * dist, h, Math.cos(ang) * dist); camera.lookAt(V(-1.5 * b, -1.5 + 1.5 * b, 0)); camera.updateMatrixWorld();
+  renderer.render(scene, camera); L(t);
+  const show = (id, a0, a1) => { const el = document.getElementById(id); const o = sm(ramp(t, a0, a0 + .3)) * (a1 ? 1 - sm(ramp(t, a1, a1 + .25)) : 1); el.style.opacity = o; el.style.transform = `translateY(${(1 - sm(ramp(t, a0, a0 + .35))) * 30}px)`; };
+  show('c1', .15, 1.45); show('c2', 1.7, 3.05); show('c3', 3.3, 0);
+  document.getElementById('note').style.opacity = sm(ramp(t, .5, 1)); }
+await ready(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html><html><head><meta charset="utf-8"><title>sim asteroid</title><style>html,body{margin:0;background:#000}#stage{position:relative;width:1080px;height:1920px;overflow:hidden}canvas{display:block}</style>
+<script src="d3-array.min.js"></script><script src="d3-geo.min.js"></script><script src="topojson-client.min.js"></script>
+<script src="land_50m.js"></script></head><body><div id="stage"><canvas id="c" width="1080" height="1920"></canvas></div><script>
+// earth74 r1: /simulate a mile-wide asteroid crashing into the Atlantic Ocean. Hypothetical simulation drawn in code, rock size exaggerated.
+// Coastlines: Natural Earth 1:50m via world-atlas (public domain). Fact on screen: NOAA (noaa.gov/jetstream/tsunamis): in the deep ocean a
+// tsunami can travel at more than 500 mph (about 800 km/h), as fast as a jet plane. Wave rings: schematic, not a model of wave height.
+const g = document.getElementById('c').getContext('2d'), W = 1080, H = 1920;
+const CL = x => x < 0 ? 0 : x > 1 ? 1 : x, RAMP = (t, a, b) => CL((t - a) / (b - a)), SM = x => x * x * (3 - 2 * x);
+const EIO = x => (x = CL(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2), EO = x => 1 - Math.pow(1 - CL(x), 4), EI = x => CL(x) ** 2.2;
+const POP = x => { x = CL(x); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const LAND = topojson.feature(LAND_50M, LAND_50M.objects.land);
+const IMP = [-38, 33];
+const proj = d3.geoOrthographic().translate([540, 1020]).clipAngle(90).precision(0.3);
+const path = d3.geoPath(proj, g);
+let seed = 11; const R = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const STARS = [...Array(260)].map(() => [R() * W, R() * H, R() * 1.6 + .3, R()]);
+const ROCK = [...Array(28)].map((_, i) => 1 + (R() - .5) * .28);
+const SPARKS = [...Array(90)].map(() => [R() * 6.283, .4 + R(), R()]);
+function cap(t, t0, t1, pre, hb, post) { const a = SM(RAMP(t, t0, t0 + .3)) * (t1 ? 1 - SM(RAMP(t, t1, t1 + .25)) : 1); if (a <= 0) return;
+  g.save(); g.globalAlpha = a; g.translate(0, (1 - SM(RAMP(t, t0, t0 + .35))) * 30); g.font = '800 64px Inter'; g.textBaseline = 'middle';
+  const w1 = g.measureText(pre).width, w2 = g.measureText(hb).width, w3 = g.measureText(post).width, sp = 16; let x = 540 - (w1 + w2 + w3 + 2 * sp + 24) / 2; const y = 250;
+  g.shadowColor = 'rgba(0,0,0,.7)'; g.shadowBlur = 30; g.fillStyle = '#fff'; g.fillText(pre, x, y); x += w1 + sp; g.shadowBlur = 0;
+  g.fillStyle = '#ffd23f'; g.beginPath(); g.roundRect(x - 12, y - 42, w2 + 24, 84, 12); g.fill(); g.fillStyle = '#141414'; g.fillText(hb, x, y + 2); x += w2 + 24 + sp;
+  g.shadowBlur = 30; g.fillStyle = '#fff'; g.fillText(post, x, y); g.restore(); }
+function pill(x, y, a, sc, title, sub, col) {
+  if (a <= 0.01) return; g.save(); g.globalAlpha = a; g.translate(x, y); g.scale(sc, sc);
+  g.font = '800 46px Inter'; const w1 = g.measureText(title).width; g.font = '600 31px Inter'; const w2 = sub ? g.measureText(sub).width : 0;
+  const w = Math.max(w1, w2) + 60, h = sub ? 108 : 72;
+  g.shadowColor = col; g.shadowBlur = 30; g.fillStyle = 'rgba(6,14,26,.86)'; g.beginPath(); g.roundRect(-w / 2, -h / 2, w, h, 18); g.fill();
+  g.shadowBlur = 0; g.lineWidth = 2.5; g.strokeStyle = col; g.stroke();
+  g.textAlign = 'center'; g.fillStyle = '#fff'; g.font = '800 46px Inter'; g.fillText(title, 0, sub ? -h / 2 + 52 : 16);
+  if (sub) { g.font = '600 31px Inter'; g.fillStyle = '#cfd6e0'; g.fillText(sub, 0, 34); } g.restore(); }
+const TI = 1.35; // impact time
+function draw(t) {
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  // camera shake after impact
+  const sh = 14 * Math.exp(-(t - TI) * 3) * (t > TI ? 1 : 0); g.translate(Math.sin(t * 61) * sh, Math.cos(t * 47) * sh);
+  const bg = g.createRadialGradient(540, 900, 100, 540, 900, 1300); bg.addColorStop(0, '#0d1830'); bg.addColorStop(1, '#03050c'); g.fillStyle = bg; g.fillRect(-40, -40, W + 80, H + 80);
+  STARS.forEach(([x, y, r, s]) => { g.globalAlpha = .35 + .4 * Math.sin(t * 2 + s * 20) ** 2; g.fillStyle = '#cfe0ff'; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }); g.globalAlpha = 1;
+  const zin = EIO(RAMP(t, 0, TI)), zout = EIO(RAMP(t, TI + .2, 5.2));
+  const sc = 1050 + 650 * zin - 720 * zout;
+  proj.rotate([-IMP[0] - 4 * zout, -IMP[1] + 10 - 8 * zin + 6 * zout, 0]).scale(sc);
+  const Rr = proj.scale(), [cx, cy] = proj.translate();
+  const og = g.createRadialGradient(cx - Rr * .35, cy - Rr * .4, Rr * .1, cx, cy, Rr); og.addColorStop(0, '#1e5a8c'); og.addColorStop(1, '#0a2444');
+  g.beginPath(); path({ type: 'Sphere' }); g.fillStyle = og; g.fill();
+  g.beginPath(); path(d3.geoGraticule10()); g.strokeStyle = 'rgba(160,210,255,.07)'; g.lineWidth = 1.5; g.stroke();
+  // tsunami rings (drawn before land so coasts cover them)
+  if (t > TI) { const u = t - TI;
+    for (let k = 0; k < 5; k++) { const r = Math.max(.3, (u - k * .28) * 7.2); if (u - k * .28 <= 0) continue;
+      const circ = d3.geoCircle().center(IMP).radius(r).precision(1)();
+      const a = (1 - k * .16) * (1 - SM(RAMP(r, 18, 34)) * .6);
+      g.save(); g.globalAlpha = a; g.beginPath(); path(circ); g.lineWidth = k ? 6 : 16; g.strokeStyle = k ? 'rgba(150,230,255,.75)' : '#dff8ff'; g.shadowColor = '#6fd8ff'; g.shadowBlur = k ? 10 : 30; g.stroke(); g.restore(); }
+    const inner = d3.geoCircle().center(IMP).radius(Math.min(9, u * 5)).precision(2)();
+    g.save(); g.globalAlpha = .35 * (1 - SM(RAMP(u, .5, 3))); g.beginPath(); path(inner); g.fillStyle = '#bfefff'; g.fill(); g.restore(); }
+  g.beginPath(); path(LAND); g.fillStyle = '#3f6a45'; g.fill(); g.strokeStyle = 'rgba(220,240,220,.4)'; g.lineWidth = 1.6; g.stroke();
+  const rim = g.createRadialGradient(cx, cy, Rr * .96, cx, cy, Rr * 1.08); rim.addColorStop(0, 'rgba(110,190,255,.0)'); rim.addColorStop(.35, 'rgba(110,190,255,.35)'); rim.addColorStop(1, 'rgba(110,190,255,0)');
+  g.fillStyle = rim; g.beginPath(); g.arc(cx, cy, Rr * 1.08, 0, 7); g.fill();
+  const P = proj(IMP) || [540, 1000];
+  // asteroid incoming: from upper right toward impact point, growing
+  if (t < TI) { const u = EI(RAMP(t, 0, TI)); const sx = 1150, sy = 380; const x = sx + (P[0] - sx) * u, y = sy + (P[1] - sy) * u; const rr = 26 + 34 * u;
+    const ang = Math.atan2(P[1] - sy, P[0] - sx);
+    // glowing trail
+    const tl = 520 * (.5 + u); const tx = x - Math.cos(ang) * tl, ty = y - Math.sin(ang) * tl;
+    const gr = g.createLinearGradient(x, y, tx, ty); gr.addColorStop(0, 'rgba(255,220,150,.95)'); gr.addColorStop(.25, 'rgba(255,130,40,.6)'); gr.addColorStop(1, 'rgba(255,80,20,0)');
+    g.save(); g.strokeStyle = gr; g.lineCap = 'round'; g.lineWidth = rr * 1.7; g.shadowColor = '#ff8a3a'; g.shadowBlur = 40; g.beginPath(); g.moveTo(x, y); g.lineTo(tx, ty); g.stroke(); g.restore();
+    g.save(); g.translate(x, y); g.rotate(t * 2); g.beginPath(); ROCK.forEach((k, i) => { const a = i / ROCK.length * 6.283; const px = Math.cos(a) * rr * k, py = Math.sin(a) * rr * k; i ? g.lineTo(px, py) : g.moveTo(px, py); }); g.closePath();
+    const rg = g.createRadialGradient(-rr * .3, -rr * .3, rr * .1, 0, 0, rr * 1.2); rg.addColorStop(0, '#8a7b6c'); rg.addColorStop(1, '#2e2620'); g.fillStyle = rg; g.fill();
+    g.strokeStyle = 'rgba(255,170,90,.9)'; g.lineWidth = 4; g.shadowColor = '#ff9a40'; g.shadowBlur = 25; g.stroke(); g.restore();
+    const la = SM(RAMP(t, .25, .55)); pill(P[0] + (x - P[0]) * 0.0 + 0, 0, 0, 1, '', '', '#fff');
+    if (la > 0) { g.save(); g.globalAlpha = la; g.strokeStyle = '#ffb35a'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(x - 30, y + rr + 10); g.lineTo(x - 120, y + 170); g.stroke(); g.restore();
+      pill(x - 170, y + 230, la, .86 + .14 * POP(RAMP(t, .25, .7)), '1 mile wide', '1.6 km', '#ffb35a'); } }
+  // impact flash + fireball + sparks
+  if (t >= TI - .02) { const u = t - TI;
+    const fl = Math.exp(-u * 5); g.save(); g.globalCompositeOperation = 'lighter';
+    const fb = g.createRadialGradient(P[0], P[1], 0, P[0], P[1], 120 + 520 * EO(u / 1.2)); fb.addColorStop(0, `rgba(255,250,230,${.95 * fl + .25 * Math.exp(-u)})`); fb.addColorStop(.3, `rgba(255,170,70,${.7 * Math.exp(-u * 1.4)})`); fb.addColorStop(1, 'rgba(255,90,20,0)');
+    g.fillStyle = fb; g.fillRect(-40, -40, W + 80, H + 80);
+    SPARKS.forEach(([a, s, k]) => { const d = (60 + 600 * s) * EO(u / (0.8 + k)); const al = Math.exp(-u * (1.2 + k)); if (al < .02) return; g.fillStyle = `rgba(255,${180 + 60 * k | 0},120,${al})`; g.beginPath(); g.arc(P[0] + Math.cos(a) * d, P[1] + Math.sin(a) * d * .55 - 120 * s * EO(u), 5 * (1 - u / 3) + 2, 0, 7); g.fill(); });
+    g.restore();
+    g.save(); g.globalAlpha = Math.min(1, fl * 1.6); g.fillStyle = '#fff'; g.fillRect(-40, -40, W + 80, H + 80); g.globalAlpha = 0; g.restore();
+  }
+  // pill on the wave
+  if (t > TI + 1.4) { const a = SM(RAMP(t, TI + 1.4, TI + 1.8)); const rr = Math.max(.3, (t - TI) * 7.2); const q = proj(d3.geoDestination ? IMP : IMP);
+    const edge = proj([IMP[0], IMP[1] - Math.min(rr, 30)]); if (edge) { g.save(); g.globalAlpha = a; g.strokeStyle = '#7fd4ff'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(540, 1405); g.lineTo(edge[0], edge[1]); g.stroke(); g.fillStyle = '#7fd4ff'; g.beginPath(); g.arc(edge[0], edge[1], 9, 0, 7); g.fill(); g.restore(); }
+    pill(540, 1460, a, .86 + .14 * POP(RAMP(t, TI + 1.4, TI + 1.85)), 'Tsunami: 500+ mph', 'over 800 km/h in deep water', '#7fd4ff'); }
+  cap(t, .1, TI - .1, 'A rock', '1 mile wide', '');
+  cap(t, TI + .25, TI + 1.7, 'The ocean', 'blasts open', '');
+  cap(t, TI + 1.85, 0, 'Waves race to', 'both coasts', '');
+  g.globalAlpha = SM(RAMP(t, .5, 1)); g.font = '500 25px "JetBrains Mono", monospace'; g.fillStyle = 'rgba(220,230,245,.7)'; g.textAlign = 'center';
+  g.fillText('simulation · not to scale', 540, 1660); g.globalAlpha = 1; g.textAlign = 'left';
+}
+window.DUR = 6.33; window.draw = draw; window.renderAt = draw; document.fonts.load('800 64px Inter').then(() => { draw(3); document.title = 'ok'; });
+</script></body></html>

@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset="utf-8"><title>scale sahara</title><style>html,body{margin:0;background:#000}#stage{position:relative;width:1080px;height:1920px;overflow:hidden}canvas{display:block}</style>
+<script src="d3-array.min.js"></script><script src="d3-geo.min.js"></script><script src="topojson-client.min.js"></script>
+<script src="land_50m.js"></script><script src="countries_50m.js"></script></head><body><div id="stage"><canvas id="c" width="1080" height="1920"></canvas></div><script>
+// earth74 r2: /scale the Sahara versus the USA. Real coastlines + US outline: Natural Earth 1:50m via world-atlas@2.0.2 (public domain).
+// The lower-48 outline is moved across the globe by a pure rotation of the sphere (true size kept, orthographic globe).
+// Sahara outline: own hand-simplified approximation (labelled "approx. outline"). Areas: Britannica "Sahara": about 3.5 million sq mi (9 million km2);
+// US Census: contiguous US 3.12 million sq mi (8.08 million km2, land + water).
+const g = document.getElementById('c').getContext('2d'), W = 1080, H = 1920;
+const CL = x => x < 0 ? 0 : x > 1 ? 1 : x, RAMP = (t, a, b) => CL((t - a) / (b - a)), SM = x => x * x * (3 - 2 * x);
+const EIO = x => (x = CL(x), x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2), EO = x => 1 - Math.pow(1 - CL(x), 4);
+const POP = x => { x = CL(x); const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const LAND = topojson.feature(LAND_50M, LAND_50M.objects.land);
+const BORD = topojson.mesh(COUNTRIES_50M, COUNTRIES_50M.objects.countries, (a, b) => a !== b);
+const US = topojson.feature(COUNTRIES_50M, COUNTRIES_50M.objects.countries).features.find(f => +f.id === 840);
+// lower 48 only: polygons whose first point lies inside the CONUS box
+const L48 = US.geometry.coordinates.filter(p => { const [lo, la] = d3.geoCentroid({ type: 'Polygon', coordinates: p }); return lo > -126 && lo < -66 && la > 24 && la < 50; });
+const SAH = [[-16.8, 21.5], [-15.5, 24.5], [-13.5, 27.2], [-9.5, 29.5], [-5, 30.3], [-1, 31.5], [3, 32.4], [7.5, 31.6], [9.8, 30.6], [11.5, 31.2], [15.5, 30.2], [19.5, 30.4],
+  [23.5, 30.6], [27.5, 30.4], [31, 29.8], [32.5, 28.2], [33.5, 24.5], [35.2, 22.5], [36.5, 19.5], [34.5, 17.2], [31, 16.2], [27, 15.6], [23.5, 15.4], [20.5, 15.8], [16.5, 16.2],
+  [13.5, 16.8], [10, 17.2], [6.5, 17.3], [3, 17.0], [-0.5, 16.7], [-3.5, 17.4], [-7, 17.6], [-10.5, 17.3], [-13.5, 17.6], [-15.8, 18.6], [-16.8, 21.5]];
+const SAHG = { type: 'Polygon', coordinates: [SAH] };
+const rad = Math.PI / 180;
+const toV = ([lo, la]) => [Math.cos(la * rad) * Math.cos(lo * rad), Math.cos(la * rad) * Math.sin(lo * rad), Math.sin(la * rad)];
+const toLL = ([x, y, z]) => [Math.atan2(y, x) / rad, Math.asin(Math.max(-1, Math.min(1, z / Math.hypot(x, y, z)))) / rad];
+function rotAxis(v, k, a) { const c = Math.cos(a), s = Math.sin(a), d = k[0] * v[0] + k[1] * v[1] + k[2] * v[2];
+  const cr = [k[1] * v[2] - k[2] * v[1], k[2] * v[0] - k[0] * v[2], k[0] * v[1] - k[1] * v[0]];
+  return [0, 1, 2].map(i => v[i] * c + cr[i] * s + k[i] * d * (1 - c)); }
+const CA = d3.geoCentroid({ type: 'MultiPolygon', coordinates: L48 }), CB = [11.5, 23.6];
+const va = toV(CA), vb = toV(CB);
+const DLON = (CB[0] - CA[0]) * rad, DLAT = (CB[1] - CA[1]) * rad, EAST = [-Math.sin(CB[0] * rad), Math.cos(CB[0] * rad), 0];
+// rigid sphere rotation: spin about the pole by dLon, then tilt along the target meridian by dLat (north stays up, true size kept)
+function rigid(v, u) { const a = DLON * u, c = Math.cos(a), s = Math.sin(a); let w = [v[0] * c - v[1] * s, v[0] * s + v[1] * c, v[2]];
+  const lo = (CA[0] + (CB[0] - CA[0]) * u) * rad, e = [-Math.sin(lo), Math.cos(lo), 0]; return rotAxis(w, e, -DLAT * u); }
+function moved(u) { return { type: 'MultiPolygon', coordinates: L48.map(p => p.map(r => r.map(ll => toLL(rigid(toV(ll), u))))) }; }
+const proj = d3.geoOrthographic().translate([540, 1000]).clipAngle(90).precision(0.3);
+const path = d3.geoPath(proj, g);
+const STARS = (() => { let s = 7; const R = () => (s = (s * 16807) % 2147483647) / 2147483647; return [...Array(260)].map(() => [R() * W, R() * H, R() * 1.6 + .3, R()]); })();
+function pill(x, y, a, sc, title, sub, col) {
+  if (a <= 0.01) return; g.save(); g.globalAlpha = a; g.translate(x, y); g.scale(sc, sc);
+  g.font = '800 46px Inter'; const w1 = g.measureText(title).width; g.font = '600 31px Inter'; const w2 = sub ? g.measureText(sub).width : 0;
+  const w = Math.max(w1, w2) + 60, h = sub ? 108 : 72;
+  g.shadowColor = col; g.shadowBlur = 30; g.fillStyle = 'rgba(6,14,26,.86)'; g.beginPath(); g.roundRect(-w / 2, -h / 2, w, h, 18); g.fill();
+  g.shadowBlur = 0; g.lineWidth = 2.5; g.strokeStyle = col; g.stroke();
+  g.textAlign = 'center'; g.fillStyle = '#fff'; g.font = '800 46px Inter'; g.fillText(title, 0, sub ? -h / 2 + 52 : 16);
+  if (sub) { g.font = '600 31px Inter'; g.fillStyle = '#cfd6e0'; g.fillText(sub, 0, 34); } g.restore(); }
+function leader(ax, ay, bx, by, a, col) { if (a <= .01) return; g.save(); g.globalAlpha = a; g.strokeStyle = col; g.lineWidth = 3.5; g.beginPath(); g.moveTo(ax, ay); g.lineTo(ax + (bx - ax) * Math.min(1, a * 1.3), ay + (by - ay) * Math.min(1, a * 1.3)); g.stroke();
+  if (a > .6) { g.fillStyle = col; g.beginPath(); g.arc(bx, by, 9, 0, 7); g.fill(); } g.restore(); }
+function label(t, t0, t1, ll, px, py, title, sub, col) { const a = SM(RAMP(t, t0, t0 + .4)) * (t1 ? 1 - SM(RAMP(t, t1, t1 + .3)) : 1); if (a <= 0) return;
+  const p = proj(ll); if (!p) return; leader(px, py + (p[1] > py ? 56 : -56), p[0], p[1], a, col); pill(px, py, a, .86 + .14 * POP(RAMP(t, t0, t0 + .45)), title, sub, col); }
+const SPEED = 1.0;
+function draw(t) { t = t * SPEED;
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  const bg = g.createRadialGradient(540, 900, 100, 540, 900, 1300); bg.addColorStop(0, '#0d1830'); bg.addColorStop(1, '#03050c'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  STARS.forEach(([x, y, r, s]) => { g.globalAlpha = .35 + .4 * Math.sin(t * 2 + s * 20) ** 2; g.fillStyle = '#cfe0ff'; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }); g.globalAlpha = 1;
+  // camera: USA close -> follow the shape across the Atlantic -> Africa
+  const fly = EIO(RAMP(t, 1.0, 3.0));
+  const cv = toLL(rigid(toV(CA), fly));
+  const sc = (1250 - 450 * Math.sin(Math.PI * fly) - 230 * SM(RAMP(t, 1.0, 3.0))) * (1 + 0.03 * t);
+  proj.rotate([-cv[0], -cv[1] + 4, 0]).scale(sc);
+  const R = proj.scale(), [cx, cy] = proj.translate();
+  const og = g.createRadialGradient(cx - R * .35, cy - R * .4, R * .1, cx, cy, R); og.addColorStop(0, '#1e5a8c'); og.addColorStop(1, '#0a2444');
+  g.beginPath(); path({ type: 'Sphere' }); g.fillStyle = og; g.fill();
+  g.beginPath(); path(d3.geoGraticule10()); g.strokeStyle = 'rgba(160,210,255,.08)'; g.lineWidth = 1.5; g.stroke();
+  g.beginPath(); path(LAND); g.fillStyle = '#3f6a45'; g.fill(); g.strokeStyle = 'rgba(220,240,220,.35)'; g.lineWidth = 1.6; g.stroke();
+  g.beginPath(); path(BORD); g.strokeStyle = 'rgba(235,245,235,.22)'; g.lineWidth = 1.2; g.stroke();
+  // Sahara: sand fill appears as we arrive
+  const sa = SM(RAMP(t, 2.2, 2.8));
+  if (sa > 0) { g.save(); g.globalAlpha = sa; g.beginPath(); path(SAHG); g.fillStyle = '#e8b96a'; g.fill(); g.setLineDash([14, 10]); g.lineWidth = 4; g.strokeStyle = '#ffe2a6'; g.stroke(); g.restore(); }
+  // the US outline: highlighted at home, then lifted and flown over
+  const ua = SM(RAMP(t, 0.05, 0.5)), mv = EIO(RAMP(t, 1.0, 3.0));
+  const lift = 1 + .1 * Math.sin(Math.PI * mv);
+  const shape = moved(mv);
+  g.save(); g.translate(cx, cy); g.scale(lift, lift); g.translate(-cx, -cy);
+  g.shadowColor = 'rgba(0,0,0,.6)'; g.shadowBlur = 24 * Math.sin(Math.PI * mv); g.shadowOffsetY = 12 * Math.sin(Math.PI * mv);
+  g.globalAlpha = ua; g.beginPath(); path(shape); g.fillStyle = 'rgba(255,90,40,.55)'; g.fill(); g.shadowBlur = 0; g.shadowOffsetY = 0;
+  g.lineWidth = 5; g.strokeStyle = '#ff7a45'; g.lineJoin = 'round'; g.stroke(); g.restore(); g.globalAlpha = 1;
+  // atmosphere rim
+  const rim = g.createRadialGradient(cx, cy, R * .96, cx, cy, R * 1.08); rim.addColorStop(0, 'rgba(110,190,255,.0)'); rim.addColorStop(.35, 'rgba(110,190,255,.35)'); rim.addColorStop(1, 'rgba(110,190,255,0)');
+  g.fillStyle = rim; g.beginPath(); g.arc(cx, cy, R * 1.08, 0, 7); g.fill();
+  label(t, 0.1, 1.0, [-98, 39], 540, 520, 'Lower 48 USA', '3.1M sq mi · 8.1M km²', '#ff7a45');
+  label(t, 3.0, 0, [-11, 21], 560, 470, 'Sahara', 'about 3.5M sq mi · 9M km²', '#ffd27a');
+  label(t, 3.6, 0, [-3, 20.5], 470, 1500, 'The Sahara is bigger', 'by about 12%', '#ffd27a');
+  g.globalAlpha = SM(RAMP(t, .5, 1)); g.font = '500 25px "JetBrains Mono", monospace'; g.fillStyle = 'rgba(220,230,245,.7)'; g.textAlign = 'center';
+  g.fillText('true scale on a globe · Sahara outline approx.', 540, 1660); g.globalAlpha = 1;
+}
+window.DUR = 6.33; window.draw = draw; window.renderAt = draw; document.fonts.load('800 46px Inter').then(() => { draw(5.5); document.title = 'ok'; });
+</script></body></html>

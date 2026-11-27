@@ -6056,47 +6056,6 @@
   }
  },
  {
-  "name": "earth74",
-  "date": "2026-11-27",
-  "score": 84,
-  "mode": "full",
-  "features": {
-   "hook": 1.0,
-   "hook_words": 12,
-   "hook_end_s": 4.04,
-   "tool_named_s": null,
-   "payoff": 1.0,
-   "wps": 1.65,
-   "dur_s": 30.0,
-   "words": 47,
-   "pace": 0.0,
-   "length": 1.0,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 4.5,
-   "visual_changes": 61,
-   "visuals": 0.2,
-   "ending": 0.9,
-   "angle": "app-demo",
-   "topic": 1.0,
-   "hot_words": 3,
-   "soft_words": 0
-  },
-  "flags": [
-   "4.5 s bez změny obrazu (cíl ≤3 s)"
-  ],
-  "weights": {
-   "topic": 45,
-   "hook": 5,
-   "payoff": 4,
-   "pace": 6,
-   "length": 20,
-   "filler": 4,
-   "visuals": 12,
-   "ending": 4
-  }
- },
- {
   "name": "tech75",
   "date": "2026-11-27",
   "score": 92,
@@ -6165,6 +6124,45 @@
   "flags": [
    "jen 2 „virální“ slova (Země/vesmír/katastrofa/slavné místo…; cíl ≥3)"
   ],
+  "weights": {
+   "topic": 45,
+   "hook": 5,
+   "payoff": 4,
+   "pace": 6,
+   "length": 20,
+   "filler": 4,
+   "visuals": 12,
+   "ending": 4
+  }
+ },
+ {
+  "name": "earth74",
+  "date": "2026-11-27",
+  "score": 94,
+  "mode": "full",
+  "features": {
+   "hook": 1.0,
+   "hook_words": 12,
+   "hook_end_s": 4.04,
+   "tool_named_s": null,
+   "payoff": 1.0,
+   "wps": 1.65,
+   "dur_s": 30.0,
+   "words": 47,
+   "pace": 0.0,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.25,
+   "visual_changes": 97,
+   "visuals": 1.0,
+   "ending": 0.9,
+   "angle": "app-demo",
+   "topic": 1.0,
+   "hot_words": 3,
+   "soft_words": 0
+  },
+  "flags": [],
   "weights": {
    "topic": 45,
    "hook": 5,
