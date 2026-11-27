@@ -31,7 +31,7 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 .hb{background:#ffd23f;color:#141414;padding:0 .2em;border-radius:12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .pill .sub{font-size:31px;font-weight:600;color:#cfd6e0;text-align:center;margin-top:2px}
 .pill{text-align:center}
-#note{position:absolute;left:0;right:0;top:1640px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+#note{position:absolute;left:0;right:0;top:1498px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
 const { renderer, scene, camera } = setup(30, [.01, .012, .03], [.06, .08, .16]);
 const rnd = mulberry32(74);
 const RE = 10;
@@ -91,8 +91,8 @@ scene.add(new THREE.HemisphereLight('#9fb8ff', '#0a0c18', .55));
 const SG = new THREE.BufferGeometry(); const sp = new Float32Array(1500 * 3); for (let i = 0; i < 1500; i++) { const v = new THREE.Vector3(rnd() - .5, rnd() - .5, rnd() - .5).normalize().multiplyScalar(900); sp.set([v.x, v.y, v.z], i * 3); }
 SG.setAttribute('position', new THREE.BufferAttribute(sp, 3)); scene.add(new THREE.Points(SG, new THREE.PointsMaterial({ color: '#dfe8ff', size: 2.2, sizeAttenuation: false })));
 const L = labels(camera, [
-  { el: document.getElementById('p1'), at: [0.9, 0.6, 0.9], pos: [700, 1420], t0: .45, t1: 1.6, col: '#ffb547' },
-  { el: document.getElementById('p2'), at: [-RE * 1.02, 3, 0], pos: [300, 1440], t0: 3.4, col: '#7fd4ff' } ]);
+  { el: document.getElementById('p1'), at: [0.9, 0.6, 0.9], pos: [700, 1380], t0: .45, t1: 1.6, col: '#ffb547' },
+  { el: document.getElementById('p2'), at: [-RE * 1.02, 3, 0], pos: [300, 1380], t0: 3.4, col: '#7fd4ff' } ]);
 function render(t) {
   const cool = sm(ramp(t, 1.45, 2.7)), fOff = sm(ramp(t, 1.7, 2.9)), strip = sm(ramp(t, 3.0, 5.4));
   paintLayers(cool, t);

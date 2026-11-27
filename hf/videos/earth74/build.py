@@ -3,7 +3,7 @@
 Results drawn in code (concept/: whatif_core.html, sim_asteroid.html, scale_sahara.html). Keyword CORE. Music t2.
 Facts: r0 inner core ~5,200 C / ~9,400 F (National Geographic "Core"); field made by the liquid outer core, without it the solar wind strips the air over a
 very long time, like Mars (NASA MAVEN 2015). r1 hypothetical sim, rock exaggerated; NOAA: deep-ocean tsunami > 500 mph (~800 km/h).
-r2 Britannica Sahara ~3.5M sq mi (9M km2); US Census contiguous US 3.12M sq mi (8.08M km2); outline moved by a rigid sphere rotation (true size)."""
+r2 Britannica Sahara some 3.32M sq mi (8.6M km2); US Census contiguous US 3.12M sq mi (8.08M km2); outline moved by a rigid sphere rotation (true size)."""
 import json, shutil, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).parent
@@ -63,7 +63,7 @@ S, E = F.S, F.E
 
 DEMOS = [
     (0, (2, 3), (4, 7), 8, 'what-if', "Earth's core went cold", 'What if', 'x', 0, 'Any what-if as a cinematic 3D short'),
-    (12, (14, 14), (15, 22), 23, 'simulate', 'a mile-wide asteroid hits the Atlantic', 'Simulate', 'x', 0, 'Simulate any event, step by step'),
+    (12, (14, 14), (15, 22), 23, 'simulate', 'a mile-wide asteroid crashing into the Atlantic Ocean', 'Simulate', 'x', 0, 'Simulate any event, step by step'),
     (27, (29, 29), (30, 34), 35, 'scale', 'the Sahara vs the USA', 'Scale', 'x', 0, 'Compare the true size of anything'),
 ]
 CMD = DEMOS[0][4]
@@ -75,9 +75,9 @@ for k, (a, (ci0, ci1), (pi0, pi1), andi, cmd, prompt, title, cap, hi, desc) in e
     c0, c1 = (0.08 if k == 0 else S[ci0]), E[ci1]
     send = round(S[andi] - 0.12, 3)
     p0, p1 = S[pi0], min(E[pi1] - 0.05, send - 0.3)
-    TY.append({"T": T, "slash": t_slash, "c0": c0, "c1": c1, "p0": p0, "p1": p1, "send": send, "card": send + 0.12,
-               "full": send + 0.5, "end": nxt, "prompt": prompt, "cap": [w for w in cap.split() if w != "/"], "hi": hi, "cmd": cmd, "desc": desc})
-    F.sfx.append((T, "whoosh")); F.sfx.append((send, "click")); F.sfx.append((send + 0.12, "pop"))
+    TY.append({"T": T, "slash": t_slash, "c0": c0, "c1": c1, "p0": p0, "p1": p1, "send": send, "card": send + 0.32,
+               "full": send + 0.7, "end": nxt, "prompt": prompt, "cap": [w for w in cap.split() if w != "/"], "hi": hi, "cmd": cmd, "desc": desc})
+    F.sfx.append((T, "whoosh")); F.sfx.append((send, "click")); F.sfx.append((send + 0.32, "pop"))
     for i in range(len(cmd)):
         F.sfx.append((c0 + (c1 - c0) * i / len(cmd), "tick"))
     for i in range(len(prompt)):
@@ -116,7 +116,7 @@ for k, (a, _c, _p, _a, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
     _d = TY[k]
     stages += (f'<div class="stage" id="st{k}"><video id="rv{k}" class="clip" src="assets/r{k}.mp4" data-start="{round(_d["card"], 2)}" data-duration="{round(min(8.3, _d["end"] - _d["card"] + 0.35), 2)}" data-track-index="{30 + k}" muted playsinline></video>'
                               f'<div class="ttl"><b>{title}</b><i>with Claude</i></div></div>')
-thumbs = "".join(f'<div class="th" id="th{k}" style="left:{x}px"><img src="assets/th{k}.jpg" alt=""></div>' for k, x in enumerate([90, 400, 710]))
+thumbs = "".join(f'<div class="th" id="th{k}" style="left:{x}px"><img src="assets/th{k}.jpg" alt=""></div>' for k, x in enumerate([102, 404, 706]))
 end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“CORE”</div>'
        '<div class="g" id="e3">and I\'ll send you the prompts</div>' + thumbs + '<div class="series" id="eser" style="left:0;right:0;margin:0 auto;width:fit-content;top:1400px">Type it, get it <b>#62</b></div>' + FOLLOW_LINE.replace('class="follow"', 'class="follow" id="efol" style="top:1490px;color:#fff"') + '</div>')
 F.body.append('<div class="layer" id="serl">' + series("Type it, get it", 62, x=70, y=116, dark=True) + '</div>')
@@ -180,7 +180,7 @@ html,body,#root{background:#121212!important}
 #end .c{position:absolute;left:0;right:0;top:420px;text-align:center;font-weight:800;font-size:90px;color:#fff}
 #end .kw{position:absolute;left:0;right:0;top:520px;text-align:center;font-weight:900;font-size:150px;color:#ff4b1f;letter-spacing:-.04em}
 #end .g{position:absolute;left:0;right:0;top:710px;text-align:center;font-weight:800;font-size:50px;color:#fff}
-.th{position:absolute;top:900px;width:280px;height:430px;border-radius:24px;overflow:hidden;background:#222;box-shadow:0 30px 60px rgba(0,0,0,.7),0 0 0 2px #2a2a2a}
+.th{position:absolute;top:906px;width:272px;height:417px;border-radius:24px;overflow:hidden;background:#222;box-shadow:0 30px 60px rgba(0,0,0,.7),0 0 0 2px #2a2a2a}
 .th img{width:100%;height:100%;object-fit:cover}
 """
 
@@ -220,11 +220,11 @@ const clock={t:0}; tl.fromTo(clock,{t:0},{t:DUR,duration:DUR,ease:'none',onUpdat
 const NI={immediateRender:false}; function F2(sel,f,t,at){ return tl.fromTo(sel,f,Object.assign({},t,NI),at); }
 TY.forEach((d,k)=>{
   if(k){ F2('#st'+(k-1),{opacity:1,scale:1},{opacity:0,scale:.92,duration:.22,ease:'power2.in'},d.T-0.22); tl.set(['#kbw','#inp'],{y:0,opacity:1},d.T); tl.set(['#ub','#run','#bot'],{opacity:0},d.T); }
-  F2('#chipc',{opacity:0,y:30},{opacity:1,y:0,duration:.2,ease:'power2.out'},d.slash);
+  if(k) F2('#chipc',{opacity:0,y:30},{opacity:1,y:0,duration:.2,ease:'power2.out'},d.slash); else tl.set('#chipc',{opacity:1,y:0},0);
   tl.set('#snd',{backgroundColor:'#ff4b1f'},d.slash+0.05);
   tl.set('#chipc',{opacity:0},d.p0);
   tl.to('#snd',{scale:.85,duration:.06,yoyo:true,repeat:1},d.send-0.08);
-  F2(['#kbw','#inp'],{y:0,opacity:1},{y:620,opacity:0,duration:.3,ease:'power3.in'},d.send);
+  F2(['#kbw','#inp'],{y:0,opacity:1},{y:620,opacity:0,duration:.26,ease:'power3.in'},d.send);
   F2('#ub',{opacity:0,y:30,scale:.9},{opacity:1,y:0,scale:1,duration:.25,ease:'back.out(2)'},d.send);
   F2('#run',{opacity:0,x:-20},{opacity:1,x:0,duration:.2},d.send+0.06);
   F2('#bot',{opacity:0},{opacity:1,duration:.2},d.send+0.15);
@@ -232,7 +232,7 @@ TY.forEach((d,k)=>{
   F2('#st'+k,{opacity:0,scale:.5,y:140,borderRadius:60},{opacity:1,scale:.58,y:110,borderRadius:60,duration:.3,ease:'back.out(1.6)'},d.card);
   F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.42,ease:'expo.inOut'},d.full);
 });
-TY.forEach((d,k)=>{ tl.set('#serl',{opacity:0},d.full); if(k<2) tl.set('#serl',{opacity:1},d.end); });
+
 tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
 tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.1,ease:'none'},END);

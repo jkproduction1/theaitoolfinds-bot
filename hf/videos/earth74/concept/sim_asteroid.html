@@ -46,9 +46,9 @@ function draw(t) {
   g.beginPath(); path(d3.geoGraticule10()); g.strokeStyle = 'rgba(160,210,255,.07)'; g.lineWidth = 1.5; g.stroke();
   // tsunami rings (drawn before land so coasts cover them)
   if (t > TI) { const u = t - TI;
-    for (let k = 0; k < 5; k++) { const r = Math.max(.3, (u - k * .28) * 7.2); if (u - k * .28 <= 0) continue;
+    for (let k = 0; k < 5; k++) { const r = Math.max(.3, (u - k * .28) * 10); if (u - k * .28 <= 0) continue;
       const circ = d3.geoCircle().center(IMP).radius(r).precision(1)();
-      const a = (1 - k * .16) * (1 - SM(RAMP(r, 18, 34)) * .6);
+      const a = (1 - k * .16) * (1 - SM(RAMP(r, 30, 50)) * .6);
       g.save(); g.globalAlpha = a; g.beginPath(); path(circ); g.lineWidth = k ? 6 : 16; g.strokeStyle = k ? 'rgba(150,230,255,.75)' : '#dff8ff'; g.shadowColor = '#6fd8ff'; g.shadowBlur = k ? 10 : 30; g.stroke(); g.restore(); }
     const inner = d3.geoCircle().center(IMP).radius(Math.min(9, u * 5)).precision(2)();
     g.save(); g.globalAlpha = .35 * (1 - SM(RAMP(u, .5, 3))); g.beginPath(); path(inner); g.fillStyle = '#bfefff'; g.fill(); g.restore(); }
@@ -79,14 +79,14 @@ function draw(t) {
     g.save(); g.globalAlpha = Math.min(1, fl * 1.6); g.fillStyle = '#fff'; g.fillRect(-40, -40, W + 80, H + 80); g.globalAlpha = 0; g.restore();
   }
   // pill on the wave
-  if (t > TI + 1.4) { const a = SM(RAMP(t, TI + 1.4, TI + 1.8)); const rr = Math.max(.3, (t - TI) * 7.2); const q = proj(d3.geoDestination ? IMP : IMP);
-    const edge = proj([IMP[0], IMP[1] - Math.min(rr, 30)]); if (edge) { g.save(); g.globalAlpha = a; g.strokeStyle = '#7fd4ff'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(540, 1405); g.lineTo(edge[0], edge[1]); g.stroke(); g.fillStyle = '#7fd4ff'; g.beginPath(); g.arc(edge[0], edge[1], 9, 0, 7); g.fill(); g.restore(); }
-    pill(540, 1460, a, .86 + .14 * POP(RAMP(t, TI + 1.4, TI + 1.85)), 'Tsunami: 500+ mph', 'over 800 km/h in deep water', '#7fd4ff'); }
+  if (t > TI + 1.4) { const a = SM(RAMP(t, TI + 1.4, TI + 1.8)); const rr = Math.max(.3, (t - TI) * 10); const q = proj(d3.geoDestination ? IMP : IMP);
+    const edge = proj([IMP[0], IMP[1] - Math.min(rr, 34)]); if (edge) { g.save(); g.globalAlpha = a; g.strokeStyle = '#7fd4ff'; g.lineWidth = 3.5; g.beginPath(); g.moveTo(540, 1345); g.lineTo(edge[0], edge[1]); g.stroke(); g.fillStyle = '#7fd4ff'; g.beginPath(); g.arc(edge[0], edge[1], 9, 0, 7); g.fill(); g.restore(); }
+    pill(540, 1400, a, .86 + .14 * POP(RAMP(t, TI + 1.4, TI + 1.85)), 'Tsunami: 500+ mph', 'over 800 km/h in deep water', '#7fd4ff'); }
   cap(t, .1, TI - .1, 'A rock', '1 mile wide', '');
   cap(t, TI + .25, TI + 1.7, 'The ocean', 'blasts open', '');
   cap(t, TI + 1.85, 0, 'Waves race to', 'both coasts', '');
   g.globalAlpha = SM(RAMP(t, .5, 1)); g.font = '500 25px "JetBrains Mono", monospace'; g.fillStyle = 'rgba(220,230,245,.7)'; g.textAlign = 'center';
-  g.fillText('simulation · not to scale', 540, 1660); g.globalAlpha = 1; g.textAlign = 'left';
+  g.fillText('simulation · not to scale', 540, 1520); g.globalAlpha = 1; g.textAlign = 'left';
 }
 window.DUR = 6.33; window.draw = draw; window.renderAt = draw; document.fonts.load('800 64px Inter').then(() => { draw(3); document.title = 'ok'; });
 </script></body></html>
