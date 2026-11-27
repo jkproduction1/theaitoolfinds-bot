@@ -1,50 +1,50 @@
 {
-  "date": "2026-11-26",
+  "date": "2026-11-27",
   "app_demo": [
     {
-      "title": "Zack D. Films: Země 18",
+      "title": "Zack D. Films: Země 19",
       "commands": [
-        "/zack-d-films what if Earth stopped orbiting the Sun",
-        "/deep-dive what lives at the bottom of the ocean",
-        "/scale a blue whale versus a jumbo jet"
+        "/zack-d-films what if Earth's oxygen doubled for one day",
+        "/simulate Iceland being torn apart by the Mid-Atlantic Ridge",
+        "/scale Mauna Kea versus Mount Everest from the sea floor"
       ],
-      "why": "vzorec earth8 (1M): Zack D. Films what-if jako první prompt; prediktor 91 (skript)"
+      "why": "vzorec earth8 (1M): Zack D. Films what-if o Zemi jako první prompt, pak geologie + měřítko"
     },
     {
-      "title": "Zack D. Films: vesmír 12",
+      "title": "Vesmír 13",
       "commands": [
-        "/zack-d-films what if you fell into a black hole",
-        "/explain-3d how a star explodes into a neutron star",
-        "/scale Jupiter versus Earth"
+        "/zack-d-films what if you stood on Venus for one minute",
+        "/explain-3d how a black hole bends light",
+        "/scale Saturn's rings versus the distance to the Moon"
       ],
-      "why": "vzorec space7 (197k) + space14 (72k); prediktor 91"
+      "why": "vesmír je náš druhý nejsilnější motiv: space7 (198k) a space14 (72k)"
     },
     {
-      "title": "Slavné styly: katastrofy 2",
+      "title": "Smrtící příroda 8",
       "commands": [
-        "/paper-collage why the Leaning Tower of Pisa almost fell in 1990",
-        "/painted-story how the Titanic's sister ship survived a crash",
-        "/flat-science what lightning does to a plane"
+        "/x-ray a tornado from the cloud to the ground",
+        "/simulate Hawaiian lava pouring into the ocean",
+        "/zoom-in the stinging cells of a box jellyfish"
       ],
-      "why": "vzorec styles33 (161k): slavné místo + katastrofa ve 3 stylech; prediktor 91"
+      "why": "storm45 (113k) ukázal, že příroda v nejnebezpečnější podobě táhne dosah"
     },
     {
-      "title": "Smrtící příroda 7",
+      "title": "SYSTEM: jak fungují slavné stavby (21:00)",
       "commands": [
-        "/x-ray a hurricane from the eye to the ocean floor",
-        "/explain-3d how a tsunami crosses an ocean",
-        "/what-if a volcano erupted under a city"
+        "/painted-story how the Golden Gate Bridge was built",
+        "/x-ray the Hoover Dam",
+        "/flat-science how GPS knows exactly where you are"
       ],
-      "why": "vzorec storm45 (112k): příroda v nejnebezpečnější podobě; prediktor 91"
+      "why": "pro 21:00 SYSTEM: US dospělí, slavné stavby + tech ve stylech ze styles33 (163k) a styles19 (79k)"
     },
     {
-      "title": "SYSTEM: slavné stroje a katastrofy (21:00)",
+      "title": "SYSTEM: peníze a stroje (21:00)",
       "commands": [
-        "/explain-3d how a plane lands itself in thick fog",
-        "/x-ray the Titanic wreck at the bottom of the ocean",
-        "/painted-story how Pompeii vanished under a volcano"
+        "/paper-collage how the US Mint makes a quarter",
+        "/explain-3d how a Formula 1 car brakes from 200 mph",
+        "/explode a smartphone camera module"
       ],
-      "why": "pro 21:00 SYSTEM: US/EU dospělí, letadla + Titanic + Pompeje; prediktor 91"
+      "why": "pro 21:00 SYSTEM: peníze + tech pro US/EU, 'co je uvnitř' bylo silné (inside3 140k)"
     }
   ],
   "tutorials": [],
