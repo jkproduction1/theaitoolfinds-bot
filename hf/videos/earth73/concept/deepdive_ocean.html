@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What lives at the bottom of the ocean</title>
+<!-- earth73 r1: /deep-dive what lives at the bottom of the ocean. Same deep-dive look as earth8/earth72: the camera dives with a depth
+  counter, 2-3 labels (bold name + short sub-line).
+  Facts: NOAA Ocean Exploration ("How far does light travel in the ocean?"): faint light to ~1,000 m (twilight zone 200-1,000 m), below
+  1,000 m no sunlight (midnight zone). Deepest fish ever filmed: a snailfish (Pseudoliparis) at 8,336 m in the Izu-Ogasawara Trench,
+  Aug 2022 (University of Western Australia / Tokyo Univ. of Marine Science, Guinness World Records, Apr 2023). Anglerfish live in the
+  midnight zone and lure prey with a glowing tip (NOAA). Creatures stylised; depth scale 1 unit = 100 m. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div id="ctr"><span id="dm">0</span> m<small id="df">0 ft</small></div>
+    <div class="pill" id="pJ">Twilight zone<small>last faint light</small></div>
+    <div class="pill hot" id="pA">Anglerfish<small>makes its own light</small></div>
+    <div class="pill red" id="pS">Deepest fish ever filmed<small>snailfish · 8,336 m</small></div>
+    <div id="note">deep-dive · creatures stylised</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.pill small{display:block;font-size:31px;font-weight:600;color:#cfd6e0;margin-top:2px;text-align:center}.pill{text-align:center}
+#ctr{position:absolute;left:0;right:0;top:200px;text-align:center;color:#fff;font-weight:800;font-size:110px;letter-spacing:-3px;font-variant-numeric:tabular-nums;text-shadow:0 6px 30px rgba(0,0,0,.8);opacity:0}
+#ctr small{display:block;font-size:40px;font-weight:600;color:#cfd8e6;letter-spacing:0;margin-top:-6px}
+#note{position:absolute;left:0;right:0;top:1800px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+const { renderer, scene, camera, bgU } = setup(38, [.05, .3, .42], [.2, .62, .74]);
+const rnd = mulberry32(7301);
+const glow = softTex();
+const U = d => -d / 100;   // metres -> world y
+// ---- keyframed dive (t, metres): slows down at each creature
+const K = [[0, 0], [.3, 0], [1.05, 230], [1.55, 260], [2.25, 1010], [2.75, 1060], [4.3, 8336], [6.4, 8336]];
+function depthAt(t) { for (let i = 0; i < K.length - 1; i++) { const [t0, d0] = K[i], [t1, d1] = K[i + 1]; if (t <= t1) return d0 + (d1 - d0) * eio(ramp(t, t0, t1)); } return K[K.length - 1][1]; }
+// ---- jellyfish @ ~250 m
+const jelly = new THREE.Group(); jelly.position.set(-.9, U(255) + .6, -1.5); scene.add(jelly);
+const bell = new THREE.Mesh(new THREE.SphereGeometry(1.1, 48, 24, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#c9a0ff', emissive: '#8a50ff', emissiveIntensity: .9, transparent: true, opacity: .75, roughness: .2, side: THREE.DoubleSide }));
+jelly.add(bell);
+const tent = []; for (let i = 0; i < 10; i++) { const a = i / 10 * 6.28, pts = []; for (let k = 0; k <= 20; k++) pts.push(V(Math.cos(a) * .8, -k * .16, Math.sin(a) * .8));
+  const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: '#e0c8ff', transparent: true, opacity: .7 })); jelly.add(l); tent.push([l, a]); }
+const jg = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: '#a070ff', transparent: true, opacity: .6, depthWrite: false, blending: THREE.AdditiveBlending })); jg.scale.setScalar(4.5); jelly.add(jg);
+// ---- anglerfish @ ~1,040 m
+const ang = new THREE.Group(); ang.position.set(-.9, U(1045) - .3, -1); ang.rotation.y = -.25; ang.scale.setScalar(.85); scene.add(ang);
+const aMat = new THREE.MeshStandardMaterial({ color: '#3a2a26', roughness: .6, metalness: .1 });
+const body = new THREE.Mesh(new THREE.SphereGeometry(1, 48, 32), aMat); body.scale.set(1.35, 1, 1); ang.add(body);
+const jaw = new THREE.Mesh(new THREE.SphereGeometry(.95, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), aMat); jaw.position.set(.55, -.15, 0); jaw.rotation.z = -.25; jaw.scale.set(1, .7, 1); ang.add(jaw);
+for (let i = 0; i < 9; i++) { const tooth = new THREE.Mesh(new THREE.ConeGeometry(.06, .32, 6), new THREE.MeshStandardMaterial({ color: '#f2eee6', roughness: .3 }));
+  const a = -1 + i * .25; tooth.position.set(1.25 + Math.cos(a) * .05, -.05, Math.sin(a) * .55); tooth.rotation.z = Math.PI; ang.add(tooth); }
+const tail = new THREE.Mesh(new THREE.ConeGeometry(.55, 1.1, 4), aMat); tail.position.set(-1.7, 0, 0); tail.rotation.z = Math.PI / 2; tail.scale.set(1, 1, .25); ang.add(tail);
+const eyeA = new THREE.Mesh(new THREE.SphereGeometry(.11, 16, 12), new THREE.MeshBasicMaterial({ color: '#dfe8ef' })); eyeA.position.set(.85, .45, .55); ang.add(eyeA);
+const rod = new THREE.Line(new THREE.BufferGeometry().setFromPoints(new THREE.QuadraticBezierCurve3(V(.5, .9, 0), V(1.2, 2.4, 0), V(2.1, 1.7, 0)).getPoints(24)), new THREE.LineBasicMaterial({ color: '#6a5148' })); ang.add(rod);
+const lure = new THREE.Mesh(new THREE.SphereGeometry(.14, 16, 12), new THREE.MeshBasicMaterial({ color: '#fff4b0', toneMapped: false })); lure.position.set(2.1, 1.7, 0); ang.add(lure);
+const lg = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: '#ffe680', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); lg.scale.setScalar(2.4); lg.position.copy(lure.position); ang.add(lg);
+const lureL = new THREE.PointLight('#ffe28a', 6, 6, 2); lureL.position.copy(lure.position); ang.add(lureL);
+// ---- snailfish @ 8,336 m, trench floor
+const snail = new THREE.Group(); snail.position.set(.6, U(8336) + .25, 0); snail.rotation.y = .45; snail.scale.setScalar(.62); scene.add(snail);
+const sMat = new THREE.MeshStandardMaterial({ color: '#f0b9b0', roughness: .3, transparent: true, opacity: .9, emissive: '#6a3030', emissiveIntensity: .3 });
+// tadpole body: one smooth lathe profile (round head -> long thin tail), laterally flattened
+const prof = []; for (let k = 0; k <= 40; k++) { const u = k / 40; const x = -3.6 + 4.4 * u;   // tail tip -> nose
+  const r = u < .78 ? .06 + .74 * Math.pow(u / .78, 1.6) : .8 * Math.sqrt(Math.max(0, 1 - Math.pow((u - .78) / .22, 2))); prof.push(new THREE.Vector2(Math.max(r, .001), x)); }
+const bodyS = new THREE.Mesh(new THREE.LatheGeometry(prof, 48), sMat); bodyS.rotation.z = -Math.PI / 2; bodyS.scale.set(1, 1, 1); snail.add(bodyS); bodyS.scale.z = .62;
+const head = bodyS, tailS = new THREE.Object3D();
+for (const z of [-.42, .42]) { const e = new THREE.Mesh(new THREE.SphereGeometry(.09, 12, 10), new THREE.MeshBasicMaterial({ color: '#1a1a22' })); e.position.set(.5, .22, z * .9); snail.add(e); }
+const floorG = new THREE.PlaneGeometry(60, 40, 80, 50); const fp = floorG.attributes.position; for (let i = 0; i < fp.count; i++) fp.setZ(i, (rnd() - .5) * .35 + Math.sin(fp.getX(i) * .4) * .3);
+floorG.computeVertexNormals();
+const floor = new THREE.Mesh(floorG, new THREE.MeshStandardMaterial({ color: '#3e3a35', roughness: 1 })); floor.rotation.x = -Math.PI / 2; floor.position.y = U(8336) - .55; scene.add(floor);
+const sub = new THREE.SpotLight('#dff2ff', 60, 30, .55, .6, 1.5); scene.add(sub); scene.add(sub.target);
+// ---- marine snow around the camera
+const NS = 900, SP = new Float32Array(NS * 3), SB = []; for (let i = 0; i < NS; i++) SB.push([(rnd() - .5) * 18, rnd() * 30, (rnd() - .5) * 10 - 2]);
+const SG = new THREE.BufferGeometry(); SG.setAttribute('position', new THREE.BufferAttribute(SP, 3));
+const snow = new THREE.Points(SG, new THREE.PointsMaterial({ color: '#d8ecff', size: 3, sizeAttenuation: false, transparent: true, opacity: .55 })); scene.add(snow);
+const NB = 140, BP = new Float32Array(NB * 3); for (let i = 0; i < NB; i++) BP.set([(rnd() - .5) * 16, U(1300 + rnd() * 6800), (rnd() - .5) * 8 - 2], i * 3);
+const BG = new THREE.BufferGeometry(); BG.setAttribute('position', new THREE.BufferAttribute(BP, 3));
+scene.add(new THREE.Points(BG, new THREE.PointsMaterial({ color: '#5fd8ff', size: .35, map: glow, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })));
+const hemi = new THREE.HemisphereLight('#bfe8ff', '#0a1a22', 1.4); scene.add(hemi);
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pJ'), t0: 1.0, t1: 1.75, at: () => [jelly.position.x + .9, jelly.position.y + .3, jelly.position.z], pos: (x, y) => [cl(x + 250, 330, 750), cl(y + 330, 560, 1500)], col: '#b48cff' },
+  { el: E('pA'), t0: 2.2, t1: 3.0, at: () => [ang.position.x + .2, ang.position.y + .6, ang.position.z], pos: (x, y) => [cl(x - 160, 330, 750), cl(y + 360, 560, 1500)], col: '#ffb547' },
+  { el: E('pS'), t0: 4.35, at: () => [snail.position.x + .4, snail.position.y + .55, snail.position.z], pos: (x, y) => [cl(x, 330, 750), cl(y - 330, 560, 1450)], col: '#ff4a4a' },
+]);
+const deep = new THREE.Color(.0, .008, .02), deepB = new THREE.Color(.01, .03, .06), sA = new THREE.Color(.05, .3, .42), sB = new THREE.Color(.2, .62, .74);
+function render(t) { t = cl(t, 0, DUR); const d = depthAt(t), y = U(d);
+  // water colour + light die off with depth (gone by ~1,000 m)
+  const k = cl(Math.pow(d / 1000, .6));
+  bgU.uA.value.copy(sA).lerp(deep, k); bgU.uB.value.copy(sB).lerp(deepB, k); hemi.intensity = 1.4 * (1 - k) + .06;
+  sub.intensity = 60 * sm(ramp(d, 600, 1100));
+  // camera: just above the subject line, slight drift; final shot settles on the snailfish
+  const fin = eio(ramp(t, 3.9, 5.0));
+  camera.position.set(.6 * Math.sin(t * .7) - .4 * fin, y + 1.6 + .8 * fin, 13.5 - 2 * fin); camera.lookAt(-.2, y - .2, -1); camera.updateMatrixWorld();
+  sub.position.copy(camera.position).add(V(0, 1.5, 0)); sub.target.position.set(0, y - .5, -1);
+  // marine snow drifts up past the lens
+  for (let i = 0; i < NS; i++) { const b = SB[i]; let yy = ((b[1] + t * .6 - y) % 30 + 30) % 30; SP.set([b[0] + camera.position.x * .3, camera.position.y + 15 - yy, b[2]], i * 3); }
+  SG.attributes.position.needsUpdate = true;
+  bell.scale.y = 1 + .12 * Math.sin(t * 5); tent.forEach(([l, a], i) => { const p = l.geometry.attributes.position; for (let k2 = 0; k2 <= 20; k2++) p.setX(k2, Math.cos(a) * .8 + Math.sin(t * 3 + k2 * .35 + i) * .06 * k2 / 4); p.needsUpdate = true; });
+  jelly.position.y = U(255) + .15 * Math.sin(t * 2);
+  lg.material.opacity = .75 + .25 * Math.sin(t * 9); ang.position.x = -.9 - t * .04;
+  snail.position.x = .6 + .2 * Math.sin(t * .9); tailS.rotation.y = .15 * Math.sin(t * 4);
+  renderer.render(scene, camera); lab(t);
+  const m = Math.round(d / 5) * 5; E('dm').textContent = (t > 6.2 ? 8336 : (d > 8330 ? 8336 : m)).toLocaleString('en-US'); E('df').textContent = Math.round((d > 8330 ? 8336 : m) * 3.28084).toLocaleString('en-US') + ' ft';
+  E('ctr').style.opacity = sm(ramp(t, .15, .45));
+  E('note').style.opacity = sm(ramp(t, .5, 1)); }
+await ready(render);
+</script>
+</body>
+</html>

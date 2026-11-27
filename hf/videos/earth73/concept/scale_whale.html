@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Blue whale versus a jumbo jet</title>
+<!-- earth73 r2: /scale a blue whale versus a jumbo jet. Same scale look as earth8/yellow71: true-to-scale objects pop in with name + size
+  labels, one "how many fit" beat, then a pull-back.
+  Facts: NOAA Fisheries (Blue whale species page): largest animal known to have ever lived, up to ~30 m (they quote "up to 110 feet").
+  Boeing 747-400 length 70.6 m (Boeing 747 technical characteristics). 2 whales = 60 m, still shorter than one 747; 70.6 / 30 = 2.35.
+  Plane is a generic code-built jumbo jet (no airline livery, no logo). 1 unit = 1 m. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="cap" id="c1">Biggest animal ever: <span class="hb">30 m long</span></div>
+    <div class="cap" id="c2">A jumbo jet is <span class="hb">2.3× longer</span></div>
+    <div class="pill" id="pW">Blue whale<small>up to 30 m</small></div>
+    <div class="pill hot" id="pJ">Jumbo jet<small>747 · 70.6 m</small></div>
+    <div class="pill red" id="pX">2 whales<small>60 m: still shorter</small></div>
+    <div id="note">scale · true proportions</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, popS, V, mulberry32, setup, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.cap{position:absolute;left:70px;right:70px;top:230px;text-align:center;color:#fff;font-weight:800;font-size:64px;line-height:1.18;letter-spacing:-1px;opacity:0;text-shadow:0 4px 30px rgba(0,0,0,.7)}
+.hb{background:#ffd23f;color:#141414;padding:0 .2em;border-radius:12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.pill small{display:block;font-size:31px;font-weight:600;color:#cfd6e0;margin-top:2px;text-align:center}.pill{text-align:center}
+#note{position:absolute;left:0;right:0;top:1800px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+const { renderer, scene, camera, bgU } = setup(30, [.02, .05, .09], [.1, .22, .34]);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const rnd = mulberry32(7302);
+// ---- ground: calm stylised sea surface with a faint 10 m grid
+const gC = document.createElement('canvas'); gC.width = gC.height = 1024; const gg = gC.getContext('2d'); gg.fillStyle = '#163a57'; gg.fillRect(0, 0, 1024, 1024);
+gg.strokeStyle = 'rgba(160,210,255,.16)'; gg.lineWidth = 3; for (let i = 0; i <= 1024; i += 64) { gg.beginPath(); gg.moveTo(i, 0); gg.lineTo(i, 1024); gg.stroke(); gg.beginPath(); gg.moveTo(0, i); gg.lineTo(1024, i); gg.stroke(); }
+const gT = new THREE.CanvasTexture(gC); gT.colorSpace = THREE.SRGBColorSpace; gT.wrapS = gT.wrapT = THREE.RepeatWrapping; gT.repeat.set(16, 16);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(1600, 1600), new THREE.MeshStandardMaterial({ map: gT, roughness: .55, metalness: .1 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+// ---- blue whale, 30 m (lathe body + flukes + flippers), lying along -z (head toward +z)
+function whale(mat) { const g = new THREE.Group(), L = 30;
+  const prof = []; for (let k = 0; k <= 48; k++) { const u = k / 48; // 0 = tail stock, 1 = snout
+    const r = u < .12 ? .35 + 1.2 * (u / .12) : u < .55 ? 1.55 + 1.15 * Math.sin((u - .12) / .43 * Math.PI / 2) : 2.7 * Math.sqrt(Math.max(0, 1 - Math.pow((u - .55) / .45, 2.2)));
+    prof.push(new THREE.Vector2(Math.max(r, .001), -L / 2 + L * u)); }
+  const b = new THREE.Mesh(new THREE.LatheGeometry(prof, 48), mat); b.rotation.x = Math.PI / 2; b.scale.set(1, 1, .78); b.castShadow = true; g.add(b);
+  for (const s of [-1, 1]) { const f = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12), mat); f.scale.set(3.4, .25, 1.4); f.position.set(s * 3, 0, -L / 2 - .6); f.rotation.y = s * .5; f.castShadow = true; g.add(f);
+    const fl = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12), mat); fl.scale.set(2.2, .2, .7); fl.position.set(s * 3.2, -.9, 6.5); fl.rotation.y = -s * .6; fl.castShadow = true; g.add(fl); }
+  const eye = new THREE.Mesh(new THREE.SphereGeometry(.18, 12, 8), new THREE.MeshBasicMaterial({ color: '#0d141c' })); eye.position.set(2.1, -.2, 10.6); g.add(eye);
+  return g; }
+const wMat = new THREE.MeshStandardMaterial({ color: '#6f8fae', roughness: .45, metalness: .05 });
+const W1 = whale(wMat); W1.position.set(-10, 12, 15); scene.add(W1);                      // whale 1: head at z = 30
+const gMat = new THREE.MeshStandardMaterial({ color: '#ff6a5a', roughness: .5, transparent: true, opacity: .55 });
+const W2 = whale(gMat); W2.position.set(-10, 12, -15); scene.add(W2);                     // ghost whale 2: z = -30..0
+// ---- generic jumbo jet, 70.6 m long, nose at z = 30 (lined up with the whale's head)
+const J = new THREE.Group(), JL = 70.6, jW = new THREE.MeshStandardMaterial({ color: '#eef2f6', roughness: .35, metalness: .15 }), jG = new THREE.MeshStandardMaterial({ color: '#9aa6b4', roughness: .4, metalness: .3 });
+const fus = new THREE.Mesh(new THREE.CylinderGeometry(3.25, 3.25, JL - 12, 40), jW); fus.rotation.x = Math.PI / 2; fus.position.z = 30 - 6 - (JL - 12) / 2; J.add(fus);
+const nose = new THREE.Mesh(new THREE.SphereGeometry(3.25, 40, 20, 0, Math.PI * 2, 0, Math.PI / 2), jW); nose.rotation.x = Math.PI / 2; nose.scale.set(1, 1.85, 1); nose.position.z = 30 - 6; J.add(nose);
+const hump = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), jW); hump.scale.set(2.7, 2.2, 14); hump.position.set(0, 1.9, 30 - 15); J.add(hump);
+const tailC = new THREE.Mesh(new THREE.CylinderGeometry(3.25, .6, 12, 40), jW); tailC.rotation.x = -Math.PI / 2; tailC.position.set(0, .9, 30 - JL + 6); J.add(tailC);
+const wingShape = new THREE.Shape([new THREE.Vector2(0, 0), new THREE.Vector2(32, -16), new THREE.Vector2(32, -20), new THREE.Vector2(0, -14)]);
+for (const s of [-1, 1]) { const w = new THREE.Mesh(new THREE.ExtrudeGeometry(wingShape, { depth: .6, bevelEnabled: false }), jG); w.rotation.x = Math.PI / 2; w.scale.x = s; w.position.set(s * 2.5, -.6, 30 - 24); J.add(w);
+  const st = new THREE.Mesh(new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(0, 0), new THREE.Vector2(11, -5), new THREE.Vector2(11, -7.5), new THREE.Vector2(0, -6)]), { depth: .35, bevelEnabled: false }), jG);
+  st.rotation.x = Math.PI / 2; st.scale.x = s; st.position.set(s * 1, 1.4, 30 - JL + 9); J.add(st);
+  for (const k of [.38, .7]) { const e = new THREE.Mesh(new THREE.CylinderGeometry(1.25, 1.1, 5, 24), jG); e.rotation.x = Math.PI / 2; e.position.set(s * (2.5 + 32 * k), -2.2, 30 - 24 - 16 * k + 2.5); J.add(e); } }
+const fin = new THREE.Mesh(new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(0, 0), new THREE.Vector2(9, 0), new THREE.Vector2(13, 13), new THREE.Vector2(9.5, 13)]), { depth: .4, bevelEnabled: false }), jW);
+fin.rotation.y = Math.PI / 2; fin.position.set(-.2, 2.5, 30 - JL + 12); J.add(fin);
+J.traverse(o => { if (o.isMesh) { o.castShadow = true; } }); J.position.set(4, 5.5, 0); scene.add(J);
+// ---- lights
+const key = new THREE.DirectionalLight('#fff3e2', 3); key.position.set(-60, 90, 70); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -80, right: 80, top: 80, bottom: -80, near: 1, far: 400 }); scene.add(key);
+scene.add(new THREE.HemisphereLight('#cfe4ff', '#0b1a2a', .9));
+// ---- length bars (white ticks along the ground)
+function bar(x, z0, z1, col) { const m = new THREE.Mesh(new THREE.BoxGeometry(.5, .2, 1), new THREE.MeshBasicMaterial({ color: col })); m.position.set(x, .3, 0); scene.add(m); return t => { m.scale.z = Math.max(.001, (z1 - z0) * t); m.position.z = z1 - (z1 - z0) * t / 2; m.visible = t > .001; }; }
+const barW = bar(-17, 0, 30, '#9fd4ff'), barJ = bar(40, 30 - JL, 30, '#ffb547');
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pW'), t0: .55, at: () => [W1.position.x - 2, W1.position.y + 2, W1.position.z + 3], pos: (x, y) => [cl(x - 60, 300, 780), cl(y + 280, 560, 1500)], col: '#9fd4ff' },
+  { el: E('pJ'), t0: 2.9, at: () => [J.position.x + 2, J.position.y + 4, 0], pos: (x, y) => [cl(x + 60, 300, 780), cl(y - 260, 560, 1500)], col: '#ffb547' },
+  { el: E('pX'), t0: 4.6, at: () => [W2.position.x - 2, W2.position.y + 2, W2.position.z], pos: (x, y) => [cl(x - 40, 300, 780), cl(y + 250, 560, 1500)], col: '#ff4a4a' },
+]);
+function render(t) { t = cl(t, 0, DUR);
+  // pop-ins
+  const pw = popS(ramp(t, .2, .75)), pj = popS(ramp(t, 2.4, 3.0)), px = sm(ramp(t, 4.3, 4.9));
+  W1.scale.setScalar(Math.max(.001, pw)); J.scale.setScalar(Math.max(.001, pj)); J.visible = t > 2.4;
+  W2.visible = t > 4.3; W2.position.y = 12 + 18 * (1 - eout(ramp(t, 4.3, 4.9))); gMat.opacity = .55 * px;
+  barW(eio(ramp(t, .7, 1.6))); barJ(eio(ramp(t, 3.0, 4.0)));
+  // camera: close 3/4 on the whale, then a high pull-back so the whole jet fits the frame top to bottom
+  const a = eio(ramp(t, 1.9, 4.2));
+  const near = V(-44, 38, 58), far = V(-34, 178, 100);
+  camera.position.copy(near.lerp(far, a)).add(V(.4 * Math.sin(t * .6), .3 * Math.cos(t * .5), 0));
+  camera.lookAt(V(-10, 8, 13).lerp(V(-3, 0, -6), a)); camera.updateMatrixWorld();
+  renderer.render(scene, camera); lab(t);
+  const c1 = sm(ramp(t, .2, .55)) * (1 - sm(ramp(t, 2.5, 2.8))), c2 = sm(ramp(t, 2.85, 3.2));
+  E('c1').style.opacity = c1; E('c1').style.transform = `translateY(${(1 - sm(ramp(t, .2, .55))) * 30}px)`;
+  E('c2').style.opacity = c2; E('c2').style.transform = `translateY(${(1 - c2) * 30}px)`;
+  E('note').style.opacity = sm(ramp(t, .5, 1)); }
+await ready(render);
+</script>
+</body>
+</html>

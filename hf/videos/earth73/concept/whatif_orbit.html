@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What if Earth stopped orbiting the Sun</title>
+<!-- earth73 r0: /zack-d-films what if Earth stopped orbiting the Sun. Same what-if look as earth8/earth72: stylised 3D, one strong light,
+  low cinematic camera, one bold caption with the key fact in a highlight box.
+  Facts: NASA (Earth fact sheet, nssdc.gsfc.nasa.gov): mean orbital velocity 29.78 km/s = "about 30 km every second". Without the Sun's
+  gravity a body keeps its velocity and moves in a straight line (Newton's first law): Earth would leave along the tangent of its orbit.
+  Far from the Sun, sunlight falls off with distance squared and the surface freezes. Distances and sizes not to scale (noted on screen). -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<script src="d3-array.min.js"></script><script src="d3-geo.min.js"></script><script src="topojson-client.min.js"></script><script src="land_50m.js"></script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="cap" id="c1">Earth moves <span class="hb">30 km every second</span></div>
+    <div class="cap" id="c2">No Sun's pull: it <span class="hb">flies off and freezes</span></div>
+    <div id="note">what-if · not to scale</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.cap{position:absolute;left:70px;right:70px;top:230px;text-align:center;color:#fff;font-weight:800;font-size:64px;line-height:1.18;letter-spacing:-1px;opacity:0;text-shadow:0 4px 30px rgba(0,0,0,.7)}
+.hb{background:#ffd23f;color:#141414;padding:0 .2em;border-radius:12px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+#note{position:absolute;left:0;right:0;top:1800px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:25px;color:rgba(220,228,240,.7)}</style>`);
+const { renderer, scene, camera } = setup(34, [.01, .012, .03], [.05, .06, .13]);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const rnd = mulberry32(73);
+// ---- Earth texture (real coastlines) + an icy version that fades in
+function globeTex(sea, land, poles) { const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+  g.fillStyle = sea; g.fillRect(0, 0, 2048, 1024);
+  const pr = d3.geoEquirectangular().fitSize([2048, 1024], { type: 'Sphere' }); const pth = d3.geoPath(pr, g);
+  g.beginPath(); pth(topojson.feature(LAND_50M, LAND_50M.objects.land)); g.fillStyle = land; g.fill();
+  const gg = g.createLinearGradient(0, 0, 0, 1024); gg.addColorStop(0, poles); gg.addColorStop(.09, 'rgba(255,255,255,0)'); gg.addColorStop(.91, 'rgba(255,255,255,0)'); gg.addColorStop(1, poles); g.fillStyle = gg; g.fillRect(0, 0, 2048, 1024);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
+const RE = 4;
+const earth = new THREE.Group(); scene.add(earth);
+const eMesh = new THREE.Mesh(new THREE.SphereGeometry(RE, 96, 64), new THREE.MeshStandardMaterial({ map: globeTex('#2f6fb0', '#7fbf6a', 'rgba(255,255,255,.9)'), roughness: .75, envMapIntensity: .55 }));
+eMesh.castShadow = eMesh.receiveShadow = true; earth.add(eMesh);
+const iceMat = new THREE.MeshStandardMaterial({ map: globeTex('#cfe6f5', '#eef6fb', 'rgba(255,255,255,1)'), roughness: .35, metalness: .05, envMapIntensity: .8, transparent: true, opacity: 0 });
+const ice = new THREE.Mesh(new THREE.SphereGeometry(RE * 1.004, 96, 64), iceMat); earth.add(ice);
+const atm = new THREE.Mesh(new THREE.SphereGeometry(RE * 1.05, 64, 48), new THREE.MeshBasicMaterial({ color: '#7cc4ff', transparent: true, opacity: .18, side: THREE.BackSide })); earth.add(atm);
+earth.rotation.set(.4, 0, 0);
+// ---- Sun: glowing sphere + soft halo sprites, light comes from it
+const SUNP = V(0, 0, 0), RS = 14;
+function sunTex() { const c = document.createElement('canvas'); c.width = 1024; c.height = 512; const g = c.getContext('2d'); g.fillStyle = '#ffb23e'; g.fillRect(0, 0, 1024, 512);
+  for (let i = 0; i < 6000; i++) { const x = rnd() * 1024, y = rnd() * 512, r = .8 + rnd() * 2.2; g.fillStyle = rnd() < .5 ? 'rgba(255,225,140,.18)' : 'rgba(225,120,30,.18)'; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
+const sunM = new THREE.Mesh(new THREE.SphereGeometry(RS, 64, 48), new THREE.MeshBasicMaterial({ map: sunTex(), toneMapped: false })); scene.add(sunM);
+function halo(size, col, op) { const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'); const r = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+  r.addColorStop(0, col); r.addColorStop(1, 'rgba(255,140,40,0)'); g.fillStyle = r; g.fillRect(0, 0, 256, 256);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, opacity: op, depthWrite: false, blending: THREE.AdditiveBlending })); s.scale.set(size, size, 1); scene.add(s); return s; }
+const h1 = halo(46, 'rgba(255,190,80,1)', .55), h2 = halo(90, 'rgba(255,140,40,.7)', .22);
+const sunL = new THREE.PointLight('#fff1d6', 9000, 0, 2); sunL.castShadow = true; sunL.shadow.mapSize.set(1024, 1024); scene.add(sunL);
+const fill = new THREE.HemisphereLight('#9fb8ff', '#05060c', .25); scene.add(fill);
+// ---- orbit path (dashed ring) + straight escape line
+const R0 = 60;
+const ringPts = []; for (let i = 0; i <= 256; i++) { const a = i / 256 * Math.PI * 2; ringPts.push(V(Math.cos(a) * R0, 0, Math.sin(a) * R0)); }
+const ring = new THREE.Line(new THREE.BufferGeometry().setFromPoints(ringPts), new THREE.LineDashedMaterial({ color: '#8fb3ff', dashSize: 2, gapSize: 1.6, transparent: true, opacity: .55 }));
+ring.computeLineDistances(); scene.add(ring);
+const escG = new THREE.BufferGeometry().setFromPoints([V(0, 0, 0), V(0, 0, 0)]);
+const esc = new THREE.Line(escG, new THREE.LineBasicMaterial({ color: '#ffd23f', transparent: true, opacity: 0 })); scene.add(esc);
+// stars
+const SG = new THREE.BufferGeometry(); const sp = new Float32Array(2000 * 3); for (let i = 0; i < 2000; i++) { const v = V(rnd() - .5, rnd() - .5, rnd() - .5).normalize().multiplyScalar(1200); sp.set([v.x, v.y, v.z], i * 3); }
+SG.setAttribute('position', new THREE.BufferAttribute(sp, 3)); scene.add(new THREE.Points(SG, new THREE.PointsMaterial({ color: '#dfe8ff', size: 2.2, sizeAttenuation: false })));
+// Earth moves on the orbit until t=1.9 (angle a), then leaves along the tangent
+const A0 = -0.55, W0 = .32, TB = 1.9;
+function earthPos(t) {
+  if (t <= TB) { const a = A0 + W0 * t; return [V(Math.cos(a) * R0, 0, Math.sin(a) * R0), 0]; }
+  const a = A0 + W0 * TB, p = V(Math.cos(a) * R0, 0, Math.sin(a) * R0), tan = V(-Math.sin(a), 0, Math.cos(a));
+  const s = (t - TB) * W0 * R0 * (1 + 2.2 * Math.pow(ramp(t, TB, DUR), 2)); return [p.addScaledVector(tan, s), s]; }
+const SPEED = 1.0;
+function render(t) { t = cl(t * SPEED, 0, DUR);
+  const [ep, s] = earthPos(t); earth.position.copy(ep); eMesh.rotation.y = t * .6; ice.rotation.y = t * .6;
+  const aB = A0 + W0 * TB, pB = V(Math.cos(aB) * R0, 0, Math.sin(aB) * R0);
+  escG.setFromPoints([pB, ep]); esc.material.opacity = .9 * sm(ramp(t, TB, TB + .3));
+  ring.material.opacity = .55 * (1 - .6 * sm(ramp(t, TB, TB + 1.2)));
+  // freeze: sunlight weakens with distance
+  const fr = sm(ramp(t, 3.4, 5.6)); iceMat.opacity = fr; atm.material.opacity = .18 * (1 - .7 * fr);
+  // camera: behind Earth (away from the Sun) and above it -> Earth fills the lower half, the Sun sits above it and shrinks away
+  const dir = ep.clone().sub(SUNP).normalize(), side = V(-dir.z, 0, dir.x);
+  const shake = .12 * sm(ramp(t, TB, TB + .15)) * (1 - sm(ramp(t, TB + .15, TB + .8)));
+  camera.position.copy(ep).addScaledVector(dir, 23).addScaledVector(side, 3).add(V(0, 8.5, 0)).add(V(Math.sin(t * 40) * shake, Math.cos(t * 33) * shake, 0));
+  const tgt = camera.position.clone().add(V(0, 0, 0)); const toE = ep.clone().sub(camera.position).normalize(), toS = SUNP.clone().sub(camera.position).normalize();
+  camera.lookAt(tgt.add(toE.multiplyScalar(.5).add(toS.multiplyScalar(.5)).add(V(0,.06,0)))); camera.updateMatrixWorld();
+  renderer.render(scene, camera);
+  const c1 = sm(ramp(t, .2, .55)) * (1 - sm(ramp(t, 2.6, 2.9))), c2 = sm(ramp(t, 2.95, 3.3));
+  const e1 = document.getElementById('c1'), e2 = document.getElementById('c2');
+  e1.style.opacity = c1; e1.style.transform = `translateY(${(1 - sm(ramp(t, .2, .55))) * 30}px)`;
+  e2.style.opacity = c2; e2.style.transform = `translateY(${(1 - c2) * 30}px)`;
+  document.getElementById('note').style.opacity = sm(ramp(t, .5, 1)); }
+await ready(render);
+</script>
+</body>
+</html>
