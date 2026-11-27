@@ -1,10 +1,10 @@
 """money76 - Type it, get it #64 (template earth72, mix v8 21:00 SYSTEM buyer video): /painted-story the 1929 Wall Street crash,
 /paper-collage how a card swipe moves your money, /explain-3d what lightning does to the Eiffel Tower. Results drawn in code (concept/),
 clips x1.3/x1.32 (~4.8 s); gaps 3.8 s, tail 0.7 (29.8 s); slow accent glow behind the chat + livelier end card (no static stretch > 2 s). Keyword STYLES (system CTA). Music t3.
-Facts: r0 Federal Reserve History "Stock Market Crash of 1929": Black Tuesday 29 Oct 1929, ~16 million shares traded; Dow lost ~89% from the
+Facts: r0 Federal Reserve History "Stock Market Crash of 1929": Black Tuesday 29 Oct 1929, market fell nearly 12%; Dow lost ~89% from the
 Sept 1929 peak to July 1932 (chart line is an illustrative shape). r1 Stripe "Credit card payment authorization and transaction settlement":
 terminal -> acquirer (shop's bank) -> card network -> issuer (your bank) approves within seconds; the money settles later. r2 toureiffel.paris:
-330 m (1,083 ft) tall; struck by lightning, the iron structure carries the current to the ground."""
+330 m (1,083 ft) since Mar 2022; struck ~5 times a year on average; the iron structure is connected to the ground and carries the current down."""
 import json, shutil, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).parent
@@ -177,6 +177,8 @@ html,body,#root{background:#121212!important}
 .ttl{position:absolute;left:0;right:0;top:1625px;text-align:center}
 .ttl b{display:block;font-weight:700;font-size:44px;color:#fff}.ttl i{display:block;font-family:var(--serif);font-size:44px;color:#bdbdbd}
 #glow{position:absolute;left:-200px;top:200px;width:1500px;height:1500px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,40,.20) 0%,rgba(255,90,40,.07) 40%,rgba(255,90,40,0) 70%);pointer-events:none}
+#serl{z-index:25}
+#serl .series{background:rgba(18,18,18,.88)!important;color:#ececec!important;box-shadow:0 4px 18px rgba(0,0,0,.35)}
 #end{position:absolute;inset:0;background:#121212;opacity:0;font-family:var(--sans);z-index:30}
 #end svg{position:absolute;left:490px;top:300px;width:100px;height:100px}
 #end .c{position:absolute;left:0;right:0;top:420px;text-align:center;font-weight:800;font-size:90px;color:#fff}
@@ -229,7 +231,7 @@ TY.forEach((d,k)=>{
   F2('#st'+k,{opacity:0,scale:.5,y:140,borderRadius:60},{opacity:1,scale:.58,y:110,borderRadius:60,duration:.3,ease:'back.out(1.6)'},d.card);
   F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.42,ease:'expo.inOut'},d.full);
 });
-TY.forEach((d,k)=>{ tl.set('#serl',{opacity:0},d.full); if(k<2) tl.set('#serl',{opacity:1},d.end); });
+/* series pill stays visible during results (director 11-27) */
 tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
 tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);

@@ -63,7 +63,7 @@ function draw(lt0){const lt=Math.min(lt0*1.3,6.3);g.setTransform(1,0,0,1,0,0);g.
   put(NET,N[2][0],N[2][1],lt,1.55,13,0);
   put(BANK2,N[3][0],N[3][1],lt,2.05,14,-0.03);
   paperTag(g,lt,1.15,120,800,-0.03,"Shop's bank","takes the request",21,0);
-  paperTag(g,lt,1.65,560,800-25,0.03,"Card network","routes it",22,1);
+  paperTag(g,lt,1.65,515,800-25,0.03,"Card network","routes it",22,1);
   paperTag(g,lt,2.15,575,1385,-0.02,"Your bank","checks your money",23,1);
   // the request envelope travels the loop
   if(lt>0.95&&lt<2.6){let u=(lt-0.95)/1.6,leg=Math.min(2,Math.floor(u*3)),f=u*3-leg;const [x,y]=along(LEG[leg],EIO(f));g.save();g.translate(x,y-30);g.rotate(-0.08+0.05*Math.sin(lt*9));g.drawImage(ENV,-ENV.width/2,-ENV.height/2);g.restore();}

@@ -5,7 +5,7 @@
 <title>What lightning does to the Eiffel Tower</title>
 <!-- money76 r2: /explain-3d what lightning does to the Eiffel Tower. Our explain-3d style (wide shot, camera moves, labels with thin lines,
   one caption with one key word in a box). Own procedural tower (public 1889 monument, no logo, no copy of any photo).
-  Facts: toureiffel.paris "From 300 to 330 meters": 330 m today (= 1,083 ft). toureiffel.paris "Lightning and the Eiffel Tower": the iron tower
+  Facts: toureiffel.paris "From 300 to 330 meters": 330 m (= 1,083 ft) since 15 Mar 2022; ~5 strikes a year on average; the structure is connected to the ground (Faraday cage). toureiffel.paris "Lightning and the Eiffel Tower": the iron tower
   is struck by lightning and acts as a lightning conductor; the current is carried down the metal to the ground (earthing).
   Sizes of the bolt and glow are illustrative. -->
 <script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
@@ -17,7 +17,7 @@
     <div class="pill hot" id="pA">Lightning hits the top</div>
     <div class="pill hot" id="pB">Current runs down the iron</div>
     <div class="pill" id="pC">Safely into the ground</div>
-    <div class="cap" id="cap">A <span class="hb">330 m</span> lightning rod<small>Eiffel Tower, Paris · 1,083 ft of iron</small></div>
+    <div class="cap" id="cap">A <span class="hb">330 m</span> lightning rod<small>330 m / 1,083 ft tall · struck ~5 times a year</small></div>
   </div>
 </div>
 <script type="module">
@@ -118,7 +118,7 @@ function setCam(t) { const a = eio(ramp(t, 0, 2.2)), b = eio(ramp(t, 2.2, 4.6));
   camera.position.copy(p).add(V(shake * Math.sin(t * 90), shake * Math.cos(t * 70), 0)); camera.lookAt(l); camera.updateMatrixWorld(); }
 const E = id => document.getElementById(id);
 const lab = labels(camera, [
-  { el: E('pA'), t0: 1.35, t1: 3.1, at: () => TOP, col: '#ffb547', pos: (x, y) => [cl(x - 60, 330, 750), cl(y + 260, 520, 1300)] },
+  { el: E('pA'), t0: 1.95, t1: 3.3, at: () => TOP, col: '#ffb547', pos: (x, y) => [cl(x - 60, 330, 750), cl(y + 320, 580, 1300)] },
   { el: E('pB'), t0: 2.6, t1: 4.6, at: () => edgeAt(90, 1, 1), col: '#ffb547', pos: (x, y) => [cl(x - 120, 360, 720), cl(y - 260, 560, 1400)] },
   { el: E('pC'), t0: 3.9, at: () => V(0, .1, 0), col: '#8fd0ff', pos: (x, y) => [cl(x, 330, 750), cl(y + 230, 700, 1500)] },
 ]);
