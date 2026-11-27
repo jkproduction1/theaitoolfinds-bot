@@ -5938,5 +5938,121 @@
    "visuals": 12,
    "ending": 4
   }
+ },
+ {
+  "name": "earth74",
+  "date": "2026-11-27",
+  "score": 91,
+  "mode": "script",
+  "features": {
+   "hook": 1.0,
+   "hook_words": 12,
+   "hook_end_s": 4.62,
+   "tool_named_s": null,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 26.7,
+   "words": 47,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.53,
+   "angle": "app-demo",
+   "topic": 1.0,
+   "hot_words": 3,
+   "soft_words": 0
+  },
+  "flags": [],
+  "weights": {
+   "topic": 45,
+   "hook": 5,
+   "payoff": 4,
+   "pace": 6,
+   "length": 20,
+   "filler": 4,
+   "visuals": 12,
+   "ending": 4
+  }
+ },
+ {
+  "name": "tech75",
+  "date": "2026-11-27",
+  "score": 89,
+  "mode": "script",
+  "features": {
+   "hook": 1.0,
+   "hook_words": 15,
+   "hook_end_s": 5.77,
+   "tool_named_s": null,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 28.2,
+   "words": 51,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.07,
+   "angle": "app-demo",
+   "topic": 1.0,
+   "hot_words": 3,
+   "soft_words": 0
+  },
+  "flags": [
+   "po CTA ještě 5.8 s"
+  ],
+  "weights": {
+   "topic": 45,
+   "hook": 5,
+   "payoff": 4,
+   "pace": 6,
+   "length": 20,
+   "filler": 4,
+   "visuals": 12,
+   "ending": 4
+  }
+ },
+ {
+  "name": "money76",
+  "date": "2026-11-27",
+  "score": 82,
+  "mode": "script",
+  "features": {
+   "hook": 1.0,
+   "hook_words": 13,
+   "hook_end_s": 5.0,
+   "tool_named_s": null,
+   "payoff": 1.0,
+   "wps": 2.6,
+   "dur_s": 29.4,
+   "words": 54,
+   "pace": 0.75,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "visuals": 0.5,
+   "ending": 0.07,
+   "angle": "app-demo",
+   "topic": 0.85,
+   "hot_words": 2,
+   "soft_words": 0
+  },
+  "flags": [
+   "po CTA ještě 5.8 s",
+   "jen 2 „virální“ slova (Země/vesmír/katastrofa/slavné místo…; cíl ≥3)"
+  ],
+  "weights": {
+   "topic": 45,
+   "hook": 5,
+   "payoff": 4,
+   "pace": 6,
+   "length": 20,
+   "filler": 4,
+   "visuals": 12,
+   "ending": 4
+  }
  }
 ]
