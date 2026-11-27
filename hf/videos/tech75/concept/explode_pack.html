@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploded EV battery pack</title>
+<!-- tech75 r1: /explode a Tesla battery pack. GENERIC flat floor pack of our own design (no logo, wordmark or brand colours).
+  Layout true for the Model S 85 kWh pack (electrek / teardown reports): 16 modules in one flat tray under the floor, 7,104 cylindrical
+  18650 cells in total (444 per module, 74 in parallel x 6 in series per module), liquid cooling tubes snaking between the cells.
+  Simplified, not to scale. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pLid">Armored lid</div>
+    <div class="pill" id="pMod">16 modules</div>
+    <div class="pill hot" id="pCel">7,104 cells in all</div>
+    <div class="pill" id="pCo">Cooling tube</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from './RoundedBoxGeometry.js';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(30, [.03, .033, .04], [.19, .2, .215]);
+const rnd = mulberry32(75); const R = (a, b) => a + rnd() * (b - a);
+const add = (g, m, p, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); p.add(o); return o; };
+const tray = new THREE.MeshPhysicalMaterial({ color: '#9aa1aa', metalness: 0.9, roughness: 0.38, clearcoat: 0.3 });
+const lidM = new THREE.MeshPhysicalMaterial({ color: '#2a2d33', metalness: 0.6, roughness: 0.45, clearcoat: 0.6 });
+const modM = new THREE.MeshStandardMaterial({ color: '#1b1d22', metalness: 0.3, roughness: 0.55 });
+const busM = new THREE.MeshStandardMaterial({ color: '#d8a25a', metalness: 1, roughness: 0.3 });
+const cellM = new THREE.MeshPhysicalMaterial({ color: '#3d7be0', roughness: 0.3, clearcoat: 0.8, metalness: 0.2 });
+const capM = new THREE.MeshStandardMaterial({ color: '#d7dce2', metalness: 1, roughness: 0.25 });
+const coolM = new THREE.MeshPhysicalMaterial({ color: '#ff8a2a', emissive: '#ff6a10', emissiveIntensity: 0.0, roughness: 0.3, clearcoat: 1 });
+// pack dims (units ~ dm): 16 modules, 2 columns x 8 rows
+const MW = 5.6, MD = 2.6, MH = 1.0, GAP = 0.25;
+const pack = new THREE.Group(); scene.add(pack);
+const base = add(new RoundedBoxGeometry(2 * MW + 1.6, 0.6, 8 * MD + 7 * GAP + 1.6, 3, 0.25), tray, pack, 0, -0.45, 0);
+const rim = add(new RoundedBoxGeometry(2 * MW + 1.6, 1.4, 8 * MD + 7 * GAP + 1.6, 3, 0.25), new THREE.MeshPhysicalMaterial({ color: '#9aa1aa', metalness: 0.9, roughness: 0.38, transparent: true, opacity: 1 }), pack, 0, 0.3, 0);
+const lid = new THREE.Group(); pack.add(lid);
+add(new RoundedBoxGeometry(2 * MW + 1.7, 0.22, 8 * MD + 7 * GAP + 1.7, 3, 0.1), lidM, lid);
+for (let i = -3; i <= 3; i++) add(new THREE.BoxGeometry(2 * MW + 1.2, 0.08, 0.3), new THREE.MeshStandardMaterial({ color: '#3b3f47', metalness: .7, roughness: .4 }), lid, 0, 0.14, i * 3.0);
+// modules with instanced cells (one hero module shows the full cell grid, others too: 444 cells each, drawn as 12 x 37 grid)
+const mods = [];
+const cellG = new THREE.CylinderGeometry(0.09, 0.09, 0.65, 10);
+const capG = new THREE.CylinderGeometry(0.075, 0.075, 0.04, 10);
+const NX = 37, NZ = 12;
+for (let c = 0; c < 2; c++) for (let r = 0; r < 8; r++) {
+  const g = new THREE.Group(); pack.add(g);
+  const x0 = (c - 0.5) * (MW + 0.3), z0 = (r - 3.5) * (MD + GAP);
+  g.position.set(x0, 0.2, z0);
+  add(new RoundedBoxGeometry(MW, 0.12, MD, 2, 0.05), modM, g, 0, -0.38, 0);
+  const n = NX * NZ, ci = new THREE.InstancedMesh(cellG, cellM, n), cp = new THREE.InstancedMesh(capG, capM, n), m4 = new THREE.Matrix4();
+  let k = 0; for (let i = 0; i < NX; i++) for (let j = 0; j < NZ; j++) {
+    const x = -MW / 2 + 0.18 + i * (MW - 0.36) / (NX - 1), z = -MD / 2 + 0.16 + j * (MD - 0.32) / (NZ - 1) + (i % 2 ? 0.05 : -0.05);
+    m4.makeTranslation(x, 0, z); ci.setMatrixAt(k, m4); m4.makeTranslation(x, 0.34, z); cp.setMatrixAt(k, m4); k++; }
+  g.add(ci); g.add(cp);
+  add(new THREE.BoxGeometry(MW - 0.2, 0.05, 0.22), busM, g, 0, 0.38, -MD / 2 + 0.25); add(new THREE.BoxGeometry(MW - 0.2, 0.05, 0.22), busM, g, 0, 0.38, MD / 2 - 0.25);
+  // cooling tube: serpentine ribbon between cell rows
+  const pts = []; for (let i = 0; i <= 60; i++) { const u = i / 60; pts.push(V(-MW / 2 + 0.2 + u * (MW - 0.4), 0, Math.sin(u * Math.PI * 9) * 0.07)); }
+  const tube = add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 120, 0.05, 6), coolM, g, 0, -0.05, 0);
+  tube.scale.set(1, 6, 1);
+  mods.push({ g, x0, z0, c, r, ph: R(0, 6.28) });
+}
+const hero = mods[2 + 8 * 1]; // right column, row 2
+// lights + floor shadow
+scene.add(new THREE.HemisphereLight('#eef2f8', '#2a2622', 0.65));
+const key = new THREE.DirectionalLight('#fff3e6', 2.6); key.position.set(18, 30, 22); scene.add(key);
+const rimL = new THREE.DirectionalLight('#9fc8ff', 1.8); rimL.position.set(-25, 12, -20); scene.add(rimL);
+const glow = new THREE.PointLight('#ff9a40', 0, 14, 1.5); scene.add(glow);
+const sh = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshBasicMaterial({ map: softTex(), color: '#000', transparent: true, opacity: 0.5, depthWrite: false }));
+sh.rotation.x = -Math.PI / 2; sh.position.y = -2.2; scene.add(sh);
+// motion: pack turns, lid flies up, modules rise in a wave, hero module lifts to camera
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.25 * u + 0.75 * eio(u);
+  const az = 0.55 - 0.3 * s, el = 0.95 - 0.25 * s, d = 78 - 26 * s;
+  const ly = 1.0 + 2.5 * s;
+  camera.position.set(Math.sin(az) * Math.cos(el) * d, Math.sin(el) * d + ly, Math.cos(az) * Math.cos(el) * d);
+  camera.lookAt(0.6 * s, ly, 1.0 * s); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const wp = (g, x, y, z) => { const p = V(x, y, z); g.localToWorld(p); return [p.x, p.y, p.z]; };
+const lab = labels(camera, [
+  { el: E('pLid'), t0: 0.8, t1: 2.0, at: () => wp(lid, -MW * 0.7, 0.2, -8), pos: (x, y) => [cl(x - 40, 260, 820), cl(y - 150, 300, 1450)] },
+  { el: E('pMod'), t0: 1.7, at: () => wp(mods[5].g, -1.5, 0.4, 0), pos: (x, y) => [cl(x - 170, 250, 820), cl(y + 210, 300, 1500)] },
+  { el: E('pCel'), t0: 2.35, at: () => wp(hero.g, 1.2, 0.36, 0.3), col: '#ffb547', pos: (x, y) => [cl(x + 120, 260, 800), cl(y - 260, 300, 1450)] },
+  { el: E('pCo'), t0: 3.1, at: () => wp(hero.g, -1.6, -0.05, 0.0), col: '#ffb547', pos: (x, y) => [cl(x - 160, 250, 820), cl(y + 230, 300, 1500)] },
+]);
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  pack.rotation.y = -0.35 + 0.25 * eio(ramp(t, 0, DUR));
+  const lu = eout(ramp(t, 0.35, 1.6));
+  const lu2 = eio(ramp(t, 1.7, 3.0)); lid.position.set(-3 * lu2, 0.95 + 6.0 * lu + 22 * lu2 + 0.2 * Math.sin(t * 1.5) * lu, -4 * lu - 10 * lu2); lid.rotation.x = -0.3 * lu - 0.5 * lu2; lid.visible = lu2 < 0.999;
+  rim.material.opacity = 1 - 0.85 * sm(ramp(t, 0.8, 1.5)); rim.visible = rim.material.opacity > 0.02;
+  for (const m of mods) {
+    const i = m.r + m.c * 0.5, e = eout(ramp(t, 1.0 + i * 0.07, 2.4 + i * 0.07));
+    const isH = m === hero, he = eout(ramp(t, 2.0, 3.4));
+    m.g.position.set(m.x0 * (1 + 0.28 * e) - (isH ? 2.6 * he : 0), 0.2 + 1.1 * e + Math.sin(t * 1.6 + m.ph) * 0.06 * e + (isH ? 5.5 * he : 0), m.z0 * (1 + 0.22 * e));
+    m.g.rotation.x = isH ? 0.45 * he : 0; m.g.rotation.z = isH ? -0.15 * he : 0; m.g.scale.setScalar(isH ? 1 + 0.35 * he : 1);
+  }
+  coolM.emissiveIntensity = 0.9 * sm(ramp(t, 2.9, 3.4)) * (0.8 + 0.2 * Math.sin(t * 5));
+  glow.position.copy(V(...wp(hero.g, 0, 1.5, 1.5))); glow.intensity = 60 * sm(ramp(t, 2.6, 3.2));
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

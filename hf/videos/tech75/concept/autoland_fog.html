@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Autoland in fog</title>
+<!-- tech75 r0: /explain-3d how a plane lands itself in fog. Generic twin-engine airliner of our own design (no airline, no brand).
+  True for ILS CAT III autoland (FAA AIM 1-1-9, FAA Order 8400.13): two radio beams from the runway, the LOCALIZER (left/right, along the
+  centreline) and the GLIDE SLOPE (the descent path, normally 3 degrees); the autopilot flies both beams, flares just above the runway and
+  touches down while the pilots monitor. Time compressed, not to scale. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pLo">Localizer: left/right</div>
+    <div class="pill hot" id="pGs">Glide slope: 3°</div>
+    <div class="pill" id="pAp">Autopilot flares</div>
+    <div class="pill hot" id="pTd">Touchdown</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(36, [.50, .53, .57], [.56, .59, .63]);
+const FOG = new THREE.Color('#8d959e');
+scene.fog = new THREE.FogExp2(FOG, 0.028); scene.background = FOG; scene.children.forEach(o => { if (o.isMesh && o.material.isShaderMaterial) o.visible = false; });
+const rnd = mulberry32(76); const R = (a, b) => a + rnd() * (b - a);
+const add = (g, m, p, x = 0, y = 0, z = 0) => { const o = new THREE.Mesh(g, m); o.position.set(x, y, z); p.add(o); return o; };
+// ground + runway (runway along +z, threshold at z=0); 1 unit ~ 10 m
+const grass = add(new THREE.PlaneGeometry(800, 800), new THREE.MeshStandardMaterial({ color: '#5d665c', roughness: 1 }), scene); grass.rotation.x = -Math.PI / 2; grass.position.y = -0.02;
+const rw = add(new THREE.PlaneGeometry(4.5, 300), new THREE.MeshStandardMaterial({ color: '#2b2d31', roughness: 0.85 }), scene, 0, 0, 150); rw.rotation.x = -Math.PI / 2;
+const paint = new THREE.MeshStandardMaterial({ color: '#e9ecef', roughness: 0.6 });
+for (let z = 10; z < 300; z += 6) { const m = add(new THREE.PlaneGeometry(0.15, 3), paint, scene, 0, 0.01, z); m.rotation.x = -Math.PI / 2; }
+for (let i = -7; i <= 7; i++) if (Math.abs(i) > 0) { const m = add(new THREE.PlaneGeometry(0.18, 3.0), paint, scene, i * 0.27, 0.01, 2); m.rotation.x = -Math.PI / 2; }
+for (const x of [-1.2, 1.2]) { const m = add(new THREE.PlaneGeometry(0.6, 4.5), paint, scene, x, 0.01, 30); m.rotation.x = -Math.PI / 2; }
+// lights (sprites, glow through fog)
+const lightTex = softTex();
+function lamp(col, size) { return new THREE.SpriteMaterial({ map: lightTex, color: col, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false }); }
+const edgeW = lamp('#fff6dc'), appr = lamp('#ffe8b0'), thrG = lamp('#5dff8a');
+const LAMPS = [];
+for (let z = 0; z < 300; z += 6) for (const x of [-2.4, 2.4]) { const s = new THREE.Sprite(edgeW); s.position.set(x, 0.12, z); s.scale.setScalar(0.5); scene.add(s); LAMPS.push(s); }
+for (let x = -2.4; x <= 2.41; x += 0.6) { const s = new THREE.Sprite(thrG); s.position.set(x, 0.12, -0.3); s.scale.setScalar(0.5); scene.add(s); }
+const strobes = [];
+for (let z = -3; z > -90; z -= 3) { for (let x = -0.6; x <= 0.61; x += 0.4) { const s = new THREE.Sprite(appr); s.position.set(x, 0.15, z); s.scale.setScalar(0.38); scene.add(s); }
+  const st = new THREE.Sprite(lamp('#ffffff')); st.position.set(0, 0.35, z); st.scale.setScalar(0); scene.add(st); strobes.push(st); }
+// ILS beams: localizer (horizontal fan, cyan) and glide slope (vertical wedge, orange), radiating from the runway
+const GS = 3 * Math.PI / 180, BACK = 260;
+function beamMat(col) { return new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false,
+  uniforms: { uC: { value: new THREE.Color(col) }, uA: { value: 0 }, uT: { value: 0 } },
+  vertexShader: `varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `uniform vec3 uC; uniform float uA, uT; varying vec2 vU;
+    void main(){ float c = 1.0-abs(vU.y-0.5)*2.0; float core = pow(c, 6.0)*1.4 + pow(c,1.5)*0.18;
+      float pulse = 0.75+0.25*sin(vU.x*60.0 - uT*14.0); float fade = smoothstep(0.0,0.08,vU.x)*smoothstep(1.0,0.6,vU.x);
+      gl_FragColor = vec4(uC*core*pulse*fade*uA, 1.0); }` }); }
+function wedge(len, half, mat) { // triangle fan in local xz: apex at origin, opening toward -z
+  const g = new THREE.BufferGeometry();
+  const N = 24, pos = [], uv = [], idx = [];
+  for (let i = 0; i <= N; i++) { const v = i / N, a = (v - 0.5) * 2 * half;
+    pos.push(0, 0, 0, Math.sin(a) * len, 0, -Math.cos(a) * len); uv.push(0, v, 1, v); }
+  for (let i = 0; i < N; i++) { const a = i * 2; idx.push(a, a + 1, a + 3, a, a + 3, a + 2); }
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); g.setIndex(idx);
+  return new THREE.Mesh(g, mat);
+}
+const locM = beamMat('#47c8ff'), gsM = beamMat('#ffa33a');
+const loc = wedge(BACK + 40, 0.028, locM); loc.position.set(0, 0.25, 300); scene.add(loc);           // from the far end
+const gsG = new THREE.Group(); gsG.position.set(0, 0, 10); scene.add(gsG);
+const gs = wedge(BACK + 20, 0.012, gsM); gs.rotation.z = Math.PI / 2; gsG.add(gs); gsG.rotation.x = -GS;  // vertical wedge tilted up 3 deg
+function glowLine(a, b, col, r) { const g = new THREE.CylinderGeometry(r, r, a.distanceTo(b), 12, 1, true); const m = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+  uniforms: { uC: { value: new THREE.Color(col) }, uA: { value: 0 }, uT: { value: 0 } },
+  vertexShader: `varying vec3 vN; varying vec3 vV; varying float vY; void main(){ vY = uv.y; vec4 mv = modelViewMatrix*vec4(position,1.0); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix*mv; }`,
+  fragmentShader: `uniform vec3 uC; uniform float uA, uT; varying vec3 vN; varying vec3 vV; varying float vY; void main(){ float f = abs(dot(normalize(vN),normalize(vV))); float k = pow(f,2.0)*1.3; float p = 0.7+0.3*sin(vY*160.0 - uT*18.0); gl_FragColor = vec4(uC*k*p*uA,1.0); }` });
+  const o = new THREE.Mesh(g, m); o.position.copy(a).add(b).multiplyScalar(0.5); o.quaternion.setFromUnitVectors(V(0, 1, 0), b.clone().sub(a).normalize()); scene.add(o); return m; }
+const locL = glowLine(V(0, 0.22, -140), V(0, 0.22, 300), '#47c8ff', 0.09);
+const gsL = glowLine(V(0, 0.7, 10), V(0, 0.7 + 150 * Math.tan(GS), -140), '#ffa33a', 0.14);
+// airliner (generic twin)
+const plane = new THREE.Group(); scene.add(plane);
+const body = new THREE.MeshPhysicalMaterial({ color: '#eef1f4', roughness: 0.32, metalness: 0.15, clearcoat: 0.8 });
+const grey = new THREE.MeshPhysicalMaterial({ color: '#aab2bc', roughness: 0.4, metalness: 0.5, clearcoat: 0.4 });
+const dark = new THREE.MeshStandardMaterial({ color: '#1a1d22', roughness: 0.5, metalness: 0.4 });
+{ const f = new THREE.CapsuleGeometry(0.32, 4.6, 8, 32); f.rotateX(Math.PI / 2); add(f, body, plane);
+  const n = add(new THREE.SphereGeometry(0.32, 24, 16), body, plane, 0, 0, 2.55); n.scale.set(1, 0.92, 1.5);
+  const wsh = new THREE.Shape(); wsh.moveTo(0, 0.7); wsh.lineTo(3.4, -0.9); wsh.lineTo(3.4, -1.25); wsh.lineTo(0, -0.7); wsh.lineTo(-3.4, -1.25); wsh.lineTo(-3.4, -0.9); wsh.closePath();
+  const wg = new THREE.ExtrudeGeometry(wsh, { depth: 0.08, bevelEnabled: true, bevelSize: 0.03, bevelThickness: 0.03, bevelSegments: 2 }); wg.rotateX(Math.PI / 2);
+  add(wg, grey, plane, 0, -0.12, 0.3);
+  const tsh = new THREE.Shape(); tsh.moveTo(0, 0.0); tsh.lineTo(1.25, -0.6); tsh.lineTo(1.25, -0.85); tsh.lineTo(0, -0.6); tsh.lineTo(-1.25, -0.85); tsh.lineTo(-1.25, -0.6); tsh.closePath();
+  const tg = new THREE.ExtrudeGeometry(tsh, { depth: 0.05, bevelEnabled: false }); tg.rotateX(Math.PI / 2); add(tg, grey, plane, 0, 0.1, -2.0);
+  const fsh = new THREE.Shape(); fsh.moveTo(0, 0); fsh.lineTo(-0.9, 0); fsh.lineTo(-1.45, 1.25); fsh.lineTo(-1.05, 1.25); fsh.closePath();
+  const fg = new THREE.ExtrudeGeometry(fsh, { depth: 0.05, bevelEnabled: false }); fg.rotateY(-Math.PI / 2); add(fg, body, plane, 0.025, 0.2, -1.4);
+  for (const x of [-1.15, 1.15]) { const e = add(new THREE.CylinderGeometry(0.2, 0.17, 0.8, 24), grey, plane, x, -0.36, 0.75); e.rotation.x = Math.PI / 2;
+    const fan = add(new THREE.CircleGeometry(0.17, 24), dark, plane, x, -0.36, 1.16); }
+  for (let i = 0; i < 18; i++) add(new THREE.BoxGeometry(0.02, 0.05, 0.06), dark, plane, 0.31, 0.06, 1.8 - i * 0.2).position.x = 0.315;
+  // gear
+  for (const [x, z] of [[-0.45, 0.1], [0.45, 0.1], [0, 1.9]]) { add(new THREE.CylinderGeometry(0.025, 0.025, 0.4), grey, plane, x, -0.45, z);
+    const w = add(new THREE.CylinderGeometry(0.1, 0.1, 0.12, 16), dark, plane, x, -0.66, z); w.rotation.z = Math.PI / 2; }
+  // landing lights
+  for (const x of [-0.6, 0.6]) { const s = new THREE.Sprite(lamp('#fff2d0')); s.position.set(x, -0.2, 0.9); s.scale.setScalar(1.3); plane.add(s); }
+  const beacon = new THREE.Sprite(lamp('#ff3b30')); beacon.position.set(0, 0.36, 0); beacon.scale.setScalar(0.6); plane.add(beacon); plane.userData.beacon = beacon;
+}
+plane.traverse(o => { if (o.material && !o.isSprite) o.material.fog = true; });
+// smoke puffs at touchdown
+const puffM = new THREE.SpriteMaterial({ map: softTex(), color: '#d6d9dd', transparent: true, depthWrite: false, opacity: 0 });
+const puffs = []; for (let i = 0; i < 10; i++) { const s = new THREE.Sprite(puffM.clone()); scene.add(s); puffs.push([s, R(-0.6, 0.6), R(0, 0.4), R(0.6, 1.4)]); }
+// light
+scene.add(new THREE.HemisphereLight('#dfe6ee', '#4a4f48', 1.0));
+const key = new THREE.DirectionalLight('#ffffff', 1.4); key.position.set(-20, 40, 10); scene.add(key);
+// flight path: on the glide slope, flare from ~5 units (50 ft) to touchdown at z=TD
+const TD = 24, T_TD = 3.55, SPD = 17;
+function zAt(t) { return TD - SPD * (T_TD - t) + (t > T_TD ? -0.5 * 3.2 * (t - T_TD) ** 2 * 0 : 0); }
+function path(t) {
+  const z = t <= T_TD ? TD - SPD * (T_TD - t) : TD + SPD * (t - T_TD) - 0.5 * 4.2 * (t - T_TD) ** 2;
+  let y = Math.max(0, (10 - z) * Math.tan(GS)) * 1.0 + 0.7;
+  // flare: blend the last part into a soft curve to wheel height
+  const fl = sm(ramp(t, T_TD - 0.9, T_TD));
+  const yF = 0.7 + Math.max(0, (TD - z)) * 0.03;
+  if (t >= T_TD) y = 0.7; else y = y * (1 - fl) + yF * fl;
+  const x = 0.9 * Math.sin(t * 1.1) * (1 - sm(ramp(t, 0, 2.6)));   // small drift, localizer pulls it to the centreline
+  return [x, y, z];
+}
+function setCam(t) {
+  const [px, py, pz] = path(Math.min(t, DUR));
+  const u = cl(t / DUR), s = eio(u);
+  camera.position.set(px - 3.4 + 1.0 * s, py + 3.6 - 1.2 * s, pz - 17 + 3 * s);
+  camera.lookAt(px - 0.2 + 0.7 * s, py - 0.3 - 0.2 * s, pz + 10); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pLo'), t0: 0.55, t1: 2.5, at: t => [0, 0.25, path(t)[2] + 14], pos: (x, y) => [cl(x + 120, 300, 780), cl(y + 220, 300, 1500)] },
+  { el: E('pGs'), t0: 1.05, t1: 2.9, at: t => { const z = path(t)[2] + 9; return [0, (10 - z) * Math.tan(GS) + 0.7, z]; }, col: '#ffb547', pos: (x, y) => [cl(x + 60, 300, 780), cl(y - 250, 300, 1500)] },
+  { el: E('pAp'), t0: 2.65, t1: 3.7, at: t => path(t), pos: (x, y) => [cl(x - 60, 300, 780), cl(y - 230, 300, 1500)] },
+  { el: E('pTd'), t0: T_TD + 0.05, at: t => { const p = path(t); return [p[0], 0.05, p[2] + 0.1]; }, col: '#ffb547', pos: (x, y) => [cl(x + 40, 300, 780), cl(y + 230, 300, 1500)] },
+]);
+function render(t) {
+  t = cl(t, 0, DUR);
+  const [x, y, z] = path(t);
+  plane.position.set(x, y, z);
+  const pitch = 0.03 + 0.09 * sm(ramp(t, T_TD - 0.9, T_TD)) * (1 - sm(ramp(t, T_TD + 0.4, T_TD + 1.3)));
+  plane.rotation.set(-pitch, 0.03 * Math.cos(t * 1.1) * (1 - sm(ramp(t, 0, 2.6))), -0.05 * Math.cos(t * 1.1) * (1 - sm(ramp(t, 0, 2.6))));
+  plane.userData.beacon.material.opacity = (Math.sin(t * 9) > 0.6) ? 1 : 0.15;
+  const ba = sm(ramp(t, 0.2, 0.9)) * (1 - 0.6 * sm(ramp(t, T_TD, T_TD + 0.8)));
+  locM.uniforms.uA.value = ba * 1.2; gsM.uniforms.uA.value = sm(ramp(t, 0.7, 1.3)) * (1 - 0.7 * sm(ramp(t, T_TD - 0.3, T_TD + 0.5))) * 1.3;
+  locM.uniforms.uT.value = gsM.uniforms.uT.value = t; locL.uniforms.uA.value = locM.uniforms.uA.value * 1.2; gsL.uniforms.uA.value = gsM.uniforms.uA.value * 1.1; locL.uniforms.uT.value = gsL.uniforms.uT.value = t;
+  strobes.forEach((s, i) => { const ph = ((t * 2.0) % 1) * strobes.length; const d = Math.abs(strobes.length - 1 - i - ph); s.scale.setScalar(d < 1 ? 1.4 * (1 - d) : 0); });
+  puffs.forEach(([s, dx, dy, sp], i) => { const a = t - T_TD - i * 0.02; const k = cl(a / 1.2);
+    s.material.opacity = a > 0 ? 0.55 * (1 - k) : 0; s.position.set(x + dx * 0.8 + (i % 2 ? 0.45 : -0.45), 0.15 + dy + k * 0.6, z - 0.2 - k * 2.5 * sp); s.scale.setScalar(0.4 + 1.6 * k); });
+  setCam(t);
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>

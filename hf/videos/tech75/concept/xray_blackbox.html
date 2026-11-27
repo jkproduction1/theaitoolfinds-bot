@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>X-ray flight recorder</title>
+<!-- tech75 r2: /x-ray a plane's black box after a crash. Generic flight recorder of our own design (no maker's shape or logo).
+  True for modern CVR/FDR units (NTSB "Cockpit Voice Recorders and Flight Data Recorders"; EUROCAE ED-112): painted bright orange with
+  reflective tape (not black), the data sits on memory chips inside an armoured crash-survivable memory unit (steel/titanium shell + thermal
+  insulation), tested to ~3,400 g impact and 1,100 C (2,000 F) fire, with an underwater locator beacon on the front. Simplified. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill" id="pAr">Armored memory</div>
+    
+    <div class="pill" id="pCh">Memory chips</div>
+    <div class="pill red" id="pG">3,400 g · 1,100 °C / 2,000 °F</div>
+    <div class="pill" id="pUl">Underwater beacon</div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from './RoundedBoxGeometry.js';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+const { renderer, scene, camera, bgU } = setup(30, [.012, .02, .035], [.06, .09, .14]);
+const rnd = mulberry32(175); const R = (a, b) => a + rnd() * (b - a);
+// scan: solid on +x side of SCAN, x-ray on -x side
+let SCAN = 30;
+const planeS = new THREE.Plane(V(1, 0, 0), -SCAN), planeX = new THREE.Plane(V(-1, 0, 0), SCAN);
+const XV = `#include <clipping_planes_pars_vertex>
+varying vec3 vN; varying vec3 vV; varying vec3 vW;
+void main(){ vec4 wp = modelMatrix*vec4(position,1.0); vW = wp.xyz; vec4 mvPosition = viewMatrix*wp;
+  vN = normalize(normalMatrix*normal); vV = normalize(-mvPosition.xyz); gl_Position = projectionMatrix*mvPosition;
+  #include <clipping_planes_vertex>
+}`;
+const XF = `#include <clipping_planes_pars_fragment>
+uniform vec3 uC; uniform float uB, uG, uA, uScan;
+varying vec3 vN; varying vec3 vV; varying vec3 vW;
+void main(){
+  #include <clipping_planes_fragment>
+  float f = pow(1.0-abs(dot(normalize(vN),normalize(vV))), 2.0);
+  float band = exp(-abs(vW.x-uScan)*0.35)*1.4;
+  gl_FragColor = vec4(uC*((uB+uG*f) + band*(0.3+f))*uA, 1.0); }`;
+const XM = [], EM = [];
+function xrayMat(color, base, gain) {
+  const m = new THREE.ShaderMaterial({ uniforms: { uC: { value: new THREE.Color(color) }, uB: { value: base }, uG: { value: gain }, uA: { value: 0 }, uScan: { value: SCAN } },
+    vertexShader: XV, fragmentShader: XF, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, clipping: true });
+  m.clippingPlanes = [planeX]; XM.push(m); return m;
+}
+function edgeMat(color, op) { const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+  m.clippingPlanes = [planeX]; m.userData.op = op; EM.push(m); return m; }
+function shell(geo, solid, parent, col = '#3aa8ff', xr = [0.03, 0.8], edge = 30, eop = 0.55, pos = [0, 0, 0], rot = [0, 0, 0]) {
+  const g = new THREE.Group(); g.position.set(...pos); g.rotation.set(...rot);
+  const s = solid.clone(); s.clippingPlanes = [planeS]; g.add(new THREE.Mesh(geo, s));
+  g.add(new THREE.Mesh(geo, xrayMat(col, xr[0], xr[1])));
+  if (edge) g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, edge), edgeMat(col === '#3aa8ff' ? '#9fe6ff' : '#ffd08a', eop)));
+  parent.add(g); return g;
+}
+// materials: scuffed orange + soot
+const orange = new THREE.MeshPhysicalMaterial({ color: '#ff6a12', roughness: 0.55, metalness: 0.1, clearcoat: 0.3 });
+const tex = (() => { const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 30; i++) { g.fillStyle = `rgba(20,14,10,${R(0.04, 0.16)})`; g.beginPath(); g.ellipse(R(0, 256), R(0, 256), R(10, 50), R(4, 20), R(0, 3), 0, 7); g.fill(); }
+  for (let i = 0; i < 40; i++) { g.strokeStyle = `rgba(255,255,255,${R(0.2, 0.5)})`; g.lineWidth = R(0.5, 2); g.beginPath(); const x = R(0, 256), y = R(0, 256); g.moveTo(x, y); g.lineTo(x + R(-30, 30), y + R(-6, 6)); g.stroke(); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+orange.map = tex;
+const steel = new THREE.MeshStandardMaterial({ color: '#8d939b', metalness: 0.9, roughness: 0.45, map: tex });
+const tapeM = new THREE.MeshStandardMaterial({ color: '#e8ecf0', metalness: 0.6, roughness: 0.2, emissive: '#555', emissiveIntensity: 0.3 });
+const dark = new THREE.MeshStandardMaterial({ color: '#202328', metalness: 0.5, roughness: 0.6 });
+// recorder: chassis box (units ~ cm) + CSMU drum on the front + ULB
+const rec = new THREE.Group(); scene.add(rec);
+shell(new RoundedBoxGeometry(32, 14, 12, 3, 1.0), orange, rec, '#3aa8ff', [0.03, 0.8], 30, 0.5, [-4, 0, 0]);
+for (const z of [-6.05, 6.05]) for (const x of [-15, 7]) { const m = new THREE.Mesh(new THREE.PlaneGeometry(4.5, 3.2), tapeM.clone()); m.material.clippingPlanes = [planeS]; m.position.set(x, 3.5, z); if (z < 0) m.rotation.y = Math.PI; rec.add(m); }
+// handle
+{ const h = new THREE.TorusGeometry(4, 0.45, 10, 24, Math.PI); shell(h, steel, rec, '#3aa8ff', [0.03, 0.7], 0, 0, [-4, 7, 0], [0, 0, 0]); }
+// CSMU drum (armour) at the front end
+const csmuG = new THREE.CylinderGeometry(6.2, 6.2, 11, 48); csmuG.rotateZ(Math.PI / 2);
+shell(csmuG, orange, rec, '#ffb547', [0.05, 1.0], 25, 0.7, [17.5, 0.5, 0]);
+for (const x of [13.6, 21.4]) { const g = new THREE.TorusGeometry(6.25, 0.35, 8, 48); g.rotateY(Math.PI / 2); shell(g, steel, rec, '#ffb547', [0.03, 0.8], 0, 0, [x, 0.5, 0]); }
+// ULB (underwater locator beacon) on the front face
+const ulbG = new THREE.CylinderGeometry(1.6, 1.6, 9, 32); ulbG.rotateZ(Math.PI / 2);
+shell(ulbG, steel, rec, '#3aa8ff', [0.04, 0.9], 25, 0.6, [27, -3.2, 0]);
+// mount tray
+shell(new THREE.BoxGeometry(46, 1.2, 14), dark, rec, '#3aa8ff', [0.02, 0.5], 30, 0.3, [3, -7.6, 0]);
+// inner parts (seen only through x-ray side)
+const inner = new THREE.Group(); scene.add(inner);
+const glowMat = (c, e) => new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: e, roughness: 0.4, metalness: 0.2 });
+// armour wall (inner steel/titanium cylinder) + insulation layer + memory board
+const armour = new THREE.Mesh((() => { const g = new THREE.CylinderGeometry(5.4, 5.4, 9.6, 48, 1, true); g.rotateZ(Math.PI / 2); return g; })(), new THREE.MeshStandardMaterial({ color: '#cfe8ff', emissive: '#4aa6ff', emissiveIntensity: 0.6, metalness: 0.6, roughness: 0.3, side: THREE.DoubleSide, transparent: true, opacity: 0.55 }));
+armour.position.set(17.5, 0.5, 0); inner.add(armour);
+const insul = new THREE.Mesh((() => { const g = new THREE.CylinderGeometry(4.3, 4.3, 8.4, 48); g.rotateZ(Math.PI / 2); return g; })(), new THREE.MeshStandardMaterial({ color: '#ffb547', emissive: '#ff8a1e', emissiveIntensity: 0.7, transparent: true, opacity: 0.45, depthWrite: false }));
+insul.position.set(17.5, 0.5, 0); inner.add(insul);
+const board = new THREE.Group(); board.position.set(17.5, 0.5, 0); inner.add(board);
+board.add(new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.25, 4.6), glowMat('#1f8a5a', 0.6)));
+const chipMat = glowMat('#7fe0ff', 1.3);
+for (let i = 0; i < 4; i++) { const c = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.35, 1.6), chipMat); c.position.set(-2.2 + i * 1.45, 0.3, 0.9); board.add(c);
+  const c2 = c.clone(); c2.position.z = -1.0; board.add(c2); }
+// electronics in the chassis
+for (let i = 0; i < 5; i++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.3, 10, 9), glowMat('#2aa070', 0.35)); b.position.set(-16 + i * 5, 0, 0); inner.add(b); }
+const ulbIn = new THREE.Mesh((() => { const g = new THREE.CylinderGeometry(1.0, 1.0, 6.5, 24); g.rotateZ(Math.PI / 2); return g; })(), glowMat('#9fe6ff', 0.9)); ulbIn.position.set(27, -3.2, 0); inner.add(ulbIn);
+// ground: dark sand with debris + soot
+const ground = new THREE.Mesh(new THREE.CircleGeometry(900, 64), new THREE.MeshStandardMaterial({ color: '#121316', roughness: 1 })); ground.rotation.x = -Math.PI / 2; ground.position.y = -8.3; scene.add(ground);
+const debM = new THREE.MeshStandardMaterial({ color: '#6c7178', metalness: 0.8, roughness: 0.5 });
+for (let i = 0; i < 26; i++) { const a = R(0, 6.28), r = R(26, 70); const d = new THREE.Mesh(new THREE.BoxGeometry(R(1, 6), R(0.2, 0.6), R(1, 5)), debM); d.position.set(Math.cos(a) * r, -8 + R(0, 0.4), Math.sin(a) * r); d.rotation.set(R(-0.4, 0.4), R(0, 6), R(-0.4, 0.4)); scene.add(d); }
+const soot = new THREE.Mesh(new THREE.PlaneGeometry(90, 70), new THREE.MeshBasicMaterial({ map: softTex(), color: '#000', transparent: true, opacity: 0.7, depthWrite: false })); soot.rotation.x = -Math.PI / 2; soot.position.y = -8.2; scene.add(soot);
+// scan sheet
+const sheetM = new THREE.MeshBasicMaterial({ color: '#59c8ff', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false,
+  map: (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const g = c.getContext('2d'); const gr = g.createLinearGradient(0, 0, 64, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(.5, '#fff'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 8); return new THREE.CanvasTexture(c); })() });
+const sheet = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 26), sheetM); sheet.rotation.y = Math.PI / 2 - Math.PI / 2; scene.add(sheet);
+// lights
+scene.add(new THREE.HemisphereLight('#cfe0ff', '#1b1a18', 0.6));
+const key = new THREE.DirectionalLight('#fff0dc', 2.6); key.position.set(30, 50, 40); scene.add(key);
+const rim = new THREE.DirectionalLight('#8fc6ff', 1.6); rim.position.set(-40, 20, -40); scene.add(rim);
+const hot = new THREE.PointLight('#ff8a30', 0, 40, 1.5); hot.position.set(17.5, 4, 8); scene.add(hot);
+// camera: close 3/4 view, slow push toward the memory unit
+function setCam(t) {
+  const u = cl(t / DUR), s = 0.25 * u + 0.75 * eio(u);
+  const az = 0.55 - 0.25 * s, el = 0.33 - 0.05 * s, d = 165 - 55 * s;
+  const tx = 6 + 9 * s;
+  camera.position.set(tx + Math.sin(az) * Math.cos(el) * d, Math.sin(el) * d, Math.cos(az) * Math.cos(el) * d);
+  camera.lookAt(tx, -0.5, 0); camera.updateMatrixWorld();
+}
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pAr'), t0: 1.3, at: [17.5, 6.6, 1.5], pos: (x, y) => [cl(x - 120, 300, 760), cl(y - 260, 300, 1450)] },
+  { el: E('pCh'), t0: 1.9, at: [18.0, 1.2, 1.4], pos: (x, y) => [cl(x - 260, 260, 800), cl(y + 300, 300, 1560)] },
+  { el: E('pG'), t0: 2.6, at: [22.0, 6.0, 3.0], col: '#ff4a4a', pos: (x, y) => [cl(x - 40, 400, 680), cl(y - 470, 300, 1450)] },
+  { el: E('pUl'), t0: 3.2, at: [30.5, -3.2, 1.2], pos: (x, y) => [cl(x + 20, 260, 800), cl(y + 420, 300, 1560)] },
+]);
+function render(t) {
+  t = cl(t, 0, DUR);
+  setCam(t);
+  rec.rotation.y = 0.05 * Math.sin(t * 0.7);
+  inner.rotation.y = rec.rotation.y;
+  const rr = ramp(t, 0.25, 2.3), sp = 0.3 * rr + 0.7 * sm(rr); SCAN = -24 + 56 * sp;
+  planeS.constant = -SCAN; planeX.constant = SCAN;
+  const xa = sm(ramp(t, 0.1, 0.5));
+  XM.forEach(m => { m.uniforms.uA.value = xa; m.uniforms.uScan.value = SCAN; });
+  EM.forEach(m => m.opacity = m.userData.op * xa);
+  const sa = sm(ramp(t, 0.1, 0.4)) * (1 - sm(ramp(t, 2.0, 2.35)));
+  sheet.visible = sa > 0.001; sheetM.opacity = sa; sheet.position.set(SCAN, 0, 0); sheet.scale.set(1, 1.1, 1);
+  sheet.rotation.set(0, Math.PI / 2, 0);
+  bgU.uGrid.value = 0.5 + 0.6 * sm(ramp(t, 0.3, 2.3));
+  inner.visible = true;
+  const ph = sm(ramp(t, 2.5, 3.0));
+  insul.material.emissiveIntensity = 0.7 + 1.2 * ph * (0.75 + 0.25 * Math.sin(t * 9));
+  hot.intensity = 900 * ph;
+  chipMat.emissiveIntensity = 1.3 + 0.6 * Math.sin(t * 6);
+  ulbIn.material.emissiveIntensity = 0.9 + (t > 3.2 ? 1.8 * (Math.sin(t * 7) > 0.3 ? 1 : 0) : 0);
+  renderer.render(scene, camera);
+  lab(t);
+}
+await ready(render);
+</script>
+</body>
+</html>
