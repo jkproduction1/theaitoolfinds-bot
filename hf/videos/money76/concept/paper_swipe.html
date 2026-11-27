@@ -1,0 +1,84 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Permanent Marker';src:url(permanent-marker-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// money76 r1: /paper-collage how a card swipe moves your money. Generic card, terminal, banks and network drawn in code (no brand, no logo).
+// Facts (Stripe "Credit card payment authorization and transaction settlement process"; Worldpay "How payment processing works"):
+// terminal -> merchant's bank (acquirer) -> card network -> your bank (issuer) checks funds/fraud and approves -> answer travels back,
+// all within seconds; the money itself moves later in settlement. On screen: "Shop's bank", "Card network", "Your bank", "Approved", "~2 seconds", "the cash moves later".
+const g=document.getElementById('c').getContext('2d'), MK="'Permanent Marker',cursive";
+function jit(t,seed,a){const R=R0(1+seed*131+Math.floor(t*12)*977);R();return [(R()-.5)*2*a,(R()-.5)*2*a,(R()-.5)*0.006*a];}
+function dots(p,w,h,step,rad,col){for(let y=0;y<h;y+=step)for(let x=(y/step%2)*step/2;x<w;x+=step){p.fillStyle=col;p.beginPath();p.arc(x,y,rad,0,7);p.fill();}}
+const BG=off(1080,1920,(p,w,h)=>{p.fillStyle='#ece3cf';p.fillRect(0,0,w,h);const R=R0(4);
+  for(let i=0;i<9000;i++){p.strokeStyle='rgba(120,95,60,'+(R()*.08)+')';p.lineWidth=1;const x=R()*w,y=R()*h,a=R()*6.28,l=4+R()*14;p.beginPath();p.moveTo(x,y);p.lineTo(x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}
+  // faint ledger lines (old receipt paper)
+  p.strokeStyle='rgba(60,90,120,.10)';p.lineWidth=2;for(let y=40;y<h;y+=58){p.beginPath();p.moveTo(0,y);p.lineTo(w,y);p.stroke();}
+  p.strokeStyle='rgba(180,40,30,.12)';p.beginPath();p.moveTo(120,0);p.lineTo(120,h);p.stroke();});
+// big torn blue panel behind the loop
+const PANEL=off(1040,1060,(p,w,h)=>{p.save();tornPath(p,14,14,w-28,h-28,7,16);p.shadowColor='rgba(40,30,20,.35)';p.shadowBlur=18;p.shadowOffsetY=10;p.fillStyle='#bcd3db';p.fill();p.shadowColor='transparent';p.clip();
+  dots(p,w,h,12,2.2,'rgba(20,60,90,.12)');p.restore();});
+// --- cut-outs
+const CARD=sticker(off(340,214,(p,w,h)=>{const r=22;p.beginPath();p.moveTo(r,0);p.arcTo(w,0,w,h,r);p.arcTo(w,h,0,h,r);p.arcTo(0,h,0,0,r);p.arcTo(0,0,w,0,r);p.closePath();
+  const gr=p.createLinearGradient(0,0,w,h);gr.addColorStop(0,'#e4572e');gr.addColorStop(1,'#a8321a');p.fillStyle=gr;p.fill();p.save();p.clip();dots(p,w,h,9,1.6,'rgba(60,10,0,.22)');
+  p.fillStyle='rgba(255,255,255,.12)';p.beginPath();p.ellipse(w*.8,-20,200,120,0,0,7);p.fill();p.restore();
+  p.fillStyle='#e8c66a';p.fillRect(34,70,62,48);p.strokeStyle='rgba(90,70,20,.6)';p.lineWidth=2;p.strokeRect(34,70,62,48);p.beginPath();p.moveTo(34,94);p.lineTo(96,94);p.moveTo(65,70);p.lineTo(65,118);p.stroke();
+  p.fillStyle='#fbe9dc';p.font="600 26px 'DejaVu Sans Mono',monospace";p.fillText('••••  ••••  ••••  4821',34,166);p.font="italic 500 24px "+SERIF;p.fillText('your card',34,198);}),5);
+const TERM=sticker(off(230,330,(p,w,h)=>{p.fillStyle='#2f3338';p.beginPath();p.moveTo(20,0);p.lineTo(w-20,0);p.quadraticCurveTo(w,0,w,20);p.lineTo(w-10,h-14);p.quadraticCurveTo(w-12,h,w-30,h);p.lineTo(30,h);p.quadraticCurveTo(12,h,10,h-14);p.lineTo(0,20);p.quadraticCurveTo(0,0,20,0);p.fill();
+  p.fillStyle='#9fd3c2';p.fillRect(26,26,w-52,96);p.fillStyle='#1d3a33';p.font="700 34px "+SANS;p.textAlign='center';p.fillText('$42.00',w/2,88);
+  for(let r=0;r<4;r++)for(let c=0;c<3;c++){p.fillStyle=r==3&&c==2?'#5fae6a':r==3&&c==0?'#c4473a':'#d9d6cc';p.fillRect(34+c*58,150+r*42,46,30);}
+  p.fillStyle='#16181b';p.fillRect(w/2-80,h-30,160,10);p.globalCompositeOperation='source-atop';dots(p,w,h,8,1.3,'rgba(255,255,255,.07)');}),5);
+function bankIco(col){return sticker(off(230,190,(p,w,h)=>{p.fillStyle=col;p.beginPath();p.moveTo(10,62);p.lineTo(w/2,6);p.lineTo(w-10,62);p.closePath();p.fill();p.fillRect(14,62,w-28,12);
+  for(let i=0;i<5;i++){p.fillRect(26+i*40,80,22,80);}p.fillRect(8,162,w-16,22);p.fillStyle='rgba(0,0,0,.18)';for(let i=0;i<5;i++)p.fillRect(42+i*40,80,6,80);
+  p.fillStyle='#f6f1e4';p.beginPath();p.arc(w/2,42,13,0,7);p.fill();p.fillStyle=col;p.font="700 20px "+SANS;p.textAlign='center';p.fillText('$',w/2,49);
+  p.globalCompositeOperation='source-atop';dots(p,w,h,8,1.4,'rgba(0,0,0,.14)');}),5);}
+const BANK1=bankIco('#7c8a96'), BANK2=bankIco('#3d6b8c');
+const NET=sticker(off(210,210,(p,w,h)=>{const c=w/2;p.fillStyle='#e9b949';p.beginPath();p.arc(c,c,96,0,7);p.fill();p.save();p.clip();dots(p,w,h,8,1.6,'rgba(120,70,0,.2)');p.restore();
+  p.strokeStyle='#7a4f12';p.lineWidth=4;p.beginPath();p.arc(c,c,96,0,7);p.stroke();p.beginPath();p.ellipse(c,c,44,96,0,0,7);p.stroke();p.beginPath();p.moveTo(c-96,c);p.lineTo(c+96,c);p.stroke();
+  p.beginPath();p.moveTo(c-84,c-46);p.lineTo(c+84,c-46);p.moveTo(c-84,c+46);p.lineTo(c+84,c+46);p.stroke();}),5);
+const ENV=sticker(off(150,96,(p,w,h)=>{p.fillStyle='#fbf8f0';p.fillRect(0,0,w,h);p.strokeStyle='#8a7a60';p.lineWidth=3;p.strokeRect(1,1,w-2,h-2);p.beginPath();p.moveTo(0,0);p.lineTo(w/2,h*.58);p.lineTo(w,0);p.stroke();
+  p.fillStyle='#b3261e';p.font="22px "+MK;p.fillText('$42 ok?',22,h-12);}),4);
+const STAMP=off(380,150,(p,w,h)=>{p.strokeStyle='#2f8a3e';p.fillStyle='#2f8a3e';p.lineWidth=8;p.strokeRect(8,8,w-16,h-16);p.lineWidth=3;p.strokeRect(20,20,w-40,h-40);
+  p.textAlign='center';p.font="400 68px "+DISP;p.fillText("APPROVED",w/2,106);
+  p.globalCompositeOperation='destination-out';const R=R0(44);for(let i=0;i<500;i++){p.fillStyle='rgba(0,0,0,'+(0.3+R()*0.7)+')';p.beginPath();p.arc(R()*w,R()*h,0.6+R()*2.4,0,7);p.fill();}});
+function mtext(lt,t0,dur,t,x,y,size,col,rot){if(lt<t0)return 0;g.save();g.translate(x,y);g.rotate(rot||0);g.font=size+"px "+MK;const w=g.measureText(t).width;
+  const k=CL((lt-t0)/dur);g.beginPath();g.rect(-10,-size*1.2,(w+20)*k,size*1.8);g.clip();g.fillStyle=col;g.fillText(t,0,0);g.restore();return w;}
+function put(img,cx,cy,lt,t0,seed,rot){if(lt<t0)return;const a=EBK((lt-t0)/0.4),j=jit(lt,seed,1.2);g.save();g.translate(cx+j[0],cy+j[1]);g.rotate((rot||0)+j[2]+(1-a)*0.3);g.scale(0.3+0.7*a,0.3+0.7*a);
+  g.globalAlpha=CL((lt-t0)/0.1);g.drawImage(img,-img.width/2,-img.height/2);g.restore();}
+// node centres (icons) and the loop path
+const N=[[300,1270],[290,690],[790,690],[790,1270]];
+const LEG=[[[420,1180],[380,980],[380,800]],[[430,640],[540,600],[650,640]],[[800,830],[840,1000],[800,1140]],[[660,1300],[540,1340],[430,1300]]];
+const T0=[0.95,1.45,1.95,2.75];
+function along(pts,u){const n=pts.length-1,k=Math.min(n-1,Math.floor(u*n)),f=u*n-k;return [pts[k][0]+(pts[k+1][0]-pts[k][0])*f,pts[k][1]+(pts[k+1][1]-pts[k][1])*f];}
+function draw(lt0){const lt=Math.min(lt0*1.3,6.3);g.setTransform(1,0,0,1,0,0);g.drawImage(BG,0,0);
+  const s=1.0+0.035*EIO(lt/6.3);g.save();g.translate(540,960);g.scale(s,s);g.translate(-540,-960);
+  {const j=jit(lt,1,1);g.drawImage(PANEL,20+j[0],470+j[1]);}
+  // marker route legs
+  for(let k=0;k<3;k++){if(lt>T0[k]){const e=marker(g,LEG[k],(lt-T0[k])/0.42,9,'#17222b');if(lt>T0[k]+0.42)arrowHead(g,e[0],e[1],e[2],22,9,'#17222b');}}
+  if(lt>T0[3]){const e=marker(g,LEG[3],(lt-T0[3])/0.42,9,'#2f8a3e',[18,16]);if(lt>T0[3]+0.42)arrowHead(g,e[0],e[1],e[2],22,9,'#2f8a3e');}
+  // icons + labels
+  {const a=EIO(lt/0.8),b=EIO((lt-0.85)/0.4);if(b<1){const cx=300+(1-a)*520, cy=1050+(1-a)*-320+b*170, r=-0.5*(1-a)-0.1;const j=jit(lt,9,1);g.save();g.translate(cx+j[0],cy+j[1]);g.rotate(r);g.scale(1-.25*b,1-.25*b);g.globalAlpha=1-b;g.drawImage(CARD,-CARD.width/2,-CARD.height/2);g.restore();}}
+  put(TERM,N[0][0],N[0][1],lt,0.0,11,-0.04);
+  put(BANK1,N[1][0],N[1][1],lt,1.05,12,0.03);
+  put(NET,N[2][0],N[2][1],lt,1.55,13,0);
+  put(BANK2,N[3][0],N[3][1],lt,2.05,14,-0.03);
+  paperTag(g,lt,1.15,120,800,-0.03,"Shop's bank","takes the request",21,0);
+  paperTag(g,lt,1.65,560,800-25,0.03,"Card network","routes it",22,1);
+  paperTag(g,lt,2.15,575,1385,-0.02,"Your bank","checks your money",23,1);
+  // the request envelope travels the loop
+  if(lt>0.95&&lt<2.6){let u=(lt-0.95)/1.6,leg=Math.min(2,Math.floor(u*3)),f=u*3-leg;const [x,y]=along(LEG[leg],EIO(f));g.save();g.translate(x,y-30);g.rotate(-0.08+0.05*Math.sin(lt*9));g.drawImage(ENV,-ENV.width/2,-ENV.height/2);g.restore();}
+  // approved stamp on your bank
+  if(lt>2.5){const a=E3((lt-2.5)/0.28);g.save();g.translate(585,1080);g.rotate(-0.1);g.scale(1+0.8*(1-a),1+0.8*(1-a));g.globalAlpha=CL((lt-2.5)/0.08)*0.95;g.drawImage(STAMP,-190,-75);g.restore();}
+  if(lt<2.2){g.save();g.globalAlpha=1-CL((lt-1.9)/0.3);mtext(lt,0.55,0.35,"tap!",440,1180,64,"#b3261e",-0.08);g.restore();}
+  g.restore();
+  // header: big marker words + stopwatch
+  if(lt<3.3){g.save();g.globalAlpha=1-CL((lt-3.0)/0.3);mtext(lt,0.15,0.6,'What happens after you tap?',90,330,66,'#17222b',-0.02);g.restore();}
+  const w1=mtext(lt,3.3,0.45,'Approved in',140,300,78,'#17222b',-0.02);
+  if(lt>3.7){const a=EBK((lt-3.7)/0.4);g.save();g.translate(140+w1+30,276);g.rotate(-0.04);g.scale(a,a);g.fillStyle='#ffd23f';g.beginPath();g.moveTo(-12,-62);g.lineTo(250,-70);g.lineTo(258,34);g.lineTo(-8,40);g.closePath();g.fill();
+    g.font="400 84px "+DISP;g.fillStyle='#17222b';g.fillText('~2 sec',6,22);g.restore();}
+  if(lt>4.1){g.save();g.globalAlpha=CL((lt-4.1)/0.3);g.font="italic 500 48px "+SERIF;g.fillStyle='#3a2716';g.fillText('…the cash itself moves later',150,390);g.restore();
+    marker(g,[[150,408],[500,402],[780,404]],(lt-4.25)/0.35,6,'#b3261e');}
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.globalAlpha=.6;g.drawImage(GRAIN,-540,-960);g.restore();
+}
+window.DUR=6.3;window.draw=draw;draw(4.0);document.title='ok';
+</script><script>Promise.all([document.fonts.load("400 40px 'Permanent Marker'"),document.fonts.load("400 40px 'DM Serif Display'"),document.fonts.load("italic 500 30px 'EB Garamond'")]).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

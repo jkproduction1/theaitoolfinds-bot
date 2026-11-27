@@ -1,0 +1,86 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:'EB Garamond';font-weight:500;font-style:italic;src:url(eb-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'DM Serif Display';src:url(dm-serif-display-latin-400-normal.woff2)}
+html,body{margin:0;background:#000}canvas{display:block}</style><script src="common.js"></script></head><body><canvas id="c" width="1080" height="1920"></canvas><script id="main" type="text/plain">
+// money76 r0: /painted-story the 1929 Wall Street crash (painterly look of yellow71 painted_troy). Generic columned exchange, crowd, ticker tape drawn in code.
+// Facts: Federal Reserve History "Stock Market Crash of 1929": Black Thursday Oct 24 and Black Tuesday Oct 29 1929; ~16 million shares traded on Oct 29;
+// by July 1932 the Dow had lost about 89% from its Sept 1929 peak. On screen: "Wall Street, October 1929", "Black Tuesday: 16 million shares sold",
+// "By 1932, stocks lost 89%". The falling line is an illustrative sketch of the Dow's shape, not plotted data.
+const g=document.getElementById('c').getContext('2d');const LERP=(a,b,t)=>a+(b-a)*t;
+function strokes(p,n,R,x0,y0,w,h,cols,len,wid,ang,a0,a1){a0=a0??0.08;a1=a1??0.22;for(let i=0;i<n;i++){const x=x0+R()*w,y=y0+R()*h,l=len*(0.5+R()),a=(ang||0)+(R()-.5)*0.5;
+  p.strokeStyle=cols[Math.floor(R()*cols.length)];p.globalAlpha=a0+R()*a1;p.lineWidth=wid*(0.5+R());p.lineCap='round';p.beginPath();p.moveTo(x,y);p.quadraticCurveTo(x+Math.cos(a)*l*.5,y+Math.sin(a)*l*.5+(R()-.5)*6,x+Math.cos(a)*l,y+Math.sin(a)*l);p.stroke();}p.globalAlpha=1;}
+const WW=1400, WH=2200, GY=1380;
+const SKY=off(WW,GY,(p,w,h)=>{const R=R0(41);const s=p.createLinearGradient(0,0,0,h);s.addColorStop(0,'#4a5160');s.addColorStop(.6,'#8a8a86');s.addColorStop(1,'#c2b59a');p.fillStyle=s;p.fillRect(0,0,w,h);
+  strokes(p,2600,R,0,0,w,h,['#5a6070','#7a7a78','#a09a88','#c8bca0'],220,28,0.05,0.06,0.16);});
+const SKYD=off(WW,GY,(p,w,h)=>{const R=R0(43);const s=p.createLinearGradient(0,0,0,h);s.addColorStop(0,'#1c1e28');s.addColorStop(.7,'#3a3a44');s.addColorStop(1,'#5a5448');p.fillStyle=s;p.fillRect(0,0,w,h);
+  strokes(p,2400,R,0,0,w,h,['#22242e','#34363f','#4a4740'],220,28,0.05,0.08,0.18);});
+// street canyon: side buildings + the columned exchange at the end of the street
+const CITY=off(WW,WH,(p,w,h)=>{const R=R0(31);
+  // far side towers
+  for(let i=0;i<9;i++){const x=i<4?i*90-40:w-(i-4)*90-60,ww=120+R()*60,hh=900+R()*500;p.fillStyle=['#6e665a','#5e574c','#7a7062'][i%3];p.fillRect(x,GY-hh,ww,hh);
+    p.fillStyle='rgba(30,26,20,.35)';for(let y=GY-hh+40;y<GY-60;y+=56)for(let xx=x+14;xx<x+ww-20;xx+=34)p.fillRect(xx,y,16,30);}
+  strokes(p,2200,R,0,200,w,GY-200,['#5a5348','#7e7464','#4a443a'],60,10,1.57,0.1,0.2);
+  // the exchange (generic temple front): base, 6 columns, pediment
+  const cx=w/2,bw=640,top=GY-760;
+  p.fillStyle='#d8ccb2';p.fillRect(cx-bw/2,GY-120,bw,120);p.fillRect(cx-bw/2-20,top+40,bw+40,60);
+  p.beginPath();p.moveTo(cx-bw/2-30,top+40);p.lineTo(cx,top-110);p.lineTo(cx+bw/2+30,top+40);p.closePath();p.fill();
+  p.fillStyle='#b8ab90';p.beginPath();p.moveTo(cx-bw/2+30,top+30);p.lineTo(cx,top-80);p.lineTo(cx+bw/2-30,top+30);p.closePath();p.fill();
+  p.fillStyle='#3a3228';p.fillRect(cx-bw/2+20,top+100,bw-40,GY-120-top-100);
+  for(let i=0;i<6;i++){const x=cx-bw/2+40+i*(bw-80)/5-26;const gr=p.createLinearGradient(x,0,x+52,0);gr.addColorStop(0,'#bfb296');gr.addColorStop(.4,'#efe4cc');gr.addColorStop(1,'#a89b80');p.fillStyle=gr;p.fillRect(x,top+100,52,GY-120-top-100);
+    p.fillStyle='#d8ccb2';p.fillRect(x-8,top+100,68,18);p.fillRect(x-8,GY-140,68,20);}
+  strokes(p,1400,R,cx-bw/2-30,top-110,bw+60,870,['#cfc2a6','#e8dcc2','#a89a7e','#8a7e66'],46,9,1.57,0.12,0.22);
+  // flag pole (plain)
+  p.strokeStyle='#2a2620';p.lineWidth=6;p.beginPath();p.moveTo(cx,top-110);p.lineTo(cx,top-260);p.stroke();
+  // street
+  const fg=p.createLinearGradient(0,GY,0,h);fg.addColorStop(0,'#6a6258');fg.addColorStop(1,'#2e2a26');p.fillStyle=fg;p.fillRect(0,GY,w,h-GY);
+  strokes(p,3000,R,0,GY,w,h-GY,['#5e574e','#4a443e','#7a7266'],90,12,0,0.1,0.22);
+});
+// crowd: rows of dark coats + hats (painted silhouettes), offscreen strip
+function crowdRow(seed,n,scale,col){return off(WW,300,(p,w,h)=>{const R=R0(seed);for(let i=0;i<n;i++){const x=R()*w,y=h-10-R()*40,s=scale*(0.85+R()*0.3);
+  p.fillStyle=col[Math.floor(R()*col.length)];p.beginPath();p.moveTo(x-34*s,y);p.lineTo(x-26*s,y-110*s);p.quadraticCurveTo(x,y-130*s,x+26*s,y-110*s);p.lineTo(x+34*s,y);p.closePath();p.fill();
+  p.fillStyle='#4a3a2c';p.beginPath();p.arc(x,y-140*s,17*s,0,7);p.fill();
+  p.fillStyle='#1a1714';p.beginPath();p.ellipse(x,y-152*s,28*s,7*s,0,0,7);p.fill();p.fillRect(x-16*s,y-176*s,32*s,24*s);}
+  strokes(p,400,R,0,0,w,h,['#1e1b18','#33302a'],30,6,1.57,0.1,0.2);});}
+const CR1=crowdRow(5,70,0.8,['#2a2724','#3a342e','#24221f']), CR2=crowdRow(7,46,1.15,['#1e1c1a','#2e2a26','#38322c']), CR3=crowdRow(9,26,1.7,['#161412','#24201c']);
+const BOIL=off(1080,1920,(p)=>{const R=R0(17);strokes(p,420,R,-50,0,1180,1920,['#f0e6d0','#2a2a3a','#8a8070'],120,22,0.1,0.02,0.05);});
+// ticker tape: paper strips falling
+const TAPE=[...Array(38)].map((_, i)=>{const R=R0(100+i*7919);R();R();return [R()*1080,R()*1920,0.6+R()*0.8,R()*6.28,40+R()*80];});
+function tape(lt,a){if(a<=0)return;g.save();g.globalAlpha=a;for(const [x0,y0,sp,ph,L] of TAPE){const y=(y0+lt*260*sp)%2100-100,x=x0+Math.sin(lt*2+ph)*40;g.save();g.translate(x,y);g.rotate(Math.sin(lt*3+ph)*0.9);
+  g.fillStyle='#f4ecd8';g.fillRect(-L/2,-5,L,10);g.fillStyle='rgba(60,50,40,.35)';g.fillRect(-L/2+6,-2,L-12,3);g.restore();}g.restore();}
+// painted chart card: line drawn up to fraction f (illustrative shape: rise to 1929 peak, crash, slide to 1932)
+const CHART=off(760,520,(p,w,h)=>{const R=R0(61);p.save();tornPath(p,10,10,w-20,h-20,61,10);p.fillStyle='#efe3c6';p.fill();p.clip();strokes(p,900,R,0,0,w,h,['#e2d4b2','#f6ecd4','#d4c49e'],50,10,0,0.12,0.22);
+  p.strokeStyle='rgba(90,70,40,.25)';p.lineWidth=2;for(let y=90;y<h-40;y+=70){p.beginPath();p.moveTo(50,y);p.lineTo(w-30,y);p.stroke();}p.restore();
+  p.fillStyle='#3a2716';p.font="italic 500 34px "+SERIF;p.fillText('stock prices',56,64);p.fillText('1929',70,h-34);p.fillText('1932',w-140,h-34);});
+const CP=[[70,330],[150,260],[230,170],[262,110],[290,250],[320,215],[360,300],[430,340],[500,380],[580,420],[680,445]];
+function chart(x,y,a,f,lt){if(a<=0)return;g.save();g.translate(x,y);g.rotate(-0.03+(1-a)*0.1);g.globalAlpha=CL(a*3);g.scale(.6+.4*a,.6+.4*a);g.translate(-380,-260);
+  g.shadowColor='rgba(0,0,0,.5)';g.shadowBlur=26;g.shadowOffsetY=12;g.drawImage(CHART,0,0);g.shadowColor='transparent';
+  const n=f*(CP.length-1);g.strokeStyle='#b3261e';g.lineWidth=12;g.lineCap='round';g.lineJoin='round';g.beginPath();g.moveTo(...CP[0]);
+  for(let i=1;i<=Math.floor(n);i++)g.lineTo(...CP[i]);const k=Math.floor(n),u=n-k;if(k<CP.length-1)g.lineTo(LERP(CP[k][0],CP[k+1][0],u),LERP(CP[k][1],CP[k+1][1],u));g.stroke();
+  g.strokeStyle='rgba(255,220,200,.5)';g.lineWidth=3;g.stroke();g.restore();}
+function cap(t,t0,t1,lt,i,y,fs,col){if(lt<t0||lt>t1+0.5)return;const e=E3((lt-t0)/0.5),o=E3((lt-t1)/0.45);g.save();g.textAlign='left';g.font='italic 500 '+fs+'px '+SERIF;const w=g.measureText(t).width+64,hh=fs*1.5;
+  g.translate(72-(1-e)*(w+160)-o*(w+160),y);g.rotate(-0.012+(1-e)*0.03);tornPath(g,0,0,w,hh,80+i,6);g.fillStyle='#f3e6c8';g.shadowColor='rgba(0,5,15,.6)';g.shadowBlur=14;g.shadowOffsetY=8;g.fill();g.shadowColor='transparent';
+  g.strokeStyle='rgba(150,100,50,.35)';g.lineWidth=3;g.stroke();g.fillStyle=col||'#2c1c0e';g.fillText(t,32,hh*0.7);g.restore();}
+function draw(lt0){const lt=Math.min(lt0*1.3,6.3);g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;
+  const dark=EIO((lt-3.0)/1.4), push=EIO(lt/6.3);
+  const z=1.0+0.16*push, cx=700+10*Math.sin(lt*.5), cy=LERP(1100,1000,push);
+  g.save();g.translate(540,980);g.scale(z,z);g.translate(-cx,-cy);
+  g.drawImage(SKY,0,0);g.globalAlpha=dark;g.drawImage(SKYD,0,0);g.globalAlpha=1;g.drawImage(CITY,0,0);
+  // crowd swells (rows rise in) and sways
+  const sw=(k)=>Math.sin(lt*2.2+k)*6;
+  g.drawImage(CR1,sw(1),GY-200+20*(1-E3(lt/0.8)));
+  g.drawImage(CR2,sw(2)-30,GY-90+60*(1-E3((lt-0.3)/0.9)));
+  g.drawImage(CR3,sw(3)+20,GY+40+120*(1-E3((lt-1.4)/1.2)));
+  g.globalAlpha=dark*0.35;g.fillStyle='#0a0c18';g.fillRect(0,0,WW,WH);g.globalAlpha=1;
+  g.restore();
+  tape(lt,1-0.7*dark);
+  chart(540,1080,EBK((lt-1.6)/0.6),EIO((lt-1.8)/2.6),lt);
+  const bk=Math.floor(lt*8+0.001),BRr=R0(1000+bk*7);BRr();g.save();g.translate(540+(BRr()-.5)*50,960+(BRr()-.5)*50);g.scale(bk%2?-1:1,(bk>>1)%2?-1:1);g.rotate((BRr()-.5)*0.04);g.drawImage(BOIL,-540,-960);g.restore();
+  const gk=Math.floor(lt*15+0.001);g.save();g.translate(540,960);g.scale(gk%2?-1:1,(gk>>1)%2?-1:1);g.drawImage(GRAIN,-540,-960);g.restore();
+  const vg=g.createRadialGradient(540,900,420,540,900,1300);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(10,6,20,.55)');g.fillStyle=vg;g.fillRect(0,0,1080,1920);
+  cap('Wall Street, October 1929',0.15,2.5,lt,0,230,62,'#8a1c10');
+  cap('Black Tuesday:',2.1,9,lt,1,230,62,'#8a1c10');
+  cap('16 million shares sold',2.35,9,lt,2,345,52,'#2c1c0e');
+  cap('By 1932, stocks lost 89%',3.9,9,lt,3,1480,60,'#8a1c10');
+}
+window.DUR=6.3;window.draw=draw;draw(4.0);document.title='ok';
+</script><script>Promise.all([document.fonts.load("italic 500 30px 'EB Garamond'"),document.fonts.load("400 30px 'DM Serif Display'")]).then(()=>{const s=document.createElement('script');s.textContent=document.getElementById('main').textContent;document.body.appendChild(s);});</script></body></html>

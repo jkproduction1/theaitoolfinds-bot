@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What lightning does to the Eiffel Tower</title>
+<!-- money76 r2: /explain-3d what lightning does to the Eiffel Tower. Our explain-3d style (wide shot, camera moves, labels with thin lines,
+  one caption with one key word in a box). Own procedural tower (public 1889 monument, no logo, no copy of any photo).
+  Facts: toureiffel.paris "From 300 to 330 meters": 330 m today (= 1,083 ft). toureiffel.paris "Lightning and the Eiffel Tower": the iron tower
+  is struck by lightning and acts as a lightning conductor; the current is carried down the metal to the ground (earthing).
+  Sizes of the bolt and glow are illustrative. -->
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+</head>
+<body>
+<div id="stage">
+  <div id="ov">
+    <svg id="lines" width="1080" height="1920"></svg>
+    <div class="pill hot" id="pA">Lightning hits the top</div>
+    <div class="pill hot" id="pB">Current runs down the iron</div>
+    <div class="pill" id="pC">Safely into the ground</div>
+    <div class="cap" id="cap">A <span class="hb">330 m</span> lightning rod<small>Eiffel Tower, Paris · 1,083 ft of iron</small></div>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { W, H, DUR, cl, ramp, sm, eio, eout, V, mulberry32, setup, softTex, labels, injectCSS, ready } from './studio.js';
+injectCSS();
+document.head.insertAdjacentHTML('beforeend', `<style>
+.cap{position:absolute;left:70px;right:70px;top:200px;text-align:center;color:#fff;font-weight:800;font-size:70px;line-height:1.15;letter-spacing:-1px;opacity:0;text-shadow:0 4px 30px rgba(0,0,0,.8)}
+.cap small{display:block;font-size:36px;font-weight:600;color:#cfd8e6;margin-top:12px;letter-spacing:0}
+.hb{background:#ffd23f;color:#141414;padding:0 .2em;border-radius:12px}</style>`);
+const { renderer, scene, camera, bgU } = setup(38, [.012, .016, .035], [.07, .085, .14]);
+const rnd = mulberry32(7602), R = (a, b) => a + rnd() * (b - a);
+const hemi = new THREE.HemisphereLight('#7f95c8', '#0d0f16', .5); scene.add(hemi);
+const key = new THREE.DirectionalLight('#ffd9a8', 1.1); key.position.set(30, 20, 40); scene.add(key); // warm city light from below-ish
+const flash = new THREE.PointLight('#cfe0ff', 0, 400, 1.2); flash.position.set(0, 36, 6); scene.add(flash);
+// ---- tower: units = 10 m. profile half-width (m) at height (m)
+const PROF = [[0, 62], [20, 52], [57, 34], [80, 27], [116, 19], [160, 12.5], [200, 8.5], [240, 5.8], [276, 4.2], [300, 2.0], [312, 1.0]];
+const hw = y => { for (let i = 1; i < PROF.length; i++) if (y <= PROF[i][0]) { const [y0, w0] = PROF[i - 1], [y1, w1] = PROF[i]; return w0 + (w1 - w0) * (y - y0) / (y1 - y0); } return 1; };
+const S = .1;
+const iron = new THREE.MeshStandardMaterial({ color: '#4a3424', metalness: .75, roughness: .38, emissive: '#ff9a40', emissiveIntensity: .05 });
+const struts = [];
+const seg = (a, b, r) => struts.push([a, b, r]);
+const corner = (y, sx, sz, inset = 0) => { const w = hw(y) - inset; return V(sx * w * S, y * S, sz * w * S); };
+const SIG = [[1, 1], [-1, 1], [-1, -1], [1, -1]];
+// levels (m)
+const LV = []; for (let y = 0; y <= 57; y += 7.125) LV.push(y); for (let y = 66; y <= 116; y += 10) LV.push(y); for (let y = 128; y <= 276; y += 12.3) LV.push(y); LV.push(276, 290, 300, 312);
+const LEGW = 15; // leg thickness below 1st floor
+for (let i = 1; i < LV.length; i++) { const y0 = LV[i - 1], y1 = LV[i];
+  for (const [sx, sz] of SIG) {
+    // main corner edge
+    seg(corner(y0, sx, sz), corner(y1, sx, sz), y1 < 120 ? .075 : .05);
+    if (y1 <= 57) { // legs: inner edges + bracing on each leg
+      const a0 = corner(y0, sx, sz), a1 = corner(y1, sx, sz);
+      const ix0 = V(a0.x - sx * LEGW * S, a0.y, a0.z), iz0 = V(a0.x, a0.y, a0.z - sz * LEGW * S), ii0 = V(a0.x - sx * LEGW * S, a0.y, a0.z - sz * LEGW * S);
+      const ix1 = V(a1.x - sx * LEGW * S, a1.y, a1.z), iz1 = V(a1.x, a1.y, a1.z - sz * LEGW * S), ii1 = V(a1.x - sx * LEGW * S, a1.y, a1.z - sz * LEGW * S);
+      seg(ix0, ix1, .06); seg(iz0, iz1, .06); seg(ii0, ii1, .06);
+      seg(a0, ix1, .025); seg(ix0, a1, .025); seg(a0, iz1, .025); seg(iz0, a1, .025); seg(ix0, ii1, .025); seg(iz0, ii1, .025);
+      seg(a1, ix1, .03); seg(a1, iz1, .03); seg(ix1, ii1, .03); seg(iz1, ii1, .03);
+    }
+  }
+  if (y0 >= 57) for (let f = 0; f < 4; f++) { const [ax, az] = SIG[f], [bx, bz] = SIG[(f + 1) % 4]; // X-bracing on the 4 faces
+    const p0 = corner(y0, ax, az), p1 = corner(y1, bx, bz), q0 = corner(y0, bx, bz), q1 = corner(y1, ax, az);
+    seg(p0, p1, .022); seg(q0, q1, .022); seg(q1, p1, .03); }
+}
+// arches between legs at the 1st floor
+for (let f = 0; f < 4; f++) { const [ax, az] = SIG[f], [bx, bz] = SIG[(f + 1) % 4]; let prev = null;
+  for (let i = 0; i <= 16; i++) { const u = i / 16; const y = 20 + 30 * Math.sin(Math.PI * u) ** .7; const w = hw(y) - LEGW * .5;
+    const p = V(((ax + (bx - ax) * u) * w) * S, y * S, ((az + (bz - az) * u) * w) * S); if (prev) seg(prev, p, .04); prev = p; } }
+const GEO = new THREE.CylinderGeometry(1, 1, 1, 6, 1);
+const inst = new THREE.InstancedMesh(GEO, iron, struts.length);
+const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), up = V(0, 1, 0);
+struts.forEach(([a, b, r], i) => { const d = b.clone().sub(a), L = d.length(); q.setFromUnitVectors(up, d.normalize());
+  m4.compose(a.clone().add(b).multiplyScalar(.5), q, V(r, L, r)); inst.setMatrixAt(i, m4); });
+scene.add(inst);
+// platforms
+const platM = new THREE.MeshStandardMaterial({ color: '#3a2a1e', metalness: .5, roughness: .5, emissive: '#ffb860', emissiveIntensity: .12 });
+for (const [y, h] of [[57, .55], [116, .42], [276, .3]]) { const w = hw(y) * 2 * S * 1.06; const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, w), platM); b.position.y = y * S; scene.add(b); }
+// antenna mast
+const mast = new THREE.Mesh(new THREE.CylinderGeometry(.04, .09, 1.8, 8), iron); mast.position.y = 32.1; scene.add(mast);
+const TOP = V(0, 33.0, 0);
+// ---- ground: dark park + paths + a few city lights, river glint
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshStandardMaterial({ color: '#141a22', roughness: .95 })); ground.rotation.x = -Math.PI / 2; scene.add(ground);
+const lamps = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute([...Array(700)].flatMap(() => { const a = R(0, 6.28), r = R(14, 150); return [Math.cos(a) * r, .05, Math.sin(a) * r]; }), 3)),
+  new THREE.PointsMaterial({ color: '#ffc46a', size: .5, map: softTex(), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: .8 }));
+scene.add(lamps);
+// earthing ring at the base
+const ring = new THREE.Mesh(new THREE.RingGeometry(.9, 1.0, 96), new THREE.MeshBasicMaterial({ color: '#8fd0ff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+ring.rotation.x = -Math.PI / 2; ring.position.y = .06; scene.add(ring);
+const ring2 = ring.clone(); ring2.material = ring.material.clone(); scene.add(ring2);
+// ---- storm clouds: big soft sprites above
+const cloudT = softTex();
+const clouds = [...Array(46)].map(() => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: cloudT, color: new THREE.Color().setHSL(.62, .2, R(.12, .22)), transparent: true, opacity: R(.5, .85), depthWrite: false }));
+  s.scale.setScalar(R(30, 60)); s.position.set(R(-70, 70), R(44, 62), R(-60, 10)); scene.add(s); return s; });
+// rain: streaks as points falling
+const NR = 1600, RP = new Float32Array(NR * 3), RG = new THREE.BufferGeometry(); RG.setAttribute('position', new THREE.BufferAttribute(RP, 3));
+const rain = new THREE.Points(RG, new THREE.PointsMaterial({ color: '#9fb2d6', size: .12, transparent: true, opacity: .45, depthWrite: false })); scene.add(rain);
+const rs = [...Array(NR)].map(() => [R(-30, 30), R(0, 45), R(-25, 25), R(0, 1)]);
+// ---- the bolt: jagged path from the clouds to the antenna, drawn as a glowing tube + fat glow tube + branches
+function boltPath(seed, from, to, n, jit) { const r = mulberry32(seed); const pts = []; for (let i = 0; i <= n; i++) { const u = i / n; const p = from.clone().lerp(to, u);
+  if (i > 0 && i < n) p.add(V((r() - .5) * jit, (r() - .5) * jit * .3, (r() - .5) * jit * .6)); pts.push(p); } return pts; }
+const boltG = new THREE.Group(); scene.add(boltG);
+const core = new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+const glowM = new THREE.MeshBasicMaterial({ color: '#8fb8ff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+const mainPts = boltPath(11, V(-6, 56, -8), TOP, 22, 5);
+const mkTube = (pts, r, m) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, false, 'catmullrom', .1), pts.length * 4, r, 6), m);
+boltG.add(mkTube(mainPts, .07, core)); boltG.add(mkTube(mainPts, .2, glowM));
+for (const [k, sd] of [[5, 21], [9, 22], [14, 23]]) { const a = mainPts[k]; const br = boltPath(sd, a, a.clone().add(V(R(-8, 8), R(-7, -4), R(-3, 3))), 8, 2.4); boltG.add(mkTube(br, .035, core)); boltG.add(mkTube(br, .15, glowM)); }
+const tipGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: softTex(), color: '#bcd6ff', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })); tipGlow.position.copy(TOP); tipGlow.scale.setScalar(3.5); scene.add(tipGlow);
+// current flowing down the 4 legs: glowing points along the corner edges
+const NP = 4 * 70, PP = new Float32Array(NP * 3), PG = new THREE.BufferGeometry(); PG.setAttribute('position', new THREE.BufferAttribute(PP, 3));
+const curr = new THREE.Points(PG, new THREE.PointsMaterial({ color: '#ffe08a', size: .8, map: softTex(), transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })); scene.add(curr);
+const edgeAt = (y, sx, sz) => V(sx * hw(y) * S * 1.02, y * S, sz * hw(y) * S * 1.02);
+// camera
+function setCam(t) { const a = eio(ramp(t, 0, 2.2)), b = eio(ramp(t, 2.2, 4.6));
+  const p0 = V(34, 5, 62), l0 = V(0, 17, 0); const p1 = V(26, 14, 46), l1 = V(0, 23, 0); const p2 = V(30, 7, 44), l2 = V(0, 11, 0);
+  const p = p0.clone().lerp(p1, a).lerp(p2, b), l = l0.clone().lerp(l1, a).lerp(l2, b);
+  const shake = Math.exp(-Math.max(0, t - 1.15) * 5) * (t > 1.15 ? 1 : 0) * .35;
+  camera.position.copy(p).add(V(shake * Math.sin(t * 90), shake * Math.cos(t * 70), 0)); camera.lookAt(l); camera.updateMatrixWorld(); }
+const E = id => document.getElementById(id);
+const lab = labels(camera, [
+  { el: E('pA'), t0: 1.35, t1: 3.1, at: () => TOP, col: '#ffb547', pos: (x, y) => [cl(x - 60, 330, 750), cl(y + 260, 520, 1300)] },
+  { el: E('pB'), t0: 2.6, t1: 4.6, at: () => edgeAt(90, 1, 1), col: '#ffb547', pos: (x, y) => [cl(x - 120, 360, 720), cl(y - 260, 560, 1400)] },
+  { el: E('pC'), t0: 3.9, at: () => V(0, .1, 0), col: '#8fd0ff', pos: (x, y) => [cl(x, 330, 750), cl(y + 230, 700, 1500)] },
+]);
+const SPEED = 1.32;
+function render(t) { t = cl(t * SPEED, 0, DUR); setCam(t);
+  // strike: flickers at 1.15..1.6 with a re-strike at 1.75
+  const st = (t > 1.1 && t < 1.62) ? (Math.sin(t * 60) > -.3 ? 1 : .35) * (1 - ramp(t, 1.45, 1.62)) : 0;
+  const st2 = (t > 1.72 && t < 1.92) ? 1 - ramp(t, 1.78, 1.92) : 0; const bolt = Math.max(st, st2);
+  core.opacity = bolt; glowM.opacity = .35 * bolt; tipGlow.material.opacity = Math.max(bolt, .6 * (1 - sm(ramp(t, 1.9, 3.2))) * (t > 1.1 ? 1 : 0));
+  flash.intensity = 2500 * bolt; bgU.uT.value.setRGB(.12 * bolt, .15 * bolt, .25 * bolt); hemi.intensity = .5 + .9 * bolt;
+  for (const c of clouds) c.material.color.setHSL(.62, .25, .1 + .22 * bolt);
+  // current pulses run down from the top after the strike
+  const on = sm(ramp(t, 1.4, 1.8)) * (1 - sm(ramp(t, 4.6, 5.4))); curr.material.opacity = on;
+  for (let i = 0; i < NP; i++) { const leg = i % 4, k = Math.floor(i / 4); const u = ((k / 70) + (t - 1.4) * .55) % 1; const y = 312 * (1 - u) * (t > 1.4 ? 1 : 0) + (t > 1.4 ? 0 : 312);
+    const p = edgeAt(Math.max(0, y), SIG[leg][0], SIG[leg][1]); PP.set([p.x, p.y, p.z], i * 3); } PG.attributes.position.needsUpdate = true;
+  iron.emissiveIntensity = .05 + .3 * bolt + .25 * on * (.7 + .3 * Math.sin(t * 14));
+  // earthing rings spreading from the base
+  for (const [rg, off] of [[ring, 0], [ring2, .6]]) { const u = ((t - 3.3 - off) / 1.3); const v = u - Math.floor(u); const vis = t > 3.3 + off ? 1 : 0;
+    rg.scale.setScalar(4 + 14 * v); rg.material.opacity = vis * (1 - v) * .9 * (1 - sm(ramp(t, 5.6, 6.2))); }
+  for (let i = 0; i < NR; i++) { const r = rs[i]; const y = ((r[1] - t * 22 - r[3] * 45) % 45 + 45) % 45; RP.set([r[0], y, r[2]], i * 3); } RG.attributes.position.needsUpdate = true;
+  renderer.render(scene, camera); lab(t);
+  const c = sm(ramp(t, 4.7, 5.1)); E('cap').style.opacity = c; E('cap').style.transform = `translateY(${(1 - c) * 30}px)`; }
+await ready(render);
+</script>
+</body>
+</html>

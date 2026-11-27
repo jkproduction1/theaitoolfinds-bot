@@ -6056,49 +6056,6 @@
   }
  },
  {
-  "name": "money76",
-  "date": "2026-11-27",
-  "score": 78,
-  "mode": "full",
-  "features": {
-   "hook": 1.0,
-   "hook_words": 13,
-   "hook_end_s": 4.93,
-   "tool_named_s": null,
-   "payoff": 1.0,
-   "wps": 1.82,
-   "dur_s": 31.3,
-   "words": 54,
-   "pace": 0.1,
-   "length": 0.94,
-   "filler_hits": 0,
-   "filler": 1.0,
-   "longest_static_s": 4.0,
-   "visual_changes": 58,
-   "visuals": 0.4,
-   "ending": 0.63,
-   "angle": "app-demo",
-   "topic": 0.85,
-   "hot_words": 2,
-   "soft_words": 0
-  },
-  "flags": [
-   "video má 31 s (cíl 18–31 s; všechna IG videa nad 33 s měla ≤23k)",
-   "4.0 s bez změny obrazu (cíl ≤3 s)",
-   "jen 2 „virální“ slova (Země/vesmír/katastrofa/slavné místo…; cíl ≥3)"
-  ],
-  "weights": {
-   "topic": 45,
-   "hook": 5,
-   "payoff": 4,
-   "pace": 6,
-   "length": 20,
-   "filler": 4,
-   "visuals": 12,
-   "ending": 4
-  }
- },
- {
   "name": "earth74",
   "date": "2026-11-27",
   "score": 84,
@@ -6167,6 +6124,47 @@
    "soft_words": 0
   },
   "flags": [],
+  "weights": {
+   "topic": 45,
+   "hook": 5,
+   "payoff": 4,
+   "pace": 6,
+   "length": 20,
+   "filler": 4,
+   "visuals": 12,
+   "ending": 4
+  }
+ },
+ {
+  "name": "money76",
+  "date": "2026-11-27",
+  "score": 87,
+  "mode": "full",
+  "features": {
+   "hook": 1.0,
+   "hook_words": 13,
+   "hook_end_s": 4.93,
+   "tool_named_s": null,
+   "payoff": 1.0,
+   "wps": 1.85,
+   "dur_s": 30.7,
+   "words": 54,
+   "pace": 0.13,
+   "length": 1.0,
+   "filler_hits": 0,
+   "filler": 1.0,
+   "longest_static_s": 2.0,
+   "visual_changes": 70,
+   "visuals": 1.0,
+   "ending": 0.63,
+   "angle": "app-demo",
+   "topic": 0.85,
+   "hot_words": 2,
+   "soft_words": 0
+  },
+  "flags": [
+   "jen 2 „virální“ slova (Země/vesmír/katastrofa/slavné místo…; cíl ≥3)"
+  ],
   "weights": {
    "topic": 45,
    "hook": 5,
