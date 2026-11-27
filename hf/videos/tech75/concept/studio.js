@@ -62,9 +62,10 @@ export function labels(camera, defs) {
     for (const d of defs) {
       const a = sm(ramp(t, d.t0, d.t0 + 0.4)) * (d.t1 ? 1 - sm(ramp(t, d.t1, d.t1 + 0.35)) : 1);
       const [bx, by] = proj(...(typeof d.at === 'function' ? d.at(t) : d.at));
-      const [px, py] = typeof d.pos === 'function' ? d.pos(bx, by, t) : d.pos;
-      pill(d.el, px, py, a, 0.86 + 0.14 * popS(ramp(t, d.t0, d.t0 + 0.45)));
+      let [px, py] = typeof d.pos === 'function' ? d.pos(bx, by, t) : d.pos;
       const hw = d.el.offsetWidth / 2, hh = d.el.offsetHeight / 2;
+      px = Math.max(90 + hw, Math.min(990 - hw, px));
+      pill(d.el, px, py, a, 0.86 + 0.14 * popS(ramp(t, d.t0, d.t0 + 0.45)));
       // leave from the pill edge closest to the anchor
       let ax = px, ay = py;
       if (Math.abs(by - py) > hh + 20) ay = py + Math.sign(by - py) * hh; else ax = px + Math.sign(bx - px) * hw;

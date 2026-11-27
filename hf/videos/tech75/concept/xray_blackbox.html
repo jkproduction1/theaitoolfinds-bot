@@ -117,7 +117,7 @@ const hot = new THREE.PointLight('#ff8a30', 0, 40, 1.5); hot.position.set(17.5, 
 // camera: close 3/4 view, slow push toward the memory unit
 function setCam(t) {
   const u = cl(t / DUR), s = 0.25 * u + 0.75 * eio(u);
-  const az = 0.55 - 0.25 * s, el = 0.33 - 0.05 * s, d = 165 - 55 * s;
+  const az = 0.55 - 0.25 * s, el = 0.33 - 0.05 * s, d = 182 - 62 * s;
   const tx = 6 + 9 * s;
   camera.position.set(tx + Math.sin(az) * Math.cos(el) * d, Math.sin(el) * d, Math.cos(az) * Math.cos(el) * d);
   camera.lookAt(tx, -0.5, 0); camera.updateMatrixWorld();

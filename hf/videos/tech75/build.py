@@ -119,7 +119,7 @@ for k, (a, _c, _p, _a, cmd, prompt, title, cap, hi, desc) in enumerate(DEMOS):
 thumbs = "".join(f'<div class="th" id="th{k}" style="left:{x}px"><img src="assets/th{k}.jpg" alt=""></div>' for k, x in enumerate([90, 400, 710]))
 end = ('<div id="end">' + SPARK + '<div class="c" id="e1">Comment</div><div class="kw" id="e2">“STYLES”</div>'
        '<div class="g" id="e3">to get the system that makes these</div>' + thumbs + '<div class="series" id="eser" style="left:0;right:0;margin:0 auto;width:fit-content;top:1400px">Type it, get it <b>#63</b></div>' + FOLLOW_LINE.replace('class="follow"', 'class="follow" id="efol" style="top:1490px;color:#fff"') + '</div>')
-F.body.append('<div class="layer" id="serl">' + series("Type it, get it", 63, x=70, y=116, dark=True) + '</div>')
+F.body.append('<div class="layer" id="serl">' + series("Type it, get it", 63, x=70, y=190, dark=True) + '</div>')
 F.clip(0, "".join(ui) + stages + end)
 
 CSS = r"""
@@ -215,7 +215,7 @@ const clock={t:0}; tl.fromTo(clock,{t:0},{t:DUR,duration:DUR,ease:'none',onUpdat
 const NI={immediateRender:false}; function F2(sel,f,t,at){ return tl.fromTo(sel,f,Object.assign({},t,NI),at); }
 TY.forEach((d,k)=>{
   if(k){ F2('#st'+(k-1),{opacity:1,scale:1},{opacity:0,scale:.92,duration:.22,ease:'power2.in'},d.T-0.22); tl.set(['#kbw','#inp'],{y:0,opacity:1},d.T); tl.set(['#ub','#run','#bot'],{opacity:0},d.T); }
-  F2('#chipc',{opacity:0,y:30},{opacity:1,y:0,duration:.2,ease:'power2.out'},d.slash);
+  if(k) F2('#chipc',{opacity:0,y:30},{opacity:1,y:0,duration:.2,ease:'power2.out'},d.slash); else tl.set('#chipc',{opacity:1,y:0},0);
   tl.set('#snd',{backgroundColor:'#ff4b1f'},d.slash+0.05);
   tl.set('#chipc',{opacity:0},d.p0);
   tl.to('#snd',{scale:.85,duration:.06,yoyo:true,repeat:1},d.send-0.08);
@@ -227,7 +227,7 @@ TY.forEach((d,k)=>{
   F2('#st'+k,{opacity:0,scale:.5,y:140,borderRadius:60},{opacity:1,scale:.58,y:110,borderRadius:60,duration:.3,ease:'back.out(1.6)'},d.card);
   F2('#st'+k,{scale:.58,y:110,borderRadius:60},{scale:1,y:0,borderRadius:0,duration:.42,ease:'expo.inOut'},d.full);
 });
-TY.forEach((d,k)=>{ tl.set('#serl',{opacity:0},d.full); if(k<2) tl.set('#serl',{opacity:1},d.end); });
+
 tl.set(['#st0','#st1','#st2'],{opacity:0},0); tl.set(['#kbw','#inp'],{y:0,opacity:1},0); tl.set('#snd',{backgroundColor:'#3a3a3a'},0);
 tl.set('#st2',{opacity:0},END+0.3); tl.set('#ui',{opacity:0},END);
 F2('#end',{opacity:0},{opacity:1,duration:.25,ease:'none'},END);
