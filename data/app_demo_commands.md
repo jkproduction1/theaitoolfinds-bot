@@ -61,3 +61,6 @@ Own command names, copy only the look: no logos, mascots or characters of the ch
 - yellow71 (2026-11-25): /simulate the Yellowstone supervolcano erupting, /scale the Amazon River versus Europe, /painted-story how the Trojan horse fooled a city (Jan, live)
 - earth72 (2026-11-25): /what-if the Moon crashed into Earth, /explain-3d how a solar storm knocks out the power grid, /deep-dive the deepest hole ever dug (Jan, live; SYSTEM)
 - earth73 (2026-11-27): /zack-d-films what if Earth stopped orbiting the Sun, /deep-dive what lives at the bottom of the ocean, /scale a blue whale versus a jumbo jet (Jan, live; trio 1 from predictor v2, score 95)
+- earth74 (2026-11-27): /what-if Earth's core went cold, /simulate a mile-wide asteroid crashing into the Atlantic Ocean, /scale the Sahara versus the USA (08:00 PROMPTS, mix v8)
+- tech75 (2026-11-27): /explain-3d how a plane lands itself in fog, /explode a Tesla battery pack, /x-ray a plane's black box after a crash (15:00 SYSTEM)
+- money76 (2026-11-27): /painted-story the 1929 Wall Street crash, /paper-collage how a card swipe moves your money, /explain-3d what lightning does to the Eiffel Tower (21:00 SYSTEM)
