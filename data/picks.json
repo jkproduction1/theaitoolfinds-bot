@@ -1,52 +1,52 @@
 {
-  "date": "2026-11-26",
+  "date": "2026-11-27",
   "category": "ideas",
   "items": [],
   "demos": [
     {
-      "title": "What if… Earth 17",
+      "title": "Zack D. Films: Země 19",
       "commands": [
-        "/zack-d-films what if Earth's core went cold",
-        "/simulate a mile-wide asteroid hitting the Atlantic",
-        "/scale the Sahara Desert versus the USA"
+        "/zack-d-films what if Earth's oxygen doubled for one day",
+        "/simulate Iceland being torn apart by the Mid-Atlantic Ridge",
+        "/scale Mauna Kea versus Mount Everest from the sea floor"
       ],
-      "why": "Earth what-if v duchu Zack D. Films je náš nejsilnější IG hook (earth8 874k); katastrofa + měřítko, všechno nové"
+      "why": "vzorec earth8 (1M): Zack D. Films what-if o Zemi jako první prompt, pak geologie + měřítko"
     },
     {
-      "title": "Scary space 11",
+      "title": "Vesmír 13",
       "commands": [
-        "/what-if you fell into Jupiter",
-        "/deep-dive to the bottom of Venus's clouds",
-        "/scale the biggest black hole versus our Solar System"
+        "/zack-d-films what if you stood on Venus for one minute",
+        "/explain-3d how a black hole bends light",
+        "/scale Saturn's rings versus the distance to the Moon"
       ],
-      "why": "vesmír = druhé nejsilnější téma (space7 189k IG / 366k TT); smrtící svět + obří měřítko"
+      "why": "vesmír je náš druhý nejsilnější motiv: space7 (198k) a space14 (72k)"
     },
     {
-      "title": "Deadliest nature 6",
+      "title": "Smrtící příroda 8",
       "commands": [
-        "/simulate an avalanche burying a ski town",
-        "/deep-dive into the eye of a hurricane",
-        "/what-if a megadrought dried up the Mississippi"
+        "/x-ray a tornado from the cloud to the ground",
+        "/simulate Hawaiian lava pouring into the ocean",
+        "/zoom-in the stinging cells of a box jellyfish"
       ],
-      "why": "příroda v nejnebezpečnější podobě (storm45 99k) drží; strach + obraz, žádná měkká roztomilá témata (around51 16k)"
+      "why": "storm45 (113k) ukázal, že příroda v nejnebezpečnější podobě táhne dosah"
     },
     {
-      "title": "How money works (SYSTEM)",
+      "title": "SYSTEM: jak fungují slavné stavby (21:00)",
       "commands": [
-        "/paper-collage how a credit card swipe moves your money",
-        "/x-ray an ATM",
-        "/painted-story how the New York Stock Exchange began under a tree"
+        "/painted-story how the Golden Gate Bridge was built",
+        "/x-ray the Hoover Dam",
+        "/flat-science how GPS knows exactly where you are"
       ],
-      "why": "pro 21:00 SYSTEM: peníze + slavné US instituce pro dospělé v USA/EU; explainer styly mají nejlepší save rate (styles33 5–6 %)"
+      "why": "pro 21:00 SYSTEM: US dospělí, slavné stavby + tech ve stylech ze styles33 (163k) a styles19 (79k)"
     },
     {
-      "title": "Famous machines inside (SYSTEM)",
+      "title": "SYSTEM: peníze a stroje (21:00)",
       "commands": [
-        "/explode a Tesla battery pack",
-        "/explain-3d how a Boeing 747 stays in the air",
-        "/flat-science how Wi-Fi sends a video through your wall"
+        "/paper-collage how the US Mint makes a quarter",
+        "/explain-3d how a Formula 1 car brakes from 200 mph",
+        "/explode a smartphone camera module"
       ],
-      "why": "pro 21:00 SYSTEM: tech + jak fungují slavné věci; what's inside (inside3 135k) je ověřený hit, objekty dosud nepoužité"
+      "why": "pro 21:00 SYSTEM: peníze + tech pro US/EU, 'co je uvnitř' bylo silné (inside3 140k)"
     }
   ],
   "tutorials": [],
